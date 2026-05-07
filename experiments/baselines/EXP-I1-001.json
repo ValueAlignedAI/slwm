@@ -1,0 +1,210 @@
+{
+  "ablation": {
+    "ablation_of": null,
+    "changed_variable": null,
+    "held_constant": [
+      "seed",
+      "tiny_batch"
+    ],
+    "is_ablation": false
+  },
+  "claim_trace": {
+    "expected_decision": "untested",
+    "guardrail_ids": [
+      "G-R0-1"
+    ],
+    "hypothesis_ids": [],
+    "research_questions": []
+  },
+  "config": {
+    "config_hash": "sha256:44eb475be05ec1942bc8e3070653c246f5b87efb745ebdd03f56b702a6d16e9c",
+    "config_path": "configs/baselines/gpt2_tiny_smoke.json",
+    "context_length": 8,
+    "deterministic": true,
+    "latent_dim": 16,
+    "latent_length": 8,
+    "precision": "fp32",
+    "seed": 0
+  },
+  "created_at": "2026-05-07",
+  "data": {
+    "dataset_mix": {
+      "audio": null,
+      "synthetic": "deterministic_tiny_token_batch",
+      "text_code": 1.0,
+      "visual_video": null
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "not applicable; overfit smoke uses same train/eval batch intentionally",
+        "license_notes": "synthetic smoke data generated in repo",
+        "name": "deterministic_tiny_token_batch",
+        "sample_count": 4,
+        "split": "custom",
+        "tokens": 32,
+        "version_or_snapshot": "generated_by_training.baseline_smoke.make_gpt2_tiny_batch",
+        "video_hours": null
+      }
+    ],
+    "preprocessing": {
+      "audio_codec_or_features": null,
+      "sample_schema_version": "i1.baseline_smoke",
+      "text_codec": "tiny_gpt2_bpe_surrogate_ids",
+      "visual_codec_or_features": null
+    }
+  },
+  "evaluation": {
+    "baselines_compared": [],
+    "checkpoint_path": null,
+    "controls": {
+      "always_noop": false,
+      "fixed_router": false,
+      "no_policy": true,
+      "random_or_null": false,
+      "shuffled_pairs": false
+    },
+    "decoding_or_probe_settings": {
+      "diagnostic_only": false,
+      "max_new_tokens": null,
+      "temperature": null,
+      "top_p": null
+    },
+    "eval_script": "training/baseline_smoke.py",
+    "eval_script_hash": "sha256:44815677e66b2c5553c7495412f3f1d370773e778148aa519706a5cd882410fc",
+    "metrics": {
+      "primary": {
+        "confidence_interval": null,
+        "higher_is_better": true,
+        "name": "loss_drop_percent",
+        "value": 99.99212723003413
+      },
+      "required_bundles": {
+        "hallucination_or_policy_claim": {
+          "abstention_or_noop_rate": null,
+          "calibration_metric": null,
+          "contradiction_rate": null,
+          "grounded_accuracy_or_usefulness": null,
+          "required_when_claiming_reduction": true,
+          "unsupported_claim_rate": null
+        }
+      },
+      "secondary": [
+        {
+          "higher_is_better": false,
+          "name": "initial_loss",
+          "value": 3.4723506989445987
+        },
+        {
+          "higher_is_better": false,
+          "name": "final_loss",
+          "value": 0.00027337018293628065
+        },
+        {
+          "higher_is_better": false,
+          "name": "perplexity",
+          "value": 1.00027340755197
+        },
+        {
+          "higher_is_better": null,
+          "name": "parameter_count",
+          "value": 3952
+        }
+      ]
+    },
+    "seeds": [
+      0
+    ]
+  },
+  "experiment_id": "EXP-I1-001",
+  "interpretation": {
+    "claim_language_allowed": "Baseline path runs and tiny-batch loss decreased; no broader capability claim.",
+    "failure_modes_observed": [],
+    "hypothesis_decision": "untested",
+    "limitations": [
+      "Tiny synthetic/in-memory data only.",
+      "No SLWM comparison and no model-quality claim.",
+      "No hallucination, grounding, or policy claim."
+    ],
+    "next_allowed_step": "Use registered baselines as implementation readiness evidence; larger training belongs to Training/Evaluation sprints.",
+    "result_summary": "GPT-2-style tiny overfit smoke run completed."
+  },
+  "model": {
+    "architecture_flags": {
+      "baseline_decoder_only_transformer": true,
+      "latent_prediction": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "reconstruction": false,
+      "shared_core": false,
+      "spectral_mixer": false,
+      "uncertainty_head": false
+    },
+    "core_trainable_parameters": 3312,
+    "enabled_modalities": [
+      "text_code"
+    ],
+    "frozen_parameters": 0,
+    "module_parameter_counts": {
+      "adapters": 0,
+      "decoders": 640,
+      "embeddings": 640,
+      "heads": 0,
+      "policy": 0,
+      "processor": 3312,
+      "total": 3952
+    },
+    "name": "gpt2-tiny-overfit-smoke",
+    "parameter_accounting_mode": "strict",
+    "total_trainable_parameters": 3952,
+    "variant": "gpt2_baseline"
+  },
+  "repository": {
+    "code_diff_ref": null,
+    "docs_read": [
+      "signal_latent_world_model_research_plan.md",
+      "research_impl_eval_docs.md",
+      "sprint_playbook_prompts.md",
+      "exploration.md",
+      "AGENTS.md",
+      "README.md",
+      "hypotheses.md",
+      "design_decisions.md",
+      "experiment_registry.md",
+      "docs/model_spec.md",
+      "docs/data_contract.md"
+    ],
+    "git_commit": null,
+    "working_tree_state": "dirty"
+  },
+  "sprint": {
+    "id": "I1",
+    "name": "Baselines",
+    "owner_role": "implementation"
+  },
+  "status": "completed",
+  "training": {
+    "anomalies": {
+      "loss_explosion": false,
+      "modality_collapse": false,
+      "nan_or_inf": false,
+      "notes": "Sprint I1 tiny-batch overfit smoke run; no model-quality claim."
+    },
+    "batch_size": 4,
+    "checkpoint_path": null,
+    "hardware": "cpu_numpy",
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "tiny_overfit_next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_numpy",
+    "save_config_with_checkpoint": true,
+    "total_flops_estimate": null,
+    "total_steps": 180,
+    "train_tokens_or_samples": 32,
+    "wall_clock_time": 0.08177633298328146
+  },
+  "updated_at": "2026-05-07"
+}

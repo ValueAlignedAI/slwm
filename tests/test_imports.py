@@ -14,7 +14,8 @@ def test_i0_stub_imports() -> None:
     )
     from models.policy import PolicyCommitGate
     from models.processor import SignalWorldProcessor
-    from utils import load_config, make_i0_registry_entry, write_config, write_registry_entry
+    from models.baselines import NumpyGPT2DecoderBaseline, NumpyVanillaMultimodalTransformerBaseline
+    from utils import load_config, make_i0_registry_entry, make_i1_baseline_registry_entry, write_config, write_registry_entry
 
     assert MODALITY_IDS["text_code"] == 1
     assert "observed" in SOURCE_TAGS
@@ -33,8 +34,11 @@ def test_i0_stub_imports() -> None:
     assert VisualDecoderHead is not None
     assert NoOpHead is not None
     assert PolicyCommitGate is not None
-    assert models.baselines.__all__ == []
+    assert NumpyGPT2DecoderBaseline is not None
+    assert NumpyVanillaMultimodalTransformerBaseline is not None
+    assert "NumpyGPT2DecoderBaseline" in models.baselines.__all__
     assert load_config is not None
     assert write_config is not None
     assert make_i0_registry_entry is not None
+    assert make_i1_baseline_registry_entry is not None
     assert write_registry_entry is not None

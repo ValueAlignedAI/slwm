@@ -49,6 +49,7 @@ Optional sensor, robotics, action, and persistent-memory experiments are future-
 | R0 — Hypotheses and falsification | Complete as research specification | `hypotheses.md`, `risks_and_assumptions.md`, `experiment_registry.md` | Claims are measurable; all hypotheses remain untested until registered experiments run. |
 | R1 — Literature-to-design mapping | Complete as research/design specification | `literature_map.md`, `design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
+| I1 — Baselines | Implemented locally | `baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
 
 ## I0 implementation scope
 
@@ -119,16 +120,19 @@ TOTAL 413 stmts, 0 miss, 100% coverage
 - Do not merge sprint scopes: baselines, real SLWM architecture, training, evaluation, and exploration have separate gates.
 - No main-weight continual learning or online inference-time weight updates in the initial phase.
 
-## Next allowed implementation stage
+## Sprint I1 baseline scope
 
-The next implementation sprint is **I1 — Baselines**. Its scope is to implement required baselines before SLWM novelty:
+Sprint I1 implements required baselines before SLWM novelty:
 
 1. GPT-2-small-style decoder-only text/code baseline.
 2. Vanilla multimodal Transformer baseline.
-3. Minimal Perceiver-style latent bottleneck baseline if feasible.
-4. Null/random baselines for probes.
+3. Null/random baselines for probes.
 
-I1 is accepted only when at least one text baseline and one multimodal/latent baseline can train for a tiny run and produce logged metrics.
+See `baselines.md` for exact parameter counts, configs, context lengths, tokenizer/codec choices, smoke metrics, and registry paths. Minimal Perceiver-style latent bottleneck remains pending/future because the accepted I1 gate only requires one text baseline and one multimodal/latent baseline to tiny-train and log metrics.
+
+## Next allowed implementation stage
+
+The next implementation sprint after I1 is **I2 — SLWM core**, but only after I1 validation artifacts are accepted. I2 scope is adapters and processor core; it must still avoid policy/exploration claims.
 
 ## Branch workflow
 
