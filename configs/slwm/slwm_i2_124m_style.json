@@ -1,0 +1,44 @@
+{
+  "sprint": {
+    "id": "I2",
+    "name": "SLWM core processor and adapters"
+  },
+  "model": {
+    "name": "SLWM-I2-124M-style-config-only",
+    "context_length": 1024,
+    "latent_dim": 768,
+    "n_layer": 12,
+    "text_vocab_size": 50257,
+    "audio_feature_dim": 80,
+    "visual_feature_dim": 256,
+    "intermediate_size": 2624,
+    "local_kernel_size": 3,
+    "long_conv_kernel_size": 15,
+    "spectral_modes": 1024,
+    "parameter_accounting_mode": "strict",
+    "architecture_flags": {
+      "shared_core": true,
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": true,
+      "use_uncertainty_head": true,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 0,
+    "deterministic": true,
+    "precision": "float64_numpy_smoke"
+  },
+  "data": {
+    "sample_schema_version": "i2.0",
+    "dataset_mix": {
+      "text_code": "not_loaded_in_i2_config_only",
+      "audio": "not_loaded_in_i2_config_only",
+      "visual_video": "not_loaded_in_i2_config_only"
+    }
+  }
+}

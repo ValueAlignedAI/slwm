@@ -1,0 +1,80 @@
+{
+  "sprint": {
+    "id": "I1",
+    "name": "Baselines"
+  },
+  "model": {
+    "name": "gpt2-tiny-overfit-smoke",
+    "variant": "gpt2_baseline",
+    "vocab_size": 32,
+    "context_length": 8,
+    "latent_length": 8,
+    "latent_dim": 16,
+    "n_layer": 1,
+    "n_embd": 16,
+    "n_head": 2,
+    "intermediate_size": 64,
+    "tie_embeddings": true,
+    "parameter_accounting_mode": "strict",
+    "tokenizer": {
+      "type": "tiny_gpt2_bpe_surrogate_ids",
+      "choice_reason": "Deterministic integer-token surrogate for smoke tests; full baseline config uses GPT-2 BPE size.",
+      "vocab_size": 32
+    },
+    "architecture_flags": {
+      "baseline_decoder_only_transformer": true,
+      "shared_core": false,
+      "spectral_mixer": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "latent_prediction": false,
+      "reconstruction": false,
+      "uncertainty_head": false,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 0,
+    "deterministic": true,
+    "precision": "fp32"
+  },
+  "data": {
+    "sample_schema_version": "i1.baseline_smoke",
+    "dataset_mix": {
+      "text_code": 1.0,
+      "audio": null,
+      "visual_video": null,
+      "synthetic": "deterministic_tiny_token_batch"
+    },
+    "datasets": [
+      {
+        "name": "deterministic_tiny_token_batch",
+        "version_or_snapshot": "generated_by_training.baseline_smoke.make_gpt2_tiny_batch",
+        "split": "custom",
+        "sample_count": 4,
+        "tokens": 32,
+        "audio_hours": null,
+        "video_hours": null,
+        "license_notes": "synthetic smoke data generated in repo",
+        "leakage_checks": "not applicable; overfit smoke uses same train/eval batch intentionally"
+      }
+    ]
+  },
+  "training": {
+    "objective": ["tiny_overfit_next_token_cross_entropy"],
+    "optimizer": "adamw_numpy",
+    "learning_rate_schedule": "constant",
+    "learning_rate": 0.03,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 1.0,
+    "batch_size": 4,
+    "sequence_length": 8,
+    "steps": 180
+  },
+  "registry": {
+    "experiment_id": "EXP-I1-001",
+    "path": "experiments/baselines/EXP-I1-001.json",
+    "metrics_path": "experiments/baselines/EXP-I1-001.metrics.json"
+  }
+}

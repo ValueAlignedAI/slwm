@@ -1,0 +1,59 @@
+{
+  "sprint": {
+    "id": "I1",
+    "name": "Baselines"
+  },
+  "model": {
+    "name": "gpt2-small-style-baseline",
+    "variant": "gpt2_baseline",
+    "vocab_size": 50257,
+    "context_length": 1024,
+    "latent_length": 1024,
+    "latent_dim": 768,
+    "n_layer": 12,
+    "n_embd": 768,
+    "n_head": 12,
+    "intermediate_size": 3072,
+    "tie_embeddings": true,
+    "parameter_accounting_mode": "strict",
+    "tokenizer": {
+      "type": "gpt2_bpe",
+      "choice_reason": "Matches GPT-2-small-style text/code baseline comparability; byte-level ablation is future work.",
+      "vocab_size": 50257
+    },
+    "architecture_flags": {
+      "baseline_decoder_only_transformer": true,
+      "shared_core": false,
+      "spectral_mixer": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "latent_prediction": false,
+      "reconstruction": false,
+      "uncertainty_head": false,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 0,
+    "deterministic": true,
+    "precision": "fp32"
+  },
+  "data": {
+    "sample_schema_version": "i1.baseline_config",
+    "dataset_mix": {
+      "text_code": 1.0,
+      "audio": null,
+      "visual_video": null,
+      "synthetic": null
+    },
+    "datasets": []
+  },
+  "training": {
+    "objective": ["next_token_cross_entropy"],
+    "optimizer": "adamw_numpy_or_equivalent",
+    "learning_rate_schedule": "not_set_for_full_config",
+    "batch_size": null,
+    "steps": null
+  }
+}
