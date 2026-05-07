@@ -1,0 +1,44 @@
+{
+  "sprint": {
+    "id": "I2",
+    "name": "SLWM core processor and adapters"
+  },
+  "model": {
+    "name": "SLWM-I2-tiny-smoke",
+    "context_length": 12,
+    "latent_dim": 8,
+    "n_layer": 1,
+    "text_vocab_size": 32,
+    "audio_feature_dim": 5,
+    "visual_feature_dim": 6,
+    "intermediate_size": 16,
+    "local_kernel_size": 3,
+    "long_conv_kernel_size": 5,
+    "spectral_modes": 6,
+    "parameter_accounting_mode": "strict",
+    "architecture_flags": {
+      "shared_core": true,
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": true,
+      "use_uncertainty_head": true,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 0,
+    "deterministic": true,
+    "precision": "float64_numpy_smoke"
+  },
+  "data": {
+    "sample_schema_version": "i2.0",
+    "dataset_mix": {
+      "text_code": "dummy_tokens",
+      "audio": "dummy_audio_latents",
+      "visual_video": "dummy_visual_latents"
+    }
+  }
+}
