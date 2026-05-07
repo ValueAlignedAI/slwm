@@ -551,13 +551,13 @@ The project is promising if SLWM-124M shows:
 
 The project is not successful if improvements only appear in demos, require unfair parameter/data budgets, collapse to abstention, or disappear under ablation.
 
-## Version Control Branches
+## 16. Version Control Branches
 
-Research      
-Implementation
-Training      
-Evaluation    
-Exploration   
+research
+implementation
+training
+evaluation
+exploration
 integration
 
-Per sprint branch and merge PR.
+Use one branch per sprint. Merge completed sprint work through a PR into integration

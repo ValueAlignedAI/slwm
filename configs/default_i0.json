@@ -1,0 +1,38 @@
+{
+  "sprint": {
+    "id": "I0",
+    "name": "Repo skeleton and contracts"
+  },
+  "model": {
+    "name": "SLWM-I0-shape-contract-stub",
+    "latent_length": 1024,
+    "latent_dim": 768,
+    "modalities": ["text_code", "audio", "visual_video"],
+    "parameter_accounting_mode": "strict",
+    "architecture_flags": {
+      "shared_core": true,
+      "spectral_mixer": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "latent_prediction": false,
+      "reconstruction": false,
+      "uncertainty_head": false,
+      "policy_commit_gate": false,
+      "noop_head": true
+    }
+  },
+  "runtime": {
+    "seed": 0,
+    "deterministic": true,
+    "precision": "fp32"
+  },
+  "data": {
+    "sample_schema_version": "i0.1",
+    "dataset_mix": {
+      "text_code": null,
+      "audio": null,
+      "visual_video": null,
+      "synthetic": null
+    }
+  }
+}
