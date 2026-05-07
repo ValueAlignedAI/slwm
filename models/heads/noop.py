@@ -16,9 +16,14 @@ class NoOpHead(BaseOutputHead):
 
     head_name = "noop"
     channel = "none"
+    modality = "noop"
     diagnostic_only = False
+    default_score = 1.0
+    default_source_tag = "unknown"
+    default_intention = "observe_wait"
 
     def forward(self, z_world: Any, query: Any | None = None, metadata: Mapping[str, Any] | None = None) -> dict[str, Any]:
         output = super().forward(z_world, query=query, metadata=metadata)
         output["proposal"]["intention"] = "observe_wait"
+        output["proposal"]["reason"] = "noop_head_proposal"
         return output

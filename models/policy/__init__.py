@@ -1,5 +1,5 @@
-"""Policy/commit gate stubs for Sprint I0."""
+"""Policy/commit gate stubs for Sprint I3."""
 
-from models.policy.commit_gate import PolicyCommitGate
+from models.policy.commit_gate import FixedRulePolicyCommitGate, LearnedPolicyCommitGateStub, PolicyCommitGate
 
-__all__ = ["PolicyCommitGate"]
+__all__ = ["FixedRulePolicyCommitGate", "LearnedPolicyCommitGateStub", "PolicyCommitGate"]

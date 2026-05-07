@@ -27,16 +27,13 @@ def test_dummy_batch_passes_adapter_to_policy_default_noop() -> None:
     assert text_proposal["text_logits"].shape == (batch_size, latent_length, 128)
     assert uncertainty["uncertainty"].shape == (batch_size, latent_length, 1)
     assert policy["noop_probability"] == 1.0
-    assert policy["commitments"] == [
-        {
-            "head": "noop",
-            "channel": "none",
-            "committed": True,
-            "status": "committed",
-            "intention": "observe_wait",
-            "reason": "i0_policy_stub_default_noop",
-        }
-    ]
+    assert len(policy["commitments"]) == 1
+    assert policy["commitments"][0]["head"] == "noop"
+    assert policy["commitments"][0]["channel"] == "none"
+    assert policy["commitments"][0]["modality_id"] == 0
+    assert policy["commitments"][0]["status"] == "committed"
+    assert policy["commitments"][0]["reason"] == "no_external_commit_default_noop"
+    assert [item["status"] for item in policy["suppressed"]] == ["suppressed"]
 
 
 def test_policy_can_exercise_single_head_commit_path_when_requested() -> None:
@@ -63,9 +60,11 @@ def test_policy_accepts_mapping_and_raw_proposals_and_rejects_bad_items() -> Non
 
     mapping_policy = PolicyCommitGate()(z_world, {"text": text_proposal})
     assert mapping_policy["metadata"]["proposal_count"] == 1
+    assert mapping_policy["commitments"][0]["head"] == "noop"
 
     raw_policy = PolicyCommitGate()(z_world, [text_proposal["proposal"]])
     assert raw_policy["metadata"]["proposal_count"] == 1
+    assert raw_policy["commitments"][0]["head"] == "noop"
 
     try:
         PolicyCommitGate()(z_world, [object()])

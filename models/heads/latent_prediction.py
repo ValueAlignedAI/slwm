@@ -23,6 +23,9 @@ class LatentPredictionHead(BaseOutputHead):
 
     head_name = "latent_prediction"
     channel = "internal"
+    default_score = 0.0
+    default_source_tag = "predicted"
+    default_intention = "predict_future_latent"
 
     def __init__(self, latent_dim: int | None = None, *, seed: int = 0) -> None:
         self.latent_dim = None if latent_dim is None else int(latent_dim)

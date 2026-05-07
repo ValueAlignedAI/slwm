@@ -1,9 +1,9 @@
-"""Sprint I2 NumPy SLWM core wrapper.
+"""Sprint I2/I3 NumPy SLWM core wrapper.
 
-This wrapper is intentionally limited to I2 scope: adapters, shared latent field,
-signal processor, latent prediction head, and uncertainty head. It does not
-implement policy routing, output commitment, exploration dashboards, datasets, or
-large training loops.
+This wrapper keeps the I2 trainable smoke path and adds Sprint I3 shape-only
+output-head proposal and policy/commitment routing APIs. It still does not
+implement exploration dashboards, datasets, large training loops, or model-quality
+claims.
 """
 
 from __future__ import annotations
@@ -14,15 +14,16 @@ import numpy as np
 
 from models.adapters import AudioSignalAdapter, TextSignalAdapter, VisualSignalAdapter
 from models.baselines.numpy_nn import AdamW, Parameter
-from models.heads import LatentPredictionHead, UncertaintyHead
+from models.heads import AudioDecoderHead, LatentPredictionHead, NoOpHead, TextDecoderHead, UncertaintyHead, VisualDecoderHead
 from models.latent_field import LatentSignalField
+from models.policy import PolicyCommitGate
 from models.processor import SignalWorldProcessor
 from models.slwm_config import SLWMCoreConfig
 from models.slwm_parameter_count import SLWMParameterBreakdown
 
 
 class NumpySLWMCore:
-    """Minimal Sprint I2 SLWM core for deterministic smoke tests.
+    """Minimal Sprint I2/I3 SLWM core for deterministic smoke tests.
 
     Forward input batch keys:
         ``text_tokens``: ``IntTensor[B,T_text]``.
@@ -33,6 +34,8 @@ class NumpySLWMCore:
         ``field['z']`` and ``processed['z_world']`` preserve the canonical
         ``FloatTensor[B,T,D]`` contract. Optional I2 heads emit
         ``latent_prediction: FloatTensor[B,T,D]`` and uncertainty/source logits.
+        I3 output heads emit text/audio/visual/no-op proposals and the policy
+        returns committed/suppressed/diagnostic-only routing metadata.
 
     Training smoke contract:
         ``loss_and_backward`` applies an MSE latent prediction objective against a
@@ -66,6 +69,11 @@ class NumpySLWMCore:
             LatentPredictionHead(config.latent_dim, seed=config.seed + 4) if config.use_latent_prediction_head else None
         )
         self.uncertainty_head = UncertaintyHead(config.latent_dim, seed=config.seed + 5) if config.use_uncertainty_head else None
+        self.text_decoder_head = TextDecoderHead(vocab_size=config.text_vocab_size) if config.use_output_heads else None
+        self.audio_decoder_head = AudioDecoderHead(audio_dim=config.audio_feature_dim) if config.use_output_heads else None
+        self.visual_decoder_head = VisualDecoderHead(visual_dim=config.visual_feature_dim) if config.use_output_heads else None
+        self.noop_head = NoOpHead() if config.use_output_heads else None
+        self.policy_gate = PolicyCommitGate() if config.use_policy_gate else None
         self._last_adapter_order: list[Any] = []
         self._last_output: dict[str, Any] | None = None
 
@@ -131,8 +139,23 @@ class NumpySLWMCore:
             raise ValueError("NumpySLWMCore.forward requires at least one modality in the batch")
         return packets, adapters
 
-    def forward(self, batch: Mapping[str, Any]) -> dict[str, Any]:
-        """Run adapters -> latent field -> processor -> I2 diagnostic heads."""
+    def forward(
+        self,
+        batch: Mapping[str, Any],
+        *,
+        policy_goal: Mapping[str, Any] | None = None,
+        output_metadata: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Run adapters -> latent field -> processor -> heads -> policy.
+
+        Args:
+            batch: Multimodal dummy batch accepted by ``_pack_batch``.
+            policy_goal: Optional fixed-rule policy request, e.g.
+                ``{"commit_head": "text_decoder"}`` or
+                ``{"commit_heads": ["text_decoder", "audio_decoder"]}``.
+            output_metadata: Optional proposal metadata applied to all I3 output
+                heads, e.g. ``{"mode": "explore"}`` for diagnostic-only probes.
+        """
 
         packets, adapter_order = self._pack_batch(batch)
         field = self.latent_field.from_adapter_outputs(packets)
@@ -143,6 +166,25 @@ class NumpySLWMCore:
             output["latent_prediction"] = self.latent_prediction_head(z_world)
         if self.uncertainty_head is not None:
             output["uncertainty"] = self.uncertainty_head(z_world)
+        if self.config.use_output_heads:
+            output_heads: dict[str, dict[str, Any]] = {}
+            if self.text_decoder_head is not None:
+                output_heads["text"] = self.text_decoder_head(z_world, metadata=output_metadata)
+            if self.audio_decoder_head is not None:
+                output_heads["audio"] = self.audio_decoder_head(z_world, metadata=output_metadata)
+            if self.visual_decoder_head is not None:
+                output_heads["visual"] = self.visual_decoder_head(z_world, metadata=output_metadata)
+            if self.noop_head is not None:
+                output_heads["noop"] = self.noop_head(z_world, metadata=output_metadata)
+            output["output_heads"] = output_heads
+            output["proposals"] = {name: head_output["proposal"] for name, head_output in output_heads.items()}
+            if self.policy_gate is not None:
+                output["policy"] = self.policy_gate(
+                    z_world,
+                    output_heads,
+                    uncertainty=output.get("uncertainty"),
+                    goal=policy_goal,
+                )
         self._last_adapter_order = adapter_order
         self._last_output = output
         return output

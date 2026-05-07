@@ -17,6 +17,8 @@ class ReconstructionHead(BaseOutputHead):
 
     head_name = "reconstruction"
     channel = "internal"
+    default_source_tag = "reconstructed"
+    default_intention = "diagnostic_reconstruction"
 
     def __init__(self, output_dim: int | None = None) -> None:
         self.output_dim = output_dim

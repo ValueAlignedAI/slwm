@@ -12,7 +12,7 @@ def test_i0_stub_imports() -> None:
         UncertaintyHead,
         VisualDecoderHead,
     )
-    from models.policy import PolicyCommitGate
+    from models.policy import FixedRulePolicyCommitGate, LearnedPolicyCommitGateStub, PolicyCommitGate
     from models.processor import SignalWorldProcessor
     from models.baselines import NumpyGPT2DecoderBaseline, NumpyVanillaMultimodalTransformerBaseline
     from utils import load_config, make_i0_registry_entry, make_i1_baseline_registry_entry, write_config, write_registry_entry
@@ -34,6 +34,8 @@ def test_i0_stub_imports() -> None:
     assert VisualDecoderHead is not None
     assert NoOpHead is not None
     assert PolicyCommitGate is not None
+    assert FixedRulePolicyCommitGate is not None
+    assert LearnedPolicyCommitGateStub is not None
     assert NumpyGPT2DecoderBaseline is not None
     assert NumpyVanillaMultimodalTransformerBaseline is not None
     assert "NumpyGPT2DecoderBaseline" in models.baselines.__all__
