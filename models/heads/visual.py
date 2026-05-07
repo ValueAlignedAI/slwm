@@ -16,7 +16,11 @@ class VisualDecoderHead(BaseOutputHead):
 
     head_name = "visual_decoder"
     channel = "visual"
+    modality = "visual_video"
     diagnostic_only = False
+    default_score = 0.5
+    default_source_tag = "predicted"
+    default_intention = "emit_visual_latents"
 
     def __init__(self, visual_dim: int = 768) -> None:
         self.visual_dim = int(visual_dim)
@@ -25,4 +29,5 @@ class VisualDecoderHead(BaseOutputHead):
         output = super().forward(z_world, query=query, metadata=metadata)
         output["visual_latents"] = output_spec_from_latent(z_world, self.visual_dim, "visual_latents")
         output["metadata"]["visual_dim"] = self.visual_dim
+        output["proposal"]["output_key"] = "visual_latents"
         return output

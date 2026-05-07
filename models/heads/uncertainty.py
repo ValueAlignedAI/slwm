@@ -26,6 +26,8 @@ class UncertaintyHead(BaseOutputHead):
 
     head_name = "uncertainty"
     channel = "internal"
+    default_source_tag = "inferred"
+    default_intention = "estimate_uncertainty_and_source"
 
     def __init__(self, latent_dim: int | None = None, *, seed: int = 0) -> None:
         self.latent_dim = None if latent_dim is None else int(latent_dim)

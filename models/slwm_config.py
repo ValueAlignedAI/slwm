@@ -1,4 +1,4 @@
-"""Configuration objects for Sprint I2 SLWM core modules.
+"""Configuration objects for Sprint I2/I3 SLWM core modules.
 
 The Sprint I2 implementation remains NumPy-only and tiny-run friendly while
 preserving the project-wide canonical latent contract ``Z: FloatTensor[B,T,D]``.
@@ -14,7 +14,7 @@ from typing import Any, Mapping
 
 @dataclass(frozen=True)
 class SLWMCoreConfig:
-    """Config for the Sprint I2 SLWM adapters, processor, and diagnostic heads.
+    """Config for the Sprint I2/I3 SLWM adapters, processor, heads, and policy stubs.
 
     Shape contract:
         text tokens: ``IntTensor[B,T_text]``.
@@ -28,6 +28,8 @@ class SLWMCoreConfig:
         ``use_long_conv``, and ``use_gated_mlp`` gate the I2 processor blocks.
         ``use_latent_prediction_head`` and ``use_uncertainty_head`` gate the two
         I2 trainable heads.
+        ``use_output_heads`` and ``use_policy_gate`` enable the I3 shape-only
+        proposal and commitment API stubs.  They add no trainable parameters.
     """
 
     context_length: int = 1024
@@ -48,6 +50,8 @@ class SLWMCoreConfig:
     use_gated_mlp: bool = True
     use_latent_prediction_head: bool = True
     use_uncertainty_head: bool = True
+    use_output_heads: bool = True
+    use_policy_gate: bool = True
 
     @property
     def d_ff(self) -> int:
@@ -100,6 +104,8 @@ class SLWMCoreConfig:
             use_gated_mlp=flag("use_gated_mlp", True),
             use_latent_prediction_head=flag("use_latent_prediction_head", bool(flags.get("latent_prediction", True))),
             use_uncertainty_head=flag("use_uncertainty_head", bool(flags.get("uncertainty_head", True))),
+            use_output_heads=flag("use_output_heads", bool(flags.get("output_heads", True))),
+            use_policy_gate=flag("use_policy_gate", bool(flags.get("policy_gate", True))),
         )
 
 

@@ -1,8 +1,8 @@
-# SLWM-124M Architecture — Sprint I2
+# SLWM-124M Architecture — Sprint I2/I3
 
-**Sprint:** I2 — SLWM core processor and adapters  
-**Status:** tiny NumPy forward/backward implementation for adapters, shared latent field, processor blocks, latent prediction head, uncertainty/source head.  
-**Out of scope:** advanced policy/commitment behavior, exploration dashboards, datasets/preprocessing, large training runs, and capability claims.
+**Sprint:** I2 — SLWM core processor and adapters; I3 — output heads and policy stubs  
+**Status:** tiny NumPy forward/backward implementation for adapters, shared latent field, processor blocks, latent prediction head, uncertainty/source head, plus I3 shape-only output-head proposal and policy/commit APIs.  
+**Out of scope:** trained policy behavior, exploration dashboards, datasets/preprocessing, large training runs, and capability claims.
 
 ## 1. Canonical Contract
 
@@ -60,7 +60,7 @@ Every novel block has a config flag for ablation:
 | latent prediction head | `use_latent_prediction_head` |
 | uncertainty/source head | `use_uncertainty_head` |
 
-## 5. Heads in Scope
+## 5. I2 Heads in Scope
 
 I2 implements only the heads required by the sprint gate:
 
@@ -70,17 +70,39 @@ I2 implements only the heads required by the sprint gate:
 
 No text/audio/visual external decoder behavior is added in I2 beyond the existing I0 shape stubs.
 
-## 6. Parameter Accounting
+## 6. I3 Output Heads and Policy Stubs
+
+Sprint I3 extends the shape-contract stubs with a proposal/commit interface:
+
+```text
+Z_world[B,T,D]
+  → TextDecoderHead / AudioDecoderHead / VisualDecoderHead / NoOpHead
+  → proposal dictionaries with modality IDs, source tags, scores, and status
+  → PolicyCommitGate
+  → committed, suppressed, or diagnostic-only decisions
+```
+
+Implemented routing classes:
+
+| Class | Purpose | Trainable parameters |
+|---|---|---:|
+| `PolicyCommitGate` | default deterministic I3 gate | 0 |
+| `FixedRulePolicyCommitGate` | explicit fixed-rule baseline | 0 |
+| `LearnedPolicyCommitGateStub` | future learned-policy API placeholder | 0 |
+
+The default policy commits no-op if no external head is requested. It supports single-head, multi-head, and zero-head routing through `goal` metadata. Diagnostic/probe outputs are marked `diagnostic-only` and are not external behavior.
+
+## 7. Parameter Accounting
 
 `NumpySLWMCore.parameter_count_breakdown()` reports exact instantiated counts split by:
 
 - adapters: `text_code`, `audio`, `visual_video`, plus adapter total,
 - processor,
 - heads: `latent_prediction`, `uncertainty`, plus head total,
-- policy: always `0` in I2,
+- policy: `0` for I2/I3 stubs,
 - strict total.
 
-## 7. Validation Gate
+## 8. Validation Gate
 
 Sprint I2 is accepted only as an implementation smoke result when:
 
@@ -91,3 +113,13 @@ Sprint I2 is accepted only as an implementation smoke result when:
 5. parameter counts are reported by adapter, processor, and head.
 
 No model-quality, grounding, hallucination, or policy claims are made from I2 smoke tests.
+
+I3 acceptance adds API-level tests that verify:
+
+1. text, audio, visual, and no-op heads produce scored proposals,
+2. default no-op does not decode all external heads,
+3. single-head, multi-head, and zero-head policy routes work,
+4. diagnostic/probe outputs remain internal-only,
+5. `NumpySLWMCore.forward(...)` wires proposals through the policy gate.
+
+No behavior-quality, usefulness, grounding, or hallucination claim is made from I3 stubs.

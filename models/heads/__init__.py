@@ -1,4 +1,4 @@
-"""Output and diagnostic head stubs for Sprint I0."""
+"""Output and diagnostic head stubs for Sprint I0-I3."""
 
 from models.heads.audio import AudioDecoderHead
 from models.heads.base import BaseOutputHead
