@@ -1,9 +1,9 @@
 [project]
-name = "slwm-i0"
+name = "slwm-i1-baselines"
 version = "0.0.0"
-description = "Sprint I0 skeleton and shape contracts for SLWM-124M."
+description = "Sprint I1 baseline models and smoke-training utilities for SLWM-124M."
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["numpy>=2.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

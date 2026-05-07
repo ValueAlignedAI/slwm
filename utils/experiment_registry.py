@@ -142,6 +142,184 @@ def make_i0_registry_entry(
     }
 
 
+def make_i1_baseline_registry_entry(
+    *,
+    experiment_id: str,
+    config_path: str,
+    config: Mapping[str, Any],
+    model_name: str,
+    model_variant: str,
+    parameter_count: int,
+    module_parameter_counts: Mapping[str, int],
+    enabled_modalities: list[str],
+    metrics: Mapping[str, Any],
+    training_steps: int,
+    train_tokens_or_samples: int,
+    checkpoint_path: str | None = None,
+    git_commit: str | None = None,
+    working_tree_state: str = "dirty",
+) -> dict[str, Any]:
+    """Create a completed Sprint I1 baseline registry entry.
+
+    The entry is for tiny overfit/smoke evidence only. It can show that a
+    baseline path runs, backpropagates, reduces tiny-batch loss, and logs
+    metrics; it does not support SLWM quality claims.
+    """
+
+    today = date.today().isoformat()
+    cfg = dict(config)
+    cfg_hash = config_hash(cfg)
+    runtime = cfg.get("runtime", {}) if isinstance(cfg.get("runtime", {}), Mapping) else {}
+    model_cfg = cfg.get("model", {}) if isinstance(cfg.get("model", {}), Mapping) else {}
+    data_cfg = cfg.get("data", {}) if isinstance(cfg.get("data", {}), Mapping) else {}
+    train_cfg = cfg.get("training", {}) if isinstance(cfg.get("training", {}), Mapping) else {}
+    codecs = model_cfg.get("codecs", {}) if isinstance(model_cfg.get("codecs", {}), Mapping) else {}
+    tokenizer_cfg = model_cfg.get("tokenizer", {}) if isinstance(model_cfg.get("tokenizer", {}), Mapping) else {}
+    primary_metric_name = str(metrics.get("primary_metric", "loss_drop_percent"))
+    primary_metric_value = metrics.get(primary_metric_name, metrics.get("loss_drop_percent"))
+    initial_loss = metrics.get("initial_loss")
+    final_loss = metrics.get("final_loss")
+    text_validation_loss = final_loss if model_variant == "gpt2_baseline" else None
+    perplexity = metrics.get("perplexity")
+    objective = train_cfg.get("objective", ["tiny_overfit_cross_entropy"])
+    if isinstance(objective, str):
+        objective = [objective]
+
+    return {
+        "experiment_id": experiment_id,
+        "status": "completed",
+        "created_at": today,
+        "updated_at": today,
+        "sprint": {"id": "I1", "name": "Baselines", "owner_role": "implementation"},
+        "claim_trace": {
+            "hypothesis_ids": ["H-R0-2"] if model_variant == "vanilla_multimodal_transformer" else [],
+            "guardrail_ids": ["G-R0-1"] if model_variant == "gpt2_baseline" else ["I1-baseline-smoke"],
+            "research_questions": ["RQ1"] if model_variant == "vanilla_multimodal_transformer" else [],
+            "expected_decision": "untested",
+        },
+        "repository": {
+            "git_commit": git_commit,
+            "working_tree_state": working_tree_state,
+            "code_diff_ref": None,
+            "docs_read": [
+                "signal_latent_world_model_research_plan.md",
+                "research_impl_eval_docs.md",
+                "sprint_playbook_prompts.md",
+                "exploration.md",
+                "AGENTS.md",
+                "README.md",
+                "hypotheses.md",
+                "design_decisions.md",
+                "experiment_registry.md",
+                "docs/model_spec.md",
+                "docs/data_contract.md",
+            ],
+        },
+        "config": {
+            "config_path": config_path,
+            "config_hash": cfg_hash,
+            "seed": int(runtime.get("seed", model_cfg.get("seed", 0))),
+            "deterministic": bool(runtime.get("deterministic", True)),
+            "precision": str(runtime.get("precision", "fp32")),
+            "context_length": int(model_cfg.get("context_length", model_cfg.get("latent_length", 1024))),
+            "latent_length": int(model_cfg.get("latent_length", model_cfg.get("context_length", 1024))),
+            "latent_dim": int(model_cfg.get("latent_dim", model_cfg.get("n_embd", 768))),
+        },
+        "model": {
+            "name": model_name,
+            "variant": model_variant,
+            "parameter_accounting_mode": str(model_cfg.get("parameter_accounting_mode", "strict")),
+            "total_trainable_parameters": int(parameter_count),
+            "core_trainable_parameters": int(module_parameter_counts.get("processor", 0)),
+            "frozen_parameters": 0,
+            "module_parameter_counts": dict(module_parameter_counts),
+            "enabled_modalities": enabled_modalities,
+            "architecture_flags": model_cfg.get("architecture_flags", {}),
+        },
+        "ablation": {"is_ablation": False, "ablation_of": None, "changed_variable": None, "held_constant": ["seed", "tiny_batch"]},
+        "data": {
+            "dataset_mix": data_cfg.get("dataset_mix", {}),
+            "datasets": data_cfg.get("datasets", []),
+            "preprocessing": {
+                "text_codec": tokenizer_cfg.get("type", codecs.get("text", "gpt2_bpe")),
+                "audio_codec_or_features": codecs.get("audio", None),
+                "visual_codec_or_features": codecs.get("visual", None),
+                "sample_schema_version": data_cfg.get("sample_schema_version", "i1.baseline_smoke"),
+            },
+        },
+        "training": {
+            "objective": list(objective),
+            "optimizer": train_cfg.get("optimizer", "adamw_numpy"),
+            "learning_rate_schedule": train_cfg.get("learning_rate_schedule", "constant"),
+            "batch_size": train_cfg.get("batch_size", None),
+            "total_steps": int(training_steps),
+            "train_tokens_or_samples": int(train_tokens_or_samples),
+            "wall_clock_time": metrics.get("wall_clock_time_seconds"),
+            "hardware": metrics.get("hardware", "local_cpu_numpy"),
+            "total_flops_estimate": None,
+            "checkpoint_path": checkpoint_path,
+            "save_config_with_checkpoint": True,
+            "anomalies": {
+                "nan_or_inf": bool(metrics.get("nan_or_inf", False)),
+                "loss_explosion": bool(metrics.get("loss_explosion", False)),
+                "modality_collapse": False,
+                "notes": "Sprint I1 tiny-batch overfit smoke run; no model-quality claim.",
+            },
+        },
+        "evaluation": {
+            "eval_script": "training/baseline_smoke.py",
+            "eval_script_hash": metrics.get("eval_script_hash", "sha256:uncomputed"),
+            "checkpoint_path": checkpoint_path,
+            "seeds": [int(runtime.get("seed", model_cfg.get("seed", 0)))],
+            "decoding_or_probe_settings": {"temperature": None, "top_p": None, "max_new_tokens": None, "diagnostic_only": False},
+            "metrics": {
+                "primary": {
+                    "name": primary_metric_name,
+                    "value": primary_metric_value,
+                    "higher_is_better": True,
+                    "confidence_interval": None,
+                },
+                "secondary": [
+                    {"name": "initial_loss", "value": initial_loss, "higher_is_better": False},
+                    {"name": "final_loss", "value": final_loss, "higher_is_better": False},
+                    {"name": "perplexity", "value": perplexity, "higher_is_better": False},
+                    {"name": "parameter_count", "value": int(parameter_count), "higher_is_better": None},
+                ],
+                "required_bundles": {
+                    "hallucination_or_policy_claim": {
+                        "required_when_claiming_reduction": True,
+                        "unsupported_claim_rate": None,
+                        "contradiction_rate": None,
+                        "grounded_accuracy_or_usefulness": None,
+                        "abstention_or_noop_rate": None,
+                        "calibration_metric": None,
+                    }
+                },
+            },
+            "baselines_compared": [],
+            "controls": {
+                "random_or_null": bool(metrics.get("random_or_null_control", False)),
+                "shuffled_pairs": bool(metrics.get("shuffled_pairs", False)),
+                "fixed_router": False,
+                "always_noop": False,
+                "no_policy": True,
+            },
+        },
+        "interpretation": {
+            "result_summary": str(metrics.get("result_summary", "Tiny-batch baseline smoke run completed.")),
+            "hypothesis_decision": "untested",
+            "failure_modes_observed": list(metrics.get("failure_modes_observed", [])),
+            "limitations": [
+                "Tiny synthetic/in-memory data only.",
+                "No SLWM comparison and no model-quality claim.",
+                "No hallucination, grounding, or policy claim.",
+            ],
+            "next_allowed_step": "Use registered baselines as implementation readiness evidence; larger training belongs to Training/Evaluation sprints.",
+            "claim_language_allowed": "Baseline path runs and tiny-batch loss decreased; no broader capability claim.",
+        },
+    }
+
+
 def validate_registry_entry(entry: Mapping[str, Any]) -> None:
     """Validate required top-level and I0-specific registry fields."""
 
@@ -164,5 +342,7 @@ def write_registry_entry(entry: Mapping[str, Any], path: str | Path) -> Path:
     validate_registry_entry(entry)
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(entry, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp_path = output_path.with_suffix(output_path.suffix + ".tmp")
+    tmp_path.write_text(json.dumps(entry, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    tmp_path.replace(output_path)
     return output_path

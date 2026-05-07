@@ -1,0 +1,82 @@
+{
+  "sprint": {
+    "id": "I1",
+    "name": "Baselines"
+  },
+  "model": {
+    "name": "vanilla-multimodal-transformer-tiny-overfit-smoke",
+    "variant": "vanilla_multimodal_transformer",
+    "text_vocab_size": 32,
+    "target_vocab_size": 24,
+    "context_length": 9,
+    "latent_length": 9,
+    "latent_dim": 16,
+    "n_layer": 1,
+    "n_embd": 16,
+    "n_head": 2,
+    "intermediate_size": 64,
+    "audio_feature_dim": 5,
+    "visual_feature_dim": 6,
+    "parameter_accounting_mode": "strict",
+    "codecs": {
+      "text": "tiny_gpt2_bpe_surrogate_ids",
+      "audio": "provided_continuous_audio_latents_for_smoke",
+      "visual": "provided_continuous_visual_latents_for_smoke"
+    },
+    "architecture_flags": {
+      "baseline_vanilla_multimodal_transformer": true,
+      "shared_core": false,
+      "spectral_mixer": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "latent_prediction": false,
+      "reconstruction": false,
+      "cross_modal_alignment": false,
+      "uncertainty_head": false,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 1,
+    "deterministic": true,
+    "precision": "fp32"
+  },
+  "data": {
+    "sample_schema_version": "i1.baseline_smoke",
+    "dataset_mix": {
+      "text_code": 0.3333333333,
+      "audio": 0.3333333333,
+      "visual_video": 0.3333333333,
+      "synthetic": "deterministic_tiny_multimodal_batch"
+    },
+    "datasets": [
+      {
+        "name": "deterministic_tiny_multimodal_batch",
+        "version_or_snapshot": "generated_by_training.baseline_smoke.make_multimodal_tiny_batch",
+        "split": "custom",
+        "sample_count": 4,
+        "tokens": 36,
+        "audio_hours": null,
+        "video_hours": null,
+        "license_notes": "synthetic smoke data generated in repo",
+        "leakage_checks": "not applicable; overfit smoke uses same train/eval batch intentionally"
+      }
+    ]
+  },
+  "training": {
+    "objective": ["tiny_overfit_serialized_multimodal_cross_entropy"],
+    "optimizer": "adamw_numpy",
+    "learning_rate_schedule": "constant",
+    "learning_rate": 0.03,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 1.0,
+    "batch_size": 4,
+    "steps": 220
+  },
+  "registry": {
+    "experiment_id": "EXP-I1-002",
+    "path": "experiments/baselines/EXP-I1-002.json",
+    "metrics_path": "experiments/baselines/EXP-I1-002.metrics.json"
+  }
+}

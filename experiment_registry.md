@@ -355,6 +355,14 @@ Before a result can change a hypothesis status, verify:
 
 ## 6. Current Registry State
 
-No completed experiments are registered.
+Completed Sprint I1 implementation-smoke registry entries are stored as JSON
+artifacts under `experiments/baselines/`:
 
-All R0 hypotheses in `hypotheses.md` remain `untested` until future entries satisfy this schema and produce reviewed evidence.
+| Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
+|---|---|---|---|---|---|
+| `EXP-I1-001` | I1 | GPT-2-style tiny overfit baseline smoke run | `experiments/baselines/EXP-I1-001.json` | completed | implementation readiness only; no hypothesis support |
+| `EXP-I1-002` | I1 | Vanilla multimodal Transformer tiny overfit baseline smoke run | `experiments/baselines/EXP-I1-002.json` | completed | implementation readiness only; no hypothesis support |
+
+All R0 hypotheses in `hypotheses.md` remain `untested` until future
+training/evaluation entries use real data splits, fair baseline comparisons,
+required controls, and reviewed metrics.
