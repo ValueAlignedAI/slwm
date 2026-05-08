@@ -1,0 +1,59 @@
+{
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "status": "planned_dataset_card_only_not_runnable_by_dependency_free_runner",
+  "purpose": "Document the proper T1 dataset plan before scaling beyond inline smoke pilots.",
+  "tokenizer_decision": {
+    "initial_full_run_tokenizer": "gpt2_bpe",
+    "reason": "DD-R1-002 requires BPE first for GPT-2 comparability; byte-level text remains a later ablation.",
+    "same_tokenizer_for": ["gpt2_baseline", "slwm_text_only", "slwm_text_only_no_spectral"]
+  },
+  "data": {
+    "modalities": ["text_code"],
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    },
+    "candidate_sources": [
+      {
+        "name": "FineWeb or FineWeb-Edu curated subset",
+        "use": "English text pretraining",
+        "required_checks": ["snapshot/version pin", "deduplication", "validation/test leakage check", "license/terms review"]
+      },
+      {
+        "name": "OpenWebText subset",
+        "use": "GPT-2-style comparison reference if available",
+        "required_checks": ["snapshot/version pin", "document split hash", "deduplication"]
+      },
+      {
+        "name": "The Stack v2 / StarCoderData permissive-license filtered subset",
+        "use": "Code modeling component",
+        "required_checks": ["license filter", "PII/secrets filter", "near-duplicate split leakage check", "language mix recorded"]
+      },
+      {
+        "name": "Project/local docs only",
+        "use": "Pipeline smoke fallback, not evidence",
+        "required_checks": ["label non-claim", "exclude from GPT-2-quality claims"]
+      }
+    ],
+    "split_policy": {
+      "unit": "document/sample_id",
+      "train": 0.98,
+      "validation": 0.01,
+      "test": 0.01,
+      "requirements": ["stable split seed", "split manifest hash", "no sample_id in multiple splits", "dedupe before split where feasible"]
+    }
+  },
+  "training_comparison_controls": {
+    "same_for_all_variants": ["tokenizer", "splits", "sequence_length", "optimizer_family", "batch_tokens where feasible", "seed set", "train token budget"],
+    "guardrail_tolerance_percent": 20.0,
+    "report_required": ["validation_loss", "validation_perplexity", "sample_generations", "throughput", "memory", "parameter_counts", "decoding_settings"]
+  },
+  "explicit_exclusions": ["audio data", "visual/video data", "hallucination claims", "policy/no-op claims", "multimodal grounding claims"]
+}
