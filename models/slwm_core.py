@@ -13,7 +13,7 @@ from typing import Any, Mapping
 import numpy as np
 
 from models.adapters import AudioSignalAdapter, TextSignalAdapter, VisualSignalAdapter
-from models.baselines.numpy_nn import AdamW, Parameter
+from models.baselines.numpy_nn import AdamW, Parameter, cross_entropy_loss
 from models.heads import AudioDecoderHead, LatentPredictionHead, NoOpHead, TextDecoderHead, UncertaintyHead, VisualDecoderHead
 from models.latent_field import LatentSignalField
 from models.policy import PolicyCommitGate
@@ -69,7 +69,15 @@ class NumpySLWMCore:
             LatentPredictionHead(config.latent_dim, seed=config.seed + 4) if config.use_latent_prediction_head else None
         )
         self.uncertainty_head = UncertaintyHead(config.latent_dim, seed=config.seed + 5) if config.use_uncertainty_head else None
-        self.text_decoder_head = TextDecoderHead(vocab_size=config.text_vocab_size) if config.use_output_heads else None
+        self.text_decoder_head = (
+            TextDecoderHead(
+                vocab_size=config.text_vocab_size,
+                latent_dim=config.latent_dim if config.use_text_lm_head else None,
+                seed=config.seed + 6,
+            )
+            if (config.use_output_heads or config.use_text_lm_head)
+            else None
+        )
         self.audio_decoder_head = AudioDecoderHead(audio_dim=config.audio_feature_dim) if config.use_output_heads else None
         self.visual_decoder_head = VisualDecoderHead(visual_dim=config.visual_feature_dim) if config.use_output_heads else None
         self.noop_head = NoOpHead() if config.use_output_heads else None
@@ -88,6 +96,8 @@ class NumpySLWMCore:
             params.extend(self.latent_prediction_head.parameters())
         if self.uncertainty_head is not None:
             params.extend(self.uncertainty_head.parameters())
+        if self.text_decoder_head is not None and self.text_decoder_head.trainable:
+            params.extend(self.text_decoder_head.parameters())
         return params
 
     def make_optimizer(self, *, learning_rate: float = 3e-4, weight_decay: float = 0.0, grad_clip_norm: float | None = 1.0) -> AdamW:
@@ -103,6 +113,8 @@ class NumpySLWMCore:
             head_counts["latent_prediction"] = self.latent_prediction_head.parameter_count()
         if self.uncertainty_head is not None:
             head_counts["uncertainty"] = self.uncertainty_head.parameter_count()
+        if self.text_decoder_head is not None and self.text_decoder_head.trainable:
+            head_counts["text_decoder"] = self.text_decoder_head.parameter_count()
         return SLWMParameterBreakdown(
             adapters={
                 "text_code": self.text_adapter.parameter_count(),
@@ -213,6 +225,54 @@ class NumpySLWMCore:
         for adapter, packet_grad in zip(self._last_adapter_order, packet_grads, strict=True):
             adapter.backward(packet_grad)
         return loss, output
+
+    def text_lm_loss_and_backward(self, input_ids: np.ndarray, target_ids: np.ndarray) -> tuple[float, dict[str, Any]]:
+        """Train the T1 text-only next-token objective.
+
+        Args:
+            input_ids: ``IntTensor[B,T_text]`` text/code edge-token IDs.
+            target_ids: ``IntTensor[B,T_text]`` next-token targets.
+
+        Returns:
+            ``(loss, output)`` with cross-entropy over text logits.  Gradients are
+            accumulated in the text adapter, shared latent field, processor, and
+            optional trainable text decoder head.  No audio or visual adapters are
+            used by this path.
+        """
+
+        if self.text_decoder_head is None or not self.text_decoder_head.trainable:
+            raise RuntimeError("text_lm_loss_and_backward requires use_text_lm_head=True")
+        tokens = np.asarray(input_ids, dtype=np.int64)
+        targets = np.asarray(target_ids, dtype=np.int64)
+        if tokens.shape != targets.shape:
+            raise ValueError(f"input_ids and target_ids must share shape [B,T], got {tokens.shape} and {targets.shape}")
+        output = self.forward({"text_tokens": tokens})
+        logits_full = self.text_decoder_head.logits(output["z_world"])
+        logits = logits_full[:, : targets.shape[1], :]
+        loss, grad_logits = cross_entropy_loss(logits, targets)
+
+        grad_logits_full = np.zeros_like(logits_full)
+        grad_logits_full[:, : targets.shape[1], :] = grad_logits
+        grad_z_world = self.text_decoder_head.backward(grad_logits_full)
+        grad_context = self.processor.backward(grad_z_world)
+        packet_grads = self.latent_field.backward(grad_context)
+        for adapter, packet_grad in zip(self._last_adapter_order, packet_grads, strict=True):
+            adapter.backward(packet_grad)
+        output["text_logits"] = logits
+        return loss, output
+
+    def text_lm_logits(self, input_ids: np.ndarray) -> np.ndarray:
+        """Return T1 text/code logits for ``input_ids`` without backpropagation.
+
+        Shape contract:
+            ``input_ids: IntTensor[B,T]`` -> ``FloatTensor[B,T,V]``.
+        """
+
+        if self.text_decoder_head is None or not self.text_decoder_head.trainable:
+            raise RuntimeError("text_lm_logits requires use_text_lm_head=True")
+        tokens = np.asarray(input_ids, dtype=np.int64)
+        output = self.forward({"text_tokens": tokens})
+        return self.text_decoder_head.logits(output["z_world"])[:, : tokens.shape[1], :]
 
 
 def make_i2_dummy_batch(config: SLWMCoreConfig, *, batch_size: int = 2, seed: int | None = None) -> dict[str, np.ndarray]:

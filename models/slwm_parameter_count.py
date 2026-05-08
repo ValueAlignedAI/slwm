@@ -103,6 +103,8 @@ def slwm_parameter_breakdown_from_config(config: SLWMCoreConfig) -> SLWMParamete
         heads["latent_prediction"] = d_model * d_model + d_model
     if config.use_uncertainty_head:
         heads["uncertainty"] = (d_model + 1) + (d_model * len(SOURCE_TAGS) + len(SOURCE_TAGS))
+    if getattr(config, "use_text_lm_head", False):
+        heads["text_decoder"] = d_model * int(config.text_vocab_size) + int(config.text_vocab_size)
 
     return SLWMParameterBreakdown(adapters=adapters, processor=processor, heads=heads, policy=0)
 

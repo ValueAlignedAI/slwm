@@ -52,6 +52,7 @@ class SLWMCoreConfig:
     use_uncertainty_head: bool = True
     use_output_heads: bool = True
     use_policy_gate: bool = True
+    use_text_lm_head: bool = False
 
     @property
     def d_ff(self) -> int:
@@ -106,6 +107,7 @@ class SLWMCoreConfig:
             use_uncertainty_head=flag("use_uncertainty_head", bool(flags.get("uncertainty_head", True))),
             use_output_heads=flag("use_output_heads", bool(flags.get("output_heads", True))),
             use_policy_gate=flag("use_policy_gate", bool(flags.get("policy_gate", True))),
+            use_text_lm_head=flag("use_text_lm_head", bool(flags.get("text_lm_head", False))),
         )
 
 

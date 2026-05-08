@@ -2,7 +2,7 @@
 
 **Sprint:** R0 — initial registry schema  
 **Purpose:** define the minimum metadata required before any experiment, evaluation, or exploration output can support a project claim.  
-**Status:** schema only; no experiments are registered yet.
+**Status:** schema plus completed I1/T0/T1 artifact references. Sprint T1 entries are dependency-light pilot evidence only, not GPT-2-scale quality claims.
 
 ---
 
@@ -362,6 +362,23 @@ artifacts under `experiments/baselines/`:
 |---|---|---|---|---|---|
 | `EXP-I1-001` | I1 | GPT-2-style tiny overfit baseline smoke run | `experiments/baselines/EXP-I1-001.json` | completed | implementation readiness only; no hypothesis support |
 | `EXP-I1-002` | I1 | Vanilla multimodal Transformer tiny overfit baseline smoke run | `experiments/baselines/EXP-I1-002.json` | completed | implementation readiness only; no hypothesis support |
+
+Completed Sprint T0 synthetic-signal artifact:
+
+| Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
+|---|---|---|---|---|---|
+| `EXP-T0-001` | T0 | Synthetic signal pilot comparison | `experiments/synthetic/t0/EXP-T0-001/registry.json` | completed | controlled synthetic signal pilot only |
+
+Completed Sprint T1 dependency-light text/code pilot artifacts are stored under
+`experiments/text/t1/`. These use the same inline text/code split and byte
+fallback tokenizer for all variants. They are useful for pipeline validation and
+tradeoff recording, but **not** for GPT-2-scale language-quality claims:
+
+| Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
+|---|---|---|---|---|---|
+| `EXP-T1-001` | T1 | GPT-2-style text/code tiny pilot baseline | `experiments/text/t1/EXP-T1-001/registry.json` | completed | baseline anchor for local pilot only |
+| `EXP-T1-002` | T1 | SLWM text-only tiny pilot | `experiments/text/t1/EXP-T1-002/registry.json` | completed | text tradeoff recorded; guardrail failed in pilot vs `EXP-T1-001` |
+| `EXP-T1-003` | T1 | SLWM no-spectral text-only tiny pilot | `experiments/text/t1/EXP-T1-003/registry.json` | completed | text tradeoff recorded; guardrail failed in pilot vs `EXP-T1-001` |
 
 All R0 hypotheses in `hypotheses.md` remain `untested` until future
 training/evaluation entries use real data splits, fair baseline comparisons,

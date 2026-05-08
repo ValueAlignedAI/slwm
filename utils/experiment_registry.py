@@ -504,6 +504,186 @@ def make_t0_synthetic_registry_entry(
     }
 
 
+def make_t1_text_registry_entry(
+    *,
+    experiment_id: str,
+    config_path: str,
+    config: Mapping[str, Any],
+    metrics: Mapping[str, Any],
+    model_name: str,
+    model_variant: str,
+    parameter_count: int,
+    module_parameter_counts: Mapping[str, int],
+    training_steps: int,
+    train_tokens: int,
+    checkpoint_path: str | None,
+    git_commit: str | None = None,
+    working_tree_state: str = "dirty",
+) -> dict[str, Any]:
+    """Create a completed Sprint T1 text/code training registry entry.
+
+    The entry records text/code-only validation loss/perplexity, generation
+    settings, throughput, memory, parameter accounting, and guardrail context.
+    It does not support multimodal, hallucination, or policy claims.
+    """
+
+    today = date.today().isoformat()
+    cfg = dict(config)
+    cfg_hash = config_hash(cfg)
+    runtime = cfg.get("runtime", {}) if isinstance(cfg.get("runtime", {}), Mapping) else {}
+    model_cfg = cfg.get("model", {}) if isinstance(cfg.get("model", {}), Mapping) else {}
+    data_cfg = cfg.get("data", {}) if isinstance(cfg.get("data", {}), Mapping) else {}
+    train_cfg = cfg.get("training", {}) if isinstance(cfg.get("training", {}), Mapping) else {}
+    tokenizer_cfg = model_cfg.get("tokenizer", {}) if isinstance(model_cfg.get("tokenizer", {}), Mapping) else {}
+    generation_cfg = cfg.get("generation", {}) if isinstance(cfg.get("generation", {}), Mapping) else {}
+    validation_loss = metrics.get("validation_loss")
+    validation_perplexity = metrics.get("validation_perplexity")
+    is_slwm = str(model_variant).startswith("slwm")
+
+    return {
+        "experiment_id": experiment_id,
+        "status": "completed" if not metrics.get("nan_or_inf", False) else "failed",
+        "created_at": today,
+        "updated_at": today,
+        "sprint": {"id": "T1", "name": "Text/code baseline training", "owner_role": "training"},
+        "claim_trace": {
+            "hypothesis_ids": ["H-R0-3"] if is_slwm else [],
+            "guardrail_ids": ["G-R0-1", "T1-text-code-only", "DD-R1-001", "DD-R1-002", "DD-R1-020"],
+            "research_questions": ["RQ3"] if is_slwm else [],
+            "expected_decision": "guardrail_pass_or_tradeoff_record",
+        },
+        "repository": {
+            "git_commit": git_commit,
+            "working_tree_state": working_tree_state,
+            "code_diff_ref": None,
+            "docs_read": [
+                "signal_latent_world_model_research_plan.md",
+                "research_impl_eval_docs.md",
+                "sprint_playbook_prompts.md",
+                "exploration.md",
+                "AGENTS.md",
+                "hypotheses.md",
+                "design_decisions.md",
+                "experiment_registry.md",
+                "docs/model_spec.md",
+                "docs/data_contract.md",
+                "docs/t1_text_code_training.md",
+            ],
+        },
+        "config": {
+            "config_path": config_path,
+            "config_hash": cfg_hash,
+            "seed": int(runtime.get("seed", model_cfg.get("seed", 0))),
+            "deterministic": bool(runtime.get("deterministic", True)),
+            "precision": str(runtime.get("precision", "float64_numpy")),
+            "context_length": int(model_cfg.get("context_length", model_cfg.get("latent_length", train_cfg.get("sequence_length", 0)))),
+            "latent_length": int(model_cfg.get("latent_length", model_cfg.get("context_length", train_cfg.get("sequence_length", 0)))),
+            "latent_dim": int(model_cfg.get("latent_dim", model_cfg.get("n_embd", 0))),
+        },
+        "model": {
+            "name": model_name,
+            "variant": model_variant,
+            "parameter_accounting_mode": str(model_cfg.get("parameter_accounting_mode", "strict")),
+            "total_trainable_parameters": int(parameter_count),
+            "core_trainable_parameters": int(module_parameter_counts.get("processor", 0)),
+            "frozen_parameters": 0,
+            "module_parameter_counts": dict(module_parameter_counts),
+            "enabled_modalities": ["text_code"],
+            "architecture_flags": model_cfg.get("architecture_flags", {}),
+        },
+        "ablation": cfg.get("ablation", {"is_ablation": False, "ablation_of": None, "changed_variable": None, "held_constant": []}),
+        "data": {
+            "dataset_mix": data_cfg.get("dataset_mix", {"text_code": 1.0, "audio": None, "visual_video": None}),
+            "datasets": metrics.get("registry_datasets", data_cfg.get("datasets", [])),
+            "preprocessing": {
+                "text_codec": metrics.get("tokenizer", {}).get("effective_type", tokenizer_cfg.get("type", "unknown"))
+                if isinstance(metrics.get("tokenizer", {}), Mapping)
+                else tokenizer_cfg.get("type", "unknown"),
+                "audio_codec_or_features": None,
+                "visual_codec_or_features": None,
+                "sample_schema_version": data_cfg.get("sample_schema_version", "t1.text_code_v0"),
+                "split_digests": metrics.get("split_digests", {}),
+            },
+        },
+        "training": {
+            "objective": train_cfg.get("objective", ["next_token_cross_entropy"]),
+            "optimizer": train_cfg.get("optimizer", "adamw_numpy"),
+            "learning_rate_schedule": train_cfg.get("learning_rate_schedule", "constant"),
+            "batch_size": train_cfg.get("batch_size", None),
+            "total_steps": int(training_steps),
+            "train_tokens_or_samples": int(train_tokens),
+            "wall_clock_time": metrics.get("wall_clock_time_seconds"),
+            "hardware": metrics.get("hardware", "local_cpu_numpy"),
+            "total_flops_estimate": None,
+            "checkpoint_path": checkpoint_path,
+            "save_config_with_checkpoint": checkpoint_path is not None,
+            "anomalies": {
+                "nan_or_inf": bool(metrics.get("nan_or_inf", False)),
+                "loss_explosion": bool(metrics.get("loss_explosion", False)),
+                "modality_collapse": False,
+                "notes": str(metrics.get("anomaly_notes", "Sprint T1 text/code-only run; no audio/visual data used.")),
+            },
+        },
+        "evaluation": {
+            "eval_script": "training/t1_text_baseline.py",
+            "eval_script_hash": metrics.get("eval_script_hash", "sha256:uncomputed"),
+            "checkpoint_path": checkpoint_path,
+            "seeds": [int(runtime.get("seed", model_cfg.get("seed", 0)))],
+            "decoding_or_probe_settings": {
+                "temperature": generation_cfg.get("temperature"),
+                "top_p": generation_cfg.get("top_p"),
+                "top_k": generation_cfg.get("top_k"),
+                "max_new_tokens": generation_cfg.get("max_new_tokens"),
+                "diagnostic_only": False,
+            },
+            "metrics": {
+                "primary": {
+                    "name": "validation_loss",
+                    "value": validation_loss,
+                    "higher_is_better": False,
+                    "confidence_interval": None,
+                },
+                "secondary": [
+                    {"name": "validation_perplexity", "value": validation_perplexity, "higher_is_better": False},
+                    {"name": "train_loss", "value": metrics.get("train_loss"), "higher_is_better": False},
+                    {"name": "throughput_tokens_per_second", "value": metrics.get("throughput_tokens_per_second"), "higher_is_better": True},
+                    {"name": "max_memory_mb", "value": metrics.get("max_memory_mb"), "higher_is_better": False},
+                    {"name": "parameter_count", "value": int(parameter_count), "higher_is_better": None},
+                    {"name": "text_loss_relative_delta_percent", "value": metrics.get("text_loss_relative_delta_percent"), "higher_is_better": False},
+                ],
+                "required_bundles": {
+                    "hallucination_or_policy_claim": {
+                        "required_when_claiming_reduction": True,
+                        "unsupported_claim_rate": None,
+                        "contradiction_rate": None,
+                        "grounded_accuracy_or_usefulness": None,
+                        "abstention_or_noop_rate": None,
+                        "calibration_metric": None,
+                    }
+                },
+            },
+            "baselines_compared": metrics.get("baselines_compared", []),
+            "controls": {"random_or_null": False, "shuffled_pairs": False, "fixed_router": False, "always_noop": False, "no_policy": True},
+        },
+        "interpretation": {
+            "result_summary": str(metrics.get("result_summary", "Sprint T1 text/code run completed.")),
+            "hypothesis_decision": str(metrics.get("hypothesis_decision", "guardrail_pass" if not is_slwm else "untested")),
+            "failure_modes_observed": list(metrics.get("failure_modes_observed", [])),
+            "limitations": list(
+                metrics.get(
+                    "limitations",
+                    [
+                        "Dependency-light local/pilot data unless config names a prepared external corpus.",
+                        "No audio, visual, multimodal grounding, hallucination, or policy claim is supported by T1.",
+                    ],
+                )
+            ),
+            "next_allowed_step": str(metrics.get("next_allowed_step", "Compare registered T1 runs on the same tokenizer/split before changing G-R0-1 state.")),
+            "claim_language_allowed": str(metrics.get("claim_language_allowed", "Only text/code validation loss, perplexity, throughput, memory, and sample-generation settings may be reported.")),
+        },
+    }
+
+
 def validate_registry_entry(entry: Mapping[str, Any]) -> None:
     """Validate required top-level and I0-specific registry fields."""
 
