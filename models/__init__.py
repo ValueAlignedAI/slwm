@@ -9,11 +9,13 @@ from models.latent_field import LatentSignalField
 from models.slwm_config import SLWMCoreConfig
 from models.slwm_core import NumpySLWMCore, make_i2_dummy_batch
 from models.slwm_parameter_count import SLWMParameterBreakdown, slwm_parameter_breakdown_from_config
+from models.slwm_signal_predictor import NumpySLWMSignalPredictor
 from models.types import TensorSpec, ensure_latent, ensure_mask, make_latent_spec, make_mask_spec
 
 __all__ = [
     "LatentSignalField",
     "NumpySLWMCore",
+    "NumpySLWMSignalPredictor",
     "SLWMCoreConfig",
     "SLWMParameterBreakdown",
     "TensorSpec",

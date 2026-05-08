@@ -1,0 +1,84 @@
+{
+  "data": {
+    "dataset_mix": {
+      "audio": 0.0,
+      "synthetic_signal": 1.0,
+      "text_code": 0.0,
+      "visual_video": 0.0
+    },
+    "dataset_version": "synthetic_signal_v0",
+    "sample_schema_version": "t0.synthetic_signal_v0",
+    "signal": {
+      "horizon": 3,
+      "long_horizon": 9,
+      "max_frequency": 6,
+      "min_frequency": 1,
+      "missing_fraction": 0.25,
+      "noise_std": 0.25,
+      "phase_offset": 1.5707963267948966
+    },
+    "tasks": [
+      "sine_mixture",
+      "chirp_extrapolation",
+      "phase_shift_detection",
+      "noisy_periodic_denoising",
+      "missing_span_reconstruction",
+      "long_horizon_extrapolation"
+    ]
+  },
+  "model": {
+    "architecture_flags": {
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "shared_core": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": true,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_spectral_mixer": true,
+      "use_uncertainty_head": false
+    },
+    "causal": false,
+    "context_length": 24,
+    "intermediate_size": 12,
+    "latent_dim": 4,
+    "local_kernel_size": 3,
+    "long_conv_kernel_size": 5,
+    "n_head": 2,
+    "n_layer": 1,
+    "name": "SLWM-T0-tiny-synthetic-signal",
+    "parameter_accounting_mode": "strict",
+    "spectral_modes": 12
+  },
+  "registry": {
+    "artifact_dir": "experiments/synthetic/t0/EXP-T0-001",
+    "comparison_path": "experiments/synthetic/t0/EXP-T0-001/comparison_table.csv",
+    "config_copy_path": "experiments/synthetic/t0/EXP-T0-001/config.json",
+    "experiment_id": "EXP-T0-001",
+    "failure_report_path": "experiments/synthetic/t0/EXP-T0-001/failure_report.md",
+    "metrics_path": "experiments/synthetic/t0/EXP-T0-001/metrics.json",
+    "path": "experiments/synthetic/t0/EXP-T0-001/registry.json"
+  },
+  "runtime": {
+    "deterministic": true,
+    "precision": "float64_numpy_smoke",
+    "seed": 7
+  },
+  "sprint": {
+    "id": "T0",
+    "name": "Synthetic signal pretraining"
+  },
+  "training": {
+    "batch_size": 2,
+    "grad_clip_norm": 1.0,
+    "learning_rate": 0.003,
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "synthetic_latent_mse_prediction"
+    ],
+    "optimizer": "adamw_numpy",
+    "overfit_batch": true,
+    "steps": 120,
+    "weight_decay": 0.0
+  }
+}

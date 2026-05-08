@@ -320,6 +320,190 @@ def make_i1_baseline_registry_entry(
     }
 
 
+def make_t0_synthetic_registry_entry(
+    *,
+    experiment_id: str,
+    config_path: str,
+    config: Mapping[str, Any],
+    metrics: Mapping[str, Any],
+    model_parameter_counts: Mapping[str, Mapping[str, int]],
+    training_steps: int,
+    train_samples: int,
+    checkpoint_path: str | None = None,
+    git_commit: str | None = None,
+    working_tree_state: str = "dirty",
+) -> dict[str, Any]:
+    """Create a completed Sprint T0 synthetic-signal registry entry.
+
+    The entry records controlled synthetic signal evidence only. It must not be
+    interpreted as text/code/audio/video, multimodal grounding, hallucination, or
+    policy evidence.
+    """
+
+    today = date.today().isoformat()
+    cfg = dict(config)
+    cfg_hash = config_hash(cfg)
+    runtime = cfg.get("runtime", {}) if isinstance(cfg.get("runtime", {}), Mapping) else {}
+    model_cfg = cfg.get("model", {}) if isinstance(cfg.get("model", {}), Mapping) else {}
+    data_cfg = cfg.get("data", {}) if isinstance(cfg.get("data", {}), Mapping) else {}
+    train_cfg = cfg.get("training", {}) if isinstance(cfg.get("training", {}), Mapping) else {}
+
+    aggregate = metrics.get("aggregate", {}) if isinstance(metrics.get("aggregate", {}), Mapping) else {}
+    gate = metrics.get("success_gate", {}) if isinstance(metrics.get("success_gate", {}), Mapping) else {}
+    tasks = list(data_cfg.get("tasks", metrics.get("tasks", []))) if isinstance(data_cfg.get("tasks", metrics.get("tasks", [])), list) else []
+    slwm_counts = dict(model_parameter_counts.get("slwm", {})) if isinstance(model_parameter_counts.get("slwm", {}), Mapping) else {}
+    total_params = int(slwm_counts.get("total", 0))
+
+    return {
+        "experiment_id": experiment_id,
+        "status": "completed" if not gate.get("failure_report_written", False) else "failed",
+        "created_at": today,
+        "updated_at": today,
+        "sprint": {"id": "T0", "name": "Synthetic signal pretraining", "owner_role": "training"},
+        "claim_trace": {
+            "hypothesis_ids": ["H-R0-1", "H-R0-3"],
+            "guardrail_ids": ["T0-synthetic-only", "T0-baseline-comparison", "T0-stop-on-no-win"],
+            "research_questions": ["RQ2", "RQ3"],
+            "expected_decision": "support_or_fail_signal_processor_sanity",
+        },
+        "repository": {
+            "git_commit": git_commit,
+            "working_tree_state": working_tree_state,
+            "code_diff_ref": None,
+            "docs_read": [
+                "signal_latent_world_model_research_plan.md",
+                "research_impl_eval_docs.md",
+                "sprint_playbook_prompts.md",
+                "exploration.md",
+                "AGENTS.md",
+                "docs/model_spec.md",
+                "docs/data_contract.md",
+            ],
+        },
+        "config": {
+            "config_path": config_path,
+            "config_hash": cfg_hash,
+            "seed": int(runtime.get("seed", model_cfg.get("seed", 0))),
+            "deterministic": bool(runtime.get("deterministic", True)),
+            "precision": str(runtime.get("precision", "float64_numpy")),
+            "context_length": int(model_cfg.get("context_length", model_cfg.get("latent_length", data_cfg.get("context_length", 0)))),
+            "latent_length": int(model_cfg.get("context_length", model_cfg.get("latent_length", data_cfg.get("context_length", 0)))),
+            "latent_dim": int(model_cfg.get("latent_dim", model_cfg.get("n_embd", data_cfg.get("latent_dim", 0)))),
+        },
+        "model": {
+            "name": str(model_cfg.get("name", "SLWM-T0-synthetic-signal")),
+            "variant": "slwm_synthetic_signal_predictor",
+            "parameter_accounting_mode": str(model_cfg.get("parameter_accounting_mode", "strict")),
+            "total_trainable_parameters": total_params,
+            "core_trainable_parameters": int(slwm_counts.get("processor", 0)),
+            "frozen_parameters": 0,
+            "module_parameter_counts": dict(slwm_counts),
+            "enabled_modalities": ["synthetic_signal"],
+            "architecture_flags": model_cfg.get("architecture_flags", {}),
+        },
+        "ablation": {
+            "is_ablation": False,
+            "ablation_of": None,
+            "changed_variable": None,
+            "held_constant": ["synthetic_tasks", "sample_count", "seed", "optimizer_family", "training_steps"],
+            "included_ablation_variants": ["slwm_no_spectral"],
+        },
+        "data": {
+            "dataset_mix": data_cfg.get("dataset_mix", {"synthetic_signal": 1.0}),
+            "datasets": [
+                {
+                    "name": "synthetic_signal_t0",
+                    "version_or_snapshot": data_cfg.get("dataset_version", "synthetic_signal_v0"),
+                    "split": "generated_train_eval" if not train_cfg.get("overfit_batch", True) else "fixed_overfit_batch",
+                    "sample_count": int(train_samples),
+                    "tokens": None,
+                    "audio_hours": None,
+                    "video_hours": None,
+                    "license_notes": "synthetic data generated in repo; no external dataset",
+                    "leakage_checks": "same fixed batch intentionally used only when overfit_batch=true; otherwise split-specific seeds",
+                    "tasks": tasks,
+                }
+            ],
+            "preprocessing": {
+                "text_codec": None,
+                "audio_codec_or_features": None,
+                "visual_codec_or_features": None,
+                "sample_schema_version": data_cfg.get("sample_schema_version", "t0.synthetic_signal_v0"),
+            },
+        },
+        "training": {
+            "objective": train_cfg.get("objective", ["synthetic_latent_mse_prediction"]),
+            "optimizer": train_cfg.get("optimizer", "adamw_numpy"),
+            "learning_rate_schedule": train_cfg.get("learning_rate_schedule", "constant"),
+            "batch_size": train_cfg.get("batch_size", None),
+            "total_steps": int(training_steps),
+            "train_tokens_or_samples": int(train_samples),
+            "wall_clock_time": metrics.get("wall_clock_time_seconds"),
+            "hardware": metrics.get("hardware", "local_cpu_numpy"),
+            "total_flops_estimate": None,
+            "checkpoint_path": checkpoint_path,
+            "save_config_with_checkpoint": checkpoint_path is not None,
+            "anomalies": {
+                "nan_or_inf": bool(aggregate.get("nan_or_inf", False)),
+                "loss_explosion": bool(aggregate.get("loss_explosion", False)),
+                "modality_collapse": False,
+                "notes": "Sprint T0 synthetic-signal run; no text/code/audio/video datasets used.",
+            },
+        },
+        "evaluation": {
+            "eval_script": "training/t0_synthetic_pretrain.py",
+            "eval_script_hash": metrics.get("eval_script_hash", "sha256:uncomputed"),
+            "checkpoint_path": checkpoint_path,
+            "seeds": [int(runtime.get("seed", model_cfg.get("seed", 0)))],
+            "decoding_or_probe_settings": {"temperature": None, "top_p": None, "max_new_tokens": None, "diagnostic_only": False},
+            "metrics": {
+                "primary": {
+                    "name": "slwm_beats_vanilla_mse_on_any_task",
+                    "value": bool(gate.get("slwm_beats_vanilla_on_any_task", False)),
+                    "higher_is_better": True,
+                    "confidence_interval": None,
+                },
+                "secondary": [
+                    {"name": "synthetic_mse", "value": aggregate.get("synthetic_mse"), "higher_is_better": False},
+                    {"name": "spectral_magnitude_error", "value": aggregate.get("spectral_magnitude_error"), "higher_is_better": False},
+                    {"name": "phase_or_coherence_error", "value": aggregate.get("phase_or_coherence_error"), "higher_is_better": False},
+                    {"name": "frequency_recovery_error", "value": aggregate.get("frequency_recovery_error"), "higher_is_better": False},
+                    {"name": "throughput_samples_per_second", "value": aggregate.get("throughput_samples_per_second"), "higher_is_better": True},
+                    {"name": "slwm_tasks_beating_vanilla_count", "value": gate.get("slwm_tasks_beating_vanilla_count"), "higher_is_better": True},
+                    {"name": "slwm_tasks_beating_vanilla_any_metric_count", "value": gate.get("slwm_tasks_beating_vanilla_any_metric_count"), "higher_is_better": True},
+                    {"name": "slwm_tasks_beating_vanilla_all_required_metrics_count", "value": gate.get("slwm_tasks_beating_vanilla_all_required_metrics_count"), "higher_is_better": True},
+                    {"name": "slwm_tasks_beating_random_or_noop_count", "value": gate.get("slwm_tasks_beating_random_or_noop_count"), "higher_is_better": True},
+                    {"name": "no_spectral_delta_mse", "value": aggregate.get("no_spectral_delta_mse"), "higher_is_better": True},
+                ],
+                "required_bundles": {
+                    "hallucination_or_policy_claim": {
+                        "required_when_claiming_reduction": True,
+                        "unsupported_claim_rate": None,
+                        "contradiction_rate": None,
+                        "grounded_accuracy_or_usefulness": None,
+                        "abstention_or_noop_rate": None,
+                        "calibration_metric": None,
+                    }
+                },
+            },
+            "baselines_compared": ["vanilla_continuous_transformer", "slwm_no_spectral", "random_signal", "noop_signal"],
+            "controls": {"random_or_null": True, "shuffled_pairs": False, "fixed_router": False, "always_noop": True, "no_policy": True},
+        },
+        "interpretation": {
+            "result_summary": str(metrics.get("result_summary", "Sprint T0 synthetic comparison completed.")),
+            "hypothesis_decision": "partial_support" if gate.get("slwm_beats_vanilla_on_any_task", False) else "not_supported",
+            "failure_modes_observed": list(metrics.get("failure_modes_observed", [])),
+            "limitations": [
+                "Synthetic controlled signals only; no text/code/audio/video dataset evidence.",
+                "NumPy smoke-scale implementation; not GPT-2-scale evidence.",
+                "No hallucination, grounding, policy, or multimodal claim is supported by T0.",
+            ],
+            "next_allowed_step": str(metrics.get("next_allowed_step", "Do not proceed beyond T0 unless success gate passes.")),
+            "claim_language_allowed": "Only controlled synthetic signal metric comparisons may be claimed.",
+        },
+    }
+
+
 def validate_registry_entry(entry: Mapping[str, Any]) -> None:
     """Validate required top-level and I0-specific registry fields."""
 

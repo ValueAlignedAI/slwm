@@ -1,0 +1,82 @@
+{
+  "sprint": {
+    "id": "T0",
+    "name": "Synthetic signal pretraining"
+  },
+  "model": {
+    "name": "SLWM-T0-planned-synthetic-signal",
+    "context_length": 128,
+    "latent_dim": 32,
+    "n_layer": 2,
+    "n_head": 4,
+    "intermediate_size": 128,
+    "local_kernel_size": 3,
+    "long_conv_kernel_size": 15,
+    "spectral_modes": 64,
+    "causal": false,
+    "parameter_accounting_mode": "strict",
+    "architecture_flags": {
+      "shared_core": true,
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": true,
+      "use_uncertainty_head": false,
+      "policy_commit_gate": false,
+      "noop_head": false
+    }
+  },
+  "runtime": {
+    "seed": 17,
+    "deterministic": true,
+    "precision": "float64_numpy"
+  },
+  "data": {
+    "sample_schema_version": "t0.synthetic_signal_v0",
+    "dataset_version": "synthetic_signal_v0",
+    "dataset_mix": {
+      "synthetic_signal": 1.0,
+      "text_code": 0.0,
+      "audio": 0.0,
+      "visual_video": 0.0
+    },
+    "tasks": [
+      "sine_mixture",
+      "chirp_extrapolation",
+      "phase_shift_detection",
+      "noisy_periodic_denoising",
+      "missing_span_reconstruction",
+      "long_horizon_extrapolation"
+    ],
+    "signal": {
+      "horizon": 8,
+      "long_horizon": 40,
+      "noise_std": 0.3,
+      "missing_fraction": 0.25,
+      "phase_offset": 1.5707963267948966,
+      "min_frequency": 1,
+      "max_frequency": 16
+    }
+  },
+  "training": {
+    "objective": ["synthetic_latent_mse_prediction"],
+    "optimizer": "adamw_numpy",
+    "learning_rate_schedule": "constant",
+    "learning_rate": 0.001,
+    "weight_decay": 0.0,
+    "grad_clip_norm": 1.0,
+    "batch_size": 8,
+    "steps": 400,
+    "overfit_batch": true
+  },
+  "registry": {
+    "experiment_id": "EXP-T0-PLAN",
+    "artifact_dir": "experiments/synthetic/t0/EXP-T0-PLAN",
+    "path": "experiments/synthetic/t0/EXP-T0-PLAN/registry.json",
+    "metrics_path": "experiments/synthetic/t0/EXP-T0-PLAN/metrics.json",
+    "comparison_path": "experiments/synthetic/t0/EXP-T0-PLAN/comparison_table.csv",
+    "failure_report_path": "experiments/synthetic/t0/EXP-T0-PLAN/failure_report.md",
+    "config_copy_path": "experiments/synthetic/t0/EXP-T0-PLAN/config.json"
+  }
+}
