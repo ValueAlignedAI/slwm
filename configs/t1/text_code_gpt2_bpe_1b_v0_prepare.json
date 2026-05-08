@@ -1,0 +1,126 @@
+{
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "runtime": {
+    "seed": 124,
+    "deterministic": true
+  },
+  "tokenizer": {
+    "type": "gpt2_bpe",
+    "pretrained_name": "gpt2",
+    "claim_scope": "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls"
+  },
+  "data": {
+    "modalities": [
+      "text_code"
+    ],
+    "output_dir": "artifacts/t1_text_code/gpt2_bpe_1b_v0",
+    "sample_schema_version": "t1.text_code_gpt2_bpe_1b_v0",
+    "preparation_mode": "streaming",
+    "target_tokens": {
+      "total": 1000000000,
+      "text_english": 700000000,
+      "code": 150000000,
+      "markdown_docs": 100000000,
+      "math_structured_text": 50000000
+    },
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    },
+    "split_policy": {
+      "unit": "document/sample_id",
+      "train": 0.98,
+      "validation": 0.01,
+      "test": 0.01,
+      "seed": 124
+    },
+    "sources": [
+      {
+        "type": "hf_dataset",
+        "name": "fineweb_edu_sample10bt_text_700m",
+        "path": "HuggingFaceFW/fineweb-edu",
+        "config_name": "sample-10BT",
+        "split": "train",
+        "streaming": true,
+        "text_field": "text",
+        "id_fields": [
+          "id",
+          "url",
+          "file_path"
+        ],
+        "category": "text_english",
+        "language": "en",
+        "max_documents": 5000000,
+        "max_tokens": 700000000,
+        "min_chars": 100,
+        "license_notes": "FineWeb-Edu public Hugging Face subset; source/version recorded by dataset path/config. Web text license/terms, PII, toxicity, and evaluation-contamination checks remain required before headline claims."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "starcoderdata_python_edu_150m_accessible_fallback",
+        "path": "jon-tow/starcoderdata-python-edu",
+        "split": "train",
+        "streaming": true,
+        "text_field": "content",
+        "id_fields": [
+          "id",
+          "max_stars_repo_name",
+          "max_stars_repo_path"
+        ],
+        "category": "code",
+        "language": "python",
+        "max_documents": 2000000,
+        "max_tokens": 150000000,
+        "min_chars": 80,
+        "license_notes": "Accessible Parquet fallback derived from StarCoder/Python educational code; used because preferred authenticated BigCode Stack/StarCoderData permissive-filtered sources may require gated access. Python-only source; provenance, license, secrets/PII, and eval-contamination checks remain required before strong T1 text/code claims."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "smollm_cosmopedia_docs_100m",
+        "path": "HuggingFaceTB/smollm-corpus",
+        "config_name": "cosmopedia-v2",
+        "split": "train",
+        "streaming": true,
+        "text_fields": [
+          "prompt",
+          "text"
+        ],
+        "id_fields": [
+          "seed_data",
+          "format"
+        ],
+        "category": "markdown_docs",
+        "language": "en",
+        "max_documents": 1000000,
+        "max_tokens": 100000000,
+        "min_chars": 100,
+        "license_notes": "SmolLM Corpus Cosmopedia-v2 educational/document-like text. Useful docs/structured substitute; synthetic-source limitations must be recorded in T1 reports."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "openwebmath_50m",
+        "path": "open-web-math/open-web-math",
+        "split": "train",
+        "streaming": true,
+        "text_field": "text",
+        "id_fields": [
+          "url",
+          "date"
+        ],
+        "category": "math_structured_text",
+        "language": "en",
+        "max_documents": 500000,
+        "max_tokens": 50000000,
+        "min_chars": 100,
+        "license_notes": "OpenWebMath web math/structured text source; CommonCrawl/license terms and eval contamination checks remain required before headline claims."
+      }
+    ]
+  }
+}

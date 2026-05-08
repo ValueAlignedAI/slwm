@@ -1,0 +1,118 @@
+{
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "runtime": {
+    "seed": 124,
+    "deterministic": true,
+    "device": "auto",
+    "precision": "fp32"
+  },
+  "tokenizer": {
+    "type": "gpt2_bpe",
+    "pretrained_name": "gpt2",
+    "claim_scope": "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls"
+  },
+  "model": {
+    "name": "SLWM-text-only-no-spectral-T1-PyTorch-124M-larger-local",
+    "variant": "slwm_text_only_no_spectral",
+    "parameter_accounting_mode": "strict",
+    "context_length": 1024,
+    "latent_length": 1024,
+    "latent_dim": 768,
+    "n_layer": 12,
+    "n_embd": 768,
+    "n_head": 12,
+    "dropout": 0.0,
+    "architecture_flags": {
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": false,
+      "use_long_conv": true,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "local_kernel_size": 3,
+      "spectral_kernel_size": 31,
+      "long_kernel_size": 31,
+      "causal_text_objective": true,
+      "policy_commit_gate": false
+    }
+  },
+  "data": {
+    "modalities": [
+      "text_code"
+    ],
+    "prepared_corpus_dir": "artifacts/t1_text_code/gpt2_bpe_larger_local_v0",
+    "sample_schema_version": "t1.text_code_gpt2_bpe_v0",
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    }
+  },
+  "training": {
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_torch",
+    "learning_rate_schedule": "cosine",
+    "learning_rate": 0.0001,
+    "weight_decay": 0.1,
+    "warmup_steps": 5,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 2,
+    "sequence_length": 1024,
+    "steps": 20,
+    "validation_batches": 4,
+    "grad_clip_norm": 1.0,
+    "guardrail_tolerance_percent": 20.0,
+    "claim_scope": "gpt2_size_limited_steps_larger_local_benchmark_not_converged_full_gpt2_training"
+  },
+  "generation": {
+    "prompts": [
+      "The signal latent model",
+      "def fibonacci(n):",
+      "In a controlled experiment"
+    ],
+    "max_new_tokens": 32,
+    "temperature": 0.8,
+    "top_k": 50,
+    "top_p": 0.95,
+    "seed": 10124,
+    "stop_on_eos": true
+  },
+  "registry": {
+    "experiment_id": "EXP-T1-103",
+    "artifact_dir": "experiments/text/t1/EXP-T1-103",
+    "path": "experiments/text/t1/EXP-T1-103/registry.json",
+    "metrics_path": "experiments/text/t1/EXP-T1-103/metrics.json",
+    "samples_path": "experiments/text/t1/EXP-T1-103/samples.json",
+    "report_path": "experiments/text/t1/EXP-T1-103/report.md",
+    "checkpoint_path": "experiments/text/t1/EXP-T1-103/checkpoint.pt",
+    "config_copy_path": "experiments/text/t1/EXP-T1-103/config.json"
+  },
+  "ablation": {
+    "is_ablation": true,
+    "ablation_of": "EXP-T1-102",
+    "changed_variable": "use_spectral_mixer=false",
+    "held_constant": [
+      "tokenizer",
+      "prepared_corpus",
+      "split_hashes",
+      "optimizer_family",
+      "seed",
+      "sequence_length",
+      "train_token_budget"
+    ]
+  },
+  "baselines_compared": [
+    {
+      "experiment_id": "EXP-T1-101",
+      "name": "GPT2-small-style-T1-PyTorch-124M-larger-local",
+      "comparison_notes": "Same GPT-2 BPE prepared corpus, optimizer family, seed, sequence length, and train-token budget where feasible."
+    }
+  ]
+}

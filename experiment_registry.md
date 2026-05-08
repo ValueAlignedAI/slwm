@@ -2,7 +2,7 @@
 
 **Sprint:** R0 — initial registry schema  
 **Purpose:** define the minimum metadata required before any experiment, evaluation, or exploration output can support a project claim.  
-**Status:** schema plus completed I1/T0/T1 artifact references. Sprint T1 entries are dependency-light pilot evidence only, not GPT-2-scale quality claims.
+**Status:** schema plus completed I1/T0/T1 artifact references. Sprint T1 now includes dependency-light pilot evidence and a GPT-2-BPE 124M-scale limited-step benchmark; neither is converged GPT-2-quality evidence.
 
 ---
 
@@ -370,9 +370,10 @@ Completed Sprint T0 synthetic-signal artifact:
 | `EXP-T0-001` | T0 | Synthetic signal pilot comparison | `experiments/synthetic/t0/EXP-T0-001/registry.json` | completed | controlled synthetic signal pilot only |
 
 Completed Sprint T1 dependency-light text/code pilot artifacts are stored under
-`experiments/text/t1/`. These use the same inline text/code split and byte
-fallback tokenizer for all variants. They are useful for pipeline validation and
-tradeoff recording, but **not** for GPT-2-scale language-quality claims:
+`experiments/text/t1/`. `EXP-T1-001` through `EXP-T1-003` use the same inline
+text/code split and byte fallback tokenizer for all variants. They are useful for
+pipeline validation and tradeoff recording, but **not** for GPT-2-scale
+language-quality claims:
 
 | Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
 |---|---|---|---|---|---|
@@ -380,6 +381,21 @@ tradeoff recording, but **not** for GPT-2-scale language-quality claims:
 | `EXP-T1-002` | T1 | SLWM text-only tiny pilot | `experiments/text/t1/EXP-T1-002/registry.json` | completed | text tradeoff recorded; guardrail failed in pilot vs `EXP-T1-001` |
 | `EXP-T1-003` | T1 | SLWM no-spectral text-only tiny pilot | `experiments/text/t1/EXP-T1-003/registry.json` | completed | text tradeoff recorded; guardrail failed in pilot vs `EXP-T1-001` |
 
-All R0 hypotheses in `hypotheses.md` remain `untested` until future
-training/evaluation entries use real data splits, fair baseline comparisons,
-required controls, and reviewed metrics.
+Completed Sprint T1 PyTorch/MPS GPT-2-BPE limited benchmark artifacts are stored
+under `experiments/text/t1/EXP-T1-101` through `EXP-T1-103`. These use the same
+prepared GPT-2-BPE text/code corpus, split hashes, optimizer family, seed,
+sequence length, and 40,960-token train budget per model. They are useful as
+124M-scale mechanics and initial guardrail evidence, but **not** converged
+GPT-2-quality claims:
+
+| Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
+|---|---|---|---|---|---|
+| `EXP-T1-101` | T1 | GPT-2-style 124M PyTorch/MPS GPT-2-BPE baseline | `experiments/text/t1/EXP-T1-101/registry.json` | completed | baseline anchor for limited GPT-2-BPE benchmark |
+| `EXP-T1-102` | T1 | SLWM text-only 124M PyTorch/MPS GPT-2-BPE run | `experiments/text/t1/EXP-T1-102/registry.json` | completed | limited benchmark guardrail passed vs `EXP-T1-101`; not converged quality evidence |
+| `EXP-T1-103` | T1 | SLWM no-spectral 124M PyTorch/MPS GPT-2-BPE ablation | `experiments/text/t1/EXP-T1-103/registry.json` | completed | limited benchmark guardrail passed vs `EXP-T1-101`; not converged quality evidence |
+
+Core R0 hypotheses in `hypotheses.md` remain `untested` until future
+training/evaluation entries use full modality-specific data, fair baseline
+comparisons, required controls, and reviewed metrics. G-R0-1 has pilot and
+limited-benchmark guardrail readings, but not converged text/code quality
+evidence.

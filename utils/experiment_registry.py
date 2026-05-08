@@ -625,7 +625,7 @@ def make_t1_text_registry_entry(
             },
         },
         "evaluation": {
-            "eval_script": "training/t1_text_baseline.py",
+            "eval_script": str(metrics.get("eval_script", "training/t1_text_baseline.py")),
             "eval_script_hash": metrics.get("eval_script_hash", "sha256:uncomputed"),
             "checkpoint_path": checkpoint_path,
             "seeds": [int(runtime.get("seed", model_cfg.get("seed", 0)))],

@@ -50,6 +50,7 @@ Optional sensor, robotics, action, and persistent-memory experiments are future-
 | R1 — Literature-to-design mapping | Complete as research/design specification | `literature_map.md`, `design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
 | I1 — Baselines | Implemented locally | `baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
+| T1 — Text/code baseline training | Full-stack mechanics implemented; 1B-corpus prep in progress | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/t1_text_code_training.md` | Tiny and limited 124M GPT-2-BPE runs are registered; EXP-T1-402 requires the prepared `gpt2_bpe_1b_v0` corpus and a matched GPT-2 baseline before guardrail claims. |
 
 ## I0 implementation scope
 
@@ -111,6 +112,65 @@ Result:
 26 passed
 TOTAL 413 stmts, 0 miss, 100% coverage
 ```
+
+Current T1 full-stack validation evidence:
+
+```bash
+pytest tests/test_t1_torch_full_path.py
+```
+
+Result:
+
+```text
+3 passed
+```
+
+This validates the corpus-preparation and tiny PyTorch runner mechanics only. It does not establish converged GPT-2-quality training, SLWM text-quality parity, hallucination reduction, grounding, policy behavior, or multimodal transfer.
+
+## Sprint T1 text/code training workflow
+
+T1 is text/code-only. It uses GPT-2 BPE for full-stack comparability and must not load audio or visual/video data.
+
+Prepare the configured ~1B-token GPT-2-BPE corpus for EXP-T1-402:
+
+```bash
+scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh
+scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh --run
+```
+
+The prep output required by the trainer is:
+
+```text
+artifacts/t1_text_code/gpt2_bpe_1b_v0/
+  dataset_card.json
+  manifest.jsonl
+  train.tokens.npy
+  validation.tokens.npy
+  test.tokens.npy
+  prepare_config.json
+```
+
+If a large prep attempt fails before finalizing, remove only known temporary files with:
+
+```bash
+scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh --clean-failed-output
+```
+
+After the corpus exists, validate and launch the SLWM text-only MPS run:
+
+```bash
+scripts/train/run_t1_exp_t1_402_slwm_mps.sh
+scripts/train/run_t1_exp_t1_402_slwm_mps.sh --run
+```
+
+`EXP-T1-402` is configured for `batch_size=1`, `gradient_accumulation_steps=8`, `sequence_length=1024`, and `122070` optimizer steps, for an effective budget of `999,997,440` tokens. It writes artifacts under `experiments/text/t1/EXP-T1-402/`.
+
+Important T1 caveats:
+
+- The current 1B prep config uses an accessible Python-only StarCoder-derived code fallback because some preferred BigCode/The Stack sources require authentication or additional filtering.
+- Corpus preparation alone is not model-quality evidence.
+- EXP-T1-402 alone is not a T1 guardrail result; a matched GPT-2 baseline on the same prepared corpus, tokenizer, sequence length, optimizer family, seed policy, and train-token budget is required.
+- Dataset revision pinning, license filtering, secrets/PII checks, deduplication, and evaluation-contamination checks remain required before headline text/code claims.
 
 ## Scientific guardrails
 

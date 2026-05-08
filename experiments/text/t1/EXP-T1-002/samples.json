@@ -1,0 +1,96 @@
+{
+  "decoding_settings": {
+    "max_new_tokens": 24,
+    "prompts": [
+      "Signals",
+      "def add"
+    ],
+    "seed": 1101,
+    "stop_on_eos": true,
+    "temperature": 0.0,
+    "top_k": null,
+    "top_p": null
+  },
+  "samples": [
+    {
+      "decoding_settings": {
+        "max_new_tokens": 24,
+        "seed": 1101,
+        "stop_on_eos": true,
+        "temperature": 0.0,
+        "top_k": null,
+        "top_p": null
+      },
+      "full_text": "Signals cts e totore she she sh",
+      "generated_text": " cts e totore she she sh",
+      "generated_token_ids": [
+        34,
+        101,
+        118,
+        117,
+        34,
+        103,
+        34,
+        118,
+        113,
+        118,
+        113,
+        116,
+        103,
+        34,
+        117,
+        106,
+        103,
+        34,
+        117,
+        106,
+        103,
+        34,
+        117,
+        106
+      ],
+      "prompt": "Signals",
+      "prompt_token_count": 7
+    },
+    {
+      "decoding_settings": {
+        "max_new_tokens": 24,
+        "seed": 1101,
+        "stop_on_eos": true,
+        "temperature": 0.0,
+        "top_k": null,
+        "top_p": null
+      },
+      "full_text": "def add cts e totore she she sh",
+      "generated_text": " cts e totore she she sh",
+      "generated_token_ids": [
+        34,
+        101,
+        118,
+        117,
+        34,
+        103,
+        34,
+        118,
+        113,
+        118,
+        113,
+        116,
+        103,
+        34,
+        117,
+        106,
+        103,
+        34,
+        117,
+        106,
+        103,
+        34,
+        117,
+        106
+      ],
+      "prompt": "def add",
+      "prompt_token_count": 7
+    }
+  ]
+}

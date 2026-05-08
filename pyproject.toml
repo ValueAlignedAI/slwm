@@ -1,9 +1,12 @@
 [project]
-name = "slwm-i1-baselines"
+name = "slwm-124m-research"
 version = "0.0.0"
-description = "Sprint I1 baseline models and smoke-training utilities for SLWM-124M."
+description = "Research utilities, baselines, and training runners for SLWM-124M."
 requires-python = ">=3.10"
 dependencies = ["numpy>=2.0"]
+
+[project.optional-dependencies]
+t1-full = ["torch>=2.3", "transformers>=4.40", "datasets>=2.19", "psutil>=5.9"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
