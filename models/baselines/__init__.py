@@ -6,6 +6,7 @@ mixers, long-convolution/SSM blocks, policy learning, and uncertainty heads.
 """
 
 from models.baselines.gpt2_decoder import GPT2DecoderConfig, NumpyGPT2DecoderBaseline
+from models.baselines.continuous_transformer import ContinuousSignalTransformerConfig, NumpyContinuousSignalTransformerBaseline
 from models.baselines.null_random import RandomLogitBaseline, UniformLogitBaseline, shuffled_targets
 from models.baselines.parameter_count import (
     GPT2ParameterBreakdown,
@@ -19,9 +20,11 @@ from models.baselines.vanilla_multimodal_transformer import NumpyVanillaMultimod
 
 __all__ = [
     "GPT2DecoderConfig",
+    "ContinuousSignalTransformerConfig",
     "GPT2ParameterBreakdown",
     "MultimodalParameterBreakdown",
     "NumpyGPT2DecoderBaseline",
+    "NumpyContinuousSignalTransformerBaseline",
     "NumpyVanillaMultimodalTransformerBaseline",
     "RandomLogitBaseline",
     "UniformLogitBaseline",

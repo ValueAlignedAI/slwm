@@ -1,0 +1,262 @@
+{
+  "ablation": {
+    "ablation_of": null,
+    "changed_variable": null,
+    "held_constant": [
+      "synthetic_tasks",
+      "sample_count",
+      "seed",
+      "optimizer_family",
+      "training_steps"
+    ],
+    "included_ablation_variants": [
+      "slwm_no_spectral"
+    ],
+    "is_ablation": false
+  },
+  "claim_trace": {
+    "expected_decision": "support_or_fail_signal_processor_sanity",
+    "guardrail_ids": [
+      "T0-synthetic-only",
+      "T0-baseline-comparison",
+      "T0-stop-on-no-win"
+    ],
+    "hypothesis_ids": [
+      "H-R0-1",
+      "H-R0-3"
+    ],
+    "research_questions": [
+      "RQ2",
+      "RQ3"
+    ]
+  },
+  "config": {
+    "config_hash": "sha256:a7c66de0bddfac0adb722e8d4a90aa401f341b647e5ca2ff50d0f2fe2be6013a",
+    "config_path": "configs/t0/synthetic_tiny.json",
+    "context_length": 24,
+    "deterministic": true,
+    "latent_dim": 4,
+    "latent_length": 24,
+    "precision": "float64_numpy_smoke",
+    "seed": 7
+  },
+  "created_at": "2026-05-07",
+  "data": {
+    "dataset_mix": {
+      "audio": 0.0,
+      "synthetic_signal": 1.0,
+      "text_code": 0.0,
+      "visual_video": 0.0
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "same fixed batch intentionally used only when overfit_batch=true; otherwise split-specific seeds",
+        "license_notes": "synthetic data generated in repo; no external dataset",
+        "name": "synthetic_signal_t0",
+        "sample_count": 1440,
+        "split": "fixed_overfit_batch",
+        "tasks": [
+          "sine_mixture",
+          "chirp_extrapolation",
+          "phase_shift_detection",
+          "noisy_periodic_denoising",
+          "missing_span_reconstruction",
+          "long_horizon_extrapolation"
+        ],
+        "tokens": null,
+        "version_or_snapshot": "synthetic_signal_v0",
+        "video_hours": null
+      }
+    ],
+    "preprocessing": {
+      "audio_codec_or_features": null,
+      "sample_schema_version": "t0.synthetic_signal_v0",
+      "text_codec": null,
+      "visual_codec_or_features": null
+    }
+  },
+  "evaluation": {
+    "baselines_compared": [
+      "vanilla_continuous_transformer",
+      "slwm_no_spectral",
+      "random_signal",
+      "noop_signal"
+    ],
+    "checkpoint_path": null,
+    "controls": {
+      "always_noop": true,
+      "fixed_router": false,
+      "no_policy": true,
+      "random_or_null": true,
+      "shuffled_pairs": false
+    },
+    "decoding_or_probe_settings": {
+      "diagnostic_only": false,
+      "max_new_tokens": null,
+      "temperature": null,
+      "top_p": null
+    },
+    "eval_script": "training/t0_synthetic_pretrain.py",
+    "eval_script_hash": "sha256:c3f5e02bcaa52a08c171f76c21e6c749dd4ecad7bbc5d340a788c75e6565aafe",
+    "metrics": {
+      "primary": {
+        "confidence_interval": null,
+        "higher_is_better": true,
+        "name": "slwm_beats_vanilla_mse_on_any_task",
+        "value": true
+      },
+      "required_bundles": {
+        "hallucination_or_policy_claim": {
+          "abstention_or_noop_rate": null,
+          "calibration_metric": null,
+          "contradiction_rate": null,
+          "grounded_accuracy_or_usefulness": null,
+          "required_when_claiming_reduction": true,
+          "unsupported_claim_rate": null
+        }
+      },
+      "secondary": [
+        {
+          "higher_is_better": false,
+          "name": "synthetic_mse",
+          "value": 0.5577410688657674
+        },
+        {
+          "higher_is_better": false,
+          "name": "spectral_magnitude_error",
+          "value": 25.00617718861751
+        },
+        {
+          "higher_is_better": false,
+          "name": "phase_or_coherence_error",
+          "value": 0.5505473283320015
+        },
+        {
+          "higher_is_better": false,
+          "name": "frequency_recovery_error",
+          "value": 0.8958333333333334
+        },
+        {
+          "higher_is_better": true,
+          "name": "throughput_samples_per_second",
+          "value": 6873.4050424245215
+        },
+        {
+          "higher_is_better": true,
+          "name": "slwm_tasks_beating_vanilla_count",
+          "value": 3
+        },
+        {
+          "higher_is_better": true,
+          "name": "slwm_tasks_beating_vanilla_any_metric_count",
+          "value": 6
+        },
+        {
+          "higher_is_better": true,
+          "name": "slwm_tasks_beating_vanilla_all_required_metrics_count",
+          "value": 2
+        },
+        {
+          "higher_is_better": true,
+          "name": "slwm_tasks_beating_random_or_noop_count",
+          "value": 5
+        },
+        {
+          "higher_is_better": true,
+          "name": "no_spectral_delta_mse",
+          "value": 0.05032852677072739
+        }
+      ]
+    },
+    "seeds": [
+      7
+    ]
+  },
+  "experiment_id": "EXP-T0-001",
+  "interpretation": {
+    "claim_language_allowed": "Only controlled synthetic signal metric comparisons may be claimed.",
+    "failure_modes_observed": [],
+    "hypothesis_decision": "partial_support",
+    "limitations": [
+      "Synthetic controlled signals only; no text/code/audio/video dataset evidence.",
+      "NumPy smoke-scale implementation; not GPT-2-scale evidence.",
+      "No hallucination, grounding, policy, or multimodal claim is supported by T0."
+    ],
+    "next_allowed_step": "Proceed only to formal signal evaluation/finding review; do not claim multimodal or hallucination effects.",
+    "result_summary": "Sprint T0 synthetic comparison completed; SLWM beat vanilla on primary MSE for at least one controlled task."
+  },
+  "model": {
+    "architecture_flags": {
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "shared_core": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": true,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_spectral_mixer": true,
+      "use_uncertainty_head": false
+    },
+    "core_trainable_parameters": 268,
+    "enabled_modalities": [
+      "synthetic_signal"
+    ],
+    "frozen_parameters": 0,
+    "module_parameter_counts": {
+      "adapters": 0,
+      "decoders": 0,
+      "embeddings": 0,
+      "heads": 20,
+      "policy": 0,
+      "processor": 268,
+      "total": 288
+    },
+    "name": "SLWM-T0-tiny-synthetic-signal",
+    "parameter_accounting_mode": "strict",
+    "total_trainable_parameters": 288,
+    "variant": "slwm_synthetic_signal_predictor"
+  },
+  "repository": {
+    "code_diff_ref": null,
+    "docs_read": [
+      "signal_latent_world_model_research_plan.md",
+      "research_impl_eval_docs.md",
+      "sprint_playbook_prompts.md",
+      "exploration.md",
+      "AGENTS.md",
+      "docs/model_spec.md",
+      "docs/data_contract.md"
+    ],
+    "git_commit": null,
+    "working_tree_state": "dirty"
+  },
+  "sprint": {
+    "id": "T0",
+    "name": "Synthetic signal pretraining",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "anomalies": {
+      "loss_explosion": false,
+      "modality_collapse": false,
+      "nan_or_inf": false,
+      "notes": "Sprint T0 synthetic-signal run; no text/code/audio/video datasets used."
+    },
+    "batch_size": 2,
+    "checkpoint_path": null,
+    "hardware": "cpu_numpy",
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "synthetic_latent_mse_prediction"
+    ],
+    "optimizer": "adamw_numpy",
+    "save_config_with_checkpoint": false,
+    "total_flops_estimate": null,
+    "total_steps": 120,
+    "train_tokens_or_samples": 1440,
+    "wall_clock_time": 0.6478822919889353
+  },
+  "updated_at": "2026-05-07"
+}
