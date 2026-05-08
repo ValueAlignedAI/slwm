@@ -1,0 +1,151 @@
+{
+  "data": {
+    "dataset_mix": {
+      "audio": null,
+      "synthetic": null,
+      "text_code": 1.0,
+      "visual_video": null
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level split field; no sample_id appears in more than one split",
+        "license_notes": "local synthetic/configured text for pipeline smoke only",
+        "name": "t1_inline_text_code_pilot",
+        "sample_count": 6,
+        "split": "train_validation_test",
+        "tokens": null,
+        "version_or_snapshot": "config_inline_v0",
+        "video_hours": null
+      }
+    ],
+    "inline_records": [
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke text",
+        "sample_id": "train-text-001",
+        "split": "train",
+        "text": "Signals become latents before the shared processor predicts the next state."
+      },
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke code",
+        "sample_id": "train-code-001",
+        "split": "train",
+        "text": "def add(a, b):\n    return a + b\n\nprint(add(2, 3))\n"
+      },
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke text",
+        "sample_id": "train-doc-001",
+        "split": "train",
+        "text": "Text and code are edge codecs; tokens are not the shared world field."
+      },
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke text",
+        "sample_id": "validation-text-001",
+        "split": "validation",
+        "text": "The validation split measures held out text and code tokens."
+      },
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke code",
+        "sample_id": "validation-code-001",
+        "split": "validation",
+        "text": "for item in [1, 2, 3]:\n    print(item * item)\n"
+      },
+      {
+        "dataset": "t1_inline_text_code_pilot",
+        "license_notes": "project-authored smoke text",
+        "sample_id": "test-text-001",
+        "split": "test",
+        "text": "A future full run replaces this inline corpus with prepared FineWeb and code splits."
+      }
+    ],
+    "modalities": [
+      "text_code"
+    ],
+    "sample_schema_version": "t1.text_code_v0",
+    "sequence_length": 16
+  },
+  "generation": {
+    "max_new_tokens": 24,
+    "prompts": [
+      "Signals",
+      "def add"
+    ],
+    "seed": 1101,
+    "stop_on_eos": true,
+    "temperature": 0.0,
+    "top_k": null,
+    "top_p": null
+  },
+  "model": {
+    "architecture_flags": {
+      "baseline_decoder_only_transformer": true,
+      "latent_prediction": false,
+      "local_temporal_mixer": false,
+      "longconv_or_ssm": false,
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "reconstruction": false,
+      "shared_core": false,
+      "spectral_mixer": false,
+      "text_lm_head": true,
+      "uncertainty_head": false
+    },
+    "context_length": 16,
+    "intermediate_size": 64,
+    "latent_dim": 32,
+    "latent_length": 16,
+    "n_embd": 32,
+    "n_head": 2,
+    "n_layer": 1,
+    "name": "gpt2-t1-text-tiny-pilot",
+    "parameter_accounting_mode": "strict",
+    "tie_embeddings": true,
+    "tokenizer": {
+      "choice_reason": "Dependency-free T1 smoke uses byte fallback; full T1 must use GPT-2 BPE for DD-R1-002 comparability.",
+      "claim_scope": "local_pilot_not_gpt2_bpe_evidence",
+      "intended_tokenizer": "gpt2_bpe",
+      "type": "byte_fallback_t1_smoke",
+      "vocab_size": 260
+    },
+    "variant": "gpt2_baseline",
+    "vocab_size": 260
+  },
+  "registry": {
+    "artifact_dir": "experiments/text/t1/EXP-T1-001",
+    "checkpoint_path": "experiments/text/t1/EXP-T1-001/checkpoint.npz",
+    "config_copy_path": "experiments/text/t1/EXP-T1-001/config.json",
+    "experiment_id": "EXP-T1-001",
+    "metrics_path": "experiments/text/t1/EXP-T1-001/metrics.json",
+    "path": "experiments/text/t1/EXP-T1-001/registry.json",
+    "report_path": "experiments/text/t1/EXP-T1-001/report.md",
+    "samples_path": "experiments/text/t1/EXP-T1-001/samples.json"
+  },
+  "runtime": {
+    "deterministic": true,
+    "precision": "float64_numpy_pilot",
+    "seed": 101
+  },
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "training": {
+    "batch_size": 4,
+    "grad_clip_norm": 1.0,
+    "guardrail_tolerance_percent": 20.0,
+    "learning_rate": 0.01,
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_numpy",
+    "sequence_length": 16,
+    "steps": 24,
+    "weight_decay": 0.0
+  }
+}

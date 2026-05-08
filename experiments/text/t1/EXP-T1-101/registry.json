@@ -1,0 +1,241 @@
+{
+  "ablation": {
+    "ablation_of": null,
+    "changed_variable": null,
+    "held_constant": [],
+    "is_ablation": false
+  },
+  "claim_trace": {
+    "expected_decision": "guardrail_pass_or_tradeoff_record",
+    "guardrail_ids": [
+      "G-R0-1",
+      "T1-text-code-only",
+      "DD-R1-001",
+      "DD-R1-002",
+      "DD-R1-020"
+    ],
+    "hypothesis_ids": [],
+    "research_questions": []
+  },
+  "config": {
+    "config_hash": "sha256:57f217c85fbbf27fc5942298d949084f0b4a1ccd16f04c2352811b5be482dc17",
+    "config_path": "configs/t1/gpt2_text_torch_124m_larger_local.json",
+    "context_length": 1024,
+    "deterministic": true,
+    "latent_dim": 768,
+    "latent_length": 1024,
+    "precision": "fp32",
+    "seed": 124
+  },
+  "created_at": "2026-05-08",
+  "data": {
+    "dataset_mix": {
+      "audio": null,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "text_english": 0.7,
+      "visual_video": null
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level stable hash split; manifest SHA recorded",
+        "license_notes": "sources: HuggingFaceFW/fineweb-edu, ise-uiuc/Magicoder-OSS-Instruct-75K, HuggingFaceTB/smollm-corpus, mbpp; see prepared corpus dataset_card sources and manifest",
+        "name": "prepared_t1_text_code_mix",
+        "sample_count": 2249,
+        "split": "train",
+        "tokens": 1936862,
+        "version_or_snapshot": "sha256:bf7f4e95cda7a7398cd02c43558e0482b266e250c579f7c4d5833c48358b077e",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level stable hash split; manifest SHA recorded",
+        "license_notes": "sources: HuggingFaceFW/fineweb-edu, ise-uiuc/Magicoder-OSS-Instruct-75K, HuggingFaceTB/smollm-corpus, mbpp; see prepared corpus dataset_card sources and manifest",
+        "name": "prepared_t1_text_code_mix",
+        "sample_count": 20,
+        "split": "validation",
+        "tokens": 15559,
+        "version_or_snapshot": "sha256:bf7f4e95cda7a7398cd02c43558e0482b266e250c579f7c4d5833c48358b077e",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level stable hash split; manifest SHA recorded",
+        "license_notes": "sources: HuggingFaceFW/fineweb-edu, ise-uiuc/Magicoder-OSS-Instruct-75K, HuggingFaceTB/smollm-corpus, mbpp; see prepared corpus dataset_card sources and manifest",
+        "name": "prepared_t1_text_code_mix",
+        "sample_count": 31,
+        "split": "test",
+        "tokens": 26209,
+        "version_or_snapshot": "sha256:bf7f4e95cda7a7398cd02c43558e0482b266e250c579f7c4d5833c48358b077e",
+        "video_hours": null
+      }
+    ],
+    "preprocessing": {
+      "audio_codec_or_features": null,
+      "sample_schema_version": "t1.text_code_gpt2_bpe_v0",
+      "split_digests": {
+        "test": "sha256:97823c4facb470882694422807bcdb20bfdeb904746a796ee42349762f90477a",
+        "train": "sha256:2fb7cc73aa16d0746ecd65ec1a8fb1aa4de4d995c5af14a0f7d4215c7cc5d6d9",
+        "validation": "sha256:34bc48a52b114f56a4551cd51f3cfa4c270b5bb40eefeed595da19f98ef9001b"
+      },
+      "text_codec": "gpt2_bpe",
+      "visual_codec_or_features": null
+    }
+  },
+  "evaluation": {
+    "baselines_compared": [],
+    "checkpoint_path": "experiments/text/t1/EXP-T1-101/checkpoint.pt",
+    "controls": {
+      "always_noop": false,
+      "fixed_router": false,
+      "no_policy": true,
+      "random_or_null": false,
+      "shuffled_pairs": false
+    },
+    "decoding_or_probe_settings": {
+      "diagnostic_only": false,
+      "max_new_tokens": 32,
+      "temperature": 0.8,
+      "top_k": 50,
+      "top_p": 0.95
+    },
+    "eval_script": "training/t1_torch_text.py",
+    "eval_script_hash": "sha256:2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875",
+    "metrics": {
+      "primary": {
+        "confidence_interval": null,
+        "higher_is_better": false,
+        "name": "validation_loss",
+        "value": 9.166085004806519
+      },
+      "required_bundles": {
+        "hallucination_or_policy_claim": {
+          "abstention_or_noop_rate": null,
+          "calibration_metric": null,
+          "contradiction_rate": null,
+          "grounded_accuracy_or_usefulness": null,
+          "required_when_claiming_reduction": true,
+          "unsupported_claim_rate": null
+        }
+      },
+      "secondary": [
+        {
+          "higher_is_better": false,
+          "name": "validation_perplexity",
+          "value": 9567.096140493999
+        },
+        {
+          "higher_is_better": false,
+          "name": "train_loss",
+          "value": 9.343936681747437
+        },
+        {
+          "higher_is_better": true,
+          "name": "throughput_tokens_per_second",
+          "value": 7913.8601317960865
+        },
+        {
+          "higher_is_better": false,
+          "name": "max_memory_mb",
+          "value": 1231.8125
+        },
+        {
+          "higher_is_better": null,
+          "name": "parameter_count",
+          "value": 124439808
+        },
+        {
+          "higher_is_better": false,
+          "name": "text_loss_relative_delta_percent",
+          "value": 0.0
+        }
+      ]
+    },
+    "seeds": [
+      124
+    ]
+  },
+  "experiment_id": "EXP-T1-101",
+  "interpretation": {
+    "claim_language_allowed": "GPT-2-BPE prepared-corpus T1 run: report validation loss/PPL, samples, throughput, memory, and exact settings only. Claim scope is 'gpt2_size_limited_steps_larger_local_benchmark_not_converged_full_gpt2_training'; do not claim converged GPT-2-scale quality unless the registered train-token budget supports it.",
+    "failure_modes_observed": [],
+    "hypothesis_decision": "guardrail_pass",
+    "limitations": [
+      "Prepared text/code corpus only; no audio or visual/video data used.",
+      "Validation loss/PPL reflects the registered train-token budget and should not be compared to fully trained GPT-2 unless budgets match.",
+      "No LAMBADA, HumanEval, MBPP, hallucination, grounding, or policy claim is supported by this T1 runner."
+    ],
+    "next_allowed_step": "Run companion T1 variants on the same prepared corpus/tokenizer/optimizer family before updating G-R0-1.",
+    "result_summary": "Sprint T1 gpt2_baseline PyTorch text/code run completed with validation loss 9.166085."
+  },
+  "model": {
+    "architecture_flags": {
+      "causal_decoder_only": true,
+      "policy_commit_gate": false,
+      "weight_tied_lm_head": true
+    },
+    "core_trainable_parameters": 0,
+    "enabled_modalities": [
+      "text_code"
+    ],
+    "frozen_parameters": 0,
+    "module_parameter_counts": {
+      "embeddings": 39383808,
+      "separate_lm_head": 0,
+      "total": 124439808,
+      "transformer_blocks": 85056000
+    },
+    "name": "GPT2-small-style-T1-PyTorch-124M-larger-local",
+    "parameter_accounting_mode": "strict",
+    "total_trainable_parameters": 124439808,
+    "variant": "gpt2_baseline"
+  },
+  "repository": {
+    "code_diff_ref": null,
+    "docs_read": [
+      "signal_latent_world_model_research_plan.md",
+      "research_impl_eval_docs.md",
+      "sprint_playbook_prompts.md",
+      "exploration.md",
+      "AGENTS.md",
+      "hypotheses.md",
+      "design_decisions.md",
+      "experiment_registry.md",
+      "docs/model_spec.md",
+      "docs/data_contract.md",
+      "docs/t1_text_code_training.md"
+    ],
+    "git_commit": null,
+    "working_tree_state": "dirty"
+  },
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "anomalies": {
+      "loss_explosion": false,
+      "modality_collapse": false,
+      "nan_or_inf": false,
+      "notes": "Sprint T1 text/code-only run; no audio/visual data used."
+    },
+    "batch_size": 1,
+    "checkpoint_path": "experiments/text/t1/EXP-T1-101/checkpoint.pt",
+    "hardware": "torch:2.11.0:mps:macOS-26.2-arm64-arm-64bit",
+    "learning_rate_schedule": "cosine",
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_torch",
+    "save_config_with_checkpoint": true,
+    "total_flops_estimate": null,
+    "total_steps": 20,
+    "train_tokens_or_samples": 40960,
+    "wall_clock_time": 5.175729583017528
+  },
+  "updated_at": "2026-05-08"
+}

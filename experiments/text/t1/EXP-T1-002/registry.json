@@ -1,0 +1,268 @@
+{
+  "ablation": {
+    "ablation_of": null,
+    "changed_variable": null,
+    "held_constant": [],
+    "is_ablation": false
+  },
+  "claim_trace": {
+    "expected_decision": "guardrail_pass_or_tradeoff_record",
+    "guardrail_ids": [
+      "G-R0-1",
+      "T1-text-code-only",
+      "DD-R1-001",
+      "DD-R1-002",
+      "DD-R1-020"
+    ],
+    "hypothesis_ids": [
+      "H-R0-3"
+    ],
+    "research_questions": [
+      "RQ3"
+    ]
+  },
+  "config": {
+    "config_hash": "sha256:b10517fa48d5bcadae91f4e13a16f150276dfbcfd4c5e5e4e4449a2a5a7c3d2e",
+    "config_path": "configs/t1/slwm_text_tiny_pilot.json",
+    "context_length": 16,
+    "deterministic": true,
+    "latent_dim": 16,
+    "latent_length": 16,
+    "precision": "float64_numpy_pilot",
+    "seed": 101
+  },
+  "created_at": "2026-05-08",
+  "data": {
+    "dataset_mix": {
+      "audio": null,
+      "synthetic": null,
+      "text_code": 1.0,
+      "visual_video": null
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level split by configured split field; split digests recorded in metrics",
+        "license_notes": "project-authored smoke text",
+        "name": "t1_inline_text_code_pilot",
+        "sample_count": 3,
+        "split": "train",
+        "tokens": 197,
+        "version_or_snapshot": "inline_or_prepared_t1_config",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level split by configured split field; split digests recorded in metrics",
+        "license_notes": "project-authored smoke text",
+        "name": "t1_inline_text_code_pilot",
+        "sample_count": 2,
+        "split": "validation",
+        "tokens": 108,
+        "version_or_snapshot": "inline_or_prepared_t1_config",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "document-level split by configured split field; split digests recorded in metrics",
+        "license_notes": "project-authored smoke text",
+        "name": "t1_inline_text_code_pilot",
+        "sample_count": 1,
+        "split": "test",
+        "tokens": 85,
+        "version_or_snapshot": "inline_or_prepared_t1_config",
+        "video_hours": null
+      }
+    ],
+    "preprocessing": {
+      "audio_codec_or_features": null,
+      "sample_schema_version": "t1.text_code_v0",
+      "split_digests": {
+        "test": "sha256:2d6c32fe104dae06f31743925e802eaf20e00e220c383fcbea34a7f0e61ad4ff",
+        "train": "sha256:30d822c1a76d7acb579afac25cf0adfd623088e575d03c30e3d34dbe95d65a29",
+        "validation": "sha256:b3911c10279ad1c9117bd4c8383de5c2ddf9e6866bf7a922185329dbad1a6bcd"
+      },
+      "text_codec": "byte_fallback",
+      "visual_codec_or_features": null
+    }
+  },
+  "evaluation": {
+    "baselines_compared": [
+      {
+        "comparison_notes": "Same tokenizer, inline split, optimizer family, batch, sequence length, and steps; tiny pilot only.",
+        "experiment_id": "EXP-T1-001",
+        "name": "gpt2-t1-text-tiny-pilot"
+      }
+    ],
+    "checkpoint_path": "experiments/text/t1/EXP-T1-002/checkpoint.npz",
+    "controls": {
+      "always_noop": false,
+      "fixed_router": false,
+      "no_policy": true,
+      "random_or_null": false,
+      "shuffled_pairs": false
+    },
+    "decoding_or_probe_settings": {
+      "diagnostic_only": false,
+      "max_new_tokens": 24,
+      "temperature": 0.0,
+      "top_k": null,
+      "top_p": null
+    },
+    "eval_script": "training/t1_text_baseline.py",
+    "eval_script_hash": "sha256:c1aafda3b68423624c3b2de0b8730e0ee9df7966f0de8dd15afafa930a1fed22",
+    "metrics": {
+      "primary": {
+        "confidence_interval": null,
+        "higher_is_better": false,
+        "name": "validation_loss",
+        "value": 5.015316550681898
+      },
+      "required_bundles": {
+        "hallucination_or_policy_claim": {
+          "abstention_or_noop_rate": null,
+          "calibration_metric": null,
+          "contradiction_rate": null,
+          "grounded_accuracy_or_usefulness": null,
+          "required_when_claiming_reduction": true,
+          "unsupported_claim_rate": null
+        }
+      },
+      "secondary": [
+        {
+          "higher_is_better": false,
+          "name": "validation_perplexity",
+          "value": 150.7038346177376
+        },
+        {
+          "higher_is_better": false,
+          "name": "train_loss",
+          "value": 0.7266719242855043
+        },
+        {
+          "higher_is_better": true,
+          "name": "throughput_tokens_per_second",
+          "value": 104007.78687448539
+        },
+        {
+          "higher_is_better": false,
+          "name": "max_memory_mb",
+          "value": 36.546875
+        },
+        {
+          "higher_is_better": null,
+          "name": "parameter_count",
+          "value": 11348
+        },
+        {
+          "higher_is_better": false,
+          "name": "text_loss_relative_delta_percent",
+          "value": 42.027550661753544
+        }
+      ]
+    },
+    "seeds": [
+      101
+    ]
+  },
+  "experiment_id": "EXP-T1-002",
+  "interpretation": {
+    "claim_language_allowed": "Tiny dependency-light T1 pilot: report validation loss/PPL, samples, throughput, memory, and exact settings only; do not claim GPT-2-scale text quality or SLWM superiority.",
+    "failure_modes_observed": [
+      "text_loss_exceeds_registered_tolerance"
+    ],
+    "hypothesis_decision": "guardrail_fail",
+    "limitations": [
+      "Dependency-free pilot tokenizer is byte fallback, not GPT-2 BPE, unless a future config uses an external tokenizer stack.",
+      "Inline/local pilot corpus is for pipeline validation; full T1 evidence needs prepared FineWeb/FineWeb-Edu + license-filtered code splits.",
+      "No audio or visual data was used; no multimodal, grounding, hallucination, or policy claim is supported."
+    ],
+    "next_allowed_step": "Record the T1 text tradeoff before proceeding; do not claim text improvement unless a matched rerun beats EXP-T1-001.",
+    "result_summary": "Sprint T1 slwm_text_only text/code pilot completed with validation loss 5.015317. Text tradeoff recorded: 42.03% loss delta vs EXP-T1-001."
+  },
+  "model": {
+    "architecture_flags": {
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "shared_core": true,
+      "text_lm_head": true,
+      "use_gated_mlp": true,
+      "use_latent_prediction_head": false,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_output_heads": false,
+      "use_policy_gate": false,
+      "use_spectral_mixer": true,
+      "use_text_lm_head": true,
+      "use_uncertainty_head": false
+    },
+    "core_trainable_parameters": 1936,
+    "enabled_modalities": [
+      "text_code"
+    ],
+    "frozen_parameters": 0,
+    "module_parameter_counts": {
+      "adapters": 4992,
+      "decoders": 0,
+      "embeddings": 4416,
+      "heads": 4420,
+      "inactive_adapter_parameters": 576,
+      "inactive_audio_adapter": 288,
+      "inactive_visual_video_adapter": 288,
+      "policy": 0,
+      "processor": 1936,
+      "text_code_adapter": 4416,
+      "total": 11348
+    },
+    "name": "slwm-t1-text-only-tiny-pilot",
+    "parameter_accounting_mode": "strict",
+    "total_trainable_parameters": 11348,
+    "variant": "slwm_text_only"
+  },
+  "repository": {
+    "code_diff_ref": null,
+    "docs_read": [
+      "signal_latent_world_model_research_plan.md",
+      "research_impl_eval_docs.md",
+      "sprint_playbook_prompts.md",
+      "exploration.md",
+      "AGENTS.md",
+      "hypotheses.md",
+      "design_decisions.md",
+      "experiment_registry.md",
+      "docs/model_spec.md",
+      "docs/data_contract.md",
+      "docs/t1_text_code_training.md"
+    ],
+    "git_commit": null,
+    "working_tree_state": "dirty"
+  },
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "anomalies": {
+      "loss_explosion": false,
+      "modality_collapse": false,
+      "nan_or_inf": false,
+      "notes": "Sprint T1 text/code-only run; no audio/visual data used."
+    },
+    "batch_size": 4,
+    "checkpoint_path": "experiments/text/t1/EXP-T1-002/checkpoint.npz",
+    "hardware": "cpu_numpy:macOS-26.2-arm64-arm-64bit",
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_numpy",
+    "save_config_with_checkpoint": true,
+    "total_flops_estimate": null,
+    "total_steps": 24,
+    "train_tokens_or_samples": 1536,
+    "wall_clock_time": 0.014768125023692846
+  },
+  "updated_at": "2026-05-08"
+}

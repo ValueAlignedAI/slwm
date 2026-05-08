@@ -1,0 +1,104 @@
+{
+  "baselines_compared": [
+    {
+      "comparison_notes": "Same GPT-2 BPE prepared corpus, optimizer family, seed, sequence length, and train-token budget where feasible.",
+      "experiment_id": "EXP-T1-101",
+      "name": "GPT2-small-style-T1-PyTorch-124M-larger-local"
+    }
+  ],
+  "data": {
+    "dataset_mix": {
+      "audio": null,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "text_english": 0.7,
+      "visual_video": null
+    },
+    "modalities": [
+      "text_code"
+    ],
+    "prepared_corpus_dir": "artifacts/t1_text_code/gpt2_bpe_larger_local_v0",
+    "sample_schema_version": "t1.text_code_gpt2_bpe_v0"
+  },
+  "generation": {
+    "max_new_tokens": 32,
+    "prompts": [
+      "The signal latent model",
+      "def fibonacci(n):",
+      "In a controlled experiment"
+    ],
+    "seed": 10124,
+    "stop_on_eos": true,
+    "temperature": 0.8,
+    "top_k": 50,
+    "top_p": 0.95
+  },
+  "model": {
+    "architecture_flags": {
+      "causal_text_objective": true,
+      "local_kernel_size": 3,
+      "long_kernel_size": 31,
+      "policy_commit_gate": false,
+      "spectral_kernel_size": 31,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_spectral_mixer": true
+    },
+    "context_length": 1024,
+    "dropout": 0.0,
+    "latent_dim": 768,
+    "latent_length": 1024,
+    "n_embd": 768,
+    "n_head": 12,
+    "n_layer": 12,
+    "name": "SLWM-text-only-T1-PyTorch-124M-larger-local",
+    "parameter_accounting_mode": "strict",
+    "variant": "slwm_text_only"
+  },
+  "registry": {
+    "artifact_dir": "experiments/text/t1/EXP-T1-102",
+    "checkpoint_path": "experiments/text/t1/EXP-T1-102/checkpoint.pt",
+    "config_copy_path": "experiments/text/t1/EXP-T1-102/config.json",
+    "experiment_id": "EXP-T1-102",
+    "metrics_path": "experiments/text/t1/EXP-T1-102/metrics.json",
+    "path": "experiments/text/t1/EXP-T1-102/registry.json",
+    "report_path": "experiments/text/t1/EXP-T1-102/report.md",
+    "samples_path": "experiments/text/t1/EXP-T1-102/samples.json"
+  },
+  "runtime": {
+    "deterministic": true,
+    "device": "auto",
+    "precision": "fp32",
+    "seed": 124
+  },
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "tokenizer": {
+    "claim_scope": "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls",
+    "pretrained_name": "gpt2",
+    "type": "gpt2_bpe"
+  },
+  "training": {
+    "batch_size": 1,
+    "claim_scope": "gpt2_size_limited_steps_larger_local_benchmark_not_converged_full_gpt2_training",
+    "grad_clip_norm": 1.0,
+    "gradient_accumulation_steps": 2,
+    "guardrail_tolerance_percent": 20.0,
+    "learning_rate": 0.0001,
+    "learning_rate_schedule": "cosine",
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_torch",
+    "sequence_length": 1024,
+    "steps": 20,
+    "validation_batches": 4,
+    "warmup_steps": 5,
+    "weight_decay": 0.1
+  }
+}

@@ -9,7 +9,7 @@ from data.contract import (
     validate_sample_contract,
 )
 from data.text_code import TextCodeDatasetBundle, TextCodeRecord, TokenWindowDataset, build_text_code_lm_datasets
-from data.tokenizer import ByteFallbackTokenizer, build_text_tokenizer
+from data.tokenizer import ByteFallbackTokenizer, GPT2BPETokenizer, build_text_tokenizer
 
 __all__ = [
     "MODALITY_IDS",
@@ -21,6 +21,7 @@ __all__ = [
     "TextCodeRecord",
     "TokenWindowDataset",
     "ByteFallbackTokenizer",
+    "GPT2BPETokenizer",
     "build_text_code_lm_datasets",
     "build_text_tokenizer",
     "validate_sample_contract",

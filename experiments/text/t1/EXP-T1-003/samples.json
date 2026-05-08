@@ -1,0 +1,96 @@
+{
+  "decoding_settings": {
+    "max_new_tokens": 24,
+    "prompts": [
+      "Signals",
+      "def add"
+    ],
+    "seed": 1101,
+    "stop_on_eos": true,
+    "temperature": 0.0,
+    "top_k": null,
+    "top_p": null
+  },
+  "samples": [
+    {
+      "decoding_settings": {
+        "max_new_tokens": 24,
+        "seed": 1101,
+        "stop_on_eos": true,
+        "temperature": 0.0,
+        "top_k": null,
+        "top_p": null
+      },
+      "full_text": "Signals becoc the are nthe are ",
+      "generated_text": " becoc the are nthe are ",
+      "generated_token_ids": [
+        34,
+        100,
+        103,
+        101,
+        113,
+        101,
+        34,
+        118,
+        106,
+        103,
+        34,
+        99,
+        116,
+        103,
+        34,
+        112,
+        118,
+        106,
+        103,
+        34,
+        99,
+        116,
+        103,
+        34
+      ],
+      "prompt": "Signals",
+      "prompt_token_count": 7
+    },
+    {
+      "decoding_settings": {
+        "max_new_tokens": 24,
+        "seed": 1101,
+        "stop_on_eos": true,
+        "temperature": 0.0,
+        "top_k": null,
+        "top_p": null
+      },
+      "full_text": "def addicore e re nthe are nthe",
+      "generated_text": "icore e re nthe are nthe",
+      "generated_token_ids": [
+        107,
+        101,
+        113,
+        116,
+        103,
+        34,
+        103,
+        34,
+        116,
+        103,
+        34,
+        112,
+        118,
+        106,
+        103,
+        34,
+        99,
+        116,
+        103,
+        34,
+        112,
+        118,
+        106,
+        103
+      ],
+      "prompt": "def add",
+      "prompt_token_count": 7
+    }
+  ]
+}

@@ -1,11 +1,14 @@
-"""Dependency-light text/code tokenizers for Sprint T1.
+"""Text/code tokenizers for Sprint T1.
 
 Sprint T1 requires the GPT-2 BPE tokenizer for fair text/code baseline
-comparisons when a full training stack is available.  The current repository is
-still dependency-light, so the runnable tiny pilot uses a deterministic byte
-fallback tokenizer and records that fallback explicitly in configs/registries.
+comparisons when a full training stack is available.  The dependency-light tiny
+pilot still uses a deterministic byte fallback tokenizer and records that
+fallback explicitly in configs/registries.  The full-T1 path can use
+``transformers`` to load GPT-2 BPE lazily, while keeping the same tiny-pilot
+imports dependency-light for tests and offline shape checks.
+
 Both GPT-2 and SLWM variants consume the same tokenizer object, preserving the
-same-tokenizer guardrail for pilot/smoke evidence.
+same-tokenizer guardrail for pilot, smoke, and full-stack evidence.
 """
 
 from __future__ import annotations
@@ -107,11 +110,97 @@ class ByteFallbackTokenizer:
         }
 
 
+class GPT2BPETokenizer:
+    """GPT-2 BPE tokenizer wrapper used by the full Sprint T1 path.
+
+    The wrapper intentionally follows the small ``TextTokenizer`` protocol used
+    by the repository instead of exposing the entire Hugging Face tokenizer API.
+    It appends EOS explicitly so text/code corpus preparation can create stable
+    document boundaries.
+
+    Shape contract:
+        ``encode(text)`` returns ``list[int]`` with values in
+        ``[0, vocab_size)``.  Batched training code later forms
+        ``IntTensor[B,T]`` windows from the resulting one-dimensional token
+        stream.
+    """
+
+    def __init__(
+        self,
+        *,
+        pretrained_name: str = "gpt2",
+        cache_dir: str | None = None,
+        revision: str | None = None,
+        local_files_only: bool = False,
+        claim_scope: str = "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls",
+    ) -> None:
+        try:
+            from transformers import AutoTokenizer
+        except Exception as exc:  # pragma: no cover - exercised only without optional dependency
+            raise ImportError(
+                "GPT-2 BPE tokenizer requires the optional 'transformers' dependency. "
+                "Install the T1 full-stack dependencies or use byte_fallback for smoke tests."
+            ) from exc
+
+        kwargs: dict[str, Any] = {"use_fast": True, "local_files_only": bool(local_files_only)}
+        if cache_dir:
+            kwargs["cache_dir"] = cache_dir
+        if revision:
+            kwargs["revision"] = revision
+        self._tokenizer = AutoTokenizer.from_pretrained(pretrained_name, **kwargs)
+        if self._tokenizer.eos_token_id is None:
+            raise ValueError(f"Tokenizer {pretrained_name!r} must expose an EOS token for T1 document boundaries")
+        if self._tokenizer.pad_token_id is None:
+            # GPT-2 has no native pad token.  T1 causal LM batching uses fixed
+            # windows, so no padding is needed during training; recording EOS as
+            # the pad ID keeps metadata complete without changing tokenization.
+            self._tokenizer.pad_token = self._tokenizer.eos_token
+        self.name = "gpt2_bpe"
+        self.pretrained_name = pretrained_name
+        self.revision = revision
+        self.cache_dir = cache_dir
+        self.claim_scope = claim_scope
+        self.vocab_size = int(len(self._tokenizer))
+        self.pad_token_id = int(self._tokenizer.pad_token_id)
+        self.eos_token_id = int(self._tokenizer.eos_token_id)
+
+    def encode(self, text: str, *, add_eos: bool = True) -> list[int]:
+        """Encode text/code with GPT-2 BPE and optional EOS boundary."""
+
+        ids = [int(token_id) for token_id in self._tokenizer.encode(str(text), add_special_tokens=False)]
+        if add_eos:
+            ids.append(self.eos_token_id)
+        return ids
+
+    def decode(self, token_ids: list[int] | tuple[int, ...]) -> str:
+        """Decode GPT-2 BPE IDs for sample-generation reports."""
+
+        return str(self._tokenizer.decode([int(token_id) for token_id in token_ids], skip_special_tokens=True))
+
+    def metadata(self) -> dict[str, Any]:
+        """Return JSON-serializable tokenizer metadata for registry artifacts."""
+
+        return {
+            "type": self.name,
+            "effective_type": "gpt2_bpe",
+            "intended_tokenizer": "gpt2_bpe",
+            "pretrained_name": self.pretrained_name,
+            "revision": self.revision,
+            "cache_dir": self.cache_dir,
+            "vocab_size": int(self.vocab_size),
+            "pad_token_id": int(self.pad_token_id),
+            "eos_token_id": int(self.eos_token_id),
+            "claim_scope": self.claim_scope,
+            "notes": "GPT-2 BPE edge codec for full Sprint T1 text/code comparisons.",
+        }
+
+
 def build_text_tokenizer(config: Mapping[str, Any]) -> TextTokenizer:
     """Build the tokenizer requested by a T1 config.
 
-    Supported dependency-free tokenizer types:
+    Supported tokenizer types:
         - ``byte_fallback_t1_smoke`` / ``byte_fallback``
+        - ``gpt2_bpe`` / ``hf_gpt2_bpe`` (requires optional ``transformers``)
 
     The config may still record ``intended_tokenizer: gpt2_bpe`` so the dataset
     decision record is explicit about the intended full-run tokenizer.
@@ -129,10 +218,23 @@ def build_text_tokenizer(config: Mapping[str, Any]) -> TextTokenizer:
             intended_tokenizer=str(tokenizer_cfg.get("intended_tokenizer", "gpt2_bpe")),
             claim_scope=str(tokenizer_cfg.get("claim_scope", "local_pilot_not_gpt2_bpe_evidence")),
         )
+    if tokenizer_type in {"gpt2_bpe", "gpt2", "hf_gpt2_bpe"}:
+        return GPT2BPETokenizer(
+            pretrained_name=str(tokenizer_cfg.get("pretrained_name", tokenizer_cfg.get("name", "gpt2"))),
+            cache_dir=tokenizer_cfg.get("cache_dir"),
+            revision=tokenizer_cfg.get("revision"),
+            local_files_only=bool(tokenizer_cfg.get("local_files_only", False)),
+            claim_scope=str(
+                tokenizer_cfg.get(
+                    "claim_scope",
+                    "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls",
+                )
+            ),
+        )
     raise ValueError(
         f"Unsupported tokenizer type {tokenizer_type!r}. "
-        "Dependency-free Sprint T1 supports byte_fallback_t1_smoke; use a documented external stack for GPT-2 BPE."
+        "Sprint T1 supports byte_fallback_t1_smoke for smoke tests and gpt2_bpe for the full text/code path."
     )
 
 
-__all__ = ["ByteFallbackTokenizer", "TextTokenizer", "build_text_tokenizer"]
+__all__ = ["ByteFallbackTokenizer", "GPT2BPETokenizer", "TextTokenizer", "build_text_tokenizer"]

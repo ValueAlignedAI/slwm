@@ -91,6 +91,31 @@ Implemented dependency-light pilot paths:
 - `slwm_text_only`: text adapter → shared latent field → SLWM processor → text LM head,
 - `slwm_text_only_no_spectral`: same as above with spectral mixer disabled.
 
+Implemented full-stack mechanics path:
+
+- `training.t1_prepare_text_code`: prepares GPT-2-BPE text/code-only token streams from configured local/Hugging Face sources and writes manifest/split hashes under `artifacts/t1_text_code/`.
+- `training.t1_torch_text`: trains GPT-2-size PyTorch/MPS GPT-2 and SLWM text-only variants from prepared corpora and writes T1 registry artifacts.
+
+The full-stack path is still limited by the registered train-token budget; the current configs are 124M-scale mechanics/initial benchmark runs, not converged GPT-2 training.
+
+## Running the GPT-2-BPE prepared-corpus path
+
+```bash
+python -m training.t1_prepare_text_code --config configs/t1/text_code_gpt2_bpe_larger_local_prepare.json
+python -m training.t1_torch_text --config configs/t1/gpt2_text_torch_124m_larger_local.json
+python -m training.t1_torch_text --config configs/t1/slwm_text_torch_124m_larger_local.json
+python -m training.t1_torch_text --config configs/t1/slwm_text_no_spectral_torch_124m_larger_local.json
+```
+
+Artifacts are written under `experiments/text/t1/<experiment_id>/`:
+
+- `registry.json`,
+- `metrics.json`,
+- `samples.json`,
+- `report.md`,
+- `checkpoint.pt`,
+- copied `config.json`.
+
 ## Running the tiny pilot configs
 
 ```bash

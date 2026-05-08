@@ -1,0 +1,106 @@
+{
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "runtime": {
+    "seed": 124,
+    "deterministic": true,
+    "device": "mps",
+    "precision": "fp32"
+  },
+  "tokenizer": {
+    "type": "gpt2_bpe",
+    "pretrained_name": "gpt2",
+    "claim_scope": "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls"
+  },
+  "model": {
+    "name": "SLWM-text-only-T1-PyTorch-124M-1B-M4Max",
+    "variant": "slwm_text_only",
+    "parameter_accounting_mode": "strict",
+    "context_length": 1024,
+    "latent_length": 1024,
+    "latent_dim": 768,
+    "n_layer": 12,
+    "n_embd": 768,
+    "n_head": 12,
+    "dropout": 0.0,
+    "architecture_flags": {
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "local_kernel_size": 3,
+      "spectral_kernel_size": 31,
+      "long_kernel_size": 31,
+      "causal_text_objective": true,
+      "policy_commit_gate": false
+    }
+  },
+  "data": {
+    "modalities": [
+      "text_code"
+    ],
+    "prepared_corpus_dir": "artifacts/t1_text_code/gpt2_bpe_1b_v0",
+    "sample_schema_version": "t1.text_code_gpt2_bpe_v0",
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    }
+  },
+  "training": {
+    "objective": [
+      "next_token_cross_entropy"
+    ],
+    "optimizer": "adamw_torch",
+    "learning_rate_schedule": "cosine",
+    "learning_rate": 0.0001,
+    "weight_decay": 0.1,
+    "warmup_steps": 2000,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "sequence_length": 1024,
+    "steps": 122070,
+    "validation_batches": 128,
+    "grad_clip_norm": 1.0,
+    "guardrail_tolerance_percent": 20.0,
+    "claim_scope": "slwm_text_only_1b_token_m4max_t1_guardrail_run"
+  },
+  "generation": {
+    "prompts": [
+      "The signal latent model",
+      "def fibonacci(n):",
+      "In a controlled experiment"
+    ],
+    "max_new_tokens": 32,
+    "temperature": 0.8,
+    "top_k": 50,
+    "top_p": 0.95,
+    "seed": 10124,
+    "stop_on_eos": true
+  },
+  "registry": {
+    "experiment_id": "EXP-T1-402",
+    "artifact_dir": "experiments/text/t1/EXP-T1-402",
+    "path": "experiments/text/t1/EXP-T1-402/registry.json",
+    "metrics_path": "experiments/text/t1/EXP-T1-402/metrics.json",
+    "samples_path": "experiments/text/t1/EXP-T1-402/samples.json",
+    "report_path": "experiments/text/t1/EXP-T1-402/report.md",
+    "checkpoint_path": "experiments/text/t1/EXP-T1-402/checkpoint.pt",
+    "config_copy_path": "experiments/text/t1/EXP-T1-402/config.json"
+  },
+  "baselines_compared": [],
+  "pending_baselines": [
+    {
+      "required_variant": "gpt2_baseline",
+      "suggested_experiment_id": "EXP-T1-401",
+      "required_match": "same prepared corpus, tokenizer, sequence length, optimizer family, seed policy, and train-token budget as EXP-T1-402",
+      "comparison_notes": "EXP-T1-101 is historical limited-run context only and is intentionally not listed in baselines_compared because it is not a matched 1B-token/corpus baseline."
+    }
+  ]
+}

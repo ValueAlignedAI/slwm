@@ -1,0 +1,120 @@
+{
+  "sprint": {
+    "id": "T1",
+    "name": "Text/code baseline training"
+  },
+  "runtime": {
+    "seed": 124,
+    "deterministic": true
+  },
+  "tokenizer": {
+    "type": "gpt2_bpe",
+    "pretrained_name": "gpt2",
+    "claim_scope": "full_t1_gpt2_bpe_text_code_evidence_requires_registered_data_controls"
+  },
+  "data": {
+    "modalities": [
+      "text_code"
+    ],
+    "output_dir": "artifacts/t1_text_code/gpt2_bpe_larger_local_v0",
+    "sample_schema_version": "t1.text_code_gpt2_bpe_v0",
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    },
+    "split_policy": {
+      "unit": "document/sample_id",
+      "train": 0.98,
+      "validation": 0.01,
+      "test": 0.01,
+      "seed": 124
+    },
+    "sources": [
+      {
+        "type": "hf_dataset",
+        "name": "fineweb_edu_sample10bt_text",
+        "path": "HuggingFaceFW/fineweb-edu",
+        "config_name": "sample-10BT",
+        "split": "train",
+        "streaming": true,
+        "text_field": "text",
+        "id_fields": [
+          "id",
+          "url",
+          "file_path"
+        ],
+        "category": "text_english",
+        "language": "en",
+        "max_documents": 2500,
+        "max_tokens": 1400000,
+        "min_chars": 100,
+        "license_notes": "FineWeb-Edu public Hugging Face subset; source/version recorded by dataset path/config; web text license/terms require review before headline claims."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "magicoder_oss_instruct_code",
+        "path": "ise-uiuc/Magicoder-OSS-Instruct-75K",
+        "split": "train",
+        "streaming": true,
+        "text_fields": [
+          "problem",
+          "solution"
+        ],
+        "id_fields": [
+          "index",
+          "raw_index",
+          "lang"
+        ],
+        "category": "code",
+        "language": "mixed_code",
+        "max_documents": 900,
+        "max_tokens": 300000,
+        "min_chars": 40,
+        "license_notes": "OSS code-instruction dataset used as accessible code-like source because The Stack v2/StarCoderData are gated without HF authentication; limitations recorded."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "smollm_cosmopedia_docs",
+        "path": "HuggingFaceTB/smollm-corpus",
+        "config_name": "cosmopedia-v2",
+        "split": "train",
+        "streaming": true,
+        "text_fields": [
+          "prompt",
+          "text"
+        ],
+        "id_fields": [
+          "seed_data",
+          "format"
+        ],
+        "category": "markdown_docs",
+        "language": "en",
+        "max_documents": 400,
+        "max_tokens": 200000,
+        "min_chars": 100,
+        "license_notes": "SmolLM corpus Cosmopedia-v2 text/document source; source/config recorded; use as docs/structured text component for T1 pilot-scale corpus."
+      },
+      {
+        "type": "hf_dataset",
+        "name": "mbpp_structured_code_math",
+        "path": "mbpp",
+        "split": "train",
+        "streaming": true,
+        "text_template": "Problem:\n{text}\n\nCode:\n{code}\n\nTests:\n{test_list}",
+        "id_fields": [
+          "task_id"
+        ],
+        "category": "math_structured_text",
+        "language": "python",
+        "max_documents": 1000,
+        "max_tokens": 100000,
+        "min_chars": 20,
+        "license_notes": "MBPP structured Python problems/tests; used only for T1 text/code language-modeling pilot corpus, not HumanEval/MBPP pass@k evaluation."
+      }
+    ]
+  }
+}
