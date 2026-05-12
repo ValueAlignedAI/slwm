@@ -1,7 +1,7 @@
-# SLWM-124M Sprint R1 — Design Decisions
+# SLWM Sprint R1 — Design Decisions
 
 **Sprint:** R1 — Literature-to-design mapping  
-**Primary purpose:** state what SLWM-124M will implement now, what it will not implement now, and what remains future-phase.  
+**Primary purpose:** state what SLWM will implement now, what it will not implement now, and what remains future-phase.  
 **Status:** pre-implementation decision record; no empirical success is claimed here.
 
 ---
@@ -10,13 +10,13 @@
 
 Every current-phase design decision must satisfy at least one of:
 
-1. It directly tests an R0 hypothesis or guardrail from `hypotheses.md`.
+1. It directly tests an R0 hypothesis or guardrail from `docs/research/hypotheses.md`.
 2. It is required by the architecture/evaluation contract in `AGENTS.md`.
-3. It is justified by a mapped source in `literature_map.md`.
+3. It is justified by a mapped source in `docs/research/literature_map.md`.
 
 Every non-trivial component must have an ablation or control. If a component cannot be ablated cleanly, it cannot support an architecture claim.
 
-No decision below is evidence that SLWM-124M works. Evidence requires registered experiments in `experiment_registry.md`.
+No decision below is evidence that SLWM works. Evidence requires registered experiments in `docs/experiments/experiment_registry.md`.
 
 ---
 
@@ -38,12 +38,12 @@ No decision below is evidence that SLWM-124M works. Evidence requires registered
 | DD-R1-012 | Include a local temporal mixer/filter path for short-range signal structure. | H-R0-3 and the research-plan hybrid processor contract; complements FNet/Hyena/Mamba long-range and spectral paths with an ablatable short-range temporal path. | Processor block, adapters, temporal signal evals. | No local temporal mixer; local-only vs hybrid. | H-R0-3 |
 | DD-R1-013 | Include either `LongConv` or `SSMBlock` as a replaceable long-range temporal path, depending on implementation feasibility. | Hyena for long convolution; Mamba for SSM. | `LongConv`, `SSMBlock`, `SignalWorldProcessor`. | No long-conv/SSM; LongConv vs SSM; attention-only; throughput/memory logging. | H-R0-3 |
 | DD-R1-014 | Keep attention or binding capacity in the processor/baseline instead of using a pure Fourier/SSM-only core. | FNet limitations; research-plan hybrid block; multimodal binding risk. | `SignalWorldProcessor`, multimodal binding evals. | Remove attention/binding; spectral-only; SSM-only; retrieval/grounding comparison. | H-R0-2, H-R0-3 |
-| DD-R1-015 | Add uncertainty/source outputs as first-class prediction heads before unsupported-output claims. | TruthfulQA, HaluEval, POPE/MME protocols, `exploration.md`. | `UncertaintyHead`, hallucination evals, probe reports. | No uncertainty head; calibration ECE; source-tag coverage. | H-R0-4, H-R0-5 |
+| DD-R1-015 | Add uncertainty/source outputs as first-class prediction heads before unsupported-output claims. | TruthfulQA, HaluEval, POPE/MME protocols, `docs/exploration/exploration.md`. | `UncertaintyHead`, hallucination evals, probe reports. | No uncertainty head; calibration ECE; source-tag coverage. | H-R0-4, H-R0-5 |
 | DD-R1-016 | Implement policy/commitment as a gate over proposals, with no-op/wait as valid outputs, when policy sprint scope begins. | R0 H-R0-4; hallucination evals require answer vs abstain/no-op; AGENTS policy contract. | `PolicyCommitGate`, `NoOpHead`, output heads, policy evals. | No policy; fixed router; always-answer; always-no-op; no no-op head; no uncertainty. | H-R0-4 |
-| DD-R1-017 | Require diagnostic probes to be internal-only and source/uncertainty-tagged. | `exploration.md`; linear probing precedent; R0 H-R0-5. | Diagnostic text/audio/visual probes, `UncertaintyHead`, exploration logs. | Random latent; null probe; shuffled modality; frozen random head; no shared core. | H-R0-5 |
+| DD-R1-017 | Require diagnostic probes to be internal-only and source/uncertainty-tagged. | `docs/exploration/exploration.md`; linear probing precedent; R0 H-R0-5. | Diagnostic text/audio/visual probes, `UncertaintyHead`, exploration logs. | Random latent; null probe; shuffled modality; frozen random head; no shared core. | H-R0-5 |
 | DD-R1-018 | Use CLIP/ImageBind-style retrieval as grounding evaluation precedent, not as unaccounted proof of SLWM performance. | CLIP and ImageBind. | Cross-modal retrieval evals, alignment loss diagnostics. | Shuffled pairs; random retrieval; no alignment loss; separate cores; frozen reference labeled separately. | H-R0-2 |
 | DD-R1-019 | Gate hallucination/unsupported-output claims on usefulness, accuracy, contradiction, abstention/no-op, and calibration. | TruthfulQA, HaluEval, POPE/MME; AGENTS evaluation rules. | Hallucination evals, policy evals, registry metric bundle. | Always-no-op; always-answer; no-policy; no-uncertainty; fixed router. | H-R0-4 |
-| DD-R1-020 | Register every experiment before it can change a claim state. | R0 `experiment_registry.md`; project evidence rules. | Training/eval/exploration workflows. | Reject unregistered results as evidence. | all R0 items |
+| DD-R1-020 | Register every experiment before it can change a claim state. | R0 `docs/experiments/experiment_registry.md`; project evidence rules. | Training/eval/exploration workflows. | Reject unregistered results as evidence. | all R0 items |
 
 ---
 
@@ -142,7 +142,7 @@ Rules for these flags:
 
 - [x] Current-phase decisions are separated from not-now and future-phase decisions.
 - [x] Every current design choice has a reference or R0 hypothesis link.
-- [x] Every reference maps to a concrete module or evaluation through `literature_map.md`.
+- [x] Every reference maps to a concrete module or evaluation through `docs/research/literature_map.md`.
 - [x] Every non-trivial component has an ablation/control requirement.
 - [x] P0 modules are traceable.
 - [x] No empirical success claim is made.

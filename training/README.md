@@ -1,4 +1,4 @@
-# SLWM-124M Training Runners
+# SLWM Training Runners
 
 This directory contains dependency-light training runners for completed/pilot
 sprints. Each runner is config-driven and writes registry artifacts before any
@@ -138,5 +138,65 @@ Artifacts are written under `experiments/text/t1/<experiment_id>/`:
 The tiny T1 pilot uses a dependency-free byte fallback tokenizer and inline
 project-authored records for pipeline validation. Full T1 text/code evidence
 requires the documented GPT-2 BPE tokenizer and prepared external text/code
-datasets described in `docs/t1_text_code_training.md` and
-`configs/t1/text_code_full_dataset_plan.json`.
+datasets described in `../docs/training/t1_text_code_training.md` and
+`../configs/t1/text_code_full_dataset_plan.json`.
+
+---
+
+# Sprint T2 Training — Audio/Visual Latent Training
+
+Sprint T2 is limited to audio and visual/video **latents**. It does not train
+text generation, raw waveform/video generation, policy behavior, hallucination
+metrics, or action/sensor modalities.
+
+## Scope
+
+Implemented paths:
+
+- `training.t2_prepare_latents`: standardizes precomputed audio/visual latent
+  records into NPZ files, split manifests, and a dataset card under
+  `artifacts/t2_audio_visual/`.
+- `training.t2_train_latents`: trains a PyTorch audio/visual latent model on
+  continuation, missing-span reconstruction, and audio-video contrastive
+  alignment.
+
+Implemented controls and metrics:
+
+- null/persistence latent MSE,
+- random latent MSE,
+- shuffled audio-video retrieval baseline,
+- audio latent MSE and spectral/phase/frequency proxy metrics,
+- visual/video latent error,
+- audio-video retrieval R@1/R@5/R@10 and correspondence accuracy,
+- throughput, memory, registry, config copy, report, and optional checkpoint.
+
+## Running the generated smoke fixture
+
+```bash
+python -m training.t2_prepare_latents --config configs/t2/prepare_audio_visual_generated_smoke.json
+python -m training.t2_train_latents --config configs/t2/slwm_t2_tiny_smoke.json --max-steps 2 --no-checkpoint
+```
+
+The generated fixture is for pipeline validation only and must not be used as
+audio/video quality evidence.
+
+See `../docs/training/preprocessing.md` for the T2 external dataset and feature
+extraction plan.
+
+## Inspecting larger model configs without starting training
+
+```bash
+python -m training.t2_train_latents --config configs/t2/slwm_124m_audio_visual_pilot.json --describe-only
+python -m training.t2_train_latents --config configs/t2/slwm_700m_audio_visual_24gb_fitcheck.json --describe-only
+```
+
+The 700M+ config is a best-effort 24GB VRAM fit-check profile using bf16/fp16,
+activation checkpointing, batch size 1, and gradient accumulation. It is not a
+replacement for the 124M strict-comparison path.
+
+## Claim limits
+
+T2 can report only latent prediction, reconstruction, spectral proxy,
+audio-video correspondence/retrieval, shuffled/null controls, throughput, and
+memory. It cannot support text/code, policy, hallucination, raw generation, or
+grounding claims.

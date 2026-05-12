@@ -1,10 +1,12 @@
-# SLWM-124M
+# SLWM
 
-SLWM-124M is a research project for a GPT-2-scale **Signal-Latent World Model**. The core question is whether a model that processes shared latent signal fields can learn reusable multimodal representations for text/code, audio, and visual/video signals without treating tokens as the only modeling substrate.
+SLWM is a research project for **Signal-Latent World Models**: models that process shared latent signal fields for text/code, audio, and visual/video instead of treating tokens as the only modeling substrate.
+
+The original anchor remains the GPT-2-small-scale `SLWM-124M` comparison target, but the repository now tracks multiple scale profiles. Current configs include near-124M strict/core comparison runs and a 700M+ fit-check profile for later large-run training. Every result must report its parameter accounting mode, data budget, and claim limits.
 
 The project is evidence-first: no capability claim is accepted without registered experiments, baselines, ablations, and failure-case analysis.
 
-## Core idea
+## Core Idea
 
 The planned architecture keeps modality-specific processing at the edges and a shared latent world field in the middle:
 
@@ -29,185 +31,117 @@ Z: FloatTensor[B, T, D]
 mask: BoolTensor[B, T]
 ```
 
-The initial GPT-2-scale target is approximately 124M parameters, with strict and core-only parameter accounting tracked separately in future experiments.
-
-## Required modalities
-
-Current required modalities are:
+## Required Modalities
 
 - `text_code` — English text and code at the edge codec/decoder.
-- `audio` — speech and general audio latent/features.
+- `audio` — speech and general audio latents/features.
 - `visual_video` — image/video patch, tube, or latent streams.
 - `noop` — valid committed policy behavior.
 
 Optional sensor, robotics, action, and persistent-memory experiments are future-phase only.
 
-## Current sprint status
+## Documentation
+
+Root Markdown is intentionally minimal:
+
+- `AGENTS.md` — operational rules, required reading, sprint discipline, and branch workflow.
+- `README.md` — project overview and current status.
+
+Project documentation is organized under `docs/`:
+
+- `docs/README.md` — documentation index.
+- `docs/research/` — research plan, hypotheses, risks, literature map, and design decisions.
+- `docs/architecture/` — architecture, inference, and policy/commitment design.
+- `docs/training/` — preprocessing and sprint training notes.
+- `docs/evaluation/` — baseline and evaluation-facing design notes.
+- `docs/experiments/` — experiment registry schema and completed artifact references.
+- `docs/exploration/` — diagnostic probe and exploration protocol.
+- `docs/process/` — sprint playbook and agent prompts.
+
+## Current Sprint Status
 
 | Sprint | Status | Main artifacts | Gate status |
 |---|---|---|---|
-| R0 — Hypotheses and falsification | Complete as research specification | `hypotheses.md`, `risks_and_assumptions.md`, `experiment_registry.md` | Claims are measurable; all hypotheses remain untested until registered experiments run. |
-| R1 — Literature-to-design mapping | Complete as research/design specification | `literature_map.md`, `design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
+| R0 — Hypotheses and falsification | Complete as research specification | `docs/research/hypotheses.md`, `docs/research/risks_and_assumptions.md`, `docs/experiments/experiment_registry.md` | Claims are measurable; hypotheses remain untested until registered experiments run. |
+| R1 — Literature-to-design mapping | Complete as research/design specification | `docs/research/literature_map.md`, `docs/research/design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
-| I1 — Baselines | Implemented locally | `baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
-| T1 — Text/code baseline training | Full-stack mechanics implemented; 1B-corpus prep in progress | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/t1_text_code_training.md` | Tiny and limited 124M GPT-2-BPE runs are registered; EXP-T1-402 requires the prepared `gpt2_bpe_1b_v0` corpus and a matched GPT-2 baseline before guardrail claims. |
-
-## I0 implementation scope
-
-Sprint I0 intentionally implements only repository structure and shape contracts. It does **not** implement real training, real datasets, learned codecs, GPT-2 baselines, spectral/SSM/long-conv blocks, or model-quality evaluation.
-
-Implemented skeleton areas:
-
-```text
-configs/
-data/
-docs/
-evals/
-exploration/
-models/
-  adapters/
-  baselines/
-  heads/
-  policy/
-  processor/
-training/
-tests/
-utils/
-```
-
-Key I0 modules:
-
-- `TextSignalAdapter`, `AudioSignalAdapter`, `VisualSignalAdapter`
-- `LatentSignalField`
-- `SignalWorldProcessor`
-- `LatentPredictionHead`, `ReconstructionHead`, `UncertaintyHead`
-- `TextDecoderHead`, `AudioDecoderHead`, `VisualDecoderHead`, `NoOpHead`
-- `PolicyCommitGate`
-- dependency-free `TensorSpec` shape carriers
-- JSON config loader and experiment registry writer
+| I1 — Baselines | Implemented locally | `docs/evaluation/baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
+| T1 — Text/code baseline training | Full-stack mechanics implemented; larger corpus work remains | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/training/t1_text_code_training.md` | Tiny and limited GPT-2-BPE runs are registered; full guardrail claims require matched GPT-2 and SLWM runs on pinned corpora. |
+| T2 — Audio/visual latent training | Mechanics implemented; external data run remains | `data/audio_visual_latents.py`, `training/t2_prepare_latents.py`, `training/t2_train_latents.py`, `configs/t2/*`, `docs/training/preprocessing.md` | Generated-fixture smoke run passes mechanics only; external curated audio/video corpora and matched baselines are required before hypothesis support. |
 
 ## Validation
 
-Current local I0 validation evidence:
+Current local validation evidence:
 
 ```bash
-python -m pytest
+pytest
+```
+
+Latest result from the T1/T2 foundation branch:
+
+```text
+74 passed
+```
+
+Targeted T2 validation:
+
+```bash
+pytest tests/test_t2_audio_visual_latents.py tests/test_t2_training_runner.py
 ```
 
 Result:
 
 ```text
-26 passed
+9 passed
 ```
 
-Coverage validation over the implemented I0 packages:
+This validates mechanics and safety checks only. It does not establish converged GPT-2-quality training, multimodal grounding, hallucination reduction, policy behavior, or real audio/video model quality.
+
+## Training Workflows
+
+T1 text/code training docs:
+
+- `docs/training/t1_text_code_training.md`
+- `training/README.md`
+
+T2 audio/visual latent training docs:
+
+- `docs/training/preprocessing.md`
+- `training/README.md`
+
+Useful T2 commands:
 
 ```bash
-python -m pytest --cov=data --cov=models --cov=utils --cov-report=term-missing
+python -m training.t2_prepare_latents --config configs/t2/prepare_audio_visual_generated_smoke.json
+python -m training.t2_train_latents --config configs/t2/slwm_t2_tiny_smoke.json
+python -m training.t2_train_latents --config configs/t2/slwm_124m_audio_visual_pilot.json --describe-only
+python -m training.t2_train_latents --config configs/t2/slwm_700m_audio_visual_24gb_fitcheck.json --describe-only
 ```
 
-Result:
+The generated T2 fixture is for pipeline validation only and must not be used as evidence of real audio/video quality.
 
-```text
-26 passed
-TOTAL 413 stmts, 0 miss, 100% coverage
-```
+## Next Training Focus
 
-Current T1 full-stack validation evidence:
+The next training workstream is **T1-T2 refinement, dataset gathering, T3 implementation, and large-run training**.
 
-```bash
-pytest tests/test_t1_torch_full_path.py
-```
+Immediate priorities:
 
-Result:
+1. Refine T1 and T2 configs, registry outputs, and matched baseline/ablation coverage.
+2. Gather and pin external text/code and audio/video datasets with licenses, split hashes, leakage checks, and feature-extractor versions.
+3. Implement T3 joint SLWM training for mixed-modality latent batches after T1/T2 inputs are reproducible.
+4. Run larger 124M and 700M+ training profiles only after dataset cards, baselines, checkpoints, and claim language are registered.
 
-```text
-3 passed
-```
-
-This validates the corpus-preparation and tiny PyTorch runner mechanics only. It does not establish converged GPT-2-quality training, SLWM text-quality parity, hallucination reduction, grounding, policy behavior, or multimodal transfer.
-
-## Sprint T1 text/code training workflow
-
-T1 is text/code-only. It uses GPT-2 BPE for full-stack comparability and must not load audio or visual/video data.
-
-Prepare the configured ~1B-token GPT-2-BPE corpus for EXP-T1-402:
-
-```bash
-scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh
-scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh --run
-```
-
-The prep output required by the trainer is:
-
-```text
-artifacts/t1_text_code/gpt2_bpe_1b_v0/
-  dataset_card.json
-  manifest.jsonl
-  train.tokens.npy
-  validation.tokens.npy
-  test.tokens.npy
-  prepare_config.json
-```
-
-If a large prep attempt fails before finalizing, remove only known temporary files with:
-
-```bash
-scripts/train/prepare_t1_gpt2_bpe_1b_corpus.sh --clean-failed-output
-```
-
-After the corpus exists, validate and launch the SLWM text-only MPS run:
-
-```bash
-scripts/train/run_t1_exp_t1_402_slwm_mps.sh
-scripts/train/run_t1_exp_t1_402_slwm_mps.sh --run
-```
-
-`EXP-T1-402` is configured for `batch_size=1`, `gradient_accumulation_steps=8`, `sequence_length=1024`, and `122070` optimizer steps, for an effective budget of `999,997,440` tokens. It writes artifacts under `experiments/text/t1/EXP-T1-402/`.
-
-Important T1 caveats:
-
-- The current 1B prep config uses an accessible Python-only StarCoder-derived code fallback because some preferred BigCode/The Stack sources require authentication or additional filtering.
-- Corpus preparation alone is not model-quality evidence.
-- EXP-T1-402 alone is not a T1 guardrail result; a matched GPT-2 baseline on the same prepared corpus, tokenizer, sequence length, optimizer family, seed policy, and train-token budget is required.
-- Dataset revision pinning, license filtering, secrets/PII checks, deduplication, and evaluation-contamination checks remain required before headline text/code claims.
-
-## Scientific guardrails
+## Scientific Guardrails
 
 - Do not claim reduced hallucination without reporting unsupported-claim rate, contradiction rate, usefulness/accuracy, abstention/no-op rate, and calibration.
 - Do not treat diagnostic probes as proof of understanding or grounded representations.
 - Do not compare runs with different data, parameter, or compute budgets unless clearly labeled approximate.
-- Do not merge sprint scopes: baselines, real SLWM architecture, training, evaluation, and exploration have separate gates.
+- Do not merge sprint scopes unless the sprint explicitly requires it.
 - No main-weight continual learning or online inference-time weight updates in the initial phase.
 
-## Sprint I1 baseline scope
+## Branch Workflow
 
-Sprint I1 implements required baselines before SLWM novelty:
-
-1. GPT-2-small-style decoder-only text/code baseline.
-2. Vanilla multimodal Transformer baseline.
-3. Null/random baselines for probes.
-
-See `baselines.md` for exact parameter counts, configs, context lengths, tokenizer/codec choices, smoke metrics, and registry paths. Minimal Perceiver-style latent bottleneck remains pending/future because the accepted I1 gate only requires one text baseline and one multimodal/latent baseline to tiny-train and log metrics.
-
-## Next allowed implementation stage
-
-The next implementation sprint after I1 is **I2 — SLWM core**, but only after I1 validation artifacts are accepted. I2 scope is adapters and processor core; it must still avoid policy/exploration claims.
-
-## Branch workflow
-
-The project branch policy is:
-
-```text
-research
-implementation
-training
-evaluation
-exploration
-integration
-```
-
-Use one branch per sprint and merge completed sprint work through a PR into `integration`. Promote from `integration` to `main` only after the integrated state is accepted.
+Use focused feature branches and merge through pull requests. `main` is the accepted project trunk for completed, reviewed work; integration branches may still be used for larger multi-sprint staging.
 
 ## License
 

@@ -1,8 +1,8 @@
 # sprint_playbook_prompts.md
 
-# SLWM-124M Sprint Playbook and Agent Prompts
+# SLWM Sprint Playbook and Agent Prompts
 
-**Project:** Signal-Latent World Model, GPT-2-size research implementation  
+**Project:** Signal-Latent World Models, anchored by GPT-2-size `SLWM-124M` and extending only through explicitly labeled larger profiles  
 **Purpose:** define clear implementation details, sprint boundaries, KPIs, success criteria, and prompts for research, implementation, training, evaluation, and exploration agents.  
 **Rule:** do not merge sprints, invent new scope mid-sprint, or claim success without the stated KPIs.
 
@@ -10,7 +10,7 @@
 
 ## 0. Operating Principle
 
-SLWM-124M is a research system, not a demo-first product.
+SLWM is a research system, not a demo-first product. `SLWM-124M` remains the comparison anchor; larger profiles must be labeled by parameter accounting mode, data budget, and compute budget.
 
 Every sprint must answer one of these questions:
 
@@ -248,9 +248,9 @@ These KPIs are project-wide. Individual sprints select a subset.
 
 | Stage          | Sprint | Name                           | Primary artifact                      | Gate                                 |
 | -------------- | -----: | ------------------------------ | ------------------------------------- | ------------------------------------ |
-| Research       |     R0 | Hypotheses and falsification   | `hypotheses.md`                       | claims are measurable                |
-| Research       |     R1 | Literature-to-design mapping   | `literature_map.md`                   | design choices justified             |
-| Implementation |     I0 | Repo skeleton and contracts    | code + `model_spec.md`                | shape tests pass                     |
+| Research       |     R0 | Hypotheses and falsification   | `docs/research/hypotheses.md`         | claims are measurable                |
+| Research       |     R1 | Literature-to-design mapping   | `docs/research/literature_map.md`     | design choices justified             |
+| Implementation |     I0 | Repo skeleton and contracts    | code + `docs/model_spec.md`           | shape tests pass                     |
 | Implementation |     I1 | Baselines                      | GPT-2 + vanilla baselines             | baseline metrics logged              |
 | Implementation |     I2 | SLWM core                      | processor + adapters                  | tiny forward/backward works          |
 | Implementation |     I3 | Output heads and policy stubs  | heads + gate APIs                     | no-op/text/probe paths work          |
@@ -289,9 +289,9 @@ Write exact hypotheses for:
 
 ### Deliverables
 
-- `hypotheses.md`
-- `risks_and_assumptions.md`
-- initial `experiment_registry.md` schema
+- `docs/research/hypotheses.md`
+- `docs/research/risks_and_assumptions.md`
+- initial `docs/experiments/experiment_registry.md` schema
 
 ### KPIs
 
@@ -309,13 +309,13 @@ Accepted only if each hypothesis can be answered with `support`, `partial suppor
 ### Agent Prompt
 
 ```text
-You are the Research Agent for SLWM-124M Sprint R0.
+You are the Research Agent for SLWM Sprint R0.
 Your task is to convert the project vision into falsifiable hypotheses.
 Do not propose implementation changes.
 Do not add new modalities.
 For each hypothesis, write: claim, metric, dataset, baseline, ablation, success threshold, failure threshold, and expected interpretation.
 Also write explicit assumptions and risks.
-Output only hypotheses.md, risks_and_assumptions.md, and experiment_registry.md schema sections.
+Output only `docs/research/hypotheses.md`, `docs/research/risks_and_assumptions.md`, and `docs/experiments/experiment_registry.md` schema sections.
 If a claim cannot be measured at GPT-2 scale, mark it as future-phase and remove it from current success criteria.
 ```
 
@@ -347,8 +347,8 @@ Required topic buckets:
 
 ### Deliverables
 
-- `literature_map.md`
-- `design_decisions.md`
+- `docs/research/literature_map.md`
+- `docs/research/design_decisions.md`
 
 ### KPIs
 
@@ -366,11 +366,11 @@ Accepted only if the implementation team can trace every P0 module to either a p
 ### Agent Prompt
 
 ```text
-You are the Research Agent for SLWM-124M Sprint R1.
+You are the Research Agent for SLWM Sprint R1.
 Create a literature-to-design map.
 Do not write a general survey.
 For each source, extract only: what it contributes, what module or eval it affects, what risk it introduces, and what ablation should test it.
-End with a design_decisions.md section that states what SLWM-124M will implement now, what it will not implement now, and why.
+End with a `docs/research/design_decisions.md` section that states what SLWM will implement now, what it will not implement now, and why.
 Keep all design claims testable.
 ```
 
@@ -434,7 +434,7 @@ A dummy batch passes through adapter → processor → head → policy with corr
 ### Agent Prompt
 
 ```text
-You are the Implementation Agent for SLWM-124M Sprint I0.
+You are the Implementation Agent for SLWM Sprint I0.
 Build only the repository skeleton, type contracts, configs, and tests.
 Do not implement the real architecture.
 Do not train anything.
@@ -463,7 +463,7 @@ Implement:
 
 ### Deliverables
 
-- `baselines.md`
+- `docs/evaluation/baselines.md`
 - baseline model code
 - baseline configs
 - baseline smoke tests
@@ -486,7 +486,7 @@ At least one text baseline and one multimodal/latent baseline can train for a ti
 ### Agent Prompt
 
 ```text
-You are the Implementation Agent for SLWM-124M Sprint I1.
+You are the Implementation Agent for SLWM Sprint I1.
 Implement baselines only.
 Do not implement SLWM novelty modules except shared utilities needed by baselines.
 Report exact parameter counts, model configs, context length, tokenizer/codec choices, and training smoke-test metrics.
@@ -535,7 +535,7 @@ residual output
 
 ### Deliverables
 
-- `architecture.md`
+- `docs/architecture/architecture.md`
 - implemented model modules
 - processor configs
 - shape tests
@@ -560,7 +560,7 @@ One SLWM core config runs forward/backward on synthetic multimodal batches and c
 ### Agent Prompt
 
 ```text
-You are the Implementation Agent for SLWM-124M Sprint I2.
+You are the Implementation Agent for SLWM Sprint I2.
 Implement the SLWM core and adapters only.
 Preserve the canonical latent tensor contract Z[B,T,D].
 Do not implement advanced policy, exploration dashboards, or large training.
@@ -594,8 +594,8 @@ Do not train a complex agentic policy yet.
 
 ### Deliverables
 
-- `policy_commitment.md`
-- `inference.md`
+- `docs/architecture/policy_commitment.md`
+- `docs/architecture/inference.md`
 - output head code
 - policy code
 - commit/no-op tests
@@ -617,7 +617,7 @@ Given a processed latent field, the system can produce candidate outputs and rou
 ### Agent Prompt
 
 ```text
-You are the Implementation Agent for SLWM-124M Sprint I3.
+You are the Implementation Agent for SLWM Sprint I3.
 Implement output heads and policy/commit interfaces.
 Do not optimize behavior quality yet.
 The policy must support no-op, single-head commitment, and multi-head commitment.
@@ -679,7 +679,7 @@ Proceed only if SLWM core shows measurable value on at least one periodic/freque
 ### Agent Prompt
 
 ```text
-You are the Training Agent for SLWM-124M Sprint T0.
+You are the Training Agent for SLWM Sprint T0.
 Train only on synthetic signal tasks.
 Do not use text/code/audio/video datasets yet.
 Compare SLWM, vanilla Transformer, and no-spectral ablation.
@@ -729,7 +729,7 @@ Do not claim text improvement unless SLWM beats the GPT-2 baseline under the sam
 ### Agent Prompt
 
 ```text
-You are the Training Agent for SLWM-124M Sprint T1.
+You are the Training Agent for SLWM Sprint T1.
 Train text/code baselines and SLWM text-only variants.
 Do not add audio or visual data in this sprint.
 Use the same tokenizer, splits, optimizer settings where possible, and parameter accounting.
@@ -760,7 +760,7 @@ Do not train raw waveform/video generation yet unless already supported by a lig
 
 ### Deliverables
 
-- `preprocessing.md`
+- `docs/training/preprocessing.md`
 - latent dataset pipeline
 - audio/visual configs
 - prediction metric reports
@@ -784,7 +784,7 @@ Proceed only if the model learns non-trivial audio/visual latent prediction and 
 ### Agent Prompt
 
 ```text
-You are the Training Agent for SLWM-124M Sprint T2.
+You are the Training Agent for SLWM Sprint T2.
 Train on audio and visual/video latents only, plus optional alignment pairs.
 Use frozen/precomputed codecs unless the sprint explicitly says otherwise.
 Do not mix in text generation objectives yet except labels/captions needed for alignment metadata.
@@ -839,7 +839,7 @@ Accepted if joint model trains stably, beats null/shuffled multimodal baselines,
 ### Agent Prompt
 
 ```text
-You are the Training Agent for SLWM-124M Sprint T3.
+You are the Training Agent for SLWM Sprint T3.
 Train the first joint multimodal SLWM.
 Do not change architecture during this sprint.
 Use the frozen model config from I2/I3.
@@ -894,7 +894,7 @@ No model claim is accepted until the eval harness can run baselines and SLWM var
 ### Agent Prompt
 
 ```text
-You are the Evaluation Agent for SLWM-124M Sprint E0.
+You are the Evaluation Agent for SLWM Sprint E0.
 Build the eval harness only.
 Do not interpret model quality yet.
 Support deterministic loading, seeded decoding, shared splits, metric aggregation, and report generation.
@@ -946,7 +946,7 @@ Accepted only if every improvement claim has a matching baseline and ablation.
 ### Agent Prompt
 
 ```text
-You are the Evaluation Agent for SLWM-124M Sprint E1.
+You are the Evaluation Agent for SLWM Sprint E1.
 Evaluate text, code, and signal metrics only.
 Do not evaluate hallucination or policy behavior in this sprint.
 Compare GPT-2 baseline, SLWM text-only, SLWM joint, no-spectral ablation, and relevant null baselines.
@@ -1001,7 +1001,7 @@ Do not claim hallucination reduction unless unsupported-claim rate decreases **a
 ### Agent Prompt
 
 ```text
-You are the Evaluation Agent for SLWM-124M Sprint E2.
+You are the Evaluation Agent for SLWM Sprint E2.
 Evaluate multimodal grounding and hallucination behavior.
 Every hallucination result must include unsupported-claim rate, contradiction rate, abstention/no-op rate, and usefulness/accuracy.
 Compare against text-only GPT-2-style baseline, vanilla multimodal baseline, and SLWM ablations.
@@ -1055,7 +1055,7 @@ Accepted when probes can visualize or decode latent states and prove they are no
 ### Agent Prompt
 
 ```text
-You are the Exploration Agent for SLWM-124M Sprint X0.
+You are the Exploration Agent for SLWM Sprint X0.
 Build diagnostic probe infrastructure only.
 Do not claim the model understands the world.
 Every probe must have a random or shuffled control.
@@ -1108,7 +1108,7 @@ Accepted if the report identifies concrete latent correspondences, failure modes
 ### Agent Prompt
 
 ```text
-You are the Exploration Agent for SLWM-124M Sprint X1.
+You are the Exploration Agent for SLWM Sprint X1.
 Map the model's latent world view through diagnostic heads.
 Test audio-to-text, visual-to-text, text-to-visual, and at least one bidirectional mapping.
 Always include null or shuffled controls.
@@ -1170,7 +1170,7 @@ The findings report must clearly say which hypotheses are supported, partially s
 ### Agent Prompt
 
 ```text
-You are the Research Lead for SLWM-124M Sprint G0.
+You are the Research Lead for SLWM Sprint G0.
 Write findings.md using only completed experiments and reports.
 Do not run new experiments.
 Do not introduce new architecture.
@@ -1204,7 +1204,7 @@ Failure means:
 Success means:
 
 - GPT-2-size baseline is registered,
-- SLWM-124M trains stably,
+- SLWM trains stably at the registered scale,
 - text/code tradeoff is quantified,
 - audio/visual latent prediction beats null/shuffled baselines,
 - parameter accounting is honest.
@@ -1280,8 +1280,8 @@ Required before moving to full multimodal:
 Use this when starting any new agent session.
 
 ```text
-You are working on SLWM-124M, a GPT-2-scale Signal-Latent World Model research project.
-Read AGENTS.md, signal_latent_world_model_research_plan.md, exploration.md, research_impl_eval_docs.md, and sprint_playbook_prompts.md before acting.
+You are working on SLWM, a Signal-Latent World Model research project anchored by `SLWM-124M` and clearly labeled larger scale profiles.
+Read `AGENTS.md`, `docs/research/signal_latent_world_model_research_plan.md`, `docs/exploration/exploration.md`, `docs/research/research_impl_eval_docs.md`, and `docs/process/sprint_playbook_prompts.md` before acting.
 Your current sprint is: <SPRINT_ID>.
 Do only the scope of that sprint.
 Do not merge sprints.

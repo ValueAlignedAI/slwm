@@ -1,0 +1,314 @@
+{
+  "ablation": {
+    "ablation_of": null,
+    "changed_variable": null,
+    "held_constant": [
+      "prepared_dataset",
+      "split",
+      "optimizer_family",
+      "seed"
+    ],
+    "is_ablation": false
+  },
+  "claim_trace": {
+    "expected_decision": "partial_support_or_untested_until_full_baselines",
+    "guardrail_ids": [
+      "T2-audio-visual-latents-only",
+      "T2-shuffled-null-controls",
+      "DD-R1-020"
+    ],
+    "hypothesis_ids": [
+      "H-R0-1",
+      "H-R0-2",
+      "H-R0-3"
+    ],
+    "research_questions": [
+      "RQ1",
+      "RQ2",
+      "RQ3"
+    ]
+  },
+  "config": {
+    "config_hash": "sha256:4b8a342e89b5b440079f233ea7b204ed68c6e84619fe22155594f7742ceecb89",
+    "config_path": "configs/t2/slwm_t2_tiny_smoke.json",
+    "context_length": 16,
+    "deterministic": true,
+    "latent_dim": 16,
+    "latent_length": 16,
+    "precision": "fp32",
+    "seed": 2026
+  },
+  "created_at": "2026-05-12",
+  "data": {
+    "dataset_mix": {
+      "audio": 0.5,
+      "text_code": null,
+      "visual_video": 0.5
+    },
+    "datasets": [
+      {
+        "audio_hours": null,
+        "leakage_checks": "Generated smoke fixture uses deterministic stable split; external T2 corpora must record duplicate/media leakage checks separately.",
+        "license_notes": "project-authored synthetic latent fixture; no external media",
+        "name": "project_generated_t2_latent_fixture",
+        "sample_count": 2,
+        "split": "test",
+        "tokens": null,
+        "version_or_snapshot": "recorded_in_source_manifest",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "Generated smoke fixture uses deterministic stable split; external T2 corpora must record duplicate/media leakage checks separately.",
+        "license_notes": "project-authored synthetic latent fixture; no external media",
+        "name": "project_generated_t2_latent_fixture",
+        "sample_count": 17,
+        "split": "train",
+        "tokens": null,
+        "version_or_snapshot": "recorded_in_source_manifest",
+        "video_hours": null
+      },
+      {
+        "audio_hours": null,
+        "leakage_checks": "Generated smoke fixture uses deterministic stable split; external T2 corpora must record duplicate/media leakage checks separately.",
+        "license_notes": "project-authored synthetic latent fixture; no external media",
+        "name": "project_generated_t2_latent_fixture",
+        "sample_count": 5,
+        "split": "validation",
+        "tokens": null,
+        "version_or_snapshot": "recorded_in_source_manifest",
+        "video_hours": null
+      }
+    ],
+    "preprocessing": {
+      "audio_codec_or_features": "project_generated_logmel_like_latents_smoke_only",
+      "prepared_corpus_dir": "artifacts/t2_audio_visual/generated_av_smoke_v0",
+      "prepared_manifest_sha256": "sha256:7628409d012517cda19545e15691779b006009be24c57d8766440232919fd604",
+      "sample_schema_version": "t2.audio_visual_latents_v0",
+      "split_counts": {
+        "test": {
+          "audio_frames": 16,
+          "samples": 2,
+          "visual_frames": 16
+        },
+        "train": {
+          "audio_frames": 136,
+          "samples": 17,
+          "visual_frames": 136
+        },
+        "validation": {
+          "audio_frames": 40,
+          "samples": 5,
+          "visual_frames": 40
+        }
+      },
+      "text_codec": null,
+      "visual_codec_or_features": "project_generated_patch_like_latents_smoke_only"
+    }
+  },
+  "evaluation": {
+    "baselines_compared": [
+      "null_persistence",
+      "random_latent",
+      "shuffled_audio_video_pairs"
+    ],
+    "checkpoint_path": "experiments/multimodal/t2/EXP-T2-901/checkpoint.pt",
+    "controls": {
+      "always_noop": false,
+      "fixed_router": false,
+      "no_policy": true,
+      "random_or_null": true,
+      "shuffled_pairs": true
+    },
+    "decoding_or_probe_settings": {
+      "diagnostic_only": true,
+      "max_new_tokens": null,
+      "temperature": null,
+      "top_p": null
+    },
+    "eval_script": "training/t2_train_latents.py",
+    "eval_script_hash": "sha256:0a69dad756d3231badd8954328be135283b0532bf016125edafe9540641e4bf3",
+    "metrics": {
+      "primary": {
+        "confidence_interval": null,
+        "higher_is_better": false,
+        "name": "validation_total_loss",
+        "value": 0.7526866793632507
+      },
+      "required_bundles": {
+        "hallucination_or_policy_claim": {
+          "abstention_or_noop_rate": null,
+          "calibration_metric": null,
+          "contradiction_rate": null,
+          "grounded_accuracy_or_usefulness": null,
+          "required_when_claiming_reduction": true,
+          "unsupported_claim_rate": null
+        }
+      },
+      "secondary": [
+        {
+          "higher_is_better": false,
+          "name": "audio_latent_prediction_error",
+          "value": 0.26910488307476044
+        },
+        {
+          "higher_is_better": false,
+          "name": "video_latent_prediction_error",
+          "value": 0.3449752628803253
+        },
+        {
+          "higher_is_better": false,
+          "name": "audio_spectral_magnitude_error",
+          "value": 1.117321202138361
+        },
+        {
+          "higher_is_better": true,
+          "name": "retrieval_r1",
+          "value": 0.25
+        },
+        {
+          "higher_is_better": true,
+          "name": "retrieval_r5",
+          "value": 1.0
+        },
+        {
+          "higher_is_better": true,
+          "name": "audio_video_correspondence_accuracy",
+          "value": 0.5
+        },
+        {
+          "higher_is_better": false,
+          "name": "shuffled_control_retrieval_r1",
+          "value": 0.25
+        },
+        {
+          "higher_is_better": false,
+          "name": "null_audio_mse",
+          "value": 0.2730167508125305
+        },
+        {
+          "higher_is_better": false,
+          "name": "null_visual_mse",
+          "value": 0.33654452860355377
+        },
+        {
+          "higher_is_better": false,
+          "name": "random_audio_mse",
+          "value": 0.5248428583145142
+        },
+        {
+          "higher_is_better": false,
+          "name": "random_visual_mse",
+          "value": 0.7762545049190521
+        },
+        {
+          "higher_is_better": true,
+          "name": "prediction_loss_decreased",
+          "value": false
+        }
+      ]
+    },
+    "seeds": [
+      2026
+    ]
+  },
+  "experiment_id": "EXP-T2-901",
+  "interpretation": {
+    "claim_language_allowed": "Only T2 latent prediction, audio spectral proxy, visual latent error, AV retrieval/correspondence, shuffled/null controls, throughput, and memory metrics may be reported.",
+    "failure_modes_observed": [
+      "prediction_loss_did_not_decrease"
+    ],
+    "hypothesis_decision": "untested",
+    "limitations": [
+      "T2 latent-only training; no raw waveform/video generation.",
+      "Smoke/generated fixtures prove mechanics only; external dataset results require recorded dataset versions and feature extractors.",
+      "No text/code, hallucination, policy, or committed-output claim is supported by T2."
+    ],
+    "next_allowed_step": "Run matched T2 baselines/ablations and external curated latent corpora before changing R0 hypothesis states.",
+    "result_summary": "Sprint T2 audio/visual latent run completed with validation loss 0.7526866793632507."
+  },
+  "model": {
+    "architecture_flags": {
+      "activation_checkpointing": false,
+      "local_kernel_size": 3,
+      "long_kernel_size": 7,
+      "mlp_ratio": 2,
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "spectral_kernel_size": 7,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_spectral_mixer": true
+    },
+    "core_trainable_parameters": 3232,
+    "enabled_modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "frozen_parameters": 0,
+    "module_parameter_counts": {
+      "adapters": 176,
+      "decoders": 0,
+      "embeddings": 320,
+      "heads": 698,
+      "policy": 0,
+      "processor": 3232,
+      "total": 4426
+    },
+    "name": "slwm-t2-tiny-audio-visual-smoke",
+    "parameter_accounting_mode": "strict",
+    "total_trainable_parameters": 4426,
+    "variant": "slwm_audio_visual_latent"
+  },
+  "repository": {
+    "code_diff_ref": null,
+    "docs_read": [
+      "docs/research/signal_latent_world_model_research_plan.md",
+      "docs/research/research_impl_eval_docs.md",
+      "docs/process/sprint_playbook_prompts.md",
+      "docs/exploration/exploration.md",
+      "AGENTS.md",
+      "docs/research/hypotheses.md",
+      "docs/research/design_decisions.md",
+      "docs/experiments/experiment_registry.md",
+      "docs/model_spec.md",
+      "docs/data_contract.md",
+      "docs/training/preprocessing.md"
+    ],
+    "git_commit": null,
+    "working_tree_state": "dirty"
+  },
+  "sprint": {
+    "id": "T2",
+    "name": "Audio/visual latent training",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "anomalies": {
+      "loss_explosion": false,
+      "modality_collapse": false,
+      "nan_or_inf": false,
+      "notes": "Sprint T2 latent-only run; no text generation or policy training."
+    },
+    "batch_size": 4,
+    "checkpoint_path": "experiments/multimodal/t2/EXP-T2-901/checkpoint.pt",
+    "hardware": "torch:2.11.0:cpu:macOS-26.2-arm64-arm-64bit",
+    "learning_rate_schedule": "constant",
+    "objective": [
+      "audio_latent_continuation_mse",
+      "visual_latent_continuation_mse",
+      "missing_span_reconstruction_mse",
+      "audio_video_contrastive_alignment"
+    ],
+    "optimizer": "adamw_torch",
+    "save_config_with_checkpoint": true,
+    "total_flops_estimate": null,
+    "total_steps": 6,
+    "train_tokens_or_samples": 24,
+    "wall_clock_time": 0.0791390830418095
+  },
+  "updated_at": "2026-05-12"
+}

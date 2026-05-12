@@ -1,7 +1,7 @@
-# SLWM-124M Sprint R1 — Literature-to-Design Mapping
+# SLWM Sprint R1 — Literature-to-Design Mapping
 
 **Sprint:** R1 — Literature-to-design mapping  
-**Primary artifact:** `literature_map.md`  
+**Primary artifact:** `docs/research/literature_map.md`  
 **Gate:** design choices are justified by references, R0 hypotheses, and testable ablations.  
 **Status:** pre-implementation research specification; no empirical result is claimed here.
 
@@ -9,21 +9,21 @@
 
 ## 0. Scope and Source Notes
 
-This document maps prior work to concrete SLWM-124M architecture, training, evaluation, and ablation decisions. It is **not** a general literature survey. A source is included only if it affects a module, objective, baseline, evaluation, risk, or control.
+This document maps prior work to concrete SLWM architecture, training, evaluation, and ablation decisions. `SLWM-124M` is the GPT-2-scale anchor; larger profiles are separate scale configurations. This is **not** a general literature survey. A source is included only if it affects a module, objective, baseline, evaluation, risk, or control.
 
 Read context:
 
-- `signal_latent_world_model_research_plan.md` — current canonical research plan in this repository.
-- `hypotheses.md` — Sprint R0 falsifiable hypotheses and guardrails.
-- `risks_and_assumptions.md` — Sprint R0 assumptions and risks.
-- `experiment_registry.md` — Sprint R0 evidence/registry schema.
-- `sprint_playbook_prompts.md` — Sprint R1 scope, deliverables, KPIs, and success gate.
-- `exploration.md` — diagnostic-probe controls and source/uncertainty tagging requirements.
+- `docs/research/signal_latent_world_model_research_plan.md` — current canonical research plan in this repository.
+- `docs/research/hypotheses.md` — Sprint R0 falsifiable hypotheses and guardrails.
+- `docs/research/risks_and_assumptions.md` — Sprint R0 assumptions and risks.
+- `docs/experiments/experiment_registry.md` — Sprint R0 evidence/registry schema.
+- `docs/process/sprint_playbook_prompts.md` — Sprint R1 scope, deliverables, KPIs, and success gate.
+- `docs/exploration/exploration.md` — diagnostic-probe controls and source/uncertainty tagging requirements.
 - `AGENTS.md` — architecture contract, modality constraints, evaluation requirements, and required ablations.
 
-Current repository note: earlier R0 docs recorded a missing canonical research-plan filename. The current repository contains `signal_latent_world_model_research_plan.md`; this R1 document treats it as canonical.
+Current repository note: earlier R0 docs recorded a missing canonical research-plan filename. The current repository contains `docs/research/signal_latent_world_model_research_plan.md`; this R1 document treats it as canonical.
 
-Terminology note: any terms inherited from `exploration.md` such as “world view” or “thinks” are treated only as informal labels for diagnostic probe outputs. They are not cognition, understanding, or grounding claims without registered evaluations and controls.
+Terminology note: any terms inherited from `docs/exploration/exploration.md` such as “world view” or “thinks” are treated only as informal labels for diagnostic probe outputs. They are not cognition, understanding, or grounding claims without registered evaluations and controls.
 
 R1 acceptance criteria:
 
@@ -80,7 +80,7 @@ R1 acceptance criteria:
 | **HumanEval** — Chen et al., 2021, [arXiv:2107.03374](https://arxiv.org/abs/2107.03374) | Functional Python synthesis benchmark using pass@k. | Use only if a code decoder is trained; run in sandbox and record sampling budget. | `TextSignalAdapter`, `TextDecoderHead`, code eval. | Contamination and sampling-budget sensitivity; 124M may underperform. | GPT-2/code baseline; decontamination checks; fixed prompt/sampling settings. | Current if code head trained | G-R0-1 |
 | **MBPP** — Austin et al., 2021, [arXiv:2108.07732](https://arxiv.org/abs/2108.07732) | Entry-level Python synthesis tasks complementing HumanEval. | Use pass@1/pass@k and syntax/error taxonomy if code decoder is trained. | Code evals. | Prompt sensitivity and contamination risk. | GPT-2/code baseline; same prompt templates; syntax/null baseline. | Current if code head trained | G-R0-1 |
 | **Linear probing / diagnostic classifiers** — Alain & Bengio, 2016, [arXiv:1610.01644](https://arxiv.org/abs/1610.01644) | Probes information available in learned representations. | Use frozen-core probes for diagnostic labels/retrieval; never treat probe success as proof of understanding. | Exploration probes, `UncertaintyHead`, source maps. | Probes can learn task shortcuts or decoder priors. | Random-latent, null, shuffled-modality, frozen random head, no shared core. | Current diagnostics | H-R0-5 |
-| **`exploration.md` protocol** | Defines diagnostic-only head activation, source/uncertainty labels, cross-head consistency, and controls. | All exploration outputs must be internal-only and tagged as observed/reconstructed/predicted/inferred/imagined/unknown/unsupported. | Diagnostic text/audio/visual/action probes, `PolicyCommitGate`, `UncertaintyHead`. | Beautiful decodes may be confused with grounded representations. | Policy enabled/disabled; forced head; input ablations; random/shuffled/null latent; no-uncertainty/source. | Current diagnostics | H-R0-5, H-R0-4 |
+| **`docs/exploration/exploration.md` protocol** | Defines diagnostic-only head activation, source/uncertainty labels, cross-head consistency, and controls. | All exploration outputs must be internal-only and tagged as observed/reconstructed/predicted/inferred/imagined/unknown/unsupported. | Diagnostic text/audio/visual/action probes, `PolicyCommitGate`, `UncertaintyHead`. | Beautiful decodes may be confused with grounded representations. | Policy enabled/disabled; forced head; input ablations; random/shuffled/null latent; no-uncertainty/source. | Current diagnostics | H-R0-5, H-R0-4 |
 
 ---
 
@@ -101,7 +101,7 @@ R1 acceptance criteria:
 | `SSMBlock` | Mamba | H-R0-3 | No SSM; LongConv alternative; attention-only baseline. |
 | `LatentPredictionHead` | data2vec, JEPA, V-JEPA | H-R0-1 | No latent prediction; reconstruction-only; latent-only vs mixed objective. |
 | `ReconstructionHead` | VideoMAE, EnCodec reconstruction/codec losses | H-R0-1, H-R0-5 | Reconstruction-only vs latent prediction; diagnostic decode controls. |
-| `UncertaintyHead` | TruthfulQA/HaluEval/POPE protocol needs calibration/source tags; `exploration.md` | H-R0-4, H-R0-5 | No uncertainty head; calibration ECE; source-tag coverage. |
+| `UncertaintyHead` | TruthfulQA/HaluEval/POPE protocol needs calibration/source tags; `docs/exploration/exploration.md` | H-R0-4, H-R0-5 | No uncertainty head; calibration ECE; source-tag coverage. |
 | `PolicyCommitGate` | HaluEval/TruthfulQA/POPE metrics require answer vs abstain/no-op decisions | H-R0-4 | No policy; fixed router; always-answer; always-no-op; no-uncertainty. |
 | `TextDecoderHead` | GPT-2, LAMBADA, HumanEval/MBPP, grounding evals | G-R0-1, H-R0-4 | Same decoding settings; text/code baseline; forced vs committed output. |
 | `AudioDecoderHead` | EnCodec/log-mel reconstruction and audio continuation | H-R0-1, H-R0-5 | Diagnostic-only forced decode; random-latent and shuffled controls. |

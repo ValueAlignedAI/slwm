@@ -1,4 +1,4 @@
-# SLWM-124M Architecture — Sprint I2/I3
+# SLWM Architecture — Sprint I2/I3
 
 **Sprint:** I2 — SLWM core processor and adapters; I3 — output heads and policy stubs  
 **Status:** tiny NumPy forward/backward implementation for adapters, shared latent field, processor blocks, latent prediction head, uncertainty/source head, plus I3 shape-only output-head proposal and policy/commit APIs.  

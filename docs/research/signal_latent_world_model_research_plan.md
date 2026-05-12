@@ -1,19 +1,19 @@
-# Signal-Latent World Model at GPT-2 Scale
+# Signal-Latent World Models
 
 **Scientific modelation, implementation protocol, evaluation plan, and findings template**  
 **Version:** 0.1  
 **Date:** 2026-05-07  
-**Working name:** **SLWM-124M** — Signal-Latent World Model, GPT-2-small scale
+**Working name:** **SLWM** — Signal-Latent World Models, anchored by the GPT-2-small-scale `SLWM-124M` profile
 
 ---
 
 ## 0. Executive Summary
 
-This document defines a research program for testing a **GPT-2-size multimodal signal model** whose core representation is not tokens, bytes, pixels, or waveform samples, but a **shared latent signal field**. The model receives compressed or encoded signals from multiple modalities, processes them in a fixed-length latent context, updates a full latent signal field, and is trained with objectives that include future prediction, hidden-state reconstruction, multimodal alignment, and uncertainty estimation latent signal states, and only decodes into text, audio, video, or actions through explicit output heads selected by a learned policy/commitment mechanism.
+This document defines a research program for testing **multimodal latent-signal models** whose core representation is not tokens, bytes, pixels, or waveform samples, but a **shared latent signal field**. `SLWM-124M` remains the GPT-2-small-scale anchor for controlled comparison; larger profiles such as 700M+ fit-checks are separate scale configurations and require explicit parameter, data, and compute labels. The model receives compressed or encoded signals from multiple modalities, processes them in a fixed-length latent context, updates a full latent signal field, and is trained with objectives that include future prediction, hidden-state reconstruction, multimodal alignment, and uncertainty estimation latent signal states, and only decodes into text, audio, video, or actions through explicit output heads selected by a learned policy/commitment mechanism.
 
 The central hypothesis is:
 
-> A fixed-context, multimodal, latent-signal world model with spectral/temporal processing and learned output commitment can learn more primitive predictive representations than a token-only decoder, while remaining testable at GPT-2-small scale.
+> A fixed-context, multimodal, latent-signal world model with spectral/temporal processing and learned output commitment can learn reusable predictive representations beyond a token-only decoder, while remaining testable against GPT-2-small-scale anchors and clearly labeled larger scale profiles.
 
 The first goal is **not** to beat frontier multimodal systems. The first goal is to determine whether the architecture learns useful, reusable, and less hallucination-prone latent representations when compared with:
 
@@ -22,7 +22,7 @@ The first goal is **not** to beat frontier multimodal systems. The first goal is
 3. a Perceiver-style latent bottleneck baseline,
 4. ablated versions of the proposed model.
 
-The project should be considered successful if SLWM-124M:
+The project should be considered successful if SLWM variants:
 
 - performs competitively with GPT-2-size baselines on English text/code modeling,
 - substantially outperforms token-only baselines on periodic, audio, and audio-visual signal prediction,

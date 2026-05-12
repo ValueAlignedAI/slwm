@@ -102,7 +102,7 @@ class TextCodeDatasetBundle:
     sample_schema_version: str
 
     def registry_datasets(self) -> list[dict[str, Any]]:
-        """Return dataset rows compatible with ``experiment_registry.md``."""
+        """Return dataset rows compatible with ``docs/experiments/experiment_registry.md``."""
 
         by_dataset: dict[tuple[str, str], dict[str, Any]] = {}
         for record in self.records:

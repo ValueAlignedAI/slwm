@@ -1,4 +1,4 @@
-# SLWM-124M Policy Commitment — Sprint I3
+# SLWM Policy Commitment — Sprint I3
 
 **Sprint:** I3 — output heads and policy stubs  
 **Status:** deterministic proposal/routing API stubs only; no trained policy, no behavior-quality claim.

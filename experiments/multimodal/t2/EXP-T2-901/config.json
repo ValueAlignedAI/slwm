@@ -1,0 +1,81 @@
+{
+  "data": {
+    "dataset_mix": {
+      "audio": 0.5,
+      "text_code": null,
+      "visual_video": 0.5
+    },
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "prepared_corpus_dir": "artifacts/t2_audio_visual/generated_av_smoke_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0"
+  },
+  "model": {
+    "architecture_flags": {
+      "activation_checkpointing": false,
+      "local_kernel_size": 3,
+      "long_kernel_size": 7,
+      "mlp_ratio": 2,
+      "noop_head": false,
+      "policy_commit_gate": false,
+      "spectral_kernel_size": 7,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "use_local_temporal_mixer": true,
+      "use_long_conv": true,
+      "use_spectral_mixer": true
+    },
+    "audio_feature_dim": 4,
+    "context_length": 16,
+    "dropout": 0.0,
+    "latent_dim": 16,
+    "latent_length": 16,
+    "n_head": 2,
+    "n_layer": 1,
+    "name": "slwm-t2-tiny-audio-visual-smoke",
+    "parameter_accounting_mode": "strict",
+    "variant": "slwm_audio_visual_latent",
+    "visual_feature_dim": 5
+  },
+  "registry": {
+    "artifact_dir": "experiments/multimodal/t2/EXP-T2-901",
+    "checkpoint_path": "experiments/multimodal/t2/EXP-T2-901/checkpoint.pt",
+    "config_copy_path": "experiments/multimodal/t2/EXP-T2-901/config.json",
+    "experiment_id": "EXP-T2-901",
+    "metrics_path": "experiments/multimodal/t2/EXP-T2-901/metrics.json",
+    "path": "experiments/multimodal/t2/EXP-T2-901/registry.json",
+    "report_path": "experiments/multimodal/t2/EXP-T2-901/report.md"
+  },
+  "runtime": {
+    "deterministic": true,
+    "device": "cpu",
+    "precision": "fp32",
+    "seed": 2026
+  },
+  "training": {
+    "batch_size": 4,
+    "context_fraction": 0.5,
+    "grad_clip_norm": 1.0,
+    "gradient_accumulation_steps": 1,
+    "learning_rate": 0.01,
+    "learning_rate_schedule": "constant",
+    "loss_weights": {
+      "alignment": 0.1,
+      "audio_prediction": 1.0,
+      "visual_prediction": 1.0
+    },
+    "missing_span_fraction": 0.125,
+    "objective": [
+      "audio_latent_continuation_mse",
+      "visual_latent_continuation_mse",
+      "missing_span_reconstruction_mse",
+      "audio_video_contrastive_alignment"
+    ],
+    "optimizer": "adamw_torch",
+    "steps": 6,
+    "validation_batches": 2,
+    "weight_decay": 0.0
+  }
+}
