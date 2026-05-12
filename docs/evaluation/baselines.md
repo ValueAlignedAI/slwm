@@ -1,4 +1,4 @@
-# SLWM-124M Sprint I1 — Baselines
+# SLWM Sprint I1 — Baselines
 
 **Sprint:** I1 — Baselines  
 **Status:** implemented baseline smoke paths; no SLWM novelty modules; no model-quality claim.  

@@ -1,4 +1,4 @@
-# SLWM-124M Inference Modes — Sprint I3
+# SLWM Inference Modes — Sprint I3
 
 **Sprint:** I3 — output heads and policy stubs  
 **Status:** API and metadata contract only; no trained generation quality claim.

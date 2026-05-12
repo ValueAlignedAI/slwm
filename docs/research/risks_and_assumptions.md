@@ -1,4 +1,4 @@
-# SLWM-124M Sprint R0 — Risks and Assumptions
+# SLWM Sprint R0 — Risks and Assumptions
 
 **Sprint:** R0 — Hypotheses and falsification  
 **Purpose:** record the assumptions and risks that could invalidate the R0 hypotheses or make later results misleading.  
@@ -8,9 +8,9 @@
 
 ## 0. Source and Scope Notes
 
-This file supports `hypotheses.md` and should be updated whenever a sprint discovers a new blocker, invalid assumption, or result that changes the project risk profile.
+This file supports `docs/research/hypotheses.md` and should be updated whenever a sprint discovers a new blocker, invalid assumption, or result that changes the project risk profile.
 
-Repository note: at initial R0 drafting, `signal_latent_world_model_research_plan.md` was reported missing and a similarly named modelation file was used as the effective source. The current repository contains `signal_latent_world_model_research_plan.md`; it is now treated as the canonical main research plan. No `docs/rules/*.md` or `CONTRIBUTING.md` files were present at the time this R0/R1 documentation was drafted.
+Repository note: at initial R0 drafting, `docs/research/signal_latent_world_model_research_plan.md` was reported missing and a similarly named modelation file was used as the effective source. The current repository contains `docs/research/signal_latent_world_model_research_plan.md`; it is now treated as the canonical main research plan. No `docs/rules/*.md` or `CONTRIBUTING.md` files were present at the time this R0/R1 documentation was drafted.
 
 R0 scope limits:
 
@@ -25,8 +25,8 @@ R0 scope limits:
 
 | ID | Assumption | Why it matters | If false |
 |---|---|---|---|
-| A-R0-1 | `signal_latent_world_model_research_plan.md` is the effective main research plan. | R0/R1 need a canonical source for RQ/H mappings. | If the canonical file diverges from prior notes, revise traceability links before implementation. |
-| A-R0-2 | GPT-2-scale experiments are sufficient to reject or support early architecture claims. | The project is scoped around SLWM-124M and comparable baselines. | Mark claims as pilot-only or future-phase; avoid scaling claims. |
+| A-R0-1 | `docs/research/signal_latent_world_model_research_plan.md` is the effective main research plan. | R0/R1 need a canonical source for RQ/H mappings. | If the canonical file diverges from prior notes, revise traceability links before implementation. |
+| A-R0-2 | GPT-2-scale experiments are sufficient to reject or support early architecture claims. | The project is anchored around SLWM-124M and comparable baselines, with larger profiles labeled separately. | Mark claims as pilot-only or future-phase; avoid scaling claims. |
 | A-R0-3 | Required modalities can be converted to common latent fields without unacceptable information loss. | Shared-core hypotheses depend on comparable latent representations. | Revisit adapter/data-contract design before interpreting shared-core failures. |
 | A-R0-4 | Fair baseline comparisons are feasible with logged parameter, data, and compute budgets. | Most hypotheses depend on matched or clearly labeled comparisons. | Results become approximate only; do not claim superiority. |
 | A-R0-5 | Synthetic signal tasks are useful early tests of spectral/temporal components. | T0 is expected to de-risk signal processing before full multimodal runs. | Treat synthetic wins as insufficient and require real audio/video confirmation. |
@@ -40,8 +40,8 @@ R0 scope limits:
 
 | Risk ID | Risk | Impact | Leading indicators | Mitigation | Stop / decision condition | Linked hypotheses |
 |---|---|---|---|---|---|---|
-| R-R0-1 | Hypotheses become broad slogans rather than falsifiable claims. | Later work can cherry-pick results or overclaim. | Claims lack metric, baseline, ablation, or failure threshold. | Enforce `hypotheses.md` checklist; reject any claim that cannot resolve to support/partial/not supported. | Pause next sprint until missing criteria are added. | all |
-| R-R0-2 | Canonical research-plan filename drift causes traceability ambiguity. | Agents may read different sources or miss constraints. | References to stale aliases or divergent research-plan files. | Treat `signal_latent_world_model_research_plan.md` as canonical and update traceability notes when file names change. | If source docs diverge, block implementation until reconciled. | all |
+| R-R0-1 | Hypotheses become broad slogans rather than falsifiable claims. | Later work can cherry-pick results or overclaim. | Claims lack metric, baseline, ablation, or failure threshold. | Enforce `docs/research/hypotheses.md` checklist; reject any claim that cannot resolve to support/partial/not supported. | Pause next sprint until missing criteria are added. | all |
+| R-R0-2 | Canonical research-plan filename drift causes traceability ambiguity. | Agents may read different sources or miss constraints. | References to stale aliases or divergent research-plan files. | Treat `docs/research/signal_latent_world_model_research_plan.md` as canonical and update traceability notes when file names change. | If source docs diverge, block implementation until reconciled. | all |
 | R-R0-3 | Baselines are weaker or unfairly budgeted. | Apparent SLWM gains may be invalid. | Missing parameter counts, data budgets, split details, context length, or compute logs. | Registry requires budget/accounting fields; compare strict and core accounting separately. | No result can change hypothesis status without fair or labeled-approximate baseline. | all |
 | R-R0-4 | Modality collapse: model ignores audio/video and relies on text/captions. | Shared latent and grounding hypotheses become invalid. | High text-only performance but poor audio/video-only or modality-dropout metrics. | Use modality dropout, audio/video-only tasks, missing-modality prediction, and hard negatives. | If multimodal gains vanish when text is removed/corrupted, mark grounding claim not supported. | H-R0-2, H-R0-5 |
 | R-R0-5 | Decoder dominance: output heads invent plausible content from priors. | Probe and hallucination results become misleading. | Random-latent or shuffled probes produce similar quality outputs. | Include random/null/shuffled controls and source/uncertainty labels. | If controls match real probes, exploration claims are not supported. | H-R0-4, H-R0-5 |
@@ -74,7 +74,7 @@ High-priority risks for immediate control:
 
 Before moving past R0/R1 into implementation and training, review:
 
-- [x] Is the canonical research plan filename resolved as `signal_latent_world_model_research_plan.md`?
+- [x] Is the canonical research plan filename resolved as `docs/research/signal_latent_world_model_research_plan.md`?
 - [ ] Does every planned experiment have at least one fair baseline?
 - [ ] Are strict and core-only parameter accounting modes defined for configs?
 - [ ] Can each key component be disabled through an ablation flag or alternate config?
@@ -86,4 +86,4 @@ Before moving past R0/R1 into implementation and training, review:
 
 ## 5. Current Risk Conclusion
 
-The project is scientifically viable only if it treats evidence as the product. The main risk is not that SLWM-124M fails; failure is informative if registered cleanly. The main risk is accepting unmeasured or unfair claims. R0 therefore prioritizes falsifiability, baselines, ablations, and negative-result recording over architectural enthusiasm.
+The project is scientifically viable only if it treats evidence as the product. The main risk is not that an SLWM scale profile fails; failure is informative if registered cleanly. The main risk is accepting unmeasured or unfair claims. R0 therefore prioritizes falsifiability, baselines, ablations, and negative-result recording over architectural enthusiasm.

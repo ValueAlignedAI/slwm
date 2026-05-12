@@ -1,8 +1,8 @@
-# SLWM-124M Experiment Registry Schema
+# SLWM Experiment Registry Schema
 
 **Sprint:** R0 — initial registry schema  
 **Purpose:** define the minimum metadata required before any experiment, evaluation, or exploration output can support a project claim.  
-**Status:** schema plus completed I1/T0/T1 artifact references. Sprint T1 now includes dependency-light pilot evidence and a GPT-2-BPE 124M-scale limited-step benchmark; neither is converged GPT-2-quality evidence.
+**Status:** schema plus completed I1/T0/T1/T2 artifact references. Sprint T1 includes dependency-light pilot evidence and a GPT-2-BPE 124M-scale limited-step benchmark; T2 includes a generated-fixture mechanics smoke. None is converged model-quality evidence.
 
 ---
 
@@ -85,10 +85,10 @@ repository:
   code_diff_ref: "<link or patch reference, if applicable>"
   docs_read:
     - AGENTS.md
-    - signal_latent_world_model_research_plan.md
-    - research_impl_eval_docs.md
-    - sprint_playbook_prompts.md
-    - exploration.md
+    - docs/research/signal_latent_world_model_research_plan.md
+    - docs/research/research_impl_eval_docs.md
+    - docs/process/sprint_playbook_prompts.md
+    - docs/exploration/exploration.md
 
 config:
   config_path: "configs/.../<config>.yaml"
@@ -394,8 +394,19 @@ GPT-2-quality claims:
 | `EXP-T1-102` | T1 | SLWM text-only 124M PyTorch/MPS GPT-2-BPE run | `experiments/text/t1/EXP-T1-102/registry.json` | completed | limited benchmark guardrail passed vs `EXP-T1-101`; not converged quality evidence |
 | `EXP-T1-103` | T1 | SLWM no-spectral 124M PyTorch/MPS GPT-2-BPE ablation | `experiments/text/t1/EXP-T1-103/registry.json` | completed | limited benchmark guardrail passed vs `EXP-T1-101`; not converged quality evidence |
 
-Core R0 hypotheses in `hypotheses.md` remain `untested` until future
+Completed Sprint T2 generated-fixture smoke artifact is stored under
+`experiments/multimodal/t2/EXP-T2-901`. This run uses a project-generated
+audio/visual latent fixture and is useful for pipeline validation only; it is
+**not** evidence of real audio/video model quality or multimodal grounding:
+
+| Experiment ID | Sprint | Purpose | Registry artifact | Status | Claim state |
+|---|---|---|---|---|---|
+| `EXP-T2-901` | T2 | Audio/visual latent preparation + tiny smoke training | `experiments/multimodal/t2/EXP-T2-901/registry.json` | completed | T2 mechanics only; hypothesis state remains untested for external audio/video data |
+
+Core R0 hypotheses in `docs/research/hypotheses.md` remain `untested` until future
 training/evaluation entries use full modality-specific data, fair baseline
 comparisons, required controls, and reviewed metrics. G-R0-1 has pilot and
 limited-benchmark guardrail readings, but not converged text/code quality
-evidence.
+evidence. T2 currently has mechanics evidence only from a generated latent
+fixture; external audio/video results must use curated corpora, split hashes,
+and shuffled/null controls before changing H-R0-1/H-R0-2/H-R0-3 states.

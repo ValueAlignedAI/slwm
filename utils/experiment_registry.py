@@ -1,4 +1,4 @@
-"""Experiment registry writer compatible with ``experiment_registry.md``.
+"""Experiment registry writer compatible with ``docs/experiments/experiment_registry.md``.
 
 I0 writes JSON records (valid YAML subset) and performs minimal schema checks.
 It does not create evidence or claim success for any model result.
@@ -67,12 +67,12 @@ def make_i0_registry_entry(
             "code_diff_ref": None,
             "docs_read": [
                 "AGENTS.md",
-                "signal_latent_world_model_research_plan.md",
-                "research_impl_eval_docs.md",
-                "sprint_playbook_prompts.md",
-                "exploration.md",
-                "design_decisions.md",
-                "experiment_registry.md",
+                "docs/research/signal_latent_world_model_research_plan.md",
+                "docs/research/research_impl_eval_docs.md",
+                "docs/process/sprint_playbook_prompts.md",
+                "docs/exploration/exploration.md",
+                "docs/research/design_decisions.md",
+                "docs/experiments/experiment_registry.md",
             ],
         },
         "config": {
@@ -202,15 +202,15 @@ def make_i1_baseline_registry_entry(
             "working_tree_state": working_tree_state,
             "code_diff_ref": None,
             "docs_read": [
-                "signal_latent_world_model_research_plan.md",
-                "research_impl_eval_docs.md",
-                "sprint_playbook_prompts.md",
-                "exploration.md",
+                "docs/research/signal_latent_world_model_research_plan.md",
+                "docs/research/research_impl_eval_docs.md",
+                "docs/process/sprint_playbook_prompts.md",
+                "docs/exploration/exploration.md",
                 "AGENTS.md",
                 "README.md",
-                "hypotheses.md",
-                "design_decisions.md",
-                "experiment_registry.md",
+                "docs/research/hypotheses.md",
+                "docs/research/design_decisions.md",
+                "docs/experiments/experiment_registry.md",
                 "docs/model_spec.md",
                 "docs/data_contract.md",
             ],
@@ -371,10 +371,10 @@ def make_t0_synthetic_registry_entry(
             "working_tree_state": working_tree_state,
             "code_diff_ref": None,
             "docs_read": [
-                "signal_latent_world_model_research_plan.md",
-                "research_impl_eval_docs.md",
-                "sprint_playbook_prompts.md",
-                "exploration.md",
+                "docs/research/signal_latent_world_model_research_plan.md",
+                "docs/research/research_impl_eval_docs.md",
+                "docs/process/sprint_playbook_prompts.md",
+                "docs/exploration/exploration.md",
                 "AGENTS.md",
                 "docs/model_spec.md",
                 "docs/data_contract.md",
@@ -557,17 +557,17 @@ def make_t1_text_registry_entry(
             "working_tree_state": working_tree_state,
             "code_diff_ref": None,
             "docs_read": [
-                "signal_latent_world_model_research_plan.md",
-                "research_impl_eval_docs.md",
-                "sprint_playbook_prompts.md",
-                "exploration.md",
+                "docs/research/signal_latent_world_model_research_plan.md",
+                "docs/research/research_impl_eval_docs.md",
+                "docs/process/sprint_playbook_prompts.md",
+                "docs/exploration/exploration.md",
                 "AGENTS.md",
-                "hypotheses.md",
-                "design_decisions.md",
-                "experiment_registry.md",
+                "docs/research/hypotheses.md",
+                "docs/research/design_decisions.md",
+                "docs/experiments/experiment_registry.md",
                 "docs/model_spec.md",
                 "docs/data_contract.md",
-                "docs/t1_text_code_training.md",
+                "docs/training/t1_text_code_training.md",
             ],
         },
         "config": {
@@ -680,6 +680,201 @@ def make_t1_text_registry_entry(
             ),
             "next_allowed_step": str(metrics.get("next_allowed_step", "Compare registered T1 runs on the same tokenizer/split before changing G-R0-1 state.")),
             "claim_language_allowed": str(metrics.get("claim_language_allowed", "Only text/code validation loss, perplexity, throughput, memory, and sample-generation settings may be reported.")),
+        },
+    }
+
+
+def make_t2_audio_visual_registry_entry(
+    *,
+    experiment_id: str,
+    config_path: str,
+    config: Mapping[str, Any],
+    metrics: Mapping[str, Any],
+    model_name: str,
+    model_variant: str,
+    parameter_count: int,
+    module_parameter_counts: Mapping[str, int],
+    training_steps: int,
+    train_samples: int,
+    checkpoint_path: str | None,
+    git_commit: str | None = None,
+    working_tree_state: str = "dirty",
+) -> dict[str, Any]:
+    """Create a completed Sprint T2 audio/visual latent registry entry.
+
+    The entry records latent-prediction, reconstruction, audio/video
+    correspondence, and shuffled/null-control metrics only.  It does not support
+    text/code, hallucination, policy, or raw waveform/video generation claims.
+    """
+
+    today = date.today().isoformat()
+    cfg = dict(config)
+    cfg_hash = config_hash(cfg)
+    runtime = cfg.get("runtime", {}) if isinstance(cfg.get("runtime", {}), Mapping) else {}
+    model_cfg = cfg.get("model", {}) if isinstance(cfg.get("model", {}), Mapping) else {}
+    data_cfg = cfg.get("data", {}) if isinstance(cfg.get("data", {}), Mapping) else {}
+    train_cfg = cfg.get("training", {}) if isinstance(cfg.get("training", {}), Mapping) else {}
+    dataset_card = metrics.get("prepared_dataset_card", {}) if isinstance(metrics.get("prepared_dataset_card", {}), Mapping) else {}
+    feature_spec = dataset_card.get("feature_spec", {}) if isinstance(dataset_card.get("feature_spec", {}), Mapping) else {}
+    validation = metrics.get("validation", {}) if isinstance(metrics.get("validation", {}), Mapping) else {}
+    gate = metrics.get("success_gate", {}) if isinstance(metrics.get("success_gate", {}), Mapping) else {}
+    prediction_loss_decreased = bool(gate.get("prediction_loss_decreased", False))
+    no_nan_or_inf = not bool(metrics.get("nan_or_inf", False))
+
+    return {
+        "experiment_id": experiment_id,
+        "status": "completed" if no_nan_or_inf else "failed",
+        "created_at": today,
+        "updated_at": today,
+        "sprint": {"id": "T2", "name": "Audio/visual latent training", "owner_role": "training"},
+        "claim_trace": {
+            "hypothesis_ids": ["H-R0-1", "H-R0-2", "H-R0-3"],
+            "guardrail_ids": ["T2-audio-visual-latents-only", "T2-shuffled-null-controls", "DD-R1-020"],
+            "research_questions": ["RQ1", "RQ2", "RQ3"],
+            "expected_decision": "partial_support_or_untested_until_full_baselines",
+        },
+        "repository": {
+            "git_commit": git_commit,
+            "working_tree_state": working_tree_state,
+            "code_diff_ref": None,
+            "docs_read": [
+                "docs/research/signal_latent_world_model_research_plan.md",
+                "docs/research/research_impl_eval_docs.md",
+                "docs/process/sprint_playbook_prompts.md",
+                "docs/exploration/exploration.md",
+                "AGENTS.md",
+                "docs/research/hypotheses.md",
+                "docs/research/design_decisions.md",
+                "docs/experiments/experiment_registry.md",
+                "docs/model_spec.md",
+                "docs/data_contract.md",
+                "docs/training/preprocessing.md",
+            ],
+        },
+        "config": {
+            "config_path": config_path,
+            "config_hash": cfg_hash,
+            "seed": int(runtime.get("seed", model_cfg.get("seed", 0))),
+            "deterministic": bool(runtime.get("deterministic", True)),
+            "precision": str(runtime.get("precision", "fp32")),
+            "context_length": int(model_cfg.get("context_length", model_cfg.get("latent_length", 0))),
+            "latent_length": int(model_cfg.get("latent_length", model_cfg.get("context_length", 0))),
+            "latent_dim": int(model_cfg.get("latent_dim", model_cfg.get("n_embd", 0))),
+        },
+        "model": {
+            "name": model_name,
+            "variant": model_variant,
+            "parameter_accounting_mode": str(model_cfg.get("parameter_accounting_mode", "strict")),
+            "total_trainable_parameters": int(parameter_count),
+            "core_trainable_parameters": int(module_parameter_counts.get("processor", 0)),
+            "frozen_parameters": metrics.get("frozen_parameters", 0),
+            "module_parameter_counts": dict(module_parameter_counts),
+            "enabled_modalities": ["audio", "visual_video"],
+            "architecture_flags": model_cfg.get("architecture_flags", {}),
+        },
+        "ablation": cfg.get(
+            "ablation",
+            {
+                "is_ablation": False,
+                "ablation_of": None,
+                "changed_variable": None,
+                "held_constant": ["prepared_dataset", "split", "optimizer_family", "seed"],
+            },
+        ),
+        "data": {
+            "dataset_mix": data_cfg.get("dataset_mix", {"audio": 0.5, "visual_video": 0.5, "text_code": None}),
+            "datasets": metrics.get("registry_datasets", dataset_card.get("datasets", data_cfg.get("datasets", []))),
+            "preprocessing": {
+                "text_codec": None,
+                "audio_codec_or_features": feature_spec.get("audio_codec_or_features", data_cfg.get("audio_codec_or_features")),
+                "visual_codec_or_features": feature_spec.get("visual_codec_or_features", data_cfg.get("visual_codec_or_features")),
+                "sample_schema_version": dataset_card.get("sample_schema_version", data_cfg.get("sample_schema_version", "t2.audio_visual_latents_v0")),
+                "prepared_corpus_dir": data_cfg.get("prepared_corpus_dir"),
+                "prepared_manifest_sha256": dataset_card.get("manifest_sha256"),
+                "split_counts": dataset_card.get("split_counts"),
+            },
+        },
+        "training": {
+            "objective": train_cfg.get("objective", ["audio_visual_latent_prediction", "missing_span_reconstruction", "audio_video_contrastive_alignment"]),
+            "optimizer": train_cfg.get("optimizer", "adamw_torch"),
+            "learning_rate_schedule": train_cfg.get("learning_rate_schedule", "constant"),
+            "batch_size": train_cfg.get("batch_size", None),
+            "total_steps": int(training_steps),
+            "train_tokens_or_samples": int(train_samples),
+            "wall_clock_time": metrics.get("wall_clock_time_seconds"),
+            "hardware": metrics.get("hardware"),
+            "total_flops_estimate": None,
+            "checkpoint_path": checkpoint_path,
+            "save_config_with_checkpoint": checkpoint_path is not None,
+            "anomalies": {
+                "nan_or_inf": bool(metrics.get("nan_or_inf", False)),
+                "loss_explosion": bool(metrics.get("loss_explosion", False)),
+                "modality_collapse": bool(metrics.get("modality_collapse", False)),
+                "notes": str(metrics.get("anomaly_notes", "Sprint T2 latent-only run; no text generation or policy training.")),
+            },
+        },
+        "evaluation": {
+            "eval_script": "training/t2_train_latents.py",
+            "eval_script_hash": metrics.get("eval_script_hash", "sha256:uncomputed"),
+            "checkpoint_path": checkpoint_path,
+            "seeds": [int(runtime.get("seed", model_cfg.get("seed", 0)))],
+            "decoding_or_probe_settings": {"temperature": None, "top_p": None, "max_new_tokens": None, "diagnostic_only": True},
+            "metrics": {
+                "primary": {
+                    "name": "validation_total_loss",
+                    "value": validation.get("total_loss"),
+                    "higher_is_better": False,
+                    "confidence_interval": None,
+                },
+                "secondary": [
+                    {"name": "audio_latent_prediction_error", "value": validation.get("audio_mse"), "higher_is_better": False},
+                    {"name": "video_latent_prediction_error", "value": validation.get("visual_mse"), "higher_is_better": False},
+                    {"name": "audio_spectral_magnitude_error", "value": validation.get("audio_spectral_loss"), "higher_is_better": False},
+                    {"name": "retrieval_r1", "value": validation.get("retrieval_r1"), "higher_is_better": True},
+                    {"name": "retrieval_r5", "value": validation.get("retrieval_r5"), "higher_is_better": True},
+                    {"name": "audio_video_correspondence_accuracy", "value": validation.get("audio_video_correspondence_accuracy"), "higher_is_better": True},
+                    {"name": "shuffled_control_retrieval_r1", "value": validation.get("shuffled_retrieval_r1"), "higher_is_better": False},
+                    {"name": "null_audio_mse", "value": validation.get("null_audio_mse"), "higher_is_better": False},
+                    {"name": "null_visual_mse", "value": validation.get("null_visual_mse"), "higher_is_better": False},
+                    {"name": "random_audio_mse", "value": validation.get("random_audio_mse"), "higher_is_better": False},
+                    {"name": "random_visual_mse", "value": validation.get("random_visual_mse"), "higher_is_better": False},
+                    {"name": "prediction_loss_decreased", "value": prediction_loss_decreased, "higher_is_better": True},
+                ],
+                "required_bundles": {
+                    "hallucination_or_policy_claim": {
+                        "required_when_claiming_reduction": True,
+                        "unsupported_claim_rate": None,
+                        "contradiction_rate": None,
+                        "grounded_accuracy_or_usefulness": None,
+                        "abstention_or_noop_rate": None,
+                        "calibration_metric": None,
+                    }
+                },
+            },
+            "baselines_compared": metrics.get("baselines_compared", ["null_persistence", "random_latent", "shuffled_audio_video_pairs"]),
+            "controls": {"random_or_null": True, "shuffled_pairs": True, "fixed_router": False, "always_noop": False, "no_policy": True},
+        },
+        "interpretation": {
+            "result_summary": str(metrics.get("result_summary", "Sprint T2 audio/visual latent run completed.")),
+            "hypothesis_decision": str(metrics.get("hypothesis_decision", "partial_support" if prediction_loss_decreased else "untested")),
+            "failure_modes_observed": list(metrics.get("failure_modes_observed", [])),
+            "limitations": list(
+                metrics.get(
+                    "limitations",
+                    [
+                        "T2 latent-only training; no raw waveform/video generation.",
+                        "No text/code, hallucination, policy, or committed-output claim is supported.",
+                        "Frozen/precomputed feature provenance must be reported for external corpora.",
+                    ],
+                )
+            ),
+            "next_allowed_step": str(metrics.get("next_allowed_step", "Run matched T2 baselines/ablations before updating R0 hypothesis states.")),
+            "claim_language_allowed": str(
+                metrics.get(
+                    "claim_language_allowed",
+                    "Only registered T2 latent prediction, spectral proxy, retrieval/correspondence, shuffled/null control, throughput, and memory metrics may be reported.",
+                )
+            ),
         },
     }
 

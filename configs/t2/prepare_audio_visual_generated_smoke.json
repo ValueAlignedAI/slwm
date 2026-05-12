@@ -1,0 +1,50 @@
+{
+  "runtime": {
+    "seed": 2026,
+    "deterministic": true
+  },
+  "data": {
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "output_dir": "artifacts/t2_audio_visual/generated_av_smoke_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0",
+    "audio_codec_or_features": "project_generated_logmel_like_latents_smoke_only",
+    "visual_codec_or_features": "project_generated_patch_like_latents_smoke_only",
+    "audio_length": 8,
+    "visual_length": 8,
+    "max_audio_length": 8,
+    "max_visual_length": 8,
+    "dataset_mix": {
+      "text_code": null,
+      "audio": 0.5,
+      "visual_video": 0.5
+    },
+    "split_policy": {
+      "train": 0.7,
+      "validation": 0.2,
+      "test": 0.1,
+      "seed": 2026
+    },
+    "leakage_checks": "Generated smoke fixture uses deterministic stable split; external T2 corpora must record duplicate/media leakage checks separately.",
+    "source_notes": [
+      "Pipeline validation only; not dataset-quality evidence."
+    ],
+    "sources": [
+      {
+        "type": "generated_fixture",
+        "name": "project_generated_t2_av_smoke",
+        "dataset": "project_generated_t2_latent_fixture",
+        "license": "project-authored synthetic latent fixture; no external media",
+        "sample_count": 24,
+        "audio_length": 8,
+        "visual_length": 8,
+        "audio_feature_dim": 4,
+        "visual_feature_dim": 5,
+        "label_count": 4,
+        "seed": 2026
+      }
+    ]
+  }
+}

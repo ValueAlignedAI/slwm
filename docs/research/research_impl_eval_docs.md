@@ -1,6 +1,6 @@
 # research_impl_eval_docs.md
 
-# SLWM-124M Project Documentation Map
+# SLWM Project Documentation Map
 
 **Purpose:** define every document that a research, implementation, or evaluation agent should read or maintain for the **Signal-Latent World Model** project.
 
@@ -12,13 +12,13 @@ This file is a **navigation and responsibility map**. It does not replace the ma
 
 Every agent should read these first, in order:
 
-1. [`AGENTS.md`](./AGENTS.md)  
+1. [`AGENTS.md`](../../AGENTS.md)  
    Agent behavior, coding style, repository expectations, research constraints.
 
 2. [`signal_latent_world_model_research_plan.md`](./signal_latent_world_model_research_plan.md)  
    Main scientific specification: hypothesis, architecture, training, baselines, evaluations, and findings template.
 
-3. [`exploration.md`](./exploration.md)  
+3. [`exploration.md`](../exploration/exploration.md)  
    Diagnostic exploration of output heads, latent probes, cross-modal mappings, and the model's latent world view.
 
 4. `research_impl_eval_docs.md`  
@@ -32,30 +32,31 @@ After reading these, agents should follow the role-specific tracks below.
 
 | Document | Status | Owner | Purpose |
 |---|---:|---|---|
-| `AGENTS.md` | Exists | All agents | Operating instructions for implementation/research/eval agents. |
+| `../../AGENTS.md` | Exists | All agents | Operating instructions for implementation/research/eval agents. |
+| `../README.md` | Exists | All agents | Documentation index by workstream. |
 | `signal_latent_world_model_research_plan.md` | Exists | Research lead | Main scientific modelation and project plan. |
-| `exploration.md` | Exists | Research + eval | Explore output heads and latent world-view diagnostics. |
+| `../exploration/exploration.md` | Exists | Research + eval | Explore output heads and latent world-view diagnostics. |
 | `research_impl_eval_docs.md` | Exists | Documentation agent | Canonical doc map and reading list. |
 
 ---
 
-## 2. Documents to Create Next
+## 2. Organized Documentation Set
 
-These should become repository-level `.md` files. Keep each file focused. Do not let one document become the entire project.
+Keep each file focused. Do not let one document become the entire project.
 
 ### 2.1 Implementation Documents
 
 | Document | Priority | Purpose |
 |---|---:|---|
-| `architecture.md` | P0 | Concrete architecture: encoders, shared latent field, processor blocks, policy/commitment, heads. |
-| `model_spec.md` | P0 | Exact GPT-2-scale model configs, tensor shapes, parameter budget, block definitions. |
-| `data_contract.md` | P0 | Defines the unified signal sample format: text/code, audio, image/video, masks, timestamps, modality IDs, uncertainty channels. |
-| `preprocessing.md` | P0 | How each modality becomes compressed/encoded latent signals. Includes audio/video/text/code pipelines. |
+| `../architecture/architecture.md` | P0 | Concrete architecture: encoders, shared latent field, processor blocks, policy/commitment, heads. |
+| `../model_spec.md` | P0 | Exact GPT-2-scale model configs, tensor shapes, parameter budget, block definitions. |
+| `../data_contract.md` | P0 | Defines the unified signal sample format: text/code, audio, image/video, masks, timestamps, modality IDs, uncertainty channels. |
+| `../training/preprocessing.md` | P0 | How each modality becomes compressed/encoded latent signals. Includes audio/video/text/code pipelines. |
 | `training.md` | P0 | Losses, batch construction, curriculum, optimizer, checkpoints, mixed precision, distributed training. |
-| `inference.md` | P0 | No-grad inference modes: perception update, latent rollout, committed output, diagnostic probing. |
-| `policy_commitment.md` | P0 | Learned policy/arbiter that decides speak/act/wait/decode/no-op. Separates imagination from committed behavior. |
+| `../architecture/inference.md` | P0 | No-grad inference modes: perception update, latent rollout, committed output, diagnostic probing. |
+| `../architecture/policy_commitment.md` | P0 | Learned policy/arbiter that decides speak/act/wait/decode/no-op. Separates imagination from committed behavior. |
 | `memory.md` | P1 | Working memory, external episodic memory, retrieval into context, later adapter/continual-learning phases. |
-| `baselines.md` | P0 | GPT-2 decoder, vanilla multimodal transformer, FNet-like, Hyena-like, Mamba-like, ablated SLWM variants. |
+| `../evaluation/baselines.md` | P0 | GPT-2 decoder, vanilla multimodal transformer, FNet-like, Hyena-like, Mamba-like, ablated SLWM variants. |
 | `ablations.md` | P0 | Required ablations: no spectral mixer, no policy, no cross-modal loss, no uncertainty, no signal pretraining. |
 | `engineering.md` | P1 | Repo layout, config system, logging, determinism, experiment tracking, failure handling. |
 
@@ -66,7 +67,7 @@ These should become repository-level `.md` files. Keep each file focused. Do not
 | `hypotheses.md` | P0 | Testable claims and falsification criteria. |
 | `literature_map.md` | P0 | Summary of related work and why each paper matters. |
 | `research_questions.md` | P0 | Open questions: latent signal universality, policy selection, hallucination, transfer, memory. |
-| `experiment_registry.md` | P0 | Every experiment ID, config, dataset mix, seed, checkpoint, metric, and result link. |
+| `../experiments/experiment_registry.md` | P0 | Every experiment ID, config, dataset mix, seed, checkpoint, metric, and result link. |
 | `findings.md` | P0 | Running scientific findings, negative results, interpretation, and next decisions. |
 | `risks_and_assumptions.md` | P1 | Technical risks, naive assumptions, data risks, eval risks, safety risks. |
 | `phase_plan.md` | P0 | Phase 0 prototype → Phase 1 GPT-2-scale text/audio/visual → Phase 2 memory/action. |
@@ -92,32 +93,32 @@ These should become repository-level `.md` files. Keep each file focused. Do not
 
 Read in this order:
 
-1. `AGENTS.md`
+1. `../../AGENTS.md`
 2. `signal_latent_world_model_research_plan.md`
-3. `architecture.md`
-4. `model_spec.md`
-5. `data_contract.md`
-6. `preprocessing.md`
+3. `../architecture/architecture.md`
+4. `../model_spec.md`
+5. `../data_contract.md`
+6. `../training/preprocessing.md`
 7. `training.md`
-8. `inference.md`
-9. `policy_commitment.md`
-10. `baselines.md`
+8. `../architecture/inference.md`
+9. `../architecture/policy_commitment.md`
+10. `../evaluation/baselines.md`
 11. `engineering.md`
 
-Implementation agents should not change the research hypothesis or evaluation criteria casually. If implementation constraints force a design change, record it in `experiment_registry.md` and `findings.md`.
+Implementation agents should not change the research hypothesis or evaluation criteria casually. If implementation constraints force a design change, record it in `../experiments/experiment_registry.md` and `findings.md`.
 
 ### 3.2 Research Agent Track
 
 Read in this order:
 
 1. `signal_latent_world_model_research_plan.md`
-2. `exploration.md`
+2. `../exploration/exploration.md`
 3. `hypotheses.md`
 4. `literature_map.md`
 5. `research_questions.md`
 6. `phase_plan.md`
 7. `risks_and_assumptions.md`
-8. `experiment_registry.md`
+8. `../experiments/experiment_registry.md`
 9. `findings.md`
 10. All evaluation docs relevant to the current phase.
 
@@ -135,7 +136,7 @@ Read in this order:
 6. `multimodal_evals.md`
 7. `policy_evals.md`
 8. `exploration_evals.md`
-9. `baselines.md`
+9. `../evaluation/baselines.md`
 10. `eval_report_template.md`
 
 Evaluation agents must be stricter than implementation agents. Do not accept a model improvement unless the baseline, dataset split, random seeds, and decoding settings are documented.
@@ -144,7 +145,7 @@ Evaluation agents must be stricter than implementation agents. Do not accept a m
 
 ## 4. Required External Reading: Architecture and Modeling
 
-These sources define the architecture space SLWM-124M is exploring.
+These sources define the architecture space SLWM is exploring. `SLWM-124M` remains the GPT-2-small anchor for fair comparison; larger profiles are labeled scale studies.
 
 | Topic | Source | Why agents should read it |
 |---|---|---|
@@ -297,59 +298,55 @@ no-op: valid committed behavior
 
 ## 9. Minimal Repository Documentation Layout
 
-Recommended final layout:
+Current organized layout:
 
 ```text
 /
   AGENTS.md
   README.md
-  research_impl_eval_docs.md
 
 /docs
-  signal_latent_world_model_research_plan.md
-  architecture.md
+  README.md
   model_spec.md
   data_contract.md
-  preprocessing.md
-  training.md
-  inference.md
-  policy_commitment.md
-  memory.md
-  exploration.md
-  baselines.md
-  ablations.md
-  engineering.md
 
-/docs/research
-  hypotheses.md
-  literature_map.md
-  research_questions.md
-  risks_and_assumptions.md
-  phase_plan.md
-  experiment_registry.md
-  findings.md
+  /architecture
+    architecture.md
+    inference.md
+    policy_commitment.md
 
-/docs/evals
-  evals.md
-  text_code_evals.md
-  signal_evals.md
-  multimodal_evals.md
-  hallucination_evals.md
-  policy_evals.md
-  exploration_evals.md
-  eval_report_template.md
+  /evaluation
+    baselines.md
+
+  /experiments
+    experiment_registry.md
+
+  /exploration
+    exploration.md
+
+  /process
+    sprint_playbook_prompts.md
+
+  /research
+    signal_latent_world_model_research_plan.md
+    research_impl_eval_docs.md
+    hypotheses.md
+    literature_map.md
+    design_decisions.md
+    risks_and_assumptions.md
+
+  /training
+    preprocessing.md
 ```
 
 ---
 
 ## 10. Immediate Next Documentation Tasks
 
-1. Create `architecture.md` from the current research plan.
-2. Create `data_contract.md` before writing dataset loaders.
-3. Create `model_spec.md` before implementing model classes.
-4. Create `evals.md` before claiming any improvement.
-5. Create `experiment_registry.md` before running the first training job.
-6. Create `findings.md` and update it after every meaningful result, including failed runs.
+1. Keep `docs/README.md` updated when documentation moves.
+2. Create dedicated evaluation docs before claiming any improvement.
+3. Create `findings.md` and update it after every meaningful result, including failed runs.
+4. Keep `docs/experiments/experiment_registry.md` synchronized with generated registry artifacts.
 
 ---
 

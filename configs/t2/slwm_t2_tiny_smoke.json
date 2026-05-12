@@ -1,0 +1,81 @@
+{
+  "runtime": {
+    "seed": 2026,
+    "deterministic": true,
+    "device": "cpu",
+    "precision": "fp32"
+  },
+  "model": {
+    "name": "slwm-t2-tiny-audio-visual-smoke",
+    "variant": "slwm_audio_visual_latent",
+    "parameter_accounting_mode": "strict",
+    "context_length": 16,
+    "latent_length": 16,
+    "latent_dim": 16,
+    "n_layer": 1,
+    "n_head": 2,
+    "dropout": 0.0,
+    "audio_feature_dim": 4,
+    "visual_feature_dim": 5,
+    "architecture_flags": {
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "local_kernel_size": 3,
+      "spectral_kernel_size": 7,
+      "long_kernel_size": 7,
+      "mlp_ratio": 2,
+      "policy_commit_gate": false,
+      "noop_head": false,
+      "activation_checkpointing": false
+    }
+  },
+  "data": {
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "prepared_corpus_dir": "artifacts/t2_audio_visual/generated_av_smoke_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0",
+    "dataset_mix": {
+      "text_code": null,
+      "audio": 0.5,
+      "visual_video": 0.5
+    }
+  },
+  "training": {
+    "objective": [
+      "audio_latent_continuation_mse",
+      "visual_latent_continuation_mse",
+      "missing_span_reconstruction_mse",
+      "audio_video_contrastive_alignment"
+    ],
+    "optimizer": "adamw_torch",
+    "learning_rate_schedule": "constant",
+    "learning_rate": 0.01,
+    "weight_decay": 0.0,
+    "batch_size": 4,
+    "gradient_accumulation_steps": 1,
+    "steps": 6,
+    "validation_batches": 2,
+    "context_fraction": 0.5,
+    "missing_span_fraction": 0.125,
+    "grad_clip_norm": 1.0,
+    "loss_weights": {
+      "audio_prediction": 1.0,
+      "visual_prediction": 1.0,
+      "alignment": 0.1
+    }
+  },
+  "registry": {
+    "experiment_id": "EXP-T2-901",
+    "artifact_dir": "experiments/multimodal/t2/EXP-T2-901",
+    "path": "experiments/multimodal/t2/EXP-T2-901/registry.json",
+    "metrics_path": "experiments/multimodal/t2/EXP-T2-901/metrics.json",
+    "report_path": "experiments/multimodal/t2/EXP-T2-901/report.md",
+    "checkpoint_path": "experiments/multimodal/t2/EXP-T2-901/checkpoint.pt",
+    "config_copy_path": "experiments/multimodal/t2/EXP-T2-901/config.json"
+  }
+}

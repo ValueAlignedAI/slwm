@@ -1,4 +1,4 @@
-# SLWM-124M Model Spec — Sprint I0
+# SLWM Model Spec — Sprint I0
 
 **Sprint:** I0 — repository skeleton and contracts  
 **Status:** shape-contract specification only; no real architecture or training logic is implemented.  

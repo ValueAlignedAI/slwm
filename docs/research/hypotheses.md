@@ -1,7 +1,7 @@
-# SLWM-124M Sprint R0 — Hypotheses and Falsification
+# SLWM Sprint R0 — Hypotheses and Falsification
 
 **Sprint:** R0 — Hypotheses and falsification  
-**Primary artifact:** `hypotheses.md`  
+**Primary artifact:** `docs/research/hypotheses.md`  
 **Gate:** claims are measurable before implementation, training, or evaluation claims are accepted.  
 **Status:** pre-experiment research specification; no results are claimed here.
 
@@ -9,17 +9,17 @@
 
 ## 0. Source and Scope Notes
 
-This document converts the SLWM-124M project vision into falsifiable, GPT-2-scale research claims.
+This document converts the SLWM project vision into falsifiable research claims. `SLWM-124M` remains the GPT-2-scale anchor; larger profiles require explicit parameter, data, and compute labeling.
 
 Read context:
 
-- `signal_latent_world_model_research_plan.md` — canonical scientific/modelation plan available in this repository.
-- `research_impl_eval_docs.md` — project documentation map and required reference/evaluation areas.
-- `sprint_playbook_prompts.md` — sprint R0 scope, KPIs, and success gate.
-- `exploration.md` — diagnostic probe and latent-worldview exploration protocol.
+- `docs/research/signal_latent_world_model_research_plan.md` — canonical scientific/modelation plan available in this repository.
+- `docs/research/research_impl_eval_docs.md` — project documentation map and required reference/evaluation areas.
+- `docs/process/sprint_playbook_prompts.md` — sprint R0 scope, KPIs, and success gate.
+- `docs/exploration/exploration.md` — diagnostic probe and latent-worldview exploration protocol.
 - `AGENTS.md` — architecture, modality, evaluation, ablation, and reporting constraints.
 
-Repository note: at initial R0 drafting, the canonical research-plan file was reported missing and a similarly named modelation file was used as the effective source. The current repository contains `signal_latent_world_model_research_plan.md`; it is now treated as the canonical main research plan.
+Repository note: at initial R0 drafting, the canonical research-plan file was reported missing and a similarly named modelation file was used as the effective source. The current repository contains `docs/research/signal_latent_world_model_research_plan.md`; it is now treated as the canonical main research plan.
 
 Current-phase scope:
 
@@ -43,7 +43,7 @@ Every hypothesis below must be answerable after registered experiments as one of
 
 General evidence rules:
 
-1. Results require an `experiment_registry.md` entry with config, dataset split, seed, parameter count, compute/data budget, checkpoint, eval script, and metrics.
+1. Results require a `docs/experiments/experiment_registry.md` entry with config, dataset split, seed, parameter count, compute/data budget, checkpoint, eval script, and metrics.
 2. Comparisons must state whether they use strict parameter accounting or core-only parameter accounting.
 3. Runs with different data/compute budgets may be reported only as approximate comparisons.
 4. Hallucination or unsupported-output improvements must report unsupported claim rate, contradiction rate, abstention/no-op rate, grounded accuracy/usefulness, and calibration.
@@ -74,7 +74,7 @@ SLWM-124M variants trained with future/hidden **latent signal prediction** will 
 
 - Research plan: RQ2, H1, H3.
 - `AGENTS.md`: signal/audio/visual evaluation requirements; required ablations for no latent prediction and reconstruction only.
-- `sprint_playbook_prompts.md`: R0 scope item 1 and T0/T2/T3 gates.
+- `docs/process/sprint_playbook_prompts.md`: R0 scope item 1 and T0/T2/T3 gates.
 
 ### Metrics
 
@@ -154,7 +154,7 @@ A **shared latent signal core** will improve cross-modal grounding and transfer 
 
 - Research plan: RQ1, RQ5, H4.
 - `AGENTS.md`: required modality support, multimodal grounding evaluation requirements, no-shared-core/separate-core ablations.
-- `sprint_playbook_prompts.md`: R0 scope item 2 and multimodal grounding gates.
+- `docs/process/sprint_playbook_prompts.md`: R0 scope item 2 and multimodal grounding gates.
 
 ### Metrics
 
@@ -233,7 +233,7 @@ Combining local temporal processing, spectral mixing, and long-range convolution
 
 - Research plan: RQ3, H1, processor-core sections, ablation plan.
 - `AGENTS.md`: required `SpectralMixer`, `LongConv` or `SSMBlock`, and required ablations.
-- `sprint_playbook_prompts.md`: R0 scope item 3 and T0 synthetic signal gate.
+- `docs/process/sprint_playbook_prompts.md`: R0 scope item 3 and T0 synthetic signal gate.
 
 ### Metrics
 
@@ -312,7 +312,7 @@ A learned policy/commitment gate with uncertainty and no-op/wait options will re
 
 - Research plan: RQ4, RQ5, H5.
 - `AGENTS.md`: policy-selected output heads, hallucination/unsupported-output evaluation requirements, no-policy/no-no-op/no-uncertainty ablations.
-- `sprint_playbook_prompts.md`: R0 scope item 4, E2 gate, policy/no-op gates.
+- `docs/process/sprint_playbook_prompts.md`: R0 scope item 4, E2 gate, policy/no-op gates.
 
 ### Metrics
 
@@ -397,10 +397,10 @@ Diagnostic probes can reveal cross-modal latent structure and failure modes beyo
 
 ### Source mapping
 
-- `exploration.md`: diagnostic modes, controls, logging, and failure modes.
+- `docs/exploration/exploration.md`: diagnostic modes, controls, logging, and failure modes.
 - Research plan: exploration and latent probe success criteria.
 - `AGENTS.md`: diagnostic decoders are inspection tools, not proof of internal understanding.
-- `sprint_playbook_prompts.md`: R0 scope item 5 and X0/X1 gates.
+- `docs/process/sprint_playbook_prompts.md`: R0 scope item 5 and X0/X1 gates.
 
 ### Metrics
 
@@ -419,7 +419,7 @@ Required tagging metric:
 
 ### Dataset / evaluation family
 
-Minimum diagnostic paths from `exploration.md`:
+Minimum diagnostic paths from `docs/exploration/exploration.md`:
 
 - Video → latent → text.
 - Audio → latent → text.
@@ -481,7 +481,7 @@ SLWM-124M does not need to beat GPT-2-small on pure text/code in early phases, b
 
 - Research plan: H2 and success criteria.
 - `AGENTS.md`: required text/code evaluations.
-- `sprint_playbook_prompts.md`: T1 text/code gate.
+- `docs/process/sprint_playbook_prompts.md`: T1 text/code gate.
 
 ### Metrics
 
@@ -563,4 +563,4 @@ The R0 hypothesis set is acceptable only if each item is true:
 
 All hypotheses are currently `untested`.
 
-No implementation, training, evaluation, or exploration evidence has been registered in this document. Future findings must cite experiment IDs from `experiment_registry.md` before any hypothesis status changes.
+No implementation, training, evaluation, or exploration evidence has been registered in this document. Future findings must cite experiment IDs from `docs/experiments/experiment_registry.md` before any hypothesis status changes.

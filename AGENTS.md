@@ -1,14 +1,14 @@
-# AGENTS.md — SLWM-124M Research Project
+# AGENTS.md — SLWM Research Project
 
 ## 0. Mission
 
-Build and evaluate **SLWM-124M**, a GPT-2-scale **Signal-Latent World Model** that learns from multimodal signals rather than treating tokens as the core substrate.
+Build and evaluate **Signal-Latent World Models (SLWM)** that learn from multimodal signals rather than treating tokens as the core substrate. `SLWM-124M` remains the GPT-2-small-scale anchor, and larger scale profiles such as 700M+ fit-checks are allowed only when their accounting mode, data budget, and claim limits are explicit.
 
 The model receives compressed or encoded **text/code, audio, and visual/video signals**, maps them into a fixed-length shared latent signal field, processes that field into an updated latent world field, and decodes only through specialized heads selected by a learned policy/commitment mechanism.
 
 Primary research question:
 
-> Can a GPT-2-size latent signal world model learn reusable, grounded, multimodal representations that improve signal prediction, cross-modal transfer, and unsupported-output control compared with token-only or vanilla multimodal baselines?
+> Can latent signal world models learn reusable, grounded, multimodal representations that improve signal prediction, cross-modal transfer, and unsupported-output control compared with token-only or vanilla multimodal baselines at matched data, compute, and parameter-accounting budgets?
 
 ---
 
@@ -16,10 +16,10 @@ Primary research question:
 
 Before implementing or evaluating, agents must read these docs in order:
 
-1. `signal_latent_world_model_research_plan.md` — scientific modelation and research definition.
-2. `research_impl_eval_docs.md` — document map and required references.
-3. `sprint_playbook_prompts.md` — sprint boundaries, KPIs, agent prompts, success gates.
-4. `exploration.md` — diagnostic output-head and latent-worldview exploration plan.
+1. `docs/research/signal_latent_world_model_research_plan.md` — scientific modelation and research definition.
+2. `docs/research/research_impl_eval_docs.md` — document map and required references.
+3. `docs/process/sprint_playbook_prompts.md` — sprint boundaries, KPIs, agent prompts, success gates.
+4. `docs/exploration/exploration.md` — diagnostic output-head and latent-worldview exploration plan.
 5. `AGENTS.md` — operational constraints for agents working in the repo.
 
 Do not invent new project direction before checking these documents.
@@ -122,12 +122,14 @@ Z_processed → text/audio/visual/action/no-op/internal-only behavior
 
 ## 4. Model Scale Contract
 
-Target scale:
+Scale targets:
 
 ```yaml
-name: SLWM-124M
+anchor_name: SLWM-124M
 reference_baseline: GPT-2 small
-approx_params: 124M
+anchor_approx_params: 124M
+larger_profiles:
+  - 700M+ fit-check / large-run candidate
 initial_context_length: 1024
 minimum_modalities:
   - english_text_and_code
@@ -140,7 +142,7 @@ Maintain two parameter accounting modes:
 1. **Strict comparison**: adapters + processor + policy + heads ≈ 124M.
 2. **Core comparison**: processor ≈ 124M, adapters/decoders counted separately.
 
-Every experiment must report which accounting mode was used.
+Every experiment must report which accounting mode was used. Larger runs must not be compared against 124M or GPT-2-small baselines without clear labels for parameter, data, and compute differences.
 
 ---
 
@@ -186,7 +188,7 @@ Do not begin optional modalities until the required modality gates are complete.
 
 ## 7. Training Stages
 
-Follow `sprint_playbook_prompts.md`. Do not merge stages unless explicitly authorized.
+Follow `docs/process/sprint_playbook_prompts.md`. Do not merge stages unless explicitly authorized.
 
 ### Stage 1 — Infrastructure and baselines
 
@@ -539,7 +541,7 @@ Do not:
 
 ## 15. Current Success Criteria
 
-The project is promising if SLWM-124M shows:
+The project is promising if SLWM variants show:
 
 1. clear advantage over GPT-2-style baselines on periodic/audio/visual signal prediction,
 2. competitive but not necessarily superior text/code performance,
@@ -553,11 +555,15 @@ The project is not successful if improvements only appear in demos, require unfa
 
 ## 16. Version Control Branches
 
-research
-implementation
-training
-evaluation
-exploration
-integration
+Use focused feature branches by workstream, for example:
 
-Use one branch per sprint. Merge completed sprint work through a PR into integration
+```text
+research/<topic>
+implementation/<topic>
+training/<topic>
+evaluation/<topic>
+exploration/<topic>
+integration/<topic>
+```
+
+Merge completed, reviewed work through a pull request. `main` is the accepted project trunk; integration branches may be used for larger multi-sprint staging before promotion to `main`.

@@ -1,4 +1,4 @@
-# SLWM-124M Sprint T1 — Text/Code Baseline Training
+# SLWM Sprint T1 — Text/Code Baseline Training
 
 **Sprint:** T1 — Text/code baseline training  
 **Owner role:** Training  
@@ -9,7 +9,7 @@
 
 | ID / source | Requirement | T1 handling |
 |---|---|---|
-| T1 / `sprint_playbook_prompts.md` | Train/evaluate GPT-2-style decoder, SLWM text-only, and no-spectral SLWM text ablation. | Configs: `configs/t1/gpt2_text_tiny_pilot.json`, `configs/t1/slwm_text_tiny_pilot.json`, `configs/t1/slwm_text_no_spectral_tiny_pilot.json`. |
+| T1 / `docs/process/sprint_playbook_prompts.md` | Train/evaluate GPT-2-style decoder, SLWM text-only, and no-spectral SLWM text ablation. | Configs: `configs/t1/gpt2_text_tiny_pilot.json`, `configs/t1/slwm_text_tiny_pilot.json`, `configs/t1/slwm_text_no_spectral_tiny_pilot.json`. |
 | T1 KPI | Report validation loss/perplexity, sample generations, throughput, memory, decoding settings. | `training/t1_text_baseline.py` writes metrics, samples, report, checkpoint, registry. |
 | G-R0-1 | Quantify text/code tradeoff vs GPT-2; register tolerance before comparing. | Tiny configs register `guardrail_tolerance_percent=20.0`; full plan keeps suggested 15–25% range. |
 | DD-R1-001 | GPT-2 baseline before text/code claims. | `EXP-T1-001` is the required baseline anchor. |

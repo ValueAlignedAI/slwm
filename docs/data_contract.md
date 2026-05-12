@@ -1,4 +1,4 @@
-# SLWM-124M Data Contract — Sprint I0
+# SLWM Data Contract — Sprint I0
 
 **Sprint:** I0 — repository skeleton and contracts  
 **Status:** schema and validation helpers only; no dataset loading or preprocessing.
