@@ -1,0 +1,452 @@
+{
+  "active_stage": "high_volume",
+  "storage": {
+    "plan_id": "t1_t2_high_volume_v0",
+    "data_root": "/data/projects/slwm",
+    "max_total_bytes": 18000000000000,
+    "dry_run": true,
+    "allow_network": false,
+    "bootstrap_directories": true,
+    "notes": "Default is a safe dry-run planner. Set --no-dry-run, --confirm-download, allow_network=true, and per-source accepted_terms only after credentials and license/ToS review."
+  },
+  "quality_checks": {
+    "split_policy": "split before tokenization/feature extraction using stable source ids and saved hashes",
+    "t1_required": [
+      "license/source manifest",
+      "exact and near duplicate report",
+      "PII/secrets filter report",
+      "eval contamination checks for LAMBADA/HumanEval/MBPP-style heldouts",
+      "token length/domain/code language entropy summaries"
+    ],
+    "t2_required": [
+      "media availability/dead-link report",
+      "clip checksum or source-id manifest",
+      "feature extractor version/hash",
+      "audio class and visual/action class balance summaries",
+      "audio-video pair shuffle-control manifest"
+    ]
+  },
+  "t1": {
+    "enabled": true,
+    "modalities": [
+      "text_code"
+    ],
+    "target_tokens": {
+      "smoke": 10000000,
+      "pilot": 1000000000,
+      "quality": 10000000000,
+      "high_volume": 100000000000
+    },
+    "dataset_mix": {
+      "text_english": 0.7,
+      "code": 0.15,
+      "markdown_docs": 0.1,
+      "math_structured_text": 0.05,
+      "audio": null,
+      "visual_video": null
+    },
+    "sources": [
+      {
+        "name": "project_authored_t1_smoke_text_code",
+        "dataset": "project_fixture_text_code",
+        "source_url": null,
+        "version_or_snapshot": "repo-local smoke records generated at acquisition time",
+        "stage": "smoke",
+        "modality": "text_code",
+        "category": "text_english",
+        "estimated_bytes": 100000000,
+        "download_kind": "local_fixture",
+        "requires_auth": false,
+        "requires_terms": false,
+        "accepted_terms": true,
+        "required_tools": [],
+        "license_notes": "Project-authored text/code fixture for schema and dry-run validation only; not model-quality evidence.",
+        "notes": "Smoke source validates /data layout before external corpora."
+      },
+      {
+        "name": "fineweb_edu_sample_10bt",
+        "dataset": "HuggingFaceFW/fineweb-edu",
+        "source_url": "https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu",
+        "version_or_snapshot": "sample-10BT pinned by HF revision at acquisition time",
+        "stage": "quality",
+        "modality": "text_code",
+        "category": "text_english",
+        "estimated_bytes": 350000000000,
+        "download_kind": "hf_dataset_streaming",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "huggingface_hub",
+          "datasets",
+          "zstd"
+        ],
+        "license_notes": "FineWeb-Edu is ODC-BY with Common Crawl/source-web caveats; record exact HF revision and filtering/decontamination before evidence-bearing runs.",
+        "notes": "Primary high-quality English text source; start here before broad FineWeb shards."
+      },
+      {
+        "name": "fineweb_edu_sample_100bt",
+        "dataset": "HuggingFaceFW/fineweb-edu",
+        "source_url": "https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu",
+        "version_or_snapshot": "sample-100BT pinned by HF revision at acquisition time",
+        "stage": "high_volume",
+        "modality": "text_code",
+        "category": "text_english",
+        "estimated_bytes": 3200000000000,
+        "download_kind": "hf_dataset_streaming",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "huggingface_hub",
+          "datasets",
+          "zstd"
+        ],
+        "license_notes": "FineWeb-Edu ODC-BY/Common Crawl terms; high-volume use requires pinned snapshot, quality filters, and decontamination report.",
+        "notes": "High-volume text target once sample-10BT pipeline passes."
+      },
+      {
+        "name": "openwebtext_reference_subset",
+        "dataset": "Skylion007/openwebtext",
+        "source_url": "https://huggingface.co/datasets/Skylion007/openwebtext",
+        "version_or_snapshot": "HF snapshot pinned at acquisition time",
+        "stage": "pilot",
+        "modality": "text_code",
+        "category": "text_english",
+        "estimated_bytes": 60000000000,
+        "download_kind": "hf_dataset",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "huggingface_hub",
+          "datasets"
+        ],
+        "license_notes": "Packaged as open web text with takedown/source-web caveats; useful GPT-2 comparison reference, not sole source.",
+        "notes": "Use as comparability anchor and validation of GPT-2-style preprocessing."
+      },
+      {
+        "name": "starcoderdata_python_edu_quality_fallback",
+        "dataset": "jon-tow/starcoderdata-python-edu",
+        "source_url": "https://huggingface.co/datasets/jon-tow/starcoderdata-python-edu",
+        "version_or_snapshot": "HF snapshot pinned at acquisition time",
+        "stage": "quality",
+        "modality": "text_code",
+        "category": "code",
+        "estimated_bytes": 50000000000,
+        "download_kind": "hf_dataset_streaming",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "huggingface_hub",
+          "datasets",
+          "secret-scanner"
+        ],
+        "license_notes": "Accessible Python-only StarCoder-derived fallback for the ~1TB quality stage; still requires source/license metadata, generated/vendor filtering, secrets scanning, and HumanEval/MBPP decontamination before claims.",
+        "notes": "Keeps code represented in the quality-stage T1 mix while preferred authenticated BigCode permissive subsets are still gated."
+      },
+      {
+        "name": "starcoderdata_permissive_code_subset",
+        "dataset": "bigcode/starcoderdata",
+        "source_url": "https://huggingface.co/datasets/bigcode/starcoderdata",
+        "version_or_snapshot": "HF gated snapshot pinned after access approval",
+        "stage": "high_volume",
+        "modality": "text_code",
+        "category": "code",
+        "estimated_bytes": 900000000000,
+        "download_kind": "hf_dataset_gated",
+        "requires_auth": true,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "auth_hint": "Hugging Face token with accepted BigCode dataset terms",
+        "required_tools": [
+          "huggingface_hub",
+          "datasets",
+          "secret-scanner"
+        ],
+        "license_notes": "Use only license-aware/permissive subsets; run generated/vendor/secret filters and HumanEval/MBPP decontamination before claims.",
+        "notes": "Preferred code source if BigCode terms and filters are in place."
+      },
+      {
+        "name": "the_stack_v2_language_subsets",
+        "dataset": "bigcode/the-stack-v2",
+        "source_url": "https://huggingface.co/datasets/bigcode/the-stack-v2",
+        "version_or_snapshot": "Stack v2 train-smol/language subset snapshot pinned after access approval",
+        "stage": "high_volume",
+        "modality": "text_code",
+        "category": "code",
+        "estimated_bytes": 5000000000000,
+        "download_kind": "hf_or_software_heritage_gated",
+        "requires_auth": true,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "auth_hint": "HF token and/or Software Heritage/INRIA agreement plus AWS credentials for bulk content",
+        "required_tools": [
+          "huggingface_hub",
+          "datasets",
+          "awscli",
+          "secret-scanner"
+        ],
+        "license_notes": "Full Stack v2 content exceeds local 20TB if mirrored broadly; use approved language/license subsets and record SWHIDs/license metadata.",
+        "notes": "High-entropy code option; do not mirror full 30TB+ content on this workstation."
+      },
+      {
+        "name": "openwebmath_structured_text",
+        "dataset": "open-web-math/open-web-math",
+        "source_url": "https://huggingface.co/datasets/open-web-math/open-web-math",
+        "version_or_snapshot": "HF snapshot pinned at acquisition time",
+        "stage": "quality",
+        "modality": "text_code",
+        "category": "math_structured_text",
+        "estimated_bytes": 100000000000,
+        "download_kind": "hf_dataset_streaming",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "huggingface_hub",
+          "datasets"
+        ],
+        "license_notes": "Web math/structured text; record source terms and contamination checks for math/text evals.",
+        "notes": "Supports the 5% math/structured text mixture."
+      }
+    ]
+  },
+  "t2": {
+    "enabled": true,
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "dataset_mix": {
+      "text_code": null,
+      "audio": 0.5,
+      "visual_video": 0.5
+    },
+    "feature_plan": {
+      "audio_first_pass": "16kHz mono 80-bin log-mel, fixed window/hop, stored fp16/fp32 with masks",
+      "visual_first_pass": "fixed-FPS frame/tube latents from frozen ViT/DINO/VideoMAE-style extractor, stored fp16/fp32 with masks",
+      "paired_av": "same clip start/end for audio and visual; split before extraction; shuffled negatives drawn within validation split"
+    },
+    "sources": [
+      {
+        "name": "project_generated_t2_av_smoke_latents",
+        "dataset": "project_fixture_audio_visual_latents",
+        "source_url": null,
+        "version_or_snapshot": "repo-local deterministic latent fixture generated at acquisition time",
+        "stage": "smoke",
+        "modality": "audio_visual_pair",
+        "category": "audio_video_correspondence",
+        "estimated_bytes": 100000000,
+        "download_kind": "local_fixture",
+        "requires_auth": false,
+        "requires_terms": false,
+        "accepted_terms": true,
+        "required_tools": [],
+        "caption_use": "none",
+        "license_notes": "Project-authored synthetic latent fixture for pipeline validation only; not audio/video quality evidence.",
+        "notes": "Smoke source validates T2 /data layout before external media acquisition."
+      },
+      {
+        "name": "librispeech_all_audio_controls",
+        "dataset": "LibriSpeech",
+        "source_url": "https://www.openslr.org/12",
+        "version_or_snapshot": "OpenSLR 12 archives pinned by URL/checksum at acquisition time",
+        "stage": "pilot",
+        "modality": "audio",
+        "category": "speech_audio",
+        "estimated_bytes": 150000000000,
+        "download_kind": "openslr_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "wget_or_aria2c",
+          "ffmpeg"
+        ],
+        "license_notes": "LibriSpeech is CC BY 4.0; use transcripts only as metadata/alignment, not T2 text-generation targets.",
+        "notes": "Clean speech/audio latent continuation control."
+      },
+      {
+        "name": "fsd50k_full_audio_events",
+        "dataset": "FSD50K",
+        "source_url": "https://zenodo.org/records/4060432",
+        "version_or_snapshot": "Zenodo record/version pinned at acquisition time",
+        "stage": "quality",
+        "modality": "audio",
+        "category": "audio_events",
+        "estimated_bytes": 30000000000,
+        "download_kind": "zenodo_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "wget_or_aria2c",
+          "ffmpeg"
+        ],
+        "license_notes": "FSD50K clips have mixed Creative Commons licenses; retain per-clip license and attribution metadata.",
+        "notes": "General audio event entropy and label balance source."
+      },
+      {
+        "name": "audioset_released_features",
+        "dataset": "AudioSet released embeddings/features",
+        "source_url": "https://research.google.com/audioset/download.html",
+        "version_or_snapshot": "metadata/features snapshot pinned at acquisition time",
+        "stage": "quality",
+        "modality": "audio",
+        "category": "audio_events",
+        "estimated_bytes": 5000000000,
+        "download_kind": "released_feature_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "curl_or_wget"
+        ],
+        "license_notes": "AudioSet dataset metadata/features are CC BY 4.0; ontology has separate CC BY-SA notes. Prefer features before raw YouTube downloads.",
+        "notes": "Large weak-label audio coverage without fragile raw-media acquisition."
+      },
+      {
+        "name": "coco_2017_visual_latents",
+        "dataset": "COCO 2017 images",
+        "source_url": "https://cocodataset.org/#download",
+        "version_or_snapshot": "2017 train/val archives pinned by checksum at acquisition time",
+        "stage": "quality",
+        "modality": "visual_video",
+        "category": "images",
+        "estimated_bytes": 80000000000,
+        "download_kind": "http_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "wget_or_aria2c"
+        ],
+        "caption_use": "metadata_only",
+        "license_notes": "COCO images/annotations have dataset-specific terms; captions are metadata only in T2 and must not become a text-generation objective.",
+        "notes": "Visual latent grounding/control source; text captions remain metadata."
+      },
+      {
+        "name": "vggsound_5k_available_clips_quality",
+        "dataset": "VGGSound 5k available-clips subset",
+        "source_url": "https://www.robots.ox.ac.uk/~vgg/data/vggsound/",
+        "version_or_snapshot": "CSV/manifest snapshot and 5k/500/500 available-clip split pinned at acquisition time",
+        "stage": "quality",
+        "modality": "audio_visual_pair",
+        "category": "audio_video_correspondence",
+        "estimated_bytes": 45000000000,
+        "download_kind": "youtube_manifest_available_clips_subset",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "yt-dlp",
+          "ffmpeg"
+        ],
+        "license_notes": "Dataset metadata is published by VGG; original video rights remain with owners. Record legal/ToS review, availability checks, dead clips, source ids, and clip-level split hashes before use.",
+        "notes": "Initial evidence-bearing paired audio-video subset so the ~1TB quality stage includes external audio, visual/video, and audio-video correspondence data."
+      },
+      {
+        "name": "vggsound_available_clips",
+        "dataset": "VGGSound",
+        "source_url": "https://www.robots.ox.ac.uk/~vgg/data/vggsound/",
+        "version_or_snapshot": "CSV/manifest snapshot and YouTube availability pinned at acquisition time",
+        "stage": "high_volume",
+        "modality": "audio_visual_pair",
+        "category": "audio_video_correspondence",
+        "estimated_bytes": 2455000000000,
+        "download_kind": "youtube_manifest_available_clips",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "yt-dlp",
+          "ffmpeg"
+        ],
+        "license_notes": "Dataset metadata is published by VGG; original video rights remain with owners. Record dead/unavailable clips and legal/ToS review before raw acquisition.",
+        "notes": "Primary paired audio-video correspondence source for T2 high-volume latent runs; estimate is incremental beyond the quality-stage 5k available-clips subset to avoid duplicate accounting."
+      },
+      {
+        "name": "common_voice_en_validated",
+        "dataset": "Mozilla Common Voice English",
+        "source_url": "https://commonvoice.mozilla.org/en/datasets",
+        "version_or_snapshot": "Common Voice version selected and pinned after terms review",
+        "stage": "high_volume",
+        "modality": "audio",
+        "category": "diverse_speech_audio",
+        "estimated_bytes": 600000000000,
+        "download_kind": "common_voice_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "wget_or_browser_download",
+          "ffmpeg"
+        ],
+        "license_notes": "Common Voice terms/version must be accepted and recorded; retain speaker/accent/client metadata where available.",
+        "notes": "Speech diversity source after LibriSpeech path works."
+      },
+      {
+        "name": "ucf101_visual_video_controls",
+        "dataset": "UCF101",
+        "source_url": "https://www.crcv.ucf.edu/data/UCF101.php",
+        "version_or_snapshot": "archive/checksum pinned at acquisition time",
+        "stage": "quality",
+        "modality": "visual_video",
+        "category": "action_video",
+        "estimated_bytes": 25000000000,
+        "download_kind": "http_archives",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "wget_or_aria2c",
+          "ffmpeg"
+        ],
+        "license_notes": "Verify UCF101 redistribution/use terms before mirroring; labels are metadata for T2 controls.",
+        "notes": "Compact video temporal latent control."
+      },
+      {
+        "name": "msrvtt_metadata_limited_video",
+        "dataset": "MSR-VTT",
+        "source_url": "https://www.microsoft.com/en-us/research/publication/msr-vtt-a-large-video-description-dataset-for-bridging-video-and-language/",
+        "version_or_snapshot": "terms-compliant subset pinned at acquisition time",
+        "stage": "quality",
+        "modality": "visual_video",
+        "category": "video_text_metadata",
+        "estimated_bytes": 100000000000,
+        "download_kind": "dataset_specific_manual",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "ffmpeg"
+        ],
+        "caption_use": "metadata_only",
+        "license_notes": "MSR-VTT captions/text must remain metadata in T2; verify dataset terms before use.",
+        "notes": "Optional video metadata source; do not train text generation in T2."
+      },
+      {
+        "name": "kinetics_mini_terms_compliant_subset",
+        "dataset": "Kinetics mini/subset",
+        "source_url": "https://deepmind.google/discover/blog/announcing-the-kinetics-human-action-video-dataset/",
+        "version_or_snapshot": "accessible subset pinned after terms/legal review",
+        "stage": "high_volume",
+        "modality": "visual_video",
+        "category": "action_video",
+        "estimated_bytes": 2000000000000,
+        "download_kind": "youtube_manifest_available_clips",
+        "requires_auth": false,
+        "requires_terms": true,
+        "accepted_terms": false,
+        "required_tools": [
+          "yt-dlp",
+          "ffmpeg"
+        ],
+        "license_notes": "Use only a terms-compliant accessible subset; YouTube availability and rights must be recorded.",
+        "notes": "High-volume visual/action entropy source after smaller T2 controls pass."
+      }
+    ]
+  }
+}

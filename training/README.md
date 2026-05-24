@@ -100,6 +100,29 @@ The full-stack path is still limited by the registered train-token budget; the c
 
 ## Running the GPT-2-BPE prepared-corpus path
 
+The current T1/T2 reproducible training commands are consolidated in
+`../docs/training/t1_t2_reproducible_training_runbook.md`. Use that runbook for
+the prepared 1B-token T1 corpus, external T2 control latents, VGGSound
+available-clips latents, and spin-off launcher commands.
+
+High-volume `/data` planning and directory bootstrap:
+
+```bash
+python -m training.t1_t2_high_volume_data \
+  --config configs/data/t1_t2_high_volume_data_plan.json \
+  --data-root /data/slwm \
+  --stage quality
+```
+
+The planner is dry-run by default and writes manifests/blockers only. It does not
+replace `training.t1_prepare_text_code`; after approved sources are actually
+available, T1 prepared corpora must still be tokenized, split, hashed, and
+registered before training claims.
+
+Use `--stage quality` for the current approximately 1 TB T1/T2 staging plan. Use
+`--stage high_volume` only for the full ~15.15 TB source ladder after free-space,
+scratch, and legal/terms blockers are cleared.
+
 ```bash
 python -m training.t1_prepare_text_code --config configs/t1/text_code_gpt2_bpe_larger_local_prepare.json
 python -m training.t1_torch_text --config configs/t1/gpt2_text_torch_124m_larger_local.json
@@ -170,7 +193,23 @@ Implemented controls and metrics:
 - audio-video retrieval R@1/R@5/R@10 and correspondence accuracy,
 - throughput, memory, registry, config copy, report, and optional checkpoint.
 
+For any run with `audio_video_contrastive_alignment` enabled, use a physical
+microbatch of at least `2`. Gradient accumulation improves optimizer effective
+batch size, but it does not provide in-batch negatives for retrieval/alignment
+metrics. The current RTX 3090 VGGSound configs use `batch_size=256` and
+`gradient_accumulation_steps=1` to keep in-batch negatives meaningful while using
+most of the 24GB GPU safely. If this profile OOMs on another card, roll back to
+`batch_size=192`, `128`, or `64` while keeping physical batch size at least `2`.
+
 ## Running the generated smoke fixture
+
+High-volume `/data` planning for external T2 audio/visual sources uses the same
+planner command shown in the T1 section. It bootstraps
+`/data/slwm/t2_signal_latents` and writes blockers for licenses, auth, tools,
+media availability, and feature extractor metadata. The quality stage includes a
+small VGGSound available-clips subset so the ~1 TB target contains paired
+audio-video data for correspondence controls. It does not download raw media or
+extract latents by default.
 
 ```bash
 python -m training.t2_prepare_latents --config configs/t2/prepare_audio_visual_generated_smoke.json

@@ -97,6 +97,52 @@ This fallback is recorded as `effective_type=byte_fallback` and `intended_tokeni
 
 ## 4. Runnable commands
 
+The current T1/T2 reproducible spin-off runbook is
+`docs/training/t1_t2_reproducible_training_runbook.md`. It records the prepared
+1B-token T1 corpus, matched 124M-scale T1 configs, T2 prepared latent corpora,
+and launcher commands.
+
+### High-volume `/data` acquisition plan
+
+The repository now includes a safety-first planner for the user-requested
+high-volume local data layout:
+
+```bash
+python -m training.t1_t2_high_volume_data \
+  --config configs/data/t1_t2_high_volume_data_plan.json \
+  --data-root /data/slwm \
+  --stage quality
+```
+
+This command writes small planning manifests under
+`/data/slwm/manifests/t1_t2_high_volume/<plan_id>/` and bootstraps the intended
+directory layout. The quality stage is the current approximately 1 TB staging
+target across T1 text/code and T2 audio/visual data. It does **not** download
+high-volume sources by default.
+Network acquisition remains blocked until the operator explicitly supplies
+credentials, accepts source-specific terms/licenses, verifies required tools,
+sets `storage.allow_network=true`, and runs with both `--no-dry-run` and
+`--confirm-download`. The current implementation is therefore a data-planning and
+gatekeeping artifact, not completed T1 training evidence. For the full 15.15 TB
+source ladder, rerun the same planner with `--stage high_volume` only after
+storage headroom and preprocessing scratch requirements are documented.
+
+T1 source priorities in that plan are:
+
+1. FineWeb-Edu sample-10BT then sample-100BT for high-quality English text;
+2. OpenWebText as a GPT-2-style comparison reference subset;
+3. an accessible Python-only StarCoder-derived fallback in the approximately
+   1 TB quality stage so code remains represented before gated BigCode access is
+   ready;
+4. StarCoderData or The Stack v2 language/license-filtered subsets only after
+   gated access, terms, license metadata, secrets filtering, and code benchmark
+   decontamination are recorded;
+5. OpenWebMath/structured text for the planned math/structured component.
+
+Before any T1 result from `/data` can update G-R0-1, the dataset card must record
+source snapshots, split hashes, duplicate/leakage reports, PII/secrets filtering,
+license notes, token counts, and the exact GPT-2 BPE tokenizer metadata.
+
 ### GPT-2-BPE prepared-corpus 124M limited benchmark
 
 ```bash

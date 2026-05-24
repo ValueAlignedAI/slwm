@@ -56,14 +56,90 @@ artifacts/t2_audio_visual/<corpus>/dataset_card.json
 
 The dataset card records split counts, feature specs, dataset/source notes, license notes, leakage checks, and a manifest SHA-256.
 
+## 3.1 High-volume `/data` acquisition plan
+
+The high-volume data planner shared with T1 is available at:
+
+```bash
+python -m training.t1_t2_high_volume_data \
+  --config configs/data/t1_t2_high_volume_data_plan.json \
+  --data-root /data/projects/slwm \
+  --stage high_volume
+```
+
+The planner creates small manifests and a directory layout under `/data/projects/slwm`:
+
+```text
+/data/projects/slwm/
+  manifests/t1_t2_high_volume/<plan_id>/
+  t1_text_code/
+  t2_signal_latents/
+    raw_cache/
+    manifests/
+    audio_latents/
+    visual_latents/
+    av_pair_index/
+    feature_extraction_logs/
+```
+
+It remains dry-run by default. High-volume media acquisition is blocked until
+dataset-specific terms, credentials, required tools, checksums, and legal/ToS
+decisions are recorded. This is intentional because T2 external sources include
+YouTube-derived corpora and mixed-license audio. The planner therefore satisfies
+only the acquisition-planning gate; it does **not** prove that external T2 data is
+downloaded, deduplicated, feature-extracted, or ready for model-quality claims.
+
+T2 source priorities in the current `/data` plan are:
+
+1. LibriSpeech and FSD50K for audio controls;
+2. AudioSet released features before raw YouTube acquisition;
+3. COCO/UCF101 for visual/video controls, with captions/labels as metadata only;
+4. VGGSound 5k available clips in the approximately 1 TB quality stage, then
+   larger VGGSound available clips as the high-volume audio-video correspondence
+   target after terms, legal/ToS review, and media availability are recorded;
+5. Common Voice EN and Kinetics/MSR-VTT subsets only after terms/tooling review.
+
+For T2, all caption/transcript text must remain metadata or alignment labels. It
+must not become a text generation objective in this sprint.
+
 ## 4. Recommended high-quality dataset plan
 
 ### Primary paired audio-video corpus: VGGSound subset
 
 - **Initial evidence-bearing local subset:** 5k train / 500 validation / 500 test clips after availability filtering.
 - **Larger local subset:** 20k train / 2k validation / 2k test clips if storage and download stability allow.
+- **Current `/data` quality-stage estimate:** about 45 GB for the initial
+  available-clips subset, bringing the quality-stage T1/T2 plan to roughly
+  1.0 TB before preprocessing overhead.
 - **Why:** directly supports audio-video correspondence and shuffled-pair controls.
 - **Caveats:** YouTube availability drift and source-media rights must be logged; dead/unavailable clips must be recorded in the manifest.
+
+### `/data` staging commands and storage headroom
+
+For the user-requested approximately 1 TB multimodal acquisition/preparation
+target, use the quality stage:
+
+```bash
+python -m training.t1_t2_high_volume_data \
+  --config configs/data/t1_t2_high_volume_data_plan.json \
+  --data-root /data/slwm \
+  --stage quality
+```
+
+The full high-volume dry-run remains available, but should be treated as a later
+capacity-gated step:
+
+```bash
+python -m training.t1_t2_high_volume_data \
+  --config configs/data/t1_t2_high_volume_data_plan.json \
+  --data-root /data/slwm \
+  --stage high_volume
+```
+
+Keep additional free space for decompression, retries, duplicate/leakage indexes,
+token arrays, feature extraction intermediates, and checkpoints. Do not start a
+stage if its raw estimate plus processing overhead would consume more than about
+80-85% of available `/data` space.
 
 ### Audio-only controls
 
@@ -76,7 +152,10 @@ The dataset card records split counts, feature specs, dataset/source notes, lice
 
 ### Deferred in T2
 
-- AudioSet full/unbalanced, Kinetics full, MSR-VTT, and COCO are documented future candidates. MSR-VTT/COCO are text-heavy and should not drive T2 because captions can leak into text-generation scope.
+- Raw AudioSet full/unbalanced media mirrors, Kinetics full, and any MSR-VTT/COCO
+  caption-driven text objectives remain deferred. AudioSet released features and
+  COCO images may be used as T2 controls only when labels/captions stay metadata
+  and do not become text-generation targets.
 
 ## 5. Feature extraction recommendations
 
@@ -91,6 +170,11 @@ T2 currently expects precomputed arrays. External feature extraction should be d
 Every external corpus must record feature extractor name/version, source split, sample count, clip duration policy, failed media count, and SHA-256 hashes.
 
 ## 6. Runnable commands
+
+The current end-to-end T1/T2 data-prep and training spin-off commands are in
+`docs/training/t1_t2_reproducible_training_runbook.md`. That runbook includes the
+prepared external T2 control corpus, the VGGSound available-clips corpus, and the
+claim limits for availability-biased natural-AV evaluation.
 
 ### Smoke latent corpus
 
@@ -131,9 +215,12 @@ T2 acceptance requires registered artifacts showing:
 
 1. audio and visual latent splits load;
 2. batch masks and modality IDs match the data contract;
-3. prediction loss decreases in a short run;
-4. shuffled-pair and null/random controls are logged;
-5. cross-modal alignment metrics are reported;
-6. configs and checkpoints are saved when not running a no-checkpoint smoke.
+3. physical microbatch size is at least `2` whenever audio-video contrastive
+   alignment is enabled, because gradient accumulation does not create in-batch
+   negatives;
+4. prediction loss decreases in a short run;
+5. shuffled-pair and null/random controls are logged;
+6. cross-modal alignment metrics are reported;
+7. configs and checkpoints are saved when not running a no-checkpoint smoke.
 
 Even if those pass, T2 supports only latent-prediction/correspondence mechanics and metrics. It does not support claims about text/code quality, hallucination reduction, policy behavior, or external-output grounding.

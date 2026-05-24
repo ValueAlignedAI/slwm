@@ -1,0 +1,35 @@
+{
+  "runtime": {
+    "seed": 20260521,
+    "deterministic": true
+  },
+  "data": {
+    "raw_root": "/data/slwm/raw",
+    "output_feature_root": "/data/slwm/t2_signal_latents/extracted_features/external_t2_control_v0",
+    "manifest_path": "/data/slwm/t2_signal_latents/manifests/external_t2_control_v0/manifest.jsonl",
+    "report_path": "/data/slwm/t2_signal_latents/manifests/external_t2_control_v0/extraction_report.json",
+    "max_samples": 1200,
+    "split_counts": {
+      "train": 1000,
+      "validation": 100,
+      "test": 100
+    },
+    "audio_archives": [
+      "t2_signal_latents/audio/librispeech_all_audio_controls/train-clean-100.tar.gz"
+    ],
+    "visual_archives": [
+      "t2_signal_latents/visual_video/coco_2017_visual_latents/train2017.zip"
+    ],
+    "feature_spec": {
+      "audio_codec_or_features": "frozen_log_mel_80bin_16khz_control",
+      "visual_codec_or_features": "deterministic_coco_grayscale_row_patch_latents_control",
+      "target_sample_rate": 16000,
+      "duration_seconds": 6.0,
+      "audio_feature_dim": 80,
+      "visual_feature_dim": 256,
+      "hop_length": 160,
+      "n_fft": 400
+    },
+    "claim_scope": "Cross-source LibriSpeech+COCO control latents for T2 loader/training mechanics only; natural_av_correspondence=false."
+  }
+}

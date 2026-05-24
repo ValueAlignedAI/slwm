@@ -1,0 +1,25 @@
+{
+  "runtime": {
+    "seed": 20260521,
+    "deterministic": true
+  },
+  "data": {
+    "media_availability_path": "/data/slwm/t2_signal_latents/manifests/vggsound_5k_v0/media_availability.jsonl",
+    "output_feature_root": "/data/slwm/t2_signal_latents/extracted_features/vggsound_5k_v0",
+    "manifest_path": "/data/slwm/t2_signal_latents/manifests/vggsound_5k_v0/latent_manifest.jsonl",
+    "report_path": "/data/slwm/t2_signal_latents/manifests/vggsound_5k_v0/latent_extraction_report.json",
+    "max_samples": 6000,
+    "feature_spec": {
+      "audio_codec_or_features": "frozen_log_mel_80bin_16khz_vggsound",
+      "visual_codec_or_features": "deterministic_vggsound_frame_grayscale_patch_latents",
+      "target_sample_rate": 16000,
+      "duration_seconds": 10.0,
+      "audio_feature_dim": 80,
+      "visual_feature_dim": 256,
+      "hop_length": 160,
+      "n_fft": 400,
+      "frame_timestamp_seconds": 5.0
+    },
+    "claim_scope": "VGGSound available-clips latent extraction for natural paired AV data; no text objective and no model-quality claim."
+  }
+}

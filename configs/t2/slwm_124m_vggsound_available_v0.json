@@ -1,0 +1,102 @@
+{
+  "runtime": {
+    "seed": 12402,
+    "deterministic": true,
+    "device": "auto",
+    "precision": "bf16"
+  },
+  "model": {
+    "name": "slwm-t2-124m-vggsound-available-v0",
+    "variant": "slwm_audio_visual_latent",
+    "parameter_accounting_mode": "strict",
+    "target_parameter_count_notes": "GPT-2-scale T2 latent run on the available VGGSound subset; evaluation split is availability-limited.",
+    "context_length": 1024,
+    "latent_length": 1024,
+    "latent_dim": 768,
+    "n_layer": 13,
+    "n_head": 12,
+    "dropout": 0.05,
+    "audio_feature_dim": 80,
+    "visual_feature_dim": 256,
+    "activation_checkpointing": true,
+    "architecture_flags": {
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "local_kernel_size": 3,
+      "spectral_kernel_size": 31,
+      "long_kernel_size": 31,
+      "mlp_ratio": 4,
+      "policy_commit_gate": false,
+      "noop_head": false,
+      "activation_checkpointing": true
+    }
+  },
+  "data": {
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "prepared_corpus_dir": "artifacts/t2_audio_visual/vggsound_5k_available_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0",
+    "audio_codec_or_features": "frozen_log_mel_80bin_16khz_vggsound",
+    "visual_codec_or_features": "deterministic_vggsound_frame_grayscale_patch_latents",
+    "feature_spec": {
+      "audio_feature_dim": 80,
+      "visual_feature_dim": 256,
+      "audio_length": 512,
+      "visual_length": 512
+    },
+    "dataset_mix": {
+      "text_code": null,
+      "audio": 0.5,
+      "visual_video": 0.5
+    }
+  },
+  "training": {
+    "objective": [
+      "audio_latent_continuation_mse",
+      "visual_latent_continuation_mse",
+      "missing_span_reconstruction_mse",
+      "audio_video_contrastive_alignment"
+    ],
+    "optimizer": "adamw_torch",
+    "learning_rate_schedule": "cosine",
+    "learning_rate": 0.0002,
+    "weight_decay": 0.05,
+    "batch_size": 256,
+    "gradient_accumulation_steps": 1,
+    "effective_batch_size_notes": "Physical microbatch B=256 targets high RTX 3090 utilization while preserving in-batch audio-video negatives; if OOM, roll back to B=192/128.",
+    "eval_batch_size": 5,
+    "steps": 1000,
+    "warmup_steps": 200,
+    "validation_batches": 1,
+    "log_interval_steps": 1,
+    "checkpoint_interval_steps": 25,
+    "keep_last_n_checkpoints": 3,
+    "context_fraction": 0.5,
+    "missing_span_fraction": 0.15,
+    "grad_clip_norm": 1.0,
+    "loss_weights": {
+      "audio_prediction": 1.0,
+      "visual_prediction": 1.0,
+      "alignment": 0.1
+    },
+    "claim_scope": "T2 124M available-VGGSound RTX3090 batching run; physical batch size is >=2 for non-degenerate AV contrastive negatives; no strong natural-AV evaluation claim until validation/test splits are expanded."
+  },
+  "registry": {
+    "experiment_id": "EXP-T2-111",
+    "artifact_dir": "experiments/multimodal/t2/EXP-T2-111",
+    "path": "experiments/multimodal/t2/EXP-T2-111/registry.json",
+    "metrics_path": "experiments/multimodal/t2/EXP-T2-111/metrics.json",
+    "report_path": "experiments/multimodal/t2/EXP-T2-111/report.md",
+    "checkpoint_path": "experiments/multimodal/t2/EXP-T2-111/checkpoint.pt",
+    "latest_checkpoint_path": "experiments/multimodal/t2/EXP-T2-111/latest.pt",
+    "checkpoint_index_path": "experiments/multimodal/t2/EXP-T2-111/checkpoints.json",
+    "run_state_path": "experiments/multimodal/t2/EXP-T2-111/run_state.json",
+    "config_copy_path": "experiments/multimodal/t2/EXP-T2-111/config.json",
+    "progress_path": "experiments/multimodal/t2/EXP-T2-111/progress.jsonl"
+  }
+}

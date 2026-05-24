@@ -12,13 +12,9 @@ Scope boundaries:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import math
 import platform
-import resource
-import shutil
-import sys
 import time
 from pathlib import Path
 from typing import Any, Mapping
@@ -26,6 +22,21 @@ from typing import Any, Mapping
 import numpy as np
 
 from data.audio_visual_latents import T2PreparedLatentDataset, t2_batch_contract_summary, validate_t2_audio_visual_data_config
+from training.run_support import (
+    CheckpointSpec,
+    SafePathPolicy,
+    accelerator_memory_stats_mb,
+    accelerator_peak_memory_mb,
+    append_jsonl,
+    atomic_write_json,
+    atomic_write_text,
+    copy_atomic,
+    file_sha256,
+    max_rss_mb,
+    torch_load_checkpoint,
+    torch_save_atomic,
+    validate_checkpoint_payload,
+)
 from training.synthetic_metrics import frequency_recovery_error, phase_error, spectral_magnitude_loss
 from utils.config import config_hash, load_config, write_config
 from utils.experiment_registry import make_t2_audio_visual_registry_entry, write_registry_entry
@@ -48,6 +59,8 @@ else:
 
 ARTIFACT_ROOT = Path("experiments/multimodal/t2")
 PREPARED_ROOT = Path("artifacts/t2_audio_visual")
+ARTIFACT_POLICY = SafePathPolicy(ARTIFACT_ROOT, "T2 artifact")
+PREPARED_POLICY = SafePathPolicy(PREPARED_ROOT, "T2 prepared corpus")
 
 
 def _require_torch() -> None:
@@ -55,44 +68,22 @@ def _require_torch() -> None:
         raise ImportError("training.t2_train_latents requires PyTorch") from _TORCH_IMPORT_ERROR
 
 
-def _is_relative_to(path: Path, parent: Path) -> bool:
-    try:
-        path.relative_to(parent)
-    except ValueError:
-        return False
-    return True
-
-
 def _safe_artifact_path(raw_path: str | Path) -> Path:
     """Validate T2 artifact paths before writing."""
 
-    path = Path(raw_path)
-    if path.is_absolute():
-        raise ValueError("T2 artifact paths must be relative")
-    repo_root = Path.cwd().resolve()
-    artifact_root = (repo_root / ARTIFACT_ROOT).resolve()
-    resolved = (repo_root / path).resolve()
-    if not _is_relative_to(resolved, artifact_root):
-        raise ValueError(f"T2 artifacts must be written under {ARTIFACT_ROOT}")
-    if resolved.exists() and resolved.is_symlink():
-        raise ValueError("T2 artifact path must not be a symlink")
-    return path
+    return ARTIFACT_POLICY.validate(raw_path)
 
 
 def _safe_prepared_corpus_dir(raw_path: str | Path) -> Path:
     """Validate config-controlled T2 prepared corpus reads."""
 
-    path = Path(raw_path)
-    if path.is_absolute():
-        raise ValueError("T2 prepared_corpus_dir must be relative")
-    repo_root = Path.cwd().resolve()
-    prepared_root = (repo_root / PREPARED_ROOT).resolve()
-    resolved = (repo_root / path).resolve()
-    if not _is_relative_to(resolved, prepared_root):
-        raise ValueError(f"T2 prepared_corpus_dir must be under {PREPARED_ROOT}")
-    if resolved.exists() and resolved.is_symlink():
-        raise ValueError("T2 prepared_corpus_dir must not be a symlink")
-    return path
+    return PREPARED_POLICY.validate(raw_path, must_exist=True)
+
+
+def _safe_checkpoint_read_path(raw_path: str | Path) -> Path:
+    """Validate resume checkpoint reads before torch deserialization."""
+
+    return ARTIFACT_POLICY.validate(raw_path, must_exist=True)
 
 
 def _registry_paths(config: Mapping[str, Any], experiment_id: str) -> dict[str, Path]:
@@ -104,49 +95,28 @@ def _registry_paths(config: Mapping[str, Any], experiment_id: str) -> dict[str, 
         "metrics": _safe_artifact_path(str(registry.get("metrics_path", artifact_dir / "metrics.json"))),
         "report": _safe_artifact_path(str(registry.get("report_path", artifact_dir / "report.md"))),
         "checkpoint": _safe_artifact_path(str(registry.get("checkpoint_path", artifact_dir / "checkpoint.pt"))),
+        "latest_checkpoint": _safe_artifact_path(str(registry.get("latest_checkpoint_path", artifact_dir / "latest.pt"))),
+        "checkpoint_index": _safe_artifact_path(str(registry.get("checkpoint_index_path", artifact_dir / "checkpoints.json"))),
+        "run_state": _safe_artifact_path(str(registry.get("run_state_path", artifact_dir / "run_state.json"))),
         "config_copy": _safe_artifact_path(str(registry.get("config_copy_path", artifact_dir / "config.json"))),
+        "progress": _safe_artifact_path(str(registry.get("progress_path", artifact_dir / "progress.jsonl"))),
     }
 
 
-def _write_json(payload: Mapping[str, Any], path: Path) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    tmp.replace(path)
-    return path
+_write_json = atomic_write_json
+_write_text = atomic_write_text
 
 
-def _write_text(payload: str, path: Path) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(payload, encoding="utf-8")
-    tmp.replace(path)
-    return path
+def _append_progress(path: Path, payload: Mapping[str, Any]) -> None:
+    """Append one JSON progress event and flush it to stdout for nohup logs."""
+
+    append_jsonl(path, payload, echo_stdout=True)
 
 
-def _file_sha256(path: str | Path) -> str:
-    digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()
-    return f"sha256:{digest}"
-
-
-def _max_rss_mb() -> float:
-    raw = float(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-    if sys.platform == "darwin":
-        return raw / (1024.0 * 1024.0)
-    return raw / 1024.0
-
-
-def _accelerator_memory_mb() -> float | None:
-    if torch is None:
-        return None
-    if torch.cuda.is_available():
-        return float(torch.cuda.max_memory_allocated() / (1024.0 * 1024.0))
-    if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
-        try:
-            return float(torch.mps.current_allocated_memory() / (1024.0 * 1024.0))
-        except Exception:  # pragma: no cover - backend-dependent
-            return None
-    return None
+_file_sha256 = file_sha256
+_max_rss_mb = max_rss_mb
+_accelerator_memory_mb = accelerator_peak_memory_mb
+_accelerator_memory_stats_mb = accelerator_memory_stats_mb
 
 
 def _runtime_seed(config: Mapping[str, Any]) -> int:
@@ -264,7 +234,10 @@ class T2SpectralMixer(nn.Module):
         self.bias = nn.Parameter(torch.zeros(latent_dim))
 
     def forward(self, x: "torch.Tensor") -> "torch.Tensor":
-        freq = torch.complex(self.real, self.imag)
+        # torch.complex does not support bf16 parameters on CUDA. Build the
+        # frequency kernel in fp32, then cast the real-valued kernel back to the
+        # active model/input dtype for convolution.
+        freq = torch.complex(self.real.float(), self.imag.float())
         kernel = torch.fft.irfft(freq, n=self.kernel_size, dim=-1).to(dtype=x.dtype)
         y = F.conv1d(F.pad(x.transpose(1, 2), (self.kernel_size // 2, self.kernel_size // 2)), kernel.unsqueeze(1), bias=self.bias.to(dtype=x.dtype), groups=self.latent_dim)
         return y.transpose(1, 2)[:, : x.shape[1], :]
@@ -469,11 +442,19 @@ def _metric_bundle(
     audio_loss_mask = batch["audio_loss_mask"].detach().cpu().numpy().astype(bool)
     visual_loss_mask = batch["visual_loss_mask"].detach().cpu().numpy().astype(bool)
     logits = details["alignment_logits"].detach().float().cpu().numpy()
-    retrieval = _retrieval_metrics(logits)
-    shuffled_logits = np.roll(logits, shift=1, axis=1) if logits.shape[0] > 1 else logits.copy()
-    shuffled = _retrieval_metrics(shuffled_logits)
-    positive = np.diag(logits)
-    negative = np.diag(shuffled_logits)
+    if logits.shape[0] > 1:
+        retrieval = _retrieval_metrics(logits)
+        shuffled_logits = np.roll(logits, shift=1, axis=1)
+        shuffled = _retrieval_metrics(shuffled_logits)
+        positive = np.diag(logits)
+        negative = np.diag(shuffled_logits)
+        correspondence_accuracy = float(np.mean(positive > negative))
+    else:
+        # With B=1 there are no in-batch negatives, so retrieval/correspondence
+        # metrics are degenerate and must not satisfy T2 alignment gates.
+        retrieval = {"retrieval_r1": None, "retrieval_r5": None, "retrieval_r10": None, "mean_rank": None}
+        shuffled = {"retrieval_r1": None, "retrieval_r5": None, "retrieval_r10": None, "mean_rank": None}
+        correspondence_accuracy = None
     null_audio = np.asarray(batch["audio_features"].detach().float().cpu().numpy())
     null_visual = np.asarray(batch["visual_features"].detach().float().cpu().numpy())
     rng = np.random.default_rng(0)
@@ -495,9 +476,9 @@ def _metric_bundle(
         "null_visual_mse": float(np.sum(((null_visual - visual_targets) ** 2) * visual_loss_mask[:, :, None]) / visual_denom),
         "random_audio_mse": float(np.sum(((random_audio - audio_targets) ** 2) * audio_loss_mask[:, :, None]) / audio_denom),
         "random_visual_mse": float(np.sum(((random_visual - visual_targets) ** 2) * visual_loss_mask[:, :, None]) / visual_denom),
-        "audio_video_correspondence_accuracy": float(np.mean(positive > negative)) if logits.shape[0] > 1 else None,
-        "shuffled_retrieval_r1": float(shuffled["retrieval_r1"]),
-        "shuffled_retrieval_r5": float(shuffled["retrieval_r5"]),
+        "audio_video_correspondence_accuracy": correspondence_accuracy,
+        "shuffled_retrieval_r1": shuffled["retrieval_r1"],
+        "shuffled_retrieval_r5": shuffled["retrieval_r5"],
         **retrieval,
     }
 
@@ -514,7 +495,7 @@ def _evaluate_model(
 ) -> dict[str, Any]:
     model.eval()
     train_cfg = config.get("training", {}) if isinstance(config.get("training", {}), Mapping) else {}
-    batch_size = int(train_cfg.get("batch_size", 2))
+    batch_size = _configured_eval_batch_size(train_cfg, dataset.sample_count)
     context_fraction = float(train_cfg.get("context_fraction", 0.5))
     missing_span_fraction = float(train_cfg.get("missing_span_fraction", 0.0))
     weights = train_cfg.get("loss_weights", {}) if isinstance(train_cfg.get("loss_weights", {}), Mapping) else {}
@@ -567,6 +548,131 @@ def _learning_rate(step: int, *, base_lr: float, warmup_steps: int, total_steps:
 def _apply_lr(optimizer: "torch.optim.Optimizer", lr: float) -> None:
     for group in optimizer.param_groups:
         group["lr"] = float(lr)
+
+
+def _alignment_weight(train_cfg: Mapping[str, Any]) -> float:
+    weights = train_cfg.get("loss_weights", {}) if isinstance(train_cfg.get("loss_weights", {}), Mapping) else {}
+    return float(weights.get("alignment", 0.0))
+
+
+def _configured_eval_batch_size(train_cfg: Mapping[str, Any], dataset_size: int) -> int:
+    """Return an eval batch size that avoids duplicate in-batch negatives."""
+
+    requested = int(train_cfg.get("eval_batch_size", train_cfg.get("batch_size", 2)))
+    return max(1, min(requested, max(1, int(dataset_size))))
+
+
+def _validate_t2_batching(train_cfg: Mapping[str, Any]) -> None:
+    """Reject degenerate T2 contrastive batches before a long run starts."""
+
+    batch_size = int(train_cfg.get("batch_size", 2))
+    grad_accum = int(train_cfg.get("gradient_accumulation_steps", 1))
+    if batch_size <= 0:
+        raise ValueError("training.batch_size must be positive")
+    if grad_accum <= 0:
+        raise ValueError("training.gradient_accumulation_steps must be positive")
+    if _alignment_weight(train_cfg) > 0.0 and batch_size < 2:
+        raise ValueError(
+            "T2 audio_video_contrastive_alignment requires training.batch_size >= 2; "
+            "gradient_accumulation does not provide in-batch negatives."
+        )
+
+
+T2_CHECKPOINT_SCHEMA = "t2_audio_visual_checkpoint_v1"
+T2_CHECKPOINT_REQUIRED_KEYS = frozenset(
+    {
+        "schema_version",
+        "model_state_dict",
+        "optimizer_state_dict",
+        "step",
+        "config_hash",
+        "parameter_count",
+        "prepared_dataset_manifest_sha256",
+    }
+)
+
+
+def _save_training_checkpoint(
+    *,
+    path: Path,
+    model: T2AudioVisualSLWM,
+    optimizer: "torch.optim.Optimizer",
+    experiment_id: str,
+    model_name: str,
+    model_variant: str,
+    step: int,
+    samples_seen: int,
+    losses: list[float],
+    grad_norms: list[float],
+    config: Mapping[str, Any],
+    module_counts: Mapping[str, int],
+    dataset_card: Mapping[str, Any],
+) -> Path:
+    payload: dict[str, Any] = {
+        "schema_version": T2_CHECKPOINT_SCHEMA,
+        "experiment_id": experiment_id,
+        "model_name": model_name,
+        "model_variant": model_variant,
+        "step": int(step),
+        "samples_seen": int(samples_seen),
+        "losses": [float(value) for value in losses],
+        "grad_norms": [float(value) for value in grad_norms],
+        "config_hash": config_hash(config),
+        "parameter_count": int(module_counts["total"]),
+        "prepared_dataset_manifest_sha256": dataset_card.get("manifest_sha256"),
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "torch_rng_state": torch.get_rng_state(),
+    }
+    if torch.cuda.is_available():
+        payload["cuda_rng_state_all"] = torch.cuda.get_rng_state_all()
+    return torch_save_atomic(payload, path)
+
+
+def _copy_checkpoint_atomic(source: Path, target: Path) -> Path:
+    return copy_atomic(source, target)
+
+
+def _load_training_checkpoint(
+    *,
+    path: Path,
+    model: T2AudioVisualSLWM,
+    optimizer: "torch.optim.Optimizer",
+    experiment_id: str,
+    model_variant: str,
+    config: Mapping[str, Any],
+    module_counts: Mapping[str, int],
+    dataset_card: Mapping[str, Any],
+    allow_config_mismatch: bool,
+) -> dict[str, Any]:
+    payload = torch_load_checkpoint(path, next(model.parameters()).device)
+    validate_checkpoint_payload(
+        payload,
+        CheckpointSpec(
+            schema_version=T2_CHECKPOINT_SCHEMA,
+            required_keys=T2_CHECKPOINT_REQUIRED_KEYS,
+            expected_values={
+                "experiment_id": experiment_id,
+                "model_variant": model_variant,
+                "parameter_count": int(module_counts["total"]),
+                "prepared_dataset_manifest_sha256": dataset_card.get("manifest_sha256"),
+                "config_hash": config_hash(config),
+            },
+            allow_mismatch_keys=frozenset({"config_hash"} if allow_config_mismatch else set()),
+        ),
+    )
+    model.load_state_dict(payload["model_state_dict"])
+    optimizer.load_state_dict(payload["optimizer_state_dict"])
+    if "torch_rng_state" in payload:
+        torch.set_rng_state(payload["torch_rng_state"].detach().cpu())
+    if torch.cuda.is_available() and "cuda_rng_state_all" in payload:
+        torch.cuda.set_rng_state_all(list(payload["cuda_rng_state_all"]))
+    return {
+        "step": int(payload.get("step", 0)),
+        "samples_seen": int(payload.get("samples_seen", 0)),
+        "losses": [float(value) for value in payload.get("losses", [])],
+        "grad_norms": [float(value) for value in payload.get("grad_norms", [])],
+    }
 
 
 def estimate_t2_parameter_count(config: Mapping[str, Any], *, audio_feature_dim: int | None = None, visual_feature_dim: int | None = None) -> dict[str, int]:
@@ -632,6 +738,8 @@ def _report_markdown(metrics: Mapping[str, Any]) -> str:
             f"- Model variant: `{metrics['model_variant']}`",
             f"- Parameter count: `{metrics['parameter_count']}`",
             f"- Prepared corpus: `{metrics.get('prepared_corpus_dir')}`",
+            f"- Physical/effective batch size: `{metrics.get('batch_size')}` / `{metrics.get('effective_batch_size')}`",
+            f"- Eval batch size: `{metrics.get('eval_batch_size')}`",
             f"- Initial → validation total loss: `{initial.get('total_loss')}` → `{validation.get('total_loss')}`",
             f"- Initial → audio latent MSE: `{initial.get('audio_mse')}` → `{validation.get('audio_mse')}`",
             f"- Initial → visual/video latent MSE: `{initial.get('visual_mse')}` → `{validation.get('visual_mse')}`",
@@ -651,12 +759,22 @@ def _report_markdown(metrics: Mapping[str, Any]) -> str:
     )
 
 
-def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | None = None, no_checkpoint: bool = False, describe_only: bool = False) -> dict[str, Any]:
+def run_t2_audio_visual_training(
+    config_path: str | Path,
+    *,
+    max_steps: int | None = None,
+    no_checkpoint: bool = False,
+    describe_only: bool = False,
+    resume_from: str | Path | None = None,
+    allow_config_mismatch: bool = False,
+) -> dict[str, Any]:
     """Run one registered Sprint T2 audio/visual latent training job."""
 
     _require_torch()
     path = Path(config_path)
     config = load_config(path)
+    train_cfg = config.get("training", {}) if isinstance(config.get("training", {}), Mapping) else {}
+    _validate_t2_batching(train_cfg)
     seed = _runtime_seed(config)
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -702,12 +820,12 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
     if runtime_dtype in {torch.float16, torch.bfloat16} and device.type != "cpu":
         model.to(dtype=runtime_dtype)
     module_counts = _module_parameter_counts(model)
-    train_cfg = config.get("training", {}) if isinstance(config.get("training", {}), Mapping) else {}
     steps = int(train_cfg.get("steps", 100))
     if max_steps is not None:
         steps = min(steps, int(max_steps))
     batch_size = int(train_cfg.get("batch_size", 2))
     grad_accum = int(train_cfg.get("gradient_accumulation_steps", 1))
+    eval_batch_size = _configured_eval_batch_size(train_cfg, validation_dataset.sample_count)
     eval_batches = int(train_cfg.get("validation_batches", 2))
     learning_rate = float(train_cfg.get("learning_rate", 3e-4))
     warmup_steps = int(train_cfg.get("warmup_steps", 0))
@@ -719,23 +837,92 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
     missing_span_fraction = float(train_cfg.get("missing_span_fraction", 0.0))
     weights = train_cfg.get("loss_weights", {}) if isinstance(train_cfg.get("loss_weights", {}), Mapping) else {}
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    log_interval_steps = max(1, int(train_cfg.get("log_interval_steps", 1)))
+    checkpoint_interval_steps = int(train_cfg.get("checkpoint_interval_steps", 0))
+    keep_last_n_checkpoints = max(1, int(train_cfg.get("keep_last_n_checkpoints", 3)))
+    resume_candidate = resume_from if resume_from is not None else train_cfg.get("resume_from")
+    resume_path = _safe_checkpoint_read_path(str(resume_candidate)) if resume_candidate else None
+    checkpoint_history: list[str] = []
+    if paths["checkpoint_index"].exists():
+        try:
+            checkpoint_index = json.loads(paths["checkpoint_index"].read_text(encoding="utf-8"))
+            checkpoint_history = [str(row.get("path")) for row in checkpoint_index.get("checkpoints", []) if isinstance(row, Mapping) and row.get("path")]
+        except Exception:
+            checkpoint_history = []
+    if resume_path is None:
+        paths["progress"].unlink(missing_ok=True)
 
     batch_dtype = runtime_dtype if runtime_dtype in {torch.float16, torch.bfloat16} and device.type != "cpu" else torch.float32
-    initial_validation = _evaluate_model(model=model, dataset=validation_dataset, config=config, device=device, dtype=batch_dtype, batches=eval_batches, seed_offset=10_000)
-    losses: list[float] = [float(initial_validation["total_loss"])]
+    start_step = 0
+    samples_seen = 0
+    losses: list[float] = []
     grad_norms: list[float] = []
+    if resume_path is not None:
+        resume_state = _load_training_checkpoint(
+            path=resume_path,
+            model=model,
+            optimizer=optimizer,
+            experiment_id=experiment_id,
+            model_variant=model.variant,
+            config=config,
+            module_counts=module_counts,
+            dataset_card=dataset_card,
+            allow_config_mismatch=allow_config_mismatch,
+        )
+        start_step = int(resume_state["step"])
+        samples_seen = int(resume_state["samples_seen"])
+        losses = list(resume_state["losses"])
+        grad_norms = list(resume_state["grad_norms"])
+        _append_progress(
+            paths["progress"],
+            {
+                "event": "resume",
+                "experiment_id": experiment_id,
+                "resume_from": str(resume_path),
+                "step": start_step,
+                "steps": steps,
+                "samples_seen": samples_seen,
+                "config_hash": config_hash(config),
+                "accelerator_memory": _accelerator_memory_stats_mb(),
+            },
+        )
+    initial_validation = _evaluate_model(model=model, dataset=validation_dataset, config=config, device=device, dtype=batch_dtype, batches=eval_batches, seed_offset=10_000)
+    _append_progress(
+        paths["progress"],
+        {
+            "event": "initial_validation",
+            "experiment_id": experiment_id,
+            "step": start_step,
+            "steps": steps,
+            "batch_size": batch_size,
+            "effective_batch_size": batch_size * grad_accum,
+            "total_loss": initial_validation.get("total_loss"),
+            "audio_mse": initial_validation.get("audio_mse"),
+            "visual_mse": initial_validation.get("visual_mse"),
+            "alignment_loss": initial_validation.get("alignment_loss"),
+            "retrieval_r1": initial_validation.get("retrieval_r1"),
+            "shuffled_retrieval_r1": initial_validation.get("shuffled_retrieval_r1"),
+            "accelerator_memory_mb": _accelerator_memory_mb(),
+            "accelerator_memory": _accelerator_memory_stats_mb(),
+            "wall_clock_time_seconds": 0.0,
+        },
+    )
+    if not losses:
+        losses = [float(initial_validation["total_loss"])]
     nan_or_inf = not math.isfinite(float(initial_validation["total_loss"]))
     loss_explosion = False
-    samples_seen = 0
     start = time.perf_counter()
     model.train()
     optimizer.zero_grad(set_to_none=True)
-    for step in range(max(0, steps)):
+    for step in range(max(0, start_step), max(0, steps)):
         _apply_lr(
             optimizer,
             _learning_rate(step, base_lr=learning_rate, warmup_steps=warmup_steps, total_steps=max(1, steps), schedule=schedule),
         )
         accumulated = 0.0
+        accumulated_audio = 0.0
+        accumulated_visual = 0.0
+        accumulated_alignment = 0.0
         for accum_index in range(max(1, grad_accum)):
             raw_batch = train_dataset.batch(
                 batch_size=batch_size,
@@ -745,13 +932,16 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
                 missing_span_fraction=missing_span_fraction,
             )
             batch = _cpu_float_batch(raw_batch, device=device, dtype=batch_dtype)
-            loss, _ = _loss_bundle(model, batch, weights=weights)
+            loss, details = _loss_bundle(model, batch, weights=weights)
             loss = loss / max(1, grad_accum)
             if not torch.isfinite(loss).all():
                 nan_or_inf = True
                 break
             loss.backward()
             accumulated += float(loss.detach().float().cpu())
+            accumulated_audio += float(details["audio_mse"].detach().float().cpu()) / max(1, grad_accum)
+            accumulated_visual += float(details["visual_mse"].detach().float().cpu()) / max(1, grad_accum)
+            accumulated_alignment += float(details["alignment_loss"].detach().float().cpu()) / max(1, grad_accum)
             samples_seen += int(batch_size)
         if nan_or_inf:
             break
@@ -769,8 +959,99 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         grad_norms.append(grad_norm)
         if accumulated > max(losses[0], 1e-12) * 10.0:
             loss_explosion = True
+        if step == 0 or (step + 1) % log_interval_steps == 0 or (step + 1) == steps:
+            elapsed = time.perf_counter() - start
+            progress_event = {
+                "event": "train_step",
+                "experiment_id": experiment_id,
+                "step": step + 1,
+                "steps": steps,
+                "batch_size": batch_size,
+                "effective_batch_size": batch_size * grad_accum,
+                "train_loss": float(accumulated),
+                "train_audio_mse": float(accumulated_audio),
+                "train_visual_mse": float(accumulated_visual),
+                "train_alignment_loss": float(accumulated_alignment),
+                "learning_rate": _learning_rate(step, base_lr=learning_rate, warmup_steps=warmup_steps, total_steps=max(1, steps), schedule=schedule),
+                "grad_norm": grad_norm,
+                "samples_seen": int(samples_seen),
+                "throughput_samples_per_second": float(samples_seen / max(elapsed, 1e-12)),
+                "accelerator_memory_mb": _accelerator_memory_mb(),
+                "accelerator_memory": _accelerator_memory_stats_mb(),
+                "max_memory_mb": float(_max_rss_mb()),
+                "wall_clock_time_seconds": float(elapsed),
+                "nan_or_inf": bool(nan_or_inf),
+                "loss_explosion": bool(loss_explosion),
+                "latest_checkpoint_path": str(paths["latest_checkpoint"]) if paths["latest_checkpoint"].exists() else None,
+            }
+            _append_progress(
+                paths["progress"],
+                progress_event,
+            )
+            _write_json(progress_event, paths["run_state"])
+        if not no_checkpoint and checkpoint_interval_steps > 0 and ((step + 1) % checkpoint_interval_steps == 0 or (step + 1) == steps):
+            checkpoint_path = paths["artifact_dir"] / f"checkpoint_step_{step + 1:06d}.pt"
+            _save_training_checkpoint(
+                path=checkpoint_path,
+                model=model,
+                optimizer=optimizer,
+                experiment_id=experiment_id,
+                model_name=model.name,
+                model_variant=model.variant,
+                step=step + 1,
+                samples_seen=samples_seen,
+                losses=losses,
+                grad_norms=grad_norms,
+                config=config,
+                module_counts=module_counts,
+                dataset_card=dataset_card,
+            )
+            _copy_checkpoint_atomic(checkpoint_path, paths["latest_checkpoint"])
+            checkpoint_history.append(str(checkpoint_path))
+            while len(checkpoint_history) > keep_last_n_checkpoints:
+                old = checkpoint_history.pop(0)
+                if old not in {str(paths["latest_checkpoint"]), str(paths["checkpoint"])}:
+                    Path(old).unlink(missing_ok=True)
+            checkpoint_index = {
+                "experiment_id": experiment_id,
+                "latest_checkpoint_path": str(paths["latest_checkpoint"]),
+                "checkpoints": [{"path": item} for item in checkpoint_history],
+            }
+            _write_json(checkpoint_index, paths["checkpoint_index"])
+            _append_progress(
+                paths["progress"],
+                {
+                    "event": "checkpoint",
+                    "experiment_id": experiment_id,
+                    "step": step + 1,
+                    "checkpoint_path": str(checkpoint_path),
+                    "latest_checkpoint_path": str(paths["latest_checkpoint"]),
+                    "kept_checkpoints": list(checkpoint_history),
+                    "accelerator_memory": _accelerator_memory_stats_mb(),
+                },
+            )
     wall_clock = time.perf_counter() - start
     validation = _evaluate_model(model=model, dataset=validation_dataset, config=config, device=device, dtype=batch_dtype, batches=eval_batches, seed_offset=30_000)
+    final_validation_event = {
+        "event": "final_validation",
+        "experiment_id": experiment_id,
+        "step": len(grad_norms),
+        "steps": steps,
+        "total_loss": validation.get("total_loss"),
+        "audio_mse": validation.get("audio_mse"),
+        "visual_mse": validation.get("visual_mse"),
+        "alignment_loss": validation.get("alignment_loss"),
+        "retrieval_r1": validation.get("retrieval_r1"),
+        "shuffled_retrieval_r1": validation.get("shuffled_retrieval_r1"),
+        "accelerator_memory_mb": _accelerator_memory_mb(),
+        "accelerator_memory": _accelerator_memory_stats_mb(),
+        "wall_clock_time_seconds": float(wall_clock),
+    }
+    _append_progress(
+        paths["progress"],
+        final_validation_event,
+    )
+    _write_json(final_validation_event, paths["run_state"])
     train_eval = _evaluate_model(model=model, dataset=train_dataset, config=config, device=device, dtype=batch_dtype, batches=1, seed_offset=40_000)
     losses.append(float(validation["total_loss"]))
     audio_prediction_loss_decreased = bool(validation.get("audio_mse") is not None and float(validation["audio_mse"]) < float(initial_validation["audio_mse"]))
@@ -781,6 +1062,7 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
     beats_null_visual = bool(validation.get("visual_mse") is not None and validation.get("null_visual_mse") is not None and float(validation["visual_mse"]) < float(validation["null_visual_mse"]))
     beats_random_audio = bool(validation.get("audio_mse") is not None and validation.get("random_audio_mse") is not None and float(validation["audio_mse"]) < float(validation["random_audio_mse"]))
     beats_random_visual = bool(validation.get("visual_mse") is not None and validation.get("random_visual_mse") is not None and float(validation["visual_mse"]) < float(validation["random_visual_mse"]))
+    contrastive_microbatch_valid = bool(_alignment_weight(train_cfg) <= 0.0 or batch_size >= 2)
     beats_shuffled = bool(validation.get("retrieval_r1") is not None and validation.get("shuffled_retrieval_r1") is not None and float(validation["retrieval_r1"]) > float(validation["shuffled_retrieval_r1"]))
     gate = {
         "audio_latent_dataset_loads": train_dataset.sample_count > 0,
@@ -791,7 +1073,8 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         "visual_prediction_loss_decreased": visual_prediction_loss_decreased,
         "total_loss_decreased": total_prediction_loss_decreased,
         "shuffled_modality_baseline_included": True,
-        "cross_modal_alignment_metric_reported": validation.get("retrieval_r1") is not None,
+        "cross_modal_alignment_metric_reported": validation.get("audio_video_correspondence_accuracy") is not None,
+        "contrastive_microbatch_valid": contrastive_microbatch_valid,
         "beats_null_audio": beats_null_audio,
         "beats_null_visual": beats_null_visual,
         "beats_random_audio": beats_random_audio,
@@ -801,20 +1084,43 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
     }
     checkpoint_path: str | None = None
     if not no_checkpoint:
-        paths["checkpoint"].parent.mkdir(parents=True, exist_ok=True)
-        torch.save(
-            {
-                "model_state_dict": model.state_dict(),
-                "metadata": {
-                    "experiment_id": experiment_id,
-                    "config_hash": config_hash(config),
-                    "parameter_count": module_counts["total"],
-                    "prepared_dataset_manifest_sha256": dataset_card.get("manifest_sha256"),
-                },
-            },
-            paths["checkpoint"],
+        _save_training_checkpoint(
+            path=paths["checkpoint"],
+            model=model,
+            optimizer=optimizer,
+            experiment_id=experiment_id,
+            model_name=model.name,
+            model_variant=model.variant,
+            step=len(grad_norms),
+            samples_seen=samples_seen,
+            losses=losses,
+            grad_norms=grad_norms,
+            config=config,
+            module_counts=module_counts,
+            dataset_card=dataset_card,
         )
+        _copy_checkpoint_atomic(paths["checkpoint"], paths["latest_checkpoint"])
         checkpoint_path = str(paths["checkpoint"])
+        if str(paths["checkpoint"]) not in checkpoint_history:
+            checkpoint_history.append(str(paths["checkpoint"]))
+        checkpoint_index = {
+            "experiment_id": experiment_id,
+            "latest_checkpoint_path": str(paths["latest_checkpoint"]),
+            "final_checkpoint_path": str(paths["checkpoint"]),
+            "checkpoints": [{"path": item} for item in checkpoint_history[-keep_last_n_checkpoints:]],
+        }
+        _write_json(checkpoint_index, paths["checkpoint_index"])
+        _append_progress(
+            paths["progress"],
+            {
+                "event": "checkpoint_final",
+                "experiment_id": experiment_id,
+                "step": len(grad_norms),
+                "checkpoint_path": checkpoint_path,
+                "latest_checkpoint_path": str(paths["latest_checkpoint"]),
+                "accelerator_memory": _accelerator_memory_stats_mb(),
+            },
+        )
     else:
         paths["checkpoint"].unlink(missing_ok=True)
 
@@ -836,14 +1142,21 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
                     "leakage_checks": dataset.get("leakage_checks"),
                 }
             )
-    sample_batch = validation_dataset.batch(batch_size=min(batch_size, validation_dataset.sample_count), seed=seed + 55_000, step=0, context_fraction=context_fraction, missing_span_fraction=missing_span_fraction, sequential=True)
+    sample_batch = validation_dataset.batch(batch_size=eval_batch_size, seed=seed + 55_000, step=0, context_fraction=context_fraction, missing_span_fraction=missing_span_fraction, sequential=True)
     dataset_names_for_claim = [
         str(dataset.get("name", ""))
         for dataset in dataset_card.get("datasets", [])
         if isinstance(dataset, Mapping)
     ]
+    source_notes_for_claim = [str(note).lower() for note in dataset_card.get("source_notes", [])]
     generated_fixture_only = any("project_generated" in name for name in dataset_names_for_claim) or "smoke_only" in str(dataset_card.get("feature_spec", {}))
-    hypothesis_decision = "untested" if generated_fixture_only else ("partial_support" if prediction_loss_decreased and beats_shuffled else "untested")
+    natural_av_correspondence = (
+        any("natural_av_correspondence=true" in note or "natural audio-video correspondence is true" in note for note in source_notes_for_claim)
+        and not any("natural_av_correspondence=false" in note or "natural audio-video correspondence is false" in note for note in source_notes_for_claim)
+    )
+    validation_sample_count = int(getattr(validation_dataset, "sample_count", 0))
+    tiny_eval_split = validation_sample_count < 100
+    hypothesis_decision = "untested" if (generated_fixture_only or tiny_eval_split or not natural_av_correspondence) else ("partial_support" if prediction_loss_decreased and beats_shuffled else "untested")
     metrics: dict[str, Any] = {
         "experiment_id": experiment_id,
         "sprint": "T2",
@@ -854,6 +1167,7 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         "module_parameter_counts": module_counts,
         "prepared_corpus_dir": str((config.get("data", {}) if isinstance(config.get("data", {}), Mapping) else {}).get("prepared_corpus_dir")),
         "prepared_dataset_card": dataset_card,
+        "natural_av_correspondence": natural_av_correspondence,
         "registry_datasets": registry_datasets,
         "initial_validation": initial_validation,
         "validation": validation,
@@ -864,6 +1178,11 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         "loss_explosion": bool(loss_explosion),
         "modality_collapse": False,
         "success_gate": gate,
+        "batch_size": int(batch_size),
+        "gradient_accumulation_steps": int(grad_accum),
+        "effective_batch_size": int(batch_size * grad_accum),
+        "eval_batch_size": int(eval_batch_size),
+        "contrastive_microbatch_valid": contrastive_microbatch_valid,
         "batch_contract_summary": t2_batch_contract_summary(sample_batch),
         "train_samples_seen": int(samples_seen),
         "throughput_samples_per_second": float(samples_seen / max(wall_clock, 1e-12)),
@@ -874,10 +1193,14 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         "eval_script_hash": _file_sha256(Path(__file__).resolve()),
         "config_hash": config_hash(config),
         "checkpoint_path": checkpoint_path,
+        "latest_checkpoint_path": str(paths["latest_checkpoint"]) if paths["latest_checkpoint"].exists() else None,
+        "checkpoint_index_path": str(paths["checkpoint_index"]),
+        "run_state_path": str(paths["run_state"]),
         "config_copy_path": str(paths["config_copy"]),
         "metrics_path": str(paths["metrics"]),
         "registry_path": str(paths["registry"]),
         "report_path": str(paths["report"]),
+        "progress_path": str(paths["progress"]),
         "baselines_compared": ["null_persistence", "random_latent", "shuffled_audio_video_pairs"],
         "result_summary": f"Sprint T2 audio/visual latent run completed with validation loss {validation.get('total_loss')}.",
         "hypothesis_decision": hypothesis_decision,
@@ -896,6 +1219,8 @@ def run_t2_audio_visual_training(config_path: str | Path, *, max_steps: int | No
         metrics["failure_modes_observed"].append("loss_explosion")
     if not prediction_loss_decreased:
         metrics["failure_modes_observed"].append("prediction_loss_did_not_decrease")
+    if not natural_av_correspondence:
+        metrics["limitations"].append("This corpus is a non-natural audio/visual control; it must not support natural AV correspondence claims.")
     write_config(config, paths["config_copy"])
     _write_json(metrics, paths["metrics"])
     entry = make_t2_audio_visual_registry_entry(
@@ -923,8 +1248,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--max-steps", type=int, default=None, help="Optional cap used for fit/smoke checks")
     parser.add_argument("--no-checkpoint", action="store_true", help="Run without writing checkpoint.pt")
     parser.add_argument("--describe-only", action="store_true", help="Load config/dataset card and print parameter estimates without allocating model")
+    parser.add_argument("--resume-from", default=None, help="Repository-relative T2 checkpoint path to resume from")
+    parser.add_argument("--allow-config-mismatch", action="store_true", help="Allow resume when checkpoint config hash differs; use only for intentional recovery")
     args = parser.parse_args(argv)
-    metrics = run_t2_audio_visual_training(args.config, max_steps=args.max_steps, no_checkpoint=args.no_checkpoint, describe_only=args.describe_only)
+    metrics = run_t2_audio_visual_training(
+        args.config,
+        max_steps=args.max_steps,
+        no_checkpoint=args.no_checkpoint,
+        describe_only=args.describe_only,
+        resume_from=args.resume_from,
+        allow_config_mismatch=args.allow_config_mismatch,
+    )
     print(json.dumps(metrics, indent=2, sort_keys=True))
     return 0
 

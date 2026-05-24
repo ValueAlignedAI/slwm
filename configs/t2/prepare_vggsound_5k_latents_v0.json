@@ -1,0 +1,46 @@
+{
+  "runtime": {
+    "seed": 20260521,
+    "deterministic": true
+  },
+  "data": {
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "output_dir": "artifacts/t2_audio_visual/vggsound_5k_available_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0",
+    "audio_codec_or_features": "frozen_log_mel_80bin_16khz_vggsound",
+    "visual_codec_or_features": "deterministic_vggsound_frame_grayscale_patch_latents",
+    "audio_length": 512,
+    "visual_length": 512,
+    "max_audio_length": 512,
+    "max_visual_length": 512,
+    "dataset_mix": {
+      "text_code": null,
+      "audio": 0.5,
+      "visual_video": 0.5
+    },
+    "split_policy": {
+      "train": 0.8333333333,
+      "validation": 0.0833333333,
+      "test": 0.0833333334,
+      "seed": 20260521
+    },
+    "leakage_checks": "VGGSound source split is preserved from the pinned manifest. Media availability, duplicate/leakage checks, and shuffled controls remain required before evidence-bearing claims.",
+    "source_notes": [
+      "Prepared from available downloaded VGGSound YouTube clips after explicit operator ToS/legal approval.",
+      "Natural audio-video correspondence is true at source level, subject to availability/filtering report.",
+      "Labels are metadata only; no text-generation objective is introduced."
+    ],
+    "sources": [
+      {
+        "type": "manifest_jsonl",
+        "name": "vggsound_5k_available_clips_v0",
+        "dataset": "VGGSound_5k_available_clips_v0",
+        "manifest_path": "/data/slwm/t2_signal_latents/manifests/vggsound_5k_v0/latent_manifest.jsonl",
+        "license": "VGGSound metadata CC BY 4.0; original YouTube video rights remain with owners"
+      }
+    ]
+  }
+}

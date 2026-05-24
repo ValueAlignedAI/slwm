@@ -1,0 +1,284 @@
+{
+  "accelerator_memory_mb": 0.0,
+  "baselines_compared": [
+    "null_persistence",
+    "random_latent",
+    "shuffled_audio_video_pairs"
+  ],
+  "batch_contract_summary": {
+    "audio_mask_shape": [
+      4,
+      512
+    ],
+    "audio_shape": [
+      4,
+      512,
+      80
+    ],
+    "modality_ids": {
+      "audio": 2,
+      "visual_video": 3
+    },
+    "source_tags_valid": true,
+    "visual_mask_shape": [
+      4,
+      512
+    ],
+    "visual_shape": [
+      4,
+      512,
+      256
+    ]
+  },
+  "batch_size": 4,
+  "checkpoint_index_path": "experiments/multimodal/t2/EXP-T2-902/checkpoints.json",
+  "checkpoint_path": "experiments/multimodal/t2/EXP-T2-902/checkpoint.pt",
+  "claim_language_allowed": "Only T2 latent prediction, audio spectral proxy, visual latent error, AV retrieval/correspondence, shuffled/null controls, throughput, and memory metrics may be reported.",
+  "config_copy_path": "experiments/multimodal/t2/EXP-T2-902/config.json",
+  "config_hash": "sha256:c15ef95414b51757e384ba596fc301e212a268fd378a429ee53bc44025e48828",
+  "contrastive_microbatch_valid": true,
+  "effective_batch_size": 4,
+  "estimated_parameter_count": {
+    "adapters": 21632,
+    "decoders": 0,
+    "embeddings": 65792,
+    "heads": 30161,
+    "policy": 0,
+    "processor": 43648,
+    "total": 161233
+  },
+  "eval_batch_size": 4,
+  "eval_script_hash": "sha256:052d7d9f07c6e6ce84a7e81d503e1aff42cd1a423aa23d69e642477388eb8c89",
+  "experiment_id": "EXP-T2-902",
+  "failure_modes_observed": [
+    "prediction_loss_did_not_decrease"
+  ],
+  "grad_norms": [
+    1.3326829671859741,
+    1.166704535484314
+  ],
+  "gradient_accumulation_steps": 1,
+  "hardware": "torch:2.12.0+cu130:cpu:Linux-6.12.87-x86_64-with-glibc2.40",
+  "hypothesis_decision": "untested",
+  "initial_validation": {
+    "alignment_loss": 1.3505195379257202,
+    "audio_frequency_recovery_error": 19.240625,
+    "audio_mse": 0.9341449737548828,
+    "audio_phase_error": 1.558351144706271,
+    "audio_spectral_loss": 257.82298505516263,
+    "audio_video_correspondence_accuracy": 0.75,
+    "mean_rank": 2.0,
+    "null_audio_mse": 0.9278184771537781,
+    "null_visual_mse": 0.26193347573280334,
+    "random_audio_mse": 1.922969102859497,
+    "random_visual_mse": 0.40008002519607544,
+    "retrieval_r1": 0.5,
+    "retrieval_r10": 1.0,
+    "retrieval_r5": 1.0,
+    "shuffled_retrieval_r1": 0.0,
+    "shuffled_retrieval_r5": 1.0,
+    "total_loss": 1.3584610223770142,
+    "visual_latent_error": 0.28926411271095276,
+    "visual_mse": 0.28926411271095276,
+    "visual_spectral_proxy_loss": 32.71437550170894
+  },
+  "latest_checkpoint_path": "experiments/multimodal/t2/EXP-T2-902/latest.pt",
+  "limitations": [
+    "T2 latent-only training; no raw waveform/video generation.",
+    "Smoke/generated fixtures prove mechanics only; external dataset results require recorded dataset versions and feature extractors.",
+    "No text/code, hallucination, policy, or committed-output claim is supported by T2.",
+    "This corpus is a non-natural audio/visual control; it must not support natural AV correspondence claims."
+  ],
+  "loss_explosion": false,
+  "losses": [
+    1.3909074068069458,
+    1.3911560773849487,
+    1.3551833629608154,
+    1.2881131172180176,
+    1.3338103294372559
+  ],
+  "max_memory_mb": 956.1171875,
+  "metrics_path": "experiments/multimodal/t2/EXP-T2-902/metrics.json",
+  "modality_collapse": false,
+  "model_name": "slwm-t2-external-control-smoke",
+  "model_variant": "slwm_audio_visual_latent",
+  "module_parameter_counts": {
+    "adapters": 21632,
+    "decoders": 0,
+    "embeddings": 65792,
+    "heads": 30161,
+    "policy": 0,
+    "processor": 43648,
+    "total": 161233
+  },
+  "nan_or_inf": false,
+  "natural_av_correspondence": false,
+  "next_allowed_step": "Run matched T2 baselines/ablations and external curated latent corpora before changing R0 hypothesis states.",
+  "parameter_count": 161233,
+  "prepared_corpus_dir": "artifacts/t2_audio_visual/external_t2_control_v0",
+  "prepared_dataset_card": {
+    "claim_language_allowed": "Prepared T2 latent corpus can support loader/training mechanics only until external dataset versions, feature extractors, split hashes, and shuffled/null controls are registered.",
+    "config_hash": "sha256:804ef6abf81ca7a10aa0225c772fd3d2c64f6b134c149ce7204d4af81748ed1f",
+    "config_path": "configs/t2/prepare_external_t2_control_v0.json",
+    "created_at": "2026-05-21",
+    "dataset_mix": {
+      "audio": 0.5,
+      "text_code": null,
+      "visual_video": 0.5
+    },
+    "datasets": [
+      {
+        "leakage_checks": "Stable split is assigned by extraction manifest. Duplicate/leakage/media contamination checks remain required before evidence-bearing T2 claims.",
+        "license_notes": "LibriSpeech CC BY 4.0; COCO dataset/image terms; captions metadata-only and not used",
+        "name": "LibriSpeech_COCO2017_cross_source_control",
+        "version_or_snapshot": "recorded_in_source_manifest"
+      }
+    ],
+    "feature_spec": {
+      "audio_codec_or_features": "frozen_log_mel_80bin_16khz_control",
+      "audio_feature_dim": 80,
+      "audio_length": 512,
+      "dtype": "float32_npz",
+      "visual_codec_or_features": "deterministic_coco_grayscale_row_patch_latents_control",
+      "visual_feature_dim": 256,
+      "visual_length": 512
+    },
+    "manifest_sha256": "sha256:8c00abb8a4b6709fd47a904877cdb2ca8c98fb397bfdeee8deee6476d5ce997a",
+    "modalities": [
+      "audio",
+      "visual_video"
+    ],
+    "output_dir": "artifacts/t2_audio_visual/external_t2_control_v0",
+    "sample_schema_version": "t2.audio_visual_latents_v0",
+    "source_notes": [
+      "External raw-control latent dataset built from LibriSpeech audio and COCO images.",
+      "Pairs are deterministic cross-source controls; natural_av_correspondence=false.",
+      "COCO captions/annotations are metadata-only and are not used by extraction or T2 objectives."
+    ],
+    "split_counts": {
+      "test": {
+        "audio_frames": 51200,
+        "samples": 100,
+        "visual_frames": 25600
+      },
+      "train": {
+        "audio_frames": 512000,
+        "samples": 1000,
+        "visual_frames": 256000
+      },
+      "validation": {
+        "audio_frames": 51200,
+        "samples": 100,
+        "visual_frames": 25600
+      }
+    },
+    "sprint": "T2",
+    "status": "prepared"
+  },
+  "progress_path": "experiments/multimodal/t2/EXP-T2-902/progress.jsonl",
+  "registry_datasets": [
+    {
+      "audio_hours": null,
+      "leakage_checks": "Stable split is assigned by extraction manifest. Duplicate/leakage/media contamination checks remain required before evidence-bearing T2 claims.",
+      "license_notes": "LibriSpeech CC BY 4.0; COCO dataset/image terms; captions metadata-only and not used",
+      "name": "LibriSpeech_COCO2017_cross_source_control",
+      "sample_count": 100,
+      "split": "test",
+      "tokens": null,
+      "version_or_snapshot": "recorded_in_source_manifest",
+      "video_hours": null
+    },
+    {
+      "audio_hours": null,
+      "leakage_checks": "Stable split is assigned by extraction manifest. Duplicate/leakage/media contamination checks remain required before evidence-bearing T2 claims.",
+      "license_notes": "LibriSpeech CC BY 4.0; COCO dataset/image terms; captions metadata-only and not used",
+      "name": "LibriSpeech_COCO2017_cross_source_control",
+      "sample_count": 1000,
+      "split": "train",
+      "tokens": null,
+      "version_or_snapshot": "recorded_in_source_manifest",
+      "video_hours": null
+    },
+    {
+      "audio_hours": null,
+      "leakage_checks": "Stable split is assigned by extraction manifest. Duplicate/leakage/media contamination checks remain required before evidence-bearing T2 claims.",
+      "license_notes": "LibriSpeech CC BY 4.0; COCO dataset/image terms; captions metadata-only and not used",
+      "name": "LibriSpeech_COCO2017_cross_source_control",
+      "sample_count": 100,
+      "split": "validation",
+      "tokens": null,
+      "version_or_snapshot": "recorded_in_source_manifest",
+      "video_hours": null
+    }
+  ],
+  "registry_path": "experiments/multimodal/t2/EXP-T2-902/registry.json",
+  "report_path": "experiments/multimodal/t2/EXP-T2-902/report.md",
+  "result_summary": "Sprint T2 audio/visual latent run completed with validation loss 1.3338103294372559.",
+  "run_state_path": "experiments/multimodal/t2/EXP-T2-902/run_state.json",
+  "sprint": "T2",
+  "success_gate": {
+    "audio_latent_dataset_loads": true,
+    "audio_prediction_loss_decreased": false,
+    "batch_format_matches_data_contract": true,
+    "beats_null_and_random_controls": false,
+    "beats_null_audio": true,
+    "beats_null_visual": false,
+    "beats_random_audio": true,
+    "beats_random_visual": true,
+    "beats_shuffled_retrieval_control": true,
+    "contrastive_microbatch_valid": true,
+    "cross_modal_alignment_metric_reported": true,
+    "prediction_loss_decreased": false,
+    "shuffled_modality_baseline_included": true,
+    "total_loss_decreased": true,
+    "visual_prediction_loss_decreased": true,
+    "visual_video_latent_dataset_loads": true
+  },
+  "throughput_samples_per_second": 105.69089585179039,
+  "train_eval": {
+    "alignment_loss": 1.3820350170135498,
+    "audio_frequency_recovery_error": 12.15,
+    "audio_mse": 0.900081992149353,
+    "audio_phase_error": 1.486687831980747,
+    "audio_spectral_loss": 286.6619309006911,
+    "audio_video_correspondence_accuracy": 0.25,
+    "mean_rank": 2.5,
+    "null_audio_mse": 0.9605565667152405,
+    "null_visual_mse": 0.24063554406166077,
+    "random_audio_mse": 1.9650806188583374,
+    "random_visual_mse": 0.3540054261684418,
+    "retrieval_r1": 0.25,
+    "retrieval_r10": 1.0,
+    "retrieval_r5": 1.0,
+    "shuffled_retrieval_r1": 0.25,
+    "shuffled_retrieval_r5": 1.0,
+    "total_loss": 1.2918034791946411,
+    "visual_latent_error": 0.2535180449485779,
+    "visual_mse": 0.2535180449485779,
+    "visual_spectral_proxy_loss": 29.542383584596625
+  },
+  "train_samples_seen": 8,
+  "validation": {
+    "alignment_loss": 1.2974077463150024,
+    "audio_frequency_recovery_error": 13.434375,
+    "audio_mse": 0.9354394674301147,
+    "audio_phase_error": 1.5446029287706953,
+    "audio_spectral_loss": 261.0799048975226,
+    "audio_video_correspondence_accuracy": 0.75,
+    "mean_rank": 1.75,
+    "null_audio_mse": 0.9383296966552734,
+    "null_visual_mse": 0.24746492505073547,
+    "random_audio_mse": 1.935683250427246,
+    "random_visual_mse": 0.38538187742233276,
+    "retrieval_r1": 0.5,
+    "retrieval_r10": 1.0,
+    "retrieval_r5": 1.0,
+    "shuffled_retrieval_r1": 0.25,
+    "shuffled_retrieval_r5": 1.0,
+    "total_loss": 1.3338103294372559,
+    "visual_latent_error": 0.2686299979686737,
+    "visual_mse": 0.2686299979686737,
+    "visual_spectral_proxy_loss": 30.817224166013958
+  },
+  "wall_clock_time_seconds": 0.07569242303725332
+}

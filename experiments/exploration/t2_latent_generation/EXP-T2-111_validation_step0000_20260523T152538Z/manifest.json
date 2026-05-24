@@ -1,0 +1,278 @@
+{
+  "batch_contract_summary": {
+    "audio_mask_shape": [
+      5,
+      512
+    ],
+    "audio_shape": [
+      5,
+      512,
+      80
+    ],
+    "modality_ids": {
+      "audio": 2,
+      "visual_video": 3
+    },
+    "source_tags_valid": true,
+    "visual_mask_shape": [
+      5,
+      512
+    ],
+    "visual_shape": [
+      5,
+      512,
+      256
+    ]
+  },
+  "batch_size": 5,
+  "checkpoint_path": "experiments/multimodal/t2/EXP-T2-111/checkpoint.pt",
+  "claim_limit": "Diagnostic T2 latent exploration only: predicted/reconstructed audio and visual latent fields, retrieval probes, PCA views, and optional heuristic latent-to-media renders. No learned raw waveform/video decoder, text-generation, policy/commit, grounding, understanding, or faithful media-generation claim.",
+  "config_hash": "sha256:9e7385bfd3faecb47fe0790c0a4d83ff4b1c579d26382093dab3ca0b402d7747",
+  "config_path": "experiments/multimodal/t2/EXP-T2-111/config.json",
+  "context_fraction": 0.5,
+  "dataset_card_path": "artifacts/t2_audio_visual/vggsound_5k_available_v0/dataset_card.json",
+  "dataset_manifest_sha256": "sha256:c59a1bd6bb72c6aa8d7e0859a3bca94bbf9726c852ffffca57c49c0572d794cf",
+  "dataset_mix": {
+    "audio": 0.5,
+    "text_code": null,
+    "visual_video": 0.5
+  },
+  "dataset_sample_count": 5,
+  "dataset_split_counts": {
+    "test": {
+      "audio_frames": 3072,
+      "samples": 6,
+      "visual_frames": 1536
+    },
+    "train": {
+      "audio_frames": 1117696,
+      "samples": 2183,
+      "visual_frames": 558848
+    },
+    "validation": {
+      "audio_frames": 2560,
+      "samples": 5,
+      "visual_frames": 1280
+    }
+  },
+  "device": "cuda",
+  "diagnostic_media_renderer": {
+    "audio_n_iter": 16,
+    "audio_renderer": "approximate normalized log-mel -> dB percentile scaling -> Griffin-Lim",
+    "enabled": true,
+    "hop_length": 160,
+    "n_fft": 400,
+    "sample_rate": 16000,
+    "video_fps": 2,
+    "video_seconds": 4.0,
+    "visual_renderer": "grayscale row-latent [-1,1] -> uint8 frame; repeated/panel video"
+  },
+  "dtype": "torch.bfloat16",
+  "experiment_id": "EXP-T2-111",
+  "feature_spec": {
+    "audio_feature_dim": 80,
+    "audio_length": 512,
+    "visual_feature_dim": 256,
+    "visual_length": 512
+  },
+  "labels": [
+    "people slapping",
+    "electric grinder grinding",
+    "playing hockey",
+    "firing muskets",
+    "police radio chatter"
+  ],
+  "media_claim_limit": "Optional WAV/PNG/MP4 outputs are approximate diagnostic latent-to-media renders using fixed inverse-log-mel/row-latent heuristics. The T2 model did not train a raw waveform/video decoder, phase/color/motion were discarded by extraction, and these files are not evidence of faithful media generation.",
+  "missing_span_fraction": 0.15,
+  "model_summary": {
+    "context_length": 1024,
+    "estimated_parameter_count": {
+      "adapters": 259584,
+      "decoders": 0,
+      "embeddings": 789504,
+      "heads": 1439569,
+      "policy": 0,
+      "processor": 123603456,
+      "total": 126092113
+    },
+    "latent_dim": 768,
+    "n_head": 12,
+    "n_layer": 13,
+    "name": "slwm-t2-124m-vggsound-available-v0",
+    "variant": "slwm_audio_visual_latent"
+  },
+  "modes": {
+    "audio_to_visual": {
+      "artifacts": {
+        "audio_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/audio_latent_prediction.png",
+        "diagnostic_media": {
+          "completed_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/completed_visual_frame.png",
+          "diagnostic_visual_gif": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/diagnostic_visual_sequence.gif",
+          "diagnostic_visual_mp4": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/diagnostic_visual_sequence.mp4",
+          "diagnostic_visual_panels": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/diagnostic_visual_panels.png",
+          "generated_completed_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/generated_completed_audio.wav",
+          "input_masked_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/input_masked_audio.wav",
+          "input_masked_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/input_masked_visual_frame.png",
+          "media_claim_limit": "Optional WAV/PNG/MP4 outputs are approximate diagnostic latent-to-media renders using fixed inverse-log-mel/row-latent heuristics. The T2 model did not train a raw waveform/video decoder, phase/color/motion were discarded by extraction, and these files are not evidence of faithful media generation.",
+          "prediction_only_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/prediction_only_audio.wav",
+          "prediction_only_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/prediction_only_visual_frame.png",
+          "target_reference_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/target_reference_audio.wav",
+          "target_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/target_visual_frame.png"
+        },
+        "latent_npz": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/latent_predictions.npz",
+        "latent_world_pca": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/latent_world_pca.png",
+        "mse_curve": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/latent_mse_over_time.png",
+        "pca_summary": {
+          "explained_variance_ratio": [
+            0.3735375702381134,
+            0.2745884954929352
+          ],
+          "plot_created": true,
+          "renderer": "PIL"
+        },
+        "retrieval_matrix": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/av_retrieval_matrix.png",
+        "visual_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/audio_to_visual/visual_latent_prediction.png"
+      },
+      "metrics": {
+        "alignment_loss": 0.9151339530944824,
+        "audio_mse": 0.6666343808174133,
+        "audio_null_mse": 1.0975297689437866,
+        "retrieval": {
+          "mean_rank": 1.0,
+          "retrieval_r1": 1.0,
+          "retrieval_r10": 1.0,
+          "retrieval_r5": 1.0
+        },
+        "shuffled_retrieval": {
+          "shuffled_mean_rank": 4.0,
+          "shuffled_retrieval_r1": 0.0,
+          "shuffled_retrieval_r10": 1.0,
+          "shuffled_retrieval_r5": 1.0
+        },
+        "visual_mse": 0.2897087037563324,
+        "visual_null_mse": 0.28363674879074097
+      }
+    },
+    "masked_av": {
+      "artifacts": {
+        "audio_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/audio_latent_prediction.png",
+        "diagnostic_media": {
+          "completed_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/completed_visual_frame.png",
+          "diagnostic_visual_gif": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/diagnostic_visual_sequence.gif",
+          "diagnostic_visual_mp4": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/diagnostic_visual_sequence.mp4",
+          "diagnostic_visual_panels": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/diagnostic_visual_panels.png",
+          "generated_completed_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/generated_completed_audio.wav",
+          "input_masked_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/input_masked_audio.wav",
+          "input_masked_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/input_masked_visual_frame.png",
+          "media_claim_limit": "Optional WAV/PNG/MP4 outputs are approximate diagnostic latent-to-media renders using fixed inverse-log-mel/row-latent heuristics. The T2 model did not train a raw waveform/video decoder, phase/color/motion were discarded by extraction, and these files are not evidence of faithful media generation.",
+          "prediction_only_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/prediction_only_audio.wav",
+          "prediction_only_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/prediction_only_visual_frame.png",
+          "target_reference_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/target_reference_audio.wav",
+          "target_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/target_visual_frame.png"
+        },
+        "latent_npz": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/latent_predictions.npz",
+        "latent_world_pca": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/latent_world_pca.png",
+        "mse_curve": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/latent_mse_over_time.png",
+        "pca_summary": {
+          "explained_variance_ratio": [
+            0.3052888512611389,
+            0.18194720149040222
+          ],
+          "plot_created": true,
+          "renderer": "PIL"
+        },
+        "retrieval_matrix": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/av_retrieval_matrix.png",
+        "visual_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/masked_av/visual_latent_prediction.png"
+      },
+      "metrics": {
+        "alignment_loss": 0.9449194669723511,
+        "audio_mse": 0.6787114143371582,
+        "audio_null_mse": 1.0975297689437866,
+        "retrieval": {
+          "mean_rank": 1.0,
+          "retrieval_r1": 1.0,
+          "retrieval_r10": 1.0,
+          "retrieval_r5": 1.0
+        },
+        "shuffled_retrieval": {
+          "shuffled_mean_rank": 4.2,
+          "shuffled_retrieval_r1": 0.0,
+          "shuffled_retrieval_r10": 1.0,
+          "shuffled_retrieval_r5": 1.0
+        },
+        "visual_mse": 0.26247018575668335,
+        "visual_null_mse": 0.28350207209587097
+      }
+    },
+    "visual_to_audio": {
+      "artifacts": {
+        "audio_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/audio_latent_prediction.png",
+        "diagnostic_media": {
+          "completed_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/completed_visual_frame.png",
+          "diagnostic_visual_gif": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/diagnostic_visual_sequence.gif",
+          "diagnostic_visual_mp4": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/diagnostic_visual_sequence.mp4",
+          "diagnostic_visual_panels": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/diagnostic_visual_panels.png",
+          "generated_completed_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/generated_completed_audio.wav",
+          "input_masked_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/input_masked_audio.wav",
+          "input_masked_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/input_masked_visual_frame.png",
+          "media_claim_limit": "Optional WAV/PNG/MP4 outputs are approximate diagnostic latent-to-media renders using fixed inverse-log-mel/row-latent heuristics. The T2 model did not train a raw waveform/video decoder, phase/color/motion were discarded by extraction, and these files are not evidence of faithful media generation.",
+          "prediction_only_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/prediction_only_audio.wav",
+          "prediction_only_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/prediction_only_visual_frame.png",
+          "target_reference_audio": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/target_reference_audio.wav",
+          "target_visual_frame": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/target_visual_frame.png"
+        },
+        "latent_npz": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/latent_predictions.npz",
+        "latent_world_pca": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/latent_world_pca.png",
+        "mse_curve": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/latent_mse_over_time.png",
+        "pca_summary": {
+          "explained_variance_ratio": [
+            0.35011547803878784,
+            0.1794305145740509
+          ],
+          "plot_created": true,
+          "renderer": "PIL"
+        },
+        "retrieval_matrix": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/av_retrieval_matrix.png",
+        "visual_heatmap": "experiments/exploration/t2_latent_generation/EXP-T2-111_validation_step0000_20260523T152538Z/visual_to_audio/visual_latent_prediction.png"
+      },
+      "metrics": {
+        "alignment_loss": 1.3194866180419922,
+        "audio_mse": 1.0519616603851318,
+        "audio_null_mse": 1.0515564680099487,
+        "retrieval": {
+          "mean_rank": 1.0,
+          "retrieval_r1": 1.0,
+          "retrieval_r10": 1.0,
+          "retrieval_r5": 1.0
+        },
+        "shuffled_retrieval": {
+          "shuffled_mean_rank": 3.4,
+          "shuffled_retrieval_r1": 0.0,
+          "shuffled_retrieval_r10": 1.0,
+          "shuffled_retrieval_r5": 1.0
+        },
+        "visual_mse": 0.27534449100494385,
+        "visual_null_mse": 0.28350207209587097
+      }
+    }
+  },
+  "prepared_corpus_dir": "artifacts/t2_audio_visual/vggsound_5k_available_v0",
+  "sample_ids": [
+    "vggsound-005187--dRucPKqTFc-000007",
+    "vggsound-005256--rcoSOKo-qM-000566",
+    "vggsound-005362-0D8KognM4uY-000282",
+    "vggsound-005390-0KAeUAAoVnY-000143",
+    "vggsound-005392-0KIC9xmmD8g-000105"
+  ],
+  "security_scope": "Loads trusted local PyTorch checkpoints only from experiments/multimodal/t2 and writes exploration artifacts only under experiments/exploration.",
+  "seed": 12401,
+  "split": "validation",
+  "step": 0,
+  "training_compute_summary": {
+    "accelerator_memory_mb": 21474.9140625,
+    "configured_batch_size": 256,
+    "configured_precision": "bf16",
+    "configured_steps": 1000,
+    "max_memory_mb": 2572.61328125
+  }
+}
