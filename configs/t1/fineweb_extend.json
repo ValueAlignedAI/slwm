@@ -1,0 +1,20 @@
+{
+  "sprint": "T1-S3",
+  "artifacts": "experiments/text/t1/extended-20261105",
+  "parent": "experiments/text/t1/scale-20261105",
+  "parent_config": "configs/t1/fineweb_scale.json",
+  "protocol": "docs/research/extended_text_protocol_20261105.md",
+  "additional_updates": 4096,
+  "slice_updates": 512,
+  "lr": 0.0002,
+  "lr_floor": 0.00002,
+  "warmup": 128,
+  "test_window_start": 512,
+  "test_batches": 128,
+  "runs": [
+    {"id":"EXP-T1-211","parent":"EXP-T1-201","variant":"gpt2","seed":81},
+    {"id":"EXP-T1-212","parent":"EXP-T1-202","variant":"slwm","seed":81},
+    {"id":"EXP-T1-213","parent":"EXP-T1-203","variant":"gpt2","seed":82},
+    {"id":"EXP-T1-214","parent":"EXP-T1-204","variant":"slwm","seed":82}
+  ]
+}
