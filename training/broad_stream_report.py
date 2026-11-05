@@ -22,7 +22,9 @@ def recognition_summary(rows):
             "nonempty_reference_corpus_wer":sum(r["normalized_edit_count"] for r in with_words)/sum(r["normalized_reference_words"] for r in with_words) if with_words else None,
             "no_reference_cases":len(without_words),
             "no_reference_insertions":sum(r["normalized_edit_count"] for r in without_words),
-            "reference_words":sum(r["normalized_reference_words"] for r in rows)}
+            "reference_words":sum(r["normalized_reference_words"] for r in rows),
+            "capped_recognizer_chunks":sum(c.get("token_limit_reached",False) for r in rows for c in r.get("chunks",[])),
+            "recognizer_chunks":sum(len(r.get("chunks",[])) for r in rows)}
 
 
 def content_summaries(root,recognized,long_cases):
