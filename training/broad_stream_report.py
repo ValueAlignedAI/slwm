@@ -12,6 +12,11 @@ def interval(values,people,seed=291):
     return {"person_mean":float(means.mean()),"person_cluster_95_interval":np.quantile(draws,[.025,.975]).tolist(),"people":len(unique),"cases":len(values)}
 
 
+def meeting_interval(values,meetings):
+    result=interval(values,meetings)
+    return {"meeting_mean":result["person_mean"],"meeting_cluster_95_interval":result["person_cluster_95_interval"],"meetings":result["people"],"person_contributions":result["cases"]}
+
+
 def recognition_summary(rows):
     """Keep no-reference hallucinations explicit instead of hiding them in WER."""
     with_words=[r for r in rows if r["normalized_reference_words"]>0]
@@ -84,10 +89,10 @@ def policy_summary():
         for strategy in grouped:
             person[strategy]={p:float(np.mean([r["total_cost"] for r in grouped[strategy] if r["actor"]==p])) for p in sorted({r["actor"] for r in rows})}
         people=list(person["learned"]); gain=[person[best][p]-person["learned"][p] for p in people]; effect=interval(gain,people); coverage=float(np.mean([r["committed"] for r in grouped["learned"]])); committed=[r["error"] for r in grouped["learned"] if r["committed"]]; action_counts={a:sum(r["action"]==a for r in grouped["learned"]) for a in cfg["actions"]}; summary[run]={"mean_total_cost":means,"strongest_fixed":best,"effect":effect,"coverage":coverage,"conditional_committed_error":float(np.mean(committed)) if committed else None,"actions":action_counts,"passes_gate":bool(effect["person_mean"]>0 and effect["person_cluster_95_interval"][0]>0 and coverage>=.5),"person_costs":person,"goals":{g:{k:float(np.mean([r["total_cost"] for r in v if r["goal"]==g])) for k,v in grouped.items()} for g in cfg["goals"]}}
-        meeting={r["actor"]:r["id"].split("-")[0] for r in rows}; summary[run]["meeting_cluster_sensitivity_vs_strongest_fixed"]=interval(gain,[meeting[p] for p in people]); summary[run]["independent_test_meetings"]=len(set(meeting.values()))
+        meeting={r["actor"]:r["id"].split("-")[0] for r in rows}; summary[run]["meeting_cluster_sensitivity_vs_strongest_fixed"]=meeting_interval(gain,[meeting[p] for p in people]); summary[run]["independent_test_meetings"]=len(set(meeting.values()))
         summary[run]["bootstrap_sensor_cost_per_episode"]=.1; summary[run]["risk_absolute_calibration_error"]=float(np.mean([abs(r["predicted_error"]-r["error"]) for r in grouped["learned"]])); summary[run]["activity_conditioned_tick_means"]={}
         representation=interval([person["raw"][p]-person["learned"][p] for p in people],people); summary[run]["field_vs_direct_sensor_statistics"]=representation; summary[run]["field_representation_gate"]=bool(representation["person_cluster_95_interval"][0]>0 and coverage>=.5)
-        summary[run]["meeting_cluster_sensitivity_field_vs_raw"]=interval([person["raw"][p]-person["learned"][p] for p in people],[meeting[p] for p in people])
+        summary[run]["meeting_cluster_sensitivity_field_vs_raw"]=meeting_interval([person["raw"][p]-person["learned"][p] for p in people],[meeting[p] for p in people])
         for active in (False,True):
             conditional={}
             for strategy,v in grouped.items():
@@ -96,7 +101,7 @@ def policy_summary():
     write_json(root/"summary.json",summary); lines=["# P1-S1 — continuous sensing decisions from frozen shared fields","","Every automatic tick counts toward utility, including uncommitted predictions. A shared0.1 bootstrap sensor cost per episode is additional and equal across strategies. Actions select recorded sensors; they do not control physical motion. All world weights remain fixed and calibration people are separate from training, selection and final test people.","","| World run | Learned total cost | Direct-sensor actor | Strongest fixed / cost | Paired cost gain95% interval | Commitment coverage | Gate |","|---|---:|---:|---|---|---:|---|"]
     for run,v in summary.items():
         lo,hi=v["effect"]["person_cluster_95_interval"]; lines.append(f"| {run} | {v['mean_total_cost']['learned']:.4f} | {v['mean_total_cost']['raw']:.4f} | {v['strongest_fixed']} / {v['mean_total_cost'][v['strongest_fixed']]:.4f} | {v['effect']['person_mean']:+.4f} [{lo:+.4f},{hi:+.4f}] | {100*v['coverage']:.1f}% | {'PASS' if v['passes_gate'] else 'FAIL'} |")
-    lines += ["","The strongest fixed baseline is the lowest cost across all registered fixed strategies. The actor receives current processed-field/memory means, model risk and previous sensor bits; future labels enter only train-only risk fitting and final scoring. Standardized128-hidden heads predict counterfactual future error after a2-packet guard. Goals are explicit audio/video/both enums, not learned language instructions. Summary JSON additionally reports active/quiet tick-conditional means and risk calibration error. Own-speaker activity is an evaluation-only label; primary utility retains every tick.","","The12 fresh people belong to only three independent meetings. Registered gates use person-cluster intervals; summary.json also gives pre-test-specified meeting-cluster sensitivity intervals, including the field-versus-raw comparison. Three meetings provide limited evidence about new environments. In those two sensitivity records the inherited person_cluster_95_interval key refers to resampled meetings, as identified by the enclosing meeting_cluster name and people=3 count.","","A physical-action world model still needs action-conditioned physical transitions, goals/reward, multi-step planning and embodiment-specific data. This recorded-data sensing loop cannot establish those capabilities. See the paced CPU audit for automatic action ticks, deadlines and exact weight invariance."]
+    lines += ["","The strongest fixed baseline is the lowest cost across all registered fixed strategies. The actor receives current processed-field/memory means, model risk and previous sensor bits; future labels enter only train-only risk fitting and final scoring. Standardized128-hidden heads predict counterfactual future error after a2-packet guard. Goals are explicit audio/video/both enums, not learned language instructions. Summary JSON additionally reports active/quiet tick-conditional means and risk calibration error. Own-speaker activity is an evaluation-only label; primary utility retains every tick.","","The12 fresh people belong to only three independent meetings. Registered gates use person-cluster intervals; summary.json also gives pre-test-specified meeting-cluster sensitivity intervals, including the field-versus-raw comparison. Three meetings provide limited evidence about new environments.","","A physical-action world model still needs action-conditioned physical transitions, goals/reward, multi-step planning and embodiment-specific data. This recorded-data sensing loop cannot establish those capabilities. See the paced CPU audit for automatic action ticks, deadlines and exact weight invariance."]
     (root/"report.md").write_text("\n".join(lines)+"\n"); return summary
 
 
@@ -119,7 +124,7 @@ def av_repair_summary(recognized,root):
         people=[r["actor"] for r in grouped["audio_only"]]; audio=np.asarray([r["wer"] for r in grouped["audio_only"]]); aligned=np.asarray([r["wer"] for r in grouped["aligned_video"]]); effects={}
         for condition,rows in grouped.items(): effects[condition+"_minus_aligned"]=interval(np.asarray([r["wer"] for r in rows])-aligned,people)
         meetings=[r["id"].split("-")[0] for r in grouped["audio_only"]]
-        meeting_effects={condition+"_minus_aligned":interval(np.asarray([r["wer"] for r in rows])-aligned,meetings) for condition,rows in grouped.items()}
+        meeting_effects={condition+"_minus_aligned":meeting_interval(np.asarray([r["wer"] for r in rows])-aligned,meetings) for condition,rows in grouped.items()}
         result[run]={"mean_clip_wer":{k:float(np.mean([r["wer"] for r in rows])) for k,rows in grouped.items()},"recognition":{k:recognition_summary(v) for k,v in grouped.items()},"paired_changes":effects,"meeting_cluster_sensitivity":meeting_effects,"independent_meetings":len(set(meetings)),"nonempty_reference_people":sum(r["normalized_reference_words"]>0 for r in grouped["audio_only"]),"reference_words_by_person":{r["actor"]:r["normalized_reference_words"] for r in grouped["audio_only"]},"scope":"Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"}
     write_json(root/"av_repair_summary.json",result); return result
 
