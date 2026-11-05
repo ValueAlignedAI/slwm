@@ -38,7 +38,8 @@ mask: BoolTensor[B, T]
 - `visual_video` — image/video patch, tube, or latent streams.
 - `noop` — valid committed policy behavior.
 
-Optional sensor, robotics, action, and persistent-memory experiments are future-phase only.
+Recorded active-sensing and persistent-memory experiments are in progress.
+Physical robotics/action control remains future work.
 
 ## Documentation
 
@@ -66,10 +67,28 @@ Project documentation is organized under `docs/`:
 | R1 — Literature-to-design mapping | Complete as research/design specification | `docs/research/literature_map.md`, `docs/research/design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
 | I1 — Baselines | Implemented locally | `docs/evaluation/baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
-| T1 — Text baseline and scale | Four from-scratch GPT-2/SLWM runs complete at 124M/125M | `experiments/text/t1/scale-20261105/report.md`, `docs/training/content_and_scale.md` | Early text guardrail passes both seeds. 16.8M tokens/run from a prepared 2.6B-token corpus; SLWM loss improves ~3% at equal tokens with ~40% more time/token. Severe undertraining prevents a convergence claim. |
+| T1 — Text baseline and scale | Four124M/125M continuations complete at151M tokens/run | `experiments/text/t1/extended-throughput-20261105/report.md` | Test NLL improves3.64–3.67% at equal tokens, at1.47–1.49x continuation time. Small timer-matched validation gains; severe undertraining and repetitive samples remain. |
 | T2 — Speech content and video timing | Ten new runs pass fresh-speaker content, timing rejection and spectral-video gates | `experiments/multimodal/t2/content-sync-20261105/report_v2.md`, `docs/training/content_and_scale.md` | 749 new GRID clips/eight people and unseen complete sentence combinations. Word readout +9.7–12.4pp; video gap-spectrum error −11–12%; ±240ms admission below 1%. Practical speech-recognition gate fails. Restricted grammar; 7.71M deployed video weights. |
+| T2-B1 / P1-S1 — Broader shared fields and continuous sensing | Training; final scores pending | `docs/training/operational_world.md` |24M main fields, paired Transformers,100.6h broader speech, long media and direct-sensor policy controls. No new capability gate is yet claimed. |
 
 ## Latest completed research — 2026-11-05
+
+The new [151M-token text comparison](experiments/text/t1/extended-throughput-20261105/report.md)
+is complete: SLWM test NLL is3.64–3.67% lower than the matched GPT-2-style model,
+at1.47–1.49x continuation training time. Equal total timer-budget validation
+gains are only0.10–1.04%, with checkpoint-cadence and timer limits reported.
+All fixed raw continuations remain available and still show substantial
+repetition. These124/125M language weights are separate from the24M audiovisual
+fields and remain severely undertrained at roughly1.2 tokens per parameter.
+
+The broader speech/shared-field matrix and continuous sensing study are still
+training. Their [protocols and ordinary-file workflow](docs/training/operational_world.md)
+cover100.6h LibriSpeech, paired AMI recordings, independent fresh people,
+40.96s audio/video and longer text-conditioned media, plus matched Transformer
+and direct-sensor decision controls. Final B1/P1 scores have not been read.
+Read the [next research questions](docs/research/operational_next_questions_20261105.md)
+for the data, representation and physical-action requirements. No new speech,
+world-model or motor-control success is claimed while these jobs are in progress.
 
 Read the [current findings](docs/research/findings.md),
 [corrected speech report](experiments/multimodal/t2/content-sync-20261105/report_v2.md),
@@ -97,8 +116,10 @@ pytest
 Latest complete suite on Fedora (2026-11-05):
 
 ```text
-133 passed
+163 passed
 ```
+
+The previous completed content/timing study passed133 tests.
 
 Earlier result from the T1/T2 foundation branch:
 

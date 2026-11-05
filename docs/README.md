@@ -22,6 +22,8 @@ Agents should follow the reading order in `../AGENTS.md`:
 - `research/design_decisions.md` — design decisions and ablation hooks.
 - `research/video_repair_protocol_20261105.md` — frozen true-gap video versus audio comparison.
 - `research/findings.md` — current decisions, including mixed video-repair evidence.
+- [151M-token text comparison](../experiments/text/t1/extended-throughput-20261105/report.md) — paired GPT-2-scale test and measured-time results.
+- [Next operational research questions](research/operational_next_questions_20261105.md) — train-only data/architecture diagnostics and the physical-action gap.
 
 ## Architecture
 
@@ -36,6 +38,7 @@ Agents should follow the reading order in `../AGENTS.md`:
 - `training/preprocessing.md` — T2 audio/visual latent preprocessing and dataset plan.
 - `training/t1_text_code_training.md` — T1 text/code training protocol and current evidence.
 - `training/video_repair.md` — actual speech-repair checkpoints, waveform isolation and reproduction.
+- [Broad fields and continuous sensing](training/operational_world.md) — long audio/video/text inference, paired worlds and bound decision actors; B1/P1 results pending.
 - `../training/README.md` — runnable training command reference.
 
 ## Evaluation And Experiments
