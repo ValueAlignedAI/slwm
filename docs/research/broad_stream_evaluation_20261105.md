@@ -91,3 +91,8 @@ calibration. Report each person's cost against all registered fixed strategies,
 both architectures and seeds. Commit coverage never removes ticks from utility.
 Paced replay is a continuous operational file loop; sensing does not alter the
 physical world. A later physical-action model needs intervention data separately.
+The12 AMI test people share three meeting events. Keep the registered person
+bootstrap/gates and additionally report meeting-cluster sensitivity for sensing
+utility, field-versus-raw utility and same-model video repair. Name these as
+meeting intervals with only three independent groups; do not imply12 independent
+environments or replace the original gate after seeing results.
