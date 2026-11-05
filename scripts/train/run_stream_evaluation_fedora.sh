@@ -16,6 +16,7 @@ done
 wait "$STREAM_PACED_PID"
 CUDA_VISIBLE_DEVICES= "$STREAM_PYTHON" -m training.stream_exposure_audit
 "$STREAM_PYTHON" -m training.broad_stream_report
+"$STREAM_PYTHON" -m training.stream_horizon_report
 while ! test -f experiments/text/t1/extended-throughput-20261105/summary.json; do sleep 20; done
 "$STREAM_PYTHON" -m training.extended_text_report
 "$STREAM_PYTHON" -m training.export_operational_artifacts

@@ -74,6 +74,18 @@ coverage of the complete stream, transcript error, latency and memory drift.
 Constant appearances do not count as generated scene knowledge. No pretrained
 image/video generator is used. Audio renderer weights are external and fixed.
 
+Horizon diagnostic, specified before test access: compare all saved normal,
+reset, prefix and wrong-time proposals in the same packet bins after the
+eight-chunk boundary:0–128,128–256,256–512 and512–704 packets beyond the prefix.
+This is0–5.461,5.461–10.923,10.923–21.845 and21.845–30.037s after observations
+stop in the prefix arm. Normal/reset arms continue receiving observations.
+Report mel MAE, code/motion MSE, training-mean and static-motion errors with
+person-cluster intervals. Use persisted float16 proposals and disclose that
+quantization; original per-case metrics remain full precision. No new primary
+gate or weight selection follows from this diagnostic. Prefix mode evolves
+persistent state with absent sensors; it does not feed predicted media back as
+observations or demonstrate action-conditioned planning.
+
 Frozen P1-S1 decisions are evaluated only after all policy fitting and commitment
 calibration. Report each person's cost against all registered fixed strategies,
 both architectures and seeds. Commit coverage never removes ticks from utility.
