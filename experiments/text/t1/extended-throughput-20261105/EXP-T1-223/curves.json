@@ -1,0 +1,240 @@
+[
+  {
+    "extension_step": 512,
+    "peak_gpu_bytes": 6138144768,
+    "seconds": 229.85352471203078,
+    "tokens": 25165824,
+    "total_step": 1536,
+    "training_nll": 5.518676252104342,
+    "validation": {
+      "nll": 5.441839352250099,
+      "perplexity": 230.86643786634403,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1024,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13267675136,
+    "seconds": 415.8363467720337,
+    "tokens": 33554432,
+    "total_token_equivalent_step": 2048,
+    "training_nll": 5.272515432909131,
+    "validation": {
+      "nll": 5.238098174333572,
+      "perplexity": 188.31162575052417,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1536,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273704960,
+    "seconds": 609.1295599250589,
+    "tokens": 41943040,
+    "total_token_equivalent_step": 2560,
+    "training_nll": 5.104706821963191,
+    "validation": {
+      "nll": 5.098923236131668,
+      "perplexity": 163.84538948756241,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2048,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 795.0521402070881,
+    "tokens": 50331648,
+    "total_token_equivalent_step": 3072,
+    "training_nll": 4.9823506064713,
+    "validation": {
+      "nll": 4.97467203438282,
+      "perplexity": 144.70136029425066,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2560,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 980.3953995780903,
+    "tokens": 58720256,
+    "total_token_equivalent_step": 3584,
+    "training_nll": 4.865305723622441,
+    "validation": {
+      "nll": 4.861121386289597,
+      "perplexity": 129.16896923341224,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3072,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 1165.4469090790953,
+    "tokens": 67108864,
+    "total_token_equivalent_step": 4096,
+    "training_nll": 4.754461605101824,
+    "validation": {
+      "nll": 4.7629446387290955,
+      "perplexity": 117.09020711699142,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3584,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 1350.4716831860715,
+    "tokens": 75497472,
+    "total_token_equivalent_step": 4608,
+    "training_nll": 4.675183650106192,
+    "validation": {
+      "nll": 4.685327455401421,
+      "perplexity": 108.34574489940928,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4096,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 1535.5208822790883,
+    "tokens": 83886080,
+    "total_token_equivalent_step": 5120,
+    "training_nll": 4.6011730916798115,
+    "validation": {
+      "nll": 4.62051086127758,
+      "perplexity": 101.54589474663958,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4608,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 1720.7111913870904,
+    "tokens": 92274688,
+    "total_token_equivalent_step": 5632,
+    "training_nll": 4.543779604136944,
+    "validation": {
+      "nll": 4.571680814027786,
+      "perplexity": 96.70651891840038,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5120,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 1905.8616940071224,
+    "tokens": 100663296,
+    "total_token_equivalent_step": 6144,
+    "training_nll": 4.494383182376623,
+    "validation": {
+      "nll": 4.5263300240039825,
+      "perplexity": 92.41876329576176,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5632,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 2090.880130730162,
+    "tokens": 109051904,
+    "total_token_equivalent_step": 6656,
+    "training_nll": 4.456508494913578,
+    "validation": {
+      "nll": 4.491620749235153,
+      "perplexity": 89.26600651052435,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6144,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 2275.652022672177,
+    "tokens": 117440512,
+    "total_token_equivalent_step": 7168,
+    "training_nll": 4.41576380841434,
+    "validation": {
+      "nll": 4.459128275513649,
+      "perplexity": 86.412148668424,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6656,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 2460.4107394751627,
+    "tokens": 125829120,
+    "total_token_equivalent_step": 7680,
+    "training_nll": 4.390863234177232,
+    "validation": {
+      "nll": 4.437971293926239,
+      "perplexity": 84.60313256876454,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7168,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 2645.129003626178,
+    "tokens": 134217728,
+    "total_token_equivalent_step": 8192,
+    "training_nll": 4.37821326777339,
+    "validation": {
+      "nll": 4.420682936906815,
+      "perplexity": 83.15305426101715,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7680,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 2830.2453157991986,
+    "tokens": 142606336,
+    "total_token_equivalent_step": 8704,
+    "training_nll": 4.360369153320789,
+    "validation": {
+      "nll": 4.408027574419975,
+      "perplexity": 82.1073530379034,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 8192,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13272262656,
+    "seconds": 3015.36512278422,
+    "tokens": 150994944,
+    "total_token_equivalent_step": 9216,
+    "training_nll": 4.34219047985971,
+    "validation": {
+      "nll": 4.397786810994148,
+      "perplexity": 81.27080183238918,
+      "tokens": 131072
+    }
+  }
+]

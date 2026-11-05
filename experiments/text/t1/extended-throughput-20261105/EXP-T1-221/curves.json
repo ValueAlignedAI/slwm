@@ -1,0 +1,240 @@
+[
+  {
+    "extension_step": 512,
+    "peak_gpu_bytes": 6129362944,
+    "seconds": 230.12669487000676,
+    "tokens": 25165824,
+    "total_step": 1536,
+    "training_nll": 5.528139052214101,
+    "validation": {
+      "nll": 5.454738259315491,
+      "perplexity": 233.8636514257779,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1024,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13264136704,
+    "seconds": 416.20327054697555,
+    "tokens": 33554432,
+    "total_token_equivalent_step": 2048,
+    "training_nll": 5.280983190983534,
+    "validation": {
+      "nll": 5.244497120380402,
+      "perplexity": 189.52048527224255,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1536,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13268986368,
+    "seconds": 647.0815181770013,
+    "tokens": 41943040,
+    "total_token_equivalent_step": 2560,
+    "training_nll": 5.109950255602598,
+    "validation": {
+      "nll": 5.0962997525930405,
+      "perplexity": 163.41610715913998,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2048,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 865.7170427750098,
+    "tokens": 50331648,
+    "total_token_equivalent_step": 3072,
+    "training_nll": 4.975851757451892,
+    "validation": {
+      "nll": 4.964203283190727,
+      "perplexity": 143.19441941345303,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2560,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1051.0432345150039,
+    "tokens": 58720256,
+    "total_token_equivalent_step": 3584,
+    "training_nll": 4.84975334815681,
+    "validation": {
+      "nll": 4.844093814492226,
+      "perplexity": 126.98815501268278,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3072,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1236.4146993969916,
+    "tokens": 67108864,
+    "total_token_equivalent_step": 4096,
+    "training_nll": 4.7505707163363695,
+    "validation": {
+      "nll": 4.756331816315651,
+      "perplexity": 116.31846488047084,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3584,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1421.4433839850244,
+    "tokens": 75497472,
+    "total_token_equivalent_step": 4608,
+    "training_nll": 4.662636851891875,
+    "validation": {
+      "nll": 4.684191420674324,
+      "perplexity": 108.22273025835247,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4096,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1606.4841045470675,
+    "tokens": 83886080,
+    "total_token_equivalent_step": 5120,
+    "training_nll": 4.601417304947972,
+    "validation": {
+      "nll": 4.61888974905014,
+      "perplexity": 101.38141081449832,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4608,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1792.1333005980705,
+    "tokens": 92274688,
+    "total_token_equivalent_step": 5632,
+    "training_nll": 4.541583554819226,
+    "validation": {
+      "nll": 4.5692620277404785,
+      "perplexity": 96.47288918065502,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5120,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 1977.7767776220571,
+    "tokens": 100663296,
+    "total_token_equivalent_step": 6144,
+    "training_nll": 4.491993075236678,
+    "validation": {
+      "nll": 4.5242703557014465,
+      "perplexity": 92.22860719491251,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5632,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 2163.0860794880427,
+    "tokens": 109051904,
+    "total_token_equivalent_step": 6656,
+    "training_nll": 4.458669709041715,
+    "validation": {
+      "nll": 4.492259532213211,
+      "perplexity": 89.32304633209645,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6144,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 2348.0905374930007,
+    "tokens": 117440512,
+    "total_token_equivalent_step": 7168,
+    "training_nll": 4.421882811933756,
+    "validation": {
+      "nll": 4.462863922119141,
+      "perplexity": 86.73555761293424,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6656,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 2533.003472138953,
+    "tokens": 125829120,
+    "total_token_equivalent_step": 7680,
+    "training_nll": 4.399042455479503,
+    "validation": {
+      "nll": 4.439801320433617,
+      "perplexity": 84.75810029825007,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7168,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 2717.881823532982,
+    "tokens": 134217728,
+    "total_token_equivalent_step": 8192,
+    "training_nll": 4.375069925561547,
+    "validation": {
+      "nll": 4.423213854432106,
+      "perplexity": 83.36377432840223,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7680,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 2902.8452621360193,
+    "tokens": 142606336,
+    "total_token_equivalent_step": 8704,
+    "training_nll": 4.361094109714031,
+    "validation": {
+      "nll": 4.410538017749786,
+      "perplexity": 82.31373784495494,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 8192,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 13273525760,
+    "seconds": 3087.8763645040453,
+    "tokens": 150994944,
+    "total_token_equivalent_step": 9216,
+    "training_nll": 4.351933384314179,
+    "validation": {
+      "nll": 4.401091352105141,
+      "perplexity": 81.53980876560652,
+      "tokens": 131072
+    }
+  }
+]

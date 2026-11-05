@@ -1,0 +1,64 @@
+{
+  "81": {
+    "common_compute_method": "Includes each actual parent's training/validation time plus continuation; primary is best validation checkpoint measured before the common budget, interpolation secondary; excludes GPU queue time, not FLOP matched",
+    "common_total_compute_seconds": 3564.6525965470355,
+    "equal_tokens_relative_test_nll_reduction": 0.03671334326170783,
+    "equal_total_compute_interpolated_relative_validation_nll_reduction": 0.010491485748401308,
+    "equal_total_compute_saved_relative_validation_nll_reduction": 0.010412627950908249,
+    "extension_only_diagnostic": {
+      "common_seconds": 3087.8763645040453,
+      "gpt2_validation": 4.401091352105141,
+      "relative_reduction": 0.015969217767339616,
+      "slwm_validation": 4.330809365889419
+    },
+    "gpt2_saved_validation_at_common_total_compute": {
+      "nll": 4.401091352105141,
+      "time": 3564.6525965470355,
+      "tokens": 150994944
+    },
+    "gpt2_test_nll": 4.3302039578557014,
+    "parent_seconds": {
+      "gpt2": 476.77623204299016,
+      "slwm": 680.755330592976
+    },
+    "slwm_saved_validation_at_common_total_compute": {
+      "nll": 4.35526442527771,
+      "time": 3561.7160997650353,
+      "tokens": 100663296
+    },
+    "slwm_test_nll": 4.171227693557739,
+    "slwm_to_gpt2_extension_wall_ratio": 1.467341915613533,
+    "timer_scope": "Original parent timer includes its checkpoint I/O; continuation counters include training/validation but exclude loading/saving and lock queues. This is a measured timer-budget comparison, not exact end-to-end wall or FLOP equivalence."
+  },
+  "82": {
+    "common_compute_method": "Includes each actual parent's training/validation time plus continuation; primary is best validation checkpoint measured before the common budget, interpolation secondary; excludes GPU queue time, not FLOP matched",
+    "common_total_compute_seconds": 3494.3320917582023,
+    "equal_tokens_relative_test_nll_reduction": 0.03636999654236317,
+    "equal_total_compute_interpolated_relative_validation_nll_reduction": 0.009158481923374984,
+    "equal_total_compute_saved_relative_validation_nll_reduction": 0.0009860825047899313,
+    "extension_only_diagnostic": {
+      "common_seconds": 3015.36512278422,
+      "gpt2_validation": 4.397786810994148,
+      "relative_reduction": 0.014506915747929394,
+      "slwm_validation": 4.333988488249701
+    },
+    "gpt2_saved_validation_at_common_total_compute": {
+      "nll": 4.397786810994148,
+      "time": 3494.3320917582023,
+      "tokens": 150994944
+    },
+    "gpt2_test_nll": 4.327748764306307,
+    "parent_seconds": {
+      "gpt2": 478.96696897398215,
+      "slwm": 678.6632994679967
+    },
+    "slwm_saved_validation_at_common_total_compute": {
+      "nll": 4.393450230360031,
+      "time": 3232.7100130400504,
+      "tokens": 92274688
+    },
+    "slwm_test_nll": 4.17034855671227,
+    "slwm_to_gpt2_extension_wall_ratio": 1.4859754422608056,
+    "timer_scope": "Original parent timer includes its checkpoint I/O; continuation counters include training/validation but exclude loading/saving and lock queues. This is a measured timer-budget comparison, not exact end-to-end wall or FLOP equivalence."
+  }
+}
