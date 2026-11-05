@@ -4,7 +4,7 @@ torch=pytest.importorskip("torch")
 pytest.importorskip("vocos")
 pytest.importorskip("cmudict")
 from models.slwm_stream import StreamWorld
-from training.stream_sensing import RiskActor,choose,observe,features,future_error,weight_digest,risk_masks
+from training.stream_sensing import RiskActor,choose,observe,features,raw_features,future_error,weight_digest,risk_masks
 
 
 def test_risk_head_selection_splits_people_not_adjacent_ticks():
@@ -25,6 +25,7 @@ def test_counterfactuals_do_not_receive_future_and_preserve_weights():
         out=observe(model,audio,video,0,bits); changed=audio.clone(); changed[:,32:]+=1000; second=observe(model,changed,video,0,bits)
         assert torch.equal(out["future"],second["future"])
         altered=audio.clone(); altered[1,:32]+=1000; invisible=observe(model,altered,video,0,bits); assert torch.equal(out["field"][1],invisible["field"][1])
+        assert torch.equal(out["raw_features"][1],invisible["raw_features"][1]); assert raw_features(out,bits).shape==(2,1027)
         error=future_error(out,audio,video,0); assert error.shape==(2,2)
         actor=RiskActor(67); assert actor(features(out,bits)).shape==(2,4,2)
     assert before==weight_digest(model)

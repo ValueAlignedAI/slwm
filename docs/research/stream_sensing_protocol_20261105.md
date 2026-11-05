@@ -67,6 +67,27 @@ Aggregate the three registered goals equally for the primary per-person utility;
 also retain each goal separately. Each goal has the same episode/tick count.
 Policy registry IDs101–104 map to world runs801–804 as recorded in config. These
 are separate small fitted decision heads, not additional world-model pretraining.
+Additionally report active/quiet future-target intervals using official own-speaker
+word/phone support. That label is evaluation-only and never enters observations,
+features, action choice or commitment. The primary utility retains every tick.
+The equal bootstrap costs0.1 per episode, reported separately from subsequent
+per-tick utility; adding that shared constant cannot change paired effects.
+
+Before policy fitting, register an additional direct-sensor actor111–114 for
+each world, with the same1027 inputs,128 hidden units, initial head seed, fitting
+people, labels, dropout/selection and separate70% commitment calibration. Its
+state contains observed-only audio/video feature means (400+64),32 pooled audio
+temporal deviations and16 pooled video deviations, plus a512D exponential
+running memory (0.8 previous+0.2 current), current audio-statistic energy and
+previous sensor bits. Absent sensor values are erased before every statistic.
+It receives no processed field, learned risk, labels, transcript or future signal.
+Reuse exactly the field actor's training trajectories and counterfactual labels.
+Raw and field heads both control the same frozen world forecaster at evaluation.
+The original fixed-baseline utility gate is unchanged. Separately require a
+positive person-cluster field-versus-direct-sensor utility interval, both seeds,
+and field commitment coverage≥50% before claiming added decision value from the
+processed state. This is one simple direct-sensor control, not proof that all
+possible raw-history policies are weaker.
 
 Run one40.96s paced CPU episode while the3090 continues other work when feasible.
 Record every automatic tick, sensor action, source timestamps, output commitment,
