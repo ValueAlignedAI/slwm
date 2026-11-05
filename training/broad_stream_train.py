@@ -33,15 +33,18 @@ def masked_average(values,mask):
 
 
 def phone_loss(out,batch):
-    error=F.cross_entropy(out["phone_logits"].transpose(1,2),batch["phones"],reduction="none"); weight=torch.where(batch["phones"]==0,.1,1.)*batch["valid"]
+    error=F.cross_entropy(out["phone_logits"].transpose(1,2),batch["phones"],reduction="none"); weight=torch.where(batch["phones"]==0,.1,1.)*batch["valid"]*batch.get("phone_valid",torch.ones(batch["valid"].shape[0],device=batch["valid"].device,dtype=torch.bool))[:,None]
     return masked_average(error,weight)
 
 
 def losses(out,batch,cfg,no_content=False):
     valid=batch["valid"]; hole=batch["holes"]; known=batch["a_mask"]; error=(out["mel"]-batch["audio"]).abs().mean(-1); nominal=torch.where(hole,1.,torch.where(known,.02,.2)); generation=~known.any(1); weight=torch.where(generation[:,None],torch.ones_like(nominal),nominal)*valid
     audio=masked_average(error,weight); video_mask=valid&batch["has_video"][:,None]; visual=masked_average((out["video"]-batch["video"]).square().mean(-1),video_mask); motion=masked_average(((out["video"][:,1:]-out["video"][:,:-1])-(batch["video"][:,1:]-batch["video"][:,:-1])).square().mean(-1),video_mask[:,1:]&video_mask[:,:-1]); phonetic=phone_loss(out,batch)
-    target_lengths=torch.tensor([len(t) for t in batch["texts"]],dtype=torch.long); input_lengths=valid.sum(1).long().cpu(); targets=torch.tensor([v for text in batch["texts"] for v in text],device=valid.device,dtype=torch.long)
-    ctc=F.ctc_loss(out["character_logits"].log_softmax(-1).transpose(0,1).contiguous(),targets,input_lengths,target_lengths,blank=0,zero_infinity=True)
+    eligible=torch.nonzero(batch.get("ctc_valid",torch.ones(valid.shape[0],device=valid.device,dtype=torch.bool)),as_tuple=False).flatten(); indices=eligible.cpu().tolist()
+    if len(indices):
+        target_lengths=torch.tensor([len(batch["texts"][i]) for i in indices],dtype=torch.long); input_lengths=valid[eligible].sum(1).long().cpu(); targets=torch.tensor([v for i in indices for v in batch["texts"][i]],device=valid.device,dtype=torch.long)
+        ctc=F.ctc_loss(out["character_logits"][eligible].log_softmax(-1).transpose(0,1).contiguous(),targets,input_lengths,target_lengths,blank=0,zero_infinity=True)
+    else: ctc=out["character_logits"].sum()*0
     future=[]; chunk=cfg["model"]["chunk"]
     for k in range(out["future"].shape[1]-1):
         start=(k+1)*chunk+2; end=start+8
@@ -81,7 +84,7 @@ def validation(model,data,cfg,plans,reset=False):
 
 def freeze(cfg):
     root=Path(cfg["artifacts"]); root.mkdir(parents=True,exist_ok=True)
-    names=(CONFIG,cfg["protocol"],"configs/t2/broad_stream_data.json","models/slwm_stream.py","training/broad_stream_train.py","training/broad_batch.py","training/stream_codec.py","training/broad_data.py","training/broad_sources.py","training/t1_torch_text.py","tests/test_stream_world.py","scripts/train/run_broad_stream_fedora.sh")
+    names=(CONFIG,cfg["protocol"],"configs/t2/broad_stream_data.json","models/slwm_stream.py","training/broad_stream_train.py","training/broad_batch.py","training/stream_codec.py","training/broad_data.py","training/broad_sources.py","training/broad_annotation_correction.py","docs/research/broad_annotation_review_20261105.md","docs/research/ami_source_availability_review_20261105.md","docs/research/ami_decoded_clock_review_20261105.md","tests/test_broad_annotations.py","training/t1_torch_text.py","tests/test_stream_world.py","scripts/train/run_broad_stream_fedora.sh")
     hashes={}
     for name in names:
         target=root/"source_snapshot"/name; target.parent.mkdir(parents=True,exist_ok=True)
@@ -141,7 +144,12 @@ def main():
     sources=freeze(cfg)
     if (root/"selection_plans.json").exists(): assert json.loads((root/"selection_plans.json").read_text())==plans
     else: write_json(root/"selection_plans.json",plans)
-    for relative,digest in json.loads((Path(cfg["corpus"])/"corpus_hashes.json").read_text()).items(): assert file_sha(Path(cfg["corpus"])/relative)==digest
+    corpus=Path(cfg["corpus"]); card=json.loads((corpus/"dataset_card.json").read_text())
+    assert card["annotation_revision"]==2
+    assert file_sha(corpus/"codec.npz")==card["codec_sha256"] and file_sha(corpus/"duration_model.json")==card["duration_model_sha256"]
+    for relative,digest in json.loads((corpus/"corpus_hashes.json").read_text()).items(): assert file_sha(corpus/relative)==digest
+    for manifest in corpus.glob("*/manifest.json"):
+        for name,digest in json.loads(manifest.read_text())["files"].items(): assert file_sha(manifest.parent/name)==digest
     while any(not(root/r["id"]/"complete.json").exists() for r in cfg["runs"]):
         for run in cfg["runs"]:
             if (root/run["id"]/"complete.json").exists(): continue

@@ -68,6 +68,18 @@ def libri_rows(cfg,split):
     return rows
 
 
+
+def decoded_timeline(video):
+    """Measured decoded PTS support, not the AVI header's nominal frame count."""
+    cache=video.with_suffix(video.suffix+".timeline.json"); digest=file_sha(video)
+    if cache.exists():
+        record=json.loads(cache.read_text()); assert record["source_sha256"]==digest; return record
+    process=subprocess.run(["ffprobe","-v","error","-threads","1","-select_streams","v:0","-show_entries","frame=best_effort_timestamp_time","-of","json",str(video)],capture_output=True,check=True)
+    data=json.loads(process.stdout); stamps=np.array([float(x["best_effort_timestamp_time"]) for x in data["frames"]]); period=float(np.median(np.diff(stamps)))
+    if len(stamps)<100 or abs(stamps[0])>1e-5 or np.max(np.abs(np.diff(stamps)-period))>1e-5: raise ValueError("Nonuniform/nonzero-origin AMI decoded clock requires a separate review: "+str(video))
+    record={"source_sha256":digest,"decoded_frames":len(stamps),"first_seconds":float(stamps[0]),"last_seconds":float(stamps[-1]),"frame_period":period,"decoded_end_seconds":float(stamps[-1]+period),"timestamp_sha256":hashlib.sha256(stamps.tobytes()).hexdigest(),"decoder_warnings":process.stderr.decode(errors="replace"),"ffprobe_version":subprocess.check_output(["ffprobe","-version"]).decode().splitlines()[0]}; write_json(cache,record); return record
+
+
 def ami_rows(cfg,role):
     root=Path(cfg["ami_root"]); meetings={m.attrib["observation"]:m for m in ET.parse(root/"annotations/corpusResources/meetings.xml").getroot()}; rows=[]
     for name in cfg["ami_meetings"][role]:
@@ -81,8 +93,8 @@ def ami_rows(cfg,role):
             audio=root/"sources"/name/(name+".Headset-"+s["channel"]+".wav"); video=root/"sources"/name/(name+"."+s["camera"]+".avi")
             if not audio.exists() or not video.exists(): raise FileNotFoundError("AMI signals incomplete: "+name)
             video_info=json.loads(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","json",str(video)]))
-            audio_duration=sf.info(audio).duration; video_duration=float(video_info["format"]["duration"])
-            rows.append({"id":name+"-"+s["nxt_agent"],"actor":"AMI-"+s["global_name"],"source":"ami","subset":role,"raw_path":str(audio),"video_path":str(video),"duration":min(audio_duration,video_duration),"audio_duration":audio_duration,"video_duration":video_duration,"shared_timeline_only":True,"spans":spans,"transcript":" ".join(w for _,_,w in spans),"alignment_source_sha256":file_sha(wordfile)})
+            audio_duration=sf.info(audio).duration; nominal_video_duration=float(video_info["format"]["duration"]); timeline=decoded_timeline(video); video_duration=timeline["decoded_end_seconds"]; common_duration=min(audio_duration,video_duration); source_word_count=len(spans); spans=[r for r in spans if r[0]>=0 and r[1]<=common_duration]
+            rows.append({"id":name+"-"+s["nxt_agent"],"actor":"AMI-"+s["global_name"],"source":"ami","subset":role,"raw_path":str(audio),"video_path":str(video),"duration":min(audio_duration,video_duration),"audio_duration":audio_duration,"video_duration":video_duration,"shared_timeline_only":True,"nominal_video_duration":nominal_video_duration,"decoded_timeline":timeline,"source_word_count":source_word_count,"spans":spans,"transcript":" ".join(w for _,_,w in spans),"alignment_source_sha256":file_sha(wordfile)})
     return rows
 
 

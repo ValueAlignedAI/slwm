@@ -32,13 +32,16 @@ class StreamCorpus:
         return plan
 
     def batch(self,plan,device="cuda",shuffled=False):
-        b=len(plan); t=self.window; audio=np.zeros((b,t,400),np.float32); video=np.zeros((b,t,64),np.float32); wrong_video=video.copy(); phones=np.zeros((b,t),np.int64); valid=np.zeros((b,t),bool); has_video=np.zeros(b,bool); a_mask=np.zeros((b,t),bool); v_mask=a_mask.copy(); t_mask=a_mask.copy(); holes=a_mask.copy(); texts=[]; ids=[]; actors=[]; appearance=np.zeros((b,64),np.float32)
+        b=len(plan); t=self.window; audio=np.zeros((b,t,400),np.float32); video=np.zeros((b,t,64),np.float32); wrong_video=video.copy(); phones=np.zeros((b,t),np.int64); valid=np.zeros((b,t),bool); has_video=np.zeros(b,bool); a_mask=np.zeros((b,t),bool); v_mask=a_mask.copy(); t_mask=a_mask.copy(); holes=a_mask.copy(); texts=[]; ids=[]; actors=[]; appearance=np.zeros((b,64),np.float32); phone_valid=np.ones(b,bool); ctc_valid=np.ones(b,bool); actual_modes=[]
         for i,p in enumerate(plan):
             row=self.rows[p["name"]][p["index"]]; n=min(t,row["length"]-p["start"]); offset=row["offset"]+p["start"]; mel,units=self.arrays[p["name"]]; audio[i,:n]=(np.asarray(mel[offset:offset+n],np.float32)-self.mean)/self.scale; phones[i,:n]=units[offset:offset+n]; valid[i,:n]=True; ids.append(row["id"]); actors.append(row["actor"])
+            phone_valid[i]=row.get("phone_supervision_usable",True); ctc_valid[i]=row.get("ctc_alignment_usable",True)
             begin=p["start"]*PACKET_SECONDS; end=(p["start"]+n)*PACKET_SECONDS; texts.append(character_ids(" ".join(w for a,z,w in row["spans"] if a>=begin and z<=end)))
             if row["source"]=="ami":
                 values=self.videos[row["id"]]; has_video[i]=True; at=p["wrong"] if shuffled else p["start"]; video[i,:n]=values[at:at+n]; wrong_at=min(p["wrong"],len(values)-n); wrong_video[i,:n]=values[wrong_at:wrong_at+n]
             mode=p["mode"]
+            if mode=="text" and not row.get("text_generation_usable",True): mode="audio"
+            actual_modes.append(mode)
             if mode in ("audio","repair"):
                 a_mask[i,:n]=True
                 if mode=="repair":
@@ -51,8 +54,8 @@ class StreamCorpus:
                 if dropped: a_mask[i,chunk*32:(chunk+1)*32]=False; v_mask[i,chunk*32:(chunk+1)*32]=False; t_mask[i,chunk*32:(chunk+1)*32]=False
         # Target values remain separate; the model masks every absent input and
         # computes its own observed-only interpolation inside each received chunk.
-        tensors={"audio":audio,"video":video,"wrong_video":wrong_video,"phones":phones,"valid":valid,"a_mask":a_mask,"v_mask":v_mask,"t_mask":t_mask,"holes":holes,"has_video":has_video,"appearance":appearance}
-        out={k:torch.as_tensor(v,device=device) for k,v in tensors.items()}; out.update(texts=texts,ids=ids,actors=actors,modes=[p["mode"] for p in plan]); return out
+        tensors={"audio":audio,"video":video,"wrong_video":wrong_video,"phones":phones,"valid":valid,"a_mask":a_mask,"v_mask":v_mask,"t_mask":t_mask,"holes":holes,"has_video":has_video,"appearance":appearance,"phone_valid":phone_valid,"ctc_valid":ctc_valid}
+        out={k:torch.as_tensor(v,device=device) for k,v in tensors.items()}; out.update(texts=texts,ids=ids,actors=actors,modes=actual_modes); return out
 
 
 def predict(model,batch,reset_memory=False,view=None):

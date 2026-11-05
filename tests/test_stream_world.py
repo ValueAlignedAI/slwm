@@ -58,3 +58,10 @@ def test_waveform_erased_before_features_including_edge_support():
 def test_bounded_fft_preserves_long_recording_clock():
     torch.set_num_threads(1); sound=torch.randn(1,24000*65+17)*.05; extractor=MelSpectrogramFeatures(); expected=extractor(sound)[0].T; actual=physical_mel(sound,extractor)
     torch.testing.assert_close(actual,expected,atol=1e-5,rtol=1e-5)
+
+
+def test_pinned_classical_face_detector_api():
+    from pathlib import Path
+    import cv2
+    for name in ("haarcascade_frontalface_default.xml","haarcascade_profileface.xml"):
+        detector=cv2.CascadeClassifier(str(Path(cv2.data.haarcascades)/name)); assert not detector.empty(); detector.detectMultiScale(np.zeros((128,128),np.uint8))

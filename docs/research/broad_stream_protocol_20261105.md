@@ -17,7 +17,9 @@ fresh for the trained generator; the external vocoder has its own disclosed data
 
 Use the AMI participant groups in broad_stream_data.json:28 train,4 selection,
 4 calibration,12 test. Official global identities are verified disjoint before
-training. Use the original individual headset WAV and mapped closeup AVI;
+training. A pre-fit source-availability revision replaces the whole ES2013a
+group with ES2014a after two required ES2013a files return403; no model or test
+score exists. Original signals/logs remain. See the source review. Use the original individual headset WAV and mapped closeup AVI;
 all sessions are continuous and much longer than30s. Restrict only to the common
 audio/video timeline, logging endpoint differences. No held-out crop tuning or
 discarding failed cases. Classical face tracking is causal, checked on training
