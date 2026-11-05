@@ -8,3 +8,17 @@ artifacts/
 *.pth
 *.safetensors
 *.npz
+
+# Local environments, corpora and reproducible binary research artifacts
+.venv/
+.research-venv/
+*.npy
+*.wav
+*.mp3
+*.mp4
+*.mkv
+*.flv
+*.mpg
+*.zip
+*.tar
+*.bin

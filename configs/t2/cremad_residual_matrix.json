@@ -1,0 +1,95 @@
+{
+  "sprint": "T2",
+  "cycle": "real-av-residual-20261104",
+  "source_commit": "418ebc4",
+  "protocol": "docs/research/real_av_residual_followup_20261104.md",
+  "corpus_dir": "artifacts/t2_audio_visual/cremad_fresh_residual_v2",
+  "artifact_dir": "experiments/multimodal/t2/real-av-residual-20261104",
+  "model": {
+    "latent_dim": 256,
+    "n_layer": 4,
+    "n_head": 8,
+    "context_length": 64,
+    "dropout": 0.0,
+    "architecture_flags": {
+      "use_local_temporal_mixer": true,
+      "use_spectral_mixer": true,
+      "use_long_conv": true,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "local_kernel_size": 3,
+      "spectral_kernel_size": 15,
+      "long_kernel_size": 15,
+      "mlp_ratio": 4
+    },
+    "prediction_parameterization": "residual_persistence"
+  },
+  "training": {
+    "steps": 600,
+    "batch_size": 32,
+    "learning_rate": 0.0005,
+    "warmup_steps": 30,
+    "weight_decay": 0.05,
+    "grad_clip": 1.0,
+    "context_steps": 16,
+    "modality_dropout_probability": 0.25,
+    "alignment_weight": 0.1,
+    "eval_every": 100,
+    "precision": "bf16",
+    "bootstrap_samples": 2000
+  },
+  "gates": {
+    "prediction_improvement": 0.05,
+    "cross_modal_improvement": 0.02,
+    "architecture_improvement": 0.05,
+    "retrieval_absolute_improvement": 0.05,
+    "require_visual_dynamics": true
+  },
+  "runs": [
+    {
+      "experiment_id": "EXP-T2-211",
+      "arm": "full",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-212",
+      "arm": "vanilla",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-213",
+      "arm": "no_spectral",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-214",
+      "arm": "no_longconv",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-215",
+      "arm": "shuffled",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-216",
+      "arm": "audio_only",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-217",
+      "arm": "visual_only",
+      "seed": 41
+    },
+    {
+      "experiment_id": "EXP-T2-218",
+      "arm": "full",
+      "seed": 42
+    },
+    {
+      "experiment_id": "EXP-T2-219",
+      "arm": "vanilla",
+      "seed": 42
+    }
+  ]
+}

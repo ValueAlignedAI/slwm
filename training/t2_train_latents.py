@@ -345,6 +345,9 @@ class T2AudioVisualSLWM(nn.Module):
         dropout = float(model_cfg.get("dropout", 0.0))
         flags = model_cfg.get("architecture_flags", {}) if isinstance(model_cfg.get("architecture_flags", {}), Mapping) else {}
         self.flags = dict(flags)
+        self.prediction_parameterization = str(model_cfg.get("prediction_parameterization", "absolute"))
+        if self.prediction_parameterization not in {"absolute", "residual_persistence"}:
+            raise ValueError("Unknown prediction_parameterization")
         self.use_activation_checkpointing = bool(model_cfg.get("activation_checkpointing", flags.get("activation_checkpointing", False)))
         self.audio_projection = nn.Linear(self.audio_feature_dim, self.latent_dim)
         self.visual_projection = nn.Linear(self.visual_feature_dim, self.latent_dim)
@@ -358,6 +361,12 @@ class T2AudioVisualSLWM(nn.Module):
         self.visual_align = nn.Linear(self.latent_dim, self.latent_dim)
         self.logit_scale = nn.Parameter(torch.tensor(math.log(1.0 / 0.07), dtype=torch.float32))
         self.apply(self._init_weights)
+        if self.prediction_parameterization == "residual_persistence":
+            # Start exactly at persistence (or training mean for an absent
+            # stream), then learn only the predictable change.
+            for head in (self.audio_head, self.visual_head):
+                nn.init.zeros_(head.weight)
+                nn.init.zeros_(head.bias)
 
     def _init_weights(self, module: nn.Module) -> None:
         if isinstance(module, (nn.Linear, nn.Embedding, nn.Conv1d)):
@@ -371,8 +380,10 @@ class T2AudioVisualSLWM(nn.Module):
         return torch.arange(length, device=device, dtype=torch.long).unsqueeze(0)
 
     def forward(self, batch: Mapping[str, "torch.Tensor"]) -> dict[str, "torch.Tensor"]:
-        audio = batch["audio_features"]
-        visual = batch["visual_features"]
+        # Enforce visibility here as well as in the loader. Hidden values must
+        # never enter projections or temporal mixers, including at inference.
+        audio = batch["audio_features"].masked_fill(~batch["audio_mask"].bool().unsqueeze(-1), 0.0)
+        visual = batch["visual_features"].masked_fill(~batch["visual_mask"].bool().unsqueeze(-1), 0.0)
         audio_len = int(audio.shape[1])
         visual_len = int(visual.shape[1])
         total_len = audio_len + visual_len
@@ -398,13 +409,45 @@ class T2AudioVisualSLWM(nn.Module):
         z = self.final_norm(z)
         audio_world = z[:, :audio_len, :]
         visual_world = z[:, audio_len:, :]
+        audio_prediction = self.audio_head(audio_world)
+        visual_prediction = self.visual_head(visual_world)
+        if self.prediction_parameterization == "residual_persistence":
+            audio_prediction = audio_prediction + _last_observed(audio, batch["audio_mask"])
+            visual_prediction = visual_prediction + _last_observed(visual, batch["visual_mask"])
         return {
-            "audio_prediction": self.audio_head(audio_world),
-            "visual_prediction": self.visual_head(visual_world),
+            "audio_prediction": audio_prediction,
+            "visual_prediction": visual_prediction,
             "audio_repr": self.audio_align(_masked_mean(audio_world, batch["audio_valid_mask"])),
             "visual_repr": self.visual_align(_masked_mean(visual_world, batch["visual_valid_mask"])),
             "z_world": z,
         }
+
+    def independent_representations(self, batch: Mapping[str, "torch.Tensor"]) -> tuple["torch.Tensor", "torch.Tensor"]:
+        """Encode audio/video separately, returning two ``FloatTensor[B,D]``.
+
+        Retrieval must not use representations that have already attended to
+        their paired candidate. Keep fixed packet positions while removing the
+        other stream entirely; pool observed rather than future query tokens.
+        """
+        audio_only, visual_only = dict(batch), dict(batch)
+        for separate, absent in ((audio_only, "visual"), (visual_only, "audio")):
+            separate[f"{absent}_features"] = torch.zeros_like(batch[f"{absent}_features"])
+            separate[f"{absent}_mask"] = torch.zeros_like(batch[f"{absent}_mask"], dtype=torch.bool)
+        audio_only["audio_valid_mask"] = batch["audio_mask"]
+        visual_only["visual_valid_mask"] = batch["visual_mask"]
+        return self(audio_only)["audio_repr"], self(visual_only)["visual_repr"]
+
+
+def _last_observed(features: "torch.Tensor", mask: "torch.Tensor") -> "torch.Tensor":
+    """[B,T,F] and [B,T] -> last observed [B,1,F], zero if absent.
+
+    Only visibility masks determine the index; targets/valid future values are
+    inaccessible. This is a fixed persistence skip, not a learned parameter.
+    """
+    times = torch.arange(features.shape[1], device=features.device).unsqueeze(0)
+    indices = times.masked_fill(~mask.bool(), -1).max(dim=1).values
+    last = features[torch.arange(len(features),device=features.device),indices.clamp_min(0)]
+    return (last * (indices >= 0).unsqueeze(-1)).unsqueeze(1)
 
 
 def _masked_mean(values: "torch.Tensor", mask: "torch.Tensor") -> "torch.Tensor":
@@ -419,10 +462,12 @@ def _masked_mse_torch(prediction: "torch.Tensor", target: "torch.Tensor", mask: 
     return torch.sum(((prediction - target) ** 2) * mask_f) / denom
 
 
-def _contrastive_loss(audio_repr: "torch.Tensor", visual_repr: "torch.Tensor") -> tuple["torch.Tensor", "torch.Tensor"]:
+def _contrastive_loss(audio_repr: "torch.Tensor", visual_repr: "torch.Tensor", logit_scale: "torch.Tensor | None" = None) -> tuple["torch.Tensor", "torch.Tensor"]:
     audio_norm = F.normalize(audio_repr.float(), dim=-1)
     visual_norm = F.normalize(visual_repr.float(), dim=-1)
     logits = audio_norm @ visual_norm.t()
+    if logit_scale is not None:
+        logits = logits * logit_scale.float().exp().clamp(max=100.0)
     targets = torch.arange(logits.shape[0], device=logits.device, dtype=torch.long)
     loss = 0.5 * (F.cross_entropy(logits, targets) + F.cross_entropy(logits.t(), targets))
     return loss, logits
@@ -432,7 +477,10 @@ def _loss_bundle(model: T2AudioVisualSLWM, batch: Mapping[str, "torch.Tensor"], 
     output = model(batch)
     audio_mse = _masked_mse_torch(output["audio_prediction"], batch["audio_targets"], batch["audio_loss_mask"])
     visual_mse = _masked_mse_torch(output["visual_prediction"], batch["visual_targets"], batch["visual_loss_mask"])
-    alignment_loss, logits = _contrastive_loss(output["audio_repr"], output["visual_repr"])
+    # Fused representations can copy information across paired modalities and
+    # yield spurious retrieval. Both training and evaluation use blind encodes.
+    audio_repr, visual_repr = model.independent_representations(batch)
+    alignment_loss, logits = _contrastive_loss(audio_repr, visual_repr, model.logit_scale)
     total = float(weights.get("audio_prediction", 1.0)) * audio_mse
     total = total + float(weights.get("visual_prediction", 1.0)) * visual_mse
     total = total + float(weights.get("alignment", 0.1)) * alignment_loss
