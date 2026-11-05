@@ -65,7 +65,10 @@ listen/look/both/wait, commitment decisions and future proposals without another
 user request. With `--pace`,30 decisions occupy40.96s after bootstrap; it logs
 latency/deadlines and verifies both world and actor weights remain unchanged.
 This is a recorded-file operational loop with hypothetical sensor-access costs.
-Features are prepared before replay. Actions control observations, not physical
+Features are prepared before replay. Paced inference chooses a sensor before
+waiting for the next chunk's recorded arrival; it processes that chunk only
+after the deadline, logging decision/read/proposal times separately.
+Actions control observations, not physical
 motion; motor-world transition/reward data and a faster loop are still needed.
 
 The main B1 training source/config/protocol snapshot is immutable. Person-disjoint

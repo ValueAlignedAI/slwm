@@ -29,3 +29,28 @@ def test_counterfactuals_do_not_receive_future_and_preserve_weights():
         error=future_error(out,audio,video,0); assert error.shape==(2,2)
         actor=RiskActor(67); assert actor(features(out,bits)).shape==(2,4,2)
     assert before==weight_digest(model)
+
+
+def test_paced_replay_waits_for_observations_before_processing_them(monkeypatch):
+    from types import SimpleNamespace
+    import training.stream_sensing as sensing
+    torch.set_num_threads(1)
+    model=StreamWorld(width=32,heads=4,layers=1,memory=2).eval()
+    actor=RiskActor(67).eval(); audio=torch.randn(1,106,400); video=torch.randn(1,106,64)
+    data=SimpleNamespace(rows={"ami_test":[{"offset":0}]},arrays={"ami_test":(None,np.zeros(106,np.int16))})
+    plan={"name":"ami_test","index":0,"id":"fixture","actor":"fixture","start":0,"start_seconds":0.}
+    clock=[0.]; observed=[]; original=sensing.observe
+    def observe_at_time(*args,**kwargs):
+        observed.append((args[3],clock[0]))
+        return original(*args,**kwargs)
+    monkeypatch.setattr(sensing,"sequence",lambda *args:(audio,video))
+    monkeypatch.setattr(sensing,"observe",observe_at_time)
+    monkeypatch.setattr(sensing.time,"perf_counter",lambda:clock[0])
+    monkeypatch.setattr(sensing.time,"sleep",lambda duration:clock.__setitem__(0,clock[0]+duration))
+    cfg={"episode_chunks":2,"sensor_cost":.05,"actions":["listen","look","both","wait"]}
+    rows,audit=sensing.replay(model,actor,(torch.zeros(67),torch.ones(67)),{},data,[plan],cfg,"both","learned",device="cpu",paced=True)
+    duration=32*sensing.PACKET_SECONDS
+    assert observed==[(0,0.),(32,duration),(64,2*duration)]
+    assert [r["decision_wall_seconds"] for r in rows]==[0.,duration]
+    assert all(r["observation_read_wall_seconds"]>=r["observation_available_after_bootstrap_seconds"] for r in rows)
+    assert audit["wall_seconds"]==2*duration and audit["weights_unchanged"]

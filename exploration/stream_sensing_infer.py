@@ -9,7 +9,7 @@ import torch
 from training.broad_data import face_video
 from training.broad_stream_train import load_model
 from training.stream_codec import PACKET_SECONDS,observed_mel
-from training.stream_sensing import RiskActor,BITS,features,raw_features,choose,goal_error,observe,weight_digest
+from training.stream_sensing import RiskActor,BITS,features,raw_features,choose,goal_error,observe,weight_digest,wait_for_received_chunk
 from training.research_sources import file_sha
 from training.t2_real_av import write_json
 from exploration.stream_media import read_audio,check_video_cache
@@ -24,10 +24,10 @@ def main():
     with torch.inference_mode(),amp:
         bits=torch.ones(1,2,device=a.device); current=observe(model,aa,vv,0,bits); beginning=time.perf_counter()
         for tick,at in enumerate(range(32,packets,32)):
-            begin=time.perf_counter(); state=(raw_features if ck.get("feature_mode")=="raw" else features)(current,bits); pred=actor((state-norm[0])/norm[1]).float().clamp(-12,8).exp(); decision=choose(pred,a.goal,ck["config"]["sensor_cost"]); index=int(decision.item()); bits=torch.as_tensor(BITS[index:index+1],device=a.device); risk=float(goal_error(pred[:,index],a.goal)); current=observe(model,aa,vv,at,bits,current["memory"],current["raw_memory"]); forecasts.append(current["future"][0,0].float().cpu().numpy()); elapsed=time.perf_counter()-begin; record={"tick":tick,"source_received_until_seconds":a.start+(at+32)*PACKET_SECONDS,"forecast_starts_seconds":a.start+(at+34)*PACKET_SECONDS,"action":ck["config"]["actions"][index],"committed":risk<=ck["thresholds"][a.goal],"predicted_goal_error":risk,"memory_norm":float(current["memory"].float().norm()),"compute_seconds":elapsed,"deadline_missed":elapsed>32*PACKET_SECONDS}; records.append(record); print(json.dumps(record),flush=True); write_json(root/"decisions.json",records)
-            if a.pace:
-                delay=(tick+1)*32*PACKET_SECONDS-(time.perf_counter()-beginning)
-                if delay>0: time.sleep(delay)
+            begin=time.perf_counter(); state=(raw_features if ck.get("feature_mode")=="raw" else features)(current,bits); pred=actor((state-norm[0])/norm[1]).float().clamp(-12,8).exp(); decision=choose(pred,a.goal,ck["config"]["sensor_cost"]); index=int(decision.item()); bits=torch.as_tensor(BITS[index:index+1],device=a.device); risk=float(goal_error(pred[:,index],a.goal)); decision_wall=time.perf_counter()-beginning; decision_compute=time.perf_counter()-begin
+            if a.pace: read_wall,available=wait_for_received_chunk(beginning,tick)
+            else: read_wall,available=time.perf_counter()-beginning,(tick+1)*32*PACKET_SECONDS
+            observation_start=time.perf_counter(); current=observe(model,aa,vv,at,bits,current["memory"],current["raw_memory"]); forecasts.append(current["future"][0,0].float().cpu().numpy()); elapsed=decision_compute+time.perf_counter()-observation_start; record={"tick":tick,"source_received_until_seconds":a.start+(at+32)*PACKET_SECONDS,"forecast_starts_seconds":a.start+(at+34)*PACKET_SECONDS,"action":ck["config"]["actions"][index],"committed":risk<=ck["thresholds"][a.goal],"predicted_goal_error":risk,"memory_norm":float(current["memory"].float().norm()),"compute_seconds":elapsed,"deadline_missed":elapsed>32*PACKET_SECONDS,"decision_wall_seconds":decision_wall,"observation_available_after_bootstrap_seconds":available,"observation_read_wall_seconds":read_wall,"proposal_wall_seconds":time.perf_counter()-beginning}; records.append(record); print(json.dumps(record),flush=True); write_json(root/"decisions.json",records)
     assert weight_digest(model)==before and weight_digest(actor)==actor_before; np.save(root/"forecasts.npy",np.stack(forecasts)); write_json(root/"inference.json",{"world_run":ck["world_run"],"actor_id":ck["id"],"world_sha256":file_sha(a.world),"actor_sha256":file_sha(a.actor),"audio_sha256":file_sha(a.audio),"video_sha256":file_sha(a.video),"automatic_decisions":len(records),"observation_seconds":packets*PACKET_SECONDS,"paced":a.pace,"wall_seconds_after_bootstrap":time.perf_counter()-beginning,"weights_unchanged":True,"future_ground_truth_used":False,"transcript_used":False,"physical_world_control":False,"sensing_cost_scope":"Hypothetical recorded-sensor access; file features prepared before replay","algorithmic_chunk_seconds":32*PACKET_SECONDS,"goal":a.goal})
 
 

@@ -102,3 +102,14 @@ from a shared state. Next physical-action work requires a separately registered
 simulator/action dataset and multi-step consequence/reward tests. The general
 motivation is consistent with [Dreamer](https://arxiv.org/abs/2301.04104), whose
 action-conditioned imagined control is a stronger capability than this probe.
+
+Pre-fit pacing refinement: choose the next sensor from the current state, wait
+until that chunk's recorded arrival deadline, and only then process its values.
+Log decision, observation-availability, observation-read and proposal wall times
+separately. Compute budgets exclude the intentional wait. Sleeping only after
+processing a preloaded future chunk would not test arrival ordering. The same
+refinement applies to the label-free file CLI, with a fake-clock causality test.
+The final paced episode spans at least40.96s after bootstrap plus its last compute
+time. Features remain precomputed; this is a causally paced file replay, not a
+live capture transport. Utility, fitting examples and all selection rules stay
+the same, and this change precedes all primary policy fits and final scores.

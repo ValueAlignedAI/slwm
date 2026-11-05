@@ -36,6 +36,14 @@ def choose(errors,goal,cost):
     return (goal_error(errors,goal)+cost*torch.as_tensor(BITS.sum(1),device=errors.device)).argmin(-1)
 
 
+def wait_for_received_chunk(beginning,tick):
+    """Replay may process the next chunk only after its recorded arrival time."""
+    available=(tick+1)*32*PACKET_SECONDS
+    delay=beginning+available-time.perf_counter()
+    if delay>0: time.sleep(delay)
+    return time.perf_counter()-beginning,available
+
+
 def features(out,bits):
     return torch.cat((out["field"].float().mean(1),out["memory"].float().mean(1),out["risk"].float().mean(1,keepdim=True),bits),-1)
 
@@ -103,12 +111,12 @@ def replay(model,actor,normalization,thresholds,data,plans,cfg,goal,strategy,dev
                 if strategy in ("learned","raw"): selected=choose(pred,goal,cfg["sensor_cost"])
                 else:
                     action={"listen":0,"look":1,"both":2,"wait":3,"alternating":tick%2,"periodic":2 if tick%2==0 else 3}[strategy]; selected=torch.full((len(group),),action,device=device,dtype=torch.long)
-                bits=torch.as_tensor(BITS,device=device)[selected]; at=(tick+1)*32; current=observe(model,audio,video,at,bits,current["memory"],current["raw_memory"]); actual=future_error(current,audio,video,at); predicted=pred[torch.arange(len(group),device=device),selected]; error=goal_error(actual,goal); risk=goal_error(predicted,goal); costs=cfg["sensor_cost"]*bits.sum(-1); commit=risk<=thresholds.get(goal,float("inf")); cpu=torch.stack((error,costs,risk,commit.float(),actual[:,0],actual[:,1],current["memory"].float().norm(dim=(1,2))),-1).cpu().numpy(); actions=selected.cpu().tolist(); elapsed=time.perf_counter()-tick_start
+                decision_wall=time.perf_counter()-group_start; decision_compute=time.perf_counter()-tick_start
+                if paced: read_wall,available=wait_for_received_chunk(group_start,tick)
+                else: read_wall,available=time.perf_counter()-group_start,(tick+1)*32*PACKET_SECONDS
+                observation_start=time.perf_counter(); bits=torch.as_tensor(BITS,device=device)[selected]; at=(tick+1)*32; current=observe(model,audio,video,at,bits,current["memory"],current["raw_memory"]); actual=future_error(current,audio,video,at); predicted=pred[torch.arange(len(group),device=device),selected]; error=goal_error(actual,goal); risk=goal_error(predicted,goal); costs=cfg["sensor_cost"]*bits.sum(-1); commit=risk<=thresholds.get(goal,float("inf")); cpu=torch.stack((error,costs,risk,commit.float(),actual[:,0],actual[:,1],current["memory"].float().norm(dim=(1,2))),-1).cpu().numpy(); actions=selected.cpu().tolist(); elapsed=decision_compute+time.perf_counter()-observation_start; proposal_wall=time.perf_counter()-group_start
                 for i,p in enumerate(group):
-                    row=data.rows[p["name"]][p["index"]]; offset=row["offset"]+p["start"]+at+34; units=data.arrays[p["name"]][1]; active=bool((np.asarray(units[offset:offset+8])>0).any()); records.append({"actor":p["actor"],"id":p["id"],"start_seconds":p["start_seconds"],"tick":tick,"source_received_until_seconds":p["start_seconds"]+(at+32)*PACKET_SECONDS,"future_target_start_seconds":p["start_seconds"]+(at+34)*PACKET_SECONDS,"future_speaker_active_evaluation_only":active,"strategy":strategy,"goal":goal,"action":cfg["actions"][actions[i]],"error":float(cpu[i,0]),"sensor_cost":float(cpu[i,1]),"total_cost":float(cpu[i,0]+cpu[i,1]),"predicted_error":float(cpu[i,2]),"committed":bool(cpu[i,3]),"audio_error":float(cpu[i,4]),"video_error":float(cpu[i,5]),"memory_norm":float(cpu[i,6]),"compute_seconds_batch":elapsed,"deadline_missed":elapsed>32*PACKET_SECONDS})
-                if paced:
-                    delay=(tick+1)*32*PACKET_SECONDS-(time.perf_counter()-group_start)
-                    if delay>0: time.sleep(delay)
+                    row=data.rows[p["name"]][p["index"]]; offset=row["offset"]+p["start"]+at+34; units=data.arrays[p["name"]][1]; active=bool((np.asarray(units[offset:offset+8])>0).any()); records.append({"actor":p["actor"],"id":p["id"],"start_seconds":p["start_seconds"],"tick":tick,"source_received_until_seconds":p["start_seconds"]+(at+32)*PACKET_SECONDS,"future_target_start_seconds":p["start_seconds"]+(at+34)*PACKET_SECONDS,"future_speaker_active_evaluation_only":active,"strategy":strategy,"goal":goal,"action":cfg["actions"][actions[i]],"error":float(cpu[i,0]),"sensor_cost":float(cpu[i,1]),"total_cost":float(cpu[i,0]+cpu[i,1]),"predicted_error":float(cpu[i,2]),"committed":bool(cpu[i,3]),"audio_error":float(cpu[i,4]),"video_error":float(cpu[i,5]),"memory_norm":float(cpu[i,6]),"compute_seconds_batch":elapsed,"deadline_missed":elapsed>32*PACKET_SECONDS,"paced":paced,"decision_wall_seconds":decision_wall,"observation_available_after_bootstrap_seconds":available,"observation_read_wall_seconds":read_wall,"proposal_wall_seconds":proposal_wall})
     assert weight_digest(model)==before,"Inference changed model weights"
     return records,{"weights_unchanged":True,"weights_sha256":before,"wall_seconds":time.perf_counter()-started,"source_phase_used":False,"world_weights_trainable":False,"physical_world_control":False}
 
