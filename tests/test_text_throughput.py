@@ -1,5 +1,8 @@
 import json
 from pathlib import Path
+import pytest
+pytest.importorskip("torch")
+pytest.importorskip("liger_kernel")
 from training.extend_text_train import learning_rate as initial_lr
 from training.extend_text_train_v2 import learning_rate
 

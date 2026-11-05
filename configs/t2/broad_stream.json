@@ -1,0 +1,94 @@
+{
+  "sprint": "T2-B1",
+  "protocol": "docs/research/broad_stream_protocol_20261105.md",
+  "corpus": "artifacts/t2_audio_visual/broad_stream_prepared_v1",
+  "artifacts": "experiments/multimodal/t2/broad-stream-20261105",
+  "model": {
+    "width": 512,
+    "layers": 6,
+    "heads": 8,
+    "memory": 8,
+    "chunk": 32,
+    "phone_count": 41
+  },
+  "training": {
+    "steps": 2000,
+    "batch": 128,
+    "micro_batch": 128,
+    "window": 128,
+    "lr": 0.0003,
+    "warmup": 100,
+    "eval_every": 200,
+    "clip": 1.0,
+    "weight_decay": 0.01,
+    "phoneme_weight": 0.2,
+    "ctc_weight": 0.1,
+    "alignment_weight": 0.05,
+    "future_weight": 0.1
+  },
+  "runs": [
+    {
+      "id": "EXP-T2-801",
+      "variant": "slwm",
+      "seed": 91
+    },
+    {
+      "id": "EXP-T2-802",
+      "variant": "transformer",
+      "seed": 91
+    },
+    {
+      "id": "EXP-T2-803",
+      "variant": "slwm",
+      "seed": 92
+    },
+    {
+      "id": "EXP-T2-804",
+      "variant": "transformer",
+      "seed": 92
+    },
+    {
+      "id": "EXP-T2-805",
+      "variant": "late_fusion",
+      "seed": 91
+    },
+    {
+      "id": "EXP-T2-806",
+      "variant": "slwm",
+      "seed": 91,
+      "shuffled_pairs": true
+    },
+    {
+      "id": "EXP-T2-807",
+      "variant": "slwm",
+      "seed": 91,
+      "no_content_loss": true
+    },
+    {
+      "id": "EXP-T2-808",
+      "variant": "slwm",
+      "seed": 91,
+      "reset_memory": true
+    },
+    {
+      "id": "EXP-T2-809",
+      "variant": "slwm",
+      "seed": 91,
+      "width": 256
+    },
+    {
+      "id": "EXP-T2-810",
+      "variant": "transformer",
+      "seed": 91,
+      "width": 256
+    }
+  ],
+  "long_probe_seconds": 40.96,
+  "long_probe_start": 80.0,
+  "primary_gap_seconds": 0.16,
+  "secondary_gap_seconds": 0.32,
+  "text_prompts": [
+    "The room is quiet at first. A person begins to explain the experiment. We hear a voice and see the face moving at the same time. The model should preserve the words while keeping the sound and motion together. After a short pause the speaker continues with another sentence. These are generated observations from a small model, and every unclear word or repeated movement is part of the evidence. We want to learn which details the shared representation preserves over time and which details it loses. We will listen to the whole sequence rather than selecting a fluent fragment. The sequence should continue through changing words, short pauses and longer thoughts. A repeated frame, a missing word and an unstable sound are measurable failures. We will compare the learned prediction with a Transformer that has the same data and a similar number of weights. We will also compare it with a simple fixed picture and a silent audio track. The useful result is an honest account of the information that survives each conversion, together with the failures that tell us what to train next.",
+    "A drone moves slowly through a corridor and waits when the next observation is uncertain. A useful model would remember the doorway, predict the result of moving forward and decide whether to look again. Our recordings contain people speaking in meetings, so the present video decoder can only propose a small face and its motion. It has no training target for a flying machine or a corridor. This prompt tests pronunciation and the limits of the representation, rather than demonstrating a learned ability to fly. We will listen to the whole sequence rather than selecting a fluent fragment. The sequence should continue through changing words, short pauses and longer thoughts. A repeated frame, a missing word and an unstable sound are measurable failures. We will compare the learned prediction with a Transformer that has the same data and a similar number of weights. We will also compare it with a simple fixed picture and a silent audio track. The useful result is an honest account of the information that survives each conversion, together with the failures that tell us what to train next."
+  ]
+}

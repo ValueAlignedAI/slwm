@@ -2,6 +2,8 @@
 import json
 from pathlib import Path
 import numpy as np
+import pytest
+pytest.importorskip("torch")
 from training.scale_text_train import UniqueWindows
 from training.extend_text_train import learning_rate
 
