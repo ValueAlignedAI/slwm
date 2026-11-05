@@ -586,3 +586,39 @@ Each run1024updates, global32×512; total67,108,864 training tokens and38.59
 training minutes including validation. Both-seed optimizer/RNG and final weights,
 fixed raw continuations, compute diagnostic and all data/source hashes retained.
 These are separate text-only weights; no jointly trained124M multimodal claim.
+
+## 14. Broad continuous fields and extended text — registered2026-11-05
+
+| IDs | Track / status | Registered comparison and artifacts |
+|---|---|---|
+| `EXP-T1-211`–`214` | T1-S3, superseded partial execution | Original32×512 extension; first three retain512 additional updates each, fourth was not started. No S3 final test or completed83.9M claim. `experiments/text/t1/extended-20261105/`. |
+| `EXP-T1-221`–`224` | T1-S4, running | GPT-2/SLWM, seeds81/82, optimizer-preserving151M-token target/model; batch ramp and pinned fused loss. Two512-equivalent token steps per large optimizer update; full target5376 actual updates including parents. `experiments/text/t1/extended-throughput-20261105/`. |
+| `EXP-T2-801`–`804` | T2-B1, running | Randomly initialized23,980,313-weight SLWM and23,805,209-weight Transformer, seeds91/92; same packets/heads/memory, common initialization,2000×128 positive windows. `experiments/multimodal/t2/broad-stream-20261105/`. |
+| `EXP-T2-805`–`808` | T2-B1, running controls | Late fusion, shuffled pairs, removed phone/CTC losses, reset memory; same positive plans/exposure. Active depth/graph-connected weights differ and must be disclosed. |
+| `EXP-T2-809`–`810` | T2-B1, running size probe | Width256 SLWM/Transformer, seed91, same data/updates; exploratory single-seed size comparison, not a scaling law. |
+| `EXP-P1-101`–`104` | P1-S1, planned exploratory sensing | Frozen worlds801–804 plus equal128-hidden risk actors;22 world-training people fit heads, six other world-training people select weights, four new people calibrate commitment,12 new people test. `experiments/policy/continuous-sensing-20261105/`. |
+| `EXP-P1-111`–`114` | P1-S1, planned direct-sensor controls | Equal-sized heads using observed means/deviations and exponential running memory; exactly the same collected states/labels, fitting people and calibration rules as101–104. Tests added decision value of the processed field. |
+| `EXP-X0-301` | Completed execution diagnostic | Text batch/fused-loss timings, objective/tied-gradient checks, slower alternatives and128-batch OOM. `experiments/text/t1/batch-benchmark-20261105/`. Throughput only. |
+| `EXP-X0-302`–`303` | Completed execution diagnostics | Isolated GPU concurrency and full-batch-copy avoidance. Both failed their numerical gates; copy gains below1%. Scientific B1 execution stays unchanged. Raw data retained in `concurrency-benchmark-20261105/` and `copy-benchmark-20261105/`. |
+| `EXP-X0-304` | Completed train/selection data audit | CTC feasibility and independent meeting diversity; no final test/model score read. `broad-stream-20261105/supervision_audit.json`. |
+| `EXP-X0-305` | Completed prototype inference diagnostic | Algebraic31-tap collapse of B1's parallel linear branches. Full FP32 outputs/state preserved numerically; prototype GPU FP32 speedup15%, separate BF16 differences retained. Original scientific training/render paths unchanged. `folded-inference-20261105/`. |
+
+Primary trace: H-R0-1/2/3 and G-R0-1; P1 is a bounded H-R0-4 sensing probe,
+not a promotion to physical-action T3 or a hallucination-reduction claim. B1
+uses100.58h LibriSpeech/251 people and8.23 paired AMI person-track hours from
+28 people/seven meetings (2.05 common meeting hours, not8.23 independent event
+hours). Keep video scope and repeated-stream exposure explicit. Mel statistics,
+64D video PCA and duration regression fit training only; fixed CMU pronunciation
+is an external text edge. Vocos13,531,650 frozen neural weights are separately
+counted; no pretrained video generator or language model trains B1.
+
+Frozen configs/protocols and per-run source/config/data hashes govern these
+entries. B1 holds out fresh12-person Libri sets and12 AMI people, preserving
+physical-gap speech, independent within-person retrieval,40.96s media, both long
+text prompts, same-model video/±240ms controls, quiet cases and all failed outputs.
+Whisper is a pinned independent evaluator; its text never trains these models.
+Policy weights/thresholds must freeze before any final B1/P1 scoring. All ticks
+count in sensing utility regardless of commitment. The inference actor chooses
+which recorded sensors to observe, not physical movement. Root reports and
+registry.json files will record actual completion/selection and failed gates;
+these running rows do not claim successful speech, alignment or world modeling.
