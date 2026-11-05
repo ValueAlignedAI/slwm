@@ -85,10 +85,11 @@ def fields(cfg,root):
                     if mode=="audio":
                         both={**batch,"a_mask":batch["valid"],"v_mask":batch["valid"],"t_mask":torch.zeros_like(batch["valid"]),"appearance":torch.zeros_like(batch["appearance"])}; forecast=predict(model,both,run.get("reset_memory",False))
                         for i,p in enumerate(part):
-                            row=data.rows[p["name"]][p["index"]]; errors=[]; base=[]
+                            row=data.rows[p["name"]][p["index"]]; errors=[]; base=[]; prior=[]
                             for k in range(3):
                                 begin=(k+1)*32+2; pred=forecast["future"][i,k]; truth=batch["audio"][i,begin:begin+8]; vision=batch["video"][i,begin:begin+8]; errors.append([float((pred[:,:400]-truth).abs().mean()),float((pred[:,400:]-vision).square().mean())]); base.append([float((batch["audio"][i,(k+1)*32-1]-truth).abs().mean()),float((batch["video"][i,(k+1)*32-1]-vision).square().mean())])
-                            valid=batch["phones"][i]>1; correct=(out["phone_logits"][i].argmax(-1)==batch["phones"][i]); entries.append({"id":row["id"],"actor":row["actor"],"start_packet":p["start"],"phone_accuracy_active":float(correct[valid].float().mean()) if valid.any() else None,"future_errors":np.mean(errors,0).tolist(),"persistence_errors":np.mean(base,0).tolist()})
+                                prior.append([float(truth.abs().mean()),float(vision.square().mean())])
+                            valid=batch["phones"][i]>1; correct=(out["phone_logits"][i].argmax(-1)==batch["phones"][i]); entries.append({"id":row["id"],"actor":row["actor"],"start_packet":p["start"],"phone_accuracy_active":float(correct[valid].float().mean()) if valid.any() else None,"future_errors":np.mean(errors,0).tolist(),"persistence_errors":np.mean(base,0).tolist(),"training_mean_prior_errors":np.mean(prior,0).tolist()})
         arrays={k:np.concatenate(v) for k,v in embeddings.items()}; np.savez_compressed(root/(run["id"]+"_embeddings.npz"),**arrays); retrieval=[]
         for actor in sorted({r["actor"] for r in entries}):
             ids=np.asarray([i for i,e in enumerate(entries) if e["actor"]==actor]); n=len(ids)
@@ -102,6 +103,8 @@ def long_media(cfg,root):
     for row in rows:
         folder=root/"long_inputs"/row["id"]; folder.mkdir(parents=True,exist_ok=True); sound=read_audio(row["raw_path"],cfg["long_probe_start"],cfg["long_probe_seconds"]); sound=np.pad(sound,(0,max(0,packets*1024-len(sound))))[:packets*1024]; physical,_,_=observed_mel(sound,np.zeros(len(sound),bool),packets); audio=(physical-mean)/scale; video=np.asarray(np.load(corpus/"ami_test"/(row["id"]+"_video.npy"),mmap_mode="r")[first:first+packets],np.float32); pixels=np.asarray(np.load(corpus/"ami_test"/(row["id"]+"_pixels.npy"),mmap_mode="r")[first:first+packets]); reference=" ".join(w for a,z,w in row["spans"] if a>=first*PACKET_SECONDS and z<=(first+packets)*PACKET_SECONDS); write_audio(folder/"input.wav",sound)
         if not(folder/"input.mp4").exists(): encode_video(folder/"input.mp4",pixels,folder/"input.wav")
+        if not(folder/"oracle_video_codec.mp4").exists():
+            encode_video(folder/"oracle_video_codec.mp4",decode_video(video,codec,pixels[0],video[0]),folder/"input.wav"); write_json(folder/"oracle_video_codec.json",{"reference_video_codes_used":True,"provided_appearance":"First held-out input frame; privileged codec ceiling, not a learned generator condition","model_used":False})
         manifest={"id":row["id"],"actor":row["actor"],"original_audio":row["raw_path"],"original_video":row["video_path"],"original_audio_seconds":row["audio_duration"],"original_video_seconds":row["duration"],"raw_sha256":row["raw_sha256"],"video_sha256":row["video_decode"]["raw_video_sha256"],"segment_start_seconds":first*PACKET_SECONDS,"seconds":packets*PACKET_SECONDS,"transcript":reference,"appearance_provided":True}; write_json(folder/"input.json",manifest)
         for runid in MAIN:
             model,_=load_model(Path(cfg["artifacts"])/runid/"best.pt"); model.requires_grad_(False)
@@ -144,6 +147,25 @@ def edit_distance(reference,hypothesis):
     return row[-1],len(a)
 
 
+def av_repair(cfg,root):
+    """Secondary within-model video benefit, including exact mistiming controls."""
+    corpus=Path(cfg["corpus"]); rows=json.loads((corpus/"ami_test/rows.json").read_text()); codec=dict(np.load(corpus/"codec.npz")); mean=np.tile(codec["audio_mean"],4); scale=np.tile(codec["audio_scale"],4); vocoder=load_vocoder("cuda"); records=[]; packets=960; first=round(cfg["long_probe_start"]/PACKET_SECONDS)
+    for row in rows:
+        sound=read_audio(row["raw_path"],first*PACKET_SECONDS,packets*PACKET_SECONDS); relative={"spans":[[a-first*PACKET_SECONDS,z-first*PACKET_SECONDS,w] for a,z,w in row["spans"] if a>=first*PACKET_SECONDS and z<=(first+packets)*PACKET_SECONDS]}; begin,end=gap_interval(relative,len(sound)/24000,.16); missing=np.zeros(len(sound),bool); missing[round(begin*24000):round(end*24000)]=True; physical,_,visible=observed_mel(sound,missing,packets); audio=(physical-mean)/scale; video_all=np.load(corpus/"ami_test"/(row["id"]+"_video.npy"),mmap_mode="r"); video=np.asarray(video_all[first:first+packets],np.float32); shifted={}
+        for shift in (-.24,.24):
+            coordinates=first+np.arange(packets)+shift/PACKET_SECONDS; left=np.floor(coordinates).astype(int); weight=(coordinates-left)[:,None]; shifted[shift]=(np.asarray(video_all[left],np.float32)*(1-weight)+np.asarray(video_all[left+1],np.float32)*weight).astype(np.float32)
+        for run in MAIN:
+            model,_=load_model(Path(cfg["artifacts"])/run/"best.pt"); model.requires_grad_(False)
+            for condition in ("audio_only","aligned_video","static_video","wrong_time_video","minus240ms","plus240ms"):
+                folder=root/"av_repair"/row["id"]/run/condition; folder.mkdir(parents=True,exist_ok=True)
+                if (folder/"case.json").exists(): records.append(json.loads((folder/"case.json").read_text())); continue
+                visual=np.zeros_like(video) if condition=="audio_only" else np.broadcast_to(video[0],video.shape).copy() if condition=="static_video" else np.asarray(video_all[first+1875:first+1875+packets],np.float32) if condition=="wrong_time_video" else shifted[-.24] if condition=="minus240ms" else shifted[.24] if condition=="plus240ms" else video
+                proposal=rollout(model,audio,visual,np.zeros(packets,np.int64),np.zeros(64,np.float32) if condition=="audio_only" else video[0],"repair" if condition=="audio_only" else "repair_av",visible=visible,device="cuda"); generated,renderer=synthesize(proposal["mel"],codec,vocoder,"cuda"); repaired=restore_known(generated,sound,missing); assert np.array_equal(np.rint(repaired[~missing]*32768).astype("<i2"),np.rint(sound[~missing]*32768).astype("<i2")); meta=write_audio(folder/"output.wav",repaired); write_json(folder/"trace.json",proposal["trace"]); record={"id":row["id"],"actor":row["actor"],"run":run,"condition":condition,"transcript":" ".join(w for _,_,w in relative["spans"]),"gap_seconds":.16,"gap_interval":[begin,end],"source_start_seconds":first*PACKET_SECONDS,"folder":str(folder),"waveform":meta,"renderer":renderer,"field_text":proposal["text"],"observed_pcm_exact":True,"source_phase_used":False,"reference_text_supplied":False,"provided_appearance":"First observed video packet, identical across all video conditions","video_shift_interpolation":"Linear in training-fitted PCA codes at exact ±240ms"}; write_json(folder/"case.json",record); records.append(record)
+            del model; torch.cuda.empty_cache()
+        write_json(root/"av_repair_cases.json",records); print(json.dumps({"av_repair_person":row["id"],"saved":len(records)}),flush=True)
+    write_json(root/"av_repair_cases.json",records)
+
+
 def recognize(cfg,root):
     from transformers import WhisperProcessor,WhisperForConditionalGeneration
     revision="87c7102498dcde7456f24cfd30239ca606ed9063"; processor=WhisperProcessor.from_pretrained("openai/whisper-tiny.en",revision=revision,local_files_only=True); recognizer=WhisperForConditionalGeneration.from_pretrained("openai/whisper-tiny.en",revision=revision,local_files_only=True).cuda().half().eval(); normalizer=processor.tokenizer.normalize; jobs=[]
@@ -153,6 +175,7 @@ def recognize(cfg,root):
         for record in json.loads((root/name).read_text()):
             if group=="long" and record["mode"]=="audio" and record["control"]!="prefix": continue
             jobs.append({"group":group,"id":record.get("id","prompt"+str(record.get("prompt"))),"actor":record.get("actor"),"condition":record["run"]+"_"+record["mode"]+"_"+record.get("control","normal"),"path":str(Path(record["folder"])/"output.wav"),"reference":record["transcript"]})
+    for record in json.loads((root/"av_repair_cases.json").read_text()): jobs.append({"group":"av_repair","id":record["id"],"actor":record["actor"],"condition":record["run"]+"_"+record["condition"],"run":record["run"],"control":record["condition"],"path":str(Path(record["folder"])/"output.wav"),"reference":record["transcript"]})
     for folder in sorted((root/"long_inputs").iterdir()):
         rec=json.loads((folder/"input.json").read_text())
         for name in ("input","silence","mean_spectrum","oracle_vocoder"): jobs.append({"group":"long_control","id":rec["id"],"actor":rec["actor"],"condition":name,"path":str(folder/(name+".wav")),"reference":rec["transcript"]})
@@ -180,14 +203,20 @@ def recognize(cfg,root):
     flush(); done=[]
     for job in jobs:
         chunks=cache[job["wave_sha256"]]; text=" ".join(c["text"] for c in chunks); error,words=edit_distance(normalizer(job["reference"]),normalizer(text)); raw_error,raw_words=edit_distance(job["reference"].lower(),text.lower()); done.append({**job,"recognizer_text":text,"chunks":chunks,"normalized_edit_count":error,"normalized_reference_words":words,"wer":error/max(1,words),"raw_wer":raw_error/max(1,raw_words)})
-    write_json(target,done); write_json(root/"recognizer.json",{"name":"openai/whisper-tiny.en","revision":revision,"external_evaluation_parameters":sum(p.numel() for p in recognizer.parameters()),"normalization":"Whisper English standard, both reference and hypothesis","long_chunk_seconds":20,"complete_output_coverage":True,"test_used_for_selection":False})
+    write_json(target,done); field_scores=[]
+    for group,name in (("speech","speech_cases.json"),("long","long_cases.json"),("text","text_cases.json"),("av_repair","av_repair_cases.json")):
+        for record in json.loads((root/name).read_text()):
+            entries=record["field_text"] if isinstance(record["field_text"],dict) else {record["run"]:record["field_text"]}
+            for run,text in entries.items():
+                errors,count=edit_distance(normalizer(record["transcript"]),normalizer(text)); field_scores.append({"group":group,"id":record.get("id","prompt"+str(record.get("prompt"))),"actor":record.get("actor"),"run":run,"mode":record.get("mode","repair"),"control":record.get("control",record.get("condition","normal")),"gap_seconds":record.get("gap_seconds"),"split":record.get("split"),"text_supplied":group=="text","learned_field_text":text,"normalized_edits":errors,"normalized_reference_words":count,"wer":errors/max(1,count),"external_recognizer_output_used":False})
+    write_json(root/"field_ctc_scores.json",field_scores); write_json(root/"recognizer.json",{"name":"openai/whisper-tiny.en","revision":revision,"external_evaluation_parameters":sum(p.numel() for p in recognizer.parameters()),"normalization":"Whisper English standard, both reference and hypothesis","long_chunk_seconds":20,"complete_output_coverage":True,"test_used_for_selection":False})
 
 
 def main():
-    p=argparse.ArgumentParser(); p.add_argument("--stage",required=True,choices=("speech","fields","long","score")); a=p.parse_args(); torch.set_num_threads(4); cfg=json.loads(Path(CONFIG).read_text()); root=freeze(cfg)
+    p=argparse.ArgumentParser(); p.add_argument("--stage",required=True,choices=("speech","fields","av-repair","long","score")); a=p.parse_args(); torch.set_num_threads(4); cfg=json.loads(Path(CONFIG).read_text()); root=freeze(cfg)
     with Path("/tmp/slwm_research_gpu.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
-        {"speech":speech,"fields":fields,"long":long_media,"score":recognize}[a.stage](cfg,root)
+        {"speech":speech,"fields":fields,"av-repair":av_repair,"long":long_media,"score":recognize}[a.stage](cfg,root)
 
 
 if __name__=="__main__": main()

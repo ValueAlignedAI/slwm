@@ -33,8 +33,23 @@ wholly contained official words. Encode audio, video and explicitly supplied
 text independently with zero appearance cue. Retrieve within person among all
 eligible windows, reporting actual chance1/N. Compare same-person wrong-time
 pairings, all architecture/control arms, and field phone/CTC outputs. Report
-future8-packet error beyond the2-packet guard against last-observation persistence.
+future8-packet error beyond the2-packet guard against last-observation persistence
+and the normalized-zero training-mean prior. A persistence win alone cannot rule
+out a generic average forecast.
 These are representation diagnostics, not motor-world or semantic understanding.
+Score actual learned field CTC strings separately from the external recognizer's
+transcripts of generated sound; both use the same fixed English normalization.
+Provided-phone text cases are labeled, so they cannot masquerade as audio/video
+recognition or unconstrained language generation.
+
+Secondary AV repair: use the same40.96s/80s interval for all12 AMI test people
+and all four main architecture/seed arms. Place one160ms physical gap by the same
+word/midpoint rule as LibriSpeech. Compare the exact same learned model with
+audio only, aligned video, static first-packet video, same-person video80s later,
+and ±240ms video. Exact240ms shifts use linear interpolation of the fixed PCA
+codes; all video conditions share the same observed first-packet appearance cue.
+Keep quiet/no-reference cases explicitly. Known PCM is exact. This is a secondary
+transfer probe, not a new primary speech gate or a fitted timing-rejection policy.
 
 Long generation: every fixed40.96s interval at80s, all12 AMI test people, main
 SLWM/Transformer arms in both seeds. Retain input64×64 video and original sound,

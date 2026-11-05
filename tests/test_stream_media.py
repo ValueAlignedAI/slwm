@@ -16,6 +16,12 @@ def test_plain_text_and_packed_codec_types_work_in_cpu_stream():
     torch.set_num_threads(1); model=StreamWorld(width=32,heads=4,layers=2,memory=2).eval(); result=rollout(model,np.zeros((64,400),np.float16),np.zeros((64,64),np.float16),np.full(64,3,np.int16),np.zeros(64,np.float16),"text"); assert result["mel"].shape==(64,400); assert len(result["trace"])==2; assert np.isfinite(result["mel"]).all()
 
 
+def test_video_repair_stream_masks_hidden_sound_but_uses_received_video():
+    torch.manual_seed(27); torch.set_num_threads(1); model=StreamWorld(width=32,heads=4,layers=2,memory=2).eval(); torch.nn.init.normal_(model.audio_head[-1].weight,std=.02); rng=np.random.default_rng(16); audio=rng.normal(size=(64,400)).astype(np.float32); video=rng.normal(size=(64,64)).astype(np.float32); phones=np.zeros(64,np.int64); style=np.zeros(64,np.float32); visible=np.ones(64,bool); visible[36:42]=False; changed=audio.copy(); changed[~visible]=999
+    original=rollout(model,audio,video,phones,style,"repair_av",visible=visible); hidden=rollout(model,changed,video,phones,style,"repair_av",visible=visible); absent=rollout(model,audio,video,phones,style,"repair",visible=visible)
+    assert np.array_equal(original["mel"],hidden["mel"]); assert not np.allclose(original["mel"][~visible],absent["mel"][~visible]); assert all(t["provided_text_fraction"]==0 for t in original["trace"])
+
+
 def test_repair_preserves_observed_pcm_and_gap_placement_is_deterministic():
     wave=np.arange(1200,dtype=np.float32)/32768; missing=np.zeros(1200,bool); missing[300:540]=True; generated=np.full(1200,.25,np.float32); repaired=restore_known(generated,wave,missing)
     assert np.array_equal(repaired[~missing],wave[~missing]); assert repaired[420]>.1
