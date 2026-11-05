@@ -1,0 +1,17 @@
+{
+  "version":"GRID-content-v1",
+  "root":"artifacts/t2_audio_visual/grid_content_v1",
+  "codec_root":"artifacts/t2_audio_visual/conditional_generation_v1",
+  "train_people":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+  "validation_people":[17,18,19,20],
+  "calibration_people":[22,23,24],
+  "test_people":[25,26,27,28,29,30,31,32],
+  "sentence_hash_buckets":{"train":[0,1,2,3,4,5,6,7],"validation":[8],"calibration":[8],"test":[9]},
+  "crop":"setpts=PTS-STARTPTS,fps=25,crop=iw*0.34:ih*0.28:iw*0.31:ih*0.60,scale=96:64",
+  "video_fps":25,"audio_rate":16000,"alignment_clock":25000,
+  "max_packets":80,"mouth_size":[64,96],
+  "timeline":"Frame zero is first video PTS. Trim/pad the decoded audio start by videoPTS-audioPTS; retain at most3 terminal repeated mel subframes. No endpointed external waveform is substituted.",
+  "permission":"Official GRID site: freely available for research use; not asserted public domain",
+  "source":"https://spandh.dcs.shef.ac.uk/gridcorpus/",
+  "source_history":"No GRID person has trained or selected earlier SLWM models. Speaker21 lacks video;33,34 remain an unopened lockbox."
+}
