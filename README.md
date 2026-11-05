@@ -66,8 +66,25 @@ Project documentation is organized under `docs/`:
 | R1 — Literature-to-design mapping | Complete as research/design specification | `docs/research/literature_map.md`, `docs/research/design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
 | I1 — Baselines | Implemented locally | `docs/evaluation/baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
-| T1 — Text/code baseline training | Full-stack mechanics implemented; larger corpus work remains | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/training/t1_text_code_training.md` | Tiny and limited GPT-2-BPE runs are registered; full guardrail claims require matched GPT-2 and SLWM runs on pinned corpora. |
-| T2 — Audio/visual latent training and alignment | Video improves reused-set gap prediction; fresh-speaker and practical speech gates fail | `models/slwm_video_repair.py`, `docs/research/findings.md`, `docs/training/video_repair.md` | 11 new RTX 3090 runs. The 8M visual correction model lowers CREMA spectral error ~9% beyond extra audio capacity in both seeds; fresh RAV effects remain uncertain. Preserve the content objective and exact observed waveform. |
+| T1 — Text baseline and scale | Four from-scratch GPT-2/SLWM runs complete at 124M/125M | `experiments/text/t1/scale-20261105/report.md`, `docs/training/content_and_scale.md` | Early text guardrail passes both seeds. 16.8M tokens/run from a prepared 2.6B-token corpus; SLWM loss improves ~3% at equal tokens with ~40% more time/token. Severe undertraining prevents a convergence claim. |
+| T2 — Speech content and video timing | Ten new runs pass fresh-speaker content, timing rejection and spectral-video gates | `experiments/multimodal/t2/content-sync-20261105/report_v2.md`, `docs/training/content_and_scale.md` | 749 new GRID clips/eight people and unseen complete sentence combinations. Word readout +9.7–12.4pp; video gap-spectrum error −11–12%; ±240ms admission below 1%. Practical speech-recognition gate fails. Restricted grammar; 7.71M deployed video weights. |
+
+## Latest completed research — 2026-11-05
+
+Read the [current findings](docs/research/findings.md),
+[corrected speech report](experiments/multimodal/t2/content-sync-20261105/report_v2.md),
+[32 fixed listening cases](experiments/multimodal/t2/content-sync-20261105/listen.html)
+and [early text-scale report](experiments/text/t1/scale-20261105/report.md).
+[Run and artifact instructions](docs/training/content_and_scale.md) cover portable
+speech/text checkpoints and both-seed full optimizer states. Code, compact evidence
+and reports are versioned; large model/media files remain in the local and Fedora
+experiment directories, with SHA256 delivery manifests.
+
+The speech and large text studies use separate trained weights. These results
+support further controlled research; they do not establish a unified multimodal
+124M world model or dependable speech repair. The original word-scoring result is
+retained beside revision 2, which excludes silence and short-pause labels without
+changing weights, calibration, spectra or waveforms.
 
 ## Validation
 
@@ -80,7 +97,7 @@ pytest
 Latest complete suite on Fedora (2026-11-05):
 
 ```text
-124 passed
+133 passed
 ```
 
 Earlier result from the T1/T2 foundation branch:

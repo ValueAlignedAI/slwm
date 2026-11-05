@@ -537,3 +537,52 @@ artifact audits pass, including6,007 raw-record hashes, frozen weights, actual
 CPU file inference, hidden-waveform/target/soundtrack isolation and exact
 observed PCM. See `report.md`, `failure_analysis.md`, `audit.json`,
 `render_correction.json` and `delivery_manifest.json` for complete evidence.
+
+## 12. Fresh-person content and calibrated timing — 2026-11-05
+
+| IDs | Role / fixed budget | Decision |
+|---|---|---|
+| `EXP-T2-701`–`704` | Unit CE 0/.2, seeds 71/72; 4,000×32 updates; 24 GRID +4 CREMA +4 Libri windows | Complete. Both content seeds pass field-word gain and spectral/clean guardrails. Both controls have the timed-text auxiliary interface. |
+| `EXP-T2-711`–`712` | Strong additional-audio candidates; 3,000×32; 24 GRID +8 CREMA | Complete. Exact frozen fallback for corresponding video candidates. |
+| `EXP-T2-713`–`716` | Primary video two seeds, no-unit-CE and shuffled-pair controls; 3,000×32 plus384,000 negative windows total | Complete. Fresh-person spectral-video and calibrated ±240ms rejection/coverage gates pass both seeds. Practical speech-recognition gate fails. |
+
+Artifacts: `experiments/multimodal/t2/content-sync-20261105/`. Frozen protocol
+`docs/research/content_sync_protocol_20261105.md`; current scoring report
+`report_v2.md`. GRID train12,704/16people; selection395/4; calibration278/3;
+primary test749/8, with complete sentence combinations also disjoint. Only51
+lexical words; no open-vocabulary claim. The strict source alarm and90 truncated
+training-person sources are documented with exact exclusions and failed logs.
+Historical R2 warmstarts and CREMA/Libri retention data are disclosed separately.
+
+Bases5,133,942 weights; matched audio6,428,512 / video7,713,820 deployed totals.
+Audio/video newly trained branches1,294,570 /1,285,308; extra video negatives
+are additional compute. The strong audio fallback is frozen and exact, including
+word/latent state. Fitted codecs are separate. Total34,000updates,
+1,088,000positive windows and25.68 measured training minutes including validation.
+All ten best optimizer/RNG checkpoints and final weights remain saved.
+
+Paired field lexical-word gains9.72pp [8.21,10.97] /12.43pp [10.95,13.92].
+Calibrated video spectral gains12.26% [9.65,14.86] /11.24% [8.24,14.21], with
+aligned coverage81.84% /83.85% and each ±240ms admission rate below1%.
+Wrong-utterance rejection remains incomplete (~3.5% spectral harm). WER is mixed
+and fails the practical gate. Revision2 excludes19 short-pause frames from word
+scoring using the original fitted probes; all original results/sources retained,
+with no weight, threshold, waveform or spectral change. Audits verify14,636 raw
+records and640 actual WAVs with exact observed PCM. Full suite133 passes.
+
+## 13. Early GPT-2-scale text comparison — 2026-11-05
+
+| IDs | Variant / exposure | Decision |
+|---|---|---|
+| `EXP-T1-201`, `203` | GPT-2-style124,439,808 weights, seeds81/82,16,777,216 tokens each | Complete. Random initialization; validation selection and frozen test evaluation. |
+| `EXP-T1-202`, `204` | Causal SLWM125,131,008 weights, paired initialization/windows/exposure | Complete. Early loss guardrail passes both seeds; ~3% lower NLL at equal tokens with ~40% more time/token. Not converged superiority. |
+
+Artifacts: `experiments/text/t1/scale-20261105/`; protocol
+`docs/research/text_scale_protocol_20261105.md`. Prepared pinned FineWeb-Edu
+corpus2.600B train /14.57M validation /10.01M test tokens, with disjoint registrable
+domains and global exact/prefix/URL deduplication. No guaranteed near-duplicate
+freedom. Available20.9tokens/parameter differs from actual0.13seen/parameter.
+Each run1024updates, global32×512; total67,108,864 training tokens and38.59
+training minutes including validation. Both-seed optimizer/RNG and final weights,
+fixed raw continuations, compute diagnostic and all data/source hashes retained.
+These are separate text-only weights; no jointly trained124M multimodal claim.

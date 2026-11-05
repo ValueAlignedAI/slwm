@@ -1,6 +1,121 @@
 # SLWM research findings — updated 2026-11-05
 
-## Current decision — a narrow video benefit; broader repair gate fails
+## Current decision — content and timing improve; speech quality remains mixed
+
+Ten new RTX 3090 runs (`EXP-T2-701`–`704`, `711`–`716`) test aligned lexical
+supervision and observed-only video admission. Four separate text runs
+(`EXP-T1-201`–`204`) test causal processors at GPT-2-small scale. Keep the useful
+speech/text checkpoints and continue controlled experiments. Do not commit a
+long multimodal scale run based on these short, separate studies.
+
+### Speech content and rejection: fresh people and complete sentences
+
+The original GRID recordings provide synchronized audio, actual mouth pixels
+and official timed text. Training uses **12,704 clips / 10.59 hours / 16 people**.
+Selection uses four different people (395 clips); threshold calibration uses
+three more (278); the primary test reserves **749 clips from eight people**.
+Global sentence-hash buckets also separate complete sentence combinations.
+The vocabulary remains only 51 lexical words plus two pause codes. CREMA/Libri
+windows retain broader training acoustics; their final checks are reused
+retention diagnostics, not new confirmation. All normalizers remain fitted to
+historical CREMA training data. GRID 33/34 remain unopened.
+
+The source-quality alarm stopped preparation before training. A CRC/actual-frame
+review verified 90 truncated video sources, all from training person 08
+(88 training, two training-person diagnostics). The exact exclusion list and
+failed logs are preserved; the 50-packet input rule stayed fixed, and no primary
+holdout was removed. See [the source review](grid_source_quality_review_20261105.md).
+
+The 5.13M speech base adds a timed-word decoder interface and a lexical loss on
+processed fields. Both matched bases have the timed-text auxiliary path; the
+ablation removes only the added unit cross-entropy. Audio/video candidates freeze
+the base and add about 1.29M trained weights each. The **7,713,820-weight video
+artifact** includes the strong frozen audio candidate. Every rejection returns
+that candidate's spectrum, word logits and latent state exactly. Admission uses
+only observed audio/video, with thresholds fixed on independent calibration
+people and a mandatory aligned-video coverage floor. Training labels never enter
+practical inference. Fixed ridge probes are fitted on training fields only.
+
+| Primary effect (paired clip means; person-cluster 95% intervals) | Seed 71 | Seed 72 |
+|---|---:|---:|
+| Field lexical-word accuracy gain | **+9.72pp [8.21, 10.97]** | **+12.43pp [10.95, 13.92]** |
+| Content-objective gap-spectrum improvement | 4.02% [2.81, 5.82] | 3.12% [1.47, 5.30] |
+| Calibrated video improvement over strong audio | **12.26% [9.65, 14.86]** | **11.24% [8.24, 14.21]** |
+| Aligned video accepted | 81.84% [77.33, 85.92] | 83.85% [79.53, 87.83] |
+| +240ms / −240ms video accepted | 0.53% / 0.53% | 0.93% / 0.67% |
+
+Content, calibrated rejection and spectral-video gates pass in both seeds.
+Unfiltered ±240ms video increases spectral error about 33–35%; admission reduces
+that harm to at most 0.15%. Untrained ±160ms shifts are also mostly rejected.
+Wrong-utterance video is harder: about 12–13% is admitted and causes ~3.5% mean
+harm. This is evidence for timing rejection, not calibrated semantic truth.
+Shuffled-pair training loses the aligned video's feature benefit. Letters gain
+only ~3.3pp in the content probe; digits gain ~15–16pp, exposing uneven learning.
+
+**The practical speech gate fails.** On the 32 fixed recognizer cases, strong
+audio→calibrated-video WER is **54.69%→51.04%** for seed 71 (paired interval
+includes zero), and **48.96%→53.65%** for seed 72 (worse). Erasing the gap scores
+52.60%. Reference audio scores 19.27%, and the deliberately target-provided
+spectrum diagnostic 19.79%; the missing-content/acoustic prediction remains the
+main issue. These are external recognizer diagnostics, not human ratings or
+SLWM-generated text. A lower spectral loss has not yet become dependable speech.
+
+[Corrected report](../../experiments/multimodal/t2/content-sync-20261105/report_v2.md),
+[all fixed listening cases](../../experiments/multimodal/t2/content-sync-20261105/listen.html),
+[training and ordinary-file inference](../training/content_and_scale.md).
+Revision 2 excludes 19 short-pause frames incorrectly counted as lexical words
+in the original primary score; it reuses the same fitted probes. Original metrics,
+reports and evaluation sources are retained. No checkpoint, threshold, spectrum
+or waveform changed. The initial evaluation/source snapshots remain immutable.
+
+### Separate GPT-2-scale text comparison
+
+The pinned, domain-disjoint FineWeb-Edu corpus contains **2.600B training tokens**,
+14.57M validation and 10.01M test tokens, with normalized exact document,
+long-prefix and canonical-URL deduplication. Residual near duplicates remain a
+limitation. GPT-2-style models have 124,439,808 weights; causal SLWM has 125,131,008.
+Shared modules start identically within seeds 81/82, with matched unique token
+windows and no pretrained language model. Each run sees **16,777,216 tokens**.
+
+| Seed | GPT-2 / SLWM validation NLL | GPT-2 / SLWM test perplexity | GPT-2 / SLWM minutes |
+|---|---:|---:|---:|
+| 81 | 5.6486 / 5.4517 | 262.84 / 216.33 | 7.95 / 11.35 |
+| 82 | 5.6449 / 5.4688 | 260.83 / 218.47 | 7.98 / 11.31 |
+
+The early guardrail passes, with 3.49% / 3.12% lower validation loss at equal
+tokens, at ~40% higher time per token. A separately labeled post-hoc wall-time
+interpolation gives only 0.82% / 0.55% lower loss; it is not measured equal-FLOP
+performance. The corpus provides ~20.9 available tokens/parameter, but these runs
+consume only ~0.13 tokens/parameter. They are severely undertrained, not evidence
+of converged superiority. Only 512-token contexts were trained. Each validation/test score uses the same
+fixed 131,072-token held-stream sample, not full-corpus perplexity. All fixed raw
+continuations are retained, including poor/repetitive outputs. English text
+results do not establish code skill, grounding or a learned output policy.
+
+[Text report](../../experiments/text/t1/scale-20261105/report.md),
+[compute diagnostic](../../experiments/text/t1/scale-20261105/compute_diagnostic.md),
+[frozen scale protocol](text_scale_protocol_20261105.md).
+
+### Retained evidence and next experiment
+
+All 14 best optimizer/RNG checkpoints and final weights, source/data hashes,
+validation choices, per-example scores and portable bundles are saved on Fedora
+and locally. New measured training time totals **64.27 GPU-process minutes**
+including validation, with data preparation, historical pretraining and final
+evaluation additional. The full suite passes **133 tests**. The speech audit
+verifies 14,636 source records, frozen components, actual hidden-waveform/label
+isolation and **640 observed-PCM-exact WAVs**. A separate text audit verifies
+prepared token/source hashes, disjoint domains and all selected checkpoints.
+Portable bundles also run through ordinary-file CPU inference.
+
+The next speech experiment should target lexical/acoustic decoding on broader
+continuous speech with new reserved people and phrases. Keep exact audio fallback
+and the coverage-aware timing filter. Register new data/selection choices before
+examining another confirmation set. For text, use component ablations and longer
+matched token/compute budgets before a full-corpus run. The small GRID grammar is
+inappropriate as the sole dataset for a GPT-2-scale multimodal model.
+
+## Previous T2-V1 decision — a narrow video benefit; broader repair gate fails
 
 **Keep the audio-anchored visual correction artifact, but do not scale this
 recipe yet.** Eleven additional RTX 3090 runs test whether synchronized video beats

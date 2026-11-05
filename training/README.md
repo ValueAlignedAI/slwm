@@ -332,3 +332,12 @@ terminal-padding correction has a separate evaluation revision:
 guard deliberately rejects changed rendering sources; use this explicit revision
 for the retained run. Training and primary feature scores are unchanged.
 The full suite passes124 tests; audits verify448 WAVs and all11 frozen experts.
+
+## Fresh-person speech content and GPT-2-scale text — 2026-11-05
+
+The [completed study guide](../docs/training/content_and_scale.md) covers ten
+small speech-content/timing runs, four separate124M/125M text runs, portable
+checkpoints, original-file CPU inference, corpus/compute accounting and scoring
+revision2. Current speech content, rejection and spectral-video gates pass;
+practical speech quality remains mixed. The text runs are early16.8M-token
+checkpoints from a prepared2.6B-token corpus, not converged pretraining.
