@@ -1,0 +1,16 @@
+{
+  "sprint":"T2-B1-COMPILER-PILOT",
+  "protocol":"docs/research/stream_compiled_learning_protocol_20261105.md",
+  "parent_config":"configs/t2/broad_stream.json",
+  "parent_artifacts":"experiments/multimodal/t2/broad-stream-20261105",
+  "artifacts":"experiments/multimodal/t2/compiled-learning-20261105",
+  "steps":400,
+  "compile_mode":"default",
+  "relative_validation_loss_tolerance":0.01,
+  "runs":[
+    {"id":"EXP-T2-831","variant":"slwm","seed":91,"compiled":true,"eager_reference":"EXP-T2-833","contextual_b1_reference":"EXP-T2-801"},
+    {"id":"EXP-T2-832","variant":"transformer","seed":91,"compiled":true,"eager_reference":"EXP-T2-834","contextual_b1_reference":"EXP-T2-802"},
+    {"id":"EXP-T2-833","variant":"slwm","seed":91,"compiled":false,"contextual_b1_reference":"EXP-T2-801"},
+    {"id":"EXP-T2-834","variant":"transformer","seed":91,"compiled":false,"contextual_b1_reference":"EXP-T2-802"}
+  ]
+}
