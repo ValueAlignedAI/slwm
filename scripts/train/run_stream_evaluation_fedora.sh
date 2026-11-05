@@ -14,7 +14,10 @@ for STREAM_STAGE in speech fields av-repair long score; do
     "$STREAM_PYTHON" -m exploration.broad_stream_evaluate --stage "$STREAM_STAGE"
 done
 wait "$STREAM_PACED_PID"
+CUDA_VISIBLE_DEVICES= "$STREAM_PYTHON" -m training.stream_exposure_audit
 "$STREAM_PYTHON" -m training.broad_stream_report
 while ! test -f experiments/text/t1/extended-throughput-20261105/summary.json; do sleep 20; done
 "$STREAM_PYTHON" -m training.extended_text_report
 "$STREAM_PYTHON" -m training.export_operational_artifacts
+CUDA_VISIBLE_DEVICES= "$STREAM_PYTHON" -m training.operational_artifact_audit
+"$STREAM_PYTHON" -m training.operational_registry --complete

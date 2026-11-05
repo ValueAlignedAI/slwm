@@ -12,6 +12,43 @@ def interval(values,people,seed=291):
     return {"person_mean":float(means.mean()),"person_cluster_95_interval":np.quantile(draws,[.025,.975]).tolist(),"people":len(unique),"cases":len(values)}
 
 
+def recognition_summary(rows):
+    """Keep no-reference hallucinations explicit instead of hiding them in WER."""
+    with_words=[r for r in rows if r["normalized_reference_words"]>0]
+    without_words=[r for r in rows if r["normalized_reference_words"]==0]
+    return {"cases":len(rows),"nonempty_reference_cases":len(with_words),
+            "mean_clip_wer":float(np.mean([r["wer"] for r in rows])) if rows else None,
+            "nonempty_reference_mean_clip_wer":float(np.mean([r["wer"] for r in with_words])) if with_words else None,
+            "nonempty_reference_corpus_wer":sum(r["normalized_edit_count"] for r in with_words)/sum(r["normalized_reference_words"] for r in with_words) if with_words else None,
+            "no_reference_cases":len(without_words),
+            "no_reference_insertions":sum(r["normalized_edit_count"] for r in without_words),
+            "reference_words":sum(r["normalized_reference_words"] for r in rows)}
+
+
+def content_summaries(root,recognized,long_cases):
+    field_rows=json.loads((root/"evaluation/field_ctc_scores.json").read_text()); grouped=defaultdict(list)
+    for row in field_rows:
+        key="|".join(str(row.get(k)) for k in ("run","group","split","mode","control","gap_seconds"))
+        grouped[key].append({**row,"normalized_edit_count":row["normalized_edits"]})
+    ctc={k:recognition_summary(v) for k,v in grouped.items()}
+    write_json(root/"field_content_summary.json",{"method":"Actual learned field CTC, separate from external waveform recognition; text-conditioned cases disclose supplied content","groups":ctc})
+    groups=defaultdict(list)
+    for row in recognized:
+        if row["group"] in ("long","long_control","text"): groups[row["group"]+"|"+row["condition"]].append(row)
+    recognition={k:recognition_summary(v) for k,v in groups.items()}
+    conditions=defaultdict(list)
+    for row in long_cases: conditions[row["run"]+"|"+row["mode"]+"|"+row["control"]].append(row)
+    effects={}
+    for key,rows in conditions.items():
+        people=[r["actor"] for r in rows]
+        effects[key]={"cases":len(rows),"code_mse":interval([r["video_code_mse"] for r in rows],people),
+                      "motion_mse":interval([r["motion_error_mse"] for r in rows],people),
+                      "code_gain_over_provided_static":interval([r["video_persistence_mse"]-r["video_code_mse"] for r in rows],people),
+                      "motion_gain_over_static":interval([r["static_motion_error_mse"]-r["motion_error_mse"] for r in rows],people)}
+    write_json(root/"long_condition_summary.json",{"waveform_recognition":recognition,"all_world_mode_controls":effects})
+    return recognition,ctc
+
+
 def speech_summary(cfg,root):
     records=[r for r in json.loads((root/"evaluation/recognizer_results.json").read_text()) if r["group"]=="speech"]; result={}
     for split in ("test-clean","test-other"):
@@ -73,7 +110,7 @@ def av_repair_summary(recognized,root):
         for condition in grouped: grouped[condition].sort(key=lambda r:r["id"])
         people=[r["actor"] for r in grouped["audio_only"]]; audio=np.asarray([r["wer"] for r in grouped["audio_only"]]); aligned=np.asarray([r["wer"] for r in grouped["aligned_video"]]); effects={}
         for condition,rows in grouped.items(): effects[condition+"_minus_aligned"]=interval(np.asarray([r["wer"] for r in rows])-aligned,people)
-        result[run]={"mean_clip_wer":{k:float(np.mean([r["wer"] for r in rows])) for k,rows in grouped.items()},"paired_changes":effects,"nonempty_reference_people":sum(r["normalized_reference_words"]>0 for r in grouped["audio_only"]),"reference_words_by_person":{r["actor"]:r["normalized_reference_words"] for r in grouped["audio_only"]},"scope":"Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"}
+        result[run]={"mean_clip_wer":{k:float(np.mean([r["wer"] for r in rows])) for k,rows in grouped.items()},"recognition":{k:recognition_summary(v) for k,v in grouped.items()},"paired_changes":effects,"nonempty_reference_people":sum(r["normalized_reference_words"]>0 for r in grouped["audio_only"]),"reference_words_by_person":{r["actor"]:r["normalized_reference_words"] for r in grouped["audio_only"]},"scope":"Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"}
     write_json(root/"av_repair_summary.json",result); return result
 
 
@@ -83,11 +120,14 @@ def main():
         key=r["id"]; f=field[key]; retrieval={}
         for direction in ("audio_to_video","audio_to_text","video_to_text"):
             rows=[x for x in f["retrieval"] if x["direction"]==direction]; people=[x["actor"] for x in rows]; retrieval[direction]={**interval([x["accuracy"] for x in rows],people),"person_mean_chance":float(np.mean([x["chance"] for x in rows])),"above_chance":interval([x["accuracy"]-x["chance"] for x in rows],people)}
-        future=np.asarray([x["future_errors"] for x in f["windows"]]); persistence=np.asarray([x["persistence_errors"] for x in f["windows"]]); summaries[key]={"selection":selection[key],"retrieval":retrieval,"future_mean_audio_mae_video_mse":future.mean(0).tolist(),"persistence_mean_audio_mae_video_mse":persistence.mean(0).tolist(),"phone_accuracy_active":float(np.mean([x["phone_accuracy_active"] for x in f["windows"] if x["phone_accuracy_active"] is not None]))}
+        future=np.asarray([x["future_errors"] for x in f["windows"]]); persistence=np.asarray([x["persistence_errors"] for x in f["windows"]]); prior=np.asarray([x["training_mean_prior_errors"] for x in f["windows"]]); people=[x["actor"] for x in f["windows"]]
+        summaries[key]={"selection":selection[key],"retrieval":retrieval,"future_mean_audio_mae_video_mse":future.mean(0).tolist(),"persistence_mean_audio_mae_video_mse":persistence.mean(0).tolist(),"training_mean_prior_audio_mae_video_mse":prior.mean(0).tolist(),"future_gain_over_persistence":[interval((persistence-future)[:,i],people) for i in range(2)],"future_gain_over_training_mean":[interval((prior-future)[:,i],people) for i in range(2)],"phone_accuracy_active":float(np.mean([x["phone_accuracy_active"] for x in f["windows"] if x["phone_accuracy_active"] is not None]))}
     write_json(root/"representation_summary.json",summaries); long_summary={}
     for run in ("EXP-T2-801","EXP-T2-802","EXP-T2-803","EXP-T2-804"):
         rows=[r for r in long if r["run"]==run and r["control"]=="normal"]; videos=[r for r in rows if r["mode"]=="audio"]; wer=[r["wer"] for r in recognized if r["group"]=="long" and r["condition"]==run+"_video_normal"]; long_summary[run]={"audio_to_video_code_mse":float(np.mean([r["video_code_mse"] for r in videos])),"provided_static_code_mse":float(np.mean([r["video_persistence_mse"] for r in videos])),"audio_to_video_motion_mse":float(np.mean([r["motion_error_mse"] for r in videos])),"static_motion_mse":float(np.mean([r["static_motion_error_mse"] for r in videos])),"video_to_audio_mean_clip_wer":float(np.mean(wer)),"native_generated_unique_frames":int(np.sum([r["video"]["unique_frames"] for r in videos])),"cases":len(rows)}
-    write_json(root/"long_summary.json",long_summary); av=av_repair_summary(recognized,root); gates={"speech_slwm_both_seeds_both_fresh_sets":all(speech[s]["0.16"]["paired_effects"][r]["passes_primary_gate"] for s in speech for r in ("EXP-T2-801","EXP-T2-803")),"continuous_sensing_slwm_both_seeds":all(policy[r]["passes_gate"] for r in ("EXP-T2-801","EXP-T2-803"))}; write_json(root/"gates.json",gates)
+    recognition,ctc=content_summaries(root,recognized,long)
+    for run,v in long_summary.items(): v["video_to_audio_recognition"]=recognition["long|"+run+"_video_normal"]
+    write_json(root/"long_summary.json",long_summary); av=av_repair_summary(recognized,root); gates={"speech_slwm_both_seeds_both_fresh_sets":all(speech[s]["0.16"]["paired_effects"][r]["passes_primary_gate"] for s in speech for r in ("EXP-T2-801","EXP-T2-803")),"continuous_sensing_slwm_both_seeds":all(policy[r]["passes_gate"] for r in ("EXP-T2-801","EXP-T2-803")),"field_actor_beats_direct_sensor_actor_both_slwm_seeds":all(policy[r]["field_representation_gate"] for r in ("EXP-T2-801","EXP-T2-803"))}; write_json(root/"gates.json",gates)
     lines=["# T2-B1 — broad speech and continuous multimodal fields","","Randomly initialized shared audio/video/phonetic-text models versus paired Transformers, with matched data, window plans, optimizers and2000-update limits. Selection uses independent validation only; final speakers are disjoint from all prior SLWM exposures. Gates and every failed case remain visible.","",f"Fitted codec/duration values: {fitted:,}; external frozen Vocos:13,531,650 neural weights, separately counted. CMU pronunciation is a fixed external dictionary, not a learned semantic text encoder. The124/125M English language models have separate weights.","","| Run | Variant / seed | Neural weights | Selected / total updates | Validation loss | Measured run minutes |","|---|---|---:|---:|---:|---:|"]
     for r in cfg["runs"]:
         d=selection[r["id"]]; lines.append(f"| {r['id']} | {r['variant']} / {r['seed']} | {d['parameters']:,} | {d['selected_step']} / {d['updates']} | {d['selected_validation_loss']:.4f} | {d['wall_seconds']/60:.2f} |")
@@ -104,9 +144,9 @@ def main():
     lines += ["","## Shared representation and future prediction","","Blind audio/video/text embeddings are encoded independently, with within-person candidates and no appearance input. Phonetic accuracy excludes silence/unknown targets. Forecasts receive both observed sensors and predict beyond the2-packet guard; persistence uses the same last observations.","","| Run | Audio/video retrieval | Audio/text retrieval | Video/text retrieval | Future audio MAE / persistence | Future video MSE / persistence |","|---|---:|---:|---:|---:|---:|"]
     for name,v in summaries.items():
         a,b=v["future_mean_audio_mae_video_mse"]; c,d=v["persistence_mean_audio_mae_video_mse"]; lines.append(f"| {name} | {100*v['retrieval']['audio_to_video']['person_mean']:.1f}% | {100*v['retrieval']['audio_to_text']['person_mean']:.1f}% | {100*v['retrieval']['video_to_text']['person_mean']:.1f}% | {a:.4f} / {c:.4f} | {b:.4f} / {d:.4f} |")
-    lines += ["","Chance varies with eligible windows and is saved per person. Alignment/field readouts do not establish language understanding. The smaller256-width arms are a single-seed exploratory size comparison; this is not enough to infer a scaling law.","","## Beyond thirty seconds","","Every reserved AMI participant receives the same fixed80s start and40.96s interval. All main architecture/seed outputs and registered wrong-time, reset and prefix controls are in watch.html. Text prompts use training-estimated timing with no reference alignment. All audio is retained, including poor synthesis; external recognizer text is kept separate from actual model CTC text.","","| Run | Audio→video code MSE / provided static | Motion MSE / static motion | Video→audio WER |","|---|---:|---:|---:|"]
+    lines += ["","Chance varies with eligible windows and is saved per person. Training-mean forecasts and paired person intervals are also in representation_summary.json. Alignment/field readouts do not establish language understanding. The smaller256-width arms are a single-seed exploratory size comparison; this is not enough to infer a scaling law. The trained reset-memory arm also changes embedding pooling to an average of normalized chunk readouts, so its retrieval difference is not a pure memory effect; the same-weight long reset control isolates runtime memory removal more directly.","","## Beyond thirty seconds","","Every reserved AMI participant receives the same fixed80s start and40.96s interval. All main architecture/seed outputs and registered wrong-time, reset and prefix controls are in watch.html. Text prompts use training-estimated timing with no reference alignment. All audio is retained, including poor synthesis; external recognizer text is kept separate from actual model CTC text. field_content_summary.json reports actual CTC text from the model; long_condition_summary.json includes every control, source/oracle waveform recognition and no-reference insertion counts.","","| Run | Audio→video code MSE / provided static | Motion MSE / static motion | Video→audio WER |","|---|---:|---:|---:|"]
     for name,v in long_summary.items(): lines.append(f"| {name} | {v['audio_to_video_code_mse']:.4f} / {v['provided_static_code_mse']:.4f} | {v['audio_to_video_motion_mse']:.5f} / {v['static_motion_mse']:.5f} | {100*v['video_to_audio_mean_clip_wer']:.1f}% |")
-    lines += ["","Long spontaneous meetings contain silent participants and crosstalk. All fixed cases remain, and normalized reference-word/edit counts distinguish no-reference intervals from ordinary WER. No general-scene visual decoder or pretrained language model is used in these fields. Native video is64×64 and appearance is supplied. The text edge represents CMU phones, not arbitrary English semantics.","","## Continuous decisions and research scope","",f"Broad speech gate: **{'PASS' if gates['speech_slwm_both_seeds_both_fresh_sets'] else 'FAIL'}**. Continuous SLWM sensing gate: **{'PASS' if gates['continuous_sensing_slwm_both_seeds'] else 'FAIL'}**. Full paired cost/coverage results are in the P1-S1 report. Each tick runs automatically from persistent memory, with frozen world weights; sensing actions change observations only.","","Both SLWM and Transformer share the same recurrent field/memory design. A shared-latent result is not automatically specific to the extra SLWM signal paths. Compare paired metrics, ablations, actual compute and both seeds before attributing a gain. Useful robot decisions additionally require action-conditioned physical dynamics, goals/reward, multi-step consequence tests and a faster control loop. The1.365s received chunk plus analysis support is unsuitable evidence for fast motor control."]
+    lines += ["","Long spontaneous meetings contain silent participants and crosstalk. All fixed cases remain, and normalized reference-word/edit counts distinguish no-reference intervals from ordinary WER. No general-scene visual decoder or pretrained language model is used in these fields. Native video is64×64 and appearance is supplied. The text edge represents CMU phones, not arbitrary English semantics.","","## Continuous decisions and research scope","",f"Broad speech gate: **{'PASS' if gates['speech_slwm_both_seeds_both_fresh_sets'] else 'FAIL'}**. Continuous SLWM sensing gate: **{'PASS' if gates['continuous_sensing_slwm_both_seeds'] else 'FAIL'}**. Field actor versus direct-sensor actor gate: **{'PASS' if gates['field_actor_beats_direct_sensor_actor_both_slwm_seeds'] else 'FAIL'}**. Full paired cost/coverage results are in the P1-S1 report. Each tick runs automatically from persistent memory, with frozen world weights; sensing actions change observations only.","","Both SLWM and Transformer share the same recurrent field/memory design. A shared-latent result is not automatically specific to the extra SLWM signal paths. Compare paired metrics, ablations, actual compute and both seeds before attributing a gain. Useful robot decisions additionally require action-conditioned physical dynamics, goals/reward, multi-step consequence tests and a faster control loop. The1.365s received chunk plus analysis support is unsuitable evidence for fast motor control. Waveform rendering additionally uses512ms of future predicted mel context and is performed after rollout; file-based stateful inference is not an end-to-end live microphone/camera transport."]
     (root/"report.md").write_text("\n".join(lines)+"\n"); gallery(root)
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
     fig,axes=plt.subplots(1,3,figsize=(15,4.5),layout="constrained")

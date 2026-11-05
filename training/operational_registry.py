@@ -20,6 +20,16 @@ def main():
     cfg=read("configs/policy/stream_sensing.json"); root=Path(cfg["artifacts"]); root.mkdir(parents=True,exist_ok=True)
     for world in cfg["world_runs"]:
         folder=root/world; folder.mkdir(exist_ok=True); selected=read(folder/"frozen.json"); summary=read(root/"summary.json") if a.complete else None; write_json(folder/"registry.json",{"experiment_id":cfg["policy_ids"][world],"created_at":"2026-11-05","updated_at":date,"status":"completed" if a.complete and summary else "running" if selected else "planned","sprint":{"id":"P1","name":"P1-S1 exploratory sensing","owner_role":"training"},"claim_trace":{"hypothesis_ids":["H-R0-4"],"scope":"Recorded sensor utility, not hallucination reduction or physical control"},"repository":{"git_commit_at_registry_write":commit,"source_hashes":read(root/"source_hashes.json")},"config":{"path":"configs/policy/stream_sensing.json","sha256":file_sha("configs/policy/stream_sensing.json"),"seed":cfg["seed"]},"model":{"world":world,"actor_neural_parameters":(selected or {}).get("parameters"),"world_weights_frozen":True},"data":{"risk_head_fit_people":22,"risk_head_selection_people":6,"independent_calibration_people":4,"final_test_people":12},"training":{"protocol":cfg["protocol"],"protocol_sha256":file_sha(cfg["protocol"]),"actual":read(folder/"fit.json"),"best_optimizer":str(folder/"best_optimizer.pt"),"last_optimizer":str(folder/"last_optimizer.pt")},"evaluation":{"utility_counts_all_ticks":True,"metrics":summary[world] if summary else None},"interpretation":{"physical_world_control":False,"language_hallucination_claim":False,"decision":"See registered cost/coverage gate"},"registry_writer_sha256":source}); entries.append(cfg["policy_ids"][world])
+        raw_folder=folder/"raw"; raw_folder.mkdir(exist_ok=True)
+        raw_selected=read(raw_folder/"frozen.json")
+        raw_entry=read(folder/"registry.json")
+        raw_entry.update(experiment_id=cfg["raw_policy_ids"][world],status="completed" if a.complete and summary else "running" if raw_selected else "planned")
+        raw_entry["claim_trace"]={"hypothesis_ids":["H-R0-4"],"scope":"Matched direct-sensor statistics control; same fitted counterfactual targets and people"}
+        raw_entry["model"].update(actor_neural_parameters=(raw_selected or {}).get("parameters"),feature_mode="raw",learned_world_features_used=False,world_used_for_training_targets_and_scoring=True)
+        raw_entry["training"].update(actual=read(raw_folder/"fit.json"),best_optimizer=str(raw_folder/"best_optimizer.pt"),last_optimizer=str(raw_folder/"last_optimizer.pt"),same_sample_trajectories_as_field_actor=True)
+        raw_entry["evaluation"]["strategy"]="raw"
+        raw_entry["interpretation"]["decision"]="Compare shared-field actor against this adaptive control as well as fixed strategies"
+        write_json(raw_folder/"registry.json",raw_entry); entries.append(cfg["raw_policy_ids"][world])
     write_json(Path("experiments/multimodal/t2/broad-stream-20261105")/("registry_complete.json" if a.complete else "registry_registered.json"),{"entries":entries,"date":date,"final_scores_read":a.complete,"git_commit":commit,"source_sha256":source}); print(json.dumps({"registry_entries":len(entries),"completed_mode":a.complete}),flush=True)
 
 
