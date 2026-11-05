@@ -1,0 +1,40 @@
+{
+  "calibration": {
+    "aligned_coverage": 0.7769784172661871,
+    "checkpoint_sha256": "dbfb87a0614c3bb886a54d05341c16814d5a259a613fbb95cea7b48f0150e9bc",
+    "coverage_gate_passes": true,
+    "samples": 278,
+    "shift_acceptance": 0.007194244604316547,
+    "shift_acceptance_by_direction": [
+      0.007194244604316547,
+      0.007194244604316547
+    ],
+    "source": "Independent calibration people22\u201324, no test targets",
+    "threshold": 0.0
+  },
+  "codecs": {
+    "codec.npz": "d71e1ed81846d27cb71553c67c2cf9a1e3aab557df7f327794fbed099f23a25d",
+    "codec100.npz": "c911c34d7926b135c16a02e9bb189bee67d973050194698c05503551f63b96e6",
+    "vocabulary.json": "e5bc8726527ad06ed883d6460b9e5691315952462b6936555b61debc68cee9d5"
+  },
+  "entries": {
+    "audio": {
+      "run": "EXP-T2-711",
+      "sha256": "86366c8253ae67be414689bc722d53801c7b48d23d6c4372ef19eeeacc385e82"
+    },
+    "content_base": {
+      "run": "EXP-T2-702",
+      "sha256": "a4d1d73bfeaaced2b3d9e7f752da33c6a86db65b63e49112ab24bca391e2c676"
+    },
+    "video": {
+      "run": "EXP-T2-713",
+      "sha256": "dbfb87a0614c3bb886a54d05341c16814d5a259a613fbb95cea7b48f0150e9bc"
+    }
+  },
+  "gates": {
+    "content_gate_passes": true,
+    "practical_speech_gate_passes": false,
+    "rejection_gate_passes": true,
+    "video_gate_passes": true
+  }
+}

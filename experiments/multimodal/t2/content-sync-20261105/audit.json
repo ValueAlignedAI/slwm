@@ -1,0 +1,41 @@
+{
+  "all_arrays_and_metadata_verified": true,
+  "frozen_components": {
+    "EXP-T2-711": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": false
+    },
+    "EXP-T2-712": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": false
+    },
+    "EXP-T2-713": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": true
+    },
+    "EXP-T2-714": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": true
+    },
+    "EXP-T2-715": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": true
+    },
+    "EXP-T2-716": {
+      "base_unchanged": true,
+      "strong_audio_fallback_unchanged": true
+    }
+  },
+  "held_out_people_and_compositions_disjoint": true,
+  "neural_checkpoints": 10,
+  "observed_pcm_exact": true,
+  "passed": true,
+  "raw_records_verified": 14636,
+  "reviewed_training_source_exclusions": 90,
+  "source_sha256": "aff8ed8e2f0168de58bbf54db1ec5e06a4595fb36061d508408645274d4d3e2a",
+  "trained_hidden_waveform_invariance": true,
+  "trained_missing_video_equals_strong_audio_exact": true,
+  "trained_target_and_label_dictionary_invariance": true,
+  "video_pts_aligned_pcm_redecoded_exact": true,
+  "waveforms_verified": 640
+}

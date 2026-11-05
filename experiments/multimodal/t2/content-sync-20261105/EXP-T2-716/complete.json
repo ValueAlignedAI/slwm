@@ -1,0 +1,24 @@
+{
+  "checkpoint_sha256": "964de39e196dada129a6ca40c64fc57c9ded596408c5a36ef8d539d2d1e37c0a",
+  "counts": {
+    "frozen": 6428512,
+    "graph_connected_trainable": 1285308,
+    "total": 7713820,
+    "trainable": 1285308
+  },
+  "extra_negative_windows": 96000,
+  "kind": "candidate",
+  "last_sha256": "bac49047992cec3d7366507771479c2a8bcb22295a41e8f479d97d9d8044797c",
+  "overfit_stop": false,
+  "positive_windows": 96000,
+  "run": {
+    "arm": "shuffled",
+    "id": "EXP-T2-716",
+    "seed": 71,
+    "unit_weight": 0.2
+  },
+  "selected_step": 2800,
+  "selected_validation_mse": 0.8741559386253357,
+  "updates": 3000,
+  "wall_seconds": 228.48765234899474
+}

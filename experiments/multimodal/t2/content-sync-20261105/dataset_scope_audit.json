@@ -1,0 +1,47 @@
+{
+  "dataset_card_sha256": "b2b02136ee984b13ea48f51f77b03e833737b213bc361ae96190cd1339c52287",
+  "primary_test_combinations_seen_in_train": 0,
+  "reviewed_excluded_training_clips": 90,
+  "secondary_sentence_combinations_actually_seen": 0,
+  "secondary_test_seen_caveat": "This name means training-eligible sentence hash buckets, not guaranteed exact sentence occurrence in training",
+  "splits": {
+    "calibration": {
+      "clips": 278,
+      "people": 3,
+      "retained_hours": 0.23166666666666666
+    },
+    "test": {
+      "clips": 749,
+      "people": 8,
+      "retained_hours": 0.6241555555555556
+    },
+    "test_seen": {
+      "clips": 256,
+      "people": 8,
+      "retained_hours": 0.21333333333333335
+    },
+    "train": {
+      "clips": 12704,
+      "people": 16,
+      "retained_hours": 10.585877777777778
+    },
+    "train_person_holdout": {
+      "clips": 254,
+      "people": 16,
+      "retained_hours": 0.21165555555555557
+    },
+    "validation": {
+      "clips": 395,
+      "people": 4,
+      "retained_hours": 0.32916666666666666
+    }
+  },
+  "unique_sentence_combinations": {
+    "calibration": 278,
+    "test": 749,
+    "test_seen": 256,
+    "train": 12704,
+    "validation": 395
+  },
+  "vocabulary_size": 53
+}
