@@ -1,0 +1,78 @@
+{
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "rows": [
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.4414594969712198,
+      "micro_batch": 8,
+      "peak_allocated_bytes": 6131237376,
+      "peak_reserved_bytes": 6782189568,
+      "sequence_length": 512,
+      "tokens_per_second": 37110.26425273166,
+      "variant": "gpt2",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.41608760703820735,
+      "micro_batch": 16,
+      "peak_allocated_bytes": 9989734912,
+      "peak_reserved_bytes": 10408165376,
+      "sequence_length": 512,
+      "tokens_per_second": 39375.61187114877,
+      "variant": "gpt2",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.3932455400354229,
+      "micro_batch": 32,
+      "peak_allocated_bytes": 17187559936,
+      "peak_reserved_bytes": 18922602496,
+      "sequence_length": 512,
+      "tokens_per_second": 41665.17294837694,
+      "variant": "gpt2",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.630084240983706,
+      "micro_batch": 8,
+      "peak_allocated_bytes": 6852739584,
+      "peak_reserved_bytes": 7656701952,
+      "sequence_length": 512,
+      "tokens_per_second": 26001.79223448802,
+      "variant": "slwm",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.5965731370379217,
+      "micro_batch": 16,
+      "peak_allocated_bytes": 11379854848,
+      "peak_reserved_bytes": 11804868608,
+      "sequence_length": 512,
+      "tokens_per_second": 27463.333908970715,
+      "variant": "slwm",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "median_step_seconds": 0.5696995940525085,
+      "micro_batch": 32,
+      "peak_allocated_bytes": 19953347072,
+      "peak_reserved_bytes": 21801992192,
+      "sequence_length": 512,
+      "tokens_per_second": 28760.982474180215,
+      "variant": "slwm",
+      "weights_retained": false
+    }
+  ],
+  "scope": "Disposable synthetic optimization on already-used token windows; no retained scientific weights"
+}

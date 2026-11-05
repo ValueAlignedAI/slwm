@@ -1,0 +1,59 @@
+{
+  "numerical_agreement": [
+    {
+      "absolute_loss_difference": 4.1961669921875e-05,
+      "embedding_gradient_cosine": 0.9999394416809082,
+      "fused_loss": 11.009929656982422,
+      "original_loss": 11.009971618652344,
+      "relative_gradient_error": 0.011007205583155155,
+      "variant": "gpt2"
+    },
+    {
+      "absolute_loss_difference": 4.482269287109375e-05,
+      "embedding_gradient_cosine": 0.9999805688858032,
+      "fused_loss": 11.013548851013184,
+      "original_loss": 11.013593673706055,
+      "relative_gradient_error": 0.006248084362596273,
+      "variant": "slwm"
+    }
+  ],
+  "rows": [
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "micro_batch": 16,
+      "peak_allocated_bytes": 5339121152,
+      "tokens_per_second": 31252.197955808304,
+      "variant": "gpt2",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "micro_batch": 32,
+      "peak_allocated_bytes": 7638879744,
+      "tokens_per_second": 39127.526277954086,
+      "variant": "gpt2",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "micro_batch": 16,
+      "peak_allocated_bytes": 6767304192,
+      "tokens_per_second": 23289.757124304673,
+      "variant": "slwm",
+      "weights_retained": false
+    },
+    {
+      "effective_batch": 32,
+      "finite_gradient": true,
+      "micro_batch": 32,
+      "peak_allocated_bytes": 10422174208,
+      "tokens_per_second": 27521.23621445395,
+      "variant": "slwm",
+      "weights_retained": false
+    }
+  ],
+  "scope": "Disposable runtime experiment; no scientific weight updates retained"
+}
