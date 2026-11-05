@@ -42,10 +42,11 @@ motion, timing, within-person content retrieval and fresh-person tests together.
 masked, matched audio/visual content prediction; its reported results are not a
 performance estimate for our much smaller paired corpus or current video edge.
 
-Repair currently gives the network coarse packet visibility and a chunk-local
+Repair gives the network coarse packet visibility and a chunk-local
 observed-only baseline, while the practical interpolation control retains fine
-mel visibility over the clip. A next revision should conserve known fine mel
-context and improve the observation interface, then compare with the existing
+mel visibility over the clip. A pre-test secondary readout now conserves known
+fine mel context at the renderer, without changing hidden predictions. The
+network's finer observation interface still needs a separate revision against the
 strong baseline. Do not weaken that baseline to manufacture a gain.
 
 ## Separate representation from signal parameterization

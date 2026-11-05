@@ -14,7 +14,7 @@ from training.broad_batch import StreamCorpus,predict
 from training.stream_codec import PACKET_SECONDS,estimated_text,observed_mel,load_vocoder
 from training.research_sources import file_sha
 from training.t2_real_av import write_json
-from exploration.stream_media import read_audio,write_audio,rollout,synthesize,restore_known,decode_video,encode_video
+from exploration.stream_media import read_audio,write_audio,rollout,synthesize,restore_known,decode_video,encode_video,preserve_mel_context
 
 CONFIG="configs/t2/broad_stream.json"
 MAIN=("EXP-T2-801","EXP-T2-802","EXP-T2-803","EXP-T2-804")
@@ -57,12 +57,13 @@ def speech(cfg,root):
                 waves["linear_wave"][missing]=np.interp(np.flatnonzero(missing),np.flatnonzero(~missing),sound[~missing]); field_text={}; timing={}
                 for name,model in models.items():
                     proposal=rollout(model,normalized,np.zeros((packets,64),np.float32),np.zeros(packets,np.int64),np.zeros(64,np.float32),"repair",visible=visible,device="cuda",reset_memory=name=="EXP-T2-808"); mel[name]=proposal["mel"]; field_text[name]=proposal["text"]; timing[name]=sum(t["compute_seconds"] for t in proposal["trace"])
+                    if name in MAIN: mel[name+"_conserved_context"]=preserve_mel_context(proposal["mel"],normalized,fine)
                 metrics={}; mask=((np.arange(packets*4)*256/24000)>=begin)&((np.arange(packets*4)*256/24000)<end)
                 for name,features in mel.items():
                     generated,renderer=synthesize(features,codec,vocoder,"cuda"); waves[name]=restore_known(generated,sound,missing); metrics[name]={"true_gap_mel_mae":float(np.abs(features.reshape(-1,100)[mask]-target.reshape(-1,100)[mask]).mean()),"renderer":renderer}
                 for name,wave in waves.items():
                     assert np.array_equal(np.rint(wave[~missing]*32768).astype("<i2"),np.rint(sound[~missing]*32768).astype("<i2")); write_audio(folder/(name+".wav"),wave)
-                np.save(folder/"missing_samples.npy",missing); np.savez_compressed(folder/"mels.npz",**{k:v.astype(np.float16) for k,v in mel.items()}); record={"id":row["id"],"actor":row["actor"],"split":split,"gap_seconds":width,"gap_interval":[begin,end],"transcript":row["transcript"],"folder":str(folder),"conditions":list(waves),"field_text":field_text,"metrics":metrics,"compute_seconds":timing,"observed_pcm_exact":True,"hidden_samples_erased_before_fft":True,"source_phase_used":False,"raw_sha256":row["raw_sha256"]}; write_json(folder/"case.json",record); all_records.append(record); write_json(root/"speech_cases.json",all_records); print(json.dumps({"speech_case":len(all_records),"id":row["id"],"gap":width}),flush=True)
+                np.save(folder/"missing_samples.npy",missing); np.save(folder/"fine_mel_visible.npy",fine); np.savez_compressed(folder/"mels.npz",**{k:v.astype(np.float16) for k,v in mel.items()}); record={"id":row["id"],"actor":row["actor"],"split":split,"gap_seconds":width,"gap_interval":[begin,end],"transcript":row["transcript"],"folder":str(folder),"conditions":list(waves),"field_text":field_text,"metrics":metrics,"compute_seconds":timing,"observed_pcm_exact":True,"hidden_samples_erased_before_fft":True,"source_phase_used":False,"raw_sha256":row["raw_sha256"],"secondary_readout":"_conserved_context preserves known fine mel frames at renderer input, with identical hidden model proposals and no new weights; primary gate unchanged"}; write_json(folder/"case.json",record); all_records.append(record); write_json(root/"speech_cases.json",all_records); print(json.dumps({"speech_case":len(all_records),"id":row["id"],"gap":width}),flush=True)
     write_json(root/"speech_cases.json",all_records)
 
 

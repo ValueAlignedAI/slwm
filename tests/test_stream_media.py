@@ -6,10 +6,19 @@ torch=pytest.importorskip("torch")
 pytest.importorskip("vocos")
 pytest.importorskip("cmudict")
 pytest.importorskip("soundfile")
-from exploration.stream_media import synthesize,restore_known,ctc_text,write_audio,encode_video,rollout
+from exploration.stream_media import synthesize,restore_known,ctc_text,write_audio,encode_video,rollout,preserve_mel_context
 from exploration.broad_stream_evaluate import gap_interval,edit_distance
 from training.stream_codec import load_vocoder,mel_features
 from models.slwm_stream import StreamWorld
+
+
+def test_known_mel_context_cannot_replace_hidden_model_predictions():
+    proposed=np.arange(800,dtype=np.float32).reshape(2,400); observed=-proposed; visible=np.array([True,False,True,False,False,True,True,False])
+    hidden=observed.copy().reshape(8,100); hidden[~visible]=np.nan
+    result=preserve_mel_context(proposed,hidden.reshape(2,400),visible).reshape(8,100)
+    assert np.array_equal(result[~visible],proposed.reshape(8,100)[~visible])
+    assert np.array_equal(result[visible],observed.reshape(8,100)[visible])
+    assert np.isfinite(result).all()
 
 
 def test_plain_text_and_packed_codec_types_work_in_cpu_stream():

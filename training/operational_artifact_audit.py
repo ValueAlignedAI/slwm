@@ -59,11 +59,16 @@ def main():
     repaired=0; observed=0
     for case in json.loads((root/"evaluation/speech_cases.json").read_text()):
         folder=Path(case["folder"]); reference,sr=sf.read(folder/"reference.wav",dtype="int16"); assert sr==24000; missing=np.load(folder/"missing_samples.npy")
+        fine=np.load(folder/"fine_mel_visible.npy"); mels=dict(np.load(folder/"mels.npz"))
+        for name in ("EXP-T2-801","EXP-T2-802","EXP-T2-803","EXP-T2-804"):
+            original=mels[name].reshape(-1,100); conserved=mels[name+"_conserved_context"].reshape(-1,100)
+            assert np.array_equal(original[~fine],conserved[~fine])
+            assert np.array_equal(conserved[fine],mels["interpolated_mel"].reshape(-1,100)[fine])
         for name in case["conditions"]:
             wave,rate=sf.read(folder/(name+".wav"),dtype="int16"); assert rate==sr and wave.shape==reference.shape; assert np.array_equal(wave[~missing],reference[~missing]); repaired+=1; observed+=int((~missing).sum())
     for case in json.loads((root/"evaluation/av_repair_cases.json").read_text()):
         reference,sr=sf.read(root/"evaluation/long_inputs"/case["id"]/"input.wav",dtype="int16"); wave,rate=sf.read(Path(case["folder"])/"output.wav",dtype="int16"); missing=np.zeros(len(reference),bool); a,z=case["gap_interval"]; missing[round(a*sr):round(z*sr)]=True; assert sr==rate==24000 and wave.shape==reference.shape and np.array_equal(wave[~missing],reference[~missing]); repaired+=1; observed+=int((~missing).sum())
-    result["media"].update(repaired_wavs_checked=repaired,observed_samples_checked=observed,all_observed_pcm_exact=True)
+    result["media"].update(repaired_wavs_checked=repaired,observed_samples_checked=observed,all_observed_pcm_exact=True,secondary_hidden_mel_unchanged=True,secondary_observed_mel_exact=True)
     long_cases=json.loads((root/"evaluation/long_cases.json").read_text())+json.loads((root/"evaluation/text_cases.json").read_text()); durations=[]
     for case in long_cases:
         folder=Path(case["folder"]); info=sf.info(folder/"output.wav"); assert info.samplerate==24000 and info.frames==case["waveform"]["samples"]; assert info.duration>30; assert file_sha(folder/"output.mp4")==case["video"]["sha256"]; assert case["video"]["frames"]*1024==info.frames; durations.append(info.duration)

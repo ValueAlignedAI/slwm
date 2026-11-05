@@ -28,6 +28,16 @@ def check_video_cache(cache,source,required_frames):
         if meta["raw_video_sha256"]!=file_sha(source) or meta["frames"]<required_frames: raise ValueError("Use a fresh output folder for a changed or longer video input; the existing cache belongs to another request")
 
 
+def preserve_mel_context(proposal,observed,fine_visible):
+    """Keep physically observed FFT frames; hidden proposals stay exactly intact."""
+    proposed=np.asarray(proposal,np.float32); known=np.asarray(observed,np.float32)
+    visible=np.asarray(fine_visible,bool)
+    if proposed.ndim!=2 or proposed.shape[1]!=400 or known.shape!=proposed.shape or visible.shape!=(4*len(proposed),):
+        raise ValueError("Expected matching[T,400] mel arrays and[4T] visibility")
+    result=proposed.copy(); result.reshape(-1,100)[visible]=known.reshape(-1,100)[visible]
+    return result
+
+
 def read_audio(path,start=0.,seconds=None):
     """Decode/resample -> quantized mono float32 PCM[N] at24kHz."""
     info=sf.info(path); audio,sr=sf.read(path,start=int(round(start*info.samplerate)),frames=-1 if seconds is None else int(round(seconds*info.samplerate)),dtype="float32",always_2d=True); wave=torch.from_numpy(audio.mean(1))[None]

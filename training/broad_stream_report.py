@@ -52,7 +52,7 @@ def content_summaries(root,recognized,long_cases):
 
 
 def speech_summary(cfg,root):
-    records=[r for r in json.loads((root/"evaluation/recognizer_results.json").read_text()) if r["group"]=="speech"]; result={}
+    records=[r for r in json.loads((root/"evaluation/recognizer_results.json").read_text()) if r["group"]=="speech"]; result={}; context={}
     for split in ("test-clean","test-other"):
         result[split]={}
         for width in (.16,.32):
@@ -63,7 +63,11 @@ def speech_summary(cfg,root):
             for run in cfg["runs"]:
                 name=run["id"]; people=[r["actor"] for r in grouped[name]]; delta=np.asarray([r["wer"] for r in grouped[baseline]])-np.asarray([r["wer"] for r in grouped[name]]); effect=interval(delta,people); effect["relative_reduction"]=effect["person_mean"]/max(means[baseline],1e-9); effect["passes_primary_gate"]=bool(means[baseline]>0 and effect["relative_reduction"]>=.05 and effect["person_cluster_95_interval"][0]>0); comparisons[name]=effect
             result[split][str(width)]={"mean_clip_wer":means,"corpus_wer":corpus,"stronger_registered_baseline":baseline,"paired_effects":comparisons}
-    write_json(root/"speech_summary.json",result); return result
+            context[split+"|"+str(width)]={}
+            for run in cfg["runs"][:4]:
+                name=run["id"]; conserved=name+"_conserved_context"; people=[r["actor"] for r in grouped[name]]
+                context[split+"|"+str(width)][name]={"original_mean_clip_wer":means[name],"conserved_context_mean_clip_wer":means[conserved],"original_minus_conserved":interval([a["wer"]-b["wer"] for a,b in zip(grouped[name],grouped[conserved])],people),"stronger_baseline_minus_conserved":interval([a["wer"]-b["wer"] for a,b in zip(grouped[baseline],grouped[conserved])],people),"baseline":baseline,"scope":"Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout"}
+    write_json(root/"context_conservation_summary.json",context); write_json(root/"speech_summary.json",result); return result
 
 
 def policy_summary():
@@ -140,7 +144,8 @@ def main():
             effect=primary["paired_effects"].get(name)
             if effect:
                 lo,hi=effect["person_cluster_95_interval"]; lines.append(f"| {split} | {name} | {100*wer:.2f}% | {100*effect['relative_reduction']:+.2f}% relative | [{100*lo:+.2f},{100*hi:+.2f}]pp | {'PASS' if effect['passes_primary_gate'] else 'FAIL'} |")
-            else: lines.append(f"| {split} | {name} | {100*wer:.2f}% | — | — | control |")
+            else: lines.append(f"| {split} | {name} | {100*wer:.2f}% | — | — | {'secondary readout' if name.endswith('_conserved_context') else 'control'} |")
+    lines += ["","The four `_conserved_context` conditions are pre-test secondary readouts: retain physically observed fine mel frames at Vocos input while keeping every hidden model proposal identical. They add no fitted weights and do not replace the original primary gate. context_conservation_summary.json reports paired effects against original readout and the stronger practical baseline. Fine masks and both mel arrays are retained for exact invariance checks."]
     lines += ["","## Same-model video contribution on new AMI people","","These secondary40.96s cases compare identical weights/input gaps with audio only, correct video and wrong/static/±240ms video. Empty-reference and quiet cases remain explicit; this is not a fitted timing-rejection gate. All values are mean clip WER.","","| Run | Audio only | Aligned video | Static video | Wrong time | −240ms | +240ms |","|---|---:|---:|---:|---:|---:|---:|"]
     for name,v in av.items(): lines.append("| "+name+" | "+" | ".join(f"{100*v['mean_clip_wer'][c]:.2f}%" for c in ("audio_only","aligned_video","static_video","wrong_time_video","minus240ms","plus240ms"))+" |")
     lines += ["","## Shared representation and future prediction","","Blind audio/video/text embeddings are encoded independently, with within-person candidates and no appearance input. Phonetic accuracy excludes silence/unknown targets. Forecasts receive both observed sensors and predict beyond the2-packet guard; persistence uses the same last observations.","","| Run | Audio/video retrieval | Audio/text retrieval | Video/text retrieval | Future audio MAE / persistence | Future video MSE / persistence |","|---|---:|---:|---:|---:|---:|"]

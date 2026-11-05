@@ -17,6 +17,17 @@ Controls: recorded audio, silence, linear-waveform interpolation, fine-frame
 observed-only mel interpolation plus Vocos, and oracle mel plus Vocos. The oracle
 control measures the external renderer ceiling and is never a practical input.
 
+Pre-test secondary decoder diagnostic: for the four main world/seed arms, also
+render `_conserved_context` with every physically observed fine mel frame
+restored at renderer input. Keep each hidden model mel proposal exactly the
+same. Use the same erased-waveform FFT visibility and the same frozen Vocos,
+fade and known-PCM clamp; no original hidden sample, target feature, phase or
+extra fitted weight enters this variant. Preserve original outputs and primary
+gates. Save the fine mask and both mel arrays; compare paired WER against the
+original readout and fine interpolation, both gaps/sets/seeds. These secondary
+conditions test decoder context conservation, not an improved hidden prediction
+or a retroactive primary pass. Register this before any B1/P1 final test score.
+
 Whisper-tiny.en revision87c7102498dcde7456f24cfd30239ca606ed9063 is frozen and
 external. Normalize both reference and hypothesis with its standard English
 normalizer before primary WER; retain unnormalized errors. Short clips allow
@@ -54,7 +65,7 @@ transfer probe, not a new primary speech gate or a fitted timing-rejection polic
 Long generation: every fixed40.96s interval at80s, all12 AMI test people, main
 SLWM/Transformer arms in both seeds. Retain input64×64 video and original sound,
 audio→video (original soundtrack explicitly labeled), video→audio (no source
-audio decoded), model CTC text, and text→audio/video for both fixed long prompts.
+audio supplied to the model), model CTC text, and text→audio/video for both fixed long prompts.
 Provide a static training appearance for generated video; native resolution64.
 Run reset-memory and eight-chunk-prefix controls for main seed91 arms, plus
 same-person wrong-time audio/video conditioning and static/mean/silent controls.

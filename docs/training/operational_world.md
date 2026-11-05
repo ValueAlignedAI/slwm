@@ -52,6 +52,10 @@ free-state collapse or dependence on recurrence. All proposals, state traces,
 actual model CTC text, PCM sound and verified-frame-count videos are saved.
 Add `--video VIDEO` to repair mode to supply synchronized observed video; the
 first observed video packet provides an explicit static appearance cue.
+Repair also accepts `--preserve-mel-context`, the pre-test secondary readout that
+restores physically observed fine mel frames before rendering while keeping
+hidden predictions intact. Raw and conserved mel arrays remain available.
+This does not replace the original registered speech gate or add model weights.
 
 Long-media rendering follows the continuous field rollout; it is not a live
 camera/audio transport. The model receives1.365s chunks plus the declared FFT
