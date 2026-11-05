@@ -3,6 +3,7 @@
   "protocol":"docs/research/stream_sensing_protocol_20261105.md",
   "world_root":"experiments/multimodal/t2/broad-stream-20261105",
   "world_runs":["EXP-T2-801","EXP-T2-802","EXP-T2-803","EXP-T2-804"],
+  "policy_ids":{"EXP-T2-801":"EXP-P1-101","EXP-T2-802":"EXP-P1-102","EXP-T2-803":"EXP-P1-103","EXP-T2-804":"EXP-P1-104"},
   "corpus":"artifacts/t2_audio_visual/broad_stream_prepared_v1",
   "artifacts":"experiments/policy/continuous-sensing-20261105",
   "actions":["listen","look","both","wait"],
@@ -17,6 +18,9 @@
   "risk_steps":1500,
   "risk_batch":256,
   "risk_lr":0.001,
+  "risk_holdout_people":6,
+  "risk_eval_every":100,
+  "risk_dropout":0.1,
   "calibration_coverage":0.7,
   "paced_cpu_seconds":40.96,
   "seed":391

@@ -4,7 +4,11 @@ torch=pytest.importorskip("torch")
 pytest.importorskip("vocos")
 pytest.importorskip("cmudict")
 from models.slwm_stream import StreamWorld
-from training.stream_sensing import RiskActor,choose,observe,features,future_error,weight_digest
+from training.stream_sensing import RiskActor,choose,observe,features,future_error,weight_digest,risk_masks
+
+
+def test_risk_head_selection_splits_people_not_adjacent_ticks():
+    actors=["person"+str(i) for i in range(10) for _ in range(4)]; fit,validation,held=risk_masks(actors,{"risk_holdout_people":3}); assert len(held)==3; assert not set(np.asarray(actors)[fit])&set(np.asarray(actors)[validation]); assert fit.sum()==28 and validation.sum()==12
 
 
 def test_sensing_cost_and_goal_change_decisions():

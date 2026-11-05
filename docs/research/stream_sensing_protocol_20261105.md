@@ -32,8 +32,15 @@ cost is audio error,0.2×video error, or their sum, respectively. Fit log errors
 with squared loss; standardize actor features using training means/deviations
 (deviation floor0.05). Labels
 and future signals never enter the decision input. The actor minimizes predicted
-goal-weighted future error + sensor cost. Fit1500 Adam steps, batch256, lr.001,
-seed391, retaining the risk weights and training sources.
+goal-weighted future error + sensor cost. Fit at most1500 AdamW steps, batch256,
+lr.001, weight decay.01, dropout.1, seed391. Hold out six of the28 world-training
+people from all risk-head fitting, ordered by SHA256("P1-RISK-"+global_identity).
+Fit feature statistics only on the other22 people. Select the lowest held-person
+log-risk MSE every100 steps and stop after two checks >5% above the best. Retain
+best/last optimizer and RNG states. This added pre-fit regularization/selection
+rule is registered before any policy weights or final test scores; it addresses
+the small number of independent risk-fitting people. The four genuinely new
+calibration people remain reserved for commitment thresholds, not head selection.
 
 Use five fixed training starts per person (120,170,220,270,320s). Each episode has
 one bootstrap chunk and30 automatic decisions, requiring42.325s of observations
@@ -55,6 +62,11 @@ positive person-cluster95% paired interval, both seeds, and test commitment
 coverage at least50%. Also report raw errors, sensing fractions, conditional
 committed error and coverage. The Transformer policy receives identical features,
 head capacity, examples and selection rules. A failed gate stays failed.
+
+Aggregate the three registered goals equally for the primary per-person utility;
+also retain each goal separately. Each goal has the same episode/tick count.
+Policy registry IDs101–104 map to world runs801–804 as recorded in config. These
+are separate small fitted decision heads, not additional world-model pretraining.
 
 Run one40.96s paced CPU episode while the3090 continues other work when feasible.
 Record every automatic tick, sensor action, source timestamps, output commitment,

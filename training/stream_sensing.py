@@ -23,8 +23,8 @@ STRATEGIES=("learned","listen","look","both","wait","alternating","periodic")
 
 
 class RiskActor(nn.Module):
-    def __init__(self,features,hidden=128):
-        super().__init__(); self.net=nn.Sequential(nn.Linear(features,hidden),nn.SiLU(),nn.Linear(hidden,8))
+    def __init__(self,features,hidden=128,dropout=.1):
+        super().__init__(); self.net=nn.Sequential(nn.Linear(features,hidden),nn.SiLU(),nn.Dropout(dropout),nn.Linear(hidden,8))
     def forward(self,x): return self.net(x).reshape(-1,4,2)
 
 
@@ -74,14 +74,18 @@ def future_error(out,audio,video,at):
     return torch.stack(((future[:,:,:400]-target_a).abs().mean((1,2)),(future[:,:,400:]-target_v).square().mean((1,2))),-1)
 
 
-def collect(model,data,plans,cfg,device="cuda"):
-    xs=[]; ys=[]; rng=np.random.default_rng(cfg["seed"]); amp=torch.autocast("cuda",dtype=torch.bfloat16) if device=="cuda" else nullcontext()
+def risk_masks(actors,cfg):
+    people=sorted(set(actors),key=lambda p:hashlib.sha256(("P1-RISK-"+p).encode()).hexdigest()); holdout=people[:cfg["risk_holdout_people"]]; validation=np.isin(np.asarray(actors),holdout); assert validation.any() and (~validation).any(); return ~validation,validation,holdout
+
+
+def collect(model,data,plans,cfg,device="cuda",return_actors=False):
+    xs=[]; ys=[]; owners=[]; rng=np.random.default_rng(cfg["seed"]); amp=torch.autocast("cuda",dtype=torch.bfloat16) if device=="cuda" else nullcontext()
     with torch.inference_mode(),amp:
         for begin in range(0,len(plans),16):
             group=plans[begin:begin+16]; audio,video=sequence(data,group,device); b=len(group); bits=torch.ones(b,2,device=device); current=observe(model,audio,video,0,bits); aa=audio.repeat_interleave(4,0); vv=video.repeat_interleave(4,0); actions=torch.as_tensor(BITS,device=device).repeat(b,1)
             for tick in range(cfg["episode_chunks"]):
-                xs.append(features(current,bits).cpu().numpy()); at=(tick+1)*32; candidate=observe(model,aa,vv,at,actions,current["memory"].repeat_interleave(4,0)); error=future_error(candidate,aa,vv,at).reshape(b,4,2); ys.append(error.cpu().numpy()); selected=torch.as_tensor(rng.integers(4,size=b),device=device); ids=torch.arange(b,device=device)*4+selected; current={k:v[ids] for k,v in candidate.items()}; bits=actions[ids]
-    return np.concatenate(xs),np.concatenate(ys)
+                xs.append(features(current,bits).cpu().numpy()); owners.extend(p["actor"] for p in group); at=(tick+1)*32; candidate=observe(model,aa,vv,at,actions,current["memory"].repeat_interleave(4,0)); error=future_error(candidate,aa,vv,at).reshape(b,4,2); ys.append(error.cpu().numpy()); selected=torch.as_tensor(rng.integers(4,size=b),device=device); ids=torch.arange(b,device=device)*4+selected; current={k:v[ids] for k,v in candidate.items()}; bits=actions[ids]
+    result=(np.concatenate(xs),np.concatenate(ys)); return (*result,owners) if return_actors else result
 
 
 def replay(model,actor,normalization,thresholds,data,plans,cfg,goal,strategy,device="cuda",paced=False):
@@ -118,19 +122,26 @@ def fit(cfg):
     for run in cfg["world_runs"]:
         out=root/run; out.mkdir(exist_ok=True)
         if (out/"frozen.json").exists(): continue
-        path=Path(cfg["world_root"])/run/"best.pt"; model,ck=load_model(path); model.requires_grad_(False); before=weight_digest(model); start=time.perf_counter(); x,y=collect(model,train,training_plans,cfg); assert weight_digest(model)==before; np.savez_compressed(out/"training_risks.npz",features=x,errors=y); mean=x.mean(0); scale=x.std(0).clip(.05); torch.manual_seed(cfg["seed"]); actor=RiskActor(x.shape[1],cfg["risk_hidden"]).cuda(); optimizer=torch.optim.AdamW(actor.parameters(),lr=cfg["risk_lr"]); xx=torch.as_tensor((x-mean)/scale,device="cuda"); yy=torch.as_tensor(np.log(y+1e-6),device="cuda"); rng=np.random.default_rng(cfg["seed"]); curves=[]
+        path=Path(cfg["world_root"])/run/"best.pt"; model,ck=load_model(path); model.requires_grad_(False); before=weight_digest(model); start=time.perf_counter(); x,y,owners=collect(model,train,training_plans,cfg,return_actors=True); assert weight_digest(model)==before; fit_mask,hold_mask,held_people=risk_masks(owners,cfg); np.savez_compressed(out/"training_risks.npz",features=x,errors=y,actors=np.asarray(owners),fit_mask=fit_mask,hold_mask=hold_mask); mean=x[fit_mask].mean(0); scale=x[fit_mask].std(0).clip(.05); torch.manual_seed(cfg["seed"]); actor=RiskActor(x.shape[1],cfg["risk_hidden"],cfg["risk_dropout"]).cuda(); optimizer=torch.optim.AdamW(actor.parameters(),lr=cfg["risk_lr"]); xx=torch.as_tensor((x-mean)/scale,device="cuda"); yy=torch.as_tensor(np.log(y+1e-6),device="cuda"); fit_ids=np.flatnonzero(fit_mask); hold_ids=torch.as_tensor(np.flatnonzero(hold_mask),device="cuda"); rng=np.random.default_rng(cfg["seed"]); curves=[]; best=float("inf"); rises=0; selected=None
         for step in range(cfg["risk_steps"]):
-            ids=torch.as_tensor(rng.integers(len(x),size=cfg["risk_batch"]),device="cuda"); loss=(actor(xx[ids])-yy[ids]).square().mean(); optimizer.zero_grad(set_to_none=True); loss.backward(); optimizer.step()
-            if (step+1)%100==0: curves.append({"step":step+1,"training_log_risk_mse":float(loss)})
+            actor.train(); ids=torch.as_tensor(rng.choice(fit_ids,size=cfg["risk_batch"]),device="cuda"); loss=(actor(xx[ids])-yy[ids]).square().mean(); optimizer.zero_grad(set_to_none=True); loss.backward(); optimizer.step()
+            if (step+1)%cfg["risk_eval_every"]==0:
+                actor.eval()
+                with torch.inference_mode(): value=float((actor(xx[hold_ids])-yy[hold_ids]).square().mean())
+                rises=rises+1 if value>best*1.05 else 0; curves.append({"step":step+1,"training_log_risk_mse":float(loss.detach()),"held_person_log_risk_mse":value})
+                if value<best:
+                    best=value; selected={"model":{k:v.detach().cpu().clone() for k,v in actor.state_dict().items()},"optimizer":optimizer.state_dict(),"step":step+1,"held_person_log_risk_mse":best,"torch_rng":torch.get_rng_state(),"cuda_rng":torch.cuda.get_rng_state_all(),"data_rng":rng.bit_generator.state,"mean":mean,"scale":scale,"config":cfg,"world_run":run}; torch.save(selected,out/"best_optimizer.pt")
+                if rises>=2: break
+        last_step=step+1; torch.save({"model":actor.state_dict(),"optimizer":optimizer.state_dict(),"step":last_step,"torch_rng":torch.get_rng_state(),"cuda_rng":torch.cuda.get_rng_state_all(),"data_rng":rng.bit_generator.state,"mean":mean,"scale":scale,"config":cfg,"world_run":run},out/"last_optimizer.pt"); selected=torch.load(out/"best_optimizer.pt",map_location="cpu",weights_only=False); actor.load_state_dict(selected["model"],strict=True); write_json(out/"fit.json",{"selected_step":selected["step"],"actual_steps":last_step,"early_stop":rises>=2,"fit_examples":int(fit_mask.sum()),"validation_examples":int(hold_mask.sum()),"validation_people":held_people,"normalization_fit_people":len(set(owners))-len(held_people),"best_held_person_log_risk_mse":best,"calibration_people_used_for_weight_selection":False,"test_read":False})
         actor.eval(); norm=(torch.as_tensor(mean,device="cuda"),torch.as_tensor(scale,device="cuda")); calibration=[]; thresholds={}
         for goal in cfg["goals"]:
             rows,audit=replay(model,actor,norm,{},cal,calibration_plans,cfg,goal,"learned"); thresholds[goal]=float(np.quantile([r["predicted_error"] for r in rows],cfg["calibration_coverage"])); calibration.extend(rows)
-        torch.save({"model":actor.state_dict(),"features":x.shape[1],"hidden":cfg["risk_hidden"],"mean":mean,"scale":scale,"thresholds":thresholds,"world_checkpoint_sha256":file_sha(path),"world_run":run,"config":cfg},out/"actor.pt"); write_json(out/"calibration.json",calibration); write_json(out/"curves.json",curves); write_json(out/"frozen.json",{"world_checkpoint_sha256":file_sha(path),"world_weights_unchanged":weight_digest(model)==before,"actor_sha256":file_sha(out/"actor.pt"),"parameters":sum(p.numel() for p in actor.parameters()),"training_examples":len(x),"counterfactuals_per_example":4,"thresholds":thresholds,"seconds":time.perf_counter()-start,"test_read":False}); print(json.dumps({"policy_frozen":run,"seconds":time.perf_counter()-start}),flush=True); del model,actor,optimizer,xx,yy; torch.cuda.empty_cache()
+        torch.save({"model":actor.state_dict(),"features":x.shape[1],"hidden":cfg["risk_hidden"],"mean":mean,"scale":scale,"thresholds":thresholds,"world_checkpoint_sha256":file_sha(path),"world_run":run,"config":cfg,"id":cfg["policy_ids"][run]},out/"actor.pt"); write_json(out/"calibration.json",calibration); write_json(out/"curves.json",curves); write_json(out/"frozen.json",{"id":cfg["policy_ids"][run],"world_checkpoint_sha256":file_sha(path),"world_weights_unchanged":weight_digest(model)==before,"actor_sha256":file_sha(out/"actor.pt"),"best_optimizer_sha256":file_sha(out/"best_optimizer.pt"),"fit_sha256":file_sha(out/"fit.json"),"parameters":sum(p.numel() for p in actor.parameters()),"training_examples":int(fit_mask.sum()),"counterfactuals_per_example":4,"thresholds":thresholds,"seconds":time.perf_counter()-start,"test_read":False}); print(json.dumps({"policy_frozen":run,"seconds":time.perf_counter()-start}),flush=True); del model,actor,optimizer,xx,yy; torch.cuda.empty_cache()
     write_json(root/"selection.json",{r:json.loads((root/r/"frozen.json").read_text()) for r in cfg["world_runs"]})
 
 
 def load_actor(root,run,device):
-    ck=torch.load(root/run/"actor.pt",map_location="cpu",weights_only=False); actor=RiskActor(ck["features"],ck["hidden"]); actor.load_state_dict(ck["model"],strict=True); actor.to(device).eval().requires_grad_(False); return actor,(torch.as_tensor(ck["mean"],device=device),torch.as_tensor(ck["scale"],device=device)),ck
+    ck=torch.load(root/run/"actor.pt",map_location="cpu",weights_only=False); actor=RiskActor(ck["features"],ck["hidden"],ck["config"]["risk_dropout"]); actor.load_state_dict(ck["model"],strict=True); actor.to(device).eval().requires_grad_(False); return actor,(torch.as_tensor(ck["mean"],device=device),torch.as_tensor(ck["scale"],device=device)),ck
 
 
 def evaluate(cfg,paced=False):
