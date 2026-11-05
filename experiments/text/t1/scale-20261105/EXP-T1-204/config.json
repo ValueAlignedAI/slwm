@@ -1,0 +1,82 @@
+{
+  "matrix": {
+    "artifacts": "experiments/text/t1/scale-20261105",
+    "corpus": "artifacts/text/fineweb_edu_scale_v1",
+    "model": {
+      "context_length": 1024,
+      "dropout": 0.0,
+      "n_embd": 768,
+      "n_head": 12,
+      "n_layer": 12,
+      "vocab_size": 50257
+    },
+    "prompts": [
+      "The relationship between sound and motion is",
+      "A scientist can test a hypothesis by",
+      "The purpose of a mathematical model is",
+      "When a prediction is uncertain,",
+      "A video recording contains",
+      "The experiment showed that"
+    ],
+    "protocol": "docs/research/text_scale_protocol_20261105.md",
+    "runs": [
+      {
+        "id": "EXP-T1-201",
+        "seed": 81,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-202",
+        "seed": 81,
+        "variant": "slwm"
+      },
+      {
+        "id": "EXP-T1-203",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-204",
+        "seed": 82,
+        "variant": "slwm"
+      }
+    ],
+    "sprint": "T1-S2",
+    "training": {
+      "eval_batches": 32,
+      "eval_every": 128,
+      "gradient_accumulation": 4,
+      "gradient_clip": 1.0,
+      "lr": 0.0006,
+      "micro_batch": 8,
+      "minimum_lr_fraction": 0.1,
+      "overfit_patience": 2,
+      "overfit_relative_rise": 0.05,
+      "sequence_length": 512,
+      "steps": 1024,
+      "warmup": 64,
+      "weight_decay": 0.1
+    }
+  },
+  "provenance": {
+    "config_hash": "945d5aa05e97afa2c451bf15682c6406c6ccb16e65ab08a3fce337c24047945f",
+    "dataset_card_sha256": "475db740d71aba0c4afdd4f8bb42d0a0ac5687555a4a8dc4c46cd642c12d04db",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "parameters": 125131008,
+    "source_hashes": {
+      "configs/t1/fineweb_scale.json": "d4ca57bede3ea114e7a32460bd990ad4fddb3027916bc559407ad255f5e4ee43",
+      "docs/research/text_scale_protocol_20261105.md": "85d22d1fbb4bba5a5ff09bf042a043428a1a2df8bb030a831126e895ca6142bd",
+      "training/prepare_scale_text.py": "691abc2906d51f5ed08a6805f830eba5464d74985297f444a7d6dea1ef0c1209",
+      "training/research_sources.py": "38a9fad7a22b636b8faa584c240723a9d16fcdfe2ef6e82d9411e4797dc30851",
+      "training/scale_text_train.py": "406974424b9d11efbba4800adcc60fbb87380489df54a2b46067fd9328372f45",
+      "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875"
+    },
+    "training_context": 512,
+    "warmstart": "None; all random; paired common module initializers"
+  },
+  "run": {
+    "id": "EXP-T1-204",
+    "seed": 82,
+    "variant": "slwm"
+  }
+}

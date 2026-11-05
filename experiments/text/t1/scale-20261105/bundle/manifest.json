@@ -1,0 +1,14 @@
+{
+  "full_optimizer_and_rng_checkpoints": "Retained in all four run directories",
+  "inference_exports": {
+    "gpt2_seed81": {
+      "run": "EXP-T1-201",
+      "sha256": "14589af42693f2bfebb2924e562f1955549bad3e23098ceb6fbc95a71f6db083"
+    },
+    "slwm_seed81": {
+      "run": "EXP-T1-202",
+      "sha256": "c601f2a617fd5d5d24daa064dad4a67396b9fa63cf81a513d556b0c3ab19131a"
+    }
+  },
+  "scope": "16.8M tokens/run early checkpoint; not converged or multimodal"
+}

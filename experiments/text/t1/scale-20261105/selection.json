@@ -1,0 +1,74 @@
+{
+  "EXP-T1-201": {
+    "available_train_tokens": 2600000000,
+    "checkpoint_sha256": "056124a9087977dd75965f9bacb7b97fa28a4b24b775e5fc96a41b09193bd03b",
+    "last_sha256": "5a7827f72f3f04cc4dff2100e448a871ea429ba5efba737d8315b742f4596a53",
+    "overfit_stop": false,
+    "parameters": 124439808,
+    "peak_gpu_bytes": 6132102144,
+    "run": {
+      "id": "EXP-T1-201",
+      "seed": 81,
+      "variant": "gpt2"
+    },
+    "selected_step": 1024,
+    "selected_validation_nll": 5.648578763008118,
+    "tokens_seen": 16777216,
+    "updates": 1024,
+    "wall_seconds": 476.77623204299016
+  },
+  "EXP-T1-202": {
+    "available_train_tokens": 2600000000,
+    "checkpoint_sha256": "93121a627a09a77e3890b4aa37027ef7c8a6ea836737330277dd0bf62533ab45",
+    "last_sha256": "f31adc7790903d58d12b761ed40246259d9992e001427fbd4c95f16ffc8251d0",
+    "overfit_stop": false,
+    "parameters": 125131008,
+    "peak_gpu_bytes": 6847409152,
+    "run": {
+      "id": "EXP-T1-202",
+      "seed": 81,
+      "variant": "slwm"
+    },
+    "selected_step": 1024,
+    "selected_validation_nll": 5.451707527041435,
+    "tokens_seen": 16777216,
+    "updates": 1024,
+    "wall_seconds": 680.755330592976
+  },
+  "EXP-T1-203": {
+    "available_train_tokens": 2600000000,
+    "checkpoint_sha256": "3482a1343ee4d6340c647a4b4f4a8a2d51d37e3ed7f06431af7466c9c1ddce69",
+    "last_sha256": "b4b0e3399f312e1ed487f93d3bb1fc1e5bb00fe4af80e43645d125dc463e323d",
+    "overfit_stop": false,
+    "parameters": 124439808,
+    "peak_gpu_bytes": 6130136064,
+    "run": {
+      "id": "EXP-T1-203",
+      "seed": 82,
+      "variant": "gpt2"
+    },
+    "selected_step": 1024,
+    "selected_validation_nll": 5.644908159971237,
+    "tokens_seen": 16777216,
+    "updates": 1024,
+    "wall_seconds": 478.96696897398215
+  },
+  "EXP-T1-204": {
+    "available_train_tokens": 2600000000,
+    "checkpoint_sha256": "8ca8940d403dadab2cdb3bb69abfdd19de89764637ca95f6487959271bbca43a",
+    "last_sha256": "c88adf763ab3694d2cf319add7a1b2a97ffb61566b6bdf4795c5b711c5ce0e45",
+    "overfit_stop": false,
+    "parameters": 125131008,
+    "peak_gpu_bytes": 6846731264,
+    "run": {
+      "id": "EXP-T1-204",
+      "seed": 82,
+      "variant": "slwm"
+    },
+    "selected_step": 1024,
+    "selected_validation_nll": 5.468832120299339,
+    "tokens_seen": 16777216,
+    "updates": 1024,
+    "wall_seconds": 678.6632994679967
+  }
+}
