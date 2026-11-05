@@ -21,7 +21,10 @@ def predict_sequence(model,kind,codec,new,sound,missing,mouth,threshold=None,pre
     window. Supplied timed text is explicit and supported only by a base model.
     """
     if text_ids is not None and kind!="base": raise ValueError("Use a base checkpoint for explicit timed-text conditioning")
-    features=observed_features(sound,missing,new,device); packets=min(128,(len(features)+3)//4,len(mouth)); features=pad_subframes(features,packets)
+    # Match preparation/calibration: fixed CPU FFT and stored float16 feature
+    # precision, before interpolation. Reconstruction itself stays float32.
+    features=observed_features(sound,missing,new,"cpu").astype(np.float16).astype(np.float32)
+    packets=min(128,(len(features)+3)//4,len(mouth)); features=pad_subframes(features,packets)
     if packets<32: raise ValueError("At least1.28s of context is required")
     if missing.any() and np.flatnonzero(missing)[-1]>=packets*640: raise ValueError("Recorded video/context does not cover the gap")
     visible,unknown=support_masks(missing,packets); starts=repair_windows(unknown,packets); totals=np.zeros((packets*4,64),np.float32); weight=np.zeros(packets*4,np.float32); records=[]

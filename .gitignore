@@ -22,3 +22,11 @@ artifacts/
 *.zip
 *.tar
 *.bin
+
+# Per-run logs and generated media stay beside hashed research artifacts
+experiments/**/*.log
+experiments/**/*.gif
+experiments/**/*.webm
+experiments/**/exploration/**/*.png
+experiments/**/codec_preview/
+experiments/**/evaluation_correction/original_derived/
