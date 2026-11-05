@@ -14,6 +14,20 @@ from training.stream_codec import PACKET_SECONDS,SAMPLE_RATE,load_vocoder
 from training.research_sources import file_sha
 
 
+def load_renderer(directory=None,device="cpu"):
+    """Load the separately declared frozen waveform renderer from a portable bundle."""
+    if directory is None or not(Path(directory)/"pytorch_model.bin").exists(): return load_vocoder(device)
+    from vocos import Vocos
+    folder=Path(directory); model=Vocos.from_hparams(str(folder/"config.yaml")); model.load_state_dict(torch.load(folder/"pytorch_model.bin",map_location="cpu",weights_only=True),strict=True); return model.to(device).eval().requires_grad_(False)
+
+
+def check_video_cache(cache,source,required_frames):
+    marker=Path(cache)/"input_pixels.json"
+    if marker.exists():
+        meta=json.loads(marker.read_text())
+        if meta["raw_video_sha256"]!=file_sha(source) or meta["frames"]<required_frames: raise ValueError("Use a fresh output folder for a changed or longer video input; the existing cache belongs to another request")
+
+
 def read_audio(path,start=0.,seconds=None):
     """Decode/resample -> quantized mono float32 PCM[N] at24kHz."""
     info=sf.info(path); audio,sr=sf.read(path,start=int(round(start*info.samplerate)),frames=-1 if seconds is None else int(round(seconds*info.samplerate)),dtype="float32",always_2d=True); wave=torch.from_numpy(audio.mean(1))[None]
@@ -46,8 +60,8 @@ def rollout(model,audio,video,phones,appearance,mode,*,visible=None,prefix_chunk
     with torch.inference_mode(),amp:
         for tick,start in enumerate(range(0,length,model.chunk)):
             end=min(start+model.chunk,length); n=end-start; valid=torch.ones(1,n,device=device,dtype=torch.bool); yes=valid; no=torch.zeros_like(valid)
-            a=yes if mode in ("audio","repair") else no; v=yes if mode=="video" else no; t=yes if mode=="text" else no
-            if mode=="repair": a=torch.as_tensor(visible[None,start:end],device=device)
+            a=yes if mode in ("audio","repair","repair_av") else no; v=yes if mode in ("video","repair_av") else no; t=yes if mode=="text" else no
+            if mode in ("repair","repair_av"): a=torch.as_tensor(visible[None,start:end],device=device)
             if prefix_chunks is not None and tick>=prefix_chunks: a=v=t=no
             if reset_memory: memory=None
             before=time.perf_counter(); out=model(torch.as_tensor(audio[None,start:end],device=device,dtype=torch.float32),torch.as_tensor(video[None,start:end],device=device,dtype=torch.float32),torch.as_tensor(phones[None,start:end],device=device,dtype=torch.long),a,v,t,valid,torch.as_tensor(appearance[None],device=device,dtype=torch.float32),memory); memory=out["memory"]

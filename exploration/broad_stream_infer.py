@@ -10,7 +10,7 @@ from training.broad_data import face_video
 from training.stream_codec import PACKET_SECONDS,estimated_text,timed_phones,observed_mel,load_vocoder
 from training.research_sources import file_sha
 from training.t2_real_av import write_json
-from exploration.stream_media import read_audio,write_audio,rollout,synthesize,restore_known,decode_video,encode_video
+from exploration.stream_media import read_audio,write_audio,rollout,synthesize,restore_known,decode_video,encode_video,load_renderer,check_video_cache
 
 
 def main():
@@ -30,26 +30,28 @@ def main():
         physical,_,visible=observed_mel(sound,missing,packets); audio=(physical-np.tile(codec["audio_mean"],4))/np.tile(codec["audio_scale"],4); video=np.zeros((packets,64),np.float32); phones=np.zeros(packets,np.int64); mode="repair" if a.mode=="repair" else "audio"; appearance=np.zeros(64,np.float32) if mode=="repair" else appearance_code; source_hash=file_sha(a.audio)
     elif a.mode=="video-to-audio":
         if not a.video: p.error("This mode requires --video; source audio is never decoded")
-        first=int(round(a.start/PACKET_SECONDS)); packets=int(round(a.seconds/PACKET_SECONDS)); cache=outdir/"input_video_cache"; cache.mkdir(exist_ok=True); row={"id":"input","video_path":a.video}; face_video(row,cache,first+packets); pixels=np.asarray(np.load(cache/"input_pixels.npy",mmap_mode="r")[first:first+packets]); video=((pixels.reshape(packets,-1).astype(np.float32)/255.-codec["pixel_mean"])@codec["video_basis"].T)/codec["video_scale"]; audio=np.zeros((packets,400),np.float32); phones=np.zeros(packets,np.int64); mode="video"; appearance=np.zeros(64,np.float32); source_hash=file_sha(a.video)
+        first=int(round(a.start/PACKET_SECONDS)); packets=int(round(a.seconds/PACKET_SECONDS)); cache=outdir/"input_video_cache"; cache.mkdir(exist_ok=True); check_video_cache(cache,a.video,first+packets); row={"id":"input","video_path":a.video}; face_video(row,cache,first+packets); pixels=np.asarray(np.load(cache/"input_pixels.npy",mmap_mode="r")[first:first+packets]); video=((pixels.reshape(packets,-1).astype(np.float32)/255.-codec["pixel_mean"])@codec["video_basis"].T)/codec["video_scale"]; audio=np.zeros((packets,400),np.float32); phones=np.zeros(packets,np.int64); mode="video"; appearance=np.zeros(64,np.float32); source_hash=file_sha(a.video)
     else:
         if not a.text: p.error("This mode requires --text")
         duration_model=json.loads((bundle/"duration_model.json").read_text()); phones,spans,packets=estimated_text(a.text,duration_model); native_end=spans[-1][1] if spans else 0.
         if native_end<a.min_text_seconds and native_end>0:
             scale=a.min_text_seconds/native_end; spans=[(x*scale,y*scale,w) for x,y,w in spans]; packets=int(np.ceil(a.min_text_seconds/PACKET_SECONDS)); phones=timed_phones(spans,packets)
         write_json(outdir/"provided_text.json",{"text":a.text,"estimated_spans":spans,"original_estimated_seconds":native_end,"reference_timings_used":False}); audio=np.zeros((packets,400),np.float32); video=np.zeros((packets,64),np.float32); mode="text"; appearance=appearance_code
+    if a.mode=="repair" and a.video:
+        first=round(a.start/PACKET_SECONDS); cache=outdir/"input_video_cache"; cache.mkdir(exist_ok=True); check_video_cache(cache,a.video,first+packets); face_video({"id":"input","video_path":a.video},cache,first+packets); pixels=np.asarray(np.load(cache/"input_pixels.npy",mmap_mode="r")[first:first+packets]); video=((pixels.reshape(packets,-1).astype(np.float32)/255.-codec["pixel_mean"])@codec["video_basis"].T)/codec["video_scale"]; appearance=video[0].copy(); mode="repair_av"
     proposals=rollout(model,audio,video,phones,appearance,mode,visible=visible,prefix_chunks=a.prefix_chunks,reset_memory=a.reset_memory,device=a.device); np.save(outdir/"predicted_mel.npy",proposals["mel"]); np.save(outdir/"predicted_video_codes.npy",proposals["video"]); (outdir/"field_text.txt").write_text(proposals["text"]+"\n"); write_json(outdir/"trace.json",proposals["trace"])
     preserve=False
     if a.mode=="audio-to-video" and a.prefix_chunks is None:
         wave=np.pad(sound,(0,max(0,packets*1024-len(sound))))[:packets*1024]; renderer={"soundtrack":"Original supplied audio; only video motion is generated"}
     else:
-        vocoder=load_vocoder(a.device); wave,renderer=synthesize(proposals["mel"],codec,vocoder,a.device)
+        vocoder=load_renderer(bundle/"vocos",a.device); wave,renderer=synthesize(proposals["mel"],codec,vocoder,a.device)
         if a.mode=="repair":
             wave=restore_known(wave,sound,missing); preserve=bool(np.array_equal(np.rint(wave[~missing]*32768).astype("<i2"),np.rint(sound[~missing]*32768).astype("<i2"))); assert preserve; np.save(outdir/"missing_samples.npy",missing)
     wave_meta=write_audio(outdir/"output.wav",wave)
     video_meta=None
     if a.mode!="repair":
         frames=pixels if a.mode=="video-to-audio" else decode_video(proposals["video"],codec,appearance_pixels,appearance_code); video_meta=encode_video(outdir/"output.mp4",frames,outdir/"output.wav")
-    write_json(outdir/"inference.json",{"run":ck["run"],"checkpoint_sha256":file_sha(a.checkpoint),"input_sha256":source_hash,"mode":a.mode,"prefix_observation_chunks":a.prefix_chunks,"model_parameters":sum(p.numel() for p in model.parameters()),"waveform":wave_meta,"video":video_meta,"renderer":renderer,"observed_pcm_exact":preserve if a.mode=="repair" else None,"source_audio_decoded":a.mode in ("audio-to-video","repair"),"text_supplied":a.mode=="text-to-av","source_phase_used":False,"appearance":"Declared fixed training image; predicted motion,64x64 native" if a.mode in ("audio-to-video","text-to-av") else "Input video" if a.mode=="video-to-audio" else "None","scope":"Continuous research proposals, no arbitrary-scene or motor-control claim"}); print(json.dumps({"output":str(outdir),"seconds":wave_meta["seconds"],"observed_pcm_exact":preserve}),flush=True)
+    write_json(outdir/"inference.json",{"run":ck["run"],"checkpoint_sha256":file_sha(a.checkpoint),"input_sha256":source_hash,"mode":a.mode,"device":a.device,"video_assisted_repair":mode=="repair_av","video_input_sha256":file_sha(a.video) if mode=="repair_av" else None,"prefix_observation_chunks":a.prefix_chunks,"model_parameters":sum(p.numel() for p in model.parameters()),"waveform":wave_meta,"video":video_meta,"renderer":renderer,"observed_pcm_exact":preserve if a.mode=="repair" else None,"source_audio_decoded":a.mode in ("audio-to-video","repair"),"text_supplied":a.mode=="text-to-av","source_phase_used":False,"appearance":"Declared fixed training image; predicted motion,64x64 native" if a.mode in ("audio-to-video","text-to-av") else "Input video" if a.mode in ("video-to-audio",) or mode=="repair_av" else "None","scope":"Continuous research proposals, no arbitrary-scene or motor-control claim"}); print(json.dumps({"output":str(outdir),"seconds":wave_meta["seconds"],"observed_pcm_exact":preserve}),flush=True)
 
 
 if __name__=="__main__": main()
