@@ -1,0 +1,38 @@
+{
+  "actor": "1015",
+  "actual_emotion": "SAD",
+  "actual_sentence": "It's eleven o'clock.",
+  "audio_only_identity": "Unknown; appearance is a model average, and integrated motion uses a training-mean face prior",
+  "duration_seconds": 1.84,
+  "folder": "experiments/multimodal/t2/motion-alignment-20261104/exploration/EXP-T2-308/validation_1015_IEO_SAD_LO",
+  "generation": "Actual saved model outputs. Inverse PCA / Griffin-Lim diagnostics, not realistic media synthesis or open language.",
+  "probes": {
+    "audio_emotion": {
+      "confidence": 0.9673049449920654,
+      "label": "SAD",
+      "scope": "closed-set frozen recognition probe",
+      "text": "SAD"
+    },
+    "audio_sentence": {
+      "confidence": 0.99998939037323,
+      "label": "IEO",
+      "scope": "closed-set frozen recognition probe",
+      "text": "It's eleven o'clock."
+    },
+    "video_emotion": {
+      "confidence": 0.5103646516799927,
+      "label": "SAD",
+      "scope": "closed-set frozen recognition probe",
+      "text": "SAD"
+    },
+    "video_sentence": {
+      "confidence": 0.6269647479057312,
+      "label": "TSI",
+      "scope": "closed-set frozen recognition probe",
+      "text": "The surface is slick."
+    }
+  },
+  "sample_id": "1015_IEO_SAD_LO",
+  "source_sha256": "dc1fefbf0fc2deb032ec34cac747e73bcbfdde317f6a62431b7f84610b221761",
+  "split": "validation"
+}

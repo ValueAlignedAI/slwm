@@ -1,0 +1,16 @@
+{
+  "checkpoint": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-301/best.pt",
+  "checkpoint_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+  "frames": 52,
+  "input": "artifacts/t2_audio_visual/cremad_motion_v3/raw/1009_DFA_ANG_XX.flv",
+  "input_modality": "video",
+  "input_sha256": "c1de08b986fc58f257eae136c448df5d98f7e5616d61a3ba0a46ea2fbd703d99",
+  "limitations": "Fixed lower-face crop; training-mean appearance ambiguity; inverse PCA / estimated phase; no general language or realistic-media claim",
+  "output_tag": "uncommitted_diagnostic_prediction",
+  "outputs": [
+    "generated_audio.wav",
+    "predictions.npz"
+  ],
+  "seconds": 2.08,
+  "selected_head": "audio"
+}

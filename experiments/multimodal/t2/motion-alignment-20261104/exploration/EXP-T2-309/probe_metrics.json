@@ -1,0 +1,179 @@
+{
+  "emotion_classes": [
+    "ANG",
+    "DIS",
+    "FEA",
+    "HAP",
+    "NEU",
+    "SAD"
+  ],
+  "probes": {
+    "audio_emotion": {
+      "classes": [
+        "ANG",
+        "DIS",
+        "FEA",
+        "HAP",
+        "NEU",
+        "SAD"
+      ],
+      "fitted_parameters": 2886,
+      "learned": {
+        "test": {
+          "accuracy": 0.44583333333333336,
+          "ece": 0.07429059917728106,
+          "nll": 1.4387199878692627
+        },
+        "validation": {
+          "accuracy": 0.4666666666666667,
+          "ece": 0.09112691765739803,
+          "nll": 1.4036102294921875
+        }
+      },
+      "prior_test_accuracy": 0.16666666666666666,
+      "raw_feature_control_test": {
+        "accuracy": 0.4708333333333333,
+        "ece": 0.07912373865644137,
+        "nll": 1.408942461013794
+      },
+      "shuffled_training_labels_test": {
+        "accuracy": 0.10833333333333334,
+        "ece": 0.09572048801928759,
+        "nll": 1.838318943977356
+      },
+      "temperature_selected_on_validation": 0.2
+    },
+    "audio_sentence": {
+      "classes": [
+        "DFA",
+        "IEO",
+        "IOM",
+        "ITH",
+        "ITS",
+        "IWL",
+        "IWW",
+        "MTI",
+        "TAI",
+        "TIE",
+        "TSI",
+        "WSI"
+      ],
+      "fitted_parameters": 5772,
+      "learned": {
+        "test": {
+          "accuracy": 0.675,
+          "ece": 0.07993752130617698,
+          "nll": 1.1510193347930908
+        },
+        "validation": {
+          "accuracy": 0.638095238095238,
+          "ece": 0.12558106510412126,
+          "nll": 1.1661620140075684
+        }
+      },
+      "prior_test_accuracy": 0.17083333333333334,
+      "raw_feature_control_test": {
+        "accuracy": 0.8458333333333333,
+        "ece": 0.10414596423506738,
+        "nll": 0.5821540951728821
+      },
+      "shuffled_training_labels_test": {
+        "accuracy": 0.17083333333333334,
+        "ece": 0.2875638595471779,
+        "nll": 2.723236560821533
+      },
+      "temperature_selected_on_validation": 0.05
+    },
+    "video_emotion": {
+      "classes": [
+        "ANG",
+        "DIS",
+        "FEA",
+        "HAP",
+        "NEU",
+        "SAD"
+      ],
+      "fitted_parameters": 2886,
+      "learned": {
+        "test": {
+          "accuracy": 0.3416666666666667,
+          "ece": 0.11441729093591371,
+          "nll": 1.681858777999878
+        },
+        "validation": {
+          "accuracy": 0.26666666666666666,
+          "ece": 0.02111333424136751,
+          "nll": 1.7117840051651
+        }
+      },
+      "prior_test_accuracy": 0.16666666666666666,
+      "raw_feature_control_test": {
+        "accuracy": 0.3125,
+        "ece": 0.03978461523850757,
+        "nll": 1.6624411344528198
+      },
+      "shuffled_training_labels_test": {
+        "accuracy": 0.15,
+        "ece": 0.029621890187263494,
+        "nll": 1.796094298362732
+      },
+      "temperature_selected_on_validation": 0.5
+    },
+    "video_sentence": {
+      "classes": [
+        "DFA",
+        "IEO",
+        "IOM",
+        "ITH",
+        "ITS",
+        "IWL",
+        "IWW",
+        "MTI",
+        "TAI",
+        "TIE",
+        "TSI",
+        "WSI"
+      ],
+      "fitted_parameters": 5772,
+      "learned": {
+        "test": {
+          "accuracy": 0.24166666666666667,
+          "ece": 0.07122156166781983,
+          "nll": 2.2388880252838135
+        },
+        "validation": {
+          "accuracy": 0.23809523809523808,
+          "ece": 0.07884981241964159,
+          "nll": 2.2548911571502686
+        }
+      },
+      "prior_test_accuracy": 0.17083333333333334,
+      "raw_feature_control_test": {
+        "accuracy": 0.14583333333333334,
+        "ece": 0.021892738466461496,
+        "nll": 2.3921244144439697
+      },
+      "shuffled_training_labels_test": {
+        "accuracy": 0.16666666666666666,
+        "ece": 0.023951555291811616,
+        "nll": 2.457103967666626
+      },
+      "temperature_selected_on_validation": 0.2
+    }
+  },
+  "scope": "Frozen closed-set linear recognition, not open text generation",
+  "sentence_classes": [
+    "DFA",
+    "IEO",
+    "IOM",
+    "ITH",
+    "ITS",
+    "IWL",
+    "IWW",
+    "MTI",
+    "TAI",
+    "TIE",
+    "TSI",
+    "WSI"
+  ]
+}

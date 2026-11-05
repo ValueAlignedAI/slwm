@@ -1,0 +1,31 @@
+{
+  "sprint":"T2-V1",
+  "protocol":"docs/research/video_repair_protocol_20261105.md",
+  "restoration_config":"configs/t2/signal_restoration.json",
+  "corpus":"artifacts/t2_audio_visual/video_repair_v1",
+  "artifacts":"experiments/multimodal/t2/video-repair-20261105",
+  "mouth_width":96,
+  "mouth_height":64,
+  "train_ravdess_actors":[7,8,19,20],
+  "test_ravdess_actors":[9,10,11,12,21,22,23,24],
+  "crema_crop":"fps=25,crop=iw*0.30:ih*0.24:iw*0.35:ih*0.42,scale=96:64",
+  "ravdess_crop":"fps=25,crop=iw*0.30:ih*0.24:iw*0.35:ih*0.54,scale=96:64",
+  "experts":{
+    "61":{"path":"experiments/multimodal/t2/content-conservation-20261105/EXP-T2-521/best.pt","sha256":"b4bfe63d5b1e0c5473904143a4685a22bddf4f9542f1d38f3fd149efe503cee5"},
+    "62":{"path":"experiments/multimodal/t2/content-conservation-20261105/EXP-T2-522/best.pt","sha256":"67776c537620defe5c107bdc84bc7e786c9045b3a1b4dc5ff935f8f0f44d6e8c"}
+  },
+  "training":{"anchor_steps":1600,"steps":2400,"batch_size":32,"crema_batch":24,"window":32,"lr":0.0004,"warmup_steps":80,"eval_every":400,"alignment_weight":0.05,"negative_weight":0.2,"gate_weight":0.1},
+  "gaps":{"train_lengths":[4,8,12],"train_probabilities":[0.25,0.5,0.25],"primary_packets":8,"n_fft":1024,"audio_hop":640,"subframes":4},
+  "anchors":[{"id":"EXP-T2-601","seed":61},{"id":"EXP-T2-602","seed":62}],
+  "runs":[
+    {"id":"EXP-T2-611","arm":"audio","seed":61},
+    {"id":"EXP-T2-612","arm":"audio","seed":62},
+    {"id":"EXP-T2-613","arm":"pca_video","seed":61},
+    {"id":"EXP-T2-614","arm":"video","seed":61},
+    {"id":"EXP-T2-615","arm":"video","seed":62},
+    {"id":"EXP-T2-616","arm":"ungated_video","seed":61},
+    {"id":"EXP-T2-617","arm":"shuffled_video","seed":61},
+    {"id":"EXP-T2-618","arm":"no_negatives","seed":61},
+    {"id":"EXP-T2-619","arm":"audio","seed":61,"steps_multiplier":2}
+  ]
+}

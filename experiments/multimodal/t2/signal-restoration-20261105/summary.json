@@ -1,0 +1,871 @@
+{
+  "gates": {
+    "clean_output_retention": true,
+    "positive_multimodal_contribution": false,
+    "repair_over_raw_av_and_vanilla": false,
+    "timing_retention": true
+  },
+  "interpretation": "Preserve raw observations and timing; reliable positive contribution from video is not established. Linear field readout reveals a bypass incentive problem.",
+  "matched_silence_control": {
+    "crema_test": {
+      "mean_clip_wer": 1.1316964285714284,
+      "paired_model_changes": {
+        "EXP-T2-501": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.41741071428571425,
+          "person_cluster_95_interval": [
+            0.09146205357142856,
+            0.8953124999999986
+          ]
+        },
+        "EXP-T2-502": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.43973214285714285,
+          "person_cluster_95_interval": [
+            0.11607142857142858,
+            0.9665178571428571
+          ]
+        },
+        "EXP-T2-507": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.4553571428571429,
+          "person_cluster_95_interval": [
+            0.17410714285714288,
+            0.90625
+          ]
+        }
+      }
+    },
+    "libri_test": {
+      "mean_clip_wer": 0.5982893264143264,
+      "paired_model_changes": {
+        "EXP-T2-501": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.12680317367817365,
+          "person_cluster_95_interval": [
+            0.04933574382793136,
+            0.20862691272847522
+          ]
+        },
+        "EXP-T2-502": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.11000680453805455,
+          "person_cluster_95_interval": [
+            0.03682340807340807,
+            0.1958862997534872
+          ]
+        },
+        "EXP-T2-507": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.0951523303085803,
+          "person_cluster_95_interval": [
+            -0.0019987167057479577,
+            0.20810258245805102
+          ]
+        }
+      }
+    },
+    "ravdess_test": {
+      "mean_clip_wer": 0.65625,
+      "paired_model_changes": {
+        "EXP-T2-501": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.1875,
+          "person_cluster_95_interval": [
+            0.05208333333333333,
+            0.33333333333333337
+          ]
+        },
+        "EXP-T2-502": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.15625,
+          "person_cluster_95_interval": [
+            -0.041666666666666664,
+            0.34375
+          ]
+        },
+        "EXP-T2-507": {
+          "model_absolute_wer_reduction_vs_coarse_silence": 0.17708333333333337,
+          "person_cluster_95_interval": [
+            0.010416666666666685,
+            0.33333333333333337
+          ]
+        }
+      }
+    }
+  },
+  "paired_core_comparisons": {
+    "crema_test": {
+      "EXP-T2-501": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": 0.007157461195445662,
+          "person_cluster_95_interval": [
+            -0.014523855711406741,
+            0.02834104259222142
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": 0.0006003329803417334,
+          "person_cluster_95_interval": [
+            -0.0338038976928574,
+            0.03369262933524595
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": 0.030271065805911553,
+          "person_cluster_95_interval": [
+            0.008093885169136016,
+            0.05380338524646291
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.03324296709239767,
+          "person_cluster_95_interval": [
+            0.015698414493758434,
+            0.05162682560403222
+          ]
+        }
+      },
+      "EXP-T2-502": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": 0.0028416790384053463,
+          "person_cluster_95_interval": [
+            -0.02204296798558059,
+            0.0261709013995885
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": -0.005473097280923193,
+          "person_cluster_95_interval": [
+            -0.03495599603326502,
+            0.022081353722236238
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": 0.024714367726889726,
+          "person_cluster_95_interval": [
+            0.007824785211165667,
+            0.049415062898456576
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.023702991415927358,
+          "person_cluster_95_interval": [
+            -0.0042400599411472955,
+            0.05177758172068659
+          ]
+        }
+      }
+    },
+    "libri_test": {
+      "EXP-T2-501": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": -0.001610444545115701,
+          "person_cluster_95_interval": [
+            -0.020937938778798747,
+            0.01571644867867258
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": 0.03034026393144171,
+          "person_cluster_95_interval": [
+            -0.005537048084891088,
+            0.06616973110621935
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": 0.02910852478644585,
+          "person_cluster_95_interval": [
+            -0.009726770861001276,
+            0.06522790171364523
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.025349917966590595,
+          "person_cluster_95_interval": [
+            0.004198714903044168,
+            0.0446396830690389
+          ]
+        }
+      },
+      "EXP-T2-502": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": -0.02012597462921188,
+          "person_cluster_95_interval": [
+            -0.044021677566500425,
+            0.0012995333306645477
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": 0.011323896944367773,
+          "person_cluster_95_interval": [
+            -0.03715021904228311,
+            0.056560285827502055
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": 0.01098952008021683,
+          "person_cluster_95_interval": [
+            -0.038545030418739766,
+            0.056464550933076646
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.005071106969692406,
+          "person_cluster_95_interval": [
+            -0.03378701674474268,
+            0.03932533553512264
+          ]
+        }
+      }
+    },
+    "ravdess_test": {
+      "EXP-T2-501": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": -0.002690945493932555,
+          "person_cluster_95_interval": [
+            -0.01614271675508375,
+            0.011127547808693903
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": -0.049491628496850903,
+          "person_cluster_95_interval": [
+            -0.07433798325561419,
+            -0.030747879998861877
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": -0.03589601697741189,
+          "person_cluster_95_interval": [
+            -0.05246910112330604,
+            -0.020158238462854607
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.02685097391462758,
+          "person_cluster_95_interval": [
+            0.015246920874225361,
+            0.03908859380641119
+          ]
+        }
+      },
+      "EXP-T2-502": {
+        "EXP-T2-503": {
+          "mean_per_clip_gain": -0.00860216967152898,
+          "person_cluster_95_interval": [
+            -0.02804082236372296,
+            0.015554619791680562
+          ]
+        },
+        "EXP-T2-507": {
+          "mean_per_clip_gain": -0.05310658758424458,
+          "person_cluster_95_interval": [
+            -0.07782703374036526,
+            -0.026949290154414045
+          ]
+        },
+        "EXP-T2-508": {
+          "mean_per_clip_gain": -0.0399569787092072,
+          "person_cluster_95_interval": [
+            -0.05662911257407675,
+            -0.020219772673169586
+          ]
+        },
+        "EXP-T2-509": {
+          "mean_per_clip_gain": 0.021116475230088548,
+          "person_cluster_95_interval": [
+            0.003371470734390295,
+            0.03767824567283677
+          ]
+        }
+      }
+    }
+  },
+  "recognizer": {
+    "crema_test": {
+      "mean_clip_wer": {
+        "EXP-T2-501": 0.7142857142857143,
+        "EXP-T2-502": 0.6919642857142857,
+        "EXP-T2-503": 0.6049107142857143,
+        "EXP-T2-507": 0.6763392857142857,
+        "EXP-T2-508": 0.78125,
+        "EXP-T2-509": 0.6674107142857142,
+        "clean_audio_501": 0.4575892857142857,
+        "codec100": 0.24330357142857142,
+        "interpolation": 0.859375,
+        "reference": 0.15401785714285715,
+        "silence_gaps": 0.4598214285714286,
+        "wrong_video_501": 0.765625
+      },
+      "paired_changes": {
+        "EXP-T2-501": {
+          "absolute_wer_reduction": 0.1450892857142857,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.020145089285714294,
+            0.2723214285714286
+          ],
+          "relative_wer_reduction": 0.1688311688311688
+        },
+        "EXP-T2-502": {
+          "absolute_wer_reduction": 0.1674107142857143,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.029017857142857137,
+            0.29910714285714285
+          ],
+          "relative_wer_reduction": 0.19480519480519481
+        },
+        "EXP-T2-507": {
+          "absolute_wer_reduction": 0.1830357142857143,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.04910714285714286,
+            0.3259486607142854
+          ],
+          "relative_wer_reduction": 0.212987012987013
+        },
+        "EXP-T2-508": {
+          "absolute_wer_reduction": 0.078125,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.11830357142857142,
+            0.265625
+          ],
+          "relative_wer_reduction": 0.09090909090909091
+        }
+      },
+      "people": 8,
+      "samples": 16
+    },
+    "libri_test": {
+      "mean_clip_wer": {
+        "EXP-T2-501": 0.47148615273615274,
+        "EXP-T2-502": 0.48828252187627186,
+        "EXP-T2-503": 0.46079467407592406,
+        "EXP-T2-507": 0.503136996105746,
+        "EXP-T2-508": 0.5394709457209457,
+        "EXP-T2-509": 0.4721005267880269,
+        "clean_audio_501": 0.12393526612276613,
+        "codec100": 0.06661743927368928,
+        "interpolation": 0.541179856023606,
+        "reference": 0.04556713541088542,
+        "silence_gaps": 0.30453764985014986,
+        "wrong_video_501": 0.47148615273615274
+      },
+      "paired_changes": {
+        "EXP-T2-501": {
+          "absolute_wer_reduction": 0.06969370328745329,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.016238359441484454,
+            0.12751065340909082
+          ],
+          "relative_wer_reduction": 0.12878103741616964
+        },
+        "EXP-T2-502": {
+          "absolute_wer_reduction": 0.052897334147334156,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.011650434345746842,
+            0.09855538414132164
+          ],
+          "relative_wer_reduction": 0.0977444625082771
+        },
+        "EXP-T2-507": {
+          "absolute_wer_reduction": 0.03804285991785992,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.02535268984487734,
+            0.11593915922040907
+          ],
+          "relative_wer_reduction": 0.07029614922732917
+        },
+        "EXP-T2-508": {
+          "absolute_wer_reduction": 0.001708910302660303,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.08300894707144708,
+            0.08480007116725857
+          ],
+          "relative_wer_reduction": 0.0031577492836055623
+        }
+      },
+      "people": 12,
+      "samples": 48
+    },
+    "ravdess_test": {
+      "mean_clip_wer": {
+        "EXP-T2-501": 0.46875,
+        "EXP-T2-502": 0.5,
+        "EXP-T2-503": 0.5416666666666666,
+        "EXP-T2-507": 0.47916666666666663,
+        "EXP-T2-508": 0.48958333333333337,
+        "EXP-T2-509": 0.53125,
+        "clean_audio_501": 0.08333333333333333,
+        "codec100": 0.03125,
+        "interpolation": 0.5520833333333333,
+        "reference": 0.0,
+        "silence_gaps": 0.32291666666666663,
+        "wrong_video_501": 0.5208333333333333
+      },
+      "paired_changes": {
+        "EXP-T2-501": {
+          "absolute_wer_reduction": 0.08333333333333333,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.010416666666666668,
+            0.16666666666666669
+          ],
+          "relative_wer_reduction": 0.15094339622641512
+        },
+        "EXP-T2-502": {
+          "absolute_wer_reduction": 0.05208333333333333,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.031249999999999986,
+            0.13541666666666669
+          ],
+          "relative_wer_reduction": 0.09433962264150944
+        },
+        "EXP-T2-507": {
+          "absolute_wer_reduction": 0.07291666666666667,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.010416666666666668,
+            0.14583333333333334
+          ],
+          "relative_wer_reduction": 0.13207547169811323
+        },
+        "EXP-T2-508": {
+          "absolute_wer_reduction": 0.062499999999999986,
+          "person_cluster_absolute_reduction_95_interval": [
+            -8.673617379884035e-18,
+            0.125
+          ],
+          "relative_wer_reduction": 0.11320754716981131
+        }
+      },
+      "people": 8,
+      "samples": 16
+    }
+  },
+  "runs": {
+    "EXP-T2-501": {
+      "best_validation_score": 0.5101468861103058,
+      "checkpoint_sha256": "da465785586df2ce03736bbfd536356c9c75f8bf1f6d15bbd46aa2ad6d55d3dd",
+      "last_checkpoint_sha256": "8c15ef9441adb451e058bf7f6984b3e004fd29d0ba3cc6eea5cd3295c66d6ea5",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5083841,
+          "trainable": 5083841
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "signal",
+        "id": "EXP-T2-501",
+        "seed": 51
+      },
+      "selected_step": 1200,
+      "wall_seconds": 70.20136851200368,
+      "windows_seen": 51200
+    },
+    "EXP-T2-502": {
+      "best_validation_score": 0.50418721139431,
+      "checkpoint_sha256": "6a3b748d706d2bd988e3d6d27cd87823356633fd2d271419d6990c77d3e8d483",
+      "last_checkpoint_sha256": "8b2093c1cf736b0dadbe33faa622ad9f88aad28897ab60f4641a8c28e57f918d",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5083841,
+          "trainable": 5083841
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "signal",
+        "id": "EXP-T2-502",
+        "seed": 52
+      },
+      "selected_step": 1600,
+      "wall_seconds": 70.36553974897834,
+      "windows_seen": 51200
+    },
+    "EXP-T2-503": {
+      "best_validation_score": 0.5175622552633286,
+      "checkpoint_sha256": "9ceed2c62b9bfeffb9eb3b126b113b4d90f88a0b688a2f894fb5e275472bda29",
+      "last_checkpoint_sha256": "6bf63a398f2bb975032a9f103df4a6d86741fead2b8228555aa4abc41bf1652b",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5027521,
+          "trainable": 5027521
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "vanilla",
+        "id": "EXP-T2-503",
+        "seed": 51
+      },
+      "selected_step": 1600,
+      "wall_seconds": 55.63203719200101,
+      "windows_seen": 51200
+    },
+    "EXP-T2-504": {
+      "best_validation_score": 0.5036972910165787,
+      "checkpoint_sha256": "5d100c9cb1f7a456fc1131c457bf7a281dc3251c827badf249a4e018634e1d1f",
+      "last_checkpoint_sha256": "81be885946a2e0b1e2b3ffeb30fa43f28830a9308dfa4eefe868018a675a0527",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5083841,
+          "trainable": 5083841
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "no_alignment",
+        "id": "EXP-T2-504",
+        "seed": 51
+      },
+      "selected_step": 1200,
+      "wall_seconds": 35.52499915502267,
+      "windows_seen": 51200
+    },
+    "EXP-T2-505": {
+      "best_validation_score": 0.5046320557594299,
+      "checkpoint_sha256": "101e950161cbeca1229862f3d6699466f1f031a2e6df36f556fb888fa159880c",
+      "last_checkpoint_sha256": "d83f579edb7b6abef1deaa1f8d16a57b4f87704b9fc982bcfe6478a6b886f132",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5083841,
+          "trainable": 5083841
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "no_augmentation",
+        "id": "EXP-T2-505",
+        "seed": 51
+      },
+      "selected_step": 1600,
+      "wall_seconds": 69.19347708299756,
+      "windows_seen": 51200
+    },
+    "EXP-T2-506": {
+      "best_validation_score": 0.5941983312368393,
+      "checkpoint_sha256": "305223d8e2acc8db6e46e18a5c33e4f28b01f1ad04c8d1553b1a911077bad1c1",
+      "last_checkpoint_sha256": "48357a0ac8ce63ac5d2e46d75a628b335352982d7c77705d38eb5fad7510d102",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 5083841,
+          "trainable": 5083841
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "no_skip",
+        "id": "EXP-T2-506",
+        "seed": 51
+      },
+      "selected_step": 1600,
+      "wall_seconds": 68.78370441199513,
+      "windows_seen": 51200
+    },
+    "EXP-T2-507": {
+      "best_validation_score": 0.5305613130331039,
+      "checkpoint_sha256": "7dd3c3e114af7c2bd52752ce7e4cd1747f980931e85bd947b4f20b90aade9815",
+      "last_checkpoint_sha256": "bd58825feb1e65337daae0b2501ac7d28ee39342123e5a4091b287f04ddbf690",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 548352,
+          "trainable": 548352
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "none",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "raw_audio",
+        "id": "EXP-T2-507",
+        "seed": 51
+      },
+      "selected_step": 1600,
+      "wall_seconds": 10.008282109978609,
+      "windows_seen": 51200
+    },
+    "EXP-T2-508": {
+      "best_validation_score": 0.5265484601259232,
+      "checkpoint_sha256": "1d21b22e791b41d6325b71e6c3e507dfc7daf4f2c0feec6fc0ddd2fd1b2b6968",
+      "last_checkpoint_sha256": "381124920af89770a6607eb1010515334b17ecabd8b8c2ad840d06ed5f55d5d2",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 0,
+          "total": 622848,
+          "trainable": 622848
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "none",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "raw_av",
+        "id": "EXP-T2-508",
+        "seed": 51
+      },
+      "selected_step": 1600,
+      "wall_seconds": 10.31327813200187,
+      "windows_seen": 51200
+    },
+    "EXP-T2-509": {
+      "best_validation_score": 0.5300677716732025,
+      "checkpoint_sha256": "3b6862ef7c8cc0a28f87310727261a7d50568a31a41a63da9ac2736731360a25",
+      "last_checkpoint_sha256": "cf0a0ef543af6ed783a0953408fea22e2d4b9b4a30ccd5bdd2b7f4753bafb69b",
+      "provenance": {
+        "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+        "context": "exactly the same 32 packets; no cached external context",
+        "counts": {
+          "codec_fitted_values": 249376,
+          "decoder": 548352,
+          "frozen": 4535489,
+          "total": 5083841,
+          "trainable": 548352
+        },
+        "data_manifests": {
+          "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+          "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+          "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+          "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+        },
+        "gpu": "NVIDIA GeForce RTX 3090",
+        "pretraining": "corresponding 1600-step M1 core",
+        "source_hashes": {
+          "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+          "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+          "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+          "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+          "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+          "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+          "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+          "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+          "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+          "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+          "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+          "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+          "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+          "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+        }
+      },
+      "run": {
+        "arm": "frozen_core",
+        "id": "EXP-T2-509",
+        "seed": 51
+      },
+      "selected_step": 1200,
+      "wall_seconds": 19.00450133602135,
+      "windows_seen": 51200
+    }
+  },
+  "sprint": "T2-R1",
+  "total_training_seconds": 409.0271876810002
+}

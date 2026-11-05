@@ -1,0 +1,38 @@
+{
+  "actor": "1072",
+  "actual_emotion": "HAP",
+  "actual_sentence": "I wonder what this is about.",
+  "audio_only_identity": "Unknown; appearance is a model average, and integrated motion uses a training-mean face prior",
+  "duration_seconds": 2.76,
+  "folder": "experiments/multimodal/t2/motion-alignment-20261104/exploration/EXP-T2-308/validation_1072_IWW_HAP_XX",
+  "generation": "Actual saved model outputs. Inverse PCA / Griffin-Lim diagnostics, not realistic media synthesis or open language.",
+  "probes": {
+    "audio_emotion": {
+      "confidence": 0.686591386795044,
+      "label": "ANG",
+      "scope": "closed-set frozen recognition probe",
+      "text": "ANG"
+    },
+    "audio_sentence": {
+      "confidence": 0.8593912124633789,
+      "label": "IWW",
+      "scope": "closed-set frozen recognition probe",
+      "text": "I wonder what this is about."
+    },
+    "video_emotion": {
+      "confidence": 0.6072132587432861,
+      "label": "ANG",
+      "scope": "closed-set frozen recognition probe",
+      "text": "ANG"
+    },
+    "video_sentence": {
+      "confidence": 0.13300897181034088,
+      "label": "TIE",
+      "scope": "closed-set frozen recognition probe",
+      "text": "That is exactly what happened."
+    }
+  },
+  "sample_id": "1072_IWW_HAP_XX",
+  "source_sha256": "afbbddb7b81fa527136d563862983f932f48ad0feeb43fd40d2862325016eb00",
+  "split": "validation"
+}

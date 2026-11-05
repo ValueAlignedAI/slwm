@@ -1,0 +1,60 @@
+{
+  "corrected_run": "EXP-T2-415",
+  "media": [
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/validation_1015_TAI_SAD_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1015_TAI_SAD_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/validation_1048_IOM_FEA_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1048_IOM_FEA_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/validation_1072_MTI_ANG_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1072_MTI_ANG_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/test_1026_DFA_FEA_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1026_DFA_FEA_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/test_1046_DFA_ANG_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1046_DFA_ANG_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/test_1081_WSI_HAP_XX/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "1081_WSI_HAP_XX"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/external_01-01-01-01-01-01-01/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "01-01-01-01-01-01-01"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/external_01-01-01-01-01-01-02/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "01-01-01-01-01-01-02"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/external_01-01-01-01-01-01-13/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "01-01-01-01-01-01-13"
+    },
+    {
+      "corrected_media": "experiments/multimodal/t2/conditional-generation-20261104/exploration/visual/external_01-01-01-01-01-01-14/EXP-T2-415_correct_audio.gif",
+      "original_media_input": "wrong audio (training flag retained at inference)",
+      "sample_id": "01-01-01-01-01-01-14"
+    }
+  ],
+  "no_retraining_or_reselection": true,
+  "original_artifacts_preserved": true,
+  "reason": "Training-only shuffled flag was applied at evaluation. Correct-input conditions must not automatically shuffle.",
+  "selection_note": "original checkpoint selected using shuffled validation inputs; no corrected-validation reselection",
+  "source_sha256": "b89048aa3fbc454f8e2c1a77bbdbfd914b2e6788ce827925b6678633476a3455"
+}

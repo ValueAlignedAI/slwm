@@ -1,0 +1,228 @@
+{
+  "config_hash": "0139f2cefcbd87d732429c8a2b1d1f6ca99a68f518441fc3eeeb86d8c17c7d16",
+  "core_benefit_gate": false,
+  "decision": "Retain raw observation skip with small residual decoder; frozen core adds no reliable reconstruction value. Keep core for timing alignment only.",
+  "external_status": "reused diagnostic, architecture informed by G1 failure; never used for fitting or checkpoint selection",
+  "gates": {
+    "frozen_core_residual": false,
+    "raw_residual": true
+  },
+  "paired_core_comparisons": {
+    "external": {
+      "EXP-T2-422_vs_EXP-T2-421": {
+        "mean_per_clip_gain": -0.3344530211562921,
+        "person_cluster_95_interval": [
+          -0.3855476978772252,
+          -0.28335834443535896
+        ]
+      },
+      "EXP-T2-424_vs_EXP-T2-423": {
+        "mean_per_clip_gain": -0.317602757580816,
+        "person_cluster_95_interval": [
+          -0.3633126198865458,
+          -0.2718928952750862
+        ]
+      }
+    },
+    "test": {
+      "EXP-T2-422_vs_EXP-T2-421": {
+        "mean_per_clip_gain": -0.0018072944021167816,
+        "person_cluster_95_interval": [
+          -0.0036782511599095895,
+          0.00018253387991538873
+        ]
+      },
+      "EXP-T2-424_vs_EXP-T2-423": {
+        "mean_per_clip_gain": -0.003484894224981935,
+        "person_cluster_95_interval": [
+          -0.005917930865272712,
+          -0.0011557771460067128
+        ]
+      }
+    }
+  },
+  "recognizer_diagnostic": {
+    "external": {
+      "mean_clip_wer": {
+        "EXP-T2-421": 0.08333333333333333,
+        "EXP-T2-422": 0.19791666666666663,
+        "EXP-T2-423": 0.10416666666666666,
+        "EXP-T2-424": 0.15625,
+        "codec100": 0.010416666666666666,
+        "interpolation": 0.22916666666666663,
+        "old_audio_100renderer": 0.9270833333333333,
+        "reference": 0.0
+      },
+      "paired_changes": {
+        "EXP-T2-421": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            -3.469446951953614e-18,
+            0.29166666666666663
+          ],
+          "relative_wer_gain_vs_interpolation": 0.6363636363636364
+        },
+        "EXP-T2-422": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            -0.020833333333333336,
+            0.07291666666666669
+          ],
+          "relative_wer_gain_vs_interpolation": 0.13636363636363638
+        },
+        "EXP-T2-423": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            -0.04166666666666667,
+            0.29166666666666663
+          ],
+          "relative_wer_gain_vs_interpolation": 0.5454545454545455
+        },
+        "EXP-T2-424": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            -3.469446951953614e-18,
+            0.14583333333333334
+          ],
+          "relative_wer_gain_vs_interpolation": 0.31818181818181823
+        }
+      },
+      "samples": 16
+    },
+    "test": {
+      "mean_clip_wer": {
+        "EXP-T2-421": 0.4895833333333333,
+        "EXP-T2-422": 0.43229166666666663,
+        "EXP-T2-423": 0.4817708333333333,
+        "EXP-T2-424": 0.5130208333333333,
+        "codec100": 0.40625,
+        "interpolation": 0.7317708333333333,
+        "old_audio_100renderer": 1.0338541666666665,
+        "reference": 0.36979166666666663
+      },
+      "paired_changes": {
+        "EXP-T2-421": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            0.08593750000000001,
+            0.3619791666666667
+          ],
+          "relative_wer_gain_vs_interpolation": 0.33096085409252674
+        },
+        "EXP-T2-422": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            0.19270833333333334,
+            0.4010416666666667
+          ],
+          "relative_wer_gain_vs_interpolation": 0.409252669039146
+        },
+        "EXP-T2-423": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            0.13020833333333334,
+            0.36204427083333307
+          ],
+          "relative_wer_gain_vs_interpolation": 0.3416370106761566
+        },
+        "EXP-T2-424": {
+          "absolute_wer_reduction_95_person_cluster_interval": [
+            0.09635416666666667,
+            0.33333333333333337
+          ],
+          "relative_wer_gain_vs_interpolation": 0.29893238434163705
+        }
+      },
+      "samples": 32
+    }
+  },
+  "results": {
+    "external": {
+      "EXP-T2-421": {
+        "gain_vs_interpolation": 0.1673003080373301,
+        "mean_clip_wer": 0.08333333333333333,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.1522051990032196,
+          0.18435442447662354
+        ],
+        "mel_mse": 0.05179288983345032,
+        "temporal_mse": 0.038385167717933655,
+        "wer_gain_vs_interpolation": 0.6363636363636364
+      },
+      "EXP-T2-422": {
+        "gain_vs_interpolation": -0.09688528985940814,
+        "mean_clip_wer": 0.19791666666666663,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          -0.12469713389873505,
+          -0.08345247060060501
+        ],
+        "mel_mse": 0.06822490692138672,
+        "temporal_mse": 0.0499754399061203,
+        "wer_gain_vs_interpolation": 0.13636363636363638
+      },
+      "EXP-T2-423": {
+        "gain_vs_interpolation": 0.16152970651734544,
+        "mean_clip_wer": 0.10416666666666666,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.14888887107372284,
+          0.17790676653385162
+        ],
+        "mel_mse": 0.052151814103126526,
+        "temporal_mse": 0.038660261780023575,
+        "wer_gain_vs_interpolation": 0.5454545454545455
+      },
+      "EXP-T2-424": {
+        "gain_vs_interpolation": -0.09226523900159522,
+        "mean_clip_wer": 0.15625,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          -0.1176900863647461,
+          -0.07831491529941559
+        ],
+        "mel_mse": 0.06793754547834396,
+        "temporal_mse": 0.04996969923377037,
+        "wer_gain_vs_interpolation": 0.31818181818181823
+      }
+    },
+    "test": {
+      "EXP-T2-421": {
+        "gain_vs_interpolation": 0.15137142830746775,
+        "mean_clip_wer": 0.4895833333333333,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.13617560863494874,
+          0.15257837437093258
+        ],
+        "mel_mse": 0.025664422661066055,
+        "temporal_mse": 0.01910613849759102,
+        "wer_gain_vs_interpolation": 0.33096085409252674
+      },
+      "EXP-T2-422": {
+        "gain_vs_interpolation": 0.15184358384902852,
+        "mean_clip_wer": 0.43229166666666663,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.1345617525279522,
+          0.1522732585668564
+        ],
+        "mel_mse": 0.02565014362335205,
+        "temporal_mse": 0.019320162013173103,
+        "wer_gain_vs_interpolation": 0.409252669039146
+      },
+      "EXP-T2-423": {
+        "gain_vs_interpolation": 0.15245247110233784,
+        "mean_clip_wer": 0.4817708333333333,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.13684276826679706,
+          0.15379251688718795
+        ],
+        "mel_mse": 0.025631729513406754,
+        "temporal_mse": 0.019076157361268997,
+        "wer_gain_vs_interpolation": 0.3416370106761566
+      },
+      "EXP-T2-424": {
+        "gain_vs_interpolation": 0.15146098141957698,
+        "mean_clip_wer": 0.5130208333333333,
+        "mean_per_clip_gain_person_cluster_95_interval": [
+          0.13406176604330539,
+          0.15135239847004414
+        ],
+        "mel_mse": 0.025661714375019073,
+        "temporal_mse": 0.01932794228196144,
+        "wer_gain_vs_interpolation": 0.29893238434163705
+      }
+    }
+  },
+  "sprint": "T2-G2",
+  "total_training_wall_seconds": 32.682781119016
+}

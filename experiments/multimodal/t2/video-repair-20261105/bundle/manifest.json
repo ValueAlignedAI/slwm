@@ -1,0 +1,27 @@
+{
+  "all_other_seeds_and_ablations": "../EXP-T2-*/best.pt and last.pt",
+  "codecs": {
+    "codec.npz": "d71e1ed81846d27cb71553c67c2cf9a1e3aab557df7f327794fbed099f23a25d",
+    "codec100.npz": "c911c34d7926b135c16a02e9bb189bee67d973050194698c05503551f63b96e6"
+  },
+  "decision": "Video fails the registered contribution gate; retain trained audio controls and report the negative or mixed result",
+  "entries": {
+    "audio": {
+      "chosen_by": "Fixed primary video seed; audio selected on validation only",
+      "file": "audio_seed61.pt",
+      "run": "EXP-T2-619",
+      "seed": 61,
+      "sha256": "a3daabd472082902d0b5d42519dc55a40baacb7960b9d5adc9299c15368dca24"
+    },
+    "video": {
+      "chosen_by": "Fixed primary video seed; audio selected on validation only",
+      "file": "video_seed61.pt",
+      "run": "EXP-T2-614",
+      "seed": 61,
+      "sha256": "1073883e4ed742db4b53b1deed9e2a1769ab7b39efe9ffa257b708d2599b474d"
+    }
+  },
+  "model_scope": "Offline short-gap research; no production-quality or general world-model claim",
+  "selection_sha256": "78f1d1cc2cb855e0a8151f0df01ba68519d05a04a15002909f4ca114488250ea",
+  "video_no_video_behavior": "Exactly the frozen audio anchor, not the separate stronger audio checkpoint"
+}

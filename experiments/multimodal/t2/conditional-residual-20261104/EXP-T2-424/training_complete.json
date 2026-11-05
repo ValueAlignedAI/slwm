@@ -1,0 +1,32 @@
+{
+  "checkpoint_sha256": "0b67c47980a88ac7fa45542d072a5430ea7ce770e35decf0c1340f0cb615c0ea",
+  "provenance": {
+    "codec_fitted_values": 249376,
+    "config_hash": "0139f2cefcbd87d732429c8a2b1d1f6ca99a68f518441fc3eeeb86d8c17c7d16",
+    "decoder_trainable": 548352,
+    "frozen_core": 4741089,
+    "scope": "Exploratory repair informed by G1 external failure; no external fitting",
+    "source_hashes": {
+      "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+      "configs/t2/conditional_generation_residual.json": "af4498ad4997ef13f866a9e24b3ea23d07a2b656af4c8699b467bd246ec9fd83",
+      "docs/research/conditional_residual_followup_20261104.md": "52beb9adf125c3a2ea4dbdf7dafb7c81c52b79f576dd38454136088e0fe2b81b",
+      "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+      "models/slwm_generation_residual.py": "0ab7c698cda1be79c2b4beb5b1c73a40a988b83771e472105bbc5087128074ff",
+      "training/t2_generation_residual.py": "534d3c36a2fbd91e094c58df90b057c28e55c36dc36bff319c85a3041b2a9c5f",
+      "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+      "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+      "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+      "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b"
+    },
+    "train_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+    "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be"
+  },
+  "run": {
+    "id": "EXP-T2-424",
+    "input": "field_audio",
+    "seed": 42
+  },
+  "selected_step": 1600,
+  "wall_seconds": 8.05743402702501,
+  "windows_seen": 51200
+}

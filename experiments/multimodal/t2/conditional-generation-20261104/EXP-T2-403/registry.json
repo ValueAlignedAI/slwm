@@ -1,0 +1,47 @@
+{
+  "accounting_mode": "core frozen; decoder trained, separate counts",
+  "checkpoint_sha256": "ce1425ec4169f33bb1c52e428fff4bf32474c1386fae59c5531f78601ff55023",
+  "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+  "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+  "device": "NVIDIA GeForce RTX 3090",
+  "experiment_id": "EXP-T2-403",
+  "frozen_core_sha256": null,
+  "metrics_files": [
+    "validation_metrics.json",
+    "test_metrics.json",
+    "external_metrics.json"
+  ],
+  "observations": "audio_coarse",
+  "parameter_accounting": {
+    "codec_fitted_values": 249376,
+    "decoder_trainable": 548352,
+    "external_generation_parameters": 0,
+    "frozen_core": 0
+  },
+  "run": {
+    "id": "EXP-T2-403",
+    "input": "audio_coarse",
+    "seed": 41,
+    "task": "audio"
+  },
+  "run_hash": "c12f28303706f902d4ea6d44717c3be0e54d88089be04ed107d95e986edc9832",
+  "selected_step": 1600,
+  "source_hashes": {
+    "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+    "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+    "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+    "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+    "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+    "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+    "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+    "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+    "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+    "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+  },
+  "sprint": "T2-G1",
+  "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+  "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+  "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+  "wall_seconds": 7.635763993952423,
+  "windows_seen": 51200
+}

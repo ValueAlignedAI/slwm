@@ -1,0 +1,38 @@
+{
+  "actor": "1081",
+  "actual_emotion": "ANG",
+  "actual_sentence": "Don't forget a jacket.",
+  "audio_only_identity": "Unknown; appearance is a model average, and integrated motion uses a training-mean face prior",
+  "duration_seconds": 1.92,
+  "folder": "experiments/multimodal/t2/motion-alignment-20261104/exploration/EXP-T2-309/test_1081_DFA_ANG_XX",
+  "generation": "Actual saved model outputs. Inverse PCA / Griffin-Lim diagnostics, not realistic media synthesis or open language.",
+  "probes": {
+    "audio_emotion": {
+      "confidence": 0.5773106813430786,
+      "label": "ANG",
+      "scope": "closed-set frozen recognition probe",
+      "text": "ANG"
+    },
+    "audio_sentence": {
+      "confidence": 0.3120540976524353,
+      "label": "ITH",
+      "scope": "closed-set frozen recognition probe",
+      "text": "I think I have a doctor's appointment."
+    },
+    "video_emotion": {
+      "confidence": 0.30849483609199524,
+      "label": "ANG",
+      "scope": "closed-set frozen recognition probe",
+      "text": "ANG"
+    },
+    "video_sentence": {
+      "confidence": 0.1472206562757492,
+      "label": "IOM",
+      "scope": "closed-set frozen recognition probe",
+      "text": "I'm on my way to the meeting."
+    }
+  },
+  "sample_id": "1081_DFA_ANG_XX",
+  "source_sha256": "00ea245fa24684e8ee72a25c9997bd2cbf8923a2e61dd3b896b95e9b60c6f20b",
+  "split": "test"
+}

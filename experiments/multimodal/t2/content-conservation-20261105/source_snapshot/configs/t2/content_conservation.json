@@ -1,0 +1,13 @@
+{
+  "sprint":"T2-R2",
+  "parent_config":"configs/t2/signal_restoration.json",
+  "protocol":"docs/research/content_conservation_protocol_20261105.md",
+  "artifacts":"experiments/multimodal/t2/content-conservation-20261105",
+  "other_corpus":"artifacts/t2_audio_visual/restoration_other_v1",
+  "runs":[
+    {"id":"EXP-T2-521","arm":"signal","seed":51,"aux_weight":0.5},
+    {"id":"EXP-T2-522","arm":"signal","seed":52,"aux_weight":0.5},
+    {"id":"EXP-T2-523","arm":"signal","seed":51,"aux_weight":0.0},
+    {"id":"EXP-T2-524","arm":"signal","seed":51,"aux_weight":2.0}
+  ]
+}

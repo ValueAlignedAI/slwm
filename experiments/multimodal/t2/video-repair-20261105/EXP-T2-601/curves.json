@@ -1,0 +1,162 @@
+[
+  {
+    "seconds": 0.5051611199742183,
+    "selection_score": 0.855934351682663,
+    "step": 0,
+    "training_loss": null,
+    "validation": {
+      "crema_validation": {
+        "excluded_short": 20,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.6267204880714417,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.5459176301956177,
+          "interpolation_hole_mse": 0.6695843935012817
+        },
+        "samples": 190,
+        "selection_score": 0.6267204880714417
+      },
+      "rav_validation": {
+        "excluded_short": 0,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 1.0851482152938843,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.9473303556442261,
+          "interpolation_hole_mse": 1.1472505331039429
+        },
+        "samples": 128,
+        "selection_score": 1.0851482152938843
+      }
+    }
+  },
+  {
+    "seconds": 8.23077560501406,
+    "selection_score": 0.7700804471969604,
+    "step": 400,
+    "training_loss": 0.8480679935216904,
+    "validation": {
+      "crema_validation": {
+        "excluded_short": 20,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.5655397772789001,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.49809473752975464,
+          "interpolation_hole_mse": 0.6695843935012817
+        },
+        "samples": 190,
+        "selection_score": 0.5655397772789001
+      },
+      "rav_validation": {
+        "excluded_short": 0,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.9746211171150208,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.858978807926178,
+          "interpolation_hole_mse": 1.1472505331039429
+        },
+        "samples": 128,
+        "selection_score": 0.9746211171150208
+      }
+    }
+  },
+  {
+    "seconds": 15.733328445989173,
+    "selection_score": 0.7421932220458984,
+    "step": 800,
+    "training_loss": 0.7925596368312836,
+    "validation": {
+      "crema_validation": {
+        "excluded_short": 20,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.5570127964019775,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.4910699129104614,
+          "interpolation_hole_mse": 0.6695843935012817
+        },
+        "samples": 190,
+        "selection_score": 0.5570127964019775
+      },
+      "rav_validation": {
+        "excluded_short": 0,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.9273736476898193,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.8221820592880249,
+          "interpolation_hole_mse": 1.1472505331039429
+        },
+        "samples": 128,
+        "selection_score": 0.9273736476898193
+      }
+    }
+  },
+  {
+    "seconds": 23.203953553980682,
+    "selection_score": 0.6970828473567963,
+    "step": 1200,
+    "training_loss": 0.7636417798697949,
+    "validation": {
+      "crema_validation": {
+        "excluded_short": 20,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.5405661463737488,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.4784345030784607,
+          "interpolation_hole_mse": 0.6695843935012817
+        },
+        "samples": 190,
+        "selection_score": 0.5405661463737488
+      },
+      "rav_validation": {
+        "excluded_short": 0,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.8535995483398438,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.7560591697692871,
+          "interpolation_hole_mse": 1.1472505331039429
+        },
+        "samples": 128,
+        "selection_score": 0.8535995483398438
+      }
+    }
+  },
+  {
+    "seconds": 30.76358505000826,
+    "selection_score": 0.6796154677867889,
+    "step": 1600,
+    "training_loss": 0.7320907440781593,
+    "validation": {
+      "crema_validation": {
+        "excluded_short": 20,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.5342921018600464,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.4727584719657898,
+          "interpolation_hole_mse": 0.6695843935012817
+        },
+        "samples": 190,
+        "selection_score": 0.5342921018600464
+      },
+      "rav_validation": {
+        "excluded_short": 0,
+        "gap_packets": 8,
+        "metrics": {
+          "correct_hole_mse": 0.8249388337135315,
+          "correct_mean_gate": 1.0,
+          "correct_unknown_mse": 0.7335000038146973,
+          "interpolation_hole_mse": 1.1472505331039429
+        },
+        "samples": 128,
+        "selection_score": 0.8249388337135315
+      }
+    }
+  }
+]

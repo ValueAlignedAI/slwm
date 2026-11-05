@@ -1,0 +1,121 @@
+{
+  "all_observed_pcm_exact": true,
+  "audit_source_sha256": "cf8f767287e1c453d820b1e6d1e034f0274c5fe3badc53443836be77251690db",
+  "checkpoints": {
+    "EXP-T2-601": {
+      "anchor_unchanged": false,
+      "checkpoint_sha256": "23ab23d8b10086b6a03bdc437413e4ed45da8224529d847ab89bddc4e0038d97",
+      "expert_unchanged": true,
+      "selected_step": 1600
+    },
+    "EXP-T2-602": {
+      "anchor_unchanged": false,
+      "checkpoint_sha256": "2b656aebb12d77f889733587b803ea7447951b1fb551a1b6e78264b3716c70d0",
+      "expert_unchanged": true,
+      "selected_step": 1600
+    },
+    "EXP-T2-611": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "8328d74f6fa6668402a7a919a6c5f75a31bf56b2981786ab7ea3f587068e8bfe",
+      "expert_unchanged": true,
+      "selected_step": 2000
+    },
+    "EXP-T2-612": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "15793c18403e24c1d4af9a735eb38f8e2cfb6b78d4515d555fc3a7a1081a76ce",
+      "expert_unchanged": true,
+      "selected_step": 2400
+    },
+    "EXP-T2-613": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "2ec22ee3d14eb8555d483feb7dad47e2e708409b7bed1ba4397b55fbfa101294",
+      "expert_unchanged": true,
+      "selected_step": 2000
+    },
+    "EXP-T2-614": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "1073883e4ed742db4b53b1deed9e2a1769ab7b39efe9ffa257b708d2599b474d",
+      "expert_unchanged": true,
+      "selected_step": 2400
+    },
+    "EXP-T2-615": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "2cce9d915a7b5e76bde4cab34cf0c321c6100a34bf4d119a98f69e6f02f07767",
+      "expert_unchanged": true,
+      "selected_step": 2400
+    },
+    "EXP-T2-616": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "a218407d4a4d68411e9f63ae765bd8e673d8b4041463534e2d5859a8fac303e7",
+      "expert_unchanged": true,
+      "selected_step": 2400
+    },
+    "EXP-T2-617": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "ba3182aee1a8c8e6afc3d830e3af2d396113b4f36d28f0ccfe56e099059cb3f7",
+      "expert_unchanged": true,
+      "selected_step": 2400
+    },
+    "EXP-T2-618": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "343b91eae38c1d928357b56192531afa9968f96bb1c3b16d03fa0cba3a42e0ac",
+      "expert_unchanged": true,
+      "selected_step": 2000
+    },
+    "EXP-T2-619": {
+      "anchor_unchanged": true,
+      "checkpoint_sha256": "a3daabd472082902d0b5d42519dc55a40baacb7960b9d5adc9299c15368dca24",
+      "expert_unchanged": true,
+      "selected_step": 4800
+    }
+  },
+  "container_soundtrack_invariance_exact": true,
+  "cpu_file_inference_passed": true,
+  "data": {
+    "crema_test": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "c9468631e4b1ef112be406f56efd85c4857d83670ae5f479e3ac97e42462e6fd",
+      "people": 8,
+      "samples": 240
+    },
+    "crema_train": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "4f932b2be16331cc1539140a458d867e7128804f7bae3513f03fa791a120191b",
+      "people": 62,
+      "samples": 5061
+    },
+    "crema_validation": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "aeb646eec2913c97fcc7029dfe561757258a61fa67891c816ccde1b8fa4b79ce",
+      "people": 7,
+      "samples": 210
+    },
+    "rav_test": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "60ba2cdef26bdce8a06a0c6f7632decb8bcd2a5bb4b7cb8956a63d3a8ed32f78",
+      "people": 8,
+      "samples": 128
+    },
+    "rav_train": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "d880eefdbec0271058974593af4e01bca12effe92ea91861683435658b4b6072",
+      "people": 4,
+      "samples": 240
+    },
+    "rav_validation": {
+      "all_array_and_raw_hashes_verified": true,
+      "manifest_sha256": "c90b94b56ae30cafd30013bc176f7c5e1b610c8992482b2bf30b78a0b4f67720",
+      "people": 8,
+      "samples": 128
+    }
+  },
+  "frozen_expert_and_anchor_exact": true,
+  "passed": true,
+  "people_disjoint": true,
+  "raw_records_verified": 6007,
+  "trained_hidden_waveform_invariance_exact": true,
+  "trained_no_video_equals_anchor_exact": true,
+  "trained_target_dictionary_invariance_exact": true,
+  "training_source_snapshot_exact": true,
+  "waveforms_verified": 448
+}

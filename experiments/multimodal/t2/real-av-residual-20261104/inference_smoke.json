@@ -1,0 +1,13 @@
+{
+  "checkpoint": "experiments/multimodal/t2/real-av-residual-20261104/EXP-T2-211/best.pt",
+  "checkpoint_sha256": "591e64a604a4c85cc5ae21fe3bc6863c870aaaa6590cb11b9fe9895c9e56a32a",
+  "sample": "artifacts/t2_audio_visual/cremad_fresh_residual_v2/raw/1003_DFA_ANG_XX.flv",
+  "source_sha256": "b69c5dadb66748481c8dba2e03dde00d0cba731ef0f9121c44c50353d88e8cf5",
+  "duration_seconds": 3.136,
+  "observed_mode": "paired",
+  "context_steps": 16,
+  "prediction_steps": 16,
+  "artifact": "experiments/multimodal/t2/real-av-residual-20261104/inference_smoke.npz",
+  "output_tag": "predicted_internal_features_uncommitted",
+  "limitations": "Feature predictions only; no raw audio/video decoder or general-world-model claim"
+}

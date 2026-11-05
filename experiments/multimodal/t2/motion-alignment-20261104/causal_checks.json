@@ -1,0 +1,260 @@
+{
+  "EXP-T2-301": {
+    "causal_audio_contribution": true,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.6386138796806335,
+        "difference_from_original_95_interval": [
+          0.225422690063715,
+          0.4020056672394273
+        ]
+      },
+      "original": {
+        "accuracy": 0.9554455280303955,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.18316832184791565,
+        "difference_from_original_95_interval": [
+          0.7142857313156128,
+          0.8333333134651184
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.17326731979846954,
+        "difference_from_original_95_interval": [
+          0.7333168476819992,
+          0.8341708779335022
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.03465346619486809,
+        "difference_from_original_95_interval": [
+          0.8721461296081543,
+          0.964475917816162
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  },
+  "EXP-T2-305": {
+    "causal_audio_contribution": false,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.08415841311216354,
+        "difference_from_original_95_interval": [
+          -0.03076923079788685,
+          0.019240196794271417
+        ]
+      },
+      "original": {
+        "accuracy": 0.07920791953802109,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.09405940771102905,
+        "difference_from_original_95_interval": [
+          -0.05263157933950424,
+          0.033496847841888645
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.0891089141368866,
+        "difference_from_original_95_interval": [
+          -0.05505221458151936,
+          0.03590090246871112
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.12376237660646439,
+        "difference_from_original_95_interval": [
+          -0.10695664472877979,
+          0.014218009077012539
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  },
+  "EXP-T2-306": {
+    "causal_audio_contribution": true,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.6782178282737732,
+        "difference_from_original_95_interval": [
+          0.1746031790971756,
+          0.34953247010707844
+        ]
+      },
+      "original": {
+        "accuracy": 0.9356435537338257,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.14851485192775726,
+        "difference_from_original_95_interval": [
+          0.714267784357071,
+          0.8571754813194273
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.1683168262243271,
+        "difference_from_original_95_interval": [
+          0.7156851008534432,
+          0.816911543905735
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.05445544421672821,
+        "difference_from_original_95_interval": [
+          0.8341968655586243,
+          0.9234449863433838
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  },
+  "EXP-T2-307": {
+    "causal_audio_contribution": true,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.6534653306007385,
+        "difference_from_original_95_interval": [
+          0.10848100259900093,
+          0.32642486691474915
+        ]
+      },
+      "original": {
+        "accuracy": 0.8762376308441162,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.1336633712053299,
+        "difference_from_original_95_interval": [
+          0.6634615659713745,
+          0.8190632417798042
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.16336633265018463,
+        "difference_from_original_95_interval": [
+          0.6376705288887023,
+          0.7846236690878867
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.009900989942252636,
+        "difference_from_original_95_interval": [
+          0.8119266033172607,
+          0.9263254284858703
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  },
+  "EXP-T2-308": {
+    "causal_audio_contribution": true,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.7277227640151978,
+        "difference_from_original_95_interval": [
+          0.1666666716337204,
+          0.2572815418243408
+        ]
+      },
+      "original": {
+        "accuracy": 0.9405940771102905,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.17326731979846954,
+        "difference_from_original_95_interval": [
+          0.6980172246694565,
+          0.834867139160633
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.18316832184791565,
+        "difference_from_original_95_interval": [
+          0.6971082925796509,
+          0.8255886033177375
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.05445544421672821,
+        "difference_from_original_95_interval": [
+          0.8378221020102501,
+          0.9447513818740845
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  },
+  "EXP-T2-309": {
+    "causal_audio_contribution": true,
+    "conditions": {
+      "envelope_only_audio": {
+        "accuracy": 0.7029703259468079,
+        "difference_from_original_95_interval": [
+          0.10523821469396354,
+          0.2970332063734531
+        ]
+      },
+      "original": {
+        "accuracy": 0.9009901285171509,
+        "difference_from_original_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "reversed_audio": {
+        "accuracy": 0.1683168262243271,
+        "difference_from_original_95_interval": [
+          0.6733337491750717,
+          0.7846890091896057
+        ]
+      },
+      "same_person_wrong_audio": {
+        "accuracy": 0.1782178282737732,
+        "difference_from_original_95_interval": [
+          0.6792409047484398,
+          0.7653697028756141
+        ]
+      },
+      "zeroed_audio": {
+        "accuracy": 0.029702970758080482,
+        "difference_from_original_95_interval": [
+          0.822958855330944,
+          0.9259519204497336
+        ]
+      }
+    },
+    "eligible_clips": 202,
+    "scope": "frozen input-corruption diagnostic; no model selection or threshold tuning",
+    "wrong_audio_definition": "A different clip from the same person; identical valid window length, no identity change"
+  }
+}

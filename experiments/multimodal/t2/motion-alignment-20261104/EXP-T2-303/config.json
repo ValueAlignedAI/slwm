@@ -1,0 +1,168 @@
+{
+  "matrix": {
+    "artifacts": "experiments/multimodal/t2/motion-alignment-20261104",
+    "corpus": "artifacts/t2_audio_visual/cremad_motion_v3",
+    "evaluation": {
+      "offsets": [
+        -9,
+        -6,
+        -3,
+        0,
+        3,
+        6,
+        9
+      ]
+    },
+    "gates": {
+      "sync_accuracy": 0.3
+    },
+    "protocol": "docs/research/motion_alignment_protocol_20261104.md",
+    "runs": [
+      {
+        "arm": "signal_small",
+        "id": "EXP-T2-301",
+        "model": {
+          "heads": 8,
+          "layers": 4,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 256
+        },
+        "seed": 41
+      },
+      {
+        "arm": "vanilla_small",
+        "id": "EXP-T2-302",
+        "model": {
+          "heads": 8,
+          "layers": 4,
+          "packing": "aligned",
+          "processor": "vanilla",
+          "width": 256
+        },
+        "seed": 41
+      },
+      {
+        "arm": "legacy_concat",
+        "id": "EXP-T2-303",
+        "model": {
+          "heads": 8,
+          "layers": 4,
+          "packing": "concatenated",
+          "processor": "signal",
+          "width": 256
+        },
+        "seed": 41
+      },
+      {
+        "arm": "no_local_alignment",
+        "id": "EXP-T2-304",
+        "model": {
+          "heads": 8,
+          "layers": 4,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 256
+        },
+        "no_local_alignment": true,
+        "seed": 41
+      },
+      {
+        "arm": "shuffled_pairs",
+        "id": "EXP-T2-305",
+        "model": {
+          "heads": 8,
+          "layers": 4,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 256
+        },
+        "seed": 41,
+        "shuffled": true
+      },
+      {
+        "arm": "signal_large",
+        "id": "EXP-T2-306",
+        "model": {
+          "heads": 8,
+          "layers": 6,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 384
+        },
+        "seed": 41
+      },
+      {
+        "arm": "vanilla_large",
+        "id": "EXP-T2-307",
+        "model": {
+          "heads": 8,
+          "layers": 6,
+          "packing": "aligned",
+          "processor": "vanilla",
+          "width": 384
+        },
+        "seed": 41
+      },
+      {
+        "arm": "signal_large",
+        "id": "EXP-T2-308",
+        "model": {
+          "heads": 8,
+          "layers": 6,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 384
+        },
+        "seed": 42
+      },
+      {
+        "arm": "vanilla_large",
+        "id": "EXP-T2-309",
+        "model": {
+          "heads": 8,
+          "layers": 6,
+          "packing": "aligned",
+          "processor": "vanilla",
+          "width": 384
+        },
+        "seed": 42
+      },
+      {
+        "arm": "large_no_spectral",
+        "id": "EXP-T2-310",
+        "model": {
+          "heads": 8,
+          "layers": 6,
+          "no_spectral": true,
+          "packing": "aligned",
+          "processor": "signal",
+          "width": 384
+        },
+        "seed": 41
+      }
+    ],
+    "source_commit": "418ebc4",
+    "sprint": "T2-M1",
+    "training": {
+      "batch_size": 32,
+      "eval_every": 200,
+      "lr": 0.0004,
+      "steps": 1600,
+      "warmup_steps": 80,
+      "window": 32
+    }
+  },
+  "run": {
+    "arm": "legacy_concat",
+    "id": "EXP-T2-303",
+    "model": {
+      "heads": 8,
+      "layers": 4,
+      "packing": "concatenated",
+      "processor": "signal",
+      "width": 256
+    },
+    "seed": 41
+  }
+}

@@ -200,3 +200,135 @@ T2 can report only latent prediction, reconstruction, spectral proxy,
 audio-video correspondence/retrieval, shuffled/null controls, throughput, and
 memory. It cannot support text/code, policy, hallucination, raw generation, or
 grounding claims.
+
+## Real recorded audiovisual pilots
+
+These are 4.47M-trainable-parameter T2 experiments on recorded CREMA-D speech
+video and audio. The frozen pooled ImageNet ResNet18 has 11,176,512 deployed
+parameters, counted separately. English sentence transcripts are metadata only;
+there is no trained text/code or raw-media decoder.
+
+Install the `t2-full` optional dependencies and `pytest`; `ffmpeg`/`ffprobe` must
+be available. On the authorized Fedora machine, the GPU runtime is
+`/home/db/venvs/vllm/bin/python` and the checkout is `/home/db/dev/slwm`.
+The isolated `.research-venv` supplies test/plotting packages.
+
+```bash
+python -m training.t2_prepare_cremad --config configs/t2/cremad_prepare_pilot.json
+python -m training.t2_real_av --config configs/t2/cremad_pilot_matrix.json
+python -m training.t2_real_av_report --config configs/t2/cremad_pilot_matrix.json
+python -m training.t2_prepare_cremad --config configs/t2/cremad_prepare_fresh_residual.json
+python -m training.t2_real_av --config configs/t2/cremad_residual_matrix.json
+python -m training.t2_real_av_report --config configs/t2/cremad_residual_matrix.json
+```
+
+On Fedora, `bash scripts/train/run_t2_real_av_fedora.sh` runs the first prepared
+matrix and report. Set `SLWM_MATRIX=configs/t2/cremad_residual_matrix.json` for
+the follow-up. Completed results are reused after configuration checks; prepared
+corpora are reused after file-hash checks and never silently overwritten. Use a
+new versioned directory and experiment IDs for a changed experiment.
+
+Both cycles have `best.pt` checkpoints with optimizer/RNG/config/provenance,
+`metrics.json`, `registry.json`, `curves.json`, `source_snapshot/`, report,
+comparison tables, and plots. Exact frozen-run source is archived, including the
+original accounting convention; `parameter_accounting.json` corrects the unused
+classifier count without modifying hashed source cards. The final source also
+adds artifact-integrity checks. All 18 checkpoints and compact prepared corpora
+are retained locally; all original raw clips remain on Fedora.
+
+Run a saved residual model on the supplied local/Fedora real-clip example:
+
+```bash
+python -m training.t2_real_av_infer \
+  --checkpoint experiments/multimodal/t2/real-av-residual-20261104/EXP-T2-211/best.pt \
+  --clip artifacts/t2_audio_visual/cremad_fresh_residual_v2/raw/1003_DFA_ANG_XX.flv \
+  --output experiments/multimodal/t2/real-av-residual-20261104/example_prediction.npz
+```
+
+Outputs contain observed context and predicted future features, tagged internal
+and uncommitted. They are not generated waveforms, video frames, or statements.
+`--mode audio_only` and `--mode visual_only` support diagnostic missing-input
+checks. `--device cpu` permits inference without CUDA.
+
+Exploratory stronger controls are separate from frozen gates:
+
+```bash
+python -m evals.t2_feature_controls --config configs/t2/cremad_residual_matrix.json
+```
+
+The fixed-regularization linear weights are saved as reusable NPZ artifacts.
+They were added after some test outputs were seen and must remain labeled
+exploratory. Their inputs and retained persistence anchors are documented in
+the metrics/report.
+
+## Motion-aware alignment, scaling, and generated outputs
+
+Use [the motion alignment workflow](../docs/training/motion_alignment.md) and
+`configs/t2/motion_alignment_matrix.json`. The new 4.74M/15.23M models train
+neural components from scratch on physical-time audio and mouth motion.
+`bash scripts/train/run_motion_alignment_fedora.sh` reproduces training,
+causal checks, frozen probes, the actual media gallery, and reporting.
+
+The exploratory linear-head diagnosis is separate:
+
+```bash
+python -m exploration.motion_linear_decoders --config configs/t2/motion_alignment_matrix.json
+python -m training.t2_motion_report --config configs/t2/motion_alignment_matrix.json
+```
+
+It freezes core weights and retains every original head/output and primary metric.
+The optional `evals.motion_audio_intelligibility` uses a separate pretrained
+recognizer only to score saved waveforms. It never supplies generated audio.
+
+## T2-G1/G2 conditional generation
+
+Fifteen additional GPU runs test 100 Hz sound, a single real appearance seed,
+and a signal-preserving raw audio path. The raw residual audio edge passes its
+two-seed reconstruction gate; frozen-core benefit, video-to-speech and visual
+dynamics gates fail. Run `scripts/train/run_conditional_generation_fedora.sh`
+and `scripts/train/run_conditional_residual_fedora.sh` from the repository.
+See `docs/training/conditional_generation.md` for standalone real-file inference,
+data/parameter accounting, the shuffled-control evaluation correction, and claim
+limits. All original checkpoints, metrics and media remain retained.
+
+## T2-R1/R2 signal restoration and content conservation
+
+Thirteen further GPU runs mix real LibriSpeech audio with CREMA audiovisual
+training. A 16,448-weight auxiliary observed-content readout fixes a measurable
+decodability problem in the small shared field, passing two-seed content/output/
+timing gates on a fresh harder test-other set. Correct video still does not
+reliably improve repair beyond sound alone. See `docs/training/signal_restoration.md`
+and the current findings for field-only probes, held-out split rules, actual
+audio, ordinary-file inference and the limits of mel-packet restoration.
+
+```bash
+bash scripts/train/run_signal_restoration_fedora.sh
+bash scripts/train/run_content_conservation_fedora.sh
+```
+
+
+# T2-V1 — true-gap video versus audio repair
+
+Eleven registered RTX 3090 runs finish the controlled test: video reduces reused
+CREMA gap-spectrum error ~9% over additional audio capacity in both seeds, but
+fresh-speaker intervals and the broader speech gate fail. The full model has
+7,990,547 weights, including a1,423,025-weight newly trained visual branch.
+The old content expert and adapted audio anchor are frozen during fusion.
+
+See [the training/inference guide](../docs/training/video_repair.md),
+[frozen report](../experiments/multimodal/t2/video-repair-20261105/report.md),
+[all fixed listening cases](../experiments/multimodal/t2/video-repair-20261105/listen.html)
+and [packaged weights](../experiments/multimodal/t2/video-repair-20261105/bundle/README.md).
+
+```bash
+scripts/train/run_video_repair_fedora.sh data
+scripts/train/run_video_repair_fedora.sh train
+scripts/train/run_video_repair_fedora.sh evaluate
+```
+
+The completed evidence preserves the first failed rendering attempt. Its
+terminal-padding correction has a separate evaluation revision:
+`scripts/train/resume_video_repair_render_v2.sh`. The original evaluation source
+guard deliberately rejects changed rendering sources; use this explicit revision
+for the retained run. Training and primary feature scores are unchanged.
+The full suite passes124 tests; audits verify448 WAVs and all11 frozen experts.

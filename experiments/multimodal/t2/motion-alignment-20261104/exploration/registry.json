@@ -1,0 +1,24 @@
+{
+  "checkpoint_hashes": {
+    "EXP-T2-301": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+    "EXP-T2-308": "019f7d274cfe3b8cf2cf6fa9ed26e01a86d0e12a36e358ad7b2a95de94233d6c",
+    "EXP-T2-309": "458b6f71d08bf2fe9aafb740c5e9fa20104e26401b28df9edea78052f77e6139"
+  },
+  "claims": "diagnostic media and frozen closed-set probes, not committed behavior, ASR or realistic media generation",
+  "codec_sha256": "d71e1ed81846d27cb71553c67c2cf9a1e3aab557df7f327794fbed099f23a25d",
+  "examples": 18,
+  "selected_models": [
+    "EXP-T2-301",
+    "EXP-T2-308",
+    "EXP-T2-309"
+  ],
+  "selection": "small model plus larger full seed selected by validation and its matched vanilla",
+  "source_hashes": {
+    "evals/motion_audio_intelligibility.py": "b5de09b1cf6631a6607985eb9bffd7aadb84f7aaf14859728718f92fb50f17fc",
+    "evals/motion_causal_checks.py": "561a8125f9a910ff09b23f34da0d8fd2c578cb3b133f26085cff84d15fc3bfcc",
+    "exploration/motion_infer.py": "2d4123a3f9a8d6df1bc0beaa32f26d695daa2e48ba1021196565c82a318a7798",
+    "exploration/motion_outputs.py": "53180479b6df7b9d9cbc5a177136cdec1d86dafbcd1340134e721bad88805107"
+  },
+  "sprint": "X0-M1",
+  "status": "completed"
+}

@@ -1,0 +1,12 @@
+{
+  "changed_original_files": [
+    "exploration/video_repair_infer.py",
+    "exploration/video_repair_outputs.py",
+    "tests/test_video_repair.py"
+  ],
+  "feature_metrics_and_training_unchanged": true,
+  "fixed_ids_unchanged": true,
+  "original_source_snapshot_preserved": true,
+  "reason": "Repeat at most three terminal analyzed subframes, as in original packetize; globally erased input only",
+  "revision": 2
+}

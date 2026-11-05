@@ -1,0 +1,42 @@
+{
+  "anchor": {
+    "61": "EXP-T2-601",
+    "62": "EXP-T2-602"
+  },
+  "audio": {
+    "61": "EXP-T2-619",
+    "62": "EXP-T2-612"
+  },
+  "checkpoint_hashes": {
+    "EXP-T2-601": "23ab23d8b10086b6a03bdc437413e4ed45da8224529d847ab89bddc4e0038d97",
+    "EXP-T2-602": "2b656aebb12d77f889733587b803ea7447951b1fb551a1b6e78264b3716c70d0",
+    "EXP-T2-611": "8328d74f6fa6668402a7a919a6c5f75a31bf56b2981786ab7ea3f587068e8bfe",
+    "EXP-T2-612": "15793c18403e24c1d4af9a735eb38f8e2cfb6b78d4515d555fc3a7a1081a76ce",
+    "EXP-T2-613": "2ec22ee3d14eb8555d483feb7dad47e2e708409b7bed1ba4397b55fbfa101294",
+    "EXP-T2-614": "1073883e4ed742db4b53b1deed9e2a1769ab7b39efe9ffa257b708d2599b474d",
+    "EXP-T2-615": "2cce9d915a7b5e76bde4cab34cf0c321c6100a34bf4d119a98f69e6f02f07767",
+    "EXP-T2-616": "a218407d4a4d68411e9f63ae765bd8e673d8b4041463534e2d5859a8fac303e7",
+    "EXP-T2-617": "ba3182aee1a8c8e6afc3d830e3af2d396113b4f36d28f0ccfe56e099059cb3f7",
+    "EXP-T2-618": "343b91eae38c1d928357b56192531afa9968f96bb1c3b16d03fa0cba3a42e0ac",
+    "EXP-T2-619": "a3daabd472082902d0b5d42519dc55a40baacb7960b9d5adc9299c15368dca24"
+  },
+  "config_hash": "064b7e1b81ae517f2d22fa280eb0a0e69593c43f04b36d45d2698ab1ecb78424",
+  "primary_video": {
+    "61": "EXP-T2-614",
+    "62": "EXP-T2-615"
+  },
+  "rule": "Minimum equal-corpus mean validation gap320ms MSE; no test metrics read",
+  "validation_scores": {
+    "EXP-T2-601": 0.6796154677867889,
+    "EXP-T2-602": 0.6731987595558167,
+    "EXP-T2-611": 0.6725834906101227,
+    "EXP-T2-612": 0.654770702123642,
+    "EXP-T2-613": 0.6288675367832184,
+    "EXP-T2-614": 0.5875392556190491,
+    "EXP-T2-615": 0.581754207611084,
+    "EXP-T2-616": 0.5989691317081451,
+    "EXP-T2-617": 0.6591956615447998,
+    "EXP-T2-618": 0.5899575650691986,
+    "EXP-T2-619": 0.6677097976207733
+  }
+}

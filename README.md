@@ -67,7 +67,7 @@ Project documentation is organized under `docs/`:
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
 | I1 — Baselines | Implemented locally | `docs/evaluation/baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
 | T1 — Text/code baseline training | Full-stack mechanics implemented; larger corpus work remains | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/training/t1_text_code_training.md` | Tiny and limited GPT-2-BPE runs are registered; full guardrail claims require matched GPT-2 and SLWM runs on pinned corpora. |
-| T2 — Audio/visual latent training | Mechanics implemented; external data run remains | `data/audio_visual_latents.py`, `training/t2_prepare_latents.py`, `training/t2_train_latents.py`, `configs/t2/*`, `docs/training/preprocessing.md` | Generated-fixture smoke run passes mechanics only; external curated audio/video corpora and matched baselines are required before hypothesis support. |
+| T2 — Audio/visual latent training and alignment | Video improves reused-set gap prediction; fresh-speaker and practical speech gates fail | `models/slwm_video_repair.py`, `docs/research/findings.md`, `docs/training/video_repair.md` | 11 new RTX 3090 runs. The 8M visual correction model lowers CREMA spectral error ~9% beyond extra audio capacity in both seeds; fresh RAV effects remain uncertain. Preserve the content objective and exact observed waveform. |
 
 ## Validation
 
@@ -77,7 +77,13 @@ Current local validation evidence:
 pytest
 ```
 
-Latest result from the T1/T2 foundation branch:
+Latest complete suite on Fedora (2026-11-05):
+
+```text
+124 passed
+```
+
+Earlier result from the T1/T2 foundation branch:
 
 ```text
 74 passed
@@ -146,3 +152,31 @@ Use focused feature branches and merge through pull requests. `main` is the acce
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for copyright holders and terms.
+
+## Earlier real audiovisual pilots — 2026-11-04
+
+[Findings and research decision](docs/research/findings.md) summarize 18 real-data
+GPU runs, including a fresh-person residual follow-up. Saved checkpoints, full
+metrics, source snapshots and diagnostic plots live under
+`experiments/multimodal/t2/real-av-20261104/` and
+`experiments/multimodal/t2/real-av-residual-20261104/`. The current recipe does
+not pass the multimodal or visual-dynamics gates; larger or joint text/code
+runs are not justified by these results.
+
+The final validation suite passes **84 tests**. See
+[the training workflow](training/README.md#real-recorded-audiovisual-pilots)
+for reproduction and checkpoint inference.
+
+## Motion-aware architecture and model outputs
+
+The new physical-time recipe learns real audio/video timing alignment without a
+pretrained neural encoder. Compare 4.74M and 15.23M models, matched baselines,
+ablations and input-corruption controls in the
+[research report](experiments/multimodal/t2/motion-alignment-20261104/report.md).
+Inspect the [actual conditional output gallery](experiments/multimodal/t2/motion-alignment-20261104/exploration/gallery.md)
+for audio→mouth, video→audio, codec/reconstruction/null controls, and bounded
+recognition probes. The current source passes **96 tests**.
+
+[Standalone inference](docs/training/motion_alignment.md) accepts an audio or
+video file with a saved checkpoint. Outputs are diagnostic predictions; larger
+parameter count has not resolved generation quality.

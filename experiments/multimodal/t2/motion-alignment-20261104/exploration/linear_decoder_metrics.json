@@ -1,0 +1,54 @@
+{
+  "EXP-T2-301": {
+    "checkpoint_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+    "fitted_parameters": 148032,
+    "scope": "post-hoc frozen-core supervised decoder, fixed ridge 10; original heads and frozen metrics unchanged",
+    "source_sha256": "ece9743dc56471fab2d322656dc4ea651dafd893b71b999493d5c7e843fc60cf",
+    "test": {
+      "audio_input_audio_delta": 0.1279146820306778,
+      "audio_input_audio_mel": 0.08312974870204926,
+      "audio_input_video_appearance": 0.9721482992172241,
+      "audio_input_video_motion": 1.6384029388427734,
+      "video_input_audio_delta": 0.7168126702308655,
+      "video_input_audio_mel": 0.643679678440094,
+      "video_input_video_appearance": 0.5491175055503845,
+      "video_input_video_motion": 0.31128206849098206
+    },
+    "validation": {
+      "audio_input_audio_delta": 0.13085107505321503,
+      "audio_input_audio_mel": 0.08395592868328094,
+      "audio_input_video_appearance": 1.315123438835144,
+      "audio_input_video_motion": 1.9887053966522217,
+      "video_input_audio_delta": 0.7162610292434692,
+      "video_input_audio_mel": 0.7007696032524109,
+      "video_input_video_appearance": 0.6969999074935913,
+      "video_input_video_motion": 0.40737196803092957
+    }
+  },
+  "EXP-T2-308": {
+    "checkpoint_sha256": "019f7d274cfe3b8cf2cf6fa9ed26e01a86d0e12a36e358ad7b2a95de94233d6c",
+    "fitted_parameters": 221760,
+    "scope": "post-hoc frozen-core supervised decoder, fixed ridge 10; original heads and frozen metrics unchanged",
+    "source_sha256": "ece9743dc56471fab2d322656dc4ea651dafd893b71b999493d5c7e843fc60cf",
+    "test": {
+      "audio_input_audio_delta": 0.10477631539106369,
+      "audio_input_audio_mel": 0.07146774977445602,
+      "audio_input_video_appearance": 0.976449191570282,
+      "audio_input_video_motion": 1.6412537097930908,
+      "video_input_audio_delta": 0.7080624103546143,
+      "video_input_audio_mel": 0.6241754293441772,
+      "video_input_video_appearance": 0.49085649847984314,
+      "video_input_video_motion": 0.2378508597612381
+    },
+    "validation": {
+      "audio_input_audio_delta": 0.10550699383020401,
+      "audio_input_audio_mel": 0.07094138115644455,
+      "audio_input_video_appearance": 1.324178695678711,
+      "audio_input_video_motion": 1.9897270202636719,
+      "video_input_audio_delta": 0.7140937447547913,
+      "video_input_audio_mel": 0.6676273941993713,
+      "video_input_video_appearance": 0.631010890007019,
+      "video_input_video_motion": 0.31196078658103943
+    }
+  }
+}
