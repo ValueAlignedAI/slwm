@@ -25,13 +25,23 @@ Fit a128-hidden risk regressor from current processed-field mean, memory mean,
 current model risk and previous sensor bits. It predicts both audio and video
 forecast error for each of four next sensing actions. Training targets enumerate
 the four counterfactual observation choices, run copies of the same frozen state,
-and score the model's future head against training-only future recordings. Labels
+and score the model's future head against training-only future recordings. The
+target is eight packets starting two packets beyond the newly received chunk;
+audio error is normalized-mel MAE and video error is normalized-code MSE. Goal
+cost is audio error,0.2×video error, or their sum, respectively. Fit log errors
+with squared loss; standardize actor features using training means/deviations
+(deviation floor0.05). Labels
 and future signals never enter the decision input. The actor minimizes predicted
 goal-weighted future error + sensor cost. Fit1500 Adam steps, batch256, lr.001,
 seed391, retaining the risk weights and training sources.
 
-Use five fixed40.96s training starts per person (120,170,220,270,320s), stopping
-an episode at the common signal endpoint with the valid length recorded. Use
+Use five fixed training starts per person (120,170,220,270,320s). Each episode has
+one bootstrap chunk and30 automatic decisions, requiring42.325s of observations
+plus0.427s future-target support. Pacing the30 decisions takes40.96s after the
+bootstrap. Reject an episode that lacks the registered common signal support;
+never silently pad or truncate it. This clock clarification precedes policy fits
+and test scores. Training trajectories use a fixed seeded uniform action stream;
+all four counterfactual actions are labeled at each encountered state. Use
 independent calibration starts120,170,220s to set per-goal70% predicted-error
 commitment coverage. No threshold tuning on test. Test uses the same fixed80s
 start for every reserved person. Compare learned sensing, always-listen,
