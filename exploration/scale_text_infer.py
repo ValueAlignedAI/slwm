@@ -14,7 +14,8 @@ def main():
         for _ in range(a.tokens):
             logits=model(ids[:,-512:])[:,-1].float()/.8; threshold=logits.topk(50).values[:,-1:]; logits.masked_fill_(logits<threshold,-float("inf")); next_id=torch.multinomial(logits.softmax(-1),1); ids=torch.cat((ids,next_id),1)
             if int(next_id)==enc.eot_token: break
-    record={"run":ck["run"],"selected_step":ck["step"],"prompt":a.prompt,"text":enc.decode(ids[0].tolist()),"scope":"Raw early-model continuation;16.8M training tokens, no factual/reasoning or converged-quality claim"}
+    token_step=ck.get("total_token_equivalent_step",ck["step"]); tokens=int(token_step)*32*512
+    record={"run":ck["run"],"selected_optimizer_step":ck["step"],"training_tokens_at_checkpoint":tokens,"prompt":a.prompt,"text":enc.decode(ids[0].tolist()),"scope":"Raw undertrained text continuation; separate language weights,512-token context; no factual/reasoning or converged-quality claim"}
     if a.output:
         from pathlib import Path
         Path(a.output).write_text(json.dumps(record,indent=2)+"\n")

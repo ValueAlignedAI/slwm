@@ -50,7 +50,7 @@ def rollout(model,audio,video,phones,appearance,mode,*,visible=None,prefix_chunk
             if mode=="repair": a=torch.as_tensor(visible[None,start:end],device=device)
             if prefix_chunks is not None and tick>=prefix_chunks: a=v=t=no
             if reset_memory: memory=None
-            before=time.perf_counter(); out=model(torch.as_tensor(audio[None,start:end],device=device),torch.as_tensor(video[None,start:end],device=device),torch.as_tensor(phones[None,start:end],device=device),a,v,t,valid,torch.as_tensor(appearance[None],device=device),memory); memory=out["memory"]
+            before=time.perf_counter(); out=model(torch.as_tensor(audio[None,start:end],device=device,dtype=torch.float32),torch.as_tensor(video[None,start:end],device=device,dtype=torch.float32),torch.as_tensor(phones[None,start:end],device=device,dtype=torch.long),a,v,t,valid,torch.as_tensor(appearance[None],device=device,dtype=torch.float32),memory); memory=out["memory"]
             # Transfer the emitted proposal before timing, making CUDA completion
             # part of latency instead of measuring kernel dispatch alone.
             for key in ("mel","video"): outputs[key].append(out[key][0].float().cpu().numpy())

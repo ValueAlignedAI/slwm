@@ -6,9 +6,14 @@ torch=pytest.importorskip("torch")
 pytest.importorskip("vocos")
 pytest.importorskip("cmudict")
 pytest.importorskip("soundfile")
-from exploration.stream_media import synthesize,restore_known,ctc_text,write_audio,encode_video
+from exploration.stream_media import synthesize,restore_known,ctc_text,write_audio,encode_video,rollout
 from exploration.broad_stream_evaluate import gap_interval,edit_distance
 from training.stream_codec import load_vocoder,mel_features
+from models.slwm_stream import StreamWorld
+
+
+def test_plain_text_and_packed_codec_types_work_in_cpu_stream():
+    torch.set_num_threads(1); model=StreamWorld(width=32,heads=4,layers=2,memory=2).eval(); result=rollout(model,np.zeros((64,400),np.float16),np.zeros((64,64),np.float16),np.full(64,3,np.int16),np.zeros(64,np.float16),"text"); assert result["mel"].shape==(64,400); assert len(result["trace"])==2; assert np.isfinite(result["mel"]).all()
 
 
 def test_repair_preserves_observed_pcm_and_gap_placement_is_deterministic():

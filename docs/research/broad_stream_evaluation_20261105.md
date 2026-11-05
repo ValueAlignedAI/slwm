@@ -23,6 +23,7 @@ normalizer before primary WER; retain unnormalized errors. Short clips allow
 256 new tokens. Long outputs are decoded in consecutive nonoverlapping20s
 windows, including the final remainder; store source intervals and all raw
 transcripts so no30s truncation can be mistaken for whole-output scoring.
+Mean whole-clip WER is primary, with corpus word-weighted WER reported separately.
 Bootstrap paired effects by person with10,000 seeded resamples; report seed
 effects separately. The original5% relative WER gate remains unchanged.
 

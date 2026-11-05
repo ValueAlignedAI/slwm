@@ -30,7 +30,7 @@ def vocabulary_bundle(cfg):
     root=Path(cfg["artifacts"])/"inference_bundle"; root.mkdir(exist_ok=True); corpus=Path(cfg["corpus"])
     for name in ("codec.npz","duration_model.json","vocabulary.json","dataset_card.json"):
         shutil.copyfile(corpus/name,root/name)
-    row=json.loads((corpus/"ami_train/rows.json").read_text())[0]; index=int(round(100/PACKET_SECONDS)); pixels=np.load(corpus/"ami_train"/(row["id"]+"_pixels.npy"),mmap_mode="r")[index]; code=np.load(corpus/"ami_train"/(row["id"]+"_video.npy"),mmap_mode="r")[index]; np.save(root/"appearance_pixels.npy",pixels); np.save(root/"appearance_code.npy",code); write_json(root/"appearance.json",{"training_id":row["id"],"source_packet":index,"source_seconds":index*PACKET_SECONDS,"provided_static_appearance":True,"heldout_data_used":False}); return root
+    row=json.loads((corpus/"ami_train/rows.json").read_text())[0]; index=int(round(100/PACKET_SECONDS)); pixels=np.load(corpus/"ami_train"/(row["id"]+"_pixels.npy"),mmap_mode="r")[index]; code=np.asarray(np.load(corpus/"ami_train"/(row["id"]+"_video.npy"),mmap_mode="r")[index],np.float32); np.save(root/"appearance_pixels.npy",pixels); np.save(root/"appearance_code.npy",code); write_json(root/"appearance.json",{"training_id":row["id"],"source_packet":index,"source_seconds":index*PACKET_SECONDS,"provided_static_appearance":True,"heldout_data_used":False}); return root
 
 
 def freeze(cfg):
@@ -118,7 +118,7 @@ def long_media(cfg,root):
                     proposal=rollout(model,aa,vv,np.zeros(packets,np.int64),appearance if mode=="audio" else np.zeros(64,np.float32),mode,prefix_chunks=8 if control=="prefix" else None,reset_memory=control=="reset",device="cuda"); np.savez_compressed(outdir/"proposals.npz",mel=proposal["mel"].astype(np.float16),video=proposal["video"].astype(np.float16)); write_json(outdir/"trace.json",proposal["trace"]); (outdir/"field_text.txt").write_text(proposal["text"]+"\n")
                     if mode=="audio" and control!="prefix": wave=sound; renderer={"soundtrack":"Original input audio; only video motion generated"}
                     else: wave,renderer=synthesize(proposal["mel"],codec,vocoder,"cuda")
-                    wav=write_audio(outdir/"output.wav",wave); frames=pixels if mode=="video" else decode_video(proposal["video"],codec,picture,appearance); meta=encode_video(outdir/"output.mp4",frames,outdir/"output.wav"); case={**manifest,"run":runid,"mode":mode,"control":control,"folder":str(outdir),"waveform":wav,"video":meta,"renderer":renderer,"source_audio_decoded_by_model":mode=="audio","source_phase_used":False,"reference_text_supplied":False,"field_text":proposal["text"],"normalized_mel_mae":float(np.abs(proposal["mel"]-audio).mean()),"video_code_mse":float(np.square(proposal["video"]-video).mean()),"video_persistence_mse":float(np.square(appearance-video).mean()),"predicted_motion_mse":float(np.square(np.diff(proposal["video"],axis=0)).mean()),"compute_seconds":sum(r["compute_seconds"] for r in proposal["trace"])}; write_json(outdir/"case.json",case); records.append(case); write_json(root/"long_cases.json",records); print(json.dumps({"long_case":len(records),"id":row["id"],"run":runid,"mode":mode,"control":control}),flush=True)
+                    wav=write_audio(outdir/"output.wav",wave); frames=pixels if mode=="video" else decode_video(proposal["video"],codec,picture,appearance); meta=encode_video(outdir/"output.mp4",frames,outdir/"output.wav"); case={**manifest,"run":runid,"mode":mode,"control":control,"folder":str(outdir),"waveform":wav,"video":meta,"renderer":renderer,"source_audio_decoded_by_model":mode=="audio","source_phase_used":False,"reference_text_supplied":False,"field_text":proposal["text"],"normalized_mel_mae":float(np.abs(proposal["mel"]-audio).mean()),"video_code_mse":float(np.square(proposal["video"]-video).mean()),"video_persistence_mse":float(np.square(appearance-video).mean()),"predicted_motion_mse":float(np.square(np.diff(proposal["video"],axis=0)).mean()),"motion_error_mse":float(np.square(np.diff(proposal["video"],axis=0)-np.diff(video,axis=0)).mean()),"static_motion_error_mse":float(np.square(np.diff(video,axis=0)).mean()),"motion_pixel_error_mse":float(np.square(np.diff(frames.astype(np.float32)/255.,axis=0)-np.diff(pixels.astype(np.float32)/255.,axis=0)).mean()) if mode=="audio" else None,"input_clock_seconds":packets*PACKET_SECONDS,"conditioning_shift_seconds":80. if control=="wrong_time" else 0.,"compute_seconds":sum(r["compute_seconds"] for r in proposal["trace"])}; write_json(outdir/"case.json",case); records.append(case); write_json(root/"long_cases.json",records); print(json.dumps({"long_case":len(records),"id":row["id"],"run":runid,"mode":mode,"control":control}),flush=True)
             del model; torch.cuda.empty_cache()
         constant=folder/"constant_appearance.mp4"
         if not constant.exists(): encode_video(constant,np.broadcast_to(picture,(packets,64,64)),folder/"input.wav")
@@ -156,20 +156,30 @@ def recognize(cfg,root):
     for folder in sorted((root/"long_inputs").iterdir()):
         rec=json.loads((folder/"input.json").read_text())
         for name in ("input","silence","mean_spectrum","oracle_vocoder"): jobs.append({"group":"long_control","id":rec["id"],"actor":rec["actor"],"condition":name,"path":str(folder/(name+".wav")),"reference":rec["transcript"]})
-    target=root/"recognizer_results.json"; done=json.loads(target.read_text()) if target.exists() else []; seen={r["path"] for r in done}; cache={}
+    target=root/"recognizer_results.json"; cache_path=root/"recognizer_cache.json"; cache=json.loads(cache_path.read_text()) if cache_path.exists() else {}; unique={}
     for job in jobs:
-        if job["path"] in seen: continue
-        digest=file_sha(job["path"])
-        if digest in cache: chunks=cache[digest]
-        else:
-            sound=read_audio(job["path"]); sound=torchaudio.functional.resample(torch.from_numpy(sound)[None],24000,16000)[0].numpy(); chunks=[]
-            for start in range(0,len(sound),20*16000):
-                segment=sound[start:start+20*16000]; inputs=processor(segment,sampling_rate=16000,return_tensors="pt",return_attention_mask=True)
-                with torch.inference_mode(): ids=recognizer.generate(inputs.input_features.cuda().half(),attention_mask=inputs.attention_mask.cuda(),max_new_tokens=256,num_beams=1,do_sample=False)
-                text=processor.batch_decode(ids,skip_special_tokens=True)[0].strip(); chunks.append({"start_seconds":start/16000,"end_seconds":(start+len(segment))/16000,"text":text,"generated_token_count":int(ids.shape[-1]),"max_new_tokens":256})
-            cache[digest]=chunks
-        text=" ".join(c["text"] for c in chunks); error,words=edit_distance(normalizer(job["reference"]),normalizer(text)); raw_error,raw_words=edit_distance(job["reference"].lower(),text.lower()); done.append({**job,"wave_sha256":digest,"recognizer_text":text,"chunks":chunks,"normalized_edit_count":error,"normalized_reference_words":words,"wer":error/max(1,words),"raw_wer":raw_error/max(1,raw_words)}); seen.add(job["path"])
-        if len(done)%10==0: write_json(target,done); print(json.dumps({"recognized":len(done),"total":len(jobs)}),flush=True)
+        job["wave_sha256"]=file_sha(job["path"]); unique.setdefault(job["wave_sha256"],job["path"])
+    pending=[]; chunks_by_hash={}; finished=0
+    def flush():
+        nonlocal finished
+        if not pending: return
+        inputs=processor([s[2] for s in pending],sampling_rate=16000,return_tensors="pt",return_attention_mask=True)
+        with torch.inference_mode(): ids=recognizer.generate(inputs.input_features.cuda().half(),attention_mask=inputs.attention_mask.cuda(),max_new_tokens=256,num_beams=1,do_sample=False)
+        texts=processor.batch_decode(ids,skip_special_tokens=True)
+        for (digest,index,_),text,row in zip(pending,texts,ids.cpu().tolist()):
+            eos=recognizer.generation_config.eos_token_id; stop=row.index(eos)+1 if eos in row else len(row); chunks_by_hash[digest][index].update(text=text.strip(),generated_token_count=stop,max_new_tokens=256,token_limit_reached=eos not in row)
+        for digest,entries in chunks_by_hash.items():
+            if digest not in cache and all("text" in c for c in entries): cache[digest]=entries; finished+=1
+        pending.clear(); write_json(cache_path,cache); print(json.dumps({"recognized_unique_waves":len(cache),"total_unique":len(unique),"batch":16}),flush=True)
+    for digest,path in unique.items():
+        if digest in cache: continue
+        sound=read_audio(path); sound=torchaudio.functional.resample(torch.from_numpy(sound)[None],24000,16000)[0].numpy(); entries=[{"start_seconds":start/16000,"end_seconds":min(start+20*16000,len(sound))/16000} for start in range(0,len(sound),20*16000)]; chunks_by_hash[digest]=entries
+        for i,entry in enumerate(entries):
+            start=round(entry["start_seconds"]*16000); end=round(entry["end_seconds"]*16000); pending.append((digest,i,sound[start:end].copy()))
+            if len(pending)==16: flush()
+    flush(); done=[]
+    for job in jobs:
+        chunks=cache[job["wave_sha256"]]; text=" ".join(c["text"] for c in chunks); error,words=edit_distance(normalizer(job["reference"]),normalizer(text)); raw_error,raw_words=edit_distance(job["reference"].lower(),text.lower()); done.append({**job,"recognizer_text":text,"chunks":chunks,"normalized_edit_count":error,"normalized_reference_words":words,"wer":error/max(1,words),"raw_wer":raw_error/max(1,raw_words)})
     write_json(target,done); write_json(root/"recognizer.json",{"name":"openai/whisper-tiny.en","revision":revision,"external_evaluation_parameters":sum(p.numel() for p in recognizer.parameters()),"normalization":"Whisper English standard, both reference and hypothesis","long_chunk_seconds":20,"complete_output_coverage":True,"test_used_for_selection":False})
 
 
