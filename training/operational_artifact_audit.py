@@ -37,6 +37,9 @@ def main():
     assert file_sha(bundle/"vocos/config.yaml")==manifest["external_vocoder"]["config_sha256"]
     for run in cfg["runs"]:
         name=run["id"]; path=root/name/"best.pt"; assert file_sha(path)==selection[name]["checkpoint_sha256"]; model,ck=load_model(path,"cpu"); model.requires_grad_(False); exported=torch.load(bundle/manifest["worlds"][name]["file"],map_location="cpu",weights_only=False); same_state(ck["model"],exported["model"]); assert ck["config"]==exported["config"] and ck["run"]==exported["run"] and ck["step"]==exported["step"]; assert sum(p.numel() for p in model.parameters())==ck["parameters"]; before=tensor_digest(model.state_dict()); n=64; valid=torch.ones(1,n,dtype=torch.bool); observed=valid.clone(); observed[:,20:28]=False; no=torch.zeros_like(valid); audio=torch.randn(1,n,400); video=torch.randn(1,n,64); phones=torch.randint(0,41,(1,n)); style=torch.zeros(1,64); args=(audio,video,phones,observed,no,no,valid,style)
+        assert exported["dataset_card_sha256"]==ck["dataset_card_sha256"]==file_sha(bundle/"dataset_card.json")
+        assert exported["source_hashes"]==ck["source_hashes"] and exported["parameters"]==ck["parameters"]
+        assert exported["selected_full_state_sha256"]==file_sha(path)
         with torch.inference_mode():
             expected=model(*args); changed_audio=audio.clone(); changed_audio[:,20:28]=float("nan"); hidden=model(changed_audio,video+1000,phones+100000,observed,no,no,valid,style)
             for key in expected: torch.testing.assert_close(expected[key],hidden[key],rtol=0,atol=0)
@@ -53,7 +56,17 @@ def main():
         assert tensor_digest(model.state_dict())==before; result["worlds"][name]={"selected_step":ck["step"],"parameters":ck["parameters"],"neural_state_sha256":before,"export_identical":True,"hidden_audio_video_text_invariant":True,"future_chunk_isolation":True,"chunk_state_matches_full":True,"weights_unchanged":True,"folding":folding}; del model,ck,exported,expected,hidden,future_changed,first,second; print(json.dumps({"audited_world":name}),flush=True)
     text_manifest=json.loads((textroot/"inference_exports/manifest.json").read_text()); text_selection=json.loads((textroot/"selection.json").read_text())
     for run in textcfg["runs"]:
-        name=run["id"]; path=textroot/name/"best.pt"; assert file_sha(path)==text_selection[name]["checkpoint_sha256"]; target=textroot/"inference_exports"/text_manifest[name]["file"]; assert file_sha(target)==text_manifest[name]["sha256"]; ck=torch.load(path,map_location="cpu",weights_only=False); exported=torch.load(target,map_location="cpu",weights_only=False); same_state(ck["model"],exported["model"]); assert ck["config"]==exported["config"] and ck["run"]==exported["run"] and ck["step"]==exported["step"]; result["language"][name]={"export_identical":True,"neural_state_sha256":tensor_digest(ck["model"]),"actual_optimizer_step":ck["step"],"selected_training_tokens":ck["total_token_equivalent_step"]*16384}; del ck,exported
+        name=run["id"]; path=textroot/name/"best.pt"
+        assert file_sha(path)==text_selection[name]["checkpoint_sha256"]
+        target=textroot/"inference_exports"/text_manifest[name]["file"]
+        assert file_sha(target)==text_manifest[name]["sha256"]
+        ck=torch.load(path,map_location="cpu",weights_only=False)
+        exported=torch.load(target,map_location="cpu",weights_only=False)
+        same_state(ck["model"],exported["model"])
+        for key in ("config","run","step","total_token_equivalent_step","provenance"):
+            assert ck[key]==exported[key],key
+        result["language"][name]={"export_identical":True,"neural_state_sha256":tensor_digest(ck["model"]),"actual_optimizer_step":ck["step"],"selected_training_tokens":ck["total_token_equivalent_step"]*16384}
+        del ck,exported
     actors=json.loads((policy/"selection.json").read_text())
     for world,chosen in actors.items():
         for mode,entry in (("field",chosen),("raw",chosen["raw_control"])):

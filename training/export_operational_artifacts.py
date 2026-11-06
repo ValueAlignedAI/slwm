@@ -19,7 +19,7 @@ def main():
     external=Path("artifacts/decoders/vocos-mel-24khz"); (bundle/"vocos").mkdir(exist_ok=True)
     for name in ("config.yaml","pytorch_model.bin","provenance.json","README.md"):
         if (external/name).exists(): shutil.copyfile(external/name,bundle/"vocos"/name)
-    manifest["external_vocoder"].update(weights_sha256=file_sha(bundle/"vocos/pytorch_model.bin"),config_sha256=file_sha(bundle/"vocos/config.yaml")); manifest["codec_files"]={name:file_sha(bundle/name) for name in ("codec.npz","duration_model.json","vocabulary.json","appearance_pixels.npy","appearance_code.npy")}; write_json(bundle/"manifest.json",manifest)
+    manifest["external_vocoder"].update(weights_sha256=file_sha(bundle/"vocos/pytorch_model.bin"),config_sha256=file_sha(bundle/"vocos/config.yaml")); manifest["codec_files"]={name:file_sha(bundle/name) for name in ("codec.npz","duration_model.json","vocabulary.json","dataset_card.json","appearance.json","appearance_pixels.npy","appearance_code.npy")}; write_json(bundle/"manifest.json",manifest)
     instructions=["# Portable B1 world fields and sensing actors","","These are inference exports of the validation-selected weights. Every neural tensor is checked against the full retained training state. Full optimizers/RNG, final states, curves and sources remain one directory above. manifest.json binds each actor to its exact exported world and records all codec/renderer hashes.","","| World | Variant / seed | Trained neural weights | Selected update |","|---|---|---:|---:|"]
     for run in cfg["runs"]:
         entry=manifest["worlds"][run["id"]]; instructions.append(f"| {run['id']} | {run['variant']} / {run['seed']} | {entry['parameters']:,} | {entry['selected_step']} |")
