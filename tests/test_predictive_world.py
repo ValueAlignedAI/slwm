@@ -18,6 +18,9 @@ def test_forecast_uses_action_history_and_never_later_commands():
     c=net.forecast_states(state,times,obs['time_unit'],later)
     assert not torch.equal(a[:,-1],b[:,-1])
     assert torch.equal(a[:,0],c[:,0])
+    absent=net.forecast_states(state,times,obs['time_unit'],None)
+    mean_plan=net.forecast_states(state,times,obs['time_unit'],torch.zeros_like(plan))
+    assert not torch.equal(absent,mean_plan)
     point=model(action_history=False);s=point(obs)
     assert torch.equal(point.forecast_states(s,times,obs['time_unit'],plan)[:,-1],point.forecast_states(s,times,obs['time_unit'],earlier)[:,-1])
 

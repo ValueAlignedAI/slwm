@@ -11,13 +11,15 @@ from models.slwm_general import GeneralWorld
 def join_observations(past, future):
     """Join observed[B,T,...] and teacher-only future[B,Q,...]; erase missing edges."""
     b,t=past['time'].shape;q=future['time'].shape[1];result={}
+    if not torch.equal(past['time_unit'],future['time_unit']):raise ValueError('Teacher continuation changes clock units')
     for key in set(past)|set(future):
         if key in ('time_unit','text','text_present'):
             if key in past:result[key]=past[key]
             continue
         a=past.get(key);z=future.get(key);sample=a if a is not None else z
-        if a is None:a=sample.new_zeros((b,t,*sample.shape[2:]))
-        if z is None:z=sample.new_zeros((b,q,*sample.shape[2:]))
+        fill=1 if key in ('pixel_present','patch_present','image_weight') else 0
+        if a is None:a=sample.new_full((b,t,*sample.shape[2:]),fill)
+        if z is None:z=sample.new_full((b,q,*sample.shape[2:]),fill)
         result[key]=torch.cat((a,z),1)
     return result
 
@@ -43,6 +45,7 @@ class PredictiveWorld(GeneralWorld):
             self.state_norm=nn.LayerNorm(memory)
             self.state_slots=nn.Linear(memory,self.slots*self.width)
             self.transition=nn.GRU(self.width,memory,batch_first=True)
+            self.transition_interval=nn.Linear(3,self.width)
             self.world_embedding=nn.Linear(memory,128)
 
     def _field(self,obs):
@@ -70,6 +73,7 @@ class PredictiveWorld(GeneralWorld):
 
     def stream_step(self,received_window,memory=None):
         """Consume only the newest encoded packet; never feed a window twice to GRU."""
+        if not bool(received_window['valid'].all()):raise ValueError('Use received packets only; represent missing modalities with their masks')
         field=self._field(received_window);b,t,k,d=field.shape
         inputs=self.history_input(field[:,-1:].reshape(b,1,k*d))
         posterior,hidden=self.history(inputs,memory)
@@ -78,8 +82,12 @@ class PredictiveWorld(GeneralWorld):
     def forecast_states(self,state,times,time_unit,planned_actions=None):
         """Past hidden[1,B,M] + supplied commands[B,Q,7] -> causal priors[B,Q,M]."""
         b,q=times.shape
+        supplied=planned_actions is not None
         if planned_actions is None:planned_actions=times.new_zeros((b,q,7))
-        inputs=self.action_edge(planned_actions)+self.clock_features(times,time_unit,state['time_origin'])
+        delta=times-torch.cat((state['last_time'],times[:,:-1]),1)
+        if bool((delta<=0).any()):raise ValueError('Future rollout timestamps must be increasing after the received state')
+        interval=torch.stack((delta.log1p(),time_unit[:,None].expand_as(delta).to(delta.dtype),torch.full_like(delta,float(supplied))),-1)
+        inputs=self.action_edge(planned_actions)+self.clock_features(times,time_unit,state['time_origin'])+self.transition_interval(interval)
         if self.action_history:
             prior,_=self.transition(inputs,state['memory'])
         else:
