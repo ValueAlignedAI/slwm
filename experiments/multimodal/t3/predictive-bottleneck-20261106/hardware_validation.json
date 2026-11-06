@@ -1,0 +1,59 @@
+{
+  "engineering_validation": {
+    "implementation_preflight_v2": {
+      "actual_gpu_optimizer_checks": 48,
+      "peak_allocated_gib": 9.916449546813965,
+      "full_tensor_checkpoint_roundtrips": 4,
+      "parameters": [
+        55595147,
+        55810187,
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "a23712fad92bb048b305a5ad3eb08f4a666413894c636ceb0b6d5bf71ea8bdba"
+    },
+    "batch_fit_32": {
+      "actual_gpu_optimizer_checks": 48,
+      "peak_allocated_gib": 17.82709264755249,
+      "full_tensor_checkpoint_roundtrips": 4,
+      "parameters": [
+        55595147,
+        55810187,
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "c74a4f56ae487e10029bc3850e58f4575830c7276d2c592e9db3321b6fbfc2fb"
+    },
+    "long_context_preflight": {
+      "actual_gpu_optimizer_checks": 24,
+      "peak_allocated_gib": 17.395575046539307,
+      "full_tensor_checkpoint_roundtrips": 6,
+      "parameters": [
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "35962da61ecf5fd320033ece3475fb0fbe0bbd12cb15c3795f88a00fbddd3713"
+    }
+  },
+  "tests": {
+    "passed": 21,
+    "scope": "Real training-source gradients, data identities/clocks, causal state/action history, actor input boundary, live-memory invariance, covariance/rank, retrieval positives and checkpoint serialization"
+  },
+  "hardware": "Fedora RTX3090 24GiB",
+  "chosen_microbatches": {
+    "context32_temporal": 32,
+    "context64_temporal": 16,
+    "static": 128,
+    "accumulation": 2
+  },
+  "warning": "Implementation checks are not evidence of held-task transfer or useful world understanding",
+  "planned_primary_updates_per_model": 12000,
+  "primary_runs": 12,
+  "eta": "Initial four-model512-update screen:2\u20134h subject to existing queue. Full transfer/artifact evaluation:48\u201372h from2026-11-06 evening Europe/Lisbon."
+}
