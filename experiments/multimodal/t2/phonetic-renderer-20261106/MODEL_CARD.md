@@ -22,3 +22,5 @@ Inference also needs the separately pinned Vocos renderer (13,531,650 parameters
 Data sampling is keyed by seed/update and there are no stochastic post-initialization Torch layers; the resume retains optimizer state and update counters. Raw Torch RNG arrays were not serialized in R1. The frozen training sources and exact hashes are preserved.
 
 The primary next test is G1-predicted phones on the untouched new-speaker cases. A good oracle cannot substitute for that test.
+
+Upstream exposure audit: Vocos was trained on LibriTTS, derived from LibriSpeech. New-speaker novelty applies to our core/R1 weights; decoder-level overlap is unverified. See [the exposure audit](../../../../docs/research/vocoder_exposure_audit_20261106.md).
