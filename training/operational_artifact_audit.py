@@ -40,9 +40,11 @@ def main():
         with torch.inference_mode():
             expected=model(*args); changed_audio=audio.clone(); changed_audio[:,20:28]=float("nan"); hidden=model(changed_audio,video+1000,phones+100000,observed,no,no,valid,style)
             for key in expected: torch.testing.assert_close(expected[key],hidden[key],rtol=0,atol=0)
-            later=audio.clone(); later[:,32:]+=999; future_changed=model(later,video,phones,observed,no,no,valid,style); torch.testing.assert_close(expected["field"][:,:32],future_changed["field"][:,:32],rtol=0,atol=0)
+            later=audio.clone(); later[:,32:]+=999; future_changed=model(later,video,phones,observed,no,no,valid,style); torch.testing.assert_close(expected["field"][:,:32],future_changed["field"][:,:32],rtol=0,atol=0); torch.testing.assert_close(expected["future"][:,:1],future_changed["future"][:,:1],rtol=0,atol=0)
             first=model(*(x[:,:32] for x in args[:7]),style); second=model(*(x[:,32:] for x in args[:7]),style,first["memory"])
             for key in ("mel","video","field","phone_logits","character_logits","activity","risk"): torch.testing.assert_close(expected[key],torch.cat((first[key],second[key]),1),rtol=2e-5,atol=2e-5)
+            torch.testing.assert_close(expected["future"],torch.cat((first["future"],second["future"]),1),rtol=2e-5,atol=2e-5)
+            torch.testing.assert_close(expected["memory"],second["memory"],rtol=2e-5,atol=2e-5)
             folding=None
             if run["variant"]=="slwm":
                 folded=fold_signal_branches(copy.deepcopy(model)); actual=folded(*args); maximum=max(float((expected[k]-actual[k]).abs().max()) for k in expected)
