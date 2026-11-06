@@ -7,8 +7,8 @@
   "horizon": 8,
   "slots": 4,
   "heads": 8,
-  "batch_temporal": 16,
-  "batch_static": 64,
+  "batch_temporal": 32,
+  "batch_static": 128,
   "updates": 12000,
   "slice_updates": 128,
   "milestones": [
@@ -169,7 +169,7 @@
   "normalizers": "artifacts/predictive_world/g2/normalizers.npz",
   "dataset_manifest": "artifacts/predictive_world/g2/dataset_contract.json",
   "memory": 512,
-  "accumulation": 4,
+  "accumulation": 2,
   "training_contexts": [
     32,
     64
