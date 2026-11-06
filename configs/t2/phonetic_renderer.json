@@ -1,0 +1,18 @@
+{
+  "root": "experiments/multimodal/t2/phonetic-renderer-20261106",
+  "seed": 701,
+  "updates": 6000,
+  "slice_updates": 1000,
+  "batch": 128,
+  "packets": 32,
+  "learning_rate": 0.0003,
+  "minimum_lr": 0.00003,
+  "weight_decay": 0.01,
+  "validation_every": 500,
+  "style_dropout": 0.2,
+  "training_rows": "artifacts/general_world/diverse_v1/prepared/speech/train_rows.json",
+  "selection_rows": "artifacts/general_world/diverse_v1/prepared/speech/legacy_selection_rows.json",
+  "phone_vocabulary": "artifacts/general_world/diverse_v1/prepared/speech/phone_vocabulary.json",
+  "normalizer": "artifacts/t2_audio_visual/broad_stream_prepared_v1/codec.npz",
+  "protocol": "docs/research/phonetic_renderer_protocol_20261106.md"
+}
