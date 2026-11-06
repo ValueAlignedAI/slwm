@@ -1,0 +1,35 @@
+{
+  "data_snapshot": "samples.csv",
+  "elapsed_seconds": 2885.358999967575,
+  "first_utc": "2026-11-05T23:30:00.068000+00:00",
+  "gpu_utilization_percent": {
+    "at_least_90_percent_sample_fraction": 0.09515570934256055,
+    "p10_median_p90": [
+      25.0,
+      51.0,
+      88.30000000000007
+    ],
+    "sample_mean": 54.048442906574394,
+    "zero_sample_fraction": 0.0
+  },
+  "interpretation": "NVIDIA GPU utilization measures sampled kernel activity, not achieved FLOPs, occupancy, useful training throughput, or a quality improvement",
+  "last_utc": "2026-11-06T00:18:05.427000+00:00",
+  "memory_used_mib": {
+    "device_capacity": 24576,
+    "peak": 6121.0,
+    "peak_capacity_fraction": 0.24906412760416666,
+    "sample_mean": 5303.217993079585
+  },
+  "observations": 578,
+  "power_watts": {
+    "peak": 180.88,
+    "sample_mean": 165.22323529411764
+  },
+  "sample_interval_seconds": {
+    "maximum": 5.007999897003174,
+    "median": 5.000999927520752
+  },
+  "sampled_energy_kwh_trapezoidal_estimate": 0.1324375602389604,
+  "scope": "Descriptive sampled GPU telemetry, including every workload/queue within the selected interval; no causal attribution to a model",
+  "training_or_test_scores_used": false
+}
