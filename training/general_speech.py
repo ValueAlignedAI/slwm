@@ -58,12 +58,34 @@ def unpack(path,dest):
     write(marker,{"sha256":file_sha(path)})
 
 
+def legacy_phone_cache(folder,names,subset="train-clean-100"):
+    """New actual-phone arrays beside immutable old mel/annotation caches."""
+    key="train" if subset=="train-clean-100" else "legacy_selection"; marker=folder/(key+"_phones_cache.json");rows_path=folder/(key+"_rows.json")
+    old=OLD/("libri_"+subset)
+    if marker.exists():
+        card=json.loads(marker.read_text());assert file_sha(rows_path)==card["rows_sha256"] and file_sha(folder/(key+"_real_phones.npy"))==card["phones_sha256"];return json.loads(rows_path.read_text())
+    training=json.loads((old/"rows.json").read_text());train_align={};alignment=ALIGN if subset=="train-clean-100" else Path("artifacts/t2_audio_visual/broad_speech_v1/alignments")/subset
+    for path in sorted(alignment.rglob("*.json")):
+        if path.name.endswith(".extracted.json"):continue
+        for name,value in json.loads(path.read_text()).items():train_align[Path(name).stem]=value
+    original=np.load(old/"mel.npy",mmap_mode="r");target=np.lib.format.open_memmap(folder/(key+"_real_phones.npy"),mode="w+",dtype=np.int16,shape=(len(original),4));target[:]=-1;rows=[]
+    for record in training:
+        aligned=train_align[record["id"]];unknown=[(float(v["xmin"]),float(v["xmax"])) for v in aligned["words"].values() if "<unk>" in v["text"]];labels=intervals_to_ids(aligned["phones"].values(),record["length"],names,unknown)
+        if not record.get("phone_supervision_usable",True):labels[:]=-1
+        a=record["offset"];target[a:a+record["length"]]=labels
+        rows.append({**record,"role":"train" if key=="train" else "selection","group":record["actor"],"mel_file":str(old/"mel.npy"),"phone_file":str(folder/(key+"_real_phones.npy")),"phone_unknown_fraction":float(np.mean(labels<0)),"phone_timing":"Actual MFA phone intervals; unknown/ambiguous intervals excluded"})
+    target.flush();del target,train_align;write(rows_path,rows)
+    write(marker,{"rows_sha256":file_sha(rows_path),"phones_sha256":file_sha(folder/(key+"_real_phones.npy")),"original_rows_sha256":file_sha(old/"rows.json"),"original_mel_sha256":file_sha(old/"mel.npy"),"source_sha256":file_sha(__file__)})
+    return rows
+
+
 def main():
     import soundfile as sf
     import torch
     import torchaudio
     from vocos.feature_extractors import MelSpectrogramFeatures
-    parser=argparse.ArgumentParser(); parser.add_argument("--stage",choices=("plan","extract","prepare"),required=True); parser.add_argument("--archive-sha256"); args=parser.parse_args()
+    from training.broad_annotation_correction import restore
+    parser=argparse.ArgumentParser(); parser.add_argument("--stage",choices=("plan","extract","prepare","prepare_train"),required=True); parser.add_argument("--archive-sha256"); args=parser.parse_args()
     folder=CACHE/"speech"; folder.mkdir(parents=True,exist_ok=True); plan_path=folder/"plan.json"
     if args.stage=="plan":
         if plan_path.exists(): print("Existing speech plan is immutable",flush=True); return
@@ -114,18 +136,9 @@ def main():
         print(json.dumps({"speech_extracted_members":count,"bytes":total,"sha256":expected}),flush=True); return
     if (folder/"manifest.json").exists(): return
     plan=json.loads(plan_path.read_text()); names=json.loads((folder/"phone_vocabulary.json").read_text()); torch.set_num_threads(1)
-    training=json.loads((OLD/"libri_train-clean-100/rows.json").read_text()); train_index={r["id"]:r for r in training}; train_align={}
-    for path in sorted(ALIGN.rglob("*.json")):
-        if path.name.endswith(".extracted.json"): continue
-        for key,value in json.loads(path.read_text()).items(): train_align[Path(key).stem]=value
-    original=np.load(OLD/"libri_train-clean-100/mel.npy",mmap_mode="r"); target=np.lib.format.open_memmap(folder/"train_real_phones.npy",mode="w+",dtype=np.int16,shape=(len(original),4)); target[:]=-1; rows=[]
-    for record in training:
-        key=record["id"]; aligned=train_align[key]; unknown=[(float(v["xmin"]),float(v["xmax"])) for v in aligned["words"].values() if "<unk>" in v["text"]]
-        labels=intervals_to_ids(aligned["phones"].values(),record["length"],names,unknown)
-        if not record.get("phone_supervision_usable",True): labels[:]=-1
-        a=record["offset"]; target[a:a+record["length"]]=labels
-        rows.append({**record,"role":"train","group":record["actor"],"mel_file":str(OLD/"libri_train-clean-100/mel.npy"),"phone_file":str(folder/"train_real_phones.npy"),"phone_unknown_fraction":float(np.mean(labels<0)),"phone_timing":"Actual MFA phone intervals; ambiguous/unknown word intervals excluded"})
-    target.flush(); del target,train_align
+    rows=legacy_phone_cache(folder,names)
+    if args.stage=="prepare_train":
+        selection=legacy_phone_cache(folder,names,"dev-other");print(json.dumps({"actual_phone_training_records":len(rows),"legacy_renderer_selection_records":len(selection)}),flush=True);return
     extractor=MelSpectrogramFeatures(); transcripts={}; fresh=[]
     assert (ROOT/"fresh_speech_360/extraction_manifest.json").exists()
     unpack(source("fresh_speech_360","LibriSpeech-aligned-train-clean-360.tar.gz"),ROOT/"fresh_speech_360/alignments")
@@ -143,7 +156,8 @@ def main():
             unknown=[(float(v["xmin"]),float(v["xmax"])) for v in aligned["words"].values() if "<unk>" in v["text"]]
             units=intervals_to_ids(aligned["phones"].values(),length,names,unknown)
             spans=[(float(w["xmin"]),float(w["xmax"]),w["text"]) for w in aligned["words"].values() if float(w["xmax"])>float(w["xmin"])]
-            fresh.append((mel[:length*4].reshape(length,400).astype(np.float16),units,{"id":stem,"actor":"LIBRI-"+person,"group":"LIBRI-"+person,"role":plan["fresh_people"][person],"duration":len(signal)/sr,"length":length,"raw_path":str(audio),"transcript":transcripts[chapter_key][stem],"spans":spans,"raw_sha256":file_sha(audio),"phone_unknown_fraction":float(np.mean(units<0))}))
+            transcript=transcripts[chapter_key][stem];fixed,usable,reason=restore({"spans":spans,"transcript":transcript})
+            fresh.append((mel[:length*4].reshape(length,400).astype(np.float16),units,{"id":stem,"actor":"LIBRI-"+person,"group":"LIBRI-"+person,"role":plan["fresh_people"][person],"duration":len(signal)/sr,"length":length,"raw_path":str(audio),"transcript":transcript,"spans":fixed,"ctc_alignment_usable":usable,"lexical_alignment_reason":reason,"raw_sha256":file_sha(audio),"decoded_pcm_sha256":hashlib.sha256(signal.tobytes()).hexdigest(),"phone_unknown_fraction":float(np.mean(units<0))}))
     count=sum(len(x) for x,_,_ in fresh); features=np.lib.format.open_memmap(folder/"fresh_mel.npy",mode="w+",dtype=np.float16,shape=(count,400)); phones=np.lib.format.open_memmap(folder/"fresh_real_phones.npy",mode="w+",dtype=np.int16,shape=(count,4)); offset=0
     for mel,units,record in fresh:
         features[offset:offset+len(mel)]=mel; phones[offset:offset+len(mel)]=units
