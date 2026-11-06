@@ -1,0 +1,97 @@
+{
+  "completion": {
+    "checkpoint_sha256": "10ea85d1eea895784668e59985888eedbb28600a20ee60af8642b81c3fe41334",
+    "last_sha256": "6b0a1f34e08e01ac568e625533b777c958939feb262be892f2fa2aeef80f0336",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 51200,
+    "run": {
+      "compiled": false,
+      "contextual_b1_reference": "EXP-T2-802",
+      "id": "EXP-T2-844",
+      "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-834",
+      "seed": 91,
+      "variant": "transformer"
+    },
+    "selected_step": 400,
+    "selected_validation_loss": 1.4307939887046814,
+    "updates": 400,
+    "wall_seconds": 143.2769090080401
+  },
+  "config": {
+    "artifacts": "experiments/multimodal/t2/compiled-learning-v2-20261105",
+    "compile_mode": "default",
+    "compiler_cache_reset_per_model": true,
+    "parent_artifacts": "experiments/multimodal/t2/broad-stream-20261105",
+    "parent_config": "configs/t2/broad_stream.json",
+    "protocol": "docs/research/stream_compiled_learning_revision2_20261105.md",
+    "recompile_limit": 32,
+    "relative_validation_loss_tolerance": 0.01,
+    "runs": [
+      {
+        "compiled": true,
+        "contextual_b1_reference": "EXP-T2-801",
+        "eager_reference": "EXP-T2-843",
+        "id": "EXP-T2-841",
+        "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-831",
+        "seed": 91,
+        "variant": "slwm"
+      },
+      {
+        "compiled": true,
+        "contextual_b1_reference": "EXP-T2-802",
+        "eager_reference": "EXP-T2-844",
+        "id": "EXP-T2-842",
+        "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-832",
+        "seed": 91,
+        "variant": "transformer"
+      },
+      {
+        "compiled": false,
+        "contextual_b1_reference": "EXP-T2-801",
+        "id": "EXP-T2-843",
+        "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-833",
+        "seed": 91,
+        "variant": "slwm"
+      },
+      {
+        "compiled": false,
+        "contextual_b1_reference": "EXP-T2-802",
+        "id": "EXP-T2-844",
+        "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-834",
+        "seed": 91,
+        "variant": "transformer"
+      }
+    ],
+    "sprint": "T2-B1-COMPILER-PILOT",
+    "steps": 400
+  },
+  "experiment_id": "EXP-T2-844",
+  "fresh_test_read": false,
+  "same_schedule_and_data_as_internal_eager_control": true,
+  "scope": "400-update auxiliary runtime learning check; original train/selection people only",
+  "source_hashes": {
+    "configs/t2/broad_stream.json": "12fbdb025c870aa3d61953f3febfae3e53103f65a288e603bb895b8d29d62e15",
+    "configs/t2/broad_stream_data.json": "9f49885b12447a11f302e5c0941226dcb693018bda9a254522f697d6c00d5f1d",
+    "configs/t2/compiled_stream_pilot_v2.json": "1e611a764dc67657417114db3213b98b1de52bd87dfa709503375939940654ec",
+    "docs/research/ami_decoded_clock_review_20261105.md": "7b1aaffb73bddbef4f96d5c6254a419284649e536b5d06ec9f5799c2f5cd1eea",
+    "docs/research/ami_source_availability_review_20261105.md": "602aeb984d9966f7ec89999640fb4841c08f84193966c2cee2e77047e9b0c0de",
+    "docs/research/broad_annotation_review_20261105.md": "b8085e5a1f468a1dc497a48e2b4b4b8b958e87a83d7a9dacc7813dd07585053d",
+    "docs/research/broad_stream_protocol_20261105.md": "1264efca14ec820444a3c7d64399a0c99242f3686aa82dccbeda8320bec6be55",
+    "docs/research/stream_compiled_learning_revision2_20261105.md": "d4c2de0952cefd503f50e37804e63dda85171b08e3047161e5520915d57b8ebe",
+    "models/slwm_stream.py": "048d85427b18114153d14315b306cd7780613f040dbf26081e497033abb74cc0",
+    "scripts/train/run_broad_stream_fedora.sh": "0d45cd2e5b2b15d562900e38ae994e7db194259b2675f9f2c701d13ef0e599ca",
+    "tests/test_broad_annotations.py": "d63db446c12d12f37bceae4dba90dc85eafc6b71204ee8743902c5f60c2cac3a",
+    "tests/test_stream_world.py": "b11f196d04e1fd7502966dfc76e84485c8c5bd81ff06f557cee09663a4686c35",
+    "training/broad_annotation_correction.py": "fe8491b60afca252a3db62be9c435ad4769f6fbf3e145264226c23737670ba42",
+    "training/broad_batch.py": "100e6462d8320febba6c7aaabad0df969924fc4748eb7cd7a74dba42e1d81fdd",
+    "training/broad_data.py": "5a8ae073e4a9ebb78451a9c33500bb8d2626f8d7ba6bcc38c39fd572feab26f5",
+    "training/broad_sources.py": "b38409ed53e0bf07624a9a457953d6023c4fd2849f570bf2ff1818ba7162d430",
+    "training/broad_stream_train.py": "b1033062098937a814a2f30542b3f4f6373c0f96c0c0b8478a9f25fe7734dec7",
+    "training/stream_codec.py": "5ff257ec1343b7c84851248d2c71a5899fa1bb5c4a9b52ee5c0effc249a29e5b",
+    "training/stream_compiled_learning.py": "2ac8058dbdebbaabfe681b56df6a824e1cffd19eb587922ed082723dfc7f948e",
+    "training/stream_compiled_learning_v2.py": "272209c3ec367927b56bd6f737b20cc34fe51d6dcca9bd63a0c3d12bcfd8da86",
+    "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875"
+  },
+  "status": "completed"
+}

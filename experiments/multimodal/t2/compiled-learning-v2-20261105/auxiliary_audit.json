@@ -1,0 +1,77 @@
+{
+  "failed_original_pilot": {
+    "log_sha256": "2e110899220a6938cb2a3c4b1b1948362c589de28a47039b3671fbefaa5d193e",
+    "new_revision": "experiments/multimodal/t2/compiled-learning-v2-20261105",
+    "original_sources_unchanged": true,
+    "runs": {
+      "EXP-T2-831": {
+        "completed": false,
+        "saved_updates": 200
+      },
+      "EXP-T2-832": {
+        "completed": false,
+        "saved_updates": 0
+      },
+      "EXP-T2-833": {
+        "completed": false,
+        "saved_updates": 0
+      },
+      "EXP-T2-834": {
+        "completed": false,
+        "saved_updates": 0
+      }
+    },
+    "type": "Dynamo cache variant limit"
+  },
+  "models": {
+    "EXP-T2-841": {
+      "actual_updates": 400,
+      "compilation_required_for_inference": false,
+      "ordinary_eager_cpu_inference_passed": true,
+      "parameters": 23980313,
+      "selected_sha256": "0cc27cb434a9f87ffe6aa45d5260ad55d0d3393ea1bb8c382314ca111c36a729",
+      "selected_step": 400
+    },
+    "EXP-T2-842": {
+      "actual_updates": 400,
+      "compilation_required_for_inference": false,
+      "ordinary_eager_cpu_inference_passed": true,
+      "parameters": 23805209,
+      "selected_sha256": "31b189d49c7d3fa76c0b49b43fce37ad7c5b64dc943e793ed4a0f8a0257902ee",
+      "selected_step": 400
+    },
+    "EXP-T2-843": {
+      "actual_updates": 400,
+      "compilation_required_for_inference": false,
+      "ordinary_eager_cpu_inference_passed": true,
+      "parameters": 23980313,
+      "selected_sha256": "439f8b37ce2530a9fbe13c448fbd0e8596e77dcfb94435a2e536acfd92c56134",
+      "selected_step": 400
+    },
+    "EXP-T2-844": {
+      "actual_updates": 400,
+      "compilation_required_for_inference": false,
+      "ordinary_eager_cpu_inference_passed": true,
+      "parameters": 23805209,
+      "selected_sha256": "10ea85d1eea895784668e59985888eedbb28600a20ee60af8642b81c3fe41334",
+      "selected_step": 400
+    }
+  },
+  "next_action_source": {
+    "episodes": 2,
+    "model_fitted": false,
+    "physical_timestamps_missing": true,
+    "source_hashes_match": true,
+    "typed_pose_gripper_contract_verified": true,
+    "verified_frames": 1212
+  },
+  "preserved_resume_lineage": {
+    "EXP-T2-841": {
+      "best_sha256": "4ea3d69ca445a3735bf3439e02681388b0073e84d3f7c9fac6861b35912b2999",
+      "resume_sha256": "141dba441a8eda46d13c2c82b8f88589f929b70f655b8a88ae79a928b20df83a",
+      "saved_step": 200,
+      "source": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-831"
+    }
+  },
+  "sources_match": true
+}
