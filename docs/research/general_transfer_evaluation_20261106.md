@@ -39,6 +39,17 @@ validation state only; no readout backpropagation into the core. Normalization
 and activity class weights use readout-training people/groups only. Report head
 parameters, actual updates, inference and training time separately.
 
+Raw sensor history includes all common-channel values and missingness. Fixed
+sensor features contain per-site acceleration/gyro magnitudes, mean/std/range,
+last values and temporal spectral energy. Raw robot images are area-reduced to
+8×8 per view/time, retaining the whole32-step history alongside values/masks.
+Edge-only controls pool learned edge outputs by temporal mean/std/last/slope;
+they do not invoke shared processor blocks. Robot heads additionally concatenate
+the same17 last proprioception/previous-command channels after the128-component
+projection, giving145 input dimensions in every actor condition. Goal tokens
+use the same trained text edge in edge/raw controls; no pretrained text model is
+introduced. Feature transformations and target scales fit readout training only.
+
 MHEALTH people1–3 supply up to10000 training windows,4–5 up to3000 selection,
 6–10 up to2000/person final; starts are deterministic hash-selected without
 replacement. Context32 and future8 at50Hz. Primary input uses common named
