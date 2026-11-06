@@ -65,13 +65,23 @@ class Sources(LegacySources):
         return tensor_tree(result,device)
 
 
+def validate_identity_roles(rows,expected):
+    roles=('train','selection','calibration','test')
+    for role in roles:
+        assert len({r['group'] for r in rows if r['role']==role})==expected[role], 'Inherited role/group metadata entered G2'
+        for other in roles:
+            if role>=other:continue
+            for field in ('group','building','collector_hash'):
+                assert not {r[field] for r in rows if r['role']==role}&{r[field] for r in rows if r['role']==other}, 'Identity overlap across G2 roles: '+field
+
+
 def freeze():
     cfg=json.loads(Path(CONFIG).read_text());PREPARED.mkdir(parents=True,exist_ok=True)
     marker=Path(cfg['dataset_manifest'])
     if marker.exists():
         saved=json.loads(marker.read_text());assert saved['configuration_sha256']==file_sha(CONFIG);return saved
     acquisition=ROOT/cfg['robot_family']/'acquisition_complete.json';assert acquisition.exists()
-    path=ROOT/cfg['robot_family']/'raw_metadata/scene_role_plan.json';plan=json.loads(path.read_text());rows=plan['rows'];assert sum(r['role']=='train' for r in rows)>=400
+    path=ROOT/cfg['robot_family']/'raw_metadata/scene_role_plan.json';plan=json.loads(path.read_text());rows=plan['rows'];validate_identity_roles(rows,plan['group_counts']);assert sum(r['role']=='train' for r in rows)>=400
     previous=dict(np.load(CACHE/'normalizers.npz'));numeric=Moments(10);action=Moments(7);cases=[];live=[];hours={role:0. for role in ('train','selection','calibration','test')}
     assert sum(r['role']=='train' and r['steps']>=40 for r in rows)>=400
     assert sum(r['role']=='train' and r['steps']>=72 for r in rows)>=300

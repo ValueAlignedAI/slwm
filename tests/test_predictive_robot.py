@@ -16,3 +16,12 @@ def test_native_clock_requires_pose_alignment_and_preserves_nanosecond_differenc
     assert audit['verified'] and audit['raw_tail_frames_not_in_rlds']==1
     assert np.array_equal(short,clock[:2])
     assert native_clock(path,pose[:1])[0] is None
+
+
+def test_clock_revision_never_replaces_identity_roles_with_cached_old_labels():
+    from training.predictive_reclock import apply_clock_revision
+    original={'id':'episode','role':'train','group':'new-group','building':'new-building','collector_hash':'new-user','captions':['new']}
+    stale={**original,'role':'test','group':'old-group','building':'old-building','collector_hash':'old-user','captions':['old'],'physical_timestamps':True,'clock_audit':{'verified':True},'files':{'clock.npy':'new-sha'}}
+    result=apply_clock_revision(original,stale)
+    assert all(result[k]==v for k,v in original.items())
+    assert result['physical_timestamps'] and result['files']==stale['files']

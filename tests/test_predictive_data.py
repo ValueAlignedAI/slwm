@@ -3,13 +3,14 @@ import json
 from pathlib import Path
 import numpy as np
 import pytest
-from training.predictive_data import Sources
+from training.predictive_data import Sources,validate_identity_roles
 from training.predictive_readout_data import ReadoutData
 
 
 def test_expanded_robot_training_clocks_and_unseen_source_identity_contract():
     cfg=json.loads(Path('configs/t3/predictive_world.json').read_text())
     if not Path(cfg['dataset_manifest']).exists():pytest.skip('Expanded source integration runs on Fedora after preparation')
+    contract=json.loads(Path(cfg['dataset_manifest']).read_text());rows=json.loads(Path('artifacts/predictive_world/g2/robot_rows.json').read_text());validate_identity_roles(rows,contract['robot_group_counts'])
     source=Sources(cfg,'train')
     for position,context in [(0,32),(6,64)]:
         a=source.make('droid',position,777,'cpu',2);b=source.make('droid',position,777,'cpu',2)

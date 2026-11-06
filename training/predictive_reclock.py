@@ -8,6 +8,12 @@ from training.predictive_robot import native_clock,FAMILY
 from training.research_sources import file_sha
 
 
+def apply_clock_revision(row,revised):
+    """Keep G2 identities/roles; cached receipts can carry obsolete G1 labels."""
+    assert row['id']==revised['id']
+    return {**row,**{key:revised[key] for key in ('physical_timestamps','clock_audit','files')}}
+
+
 def main():
     base=Path('artifacts/predictive_world/g2')
     root=ROOT/FAMILY;marker=root/'clock_revision.json'
@@ -30,7 +36,7 @@ def main():
                 np.save(folder/'clock.npy',clock);write(folder/'clock_audit.json',audit);row.update(physical_timestamps=True,clock_audit=audit)
                 row['files'].update({'clock.npy':file_sha(folder/'clock.npy'),'clock_audit.json':file_sha(folder/'clock_audit.json')})
         revised[row['id']]=row;verified+=int(row['physical_timestamps']);write(receipt,value)
-    for row in plan['rows']:row.update(revised[row['id']])
+    plan['rows']=[apply_clock_revision(row,revised[row['id']]) for row in plan['rows']]
     write(planpath,plan);write(CACHE/FAMILY/'rows.json',plan['rows']);card=json.loads(complete.read_text());card.update(physical_clock_episodes=verified,clock_revision_source_sha256=file_sha(__file__));write(complete,card)
     write(marker,{'source_sha256':file_sha(__file__),'clock_function_sha256':file_sha('training/predictive_robot.py'),'verified_physical_clock_episodes':verified,'episodes':len(revised),'role_counts_unchanged':True,'rule':'Full raw prefix equal within2e-6; permit at most one omitted raw tail frame; strict native monotonic timestamps','primary_optimizer_updates':0})
 
