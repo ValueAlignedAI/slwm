@@ -47,7 +47,11 @@ def report(cfg):
     for name,row in out.items():lines.append(f"| {name} ({row['variant']}) | {row['tokens']:,} | {row['parameters']:,} | {row['endpoint']['nll']:.4f} | {row['endpoint']['perplexity']:.2f} | {row['continuation_active_hours']:.2f} |")
     lines += ["","Both architectures resume immutable151M-token parents with optimizer/RNG and unused logical source windows. A registered common warm restart differs from the old uninterrupted recipe. Fresh test positions4096–5119 are scored only after all four weights freeze, including their parents on the same slice.","","The primary comparison is token-matched fresh-test NLL at the fixed endpoint. Additional-time comparisons use the last measured validation point within the common continuation-time budget, with actual token exposure reported. They neither equalize parent compute nor supply a fresh compute-matched test. Queue time, initialization, saving and EMA-free text inference costs remain distinct from active continuation time.","","There are roughly4 training tokens per total parameter at500M. This is a bounded scaling experiment; it does not establish compute-optimal training, a general language assistant, or shared world knowledge. The broad FineWeb-Edu source and domain/byte overlap controls are in its immutable dataset card; no near-duplicate guarantee is added here.","","`findings.json` retains both seeds, endpoint/selected/parent scores and timing tradeoffs. Every fixed greedy and sampled continuation remains in each run's `samples.json`; no examples are selected for fluency.",""]
     (root/"REPORT.md").write_text("\n".join(lines))
-    import matplotlib;matplotlib.use("Agg")
+    try:import matplotlib
+    except ImportError:
+        write(root/"report_complete.json",{"findings_sha256":file_sha(root/"findings.json"),"report_sha256":file_sha(root/"REPORT.md"),"plot":"Optional Matplotlib unavailable; exact curves retained","all_outputs_frozen":True})
+        return
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     fig,axes=plt.subplots(1,2,figsize=(10,4))
     for run in cfg["runs"]:
@@ -57,6 +61,7 @@ def report(cfg):
     axes[0].set_xlabel("Total training tokens (millions)");axes[1].set_xlabel("Additional active training/validation hours")
     for axis in axes:axis.set_ylabel("Validation NLL");axis.grid(alpha=.2)
     axes[0].legend(fontsize=8);fig.tight_layout();fig.savefig(root/"scaling.png",dpi=180);plt.close(fig)
+    write(root/"report_complete.json",{"findings_sha256":file_sha(root/"findings.json"),"report_sha256":file_sha(root/"REPORT.md"),"scaling_sha256":file_sha(root/"scaling.png"),"all_outputs_frozen":True})
 
 
 def main():
