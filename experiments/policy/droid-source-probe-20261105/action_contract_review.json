@@ -1,0 +1,36 @@
+{
+  "author_conventions_source": "https://github.com/droid-dataset/droid/issues/9",
+  "contract_scope": "Only the two verified records from debug1.0.0, not a universal claim about DROID versions or all action fields",
+  "episodes": [
+    {
+      "camera_count": 3,
+      "command_vs_observation_euler_raw_coordinate_max_difference": 6.243384838104248,
+      "command_vs_observation_position_coordinate_max_difference": 0.051035672426223755,
+      "default_action_matches_commanded_cartesian_pose_max_error": 0.0,
+      "default_gripper_matches_commanded_position_max_error": 0.0,
+      "episode": 1,
+      "physical_timestamp_present": false,
+      "steps": 166,
+      "verified_camera_frames": 498,
+      "wrapped_euler_coordinate_max_difference": 0.15063086152076718
+    },
+    {
+      "camera_count": 3,
+      "command_vs_observation_euler_raw_coordinate_max_difference": 6.276132106781006,
+      "command_vs_observation_position_coordinate_max_difference": 0.07200923562049866,
+      "default_action_matches_commanded_cartesian_pose_max_error": 0.0,
+      "default_gripper_matches_commanded_position_max_error": 0.0,
+      "episode": 2,
+      "physical_timestamp_present": false,
+      "steps": 238,
+      "verified_camera_frames": 714,
+      "wrapped_euler_coordinate_max_difference": 0.12439632415771484
+    }
+  ],
+  "model_training": false,
+  "next_requirement": "Typed action representation, verified transition timing and environment-disjoint episodes before fitting physical dynamics",
+  "robot_command_sent": false,
+  "rotation_note": "XYZ Euler convention documented by dataset authors; wrapped coordinate differences are diagnostic, not SO(3) geodesic error",
+  "source_probe_report_sha256": "0e630d1c22bf2fda39003ccb97dafb71ca3ec23e5a1596a12f705a5a4c4f918d",
+  "source_sha256": "23c762c7d6ce8caf4976b328655fe86762daa4ca962286ba00110d17accb341c"
+}

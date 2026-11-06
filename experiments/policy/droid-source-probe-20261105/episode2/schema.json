@@ -1,0 +1,147 @@
+{
+  "action_first6_vs_cartesian_velocity_max_error": 3.2928387224674225,
+  "action_first6_vs_first6_joint_velocity_max_error": 4.020922064781189,
+  "action_gripper_vs_commanded_position_max_error": 0.0,
+  "features": {
+    "episode_metadata/file_path": {
+      "kind": "bytes_list",
+      "values": 1
+    },
+    "episode_metadata/recording_folderpath": {
+      "kind": "bytes_list",
+      "values": 1
+    },
+    "steps/action": {
+      "kind": "float_list",
+      "values": 1666
+    },
+    "steps/action_dict/cartesian_position": {
+      "kind": "float_list",
+      "values": 1428
+    },
+    "steps/action_dict/cartesian_velocity": {
+      "kind": "float_list",
+      "values": 1428
+    },
+    "steps/action_dict/gripper_position": {
+      "kind": "float_list",
+      "values": 238
+    },
+    "steps/action_dict/gripper_velocity": {
+      "kind": "float_list",
+      "values": 238
+    },
+    "steps/action_dict/joint_position": {
+      "kind": "float_list",
+      "values": 1666
+    },
+    "steps/action_dict/joint_velocity": {
+      "kind": "float_list",
+      "values": 1666
+    },
+    "steps/discount": {
+      "kind": "float_list",
+      "values": 238
+    },
+    "steps/is_first": {
+      "kind": "int64_list",
+      "values": 238
+    },
+    "steps/is_last": {
+      "kind": "int64_list",
+      "values": 238
+    },
+    "steps/is_terminal": {
+      "kind": "int64_list",
+      "values": 238
+    },
+    "steps/language_instruction": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/language_instruction_2": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/language_instruction_3": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/observation/cartesian_position": {
+      "kind": "float_list",
+      "values": 1428
+    },
+    "steps/observation/exterior_image_1_left": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/observation/exterior_image_2_left": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/observation/gripper_position": {
+      "kind": "float_list",
+      "values": 238
+    },
+    "steps/observation/joint_position": {
+      "kind": "float_list",
+      "values": 1666
+    },
+    "steps/observation/wrist_image_left": {
+      "kind": "bytes_list",
+      "values": 238
+    },
+    "steps/reward": {
+      "kind": "float_list",
+      "values": 238
+    }
+  },
+  "fitted_model": false,
+  "id": "DROID-DEBUG-2",
+  "images": {
+    "exterior_image_1_left": {
+      "first_image_decoded": true,
+      "frames": 238,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    },
+    "exterior_image_2_left": {
+      "first_image_decoded": true,
+      "frames": 238,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    },
+    "wrist_image_left": {
+      "first_image_decoded": true,
+      "frames": 238,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    }
+  },
+  "language": {
+    "language_instruction": [
+      "Put the candy bar on the left side of the first shelf"
+    ],
+    "language_instruction_2": [
+      ""
+    ],
+    "language_instruction_3": [
+      ""
+    ]
+  },
+  "metadata": {
+    "episode_metadata/file_path": "/nfs/kun2/datasets/r2d2/r2d2-data-full/RPL/success/2023-06-05/Mon_Jun__5_20:15:38_2023/trajectory.h5",
+    "episode_metadata/recording_folderpath": "/nfs/kun2/datasets/r2d2/r2d2-data-full/RPL/success/2023-06-05/Mon_Jun__5_20:15:38_2023/recordings/MP4"
+  },
+  "physical_timestamps_available": false,
+  "steps": 238
+}
