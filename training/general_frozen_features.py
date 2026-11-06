@@ -27,7 +27,8 @@ def temporal_summary(values):
 
 def frozen_features(model, obs, family, include_raw=False, stats=None):
     """Only observations enter this function, making the actor boundary explicit."""
-    result = {"shared":model(obs)["last"].float()}
+    state=model(obs)
+    result = {"shared":state["last"].float(),"aligned":state["embedding"].float()}
     channels = COMMON if family == "mhealth" else ROBOT_CHANNELS
     numeric = obs["numeric"][:, :, channels]
     present = obs["numeric_present"][:, :, channels]

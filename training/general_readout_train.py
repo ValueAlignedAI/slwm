@@ -33,7 +33,7 @@ def load_configuration():
 
 
 def source_guard(root):
-    names = (CONFIG, "training/general_readout_train.py", "training/general_readout_data.py", "training/general_frozen_features.py", "docs/research/general_transfer_evaluation_20261106.md", "tests/test_general_readout_data.py", "tests/test_general_frozen_features.py", "tests/test_general_readout_train.py")
+    names = (CONFIG, "training/general_readout_train.py", "training/general_readout_data.py", "training/general_frozen_features.py", "docs/research/general_transfer_evaluation_20261106.md", "docs/research/general_aligned_state_probe_20261106.md", "tests/test_general_readout_data.py", "tests/test_general_frozen_features.py", "tests/test_general_readout_train.py")
     hashes = {p:file_sha(p) for p in names}
     path = root/"source_hashes.json"
     if path.exists():assert json.loads(path.read_text()) == hashes, "Frozen readout recipe changed"
@@ -50,6 +50,7 @@ def target_arrays(batch, family):
 
 
 def cache_split(cfg, recipe, root, run, family, role, final=False):
+    if role=="test":assert final and (Path(cfg["root"])/"evaluation_lock.json").exists(),"Final observations remain locked"
     folder = root/"features"/family/run["id"]/role
     marker = folder/"complete.json"
     checkpoint = Path(cfg["root"])/run["id"]/"endpoint.pt"
@@ -105,7 +106,9 @@ def comparisons(cfg, recipe):
 
 def conditions(root, family, recipe):
     names = [*recipe["core_comparisons"],recipe["sensor_specialist"] if family=="mhealth" else recipe["robot_specialist"]]
-    result = [{"id":name,"run":name,"feature":"shared","baseline":False} for name in names]
+    specialist=recipe["sensor_specialist"] if family=="mhealth" else recipe["robot_specialist"]
+    result = [{"id":name,"run":name,"feature":"shared","baseline":name==specialist} for name in names]
+    result += [{"id":name+"-aligned","run":name,"feature":"aligned","baseline":False,"secondary":True} for name in names]
     result += [{"id":name+"-edge","run":name,"feature":"edge","baseline":True} for name in recipe["edge_controls"]]
     result.append({"id":"raw-history","run":recipe["shared_raw_text_edge"],"feature":"raw","baseline":True})
     if family=="mhealth":result.append({"id":"physical-invariants","run":recipe["shared_raw_text_edge"],"feature":"invariant","baseline":True})
@@ -131,6 +134,27 @@ def labels(folder, family, task, recipe):
     last=np.asarray(load_array(folder,"target_last_physical"),np.float32)
     present=np.asarray(load_array(folder,"target_future_present"))[:,np.array(recipe["horizons"])-1]&np.asarray(load_array(folder,"target_last_present"))[:,None]
     return (future-last[:,None]).reshape(len(future),-1),present.reshape(len(future),-1)
+
+
+def fixed_predictions(cfg,recipe,root,family,task,role):
+    folder=root/"features"/family/recipe["shared_raw_text_edge"]/role
+    training=root/"features"/family/recipe["shared_raw_text_edge"] / "train"
+    train,present=labels(training,family,task,recipe)
+    target,keep=labels(folder,family,task,recipe)
+    if task=="activity":
+        majority=np.bincount(train[present],minlength=12).argmax();prediction=np.zeros((len(target),12),np.float32);prediction[:,majority]=1
+        return {"training-majority":prediction},target,keep,None,None
+    count=present.sum(0).clip(1);mean=(train*present).sum(0)/count
+    scale=np.sqrt((((train-mean)**2)*present).sum(0)/count).clip(recipe["target_scale_floor"])
+    if task=="actor":
+        stats=np.load(Path(cfg["data_root"])/"normalizers.npz")
+        common=np.asarray(load_array(folder,"target_common"));gripper=common[:,9]*stats["numeric_scale"][42]+stats["numeric_mean"][42]
+        noop=np.zeros_like(target);noop[:,6]=gripper
+        predictions={"previous-command":np.asarray(load_array(folder,"target_previous_command")),"no-op":noop,"training-mean":np.broadcast_to(mean,target.shape)}
+    else:
+        last=np.asarray(load_array(folder,"target_last_physical"));previous=np.asarray(load_array(folder,"target_previous_physical"));velocity=(last-previous)[:,None]*np.array(recipe["horizons"],np.float32)[None,:,None]
+        predictions={"persistence":np.zeros_like(target),"last-velocity":velocity.reshape(target.shape),"training-mean":np.broadcast_to(mean,target.shape)}
+    return {k:((v-mean)/scale).astype(np.float32) for k,v in predictions.items()},((target-mean)/scale).astype(np.float32),keep,mean,scale
 
 
 class Readout(nn.Module):
@@ -219,7 +243,10 @@ def main():
                 for seed in recipe["seeds"]:current.append(fit_one(cfg,recipe,root,family,condition,task,seed,sources))
             result=defaultdict_scores(current)
             baselines={name:value for name,value in result.items() if next(r for r in current if r["condition"]["id"]==name)["condition"]["baseline"]}
-            choices[family+"/"+task]={"strongest_fitted_baseline":min(baselines,key=baselines.get),"selection_by_condition":result};results.extend(current)
+            fixed,target,keep,_,_=fixed_predictions(cfg,recipe,root,family,task,"selection")
+            fixed_scores={name:score(value,target,keep,task) for name,value in fixed.items()}
+            baselines.update({name:value["selection"] for name,value in fixed_scores.items()})
+            choices[family+"/"+task]={"strongest_baseline":min(baselines,key=baselines.get),"selection_by_condition":result,"fixed_baselines":fixed_scores};results.extend(current)
     write(root/"training_complete.json",{"heads":results,"choices":choices,"sources":sources,"all_readouts_frozen":True,"final_observations_opened":False})
 
 

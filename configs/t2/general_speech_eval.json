@@ -1,0 +1,16 @@
+{
+  "alphas": [0.0, 0.25, 0.5, 0.75, 1.0],
+  "alpha_definition": "Physical mel = (1-alpha)*direct residual prediction + alpha*predicted-phone R1 mel; observed fine frames remain exact.",
+  "timing_thresholds": [0.0, 0.25, 0.5, 0.75, 0.9, 1.000001],
+  "timing_threshold_selection": "Highest calibration balanced accuracy, tie prefers greater rejection; own-active/nonoverlap clips only; no new final person.",
+  "primary_shifts_packets": [-24, -8, 8, 24],
+  "diagnostic_shifts_packets": [-4, -2, 2, 4],
+  "secondary_speech_clips_per_person": 2,
+  "secondary_gap_seconds": [0.064, 0.320],
+  "runs": ["G1-101", "G1-102", "G1-103", "G1-104", "G1-105", "G1-106", "G1-107", "G1-108", "G1-109", "G1-111"],
+  "recognizer": "openai/whisper-tiny.en",
+  "recognizer_revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "recognizer_max_new_tokens": 256,
+  "recognizer_batch": 8,
+  "flac_outputs": true
+}

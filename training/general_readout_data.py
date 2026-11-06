@@ -101,7 +101,7 @@ class ReadoutData:
     def _robot(self, cases, goal_control):
         t, q = self.cfg["context"], self.cfg["horizon"]
         values, masks, images, targets, commands, plans, future, anchors, previous = [], [], [], [], [], [], [], [], []
-        captions, goals = [], []
+        captions, goals, previous_poses, anchor_grippers = [], [], [], []
         for case in cases:
             row, start = self.rows[case["id"]], case["start"]
             folder = CACHE / self.cfg["robot_family"] / row["id"]
@@ -113,6 +113,8 @@ class ReadoutData:
             current = start+t-1
             targets.append(trajectory["action"][current]); previous.append(past[-1])
             anchor = trajectory["observed"][current]; anchors.append(anchor)
+            previous_poses.append(np.concatenate([trajectory["observed"][current-1],trajectory["gripper"][current-1]]))
+            anchor_grippers.append(trajectory["gripper"][current,0])
             command = trajectory["commanded"][current:current+q]
             grip = trajectory["action"][current:current+q, 6:]
             plans.append(np.concatenate([pose_delta(np.repeat(anchor[None], q, axis=0), command), grip], 1))
@@ -125,11 +127,15 @@ class ReadoutData:
         obs = base_observation(len(cases), t, 1., True)
         obs.update(numeric=np.stack(values), numeric_present=np.stack(masks), images=np.stack(images), image_present=np.ones((len(cases),t,3),bool))
         if goal_control == "missing":captions = [""]*len(captions)
-        elif goal_control == "shuffled":captions = captions[1:]+captions[:1]
+        elif goal_control == "shuffled":
+            available=sorted({r["captions"][0] for r in self.rows.values() if r["captions"]})
+            replacement={text:available[(i+1)%len(available)] for i,text in enumerate(available)}
+            captions=[replacement.get(text,"") for text in captions]
         elif goal_control != "provided":raise ValueError(goal_control)
         return {"obs":obs, "captions":captions, "goal_present":np.array(goals,bool),
                 "target":np.stack(targets).astype(np.float32), "previous_command":np.stack(previous).astype(np.float32),
                 "plans":np.stack(plans).astype(np.float32), "commanded_poses":np.stack(commands).astype(np.float32),
                 "future_poses":np.stack(future).astype(np.float32), "anchors":np.stack(anchors).astype(np.float32),
+                "previous_poses":np.stack(previous_poses).astype(np.float32),"anchor_grippers":np.array(anchor_grippers,np.float32),
                 "common":obs["numeric"][:, -1, ROBOT_CHANNELS],
                 "groups":[c["group"] for c in cases], "ids":[c["id"]+"@"+str(c["start"]) for c in cases]}
