@@ -111,7 +111,16 @@ def evaluate_run(cfg,run,root):
         for condition in sorted({r["condition"] for r in records if r["kind"]==kind}):
             current=[r for r in records if r["kind"]==kind and r["condition"]==condition];keys=[k for k in current[0] if k not in ("id","group","condition","kind")]
             summaries[kind+"/"+condition]={k:np.mean([r[k] for r in current],axis=0).tolist() for k in keys}
-    write(out/"summary.json",{"horizons_ordinal_steps":horizons,"metrics":summaries,"groups":len({r["group"] for r in records}),"scope":"Prediction of actual recorded outcomes; wrong-plan interventions do not supply physical counterfactual ground truth","rotation_invalid_penalty_rad":float(np.pi),"no_source_identity_or_future_observation_inputs":True})
+    effects={}
+    for kind,keys,baselines in [("pose",("translation_m","rotation_rad","gripper_absolute"),("commanded-pose-as-state","persistence","no-plan","shuffled-plan")),("image",("pixel_mse","motion_velocity_mse"),("last-frame","last-image-velocity","no-plan","shuffled-plan"))]:
+        candidate={r["id"]:r for r in records if r["kind"]==kind and r["condition"]=="actual-plan"}
+        for baseline in baselines:
+            reference={r["id"]:r for r in records if r["kind"]==kind and r["condition"]==baseline}
+            groups=sorted({r["group"] for r in candidate.values()});rng=np.random.default_rng(7391);indices=rng.integers(0,len(groups),(10000,len(groups)))
+            for key in keys:
+                values=np.array([np.mean([np.asarray(reference[i][key])-np.asarray(r[key]) for i,r in candidate.items() if r["group"]==g],axis=0) for g in groups])
+                draws=values[indices].mean(1);effects[kind+"/"+key+"/"+baseline]={"group_mean_gain":values.mean(0).tolist(),"gain_95ci":np.quantile(draws,[.025,.975],axis=0).tolist(),"independent_groups":len(groups)}
+    write(out/"summary.json",{"horizons_ordinal_steps":horizons,"metrics":summaries,"paired_group_effects":effects,"groups":len({r["group"] for r in records}),"scope":"Prediction of actual recorded outcomes; wrong-plan interventions do not supply physical counterfactual ground truth","rotation_invalid_penalty_rad":float(np.pi),"no_source_identity_or_future_observation_inputs":True})
     write(out/"complete.json",{"run":run["id"],"records":len(data),"source_sha256":file_sha(__file__),"new_fit_updates":0})
     print(json.dumps({"consequence_evaluated":run["id"]}),flush=True)
 

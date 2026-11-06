@@ -67,6 +67,8 @@ def semantic_rows(scores,queries,images):
         precision=np.cumsum(ranked)/(np.arange(len(ranked))+1)
         chance={str(k):1-float(np.prod([(len(images)-count-j)/(len(images)-j) for j in range(k)])) for k in (1,5)}
         result.append({"id":query["id"],"group":query["group"],"labels":query["labels"],"hit1":float(ranked[:1].any()),"hit5":float(ranked[:5].any()),
+                       "class_hit1":{label:float(label in images[int(order[0])]["labels"]) for label in query["labels"]},
+                       "class_hit5":{label:float(any(label in images[int(i)]["labels"] for i in order[:5])) for label in query["labels"]},
                        "average_precision":float((precision*ranked).sum()/max(1,count)),"positive_images":count,"chance_hit":chance,"first_image":images[int(order[0])]["id"]})
     return result
 
@@ -110,6 +112,9 @@ def main():
         rows=semantic_rows(current["clotho"][query_indices]@current["coco"].T,queries,images);all_rows[name]=rows
         summaries[name]={"hit1":float(np.mean([r["hit1"] for r in rows])),"hit5":float(np.mean([r["hit5"] for r in rows])),"mean_average_precision":float(np.mean([r["average_precision"] for r in rows])),"gain_over_specialist_bridge":group_gain(rows,bridge_rows)}
     summaries["specialist_text_bridge"]={"hit1":float(np.mean([r["hit1"] for r in bridge_rows])),"hit5":float(np.mean([r["hit5"] for r in bridge_rows]))}
+    for name,rows in all_rows.items():
+        per_class={label:{"queries":sum(label in r["labels"] for r in rows),"hit1":float(np.mean([r["class_hit1"][label] for r in rows if label in r["labels"]])),"hit5":float(np.mean([r["class_hit5"][label] for r in rows if label in r["labels"]]))} for label in classes if any(label in r["labels"] for r in rows)}
+        summaries[name]["per_class"]=per_class;summaries[name]["macro_class_hit1"]=float(np.mean([v["hit1"] for v in per_class.values()]))
     write(out/"semantic_cases.json",all_rows)
     write(out/"summary.json",{"caption_retrieval":retrieval,"audio_to_image":summaries,"queries":len(queries),"images":len(images),"categories":classes,"frozen_class_counts":semantic["counts"],"scope":"Semantic category agreement without direct sound/image training pairs; not matched physical events or a control-state test","specialist_bridge":"Two independently trained cores, fixed text category prototypes, per-record centered cosine profiles; no final fitting"})
 

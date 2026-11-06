@@ -14,14 +14,15 @@ from training.general_sources import write
 from training.research_sources import file_sha
 
 
-def prediction(root,family,task,condition,seed,role="test"):
+def prediction(root,family,task,condition,seed,role="test",control=None):
     out=root/"heads"/family/task/condition["id"]/str(seed)
     complete=json.loads((out/"complete.json").read_text())
     assert file_sha(out/"selected.pt")==complete["checkpoint_sha256"]
     assert file_sha(out/"projection.npz")==complete["projection_sha256"]
     fitted=dict(np.load(out/"projection.npz",allow_pickle=False))
     folder=feature_folder(root,family,condition,role)
-    values=load_array(folder,condition["feature"])
+    feature=condition["feature"]+("__"+control if control else "")
+    values=load_array(folder,feature)
     extra=(np.asarray(load_array(folder,"target_common"),np.float32)-fitted["common_mean"])/fitted["common_scale"]
     x=np.concatenate([project(values,fitted),extra],1).astype(np.float32)
     ck=torch.load(out/"selected.pt",map_location="cpu",weights_only=False)
@@ -101,6 +102,17 @@ def evaluate():
                     "paired_effects":effects,"records":len(target),"independent_groups":len(set(groups)),
                     "readout_seed_aggregation":"Mean logits/normalized predictions of the two preregistered readout seeds",
                     "scope":"Frozen-core transfer and offline imitation; no physical deployment"}
+            if family=="droid":
+                interventions={}
+                for condition in conditions(root,family,recipe):
+                    if condition.get("secondary"):continue
+                    current={}
+                    for control in ("missing-goal","shuffled-goal","last-image","no-images"):
+                        value=np.mean([prediction(root,family,task,condition,seed,control=control)[0] for seed in recipe["seeds"]],axis=0)
+                        current[control]={**score(value,target,present,task),**physical_actor(value*scale+mean,target*scale+mean)}
+                    interventions[condition["id"]]=current
+                result["same_head_input_interventions"]=interventions
+            result["secondary_conditions"]=[r["id"] for r in conditions(root,family,recipe) if r.get("secondary")]
             write(destination/"summary.json",result);results[key]=result
             gate[key]=all(effects[name]["passes_10pct_transfer_gate"] for name in ("G1-101","G1-103"))
     write(root/"evaluation_summary.json",{"tasks":results,"transfer_gates":gate,"broad_gate_requires_speech_check":True,"no_core_updates":True,"evaluation_lock_sha256":file_sha(Path(cfg["root"])/"evaluation_lock.json")})

@@ -97,6 +97,7 @@ def main():
                     if mode=="video":write_audio(audio,proposal["wave"]);own_jobs.append({"id":key,"run":run["id"],"condition":mode+"_"+control,"path":str(audio),"reference":item["reference"],"cluster":item["row"]["group"]})
                     frames=proposal["frames"] if mode=="audio" else item["reference_frames"]
                     media=encode_video(folder/"output.mp4",frames,audio);write(folder/"trace.json",proposal["trace"])
+                    if mode=="video":encode_video(folder/"oracle_visual_decoder.mp4",proposal["frames"],item["folder"]/"source.flac")
                     reference=item["reference_frames"];predicted=proposal["frames"]
                     record={"id":key,"run":run["id"],"mode":mode,"control":control,"folder":str(folder),"media":media,"field_text":proposal["field_text"],"reference":item["reference"],"source_audio_supplied_to_model":mode=="audio","generated_audio_uses_training_mean_voice":mode=="video",
                             "frame_mse":float(((predicted-reference)**2).mean()),"motion_mse":float(((np.diff(predicted,axis=0)-np.diff(reference,axis=0))**2).mean()),"zero_motion_error":float((np.diff(reference,axis=0)**2).mean()),

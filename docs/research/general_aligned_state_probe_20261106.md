@@ -19,6 +19,11 @@ No future query/action plan enters either actor feature. Cache both in the same
 forward pass. Keep specialist, raw-history and edge controls. Do not relabel a
 secondary success as passage of the primary gate.
 
+Also keep a512D pooled-field control with exactly the alignment branch's
+time/slot pooling, followed by the same training-only128D SVD and readout. This
+separates temporal pooling from the learned alignment projection; otherwise a
+last-state versus alignment comparison would change two things at once.
+
 Interpret outcomes jointly with source-hidden transfer, sound→image semantic
 retrieval, action-consequence prediction and the no-future/alignment controls.
 If retrieval works while aligned-state decisions fail, the shared semantic space

@@ -78,8 +78,20 @@ def cache_split(cfg, recipe, root, run, family, role, final=False):
             obs = tensor_tree(batch["obs"],"cuda")
             with torch.inference_mode(),torch.autocast("cuda",dtype=torch.bfloat16):
                 values = frozen_features(model,obs,family,include_raw,data.stats)
+                if final and family=="droid":
+                    for control in ("missing-goal","shuffled-goal","last-image","no-images"):
+                        changed={**batch["obs"]}
+                        if control in ("missing-goal","shuffled-goal"):
+                            alternative=data.batch(range(start,min(len(data),start+64)),goal_control="missing" if control=="missing-goal" else "shuffled")
+                            changed.update(supplied_text(alternative["captions"],encoder))
+                        else:
+                            changed["images"]=changed["images"].copy();changed["image_present"]=changed["image_present"].copy()
+                            stop=-1 if control=="last-image" else None
+                            changed["images"][:,:stop]=0;changed["image_present"][:,:stop]=False
+                        altered=frozen_features(model,tensor_tree(changed,"cuda"),family,include_raw,data.stats)
+                        values.update({name+"__"+control:value for name,value in altered.items()})
             for name,array in values.items():
-                if name == "edge" and run["id"] not in recipe["edge_controls"]:continue
+                if name.split("__")[0] == "edge" and run["id"] not in recipe["edge_controls"]:continue
                 if name not in buffers:
                     buffers[name] = np.lib.format.open_memmap(folder/(name+".npy"),mode="w+",dtype=np.float16,shape=(len(data),array.shape[1]))
                 assert np.isfinite(array).all(), "Nonfinite frozen features"
@@ -109,6 +121,7 @@ def conditions(root, family, recipe):
     specialist=recipe["sensor_specialist"] if family=="mhealth" else recipe["robot_specialist"]
     result = [{"id":name,"run":name,"feature":"shared","baseline":name==specialist} for name in names]
     result += [{"id":name+"-aligned","run":name,"feature":"aligned","baseline":False,"secondary":True} for name in names]
+    result += [{"id":name+"-pooled","run":name,"feature":"pooled","baseline":False,"secondary":True} for name in names]
     result += [{"id":name+"-edge","run":name,"feature":"edge","baseline":True} for name in recipe["edge_controls"]]
     result.append({"id":"raw-history","run":recipe["shared_raw_text_edge"],"feature":"raw","baseline":True})
     if family=="mhealth":result.append({"id":"physical-invariants","run":recipe["shared_raw_text_edge"],"feature":"invariant","baseline":True})
