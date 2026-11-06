@@ -7,7 +7,7 @@ import argparse,fcntl,hashlib,json,os,shlex,shutil,subprocess,tempfile,time,trac
 from pathlib import Path
 
 HOST='db@192.168.1.200'
-REMOTE='/home/db/dev/slwm-g2'
+REMOTE=os.environ.get('SLWM_G2_REMOTE_ROOT','/home/db/dev/slwm-g2-final')
 ROOT='experiments/multimodal/t3/predictive-bottleneck-20261106'
 BRANCH='training/predictive-bottleneck-20261106'
 PROOF='artifacts/predictive_world/g2/delivery.json'
