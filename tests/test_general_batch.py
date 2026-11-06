@@ -88,3 +88,10 @@ def test_short_records_never_enter_joint_window_sampling():
     source=Sources.__new__(Sources);source.cfg={"context":32,"horizon":8,"future_audio_guard_packets":2};source.role="train"
     source.rows={"speech":[{"id":"short","group":"a","length":41},{"id":"exact","group":"b","length":42}]}
     assert {r["id"] for r in source.pick("speech",np.random.default_rng(1),20)}=={"exact"}
+
+
+def test_sound_caption_sampling_gives_uploaders_equal_probability():
+    source=Sources.__new__(Sources);source.cfg={};source.role="train"
+    source.rows={"clotho":[{"id":str(i),"group":"many","steps":1000} for i in range(99)]+[{"id":"single","group":"one","steps":400}]}
+    picked=source.pick("clotho",np.random.default_rng(1),4000)
+    assert .45<sum(r["group"]=="one" for r in picked)/len(picked)<.55

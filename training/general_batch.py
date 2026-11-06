@@ -96,16 +96,17 @@ class Sources:
 
     def pick(self,family,rng,n):
         rows=self.rows[family]
-        if family in ("coco","clotho"):return [rows[i] for i in rng.integers(0,len(rows),n)]
+        if family=="coco":return [rows[i] for i in rng.integers(0,len(rows),n)]
         if not hasattr(self,"group_sampling"):self.group_sampling={}
         if family not in self.group_sampling:
             groups={}
-            minimum=self.cfg["context"]+self.cfg["horizon"]+(self.cfg["future_audio_guard_packets"] if family in ("speech","ami") else 0)
+            minimum=1 if family=="clotho" else self.cfg["context"]+self.cfg["horizon"]+(self.cfg["future_audio_guard_packets"] if family in ("speech","ami") else 0)
             for row in rows:
-                if row.get("length",row.get("steps",0))>=minimum:groups.setdefault(row["group"],[]).append(row)
+                required=minimum*(2 if family in ("pamap2","mhealth") and row["rate_hz"]==100 else 1)
+                if row.get("length",row.get("steps",0))>=required:groups.setdefault(row["group"],[]).append(row)
             indexed=[]
             for group in sorted(groups):
-                current=groups[group]; counts=np.array([r.get("length",r.get("steps",0))-minimum+1 for r in current],np.float64);indexed.append((current,counts/counts.sum()))
+                current=groups[group]; counts=np.array([1 if family=="clotho" else r.get("length",r.get("steps",0))-minimum*(2 if family in ("pamap2","mhealth") and r["rate_hz"]==100 else 1)+1 for r in current],np.float64);indexed.append((current,counts/counts.sum()))
             if not indexed:raise ValueError(f"No {family}/{self.role} records support the registered context and horizon")
             self.group_sampling[family]=indexed
         indexed=self.group_sampling[family]; selected=[]

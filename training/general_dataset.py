@@ -68,7 +68,7 @@ def freeze(cfg):
         if family in ("speech","ami","pamap2","mhealth"):
             minimum=cfg["context"]+cfg["horizon"]+(cfg["future_audio_guard_packets"] if family in ("speech","ami") else 0)
             roles[family]["minimum_joint_window_packets"]=minimum
-            roles[family]["too_short_for_joint_future_windows"]=dict(Counter(r["role"] for r in rows if r.get("length",r.get("steps",0))<minimum))
+            roles[family]["too_short_for_joint_future_windows"]=dict(Counter(r["role"] for r in rows if r.get("length",r.get("steps",0))<minimum*(2 if family in ("pamap2","mhealth") and r["rate_hz"]==100 else 1)))
         if family in ("speech","ami"):
             for role in role_groups:people.setdefault(role,set()).update(r["actor"] for r in rows if r["role"]==role)
             for row in rows:
