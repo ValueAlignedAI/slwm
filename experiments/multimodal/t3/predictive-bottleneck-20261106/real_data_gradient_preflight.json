@@ -1,0 +1,137 @@
+[
+  {
+    "family": "coco",
+    "metrics": {
+      "alignment": 4.853751182556152,
+      "alignment_covariance": 2.535393286962062e-05,
+      "alignment_mean": 0.9983735084533691,
+      "alignment_participation": 10.877443313598633,
+      "alignment_variance": 0.4591009020805359,
+      "objective": 1.3282376527786255,
+      "paired_hit1": 0.015625,
+      "paired_uniform_chance": 0.0078125,
+      "picture": 0.239294171333313,
+      "selection": 0.7246692895889282,
+      "state_covariance": 0.00013439281610772014,
+      "state_participation": 11.59885025024414,
+      "state_variance": 0.45781928300857544
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  },
+  {
+    "family": "speech",
+    "metrics": {
+      "alignment": 3.465703010559082,
+      "alignment_covariance": 0.0006526559009216726,
+      "alignment_mean": 0.9959646463394165,
+      "alignment_participation": 1.2906742095947266,
+      "alignment_variance": 0.4410048723220825,
+      "audio_reconstruction": 0.3660714328289032,
+      "ctc": 6.5979461669921875,
+      "future": 0.7597558498382568,
+      "latent": 0.6901270151138306,
+      "objective": 4.457489967346191,
+      "paired_hit1": 0.0,
+      "paired_uniform_chance": 0.03125,
+      "phones": 4.71441650390625,
+      "reconstruction": 0.3555358052253723,
+      "risk": 0.16990382969379425,
+      "selection": 3.724334490299225,
+      "state_covariance": 0.006834268569946289,
+      "state_participation": 1.368090033531189,
+      "state_variance": 0.44286322593688965
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  },
+  {
+    "family": "ami",
+    "metrics": {
+      "alignment": 2.07865309715271,
+      "alignment_covariance": 6.841719732619822e-05,
+      "alignment_mean": 0.998964786529541,
+      "alignment_participation": 3.7753524780273438,
+      "alignment_variance": 0.47221657633781433,
+      "audio_reconstruction": 0.809594988822937,
+      "correspondence": 0.6932003498077393,
+      "ctc": 4.5278730392456055,
+      "future": 2.2772650718688965,
+      "latent": 0.6962898969650269,
+      "objective": 5.128861427307129,
+      "paired_hit1": 0.125,
+      "paired_uniform_chance": 0.125,
+      "phones": 0.0,
+      "reconstruction": 0.7733941674232483,
+      "risk": 1.0227620601654053,
+      "selection": 4.302739226818085,
+      "state_covariance": 1.536409826030649e-07,
+      "state_participation": 3.536503791809082,
+      "state_variance": 0.48860761523246765
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  },
+  {
+    "family": "clotho",
+    "metrics": {
+      "alignment": 2.7694172859191895,
+      "alignment_covariance": 0.000201794013264589,
+      "alignment_mean": 0.9973145127296448,
+      "alignment_participation": 5.628196716308594,
+      "alignment_variance": 0.45004916191101074,
+      "audio_reconstruction": 0.6636828184127808,
+      "objective": 1.5337953567504883,
+      "paired_hit1": 0.0625,
+      "paired_uniform_chance": 0.0625,
+      "reconstruction": 0.6746285557746887,
+      "selection": 0.9515702843666076,
+      "state_covariance": 0.0018329295562580228,
+      "state_participation": 5.405979156494141,
+      "state_variance": 0.4374682903289795
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  },
+  {
+    "family": "pamap2",
+    "metrics": {
+      "future": 1.224937081336975,
+      "latent": 0.6928256750106812,
+      "objective": 2.278280735015869,
+      "reconstruction": 0.40463536977767944,
+      "risk": 0.4912337064743042,
+      "selection": 1.6295724511146545,
+      "state_covariance": 1.379796231049113e-06,
+      "state_participation": 4.94564151763916,
+      "state_variance": 0.485581636428833
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  },
+  {
+    "family": "droid",
+    "metrics": {
+      "alignment": 3.1826119422912598,
+      "alignment_covariance": 1.4083447456359863,
+      "alignment_mean": 0.9268074035644531,
+      "alignment_participation": 1.0002963542938232,
+      "alignment_variance": 0.3388117253780365,
+      "future": 1.3697251081466675,
+      "future_picture": 0.35119566321372986,
+      "latent": 0.6938742399215698,
+      "objective": 3.083599328994751,
+      "paired_hit1": 0.04545454680919647,
+      "paired_uniform_chance": 0.07024793326854706,
+      "picture": 0.3444324731826782,
+      "reconstruction": 0.04607536271214485,
+      "risk": 0.5749524831771851,
+      "selection": 2.429689801484346,
+      "state_covariance": 11.794107437133789,
+      "state_participation": 1.0049585103988647,
+      "state_variance": 0.2278006672859192
+    },
+    "no_optimizer_step": true,
+    "parameters": 124521195
+  }
+]
