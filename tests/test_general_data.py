@@ -41,3 +41,14 @@ def test_tfrecord_checksum_and_truncation(tmp_path):
     with pytest.raises(ValueError,match="payload CRC"): list(checked_records(path,crc))
     corrupt=bytearray(data); corrupt[20]^=1; path.write_bytes(corrupt)
     with pytest.raises(ValueError,match="payload CRC"): list(checked_records(path,crc))
+
+
+def test_connected_meetings_and_actual_phone_intervals():
+    from training.general_ami import components
+    from training.general_speech import intervals_to_ids
+    groups=components({"a":{"person1"},"b":{"person1","person2"},"c":{"person2"},"d":{"person3"}})
+    assert groups["a"]==groups["b"]==groups["c"] and groups["a"]!=groups["d"]
+    labels=intervals_to_ids([{"xmin":.01,"xmax":.03,"text":"phoneA"}],2,["<sil>","phoneA"])
+    assert labels.shape==(2,4) and labels[0].tolist()==[0,1,1,0]
+    masked=intervals_to_ids([{"xmin":.01,"xmax":.03,"text":"phoneA"}],2,["<sil>","phoneA"],[(.02,.03)])
+    assert masked[0,2]==-1 and masked[0,1]==1

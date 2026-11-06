@@ -247,10 +247,10 @@ def prepare_clotho():
     rows=[]; role_rank={"development":0,"validation":1,"evaluation":3}; owners=defaultdict(int)
     for split in role_rank:
         captions={r["file_name"]:[r["caption_"+str(i)] for i in range(1,6)] for r in csv.DictReader(source("clotho","clotho_captions_"+split+".csv").open())}
-        metadata=list(csv.DictReader(source("clotho","clotho_metadata_"+split+".csv").open()))
+        metadata=list(csv.DictReader(source("clotho","clotho_metadata_"+split+".csv").open(encoding="iso8859-1")))
         for item in metadata:
             owner=item["manufacturer"]; assert owner; owners[owner]=max(owners[owner],role_rank[split])
-            rows.append({"id":"CLOTHO-"+item["sound_id"],"file_name":item["file_name"],"group":"CLOTHO-UPLOADER-"+owner,"owner":owner,"official_split":split,"captions":captions[item["file_name"]],"original_url":item["sound_link"],"original_license":item["license"]})
+            rows.append({"id":"CLOTHO-"+order(split+":"+item["file_name"])[:24],"source_sound_id":item["sound_id"],"file_name":item["file_name"],"group":"CLOTHO-UPLOADER-"+owner,"owner":owner,"official_split":split,"captions":captions[item["file_name"]],"original_url":item["sound_link"],"original_license":item["license"]})
     kept=[]; purged=[]; extractor=MelSpectrogramFeatures(); torch.set_num_threads(1)
     for split in role_rank:
         archive=source("clotho","clotho_audio_"+split+".7z"); raw=folder/("decoded_"+split); safe_7z_extract(archive,raw)
@@ -266,7 +266,7 @@ def prepare_clotho():
             name=row["id"]+"_mel.npy"; np.save(folder/name,mel); row.update(file=name,steps=length,duration_seconds=len(audio)/sr,raw_sha256=file_sha(path),mel_sha256=file_sha(folder/name)); kept.append(row)
             if len(kept)%128==0: print(json.dumps({"clotho_prepared":len(kept),"split":split}),flush=True)
     write(folder/"purged_uploader_overlap.json",purged)
-    rows_write(folder,kept,hours=sum(r["duration_seconds"] for r in kept)/3600,original_records=len(rows),purged_overlap=len(purged),frame_seconds=1024/24000,caption_license_file=str(source("clotho","LICENSE")),codec="Fixed Vocos log-mel transform, no learned audio teacher; waveform rendering external and separately counted")
+    rows_write(folder,kept,hours=sum(r["duration_seconds"] for r in kept)/3600,original_records=len(rows),purged_overlap=len(purged),frame_seconds=1024/24000,metadata_encoding="ISO8859-1",caption_license_file=str(source("clotho","LICENSE")),codec="Fixed Vocos log-mel transform, no learned audio teacher; waveform rendering external and separately counted")
 
 
 def main():
