@@ -592,16 +592,18 @@ These are separate text-only weights; no jointly trained124M multimodal claim.
 | IDs | Track / status | Registered comparison and artifacts |
 |---|---|---|
 | `EXP-T1-211`–`214` | T1-S3, superseded partial execution | Original32×512 extension; first three retain512 additional updates each, fourth was not started. No S3 final test or completed83.9M claim. `experiments/text/t1/extended-20261105/`. |
-| `EXP-T1-221`–`224` | T1-S4, running | GPT-2/SLWM, seeds81/82, optimizer-preserving151M-token target/model; batch ramp and pinned fused loss. Two512-equivalent token steps per large optimizer update; full target5376 actual updates including parents. `experiments/text/t1/extended-throughput-20261105/`. |
-| `EXP-T2-801`–`804` | T2-B1, running | Randomly initialized23,980,313-weight SLWM and23,805,209-weight Transformer, seeds91/92; same packets/heads/memory, common initialization,2000×128 positive windows. `experiments/multimodal/t2/broad-stream-20261105/`. |
-| `EXP-T2-805`–`808` | T2-B1, running controls | Late fusion, shuffled pairs, removed phone/CTC losses, reset memory; same positive plans/exposure. Active depth/graph-connected weights differ and must be disclosed. |
-| `EXP-T2-809`–`810` | T2-B1, running size probe | Width256 SLWM/Transformer, seed91, same data/updates; exploratory single-seed size comparison, not a scaling law. |
-| `EXP-P1-101`–`104` | P1-S1, planned exploratory sensing | Frozen worlds801–804 plus equal128-hidden risk actors;22 world-training people fit heads, six other world-training people select weights, four new people calibrate commitment,12 new people test. `experiments/policy/continuous-sensing-20261105/`. |
-| `EXP-P1-111`–`114` | P1-S1, planned direct-sensor controls | Equal-sized heads using observed means/deviations and exponential running memory; exactly the same collected states/labels, fitting people and calibration rules as101–104. Tests added decision value of the processed field. |
+| `EXP-T1-221`–`224` | T1-S4, completed | GPT-2/SLWM, seeds81/82,150,994,944 tokens/model and5376 actual updates including parents. All select the endpoint. Test NLL improves3.64–3.67% at1.47–1.49x continuation time; repetitive undertrained samples retained. `experiments/text/t1/extended-throughput-20261105/`. |
+| `EXP-T2-801`–`804` | T2-B1, completed; practical speech gate fails | Randomly initialized23,980,313-weight SLWM and23,805,209-weight Transformer, seeds91/92;2000×128 positive windows each. Validation selects1800/1800/2000/1400; selected exposure is separately RNG-audited. `experiments/multimodal/t2/broad-stream-20261105/`. |
+| `EXP-T2-805`–`808` | T2-B1, completed controls | Late fusion, shuffled pairs, removed phone/CTC losses, reset memory. Same positive plans/maximum exposure; selected steps vary. Late-fusion depth and reset pooling confounds are explicit; no-content CTC is an untrained head. |
+| `EXP-T2-809`–`810` | T2-B1, completed size probe | Width256 SLWM/Transformer, seed91, same maximum data/updates.3.6x larger counterparts take23–28% more training/validation time; this is not a quality scaling law. |
+| `EXP-P1-101`–`104` | P1-S1, completed; replicated utility fails | Frozen worlds801–804 and132,616-weight actors.22 people fit heads, six select, four new people calibrate and12 new people/three meetings test. No actor reliably beats its strongest fixed rule. `experiments/policy/continuous-sensing-20261105/`. |
+| `EXP-P1-111`–`114` | P1-S1, completed direct-sensor controls | Same-sized heads, observed statistics and running memory, identical training states/labels/people. Field-over-raw gain does not replicate across SLWM seeds. |
 | `EXP-X0-301` | Completed execution diagnostic | Text batch/fused-loss timings, objective/tied-gradient checks, slower alternatives and128-batch OOM. `experiments/text/t1/batch-benchmark-20261105/`. Throughput only. |
 | `EXP-X0-302`–`303` | Completed execution diagnostics | Isolated GPU concurrency and full-batch-copy avoidance. Both failed their numerical gates; copy gains below1%. Scientific B1 execution stays unchanged. Raw data retained in `concurrency-benchmark-20261105/` and `copy-benchmark-20261105/`. |
 | `EXP-X0-304` | Completed train/selection data audit | CTC feasibility and independent meeting diversity; no final test/model score read. `broad-stream-20261105/supervision_audit.json`. |
-| `EXP-X0-305` | Completed prototype inference diagnostic | Algebraic31-tap collapse of B1's parallel linear branches. Full FP32 outputs/state preserved numerically; prototype GPU FP32 speedup15%, separate BF16 differences retained. Original scientific training/render paths unchanged. `folded-inference-20261105/`. |
+| `EXP-X0-305` | Completed selected-state inference diagnostic | Algebraic31-tap collapse of B1's parallel linear branches. Final1800-update selected weights pass full FP32 equivalence, CUDA1.150x speedup; BF16 differences and original400-update prototype reports retained. Training/render paths unchanged. `folded-inference-20261105/`. |
+| `EXP-T2-831`–`834` | Auxiliary compiled-learning pilot, original failure retained | Shared Dynamo variant-limit failure;831 retains200 updates, other arms incomplete. No fresh test. `compiled-learning-20261105/`. |
+| `EXP-T2-841`–`844` | Auxiliary compiled/eager controls, completed400 updates each | Cache revision preserves original failure, source lineage and exact data RNG. Both compiled arms pass the registered≤1% endpoint selection-loss degradation check; no new primary test candidates. `compiled-learning-v2-20261105/`. |
 
 Primary trace: H-R0-1/2/3 and G-R0-1; P1 is a bounded H-R0-4 sensing probe,
 not a promotion to physical-action T3 or a hallucination-reduction claim. B1
@@ -617,8 +619,11 @@ entries. B1 holds out fresh12-person Libri sets and12 AMI people, preserving
 physical-gap speech, independent within-person retrieval,40.96s media, both long
 text prompts, same-model video/±240ms controls, quiet cases and all failed outputs.
 Whisper is a pinned independent evaluator; its text never trains these models.
-Policy weights/thresholds must freeze before any final B1/P1 scoring. All ticks
+Policy weights/thresholds froze before final B1/P1 scoring. All ticks
 count in sensing utility regardless of commitment. The inference actor chooses
 which recorded sensors to observe, not physical movement. Root reports and
-registry.json files will record actual completion/selection and failed gates;
-these running rows do not claim successful speech, alignment or world modeling.
+registry.json files record actual completion/selection and failed gates.
+The [completed findings](../research/operational_findings_20261106.md) retain the
+negative results and post-test crosstalk/presentation audit. The compiled pilots
+are auxiliary; the primary completed registry contains22 entries. No physical
+control or general world-model success follows from these runs.

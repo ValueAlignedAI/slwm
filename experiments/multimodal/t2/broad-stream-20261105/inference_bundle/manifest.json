@@ -1,0 +1,153 @@
+{
+  "actors": {
+    "EXP-P1-101": {
+      "file": "EXP-P1-101.pt",
+      "original_actor_sha256": "455b8b36ed70a911cb773adca22dd2a27a07dff4b69eeaf20c34063ab8f318c3",
+      "sha256": "b9a3f5de086fd24c93366e9a1e51ae5c3a305aff6085092cdf78e16dbb3be88e",
+      "world": "EXP-T2-801",
+      "world_weights_identical": true
+    },
+    "EXP-P1-102": {
+      "file": "EXP-P1-102.pt",
+      "original_actor_sha256": "939279a707cacd0d2b36df9c9bd758893904ded6a06f2a4dc60b036c2204a3ac",
+      "sha256": "bc52f833755cdc82a0938192a28e194779a8c491820962e11dbb1db241ef86d0",
+      "world": "EXP-T2-802",
+      "world_weights_identical": true
+    },
+    "EXP-P1-103": {
+      "file": "EXP-P1-103.pt",
+      "original_actor_sha256": "d6b15dc966bacc7ad529f9047a8e76c2dbabf344f3566c21ad829473b2871434",
+      "sha256": "6b0a9d5bfa73336a5a0ba17f0e2e2e4e690b9b968d375261b817daff59d7f380",
+      "world": "EXP-T2-803",
+      "world_weights_identical": true
+    },
+    "EXP-P1-104": {
+      "file": "EXP-P1-104.pt",
+      "original_actor_sha256": "2e0f009183093f1fe96716ce9b3de09f327f6659f00f38c73571ffa3510f01d0",
+      "sha256": "139a8b83aa3e4c6dc57dcffc8529c53d62617f6c98f4654130d27e18f64d9d75",
+      "world": "EXP-T2-804",
+      "world_weights_identical": true
+    },
+    "EXP-P1-111": {
+      "feature_mode": "raw",
+      "file": "EXP-P1-111.pt",
+      "original_actor_sha256": "88ce96e73031ee71a71ec02b2f55e898b15888be29ac064d2e8fed7448a79e1d",
+      "sha256": "bfafc267f29cbe16f0a348258596713527b0ffbaec9b2182eb411a92f93f2de4",
+      "world": "EXP-T2-801",
+      "world_weights_identical": true
+    },
+    "EXP-P1-112": {
+      "feature_mode": "raw",
+      "file": "EXP-P1-112.pt",
+      "original_actor_sha256": "928b522117b6a86710fabed164625e1f07724ebcdf77c9759d0e5eabda48d916",
+      "sha256": "4925ae438d7e6ecb62e756e843f64359cb97ce70c44ea97a58506878bd03cf33",
+      "world": "EXP-T2-802",
+      "world_weights_identical": true
+    },
+    "EXP-P1-113": {
+      "feature_mode": "raw",
+      "file": "EXP-P1-113.pt",
+      "original_actor_sha256": "26002dd705fdd33a636fc501c8e26b05964fb1f3280ebc5d864722fc33ff6729",
+      "sha256": "1283278856faf6dfc852ad94827cd10a8243386c6de300b657ccdddfd4b7d3e7",
+      "world": "EXP-T2-803",
+      "world_weights_identical": true
+    },
+    "EXP-P1-114": {
+      "feature_mode": "raw",
+      "file": "EXP-P1-114.pt",
+      "original_actor_sha256": "ea6e028be051056b4e3e2c7d47bab41e3b81ecf0c3ae47304b003fc3aa8b1eb3",
+      "sha256": "c1077094195fcbe2dba6f4ddb079be6797a406a50a5701c8bddd9c48de2fdd3e",
+      "world": "EXP-T2-804",
+      "world_weights_identical": true
+    }
+  },
+  "codec_files": {
+    "appearance.json": "984ee0997161ee4e32ed8bea0138bbc3215f9129a61c4cb9cc91bbb4f1a39ac0",
+    "appearance_code.npy": "73c9dabdd6ccc8a1dbb0f3d91d7ddcd24f6e2224dde85124b68b1cc91a045f4b",
+    "appearance_pixels.npy": "bbe642c4cd612890ceb0ae910505d92be703c4c784178969ceea763a33172fc6",
+    "codec.npz": "5fde11ec15abbb15fcd4fccad5a43bdb414c2616374b0a3b26926e2d06d73558",
+    "dataset_card.json": "869be7c68b68f57609e4eb973a86081230f82d7c465beae4736bec6a9bcdffce",
+    "duration_model.json": "593c38cd40b53fb8140c6d7c6cb2f962501908d5d8ee06e40250a741eb006f34",
+    "vocabulary.json": "0a71e4263f06a44b52e3a6d8527cc4d9ddba1d25d3d9de1d12d6c7d6ed783c2d"
+  },
+  "external_vocoder": {
+    "config_sha256": "da9033922f969a47f0c160010226919e59f27761fd5066f3828d46de6650b0fc",
+    "name": "charactr/vocos-mel-24khz",
+    "parameters": 13531650,
+    "revision": "0feb3fdd929bcd6649e0e7c5a688cf7dd012ef21",
+    "weights_sha256": "97ec976ad1fd67a33ab2682d29c0ac7df85234fae875aefcc5fb215681a91b2a"
+  },
+  "text_scope": "Separate125M language weights; world text input is fixed CMU pronunciation",
+  "worlds": {
+    "EXP-T2-801": {
+      "file": "EXP-T2-801.pt",
+      "full_state_sha256": "633e0078f3de82fbd2c42a3363ce3451efc16a0aa0075592c724cf49d796882c",
+      "parameters": 23980313,
+      "selected_step": 1800,
+      "sha256": "251a3b3cf398ff5b7082450bef83a1ce8e322fa124fd41127d2ff139e615d15b"
+    },
+    "EXP-T2-802": {
+      "file": "EXP-T2-802.pt",
+      "full_state_sha256": "b9c0a2ae0ba230c58ebfafcb9f2ae82ea21109e4b508b768785c705d9f1cb790",
+      "parameters": 23805209,
+      "selected_step": 1800,
+      "sha256": "bc8a2ce740371081cbe59974edc80a1954750c9b242ff853401c89692b2e3cfb"
+    },
+    "EXP-T2-803": {
+      "file": "EXP-T2-803.pt",
+      "full_state_sha256": "de38b8f2f6d1ec588606076fb26aac3921ed87d54e2717b1f231a9e2ae7868c7",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "sha256": "41309170736f3ef8664b18c49e36c45b6457d6304f454f6e4506a53b5d49885e"
+    },
+    "EXP-T2-804": {
+      "file": "EXP-T2-804.pt",
+      "full_state_sha256": "359d3821b619ef314fcefba5f357bd9ddaf670941f4e29897e1a85eecc5d7d57",
+      "parameters": 23805209,
+      "selected_step": 1400,
+      "sha256": "72784f78942c9544ddefde3cb447d4076de229818464b13fd76b37712595caf6"
+    },
+    "EXP-T2-805": {
+      "file": "EXP-T2-805.pt",
+      "full_state_sha256": "e5cd6700a3d33115a7b8a365797ac9f3ed0a3eabba15d103c5154026701bc995",
+      "parameters": 23805209,
+      "selected_step": 1800,
+      "sha256": "badf63e0f4fbe30f816903b631900573df5038dd633d5096220bd6b550d706f6"
+    },
+    "EXP-T2-806": {
+      "file": "EXP-T2-806.pt",
+      "full_state_sha256": "494be4013c019c455d0b442276a85be801ef63b17bbe7f2744b732e10bf1e604",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "sha256": "a921abf358ebb82b29088884c40ea3d7a011ca16676c7311fcba6579560a9151"
+    },
+    "EXP-T2-807": {
+      "file": "EXP-T2-807.pt",
+      "full_state_sha256": "c64340024acfea1a5a51efc4c41c9adcaff08fa714829f27e9592538b2d7a833",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "sha256": "309979ff646372aea7451d20872587fe488c32b17ed11b4302d795f05dbbb0d7"
+    },
+    "EXP-T2-808": {
+      "file": "EXP-T2-808.pt",
+      "full_state_sha256": "b439c8116523a1e896435e20f446e36f1f897f4ff01e6be57432f9fcc0dcbea9",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "sha256": "bab11df475a28e743e18ad86fac1aabd310c7a176b0d50d357bb9571af8ad0f2"
+    },
+    "EXP-T2-809": {
+      "file": "EXP-T2-809.pt",
+      "full_state_sha256": "84c7804f48a2e95583808544062294e45fc79f4a668a1a4aac0f67a022f59ef6",
+      "parameters": 6683929,
+      "selected_step": 1800,
+      "sha256": "fc3e31f1a0b6204dc61737fc88d532f9f2185a9af95f228c5740a16c5f97239a"
+    },
+    "EXP-T2-810": {
+      "file": "EXP-T2-810.pt",
+      "full_state_sha256": "b0ffefde97432f56b48095befbda8e8820d2ff5dad0a8a4d43b8afc04a0ffe81",
+      "parameters": 6596377,
+      "selected_step": 1600,
+      "sha256": "9d50bd27ac26d7d5abd63e66346f75851c96e65dafc2a00a2fa29319ab4cb6a9"
+    }
+  }
+}

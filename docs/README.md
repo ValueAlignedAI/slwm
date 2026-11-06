@@ -38,7 +38,9 @@ Agents should follow the reading order in `../AGENTS.md`:
 - `training/preprocessing.md` — T2 audio/visual latent preprocessing and dataset plan.
 - `training/t1_text_code_training.md` — T1 text/code training protocol and current evidence.
 - `training/video_repair.md` — actual speech-repair checkpoints, waveform isolation and reproduction.
-- [Broad fields and continuous sensing](training/operational_world.md) — long audio/video/text inference, paired worlds and bound decision actors; B1/P1 results pending.
+- [Broad fields and continuous sensing](training/operational_world.md) — completed long audio/video/text inference, paired worlds and bound decision actors.
+- [Operational findings](research/operational_findings_20261106.md) — GPU scale gains, failed capability gates, long-output limits and next experiments.
+- [Measured scale budgets](research/scaling_budget_review_20261106.md) and [paired-data access](research/data_scaling_access_review_20261106.md) — next-run resource and source requirements.
 - `../training/README.md` — runnable training command reference.
 
 ## Evaluation And Experiments

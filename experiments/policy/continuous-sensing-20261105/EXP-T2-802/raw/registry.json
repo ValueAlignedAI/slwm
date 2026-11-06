@@ -1,0 +1,359 @@
+{
+  "claim_trace": {
+    "hypothesis_ids": [
+      "H-R0-4"
+    ],
+    "scope": "Matched direct-sensor statistics control; same fitted counterfactual targets and people"
+  },
+  "config": {
+    "path": "configs/policy/stream_sensing.json",
+    "seed": 391,
+    "sha256": "ea74712c9de93f16b9f4cb22bd562dca5f156e142e89fe1cd369f04851016758"
+  },
+  "created_at": "2026-11-05",
+  "data": {
+    "final_test_people": 12,
+    "independent_calibration_people": 4,
+    "risk_head_fit_people": 22,
+    "risk_head_selection_people": 6
+  },
+  "evaluation": {
+    "metrics": {
+      "actions": {
+        "both": 16,
+        "listen": 134,
+        "look": 25,
+        "wait": 905
+      },
+      "activity_conditioned_tick_means": {
+        "active": {
+          "alternating": {
+            "mean_total_cost": 0.6635316924192012,
+            "ticks": 240
+          },
+          "both": {
+            "mean_total_cost": 0.6666077260548869,
+            "ticks": 240
+          },
+          "learned": {
+            "mean_total_cost": 0.6668523686161886,
+            "ticks": 240
+          },
+          "listen": {
+            "mean_total_cost": 0.633965927703927,
+            "ticks": 240
+          },
+          "look": {
+            "mean_total_cost": 0.7176600624496738,
+            "ticks": 240
+          },
+          "periodic": {
+            "mean_total_cost": 0.6721861723189553,
+            "ticks": 240
+          },
+          "raw": {
+            "mean_total_cost": 0.6482423939897368,
+            "ticks": 240
+          },
+          "wait": {
+            "mean_total_cost": 0.8304651840745161,
+            "ticks": 240
+          }
+        },
+        "quiet": {
+          "alternating": {
+            "mean_total_cost": 0.4440731608175806,
+            "ticks": 840
+          },
+          "both": {
+            "mean_total_cost": 0.46300231266234604,
+            "ticks": 840
+          },
+          "learned": {
+            "mean_total_cost": 0.37822467031489526,
+            "ticks": 840
+          },
+          "listen": {
+            "mean_total_cost": 0.4046768130379773,
+            "ticks": 840
+          },
+          "look": {
+            "mean_total_cost": 0.4804107409857568,
+            "ticks": 840
+          },
+          "periodic": {
+            "mean_total_cost": 0.4263963738145928,
+            "ticks": 840
+          },
+          "raw": {
+            "mean_total_cost": 0.391663084245686,
+            "ticks": 840
+          },
+          "wait": {
+            "mean_total_cost": 0.3699789696816532,
+            "ticks": 840
+          }
+        }
+      },
+      "bootstrap_sensor_cost_per_episode": 0.1,
+      "conditional_committed_error": 0.35677502924014654,
+      "coverage": 0.5833333333333334,
+      "effect": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.0014079413860518767,
+          0.024788166310431233
+        ],
+        "person_mean": 0.013265790804116821
+      },
+      "field_representation_gate": false,
+      "field_vs_direct_sensor_statistics": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.00700487133908879,
+          0.01666688688892733
+        ],
+        "person_mean": 0.0063165498069590945
+      },
+      "goals": {
+        "audio": {
+          "alternating": 0.4871325408005052,
+          "both": 0.5048990277780427,
+          "learned": 0.4294991477496094,
+          "listen": 0.40890307861069836,
+          "look": 0.5713874250650406,
+          "periodic": 0.47291526082489227,
+          "raw": 0.4301027134474781,
+          "wait": 0.4680476571122805
+        },
+        "both": {
+          "alternating": 0.7142625811199347,
+          "both": 0.7123719477819072,
+          "learned": 0.656562636544307,
+          "listen": 0.6584449204305808,
+          "look": 0.7746992133557796,
+          "periodic": 0.6965244972043567,
+          "raw": 0.6755232103996807,
+          "wait": 0.7084638594753212
+        },
+        "video": {
+          "alternating": 0.2771300482667155,
+          "both": 0.3074729046887822,
+          "learned": 0.2410306921849648,
+          "listen": 0.2995418498499526,
+          "look": 0.25331179884572824,
+          "periodic": 0.2736092290841043,
+          "raw": 0.24041620205259986,
+          "wait": 0.24041620205259986
+        }
+      },
+      "independent_test_meetings": 3,
+      "mean_total_cost": {
+        "alternating": 0.49284172339571847,
+        "both": 0.5082479600829107,
+        "learned": 0.44236415882629376,
+        "listen": 0.4556299496304106,
+        "look": 0.5331328124221828,
+        "periodic": 0.4810163290377844,
+        "raw": 0.4486807086332529,
+        "wait": 0.47230923954673387
+      },
+      "meeting_cluster_sensitivity_field_vs_raw": {
+        "meeting_cluster_95_interval": [
+          -0.006847792532708924,
+          0.013204954895708297
+        ],
+        "meeting_mean": 0.0063165498069590945,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "meeting_cluster_sensitivity_vs_strongest_fixed": {
+        "meeting_cluster_95_interval": [
+          0.006376863374478306,
+          0.02659402834251522
+        ],
+        "meeting_mean": 0.013265790804116821,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "passes_gate": false,
+      "person_costs": {
+        "alternating": {
+          "AMI-FEE041": 0.6399287806616889,
+          "AMI-FEE042": 0.4657332622342639,
+          "AMI-FEE043": 0.3428162061505847,
+          "AMI-FEE044": 0.48453085703982246,
+          "AMI-FEE046": 0.4203599906629986,
+          "AMI-FEE047": 0.37666142483552295,
+          "AMI-FEE055": 0.30207511600520875,
+          "AMI-MEE045": 0.6583999772866567,
+          "AMI-MEE048": 0.5153394033511479,
+          "AMI-MEE053": 0.6351028924187024,
+          "AMI-MEE054": 0.5383228490749995,
+          "AMI-MEE056": 0.5348299210270245
+        },
+        "both": {
+          "AMI-FEE041": 0.615816777282291,
+          "AMI-FEE042": 0.47619927591747707,
+          "AMI-FEE043": 0.36774386987090113,
+          "AMI-FEE044": 0.5035303917196062,
+          "AMI-FEE046": 0.46694266233179305,
+          "AMI-FEE047": 0.3964851875272062,
+          "AMI-FEE055": 0.3290113447440995,
+          "AMI-MEE045": 0.6496578752994537,
+          "AMI-MEE048": 0.5457225501537323,
+          "AMI-MEE053": 0.6461687088012695,
+          "AMI-MEE054": 0.55457883046733,
+          "AMI-MEE056": 0.5471180468797684
+        },
+        "learned": {
+          "AMI-FEE041": 0.5416798729035589,
+          "AMI-FEE042": 0.39034263028038874,
+          "AMI-FEE043": 0.29163701666726005,
+          "AMI-FEE044": 0.4446338191628456,
+          "AMI-FEE046": 0.38755852431058885,
+          "AMI-FEE047": 0.32315615254143876,
+          "AMI-FEE055": 0.2365731937603818,
+          "AMI-MEE045": 0.6983446202344364,
+          "AMI-MEE048": 0.4524837416079309,
+          "AMI-MEE053": 0.6059330122338401,
+          "AMI-MEE054": 0.47044705119397906,
+          "AMI-MEE056": 0.46558027101887595
+        },
+        "listen": {
+          "AMI-FEE041": 0.5468244574136204,
+          "AMI-FEE042": 0.40301513489749696,
+          "AMI-FEE043": 0.3071816410455439,
+          "AMI-FEE044": 0.43677955915530525,
+          "AMI-FEE046": 0.4159936053885354,
+          "AMI-FEE047": 0.34028904479410915,
+          "AMI-FEE055": 0.26464256313112045,
+          "AMI-MEE045": 0.644572878215048,
+          "AMI-MEE048": 0.4879934330781301,
+          "AMI-MEE053": 0.6188999603192011,
+          "AMI-MEE054": 0.49952781945466995,
+          "AMI-MEE056": 0.5018392986721463
+        },
+        "look": {
+          "AMI-FEE041": 0.7209685992863443,
+          "AMI-FEE042": 0.579911662141482,
+          "AMI-FEE043": 0.3733046092920833,
+          "AMI-FEE044": 0.5234787599907981,
+          "AMI-FEE046": 0.4489815428853035,
+          "AMI-FEE047": 0.3977567330830627,
+          "AMI-FEE055": 0.30941308960318564,
+          "AMI-MEE045": 0.6764977342552609,
+          "AMI-MEE048": 0.5252985490692986,
+          "AMI-MEE053": 0.688083087404569,
+          "AMI-MEE054": 0.5669717273778385,
+          "AMI-MEE056": 0.5869276546769672
+        },
+        "periodic": {
+          "AMI-FEE041": 0.6326548488603698,
+          "AMI-FEE042": 0.45352241579029295,
+          "AMI-FEE043": 0.3381600057085355,
+          "AMI-FEE044": 0.4687982839014795,
+          "AMI-FEE046": 0.42813187026315264,
+          "AMI-FEE047": 0.3533190663903952,
+          "AMI-FEE055": 0.2996125883526272,
+          "AMI-MEE045": 0.6344524128569498,
+          "AMI-MEE048": 0.4996522969669766,
+          "AMI-MEE053": 0.6108628181947602,
+          "AMI-MEE054": 0.5264483268062273,
+          "AMI-MEE056": 0.5265810143616464
+        },
+        "raw": {
+          "AMI-FEE041": 0.5770997122757965,
+          "AMI-FEE042": 0.3925926307837168,
+          "AMI-FEE043": 0.30952323178450264,
+          "AMI-FEE044": 0.439447712401549,
+          "AMI-FEE046": 0.39432626912991203,
+          "AMI-FEE047": 0.3294974589099487,
+          "AMI-FEE055": 0.2589231373121341,
+          "AMI-MEE045": 0.6421949255797598,
+          "AMI-MEE048": 0.4681332149439388,
+          "AMI-MEE053": 0.6079864339696036,
+          "AMI-MEE054": 0.4854520383808348,
+          "AMI-MEE056": 0.4789917381273376
+        },
+        "wait": {
+          "AMI-FEE041": 0.71030098936624,
+          "AMI-FEE042": 0.39034263028038874,
+          "AMI-FEE043": 0.2894497632980347,
+          "AMI-FEE044": 0.4173915579915047,
+          "AMI-FEE046": 0.3874116294913822,
+          "AMI-FEE047": 0.32557339440617294,
+          "AMI-FEE055": 0.23736621799568336,
+          "AMI-MEE045": 0.7783418519629373,
+          "AMI-MEE048": 0.44910946041345595,
+          "AMI-MEE053": 0.7477022541893853,
+          "AMI-MEE054": 0.46914085414674545,
+          "AMI-MEE056": 0.46558027101887595
+        }
+      },
+      "risk_absolute_calibration_error": 0.16082879246247037,
+      "strongest_fixed": "listen"
+    },
+    "strategy": "raw",
+    "utility_counts_all_ticks": true
+  },
+  "experiment_id": "EXP-P1-112",
+  "interpretation": {
+    "decision": "Compare shared-field actor against this adaptive control as well as fixed strategies",
+    "language_hallucination_claim": false,
+    "physical_world_control": false
+  },
+  "model": {
+    "actor_neural_parameters": 132616,
+    "feature_mode": "raw",
+    "learned_world_features_used": false,
+    "world": "EXP-T2-802",
+    "world_used_for_training_targets_and_scoring": true,
+    "world_weights_frozen": true
+  },
+  "registry_writer_sha256": "ead3cf71f5b8ffefbf7e3b62510b76c23d13f34a982542bc2e064bc7dce7992a",
+  "repository": {
+    "git_commit_at_registry_write": "b762642b4f649a1158d81de2f7dfc78afd603b13",
+    "source_hashes": {
+      "configs/policy/stream_sensing.json": "ea74712c9de93f16b9f4cb22bd562dca5f156e142e89fe1cd369f04851016758",
+      "docs/research/stream_sensing_protocol_20261105.md": "e20a50c1f130e889f696d41fd3e4d06074911fe945fbf7e024af127f029741ff",
+      "tests/test_stream_sensing.py": "9f57c80731e864f5247c495adfb827d0dfbf90fcdfeb9b63714fde0c64f60de4",
+      "training/stream_sensing.py": "5719d746c843dc7d2e78b72da0c117dbb3814cb15b75d3115dac8e199ecf9361"
+    }
+  },
+  "sprint": {
+    "id": "P1",
+    "name": "P1-S1 exploratory sensing",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "actual": {
+      "actual_steps": 300,
+      "best_held_person_log_risk_mse": 0.29949620366096497,
+      "calibration_people_used_for_weight_selection": false,
+      "early_stop": true,
+      "fit_examples": 3300,
+      "normalization_fit_people": 22,
+      "selected_step": 100,
+      "test_read": false,
+      "validation_examples": 900,
+      "validation_people": [
+        "AMI-MEE014",
+        "AMI-MEE008",
+        "AMI-FEE029",
+        "AMI-FEE024",
+        "AMI-FEE032",
+        "AMI-FEE030"
+      ]
+    },
+    "best_optimizer": "experiments/policy/continuous-sensing-20261105/EXP-T2-802/raw/best_optimizer.pt",
+    "last_optimizer": "experiments/policy/continuous-sensing-20261105/EXP-T2-802/raw/last_optimizer.pt",
+    "protocol": "docs/research/stream_sensing_protocol_20261105.md",
+    "protocol_sha256": "e20a50c1f130e889f696d41fd3e4d06074911fe945fbf7e024af127f029741ff",
+    "same_sample_trajectories_as_field_actor": true
+  },
+  "updated_at": "2026-11-06"
+}

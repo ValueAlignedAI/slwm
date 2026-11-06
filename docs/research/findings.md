@@ -1,4 +1,15 @@
-# SLWM research findings — updated 2026-11-05
+# SLWM research findings — updated 2026-11-06
+
+## Latest decision — GPU scale improves; broader capability gates fail
+
+The [completed operational/scaling study](operational_findings_20261106.md)
+records all22 primary runs,248 long media outputs and exact artifact audits.
+Increasing world parameters3.6x costs23–28% more measured training/validation
+time, while fresh-speaker repair and replicated sensing utility fail their gates.
+Separate125M language models show an early equal-token loss advantage, with
+substantial additional compute and repetitive generation. Follow the new report
+for evidence, data/content bottlenecks and the next controlled experiments.
+The sections below retain the preceding research record.
 
 ## Current decision — content and timing improve; speech quality remains mixed
 

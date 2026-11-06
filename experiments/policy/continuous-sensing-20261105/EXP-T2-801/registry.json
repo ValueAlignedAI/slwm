@@ -1,0 +1,354 @@
+{
+  "claim_trace": {
+    "hypothesis_ids": [
+      "H-R0-4"
+    ],
+    "scope": "Recorded sensor utility, not hallucination reduction or physical control"
+  },
+  "config": {
+    "path": "configs/policy/stream_sensing.json",
+    "seed": 391,
+    "sha256": "ea74712c9de93f16b9f4cb22bd562dca5f156e142e89fe1cd369f04851016758"
+  },
+  "created_at": "2026-11-05",
+  "data": {
+    "final_test_people": 12,
+    "independent_calibration_people": 4,
+    "risk_head_fit_people": 22,
+    "risk_head_selection_people": 6
+  },
+  "evaluation": {
+    "metrics": {
+      "actions": {
+        "both": 4,
+        "listen": 153,
+        "look": 15,
+        "wait": 908
+      },
+      "activity_conditioned_tick_means": {
+        "active": {
+          "alternating": {
+            "mean_total_cost": 0.6656552979722619,
+            "ticks": 240
+          },
+          "both": {
+            "mean_total_cost": 0.6684518396854401,
+            "ticks": 240
+          },
+          "learned": {
+            "mean_total_cost": 0.6939202583860606,
+            "ticks": 240
+          },
+          "listen": {
+            "mean_total_cost": 0.6324665968616804,
+            "ticks": 240
+          },
+          "look": {
+            "mean_total_cost": 0.727536638546735,
+            "ticks": 240
+          },
+          "periodic": {
+            "mean_total_cost": 0.6691020251251757,
+            "ticks": 240
+          },
+          "raw": {
+            "mean_total_cost": 0.7296606113668531,
+            "ticks": 240
+          },
+          "wait": {
+            "mean_total_cost": 0.799426568687583,
+            "ticks": 240
+          }
+        },
+        "quiet": {
+          "alternating": {
+            "mean_total_cost": 0.4331031266777288,
+            "ticks": 840
+          },
+          "both": {
+            "mean_total_cost": 0.45868740367392696,
+            "ticks": 840
+          },
+          "learned": {
+            "mean_total_cost": 0.3688531243331021,
+            "ticks": 840
+          },
+          "listen": {
+            "mean_total_cost": 0.4044097038429408,
+            "ticks": 840
+          },
+          "look": {
+            "mean_total_cost": 0.46865248640200924,
+            "ticks": 840
+          },
+          "periodic": {
+            "mean_total_cost": 0.41920001788419625,
+            "ticks": 840
+          },
+          "raw": {
+            "mean_total_cost": 0.37175967056038123,
+            "ticks": 840
+          },
+          "wait": {
+            "mean_total_cost": 0.48228699147612564,
+            "ticks": 840
+          }
+        }
+      },
+      "bootstrap_sensor_cost_per_episode": 0.1,
+      "conditional_committed_error": 0.38505405032101575,
+      "coverage": 0.6055555555555555,
+      "effect": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.010292373876156355,
+          0.03239226437354873
+        ],
+        "person_mean": 0.013998748168901167
+      },
+      "field_representation_gate": true,
+      "field_vs_direct_sensor_statistics": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          9.620264345022309e-05,
+          0.023996537087347218
+        ],
+        "person_mean": 0.010202947728059917
+      },
+      "goals": {
+        "audio": {
+          "alternating": 0.48080507868693934,
+          "both": 0.5090466261737876,
+          "learned": 0.4396842684596777,
+          "listen": 0.407250623860293,
+          "look": 0.573008091830545,
+          "periodic": 0.4681786311169465,
+          "raw": 0.44563352974752585,
+          "wait": 0.5890026190628608
+        },
+        "both": {
+          "alternating": 0.7021720771988232,
+          "both": 0.7079525909490055,
+          "learned": 0.6442430992507272,
+          "listen": 0.6576335162752205,
+          "look": 0.7642734427418973,
+          "periodic": 0.6871006985091501,
+          "raw": 0.6681050480653842,
+          "wait": 0.8291436791006062
+        },
+        "video": {
+          "alternating": 0.2713670050104459,
+          "both": 0.29890595123999647,
+          "learned": 0.23934342799087366,
+          "listen": 0.30038290007246865,
+          "look": 0.24126535939673582,
+          "periodic": 0.26892206218714515,
+          "raw": 0.24014106107254823,
+          "wait": 0.24014106107254823
+        }
+      },
+      "independent_test_meetings": 3,
+      "mean_total_cost": {
+        "alternating": 0.48478138696540285,
+        "both": 0.5053017227875966,
+        "learned": 0.44109026523375955,
+        "listen": 0.45508901340266067,
+        "look": 0.526182297989726,
+        "periodic": 0.4747337972710806,
+        "raw": 0.45129321296181946,
+        "wait": 0.5527624530786718
+      },
+      "meeting_cluster_sensitivity_field_vs_raw": {
+        "meeting_cluster_95_interval": [
+          7.74225427045e-05,
+          0.01867579701873992
+        ],
+        "meeting_mean": 0.010202947728059917,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "meeting_cluster_sensitivity_vs_strongest_fixed": {
+        "meeting_cluster_95_interval": [
+          0.004901119683765706,
+          0.02846482909388015
+        ],
+        "meeting_mean": 0.013998748168901167,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "passes_gate": false,
+      "person_costs": {
+        "alternating": {
+          "AMI-FEE041": 0.6270695896612273,
+          "AMI-FEE042": 0.4680985922614733,
+          "AMI-FEE043": 0.3460924558341503,
+          "AMI-FEE044": 0.48041379037830567,
+          "AMI-FEE046": 0.4170177511043019,
+          "AMI-FEE047": 0.3772412892844942,
+          "AMI-FEE055": 0.3011317235728105,
+          "AMI-MEE045": 0.6538983931144079,
+          "AMI-MEE048": 0.49207829584678014,
+          "AMI-MEE053": 0.6344560191035271,
+          "AMI-MEE054": 0.5209213900897238,
+          "AMI-MEE056": 0.49895735333363217
+        },
+        "both": {
+          "AMI-FEE041": 0.5864357034365336,
+          "AMI-FEE042": 0.4746139410469267,
+          "AMI-FEE043": 0.3695657192005051,
+          "AMI-FEE044": 0.5051909655332565,
+          "AMI-FEE046": 0.43975861734814115,
+          "AMI-FEE047": 0.4260001861386829,
+          "AMI-FEE055": 0.35879629022545284,
+          "AMI-MEE045": 0.6466921127504772,
+          "AMI-MEE048": 0.5287566691637039,
+          "AMI-MEE053": 0.6584025568432278,
+          "AMI-MEE054": 0.5454205943478478,
+          "AMI-MEE056": 0.523987317416403
+        },
+        "learned": {
+          "AMI-FEE041": 0.6047475385169189,
+          "AMI-FEE042": 0.3848941495021184,
+          "AMI-FEE043": 0.2840749536537462,
+          "AMI-FEE044": 0.4140162111984359,
+          "AMI-FEE046": 0.3780335755811797,
+          "AMI-FEE047": 0.3227127745747566,
+          "AMI-FEE055": 0.22838819403615263,
+          "AMI-MEE045": 0.6146252443393071,
+          "AMI-MEE048": 0.44972851392295626,
+          "AMI-MEE053": 0.688085800409317,
+          "AMI-MEE054": 0.46380456537008286,
+          "AMI-MEE056": 0.45997166170014275
+        },
+        "listen": {
+          "AMI-FEE041": 0.5477226202686628,
+          "AMI-FEE042": 0.41214156366056864,
+          "AMI-FEE043": 0.3178893515633212,
+          "AMI-FEE044": 0.4445005002948973,
+          "AMI-FEE046": 0.42091052300400206,
+          "AMI-FEE047": 0.3438531026244164,
+          "AMI-FEE055": 0.26852988029519714,
+          "AMI-MEE045": 0.6344177123573091,
+          "AMI-MEE048": 0.4797780868079927,
+          "AMI-MEE053": 0.6046501346760326,
+          "AMI-MEE054": 0.4918901880582174,
+          "AMI-MEE056": 0.49478449722131096
+        },
+        "look": {
+          "AMI-FEE041": 0.7289733605252372,
+          "AMI-FEE042": 0.5377751107017199,
+          "AMI-FEE043": 0.39547147825360296,
+          "AMI-FEE044": 0.5330983175171746,
+          "AMI-FEE046": 0.4223769341905912,
+          "AMI-FEE047": 0.41181621741917396,
+          "AMI-FEE055": 0.31555076787869135,
+          "AMI-MEE045": 0.6936480864882469,
+          "AMI-MEE048": 0.5047733181052738,
+          "AMI-MEE053": 0.7083266228437424,
+          "AMI-MEE054": 0.5491609873043166,
+          "AMI-MEE056": 0.5132163746489419
+        },
+        "periodic": {
+          "AMI-FEE041": 0.6113242563274172,
+          "AMI-FEE042": 0.445403287311395,
+          "AMI-FEE043": 0.32953840469320617,
+          "AMI-FEE044": 0.4651885958181487,
+          "AMI-FEE046": 0.4095578137371275,
+          "AMI-FEE047": 0.37103189325167074,
+          "AMI-FEE055": 0.3049520475996865,
+          "AMI-MEE045": 0.6238771461778216,
+          "AMI-MEE048": 0.48415787054432763,
+          "AMI-MEE053": 0.6288912501600054,
+          "AMI-MEE054": 0.5136698537402683,
+          "AMI-MEE056": 0.5092131478918923
+        },
+        "raw": {
+          "AMI-FEE041": 0.6489887493352096,
+          "AMI-FEE042": 0.38441065930657914,
+          "AMI-FEE043": 0.2840749536537462,
+          "AMI-FEE044": 0.4176809850666258,
+          "AMI-FEE046": 0.38178506791591643,
+          "AMI-FEE047": 0.3253586707843675,
+          "AMI-FEE055": 0.22838819403615263,
+          "AMI-MEE045": 0.6088971997300784,
+          "AMI-MEE048": 0.4493688601586554,
+          "AMI-MEE053": 0.7591744770606359,
+          "AMI-MEE054": 0.46741907679372363,
+          "AMI-MEE056": 0.45997166170014275
+        },
+        "wait": {
+          "AMI-FEE041": 0.7111047967440552,
+          "AMI-FEE042": 0.38441065930657914,
+          "AMI-FEE043": 0.2840749536537462,
+          "AMI-FEE044": 1.2952670200003518,
+          "AMI-FEE046": 0.3809112181266149,
+          "AMI-FEE047": 0.3253586707843675,
+          "AMI-FEE055": 0.22838819403615263,
+          "AMI-MEE045": 0.8876998485790358,
+          "AMI-MEE048": 0.4493688601586554,
+          "AMI-MEE053": 0.7591744770606359,
+          "AMI-MEE054": 0.46741907679372363,
+          "AMI-MEE056": 0.45997166170014275
+        }
+      },
+      "risk_absolute_calibration_error": 0.1835694838522209,
+      "strongest_fixed": "listen"
+    },
+    "utility_counts_all_ticks": true
+  },
+  "experiment_id": "EXP-P1-101",
+  "interpretation": {
+    "decision": "See registered cost/coverage gate",
+    "language_hallucination_claim": false,
+    "physical_world_control": false
+  },
+  "model": {
+    "actor_neural_parameters": 132616,
+    "world": "EXP-T2-801",
+    "world_weights_frozen": true
+  },
+  "registry_writer_sha256": "ead3cf71f5b8ffefbf7e3b62510b76c23d13f34a982542bc2e064bc7dce7992a",
+  "repository": {
+    "git_commit_at_registry_write": "b762642b4f649a1158d81de2f7dfc78afd603b13",
+    "source_hashes": {
+      "configs/policy/stream_sensing.json": "ea74712c9de93f16b9f4cb22bd562dca5f156e142e89fe1cd369f04851016758",
+      "docs/research/stream_sensing_protocol_20261105.md": "e20a50c1f130e889f696d41fd3e4d06074911fe945fbf7e024af127f029741ff",
+      "tests/test_stream_sensing.py": "9f57c80731e864f5247c495adfb827d0dfbf90fcdfeb9b63714fde0c64f60de4",
+      "training/stream_sensing.py": "5719d746c843dc7d2e78b72da0c117dbb3814cb15b75d3115dac8e199ecf9361"
+    }
+  },
+  "sprint": {
+    "id": "P1",
+    "name": "P1-S1 exploratory sensing",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "actual": {
+      "actual_steps": 400,
+      "best_held_person_log_risk_mse": 0.24057979881763458,
+      "calibration_people_used_for_weight_selection": false,
+      "early_stop": true,
+      "fit_examples": 3300,
+      "normalization_fit_people": 22,
+      "selected_step": 100,
+      "test_read": false,
+      "validation_examples": 900,
+      "validation_people": [
+        "AMI-MEE014",
+        "AMI-MEE008",
+        "AMI-FEE029",
+        "AMI-FEE024",
+        "AMI-FEE032",
+        "AMI-FEE030"
+      ]
+    },
+    "best_optimizer": "experiments/policy/continuous-sensing-20261105/EXP-T2-801/best_optimizer.pt",
+    "last_optimizer": "experiments/policy/continuous-sensing-20261105/EXP-T2-801/last_optimizer.pt",
+    "protocol": "docs/research/stream_sensing_protocol_20261105.md",
+    "protocol_sha256": "e20a50c1f130e889f696d41fd3e4d06074911fe945fbf7e024af127f029741ff"
+  },
+  "updated_at": "2026-11-06"
+}
