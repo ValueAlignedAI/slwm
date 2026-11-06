@@ -38,12 +38,16 @@ def native_clock(path,observed):
         needed=('observation/robot_state/cartesian_position','observation/timestamp/robot_state/robot_timestamp_seconds','observation/timestamp/robot_state/robot_timestamp_nanos')
         if any(key not in h for key in needed):return None,{'verified':False,'reason':'Required raw pose/native clock datasets absent'}
         raw=np.asarray(h['observation/robot_state/cartesian_position'])
-        if raw.shape!=observed.shape or not np.allclose(raw,observed,atol=2e-6,rtol=0):return None,{'verified':False,'reason':'Raw/RLDS pose alignment failed'}
+        # RLDS commonly omits the final raw frame. Accept only an exact full
+        # prefix match with zero or one extra raw tail, never a nearest match.
+        tail=len(raw)-len(observed)
+        if tail not in (0,1) or raw.shape[1:]!=observed.shape[1:] or not np.allclose(raw[:len(observed)],observed,atol=2e-6,rtol=0):return None,{'verified':False,'reason':'Raw/RLDS pose alignment failed'}
         a=np.asarray(h['observation/timestamp/robot_state/robot_timestamp_seconds'],np.int64)
         b=np.asarray(h['observation/timestamp/robot_state/robot_timestamp_nanos'],np.int64)
-        stamp=a*1000000000+b;seconds=(stamp-stamp[0]).astype(np.float64)/1e9
+        if len(a)!=len(raw) or len(b)!=len(raw):return None,{'verified':False,'reason':'Raw pose/clock length mismatch'}
+        stamp=(a*1000000000+b)[:len(observed)];seconds=(stamp-stamp[0]).astype(np.float64)/1e9
         if not (np.isfinite(seconds).all() and np.all(np.diff(seconds)>0)):return None,{'verified':False,'reason':'Nonmonotonic/missing native robot clock'}
-        return seconds,{'verified':True,'raw_pose_max_error':float(np.max(np.abs(raw-observed))),'seconds':float(seconds[-1]),'median_interval_seconds':float(np.median(np.diff(seconds))),'timestamp_source':'robot_state seconds+nanos, integer subtraction before float conversion','raw_h5_sha256':file_sha(path)}
+        return seconds,{'verified':True,'raw_pose_max_error':float(np.max(np.abs(raw[:len(observed)]-observed))),'raw_tail_frames_not_in_rlds':tail,'seconds':float(seconds[-1]),'median_interval_seconds':float(np.median(np.diff(seconds))) if len(seconds)>1 else None,'timestamp_source':'robot_state seconds+nanos, integer subtraction before float conversion; every RLDS pose matched to its raw prefix','raw_h5_sha256':file_sha(path)}
 
 
 def episode(item,reuse,old_metadata):
@@ -72,7 +76,13 @@ def episode(item,reuse,old_metadata):
         match=re.search(r'/([^/]+)/(?:success|failure)/(\d{4}-\d{2}-\d{2})/',raw_path);assert match,raw_path
         collector,date=match.groups();key='DROID-'+order(raw_path)[:20]
         row={'id':key,'raw_path':raw_path,'collector':collector,'session_date':date,'steps':n,'source_payload_sha256':card['sha256']}
-        info=metadata(row,FAMILY);metadata_path=ROOT/FAMILY/'raw_metadata'/key
+        try:info=metadata(row,FAMILY)
+        except ValueError as exc:
+            if str(exc)!='Ambiguous metadata candidate':raise
+            # An unresolved collector identity cannot enter any identity split.
+            # Preserve every candidate listing, rather than choosing a user ID.
+            info={'id':key,'metadata_unavailable':True,'reason':str(exc),'candidate_listings':{p.name:file_sha(p) for p in (root/'raw_metadata'/key).glob('*_listing.json')}}
+        metadata_path=ROOT/FAMILY/'raw_metadata'/key
         if not info.get('metadata_unavailable'):
             dest=CACHE/FAMILY/key;dest.mkdir(parents=True,exist_ok=True)
             observed=array(features['steps/observation/cartesian_position'],6,n);commanded=array(features['steps/action_dict/cartesian_position'],6,n)

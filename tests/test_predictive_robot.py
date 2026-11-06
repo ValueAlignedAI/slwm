@@ -12,3 +12,7 @@ def test_native_clock_requires_pose_alignment_and_preserves_nanosecond_differenc
     clock,audit=native_clock(path,pose)
     assert audit['verified'] and np.allclose(clock,[0,.0400001,.0800002],atol=1e-10,rtol=0)
     assert native_clock(path,pose+1)[0] is None
+    short,audit=native_clock(path,pose[:2])
+    assert audit['verified'] and audit['raw_tail_frames_not_in_rlds']==1
+    assert np.array_equal(short,clock[:2])
+    assert native_clock(path,pose[:1])[0] is None

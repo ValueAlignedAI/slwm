@@ -72,10 +72,12 @@ def freeze():
         saved=json.loads(marker.read_text());assert saved['configuration_sha256']==file_sha(CONFIG);return saved
     acquisition=ROOT/cfg['robot_family']/'acquisition_complete.json';assert acquisition.exists()
     path=ROOT/cfg['robot_family']/'raw_metadata/scene_role_plan.json';plan=json.loads(path.read_text());rows=plan['rows'];assert sum(r['role']=='train' for r in rows)>=400
-    previous=dict(np.load(CACHE/'normalizers.npz'));numeric=Moments(10);action=Moments(7);cases=[];live=[]
+    previous=dict(np.load(CACHE/'normalizers.npz'));numeric=Moments(10);action=Moments(7);cases=[];live=[];hours={role:0. for role in ('train','selection','calibration','test')}
     assert sum(r['role']=='train' and r['steps']>=40 for r in rows)>=400
     assert sum(r['role']=='train' and r['steps']>=72 for r in rows)>=300
     for row in rows:
+        assert all(file_sha(CACHE/cfg['robot_family']/row['id']/name)==digest for name,digest in row['files'].items()),'Robot cache changed after acquisition'
+        if row['physical_timestamps']:hours[row['role']]+=row['clock_audit']['seconds']/3600
         data=np.load(CACHE/cfg['robot_family']/row['id']/'trajectory.npz');moving=moving_starts(data,cfg['context'],cfg['horizon']);row['moving_starts']=moving.tolist()
         if row['role']=='train':numeric.add(rotation6d(data['observed'],data['gripper']));action.add(data['action'])
         maximum=row['steps']-cfg['context']-cfg['horizon']+1
@@ -95,7 +97,7 @@ def freeze():
     har=PREPARED/'har/complete.json';assert har.exists()
     audit=PREPARED/'decoder_recovery_audit.json';assert json.loads(audit.read_text())['passed']
     result={'configuration_sha256':file_sha(CONFIG),'old_frozen_cache_hashes_sha256':file_sha(CACHE/'cache_hashes.json'),'robot_acquisition_sha256':file_sha(acquisition),'robot_roles_sha256':file_sha(path),'robot_rows_sha256':file_sha(PREPARED/'robot_rows.json'),'normalizers_sha256':file_sha(cfg['normalizers']),'evaluation_cases_sha256':file_sha(PREPARED/'evaluation_cases.json'),'har_sha256':file_sha(har),'training_robot_episodes':sum(r['role']=='train' for r in rows),'training_robot_steps':sum(r['steps'] for r in rows if r['role']=='train'),'training_moving_windows':sum(len(r['moving_starts']) for r in rows if r['role']=='train'),'role_counts':{role:sum(r['role']==role for r in rows) for role in ('train','selection','calibration','test')},'clock_verified_counts':{role:sum(r['role']==role and r['physical_timestamps'] for r in rows) for role in ('train','selection','calibration','test')},'normalization_scope':'Existing nonrobot training-only moments; robot/action moments recomputed from G2 training groups only','core_never_receives_har_or_mhealth_labels':True}
-    result.update(decoder_recovery_audit_sha256=file_sha(audit),robot_source_plan_sha256=file_sha(ROOT/cfg['robot_family']/'source_plan.json'),eligible_training_32=sum(r['role']=='train' and r['steps']>=40 for r in rows),eligible_training_64=sum(r['role']=='train' and r['steps']>=72 for r in rows))
+    result.update(unique_robot_physical_hours=hours,robot_group_counts=plan['group_counts'],decoder_recovery_audit_sha256=file_sha(audit),robot_source_plan_sha256=file_sha(ROOT/cfg['robot_family']/'source_plan.json'),eligible_training_32=sum(r['role']=='train' and r['steps']>=40 for r in rows),eligible_training_64=sum(r['role']=='train' and r['steps']>=72 for r in rows))
     write(marker,result);return result
 
 

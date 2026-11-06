@@ -15,11 +15,13 @@ from training.research_sources import file_sha
 def main():
     assert api_implementation.Type()=='python'
     transport.FAMILY='droid_g2';base=Path('artifacts/predictive_world/g2');revision=base/'acquisition_revision.json';cutoff=revision.stat().st_mtime
-    old={r['id'] for r in json.loads((CACHE/'droid_expanded/rows.json').read_text())};Example=example_type();results=[]
+    old={r['id'] for r in json.loads((CACHE/'droid_expanded/rows.json').read_text())};Example=example_type();results=[];novel=0;linked=0
     for receipt in sorted((ROOT/'droid_g2/receipts').glob('*.json')):
-        if receipt.stat().st_mtime>cutoff:continue
         record=json.loads(receipt.read_text());row=record.get('row')
-        if not row or row['id'] in old:continue
+        if not row:continue
+        if row['id'] in old:linked+=1;continue
+        novel+=1
+        if (CACHE/'droid_g2'/row['id']/'trajectory.npz').stat().st_mtime>cutoff:continue
         card=transport.acquire(record['object'],256*1024**2);assert card['sha256']==row['source_payload_sha256']
         payload=next(checked_records(card['file'],native_crc()));message=Example.FromString(payload);features=message.features.feature;n=row['steps'];folder=CACHE/'droid_g2'/row['id'];cached=np.load(folder/'trajectory.npz')
         observed=array(features['steps/observation/cartesian_position'],6,n);commanded=array(features['steps/action_dict/cartesian_position'],6,n);gripper=array(features['steps/observation/gripper_position'],1,n);commanded_gripper=array(features['steps/action_dict/gripper_position'],1,n)
@@ -31,7 +33,7 @@ def main():
             for tick,frame in enumerate(frames):assert np.array_equal(rgb(frame),pixels[tick,view]);count+=1
         results.append({'id':row['id'],'receipt_sha256':file_sha(receipt),'source_sha256':card['sha256'],'trajectory_arrays_equal':checks,'decoded_rgb_frames_equal':count})
         write(base/'decoder_recovery_audit_progress.json',results);Path(card['file']).unlink()
-    write(base/'decoder_recovery_audit.json',{'passed':True,'records':results,'backend':'python','source_sha256':file_sha(__file__),'scope':'All novel v1 decoded records prior to native protobuf crash rechecked against complete CRC-verified public source payloads; G1 linked caches were already verified'})
+    write(base/'decoder_recovery_audit.json',{'passed':True,'records':results,'novel_caches_at_audit':novel,'linked_old_verified_caches':linked,'precrash_novel_caches':len(results),'cutoff_unix':cutoff,'backend':'python','source_sha256':file_sha(__file__),'scope':'Census uses trajectory creation before revision cutoff. Recheck every novel precrash cache; zero means the native crash preceded any durable novel cache. Linked G1 caches retain their original verification.'})
 
 
 if __name__=='__main__':main()
