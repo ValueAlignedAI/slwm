@@ -4,7 +4,8 @@ from pathlib import Path
 import numpy as np
 from google.protobuf.internal import api_implementation
 from training import general_droid_sample as transport
-from training.action_data_probe import example_type,array
+from training.action_data_probe import array
+from training.predictive_proto import example_type
 from training.general_batch import rotation6d
 from training.general_data import ROOT,CACHE,native_crc,checked_records,rgb,pose_delta
 from training.general_sources import write
