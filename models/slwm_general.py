@@ -67,15 +67,25 @@ class GeneralWorld(nn.Module):
             self.blocks=nn.ModuleList([FieldBlock(width,heads) for _ in range(layers)]); self.norm=nn.LayerNorm(width)
             self.query_norm=nn.LayerNorm(width); self.query_attention=nn.MultiheadAttention(width,heads,batch_first=True); self.query_kind=nn.Embedding(4,width)
             self.action_edge=nn.Sequential(nn.Linear(7,width),nn.SiLU(),nn.Linear(width,width))
-            self.embedding=nn.Linear(width,128); self.mel=nn.Sequential(nn.Linear(width,width),nn.SiLU(),nn.Linear(width,400))
+            self.embedding=nn.Linear(width,128); self.future_embedding=nn.Linear(width,128); self.mel=nn.Sequential(nn.Linear(width,width),nn.SiLU(),nn.Linear(width,400))
             self.numeric=nn.Linear(width,64); self.picture=nn.Linear(width,3*16*16); self.phones=nn.Linear(width,4*phone_count); self.characters=nn.Linear(width,29)
             self.action=nn.Sequential(nn.Linear(width,width),nn.SiLU(),nn.Linear(width,14)); self.risk=nn.Linear(width,1)
             self.correspondence=nn.Sequential(nn.Linear(128*4,256),nn.SiLU(),nn.Linear(256,1))
+            self.register_buffer("action_ready",torch.tensor(False))
+            for layer in (self.mel[-1],self.numeric,self.picture):
+                nn.init.zeros_(layer.weight);nn.init.zeros_(layer.bias)
         if variant=="slwm":
             with torch.random.fork_rng():
                 torch.manual_seed(seed+9000)
                 for block in self.blocks: block.signal=TemporalSignal(width)
-        elif variant not in ("transformer","pooled_transformer"): raise ValueError(variant)
+        elif variant=="pooled_transformer":
+            # A conventional fixed-modality fusion control at almost the same
+            # parameter budget. Replace learned latent resampling with dense
+            # binding of fine audio bins, named scalar channels and camera views.
+            del self.resample,self.resample_norm
+            with torch.random.fork_rng():
+                torch.manual_seed(seed+17000);self.fixed_audio=nn.Linear(400,width);self.fixed_numeric=nn.Linear(128,width);self.fixed_views=nn.Linear(3*width,width)
+        elif variant!="transformer": raise ValueError(variant)
 
     def clock_features(self,time,unit,origin=None):
         """Relative timestamps[B,T] and unit[B] -> positional field[B,T,D]."""
@@ -85,11 +95,11 @@ class GeneralWorld(nn.Module):
         return self.clock(features)+self.unit(unit)[:,None]
 
     def forward(self,obs):
-        time=obs["time"]; b,t=time.shape; device=time.device; tokens=[]; masks=[]; clock=self.clock_features(time,obs["time_unit"])
+        time=obs["time"]; b,t=time.shape; device=time.device; tokens=[]; masks=[]; kinds=[]; clock=self.clock_features(time,obs["time_unit"])
         def append(values,present,kind):
             # Erase missing content before *every* learned edge, as well as after.
             # Edges below already receive erased values; masked tokens cannot bind.
-            tokens.append(values+self.modality.weight[kind]+clock[:,:,None]); masks.append(present)
+            tokens.append(values+self.modality.weight[kind]+clock[:,:,None]); masks.append(present);kinds.append(kind)
         if "audio" in obs:
             present=obs["audio_present"] & obs["valid"][...,None]; values=obs["audio"].masked_fill(~present[...,None],0)
             append(self.audio_edge(values)+self.audio_subframe.weight[None,None],present,0)
@@ -116,18 +126,31 @@ class GeneralWorld(nn.Module):
         values=torch.cat(tokens,2); present=torch.cat(masks,2); values=values.masked_fill(~present[...,None],0)
         queries=self.latents[None,None]+clock[:,:,None]; queries=queries.expand(b,-1,-1,-1)
         if self.variant=="pooled_transformer":
-            # Parameter-labelled deterministic bottleneck ablation, not the primary
-            # matched comparison. All edge tokens contribute without task routing.
-            average=values.sum(2)/present.sum(2).clamp_min(1)[...,None]
-            z=queries+average[:,:,None]
+            if self.slots!=4:raise ValueError("Fixed-modality control requires4 slots")
+            slots=[clock+self.modality.weight[kind] for kind in range(4)]
+            for value,mask,kind in zip(tokens[:-1],masks[:-1],kinds):
+                feature=F.silu(value).masked_fill(~mask[...,None],0).sum(2)/mask.sum(2).clamp_min(1)[...,None]
+                if kind==0:
+                    raw=obs["audio"].masked_fill(~obs["audio_present"][...,None],0);feature=feature+self.fixed_audio(raw.flatten(2))
+                elif kind==2:
+                    raw=obs["numeric"].masked_fill(~obs["numeric_present"],0);feature=feature+self.fixed_numeric(torch.cat((raw,obs["numeric_present"].to(raw.dtype)),-1))
+                elif kind==1:
+                    views=obs["images"].shape[2]
+                    if views>3:raise ValueError("Fixed-modality baseline supports the3 registered camera views")
+                    local=value.reshape(b,t,views,16,self.width);visible=mask.reshape(b,t,views,16)
+                    pooled=local.masked_fill(~visible[...,None],0).sum(3)/visible.sum(3).clamp_min(1)[...,None]
+                    feature=feature+self.fixed_views(F.pad(pooled,(0,0,0,3-views)).flatten(2))
+                slots[kind]=feature
+            z=queries+torch.stack(slots,2)
         else:
             z=queries+self.resample(queries.reshape(b*t,self.slots,self.width),self.resample_norm(values).reshape(b*t,-1,self.width),self.resample_norm(values).reshape(b*t,-1,self.width),key_padding_mask=~present.reshape(b*t,-1),need_weights=False)[0].reshape(b,t,self.slots,self.width)
         for block in self.blocks: z=block(z,obs["valid"])
         z=self.norm(z); valid=obs["valid"][...,None,None]
         pooled=(z*valid).sum((1,2))/(obs["valid"].sum(1).clamp_min(1)*self.slots)[:,None]
-        return {"field":z,"embedding":F.normalize(self.embedding(pooled).float(),dim=-1),"sequence_embedding":F.normalize(self.embedding(z.mean(2)).float(),dim=-1),"valid":obs["valid"],"last":z[:,-1].mean(1),"time_origin":time[:,:1]}
+        raw=self.embedding(pooled).float()
+        return {"field":z,"raw_embedding":raw,"embedding":F.normalize(raw,dim=-1),"sequence_embedding":F.normalize(self.embedding(z.mean(2)).float(),dim=-1),"valid":obs["valid"],"last":z[:,-1].mean(1),"time_origin":time[:,:1]}
 
-    def query(self,state,times,time_unit,kind,planned_actions=None):
+    def query(self,state,times,time_unit,kind,planned_actions=None,view=None):
         """Received field[B,T,K,D] + requested times[B,Q] -> readouts[B,Q,D].
 
         Repair queries may inspect the entire explicitly received window. Future
@@ -136,6 +159,7 @@ class GeneralWorld(nn.Module):
         """
         z=state["field"]; b,t,k,d=z.shape; q=self.clock_features(times,time_unit,state["time_origin"])+self.query_kind.weight[kind]
         if planned_actions is not None: q=q+self.action_edge(planned_actions)
+        if view is not None:q=q+self.view.weight[view]
         key=z.reshape(b,t*k,d); return q+self.query_attention(self.query_norm(q),key,key,key_padding_mask=~state["valid"].repeat_interleave(k,1),need_weights=False)[0]
 
     def propose(self,features,family):
@@ -146,6 +170,7 @@ class GeneralWorld(nn.Module):
         if family=="phones": return self.phones(features).float().reshape(*features.shape[:-1],4,self.phone_count)
         if family=="characters": return self.characters(features).float()
         if family=="action":
+            if not bool(self.action_ready):raise RuntimeError("Train/load the frozen-state actor before requesting actions")
             values=self.action(features).float(); return {"mean":values[...,:7],"log_scale":values[...,7:].clamp(-5,3),"risk":self.risk(features).float()[...,0],"status":"internal_proposal"}
         raise ValueError(family)
 

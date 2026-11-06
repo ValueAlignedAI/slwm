@@ -1,13 +1,14 @@
 {
   "root": "experiments/multimodal/t2/general-transfer-20261106",
   "data_root": "artifacts/general_world/diverse_v1/prepared",
+  "robot_family": "droid_expanded",
   "seed": 101,
   "context": 32,
   "horizon": 8,
   "slots": 4,
   "heads": 8,
-  "batch_temporal": 32,
-  "batch_static": 64,
+  "batch_temporal": 64,
+  "batch_static": 256,
   "updates": 12000,
   "slice_updates": 128,
   "milestones": [3000, 6000, 12000],
@@ -17,7 +18,13 @@
   "warmup_updates": 512,
   "weight_decay": 0.1,
   "gradient_clip": 1.0,
-  "family_schedule_100": {"coco": 35, "speech": 35, "ami": 12, "clotho": 8, "pamap2": 5, "droid": 5},
+  "family_schedule_100": {"coco": 40, "speech": 40, "ami": 10, "clotho": 5, "pamap2": 3, "droid": 2},
+  "loss_weights": {"masked": 1.0, "future": 1.0, "latent": 0.2, "phones": 0.2, "ctc": 0.2, "alignment": 0.1, "correspondence": 0.2, "variance": 0.1, "risk": 0.05, "distillation": 0.1},
+  "phone_teacher_min_confidence": 0.8,
+  "ema_decay": 0.996,
+  "tokenizer": {"name": "gpt2", "implementation": "tiktoken", "version": "0.14.0"},
+  "future_audio_guard_packets": 2,
+  "speech_mode_mix": {"repair": 0.7, "audio": 0.2, "text_prefix": 0.1},
   "runs": [
     {"id": "G1-101", "variant": "slwm", "width": 512, "layers": 10, "seed": 101},
     {"id": "G1-102", "variant": "transformer", "width": 512, "layers": 10, "seed": 101},
@@ -27,8 +34,11 @@
     {"id": "G1-106", "variant": "transformer", "width": 256, "layers": 4, "seed": 101},
     {"id": "G1-107", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "shuffle_alignment": true},
     {"id": "G1-108", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "no_future_loss": true},
+    {"id": "G1-109", "variant": "pooled_transformer", "width": 512, "layers": 10, "seed": 101},
     {"id": "G1-111", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["speech", "ami"]},
     {"id": "G1-112", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["pamap2"]},
-    {"id": "G1-113", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["droid"]}
+    {"id": "G1-113", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["droid"]},
+    {"id": "G1-114", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["coco"]},
+    {"id": "G1-115", "variant": "slwm", "width": 512, "layers": 10, "seed": 101, "only_families": ["clotho"]}
   ]
 }

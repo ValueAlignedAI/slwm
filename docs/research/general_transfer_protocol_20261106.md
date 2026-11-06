@@ -16,7 +16,7 @@ content without accepting mistimed video. Failure, negative transfer and weak
 decoder ceilings are informative outcomes; no capability is assumed.
 
 The configuration specifies both main seeds, a smaller paired scale, shuffled
-alignment, no-future-loss and three full-capacity specialist controls. The
+alignment, no-future-loss and five identical-processor specialist controls. The
 specialists consume exactly the corresponding target-family calls from the
 mixed schedule; report their smaller training time and the aggregate cost of
 three separate models. Match data, initialization of common weights, optimizer,
@@ -55,12 +55,30 @@ not listen/look labels. No physical actuator is attached.
 
 Objectives combine masked/future signal errors, actual MFA frame-phone and CTC
 content losses, real-pair contrastive alignment, cross-view prediction and
-action-conditioned consequences. Keep separate loss/exposure ledgers. Multiple
+action-conditioned consequences. An EMA copy supplies stopped-gradient future
+latent targets; report its training compute/storage separately from inference
+parameters. No-future controls remove raw and latent future losses together.
+Provided MFA forced alignments are external supervised annotations, not an
+executed/unaccounted recognition teacher. Keep separate loss/exposure ledgers. Multiple
 captions of one record are positives, not negatives. Activity labels remain out
 of shared pretraining and are used only for new frozen-core readouts. Fine FFT
 support masks prevent hidden waveform contamination; preserve all observed mel
 frames exactly at rendering. Calibration can choose a residual/commit threshold
 only from its registered role, before final tests.
+
+On active, nonoverlapping-owner AMI windows, the EMA audio branch also supplies
+frame-phone labels for the independent video branch, only at confidence>=0.8.
+This stopped-gradient self-distillation is an explicit, counted training path;
+its moving labels never select weights. The semantic-shuffle control shuffles
+contrastive semantic partners while retaining dense timing/content supervision.
+Training timing negatives include±4/8/24/70 packets (about171ms to3s), always
+within the same person. The core receives claimed-aligned clocks, never the
+offset label. Primary wrong-time tests use±8/24 packets;±2/4 are harder diagnostic
+lags. A metadata stale-frame rejection rule is separate from learned matching.
+
+The separately registered R1 phonetic renderer uses only the earlier100h training
+source and old dev-other selection people. Freeze that common acoustic edge;
+compare predicted-phone, oracle-phone and direct-mel rendering explicitly.
 
 ## Data and leakage controls
 
@@ -87,12 +105,19 @@ by a rule fixed before content scoring. Retain quiet and overlapping-owner
 conditions as explicit strata; owner transcripts do not label all audible speech.
 Old B1 training observations may be reused only in the training role.
 
-All100 DROID debugging episodes are fully CRC/JPEG/action-contract audited.
-Initial roles are collector-day disjoint. Raw building/scene metadata, where
-available, must establish stronger group roles before any unseen-environment
-claim. Keep unavailable metadata and source failures. A100-episode preview is
-not a robotics scale corpus. The records lack timestamps: forecast horizons are
-ordinal steps until cadence is independently verified. Rotation errors use
+The100-episode DROID debug audit is preparation only. G1 instead acquires384
+complete first records from deterministic hash-selected shards of the full
+official1.0.1 release, capped at16GiB of record bytes. Generation IDs, exact HTTP
+ranges, whole-record CRCs and local SHA256 identify every record; whole-shard
+published MD5 is retained but is not claimed verified from a partial range.
+This is a bounded shard-prefix sample, not uniform sampling of all episodes.
+Every JPEG and explicit commanded-pose action contract is audited. Raw metadata
+is available for288 episodes, forming20 connected building/collector groups:
+10 train,3 selection,2 calibration,5 final. The96 unverified records remain
+retained outside model fitting/evaluation; no outcome informed this exclusion.
+Keep unavailable metadata and source failures. This remains a small robotics
+pilot rather than a scale-trained robot model. RLDS lacks timestamps: horizons
+stay ordinal steps until cadence is independently verified. Rotation errors use
 SO(3) geodesics, not wrapped or raw Euler-coordinate MSE.
 
 Before fitting, freeze a dataset card with actual roles/counts/hours, all source
@@ -123,6 +148,10 @@ an average cannot hide a collapsed modality. With few groups, wide intervals
 mean insufficient evidence.
 
 Robot consequences report translation, SO(3) and gripper errors at1/4/8 steps;
+include commanded-pose-as-next-state as a strong servo-tracking baseline and
+last-frame/zero-motion visual controls, so copying commands or backgrounds
+cannot count as learned physical consequences. Future-image motion and latent
+errors are distinct from background-dominated pixel error.
 action removal/shuffling must harm prediction if action grounding is claimed.
 Frozen actors predict commands from observed history with current target action
 absent. Offline imitation and action sensitivity are not closed-loop success.
@@ -135,6 +164,13 @@ of transfer. Source-hidden readouts and input/action interventions carry the
 generality claim. Commitment/uncertainty diagnostics report usefulness alongside
 coverage; always-abstain does not pass.
 
+The disposable hardware preflight precedes all real-data fitting: choose batch64
+for temporal observations and256 for static image/caption pairs. The source mix
+is40% scene,40% speech,10% paired speech,5% environmental sound,3% wearable and2%
+robot calls. Full clip caption targets use full-clip coarse spectral packets;
+fine speech clocks remain explicit. Report record/target exposure, not just
+batch counts; distinct modalities' packets are not interchangeable text tokens.
+
 Budget: at most12000 schedule positions/model, with3000/6000/12000 milestones,
 128-update GPU-lock slices, validation-only selection and early termination for
 nonfinite loss or two consecutive validation regressions over10%. No final test
@@ -142,4 +178,16 @@ is opened before every compared arm is frozen. Endpoints are primary; selected
 weights carry their actual exposure. Report active GPU time, queue/I/O overhead,
 throughput/peak memory and cold versus warm runtime separately. Fit no scaling
 law from two sizes. Refine the wall-clock ETA from preflight measurements before
-launching this matrix alongside the500M text continuation.
+launching this matrix alongside the500M text continuation. Train the four main
+representations to3000 positions first, then the remaining controls to3000, then
+all to6000 and12000. This prioritizes early selection diagnostics without
+changing budgets, data calls or the final-test lock.
+
+The held modality-combination diagnostic uses audio-to-image semantic retrieval
+without training direct image/audio pairs. Freeze category names before fit:
+dog,cat,bird,car,motorcycle,train,bus,horse,sheep,cow. Require consensus mentions
+in at least2/5 Clotho captions and COCO's actual object-instance annotations.
+Report unavailable classes and all counts; never choose categories after scoring.
+This is semantic-category agreement, not proof of shared physical events.
+Compare direct shared embeddings with separate source specialists connected only
+through these fixed text prototypes, and the semantic-shuffle control.
