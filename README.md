@@ -116,7 +116,7 @@ pytest
 Latest complete suite on Fedora (2026-11-05):
 
 ```text
-163 passed
+166 passed
 ```
 
 The previous completed content/timing study passed133 tests.
