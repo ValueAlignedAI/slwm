@@ -1,0 +1,47 @@
+{
+  "seeds": [
+    301,
+    302
+  ],
+  "projection": 128,
+  "hidden": 128,
+  "batch": 256,
+  "updates": 2000,
+  "validation_every": 100,
+  "patience": 3,
+  "learning_rate": 0.001,
+  "weight_decay": 0.01,
+  "target_scale_floor": 0.01,
+  "raw_image_side": 8,
+  "horizons": [
+    1,
+    4,
+    8
+  ],
+  "core_comparisons": [
+    "G2-201",
+    "G2-202",
+    "G2-203",
+    "G2-204",
+    "G2-205",
+    "G2-206",
+    "G2-207",
+    "G2-208",
+    "G2-209",
+    "G2-210",
+    "G2-211",
+    "G2-212"
+  ],
+  "edge_controls": [
+    "G2-201",
+    "G2-202"
+  ],
+  "shared_raw_text_edge": "G2-201",
+  "selection": "Mean over both readout seeds; strongest baseline chosen on selection only. Average readout-seed predictions per core for group effects; preserve every seed score.",
+  "random_controls": [
+    "G2-201",
+    "G2-202",
+    "G2-205",
+    "G2-206"
+  ]
+}
