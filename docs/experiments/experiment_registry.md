@@ -627,3 +627,44 @@ The [completed findings](../research/operational_findings_20261106.md) retain th
 negative results and post-test crosstalk/presentation audit. The compiled pilots
 are auxiliary; the primary completed registry contains22 entries. No physical
 control or general world-model success follows from these runs.
+
+
+## 15. Cross-source reuse and500M text — registered2026-11-06
+
+The immutable per-study source snapshots/configs and protocols were saved before
+optimizer updates; this index consolidates their trace after launch. Base source
+lineage is `4ecc640` for S5 and `3174102` plus its captured working-tree sources
+for G1. `source_hashes.json` and `source_snapshot/` are the exact run authority,
+including files committed later without changing their bytes. The independent
+studies share the3090 through one GPU lease, not model weights.
+
+| IDs / study | Status | Registered budget, comparison and artifacts |
+|---|---|---|
+| `EXP-T1-231`–`234`, T1-S5 | Running | GPT-2-style124,439,808 / SCS125,131,008 parameters, seeds81/82,151M optimizer/RNG parents to500,006,912 tokens each;10,651 added64×512 updates. Fixed endpoint plus selected/parent diagnostics on a new524,288-token test slice after all four freeze. `configs/t1/fineweb_500m.json`, `docs/research/text_500m_protocol_20261106.md`, `experiments/text/t1/500m-20261106/`. |
+| `G1-101`–`104`, T2-GeneralTransfer-G1 | Running | Main SCS50,891,033 / latent Transformer50,675,993 total learned parameters, seeds101/102;12,000 matched mixed-family schedule positions,32 received packets/eight future queries, four latent slots. Fresh-speaker speech, withheld-source/activity and new-task action readouts, paired retrieval and consequences. `configs/t2/general_transfer.json`, `docs/research/general_transfer_protocol_20261106.md`, `experiments/multimodal/t2/general-transfer-20261106/`. These IDs are separate from the older conditional-generation T2-G1 study. |
+| `G1-105`–`109` | Running/queued | Width256×4 SCS/Transformer; main-size shuffled alignment, no-future-loss and fixed-modality Transformer. Same source plans, exact parameter counts/completion in each run. Two sizes/one small-model seed do not establish a scaling law. |
+| `G1-111`–`115` | Queued | Speech/meeting, wearable, robot, image-caption and sound-caption specialists, respectively; main-size processor, target-family call exposure matched, lower per-model compute. Core action heads remain untrained; downstream frozen-state actors are separately fitted/countable. |
+| R1 phonetic renderer | Completed |289,860 newly trained parameters,6,000×128×32-packet updates on100h/251 old training people,79 actual fine-phone labels. Old selection only; no G1 fresh calibration/final voices. Oracle-phone listening diagnostic is a decoder ceiling. `configs/t2/phonetic_renderer.json`, `experiments/multimodal/t2/phonetic-renderer-20261106/`. |
+| A1 original angular pilot | Failed before optimization | Initial covariance diagnostic entered unsupported BF16 CUDA eigensolver. Original source snapshot/log/512-update parent hashes remain in `general-transfer-20261106/angular_pilot/`; no optimizer update or final-person exposure. |
+| A1 revision2, four arms | Completed; gate not supported | Same512-update SCS/Transformer parents, original versus angular-regularized objectives,512 additional identical COCO/Clotho calls each, fresh AdamW1e-4, BF16 model/FP32 covariance. All four source/processor gates fail. Endpoints/curves/source hashes in `general-transfer-20261106/angular_pilot_v2/`; not primary candidates or fresh transfer evidence. |
+
+G1's prepared source contract contains176.1h speech/443 Libri training people,
+paired group-disjoint meeting streams,118,272 COCO training images,1,440
+uploader-controlled Clotho training clips, six PAMAP training people and131
+DROID training episodes. MHealth is withheld from core pretraining. New Libri
+roles are192/16/16/32 train/selection/calibration/final people, after excluding
+all old exposed voices. Robot intervals remain ordinal until physical timing is
+verified; sample and connected-group counts, not camera/person-track sums,
+control the independent-unit claims. Exact cache/source counts are authoritative.
+The upstream Vocos13,531,650-parameter decoder and evaluation-only Whisper
+37,760,256-parameter scorer are separate from model totals. Upstream vocoder
+held-speaker exposure is unverified; see its exposure audit.
+
+G1 final roles remain closed until every compared core, readout and calibration
+rule freezes. The registered broad gate requires both primary SCS seeds to beat
+the strongest source-selection baseline by10% relative error on activity/action
+with positive paired group intervals, while retaining speech within one WER
+point. Secondary aligned/pooled probes do not replace a failed primary gate.
+Ongoing40s replay is observation/proposal processing without physical feedback.
+The [intermediate findings](../research/general_transfer_status_20261106.md)
+retain early collapse and action-prefix limitations, not a world-model success.

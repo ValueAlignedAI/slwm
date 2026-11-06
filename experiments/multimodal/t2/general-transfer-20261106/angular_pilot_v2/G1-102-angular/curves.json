@@ -1,0 +1,875 @@
+[
+  {
+    "selection": {
+      "clotho": {
+        "batches": [
+          {
+            "alignment_loss": 3.9107718467712402,
+            "geometry": {
+              "covariance_participation_ratio": 1.0640897750854492,
+              "largest_eigenvalue_fraction": 0.9691054224967957,
+              "mean_feature_std": 0.0037854076363146305,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9970086216926575
+            },
+            "hit1": 0.0,
+            "masked_error": 0.027072979137301445,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.8603434562683105,
+              "largest_eigenvalue_fraction": 0.7063437700271606,
+              "mean_feature_std": 0.0004517467459663749,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999657869338989
+            }
+          },
+          {
+            "alignment_loss": 4.0732316970825195,
+            "geometry": {
+              "covariance_participation_ratio": 1.0433748960494995,
+              "largest_eigenvalue_fraction": 0.9788538813591003,
+              "mean_feature_std": 0.00424681231379509,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9961934685707092
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.03577994927763939,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.4592828750610352,
+              "largest_eigenvalue_fraction": 0.822029709815979,
+              "mean_feature_std": 0.000505601055920124,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999566078186035
+            }
+          },
+          {
+            "alignment_loss": 3.9222044944763184,
+            "geometry": {
+              "covariance_participation_ratio": 1.0400550365447998,
+              "largest_eigenvalue_fraction": 0.9804330468177795,
+              "mean_feature_std": 0.0036118333227932453,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9972408413887024
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.022258026525378227,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.436722993850708,
+              "largest_eigenvalue_fraction": 0.8287330269813538,
+              "mean_feature_std": 0.0005003560218028724,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999561905860901
+            }
+          },
+          {
+            "alignment_loss": 4.000104904174805,
+            "geometry": {
+              "covariance_participation_ratio": 1.0552011728286743,
+              "largest_eigenvalue_fraction": 0.9732189178466797,
+              "mean_feature_std": 0.004881637170910835,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9949938058853149
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.05515792593359947,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.5666314363479614,
+              "largest_eigenvalue_fraction": 0.791215717792511,
+              "mean_feature_std": 0.0004560236702673137,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999654293060303
+            }
+          }
+        ],
+        "hit1": 0.015625,
+        "masked_error": 0.03506722021847963,
+        "participation_ratio": 1.0506802201271057,
+        "text_participation_ratio": 1.5807451903820038
+      },
+      "coco": {
+        "batches": [
+          {
+            "alignment_loss": 4.173827171325684,
+            "geometry": {
+              "covariance_participation_ratio": 1.157362937927246,
+              "largest_eigenvalue_fraction": 0.9271387457847595,
+              "mean_feature_std": 0.012949028983712196,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9696112275123596
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.2113100290298462,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.7115520238876343,
+              "largest_eigenvalue_fraction": 0.7465165853500366,
+              "mean_feature_std": 0.00046721112448722124,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999626278877258
+            }
+          },
+          {
+            "alignment_loss": 4.099289417266846,
+            "geometry": {
+              "covariance_participation_ratio": 1.1552484035491943,
+              "largest_eigenvalue_fraction": 0.9280361533164978,
+              "mean_feature_std": 0.012209644541144371,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9734756946563721
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.21642860770225525,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.6433120965957642,
+              "largest_eigenvalue_fraction": 0.7690626382827759,
+              "mean_feature_std": 0.00043829699279740453,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999678134918213
+            }
+          },
+          {
+            "alignment_loss": 4.152451992034912,
+            "geometry": {
+              "covariance_participation_ratio": 1.1926536560058594,
+              "largest_eigenvalue_fraction": 0.9120261073112488,
+              "mean_feature_std": 0.012625989504158497,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9711442589759827
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.21814672648906708,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.5699127912521362,
+              "largest_eigenvalue_fraction": 0.7905927896499634,
+              "mean_feature_std": 0.0004471036954782903,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999666213989258
+            }
+          },
+          {
+            "alignment_loss": 4.098207950592041,
+            "geometry": {
+              "covariance_participation_ratio": 1.1769487857818604,
+              "largest_eigenvalue_fraction": 0.918788731098175,
+              "mean_feature_std": 0.012363376095890999,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.972228467464447
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.22302302718162537,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.6808135509490967,
+              "largest_eigenvalue_fraction": 0.7618349194526672,
+              "mean_feature_std": 0.00042012613266706467,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.9999717473983765
+            }
+          }
+        ],
+        "hit1": 0.01953125,
+        "masked_error": 0.21722709760069847,
+        "participation_ratio": 1.17055344581604,
+        "text_participation_ratio": 1.6513976156711578
+      }
+    },
+    "updates": 0
+  },
+  {
+    "angular_regularizer": 0.7649887800216675,
+    "selection": {
+      "clotho": {
+        "batches": [
+          {
+            "alignment_loss": 4.127991199493408,
+            "geometry": {
+              "covariance_participation_ratio": 1.0442763566970825,
+              "largest_eigenvalue_fraction": 0.978419303894043,
+              "mean_feature_std": 0.048063505440950394,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6914095282554626
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.026381783187389374,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0068551301956177,
+              "largest_eigenvalue_fraction": 0.996585488319397,
+              "mean_feature_std": 0.06346619129180908,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4677538573741913
+            }
+          },
+          {
+            "alignment_loss": 4.159708499908447,
+            "geometry": {
+              "covariance_participation_ratio": 1.0240153074264526,
+              "largest_eigenvalue_fraction": 0.9881530404090881,
+              "mean_feature_std": 0.05099453032016754,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6513427495956421
+            },
+            "hit1": 0.0625,
+            "masked_error": 0.034604161977767944,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0098599195480347,
+              "largest_eigenvalue_fraction": 0.9950960874557495,
+              "mean_feature_std": 0.062192484736442566,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4896923303604126
+            }
+          },
+          {
+            "alignment_loss": 3.985567092895508,
+            "geometry": {
+              "covariance_participation_ratio": 1.0264806747436523,
+              "largest_eigenvalue_fraction": 0.9869574904441833,
+              "mean_feature_std": 0.0458185151219368,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.7194346785545349
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.021226972341537476,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.008276104927063,
+              "largest_eigenvalue_fraction": 0.9958807826042175,
+              "mean_feature_std": 0.06309453397989273,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.47419145703315735
+            }
+          },
+          {
+            "alignment_loss": 4.119214057922363,
+            "geometry": {
+              "covariance_participation_ratio": 1.0291318893432617,
+              "largest_eigenvalue_fraction": 0.9856644868850708,
+              "mean_feature_std": 0.05705723538994789,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5633050203323364
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.054049499332904816,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0083125829696655,
+              "largest_eigenvalue_fraction": 0.995861828327179,
+              "mean_feature_std": 0.06142875552177429,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5009198784828186
+            }
+          }
+        ],
+        "hit1": 0.046875,
+        "masked_error": 0.0340656042098999,
+        "participation_ratio": 1.0309760570526123,
+        "text_participation_ratio": 1.0083259344100952
+      },
+      "coco": {
+        "batches": [
+          {
+            "alignment_loss": 4.301445007324219,
+            "geometry": {
+              "covariance_participation_ratio": 1.0400302410125732,
+              "largest_eigenvalue_fraction": 0.9804581999778748,
+              "mean_feature_std": 0.05396031588315964,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.615851640701294
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.17922429740428925,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0172336101531982,
+              "largest_eigenvalue_fraction": 0.9914602637290955,
+              "mean_feature_std": 0.052243489772081375,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6379343867301941
+            }
+          },
+          {
+            "alignment_loss": 4.135773658752441,
+            "geometry": {
+              "covariance_participation_ratio": 1.078055500984192,
+              "largest_eigenvalue_fraction": 0.9625861048698425,
+              "mean_feature_std": 0.049470849335193634,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6767998933792114
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.16909025609493256,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0079052448272705,
+              "largest_eigenvalue_fraction": 0.9960640668869019,
+              "mean_feature_std": 0.05782117694616318,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5565006732940674
+            }
+          },
+          {
+            "alignment_loss": 4.341169357299805,
+            "geometry": {
+              "covariance_participation_ratio": 1.051245093345642,
+              "largest_eigenvalue_fraction": 0.9751171469688416,
+              "mean_feature_std": 0.05413644760847092,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6126807332038879
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.17973026633262634,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0105868577957153,
+              "largest_eigenvalue_fraction": 0.9947360754013062,
+              "mean_feature_std": 0.05603940039873123,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5846185088157654
+            }
+          },
+          {
+            "alignment_loss": 4.19366979598999,
+            "geometry": {
+              "covariance_participation_ratio": 1.061646580696106,
+              "largest_eigenvalue_fraction": 0.9702221751213074,
+              "mean_feature_std": 0.0540340319275856,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6146466135978699
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.1826070249080658,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0099108219146729,
+              "largest_eigenvalue_fraction": 0.9950705766677856,
+              "mean_feature_std": 0.054837845265865326,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6009800434112549
+            }
+          }
+        ],
+        "hit1": 0.03125,
+        "masked_error": 0.17766296118497849,
+        "participation_ratio": 1.0577443540096283,
+        "text_participation_ratio": 1.0114091336727142
+      }
+    },
+    "training_objective": 0.6304029822349548,
+    "updates": 128
+  },
+  {
+    "angular_regularizer": 0.7449632883071899,
+    "selection": {
+      "clotho": {
+        "batches": [
+          {
+            "alignment_loss": 3.971680164337158,
+            "geometry": {
+              "covariance_participation_ratio": 1.1146022081375122,
+              "largest_eigenvalue_fraction": 0.945734977722168,
+              "mean_feature_std": 0.05515367537736893,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5908706188201904
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.02634882740676403,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0145457983016968,
+              "largest_eigenvalue_fraction": 0.9927875399589539,
+              "mean_feature_std": 0.06628423929214478,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.41369903087615967
+            }
+          },
+          {
+            "alignment_loss": 4.01668643951416,
+            "geometry": {
+              "covariance_participation_ratio": 1.0676729679107666,
+              "largest_eigenvalue_fraction": 0.9672912359237671,
+              "mean_feature_std": 0.058899715542793274,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5317034125328064
+            },
+            "hit1": 0.0625,
+            "masked_error": 0.03464505448937416,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0304758548736572,
+              "largest_eigenvalue_fraction": 0.9850136637687683,
+              "mean_feature_std": 0.06527494639158249,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.43340468406677246
+            }
+          },
+          {
+            "alignment_loss": 3.8627350330352783,
+            "geometry": {
+              "covariance_participation_ratio": 1.0730377435684204,
+              "largest_eigenvalue_fraction": 0.9647871255874634,
+              "mean_feature_std": 0.053868986666202545,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.6092156767845154
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.021253695711493492,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0169864892959595,
+              "largest_eigenvalue_fraction": 0.9915858507156372,
+              "mean_feature_std": 0.06678245961666107,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4055784046649933
+            }
+          },
+          {
+            "alignment_loss": 3.969186782836914,
+            "geometry": {
+              "covariance_participation_ratio": 1.0810704231262207,
+              "largest_eigenvalue_fraction": 0.9610263705253601,
+              "mean_feature_std": 0.06547367572784424,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.42222651839256287
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.05399454012513161,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.017338752746582,
+              "largest_eigenvalue_fraction": 0.9914126992225647,
+              "mean_feature_std": 0.06545589864253998,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4288351535797119
+            }
+          }
+        ],
+        "hit1": 0.03515625,
+        "masked_error": 0.03406052943319082,
+        "participation_ratio": 1.08409583568573,
+        "text_participation_ratio": 1.0198367238044739
+      },
+      "coco": {
+        "batches": [
+          {
+            "alignment_loss": 4.1839599609375,
+            "geometry": {
+              "covariance_participation_ratio": 1.1016905307769775,
+              "largest_eigenvalue_fraction": 0.9515425562858582,
+              "mean_feature_std": 0.061067625880241394,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5019429326057434
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.16979971528053284,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0212794542312622,
+              "largest_eigenvalue_fraction": 0.9894818067550659,
+              "mean_feature_std": 0.056363239884376526,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5780864357948303
+            }
+          },
+          {
+            "alignment_loss": 4.069138526916504,
+            "geometry": {
+              "covariance_participation_ratio": 1.14702308177948,
+              "largest_eigenvalue_fraction": 0.931272029876709,
+              "mean_feature_std": 0.056926093995571136,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5666759014129639
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.16579478979110718,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.0173707008361816,
+              "largest_eigenvalue_fraction": 0.9913985729217529,
+              "mean_feature_std": 0.06194768846035004,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4902966320514679
+            }
+          },
+          {
+            "alignment_loss": 4.151857376098633,
+            "geometry": {
+              "covariance_participation_ratio": 1.1091749668121338,
+              "largest_eigenvalue_fraction": 0.9481566548347473,
+              "mean_feature_std": 0.06279119849205017,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.46733635663986206
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.17041587829589844,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.019822359085083,
+              "largest_eigenvalue_fraction": 0.9901959300041199,
+              "mean_feature_std": 0.059466585516929626,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5293879508972168
+            }
+          },
+          {
+            "alignment_loss": 4.05490779876709,
+            "geometry": {
+              "covariance_participation_ratio": 1.1063178777694702,
+              "largest_eigenvalue_fraction": 0.9494529366493225,
+              "mean_feature_std": 0.06299735605716705,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4667239487171173
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.17606675624847412,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.024199366569519,
+              "largest_eigenvalue_fraction": 0.9880611896514893,
+              "mean_feature_std": 0.05861940234899521,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.543537437915802
+            }
+          }
+        ],
+        "hit1": 0.03515625,
+        "masked_error": 0.17051928490400314,
+        "participation_ratio": 1.1160516142845154,
+        "text_participation_ratio": 1.0206679701805115
+      }
+    },
+    "training_objective": 0.5959655046463013,
+    "updates": 256
+  },
+  {
+    "angular_regularizer": 0.6983366012573242,
+    "selection": {
+      "clotho": {
+        "batches": [
+          {
+            "alignment_loss": 3.869370698928833,
+            "geometry": {
+              "covariance_participation_ratio": 1.367809534072876,
+              "largest_eigenvalue_fraction": 0.8401919603347778,
+              "mean_feature_std": 0.06011778116226196,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.484656423330307
+            },
+            "hit1": 0.0625,
+            "masked_error": 0.02639765851199627,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.1787132024765015,
+              "largest_eigenvalue_fraction": 0.9176510572433472,
+              "mean_feature_std": 0.0627041906118393,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4795200824737549
+            }
+          },
+          {
+            "alignment_loss": 3.9898228645324707,
+            "geometry": {
+              "covariance_participation_ratio": 1.271392822265625,
+              "largest_eigenvalue_fraction": 0.8787749409675598,
+              "mean_feature_std": 0.06336530297994614,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4259929358959198
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.034593112766742706,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.1175181865692139,
+              "largest_eigenvalue_fraction": 0.944543182849884,
+              "mean_feature_std": 0.06892944872379303,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.37433844804763794
+            }
+          },
+          {
+            "alignment_loss": 3.8013932704925537,
+            "geometry": {
+              "covariance_participation_ratio": 1.2367459535598755,
+              "largest_eigenvalue_fraction": 0.8929856419563293,
+              "mean_feature_std": 0.05793984234333038,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.5073996186256409
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.02125108428299427,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.189742088317871,
+              "largest_eigenvalue_fraction": 0.9128929972648621,
+              "mean_feature_std": 0.06643722951412201,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4170684516429901
+            }
+          },
+          {
+            "alignment_loss": 3.868952751159668,
+            "geometry": {
+              "covariance_participation_ratio": 1.242753028869629,
+              "largest_eigenvalue_fraction": 0.8904957175254822,
+              "mean_feature_std": 0.07178176194429398,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.276813805103302
+            },
+            "hit1": 0.0625,
+            "masked_error": 0.05407249927520752,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.1589909791946411,
+              "largest_eigenvalue_fraction": 0.9261559844017029,
+              "mean_feature_std": 0.06792665272951126,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.3911999464035034
+            }
+          }
+        ],
+        "hit1": 0.04296875,
+        "masked_error": 0.03407858870923519,
+        "participation_ratio": 1.2796753346920013,
+        "text_participation_ratio": 1.1612411141395569
+      },
+      "coco": {
+        "batches": [
+          {
+            "alignment_loss": 4.16315221786499,
+            "geometry": {
+              "covariance_participation_ratio": 1.3175724744796753,
+              "largest_eigenvalue_fraction": 0.8600673675537109,
+              "mean_feature_std": 0.06617383658885956,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.39740967750549316
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.15541353821754456,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.1697614192962646,
+              "largest_eigenvalue_fraction": 0.921522319316864,
+              "mean_feature_std": 0.06361711025238037,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.46669673919677734
+            }
+          },
+          {
+            "alignment_loss": 4.077220916748047,
+            "geometry": {
+              "covariance_participation_ratio": 1.3519169092178345,
+              "largest_eigenvalue_fraction": 0.8464623689651489,
+              "mean_feature_std": 0.061314310878515244,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.47733238339424133
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.14822770655155182,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.188704490661621,
+              "largest_eigenvalue_fraction": 0.9133576154708862,
+              "mean_feature_std": 0.06539882719516754,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.43665340542793274
+            }
+          },
+          {
+            "alignment_loss": 4.130948066711426,
+            "geometry": {
+              "covariance_participation_ratio": 1.3183425664901733,
+              "largest_eigenvalue_fraction": 0.859759509563446,
+              "mean_feature_std": 0.06817128509283066,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.33445364236831665
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.15524286031723022,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.184363603591919,
+              "largest_eigenvalue_fraction": 0.9151871204376221,
+              "mean_feature_std": 0.0636761486530304,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4661049544811249
+            }
+          },
+          {
+            "alignment_loss": 4.046604156494141,
+            "geometry": {
+              "covariance_participation_ratio": 1.3047236204147339,
+              "largest_eigenvalue_fraction": 0.8652036786079407,
+              "mean_feature_std": 0.0698804259300232,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.302977979183197
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.16149404644966125,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.1398882865905762,
+              "largest_eigenvalue_fraction": 0.934584379196167,
+              "mean_feature_std": 0.06519292294979095,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4407619535923004
+            }
+          }
+        ],
+        "hit1": 0.03125,
+        "masked_error": 0.15509453788399696,
+        "participation_ratio": 1.3231388926506042,
+        "text_participation_ratio": 1.1706794500350952
+      }
+    },
+    "training_objective": 0.579079270362854,
+    "updates": 384
+  },
+  {
+    "angular_regularizer": 0.6049765348434448,
+    "selection": {
+      "clotho": {
+        "batches": [
+          {
+            "alignment_loss": 3.8955183029174805,
+            "geometry": {
+              "covariance_participation_ratio": 1.8956298828125,
+              "largest_eigenvalue_fraction": 0.6192725300788879,
+              "mean_feature_std": 0.07363865524530411,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.19349735975265503
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.026388011872768402,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2595765590667725,
+              "largest_eigenvalue_fraction": 0.8840389251708984,
+              "mean_feature_std": 0.06307364255189896,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.4758119285106659
+            }
+          },
+          {
+            "alignment_loss": 3.971952199935913,
+            "geometry": {
+              "covariance_participation_ratio": 1.9860358238220215,
+              "largest_eigenvalue_fraction": 0.5497646927833557,
+              "mean_feature_std": 0.07648235559463501,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.1465601921081543
+            },
+            "hit1": 0.046875,
+            "masked_error": 0.034582290798425674,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2493188381195068,
+              "largest_eigenvalue_fraction": 0.8885205984115601,
+              "mean_feature_std": 0.06779427826404572,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.39452576637268066
+            }
+          },
+          {
+            "alignment_loss": 3.8818721771240234,
+            "geometry": {
+              "covariance_participation_ratio": 1.7383828163146973,
+              "largest_eigenvalue_fraction": 0.6950106620788574,
+              "mean_feature_std": 0.06779353320598602,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.3061777949333191
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.021231304854154587,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.201904296875,
+              "largest_eigenvalue_fraction": 0.9078623652458191,
+              "mean_feature_std": 0.06877540796995163,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.37638095021247864
+            }
+          },
+          {
+            "alignment_loss": 3.865252733230591,
+            "geometry": {
+              "covariance_participation_ratio": 1.9045988321304321,
+              "largest_eigenvalue_fraction": 0.6149309873580933,
+              "mean_feature_std": 0.0814460813999176,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.04661262035369873
+            },
+            "hit1": 0.0625,
+            "masked_error": 0.054042987525463104,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2441362142562866,
+              "largest_eigenvalue_fraction": 0.8903565406799316,
+              "mean_feature_std": 0.06813731789588928,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.3878730535507202
+            }
+          }
+        ],
+        "hit1": 0.04296875,
+        "masked_error": 0.03406114876270294,
+        "participation_ratio": 1.8811618387699127,
+        "text_participation_ratio": 1.2387339770793915
+      },
+      "coco": {
+        "batches": [
+          {
+            "alignment_loss": 4.181306838989258,
+            "geometry": {
+              "covariance_participation_ratio": 1.882683515548706,
+              "largest_eigenvalue_fraction": 0.626846432685852,
+              "mean_feature_std": 0.07915638387203217,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.08606193214654922
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.14801648259162903,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2040886878967285,
+              "largest_eigenvalue_fraction": 0.9070572853088379,
+              "mean_feature_std": 0.06724641472101212,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.40001848340034485
+            }
+          },
+          {
+            "alignment_loss": 4.105532646179199,
+            "geometry": {
+              "covariance_participation_ratio": 1.980358600616455,
+              "largest_eigenvalue_fraction": 0.5560029149055481,
+              "mean_feature_std": 0.0741029754281044,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.19805097579956055
+            },
+            "hit1": 0.0,
+            "masked_error": 0.1425880491733551,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.218315601348877,
+              "largest_eigenvalue_fraction": 0.901033341884613,
+              "mean_feature_std": 0.06940944492816925,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.3635321259498596
+            }
+          },
+          {
+            "alignment_loss": 4.142613410949707,
+            "geometry": {
+              "covariance_participation_ratio": 1.9691944122314453,
+              "largest_eigenvalue_fraction": 0.5673566460609436,
+              "mean_feature_std": 0.07967197895050049,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.07320083677768707
+            },
+            "hit1": 0.015625,
+            "masked_error": 0.1463683843612671,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2496483325958252,
+              "largest_eigenvalue_fraction": 0.8878573775291443,
+              "mean_feature_std": 0.06754718720912933,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.3974132537841797
+            }
+          },
+          {
+            "alignment_loss": 4.023366928100586,
+            "geometry": {
+              "covariance_participation_ratio": 1.9748296737670898,
+              "largest_eigenvalue_fraction": 0.5619087219238281,
+              "mean_feature_std": 0.0820767730474472,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.024087728932499886
+            },
+            "hit1": 0.03125,
+            "masked_error": 0.15477800369262695,
+            "text_geometry": {
+              "covariance_participation_ratio": 1.2429996728897095,
+              "largest_eigenvalue_fraction": 0.8910005688667297,
+              "mean_feature_std": 0.06770449876785278,
+              "mean_norm": 1.0,
+              "mean_off_diagonal_cosine": 0.39413437247276306
+            }
+          }
+        ],
+        "hit1": 0.01953125,
+        "masked_error": 0.14793772995471954,
+        "participation_ratio": 1.951766550540924,
+        "text_participation_ratio": 1.228763073682785
+      }
+    },
+    "training_objective": 0.5561513304710388,
+    "updates": 512
+  }
+]
