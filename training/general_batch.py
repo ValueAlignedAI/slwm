@@ -100,10 +100,13 @@ class Sources:
         if not hasattr(self,"group_sampling"):self.group_sampling={}
         if family not in self.group_sampling:
             groups={}
-            for row in rows:groups.setdefault(row["group"],[]).append(row)
+            minimum=self.cfg["context"]+self.cfg["horizon"]+(self.cfg["future_audio_guard_packets"] if family in ("speech","ami") else 0)
+            for row in rows:
+                if row.get("length",row.get("steps",0))>=minimum:groups.setdefault(row["group"],[]).append(row)
             indexed=[]
             for group in sorted(groups):
-                current=groups[group]; counts=np.array([max(1,r.get("length",r.get("steps",1))-self.cfg["context"]-self.cfg["horizon"]-2) for r in current],np.float64);indexed.append((current,counts/counts.sum()))
+                current=groups[group]; counts=np.array([r.get("length",r.get("steps",0))-minimum+1 for r in current],np.float64);indexed.append((current,counts/counts.sum()))
+            if not indexed:raise ValueError(f"No {family}/{self.role} records support the registered context and horizon")
             self.group_sampling[family]=indexed
         indexed=self.group_sampling[family]; selected=[]
         for _ in range(n):

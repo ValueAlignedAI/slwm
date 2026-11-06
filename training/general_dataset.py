@@ -54,7 +54,9 @@ def normalizers(cfg):
 
 def freeze(cfg):
     path=CACHE/"dataset_contract.json"
-    if path.exists():return json.loads(path.read_text())
+    if path.exists():
+        contract=json.loads(path.read_text());assert contract["configuration_sha256"]==file_sha("configs/t2/general_transfer.json")
+        return contract
     normalizers(cfg); roles={}; hashes={};people={}
     for family in ("coco","clotho","speech","ami","pamap2","mhealth"):
         folder=CACHE/family;card=json.loads((folder/"manifest.json").read_text());rows=json.loads((folder/"rows.json").read_text());assert card["rows_sha256"]==file_sha(folder/"rows.json")
@@ -63,6 +65,10 @@ def freeze(cfg):
             for two in role_groups:
                 if one<two:assert not role_groups[one]&role_groups[two],(family,one,two)
         roles[family]={"records":dict(Counter(r["role"] for r in rows)),"groups":{k:len(v) for k,v in role_groups.items()},"card_sha256":file_sha(folder/"manifest.json")}
+        if family in ("speech","ami","pamap2","mhealth"):
+            minimum=cfg["context"]+cfg["horizon"]+(cfg["future_audio_guard_packets"] if family in ("speech","ami") else 0)
+            roles[family]["minimum_joint_window_packets"]=minimum
+            roles[family]["too_short_for_joint_future_windows"]=dict(Counter(r["role"] for r in rows if r.get("length",r.get("steps",0))<minimum))
         if family in ("speech","ami"):
             for role in role_groups:people.setdefault(role,set()).update(r["actor"] for r in rows if r["role"]==role)
             for row in rows:
@@ -82,17 +88,23 @@ def freeze(cfg):
     for role in ("selection","calibration","test"):assert not people["train"]&people[role]
     for p in old.glob("*.npy"):hashes[str(p)]=file_sha(p)
     hashes[str(old/"rows.json")]=file_sha(old/"rows.json")
+    meetings={r["id"].rsplit("-",1)[0] for r in legacy}
+    roles["ami"]["legacy_training_addition"]={"records":len(legacy),"people":len({r["actor"] for r in legacy}),"meetings":len(meetings),"person_hours":sum(r["duration"] for r in legacy)/3600,"independent_meeting_hours":sum(min(r["duration"] for r in legacy if r["id"].rsplit("-",1)[0]==m) for m in meetings)/3600}
     robot_path,robot=robot_plan(cfg);roles["droid"]={"records":dict(Counter(r["role"] for r in robot["rows"])),"groups":robot["group_counts"],"excluded_unverified":len(robot["excluded_unverified_ids"]),"source":cfg["robot_family"]}
     hashes[str(robot_path)]=file_sha(robot_path)
+    roles["droid"]["missing_instructions_by_role"]=dict(Counter(r["role"] for r in robot["rows"] if not r["captions"]))
     for row in robot["rows"]:
         for name,digest in row["files"].items():
             p=CACHE/cfg["robot_family"]/row["id"]/name;assert file_sha(p)==digest;hashes[str(p)]=digest
     hashes[str(CACHE/"normalizers.npz")]=file_sha(CACHE/"normalizers.npz")
+    cases=CACHE/"evaluation_cases.json";assert cases.exists(),"Freeze metadata-only transfer cases before fitting"
+    hashes[str(cases)]=file_sha(cases)
     enc=tiktoken.get_encoding("gpt2");rank_hash=hashlib.sha256(b"".join(token+b":"+str(rank).encode()+b"\n" for token,rank in sorted(enc._mergeable_ranks.items(),key=lambda item:item[1]))).hexdigest()
     expected=json.loads(Path("artifacts/text/fineweb_edu_scale_v1/dataset_card.json").read_text())["tokenizer"]
     assert rank_hash==expected["merge_ranks_sha256"] and tiktoken.__version__==cfg["tokenizer"]["version"]
     write(CACHE/"cache_hashes.json",hashes)
     contract={"roles":roles,"source_sha256":file_sha(__file__),"cache_hashes_sha256":file_sha(CACHE/"cache_hashes.json"),"normalizers_sha256":file_sha(CACHE/"normalizers.npz"),"configuration_sha256":file_sha("configs/t2/general_transfer.json"),"tokenizer":expected,"source_archives_may_be_on_mac":"See source_archival.json; full source bytes were verified before redundant Fedora transport removal", "no_core_pretraining_mhealth":True,"window_sampling":"Uniform connected group, eligible-window-weighted recording; no activity labels in shared pretraining","new_speech_people":json.loads((CACHE/"speech/plan.json").read_text())["fresh_people"],"train_people_including_legacy":len(people["train"]),"frozen_before_shared_core_fit":True}
+    contract["evaluation_cases_sha256"]=file_sha(cases)
     write(path,contract);print(json.dumps({"general_dataset_frozen":roles}),flush=True);return contract
 
 

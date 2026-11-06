@@ -41,7 +41,7 @@ def atomic_save(path,value):
 
 def source_guard(cfg):
     root=Path(cfg["root"]);root.mkdir(parents=True,exist_ok=True)
-    names=(CONFIG,PROTOCOL,"models/slwm_general.py","training/general_train.py","training/general_batch.py","training/general_losses.py","training/general_dataset.py","training/general_data.py","training/general_sources.py","training/research_sources.py","training/action_data_probe.py","training/temporal_masks.py","tests/test_general_world.py","tests/test_general_data.py","tests/test_general_batch.py")
+    names=(CONFIG,PROTOCOL,"docs/research/general_transfer_evaluation_20261106.md","models/slwm_general.py","training/general_train.py","training/general_batch.py","training/general_losses.py","training/general_dataset.py","training/general_data.py","training/general_sources.py","training/research_sources.py","training/action_data_probe.py","training/temporal_masks.py","tests/test_general_world.py","tests/test_general_data.py","tests/test_general_batch.py","tests/test_general_checkpoint.py")
     sources={name:file_sha(name) for name in names}
     for name,digest in sources.items():
         target=root/"source_snapshot"/name;target.parent.mkdir(parents=True,exist_ok=True)
@@ -138,6 +138,8 @@ def train_slice(item,source,selection,cfg,target,prefetch):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--stage",choices=("smoke","train"),required=True);args=parser.parse_args();cfg=json.loads(Path(CONFIG).read_text());torch.set_num_threads(4);torch.backends.cuda.matmul.allow_tf32=True
     contract=Path(cfg["data_root"])/"dataset_contract.json";assert contract.exists(),"Freeze the complete data contract before fitting";source=Sources(cfg,"train");selection=Sources(cfg,"selection")
+    data=json.loads(contract.read_text());assert data["configuration_sha256"]==file_sha(CONFIG);assert data["cache_hashes_sha256"]==file_sha(Path(cfg["data_root"])/"cache_hashes.json")
+    assert data["evaluation_cases_sha256"]==file_sha(Path(cfg["data_root"])/"evaluation_cases.json")
     if args.stage=="smoke":
         with open("/tmp/slwm_research_gpu.lock","a") as lock:
             fcntl.flock(lock,fcntl.LOCK_EX);model=initialize(cfg,cfg["runs"][0]).cuda();teacher=copy.deepcopy(model).eval().requires_grad_(False)
@@ -160,7 +162,10 @@ def main():
                     if item["pending"] is not None:item["pending"].result()
                     with open("/tmp/slwm_research_gpu.lock","a") as lock:
                         fcntl.flock(lock,fcntl.LOCK_EX);validation,improved,milestone=train_slice(item,source,selection,cfg,target,prefetch);gc.collect();torch.cuda.empty_cache()
-                    item["pending"]=saves.submit(persist(item,cfg,sources,validation,improved,milestone))
+                    # Capture the completed CPU tensors/state before releasing
+                    # the item. Only file I/O belongs in the background worker.
+                    save_job=persist(item,cfg,sources,validation,improved,milestone)
+                    item["pending"]=saves.submit(save_job)
                     # Keep only scalar progress between runs. Checkpoint tensors
                     # stay alive in their bounded writer, leaving RAM for signal
                     # caches instead of13 resident optimizer/EMA copies.

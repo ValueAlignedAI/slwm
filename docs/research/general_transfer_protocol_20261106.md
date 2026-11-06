@@ -19,7 +19,7 @@ The configuration specifies both main seeds, a smaller paired scale, shuffled
 alignment, no-future-loss and five identical-processor specialist controls. The
 specialists consume exactly the corresponding target-family calls from the
 mixed schedule; report their smaller training time and the aggregate cost of
-three separate models. Match data, initialization of common weights, optimizer,
+five separate models. Match data, initialization of common weights, optimizer,
 precision and update schedules within paired processor comparisons. The tiny
 extra temporal-path parameter count is measured explicitly. These are smaller
 joint models, not strict124M or core124M comparisons. Count adapters, embeddings,
@@ -133,7 +133,8 @@ observed-only interpolation, audio-only, correct video and within-person
 wrong-time video. Score phone/CTC error separately from rendered-waveform WER
 and source/oracle ceilings. Preserve quiet/overlap strata rather than post-score
 exclusion. A speech gain requires at least0.5 WER percentage points and a
-positive person-clustered bootstrap lower bound. Video must add that gain beyond
+positive person-clustered bootstrap lower bound (connected-meeting component for
+AMI, with person sensitivity intervals). Video must add that gain beyond
 the same model's audio-only arm; shifted video may worsen audio-only WER by at
 most0.25 points. Both main seeds must pass to confirm the processor claim.
 
@@ -191,3 +192,8 @@ Report unavailable classes and all counts; never choose categories after scoring
 This is semantic-category agreement, not proof of shared physical events.
 Compare direct shared embeddings with separate source specialists connected only
 through these fixed text prototypes, and the semantic-shuffle control.
+
+Exact case construction, readout budgets and final-test locking are registered in
+`general_transfer_evaluation_20261106.md` and the metadata-only evaluation manifest.
+Too-short recordings cannot enter joint context/future sampling; retain them in
+the cache and report eligibility counts. This is a pre-fit clock constraint.

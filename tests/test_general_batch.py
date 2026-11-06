@@ -82,3 +82,9 @@ def test_matched_processors_start_with_identical_common_weights():
     b=GeneralWorld("transformer",width=32,layers=2,heads=4,vocabulary=32,phone_count=11)
     one=a.state_dict()
     for name,value in b.state_dict().items():torch.testing.assert_close(one[name],value,rtol=0,atol=0)
+def test_short_records_never_enter_joint_window_sampling():
+    from training.general_batch import Sources
+    import numpy as np
+    source=Sources.__new__(Sources);source.cfg={"context":32,"horizon":8,"future_audio_guard_packets":2};source.role="train"
+    source.rows={"speech":[{"id":"short","group":"a","length":41},{"id":"exact","group":"b","length":42}]}
+    assert {r["id"] for r in source.pick("speech",np.random.default_rng(1),20)}=={"exact"}
