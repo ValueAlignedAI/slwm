@@ -12,7 +12,7 @@ SOURCES=("configs/t2/general_readouts.json","configs/t2/general_speech_eval.json
          "training/general_readout_data.py","training/general_frozen_features.py","training/general_readout_train.py","training/general_readout_eval.py",
          "training/general_speech_media.py","training/general_speech_score.py","training/general_speech_calibrate.py","training/general_speech_eval.py",
          "training/general_consequences.py","training/general_alignment_eval.py","training/general_live_eval.py","training/general_long_media.py",
-         "training/general_evaluation_lock.py")
+         "training/general_evaluation_lock.py","training/general_report.py","tests/test_general_evaluation_lock.py")
 
 
 def register(cfg):
