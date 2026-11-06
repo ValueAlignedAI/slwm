@@ -1,0 +1,61 @@
+{
+  "current_tokens_by_run": {
+    "EXP-T1-221": 150994944,
+    "EXP-T1-222": 150994944,
+    "EXP-T1-223": 150994944,
+    "EXP-T1-224": 150994944
+  },
+  "estimates": {
+    "1000000000": {
+      "additional_gpu_hours_both_architectures_both_seeds": 26.1907988196421,
+      "additional_gpu_hours_one_architecture_pair_seed81": 13.231409321408893,
+      "additional_hours_by_run": {
+        "EXP-T1-221": 5.356126181067424,
+        "EXP-T1-222": 7.8752831403414705,
+        "EXP-T1-223": 5.220734256969401,
+        "EXP-T1-224": 7.738655241263807
+      }
+    },
+    "2600000000": {
+      "additional_gpu_hours_both_architectures_both_seeds": 75.54890077118968,
+      "additional_gpu_hours_one_architecture_pair_seed81": 38.166778981038135,
+      "additional_hours_by_run": {
+        "EXP-T1-221": 15.450061227913453,
+        "EXP-T1-222": 22.716717753124684,
+        "EXP-T1-223": 15.059515253758942,
+        "EXP-T1-224": 22.322606536392595
+      }
+    },
+    "500000000": {
+      "additional_gpu_hours_both_architectures_both_seeds": 10.766391959783483,
+      "additional_gpu_hours_one_architecture_pair_seed81": 5.4391063027747535,
+      "additional_hours_by_run": {
+        "EXP-T1-221": 2.2017714789280385,
+        "EXP-T1-222": 3.2373348238467154,
+        "EXP-T1-223": 2.1461151954726687,
+        "EXP-T1-224": 3.18117046153606
+      }
+    }
+  },
+  "excluded_costs": [
+    "GPU lock queues",
+    "checkpoint loading/saving",
+    "new-stage startup",
+    "final evaluation",
+    "artifact mirroring"
+  ],
+  "input_curve_sha256": {
+    "experiments/text/t1/extended-throughput-20261105/EXP-T1-221/curves.json": "f0013e4fe473a5c9b6185c7673562389c136a8478968b7a1217300a9c7a41f90",
+    "experiments/text/t1/extended-throughput-20261105/EXP-T1-222/curves.json": "3abd8a87f2b876acd515b99044c02126af9331829e0fcc899559caf769c56012",
+    "experiments/text/t1/extended-throughput-20261105/EXP-T1-223/curves.json": "c2e6ef2ca28129d6395f2d0404c0398091e7f24bcea709499d98cb3144f85927",
+    "experiments/text/t1/extended-throughput-20261105/EXP-T1-224/curves.json": "b532709c6287b0ff2ff7869157c222b4284e3e3657907fa848326c160684c912"
+  },
+  "limits": "Assumes the same512 context, precision, hardware, data pipeline and fused loss. These are runtime estimates, not a scaling law or a promise of quality. New training needs a registered token/LR schedule and fresh uninspected test windows. The2.6B endpoint is a rounded corpus-budget scenario; verify exact prepared unique-window capacity before fitting.",
+  "method": "Tokens divided by actual post-ramp training/validation timer slope at global/micro batch64; no learning-quality extrapolation",
+  "tokens_per_second_by_run": {
+    "EXP-T1-221": 44030.8405375876,
+    "EXP-T1-222": 29946.19159401449,
+    "EXP-T1-223": 45172.71444394073,
+    "EXP-T1-224": 30474.89911687336
+  }
+}
