@@ -49,7 +49,7 @@ def main():
     train=StreamCorpus(cfg,"train"); histories={}
     for seed in sorted({r["seed"] for r in cfg["runs"]}):
         runs=[r for r in cfg["runs"] if r["seed"]==seed]
-        checkpoints={selection[r["id"]]["updates"] for r in runs}
+        checkpoints={selection[r["id"]][kind] for r in runs for kind in ("updates","selected_step")}
         rng=np.random.default_rng(seed+50000); packets=Counter(); windows=Counter()
         modes=defaultdict(Counter); unique=defaultdict(set); coverage=defaultdict(list)
         for step in range(1,max(checkpoints)+1):
@@ -62,13 +62,18 @@ def main():
                 modes[name][mode]+=count; unique[name].add(row["id"])
                 coverage[(name,row["id"])].append((plan["start"],plan["start"]+count))
             if step not in checkpoints: continue
-            matching=[r for r in runs if selection[r["id"]]["updates"]==step]
-            for run in matching:
-                ck=torch.load(root/run["id"]/"resume.pt",map_location="cpu",weights_only=False)
-                assert ck["step"]==step and ck["data_rng"]==rng.bit_generator.state,run["id"]
-                del ck
-            histories[str(seed)+"|"+str(step)]={"runs":[r["id"] for r in matching],
-                "exact_resume_rng_matches":True,"steps":step,
+            roles={"last_training":[r["id"] for r in runs if selection[r["id"]]["updates"]==step],
+                   "validation_selected":[r["id"] for r in runs if selection[r["id"]]["selected_step"]==step]}
+            checks=[]
+            for role,names_at_step in roles.items():
+                for runid in names_at_step:
+                    filename="resume.pt" if role=="last_training" else "best.pt"
+                    ck=torch.load(root/runid/filename,map_location="cpu",weights_only=False)
+                    assert ck["step"]==step and ck["data_rng"]==rng.bit_generator.state,(runid,role)
+                    checks.append({"run":runid,"checkpoint":filename,"step":step,"exact_data_rng_match":True})
+                    del ck
+            histories[str(seed)+"|"+str(step)]={"runs":sorted(set(roles["last_training"]+roles["validation_selected"])),
+                "checkpoint_roles":roles,"exact_checkpoint_rng_checks":checks,"steps":step,
                 "nominal_window_hours":step*cfg["training"]["batch"]*cfg["training"]["window"]*PACKET_SECONDS/3600,
                 "valid_target_packet_hours":sum(packets.values())*PACKET_SECONDS/3600,
                 "by_source":{name:{"windows":windows[name],"valid_target_packet_hours":packets[name]*PACKET_SECONDS/3600,
@@ -84,6 +89,7 @@ def main():
             "split_pairs":pairs,"prior_exposure_fresh_test_overlap":fresh,
             "transcript_overlap_policy":"Report exact nonempty strings, including common short utterances; no post-fit filtering",
             "exposure_definition":"Valid target coarse packets counted with repetition, independent of observation masks; union of sampled intervals additionally reports unique temporal coverage per source record. Nominal padded windows are separate. Parallel person tracks are not independent meeting events.",
+            "checkpoint_exposure_scope":"Both final training states and validation-selected weights. Equal maximum training budgets do not imply identical selected-checkpoint exposure; selection steps and exact RNG checks are explicit.",
             "sampled_training_exposure":histories}
     write_json(root/"exposure_identity_audit.json",result)
 

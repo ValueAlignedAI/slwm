@@ -1,0 +1,167 @@
+{
+  "EXP-T2-801": {
+    "checkpoint_sha256": "633e0078f3de82fbd2c42a3363ce3451efc16a0aa0075592c724cf49d796882c",
+    "last_sha256": "b0d35303d5d921b28ab277017531045e0b3c71816df564d159f15c4bd61d8dbc",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-801",
+      "seed": 91,
+      "variant": "slwm"
+    },
+    "selected_step": 1800,
+    "selected_validation_loss": 1.3214560270309448,
+    "updates": 2000,
+    "wall_seconds": 1061.5408382320893
+  },
+  "EXP-T2-802": {
+    "checkpoint_sha256": "b9c0a2ae0ba230c58ebfafcb9f2ae82ea21109e4b508b768785c705d9f1cb790",
+    "last_sha256": "5f6f845429bcdf1a5acdfd55003463dfadc47f52b84118a1a830954fca949157",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-802",
+      "seed": 91,
+      "variant": "transformer"
+    },
+    "selected_step": 1800,
+    "selected_validation_loss": 1.3666821956634523,
+    "updates": 2000,
+    "wall_seconds": 694.6113982350216
+  },
+  "EXP-T2-803": {
+    "checkpoint_sha256": "de38b8f2f6d1ec588606076fb26aac3921ed87d54e2717b1f231a9e2ae7868c7",
+    "last_sha256": "9608b15de9dc2fa2474c685be471bf2be15b1ad2985f059f3bd92786f593cb37",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-803",
+      "seed": 92,
+      "variant": "slwm"
+    },
+    "selected_step": 2000,
+    "selected_validation_loss": 1.321962308883667,
+    "updates": 2000,
+    "wall_seconds": 1057.2666142141097
+  },
+  "EXP-T2-804": {
+    "checkpoint_sha256": "359d3821b619ef314fcefba5f357bd9ddaf670941f4e29897e1a85eecc5d7d57",
+    "last_sha256": "d7d26ff883f6a9d3536a67ff65604a6b9aa57b355c482c9c3f372a3e96961c72",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-804",
+      "seed": 92,
+      "variant": "transformer"
+    },
+    "selected_step": 1400,
+    "selected_validation_loss": 1.3582528471946715,
+    "updates": 2000,
+    "wall_seconds": 697.5533160970663
+  },
+  "EXP-T2-805": {
+    "checkpoint_sha256": "e5cd6700a3d33115a7b8a365797ac9f3ed0a3eabba15d103c5154026701bc995",
+    "last_sha256": "7f68c24a39b2772ddc188427f82d62f497ec2ff5beaa4745ffb0a431f721a04a",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-805",
+      "seed": 91,
+      "variant": "late_fusion"
+    },
+    "selected_step": 1800,
+    "selected_validation_loss": 1.357145392894745,
+    "updates": 2000,
+    "wall_seconds": 843.3836303239223
+  },
+  "EXP-T2-806": {
+    "checkpoint_sha256": "494be4013c019c455d0b442276a85be801ef63b17bbe7f2744b732e10bf1e604",
+    "last_sha256": "3c49165b0016d8828cfee8fb83b67d32cb28453f019010b72cb8bcca0a3a91b5",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-806",
+      "seed": 91,
+      "shuffled_pairs": true,
+      "variant": "slwm"
+    },
+    "selected_step": 2000,
+    "selected_validation_loss": 1.3226083040237426,
+    "updates": 2000,
+    "wall_seconds": 1045.35263709008
+  },
+  "EXP-T2-807": {
+    "checkpoint_sha256": "c64340024acfea1a5a51efc4c41c9adcaff08fa714829f27e9592538b2d7a833",
+    "last_sha256": "91a167929c44d2105caded6cac70e665079bce12f60ef9b056cd83da7965e73b",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-807",
+      "no_content_loss": true,
+      "seed": 91,
+      "variant": "slwm"
+    },
+    "selected_step": 2000,
+    "selected_validation_loss": 1.444444704055786,
+    "updates": 2000,
+    "wall_seconds": 1042.6143687659642
+  },
+  "EXP-T2-808": {
+    "checkpoint_sha256": "b439c8116523a1e896435e20f446e36f1f897f4ff01e6be57432f9fcc0dcbea9",
+    "last_sha256": "af7a34f27e03f28091d5667298772f828421c4b8a20568eb0f7405fbb5f1a2d4",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-808",
+      "reset_memory": true,
+      "seed": 91,
+      "variant": "slwm"
+    },
+    "selected_step": 2000,
+    "selected_validation_loss": 1.3317108631134034,
+    "updates": 2000,
+    "wall_seconds": 1070.924378272961
+  },
+  "EXP-T2-809": {
+    "checkpoint_sha256": "84c7804f48a2e95583808544062294e45fc79f4a668a1a4aac0f67a022f59ef6",
+    "last_sha256": "b76d81febb23ef4d9b60bf6a0fbd04605f4ae7ae67a78ed663624155536cc3d2",
+    "overfit_stop": false,
+    "parameters": 6683929,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-809",
+      "seed": 91,
+      "variant": "slwm",
+      "width": 256
+    },
+    "selected_step": 1800,
+    "selected_validation_loss": 1.3722599983215331,
+    "updates": 2000,
+    "wall_seconds": 832.3437858299585
+  },
+  "EXP-T2-810": {
+    "checkpoint_sha256": "b0ffefde97432f56b48095befbda8e8820d2ff5dad0a8a4d43b8afc04a0ffe81",
+    "last_sha256": "663d62f7d4652acc388bd18be113c07a78401a0b39b9989e3106d696d3ad1260",
+    "overfit_stop": false,
+    "parameters": 6596377,
+    "positive_windows": 256000,
+    "run": {
+      "id": "EXP-T2-810",
+      "seed": 91,
+      "variant": "transformer",
+      "width": 256
+    },
+    "selected_step": 1600,
+    "selected_validation_loss": 1.3871817708015441,
+    "updates": 2000,
+    "wall_seconds": 566.6583924330189
+  }
+}
