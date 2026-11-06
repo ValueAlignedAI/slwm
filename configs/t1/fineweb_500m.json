@@ -1,0 +1,58 @@
+{
+  "sprint": "T1-S5",
+  "artifacts": "experiments/text/t1/500m-20261106",
+  "protocol": "docs/research/text_500m_protocol_20261106.md",
+  "parent_root": "experiments/text/t1/extended-throughput-20261105",
+  "parent_config": "configs/t1/fineweb_scale.json",
+  "parent_tokens": 150994944,
+  "target_tokens": 500006912,
+  "global_batch": 64,
+  "micro_batch": 64,
+  "sequence_length": 512,
+  "additional_updates": 10651,
+  "slice_updates": 256,
+  "warmup_updates": 256,
+  "start_lr": 2e-05,
+  "peak_lr": 0.0001,
+  "floor_lr": 1e-05,
+  "overfit_relative_rise": 0.05,
+  "overfit_patience": 2,
+  "test_window_start": 4096,
+  "test_batches": 128,
+  "milestone_tokens": [
+    250019840,
+    375029760,
+    500006912
+  ],
+  "fused_loss_version": "0.8.5",
+  "runs": [
+    {
+      "id": "EXP-T1-231",
+      "parent": "EXP-T1-221",
+      "variant": "gpt2",
+      "seed": 81,
+      "parent_sha256": "dafed7c0b42d5fc19f5a65b850d3971ac2f0bd00ac3db7441cb6e2765ed59080"
+    },
+    {
+      "id": "EXP-T1-232",
+      "parent": "EXP-T1-222",
+      "variant": "slwm",
+      "seed": 81,
+      "parent_sha256": "79f887997a02a2c050baee2651b337505569e6c9280a1eab75fee032edf58c0e"
+    },
+    {
+      "id": "EXP-T1-233",
+      "parent": "EXP-T1-223",
+      "variant": "gpt2",
+      "seed": 82,
+      "parent_sha256": "3c5af37526d7cfbba796eb85e94e31181c94cdd7e178f42705f39c5b1e1cb709"
+    },
+    {
+      "id": "EXP-T1-234",
+      "parent": "EXP-T1-224",
+      "variant": "slwm",
+      "seed": 82,
+      "parent_sha256": "a048ef7ff05b18f66019d459ddfb85b9408d692df5f9cf8fd3e3c2cd2cc67ad6"
+    }
+  ]
+}
