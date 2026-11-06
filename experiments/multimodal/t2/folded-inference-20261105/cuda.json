@@ -1,0 +1,115 @@
+{
+  "checkpoint_sha256": "633e0078f3de82fbd2c42a3363ce3451efc16a0aa0075592c724cf49d796882c",
+  "checkpoint_step": 1800,
+  "dtype_results": {
+    "bf16": {
+      "all_heads_fp32_tolerance_pass": null,
+      "batch": 128,
+      "errors": {
+        "activity": {
+          "max_absolute_error": 0.03125,
+          "relative_l2_error": 0.0026508301962167025
+        },
+        "character_logits": {
+          "max_absolute_error": 0.0625,
+          "relative_l2_error": 0.002686514751985669
+        },
+        "embedding": {
+          "max_absolute_error": 0.0015924721956253052,
+          "relative_l2_error": 0.0027112336829304695
+        },
+        "field": {
+          "max_absolute_error": 0.033359333872795105,
+          "relative_l2_error": 0.004052568692713976
+        },
+        "future": {
+          "max_absolute_error": 0.015625,
+          "relative_l2_error": 0.0027791010215878487
+        },
+        "mel": {
+          "max_absolute_error": 0.014340996742248535,
+          "relative_l2_error": 0.0007940197829157114
+        },
+        "memory": {
+          "max_absolute_error": 0.037850379943847656,
+          "relative_l2_error": 0.0021014604717493057
+        },
+        "phone_logits": {
+          "max_absolute_error": 0.0625,
+          "relative_l2_error": 0.0036217165179550648
+        },
+        "risk": {
+          "max_absolute_error": 0.0078125,
+          "relative_l2_error": 0.0031587874982506037
+        },
+        "video": {
+          "max_absolute_error": 0.015625,
+          "relative_l2_error": 0.00565565237775445
+        }
+      },
+      "folded_seconds_per_batch": 0.049216286085235574,
+      "original_seconds_per_batch": 0.061447043170725614,
+      "packets": 128,
+      "speedup": 1.248510362287559
+    },
+    "fp32": {
+      "all_heads_fp32_tolerance_pass": true,
+      "batch": 128,
+      "errors": {
+        "activity": {
+          "max_absolute_error": 4.291534423828125e-06,
+          "relative_l2_error": 3.174883715928445e-07
+        },
+        "character_logits": {
+          "max_absolute_error": 8.58306884765625e-06,
+          "relative_l2_error": 3.4287904782104306e-07
+        },
+        "embedding": {
+          "max_absolute_error": 5.960464477539063e-08,
+          "relative_l2_error": 1.545434287208991e-07
+        },
+        "field": {
+          "max_absolute_error": 4.455447196960449e-06,
+          "relative_l2_error": 5.54108225969685e-07
+        },
+        "future": {
+          "max_absolute_error": 2.0563602447509766e-06,
+          "relative_l2_error": 3.1968474445420725e-07
+        },
+        "mel": {
+          "max_absolute_error": 2.384185791015625e-06,
+          "relative_l2_error": 8.354978575653149e-08
+        },
+        "memory": {
+          "max_absolute_error": 2.86102294921875e-06,
+          "relative_l2_error": 2.2816901434907777e-07
+        },
+        "phone_logits": {
+          "max_absolute_error": 8.106231689453125e-06,
+          "relative_l2_error": 4.548597871689708e-07
+        },
+        "risk": {
+          "max_absolute_error": 9.5367431640625e-07,
+          "relative_l2_error": 2.755507466645213e-07
+        },
+        "video": {
+          "max_absolute_error": 2.086162567138672e-06,
+          "relative_l2_error": 7.405732276311028e-07
+        }
+      },
+      "folded_seconds_per_batch": 0.08072347699877962,
+      "original_seconds_per_batch": 0.09284466533184361,
+      "packets": 128,
+      "speedup": 1.150156915729079
+    }
+  },
+  "model": {
+    "deployed_parameters": 23909657,
+    "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+    "original_trained_parameters": 23980313,
+    "training_optimizer_equivalence_claimed": false,
+    "training_weights_modified": false
+  },
+  "training_only": true,
+  "weights_updated": false
+}

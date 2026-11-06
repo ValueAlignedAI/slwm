@@ -1,0 +1,65 @@
+{
+  "checkpoint_sha256": "6f9cbed85fcdbdf2816ae64dd6b33985cad32c86886bcbc5987f226b7ca97779",
+  "checkpoint_step": 400,
+  "dtype_results": {
+    "fp32": {
+      "all_heads_fp32_tolerance_pass": true,
+      "batch": 16,
+      "errors": {
+        "activity": {
+          "max_absolute_error": 1.430511474609375e-06,
+          "relative_l2_error": 1.1244767250673249e-07
+        },
+        "character_logits": {
+          "max_absolute_error": 2.205371856689453e-06,
+          "relative_l2_error": 1.4498768052817468e-07
+        },
+        "embedding": {
+          "max_absolute_error": 4.470348358154297e-08,
+          "relative_l2_error": 1.102380480233478e-07
+        },
+        "field": {
+          "max_absolute_error": 1.9073486328125e-06,
+          "relative_l2_error": 1.8541004465078004e-07
+        },
+        "future": {
+          "max_absolute_error": 1.1920928955078125e-06,
+          "relative_l2_error": 2.1582121689789346e-07
+        },
+        "mel": {
+          "max_absolute_error": 7.152557373046875e-07,
+          "relative_l2_error": 5.471133590617683e-08
+        },
+        "memory": {
+          "max_absolute_error": 1.430511474609375e-06,
+          "relative_l2_error": 1.2888729372662056e-07
+        },
+        "phone_logits": {
+          "max_absolute_error": 3.814697265625e-06,
+          "relative_l2_error": 1.8259099476836127e-07
+        },
+        "risk": {
+          "max_absolute_error": 4.76837158203125e-07,
+          "relative_l2_error": 1.9451285027116683e-07
+        },
+        "video": {
+          "max_absolute_error": 2.5331974029541016e-07,
+          "relative_l2_error": 1.3160916978449677e-07
+        }
+      },
+      "folded_seconds_per_batch": 0.34861864483294386,
+      "original_seconds_per_batch": 0.3690355808309202,
+      "packets": 128,
+      "speedup": 1.0585652440011062
+    }
+  },
+  "model": {
+    "deployed_parameters": 23909657,
+    "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+    "original_trained_parameters": 23980313,
+    "training_optimizer_equivalence_claimed": false,
+    "training_weights_modified": false
+  },
+  "training_only": true,
+  "weights_updated": false
+}
