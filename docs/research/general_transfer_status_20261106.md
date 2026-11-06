@@ -17,7 +17,7 @@ A1 revision2 restarted the same512-update SCS/Transformer parents and compared t
 | Transformer | coco | 1.56% | 1.95% | 1.35 | 1.95 |
 | Transformer | clotho | 2.34% | 4.30% | 1.16 | 1.88 |
 
-Chance within the64-record diagnostic batch is1.56%. These are four fixed selection batches/source, not a fresh generalization estimate. Total pilot active time: 11.10 minutes on the3090. The registered gate required better retrieval on both sources/processors, participation>=8 and no more than10% masked-error degradation. **All four source/processor gates fail.** Retain every endpoint and curve; do not promote this penalty or silently change G1. Lowering mean cosine alone did not remove low-rank collapse.
+Exact uniform-random record retrieval is1.65% for COCO and2.01% for Clotho across these four fixed64-record batches. Repeated record IDs make this higher than the nominal one-positive1/64 baseline; the metadata-only chance audit retains each batch. These are four fixed selection batches/source, not a fresh generalization estimate. Total pilot active time: 11.10 minutes on the3090. The registered gate required better retrieval on both sources/processors, participation>=8 and no more than10% masked-error degradation. **All four source/processor gates fail.** Retain every endpoint and curve; do not promote this penalty or silently change G1. Lowering mean cosine alone did not remove low-rank collapse.
 
 ## Active primary studies
 
