@@ -37,6 +37,28 @@ def copy_names(checkout,names,base=REMOTE):
     finally:listing.unlink()
 
 
+def archive_completed_text_endpoints(checkout,proof):
+    if proof.get('completed_text_endpoints_archived'):return
+    old=Path('/Users/db/dev/slwm');relative='experiments/text/t1/500m-20261106';verification=old/relative/'delivery_verification.json'
+    if not verification.exists():return
+    verified=json.loads(verification.read_text())['files'];names=[relative+'/EXP-T1-'+str(i)+'/last.pt' for i in (231,232,233,234)]
+    if not all(name.removeprefix(relative+'/') in verified for name in names):return
+    items={name:verified[name.removeprefix(relative+'/')] for name in names}
+    ready=json.loads(remote("from pathlib import Path; import json; r=Path('/home/db/dev/slwm/experiments/text/t1/500m-20261106'); print(json.dumps((r/'summary.json').exists() and (r/'report_complete.json').exists()))"))
+    if not ready:return
+    for name,item in items.items():assert (old/name).stat().st_size==item['bytes'] and sha(old/name)==item['sha256']
+    proof['completed_text_endpoints_archived']={n:{**v,'mac_path':str(old/n)} for n,v in items.items()};save(checkout/PROOF,proof)
+    remote("""from pathlib import Path
+import hashlib
+root=Path('/home/db/dev/slwm');r=root/'experiments/text/t1/500m-20261106'
+assert (r/'summary.json').exists() and (r/'report_complete.json').exists()
+items=ITEMS_VALUE
+for name,item in items.items():
+ p=root/name;assert p.name=='last.pt' and p.stat().st_size==item['bytes'];assert hashlib.file_digest(p.open('rb'),'sha256').hexdigest()==item['sha256']
+for name in items:(root/name).unlink()
+""".replace('ITEMS_VALUE',repr(items)))
+
+
 def archive(checkout,proof):
     names=json.loads(remote("""from pathlib import Path
 import json,time
@@ -130,7 +152,7 @@ def main():
     if proof.get('delivered_and_published'):return
     while True:
         try:
-            archive(checkout,proof)
+            archive(checkout,proof);archive_completed_text_endpoints(checkout,proof)
             ready=json.loads(remote("from pathlib import Path; import json; r=Path("+repr(ROOT)+"); print(json.dumps({'screen':(r/'screen_complete.json').exists(),'complete':(r/'study_complete.json').exists(),'status':json.loads((r/'pipeline_status.json').read_text()) if (r/'pipeline_status.json').exists() else {}}))"))
             save(base/'remote_status.json',ready)
             if ready['screen'] and not proof.get('screen_published'):
