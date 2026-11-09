@@ -14,6 +14,21 @@ Each modality now passes through the same sequence of shared states. Direct curr
 
 Dense GPT-2 stays dense at both adapter widths. The narrow dense models have 129.0M to 129.7M total weights, with 4.58M trainable. Sparse SLWM has 140.36M total and 15.23M trainable. Its nonexpert plus one-expert-per-layer count is 129.75M. The wide dense GPT-2 and SLWM controls have 139.64M and 140.33M total. This compares active adapter width and stored adapter capacity separately. A separately registered six-layer experiment tests deployed backbone depth and inherits the same language parents.
 
+## Can G3 retain the command it actually received?
+
+A subsequent diagnostic sampled up to four windows per old robot episode and kept G2/G3 case IDs and previous-command targets identical. Each ridge probe used 1,024 fit windows. Scores average across seven command coordinates and three held-out selection groups containing 300 windows. These are retrospective data. G2 had its original 32-tick multiview and goal inputs. G3 saw the last 24 ticks, one camera and numeric history.
+
+| Frozen field at the final observed tick | Seed A R² | Seed B R² |
+|---|---:|---:|
+| G2 large signal model | −1.009 | −0.771 |
+| Unadapted G3 signal backbone and new edges | 0.844 | 0.804 |
+| Dense G3 signal, 100 joint updates | 0.928 | 0.936 |
+| Same procedure with historical command channels erased during fit and scoring | 0.026 | −0.276 |
+| Sparse-adapter G3 signal, 100 joint updates | 0.903 | 0.932 |
+| Matched dense G3 GPT-2, 100 joint updates | 0.771 | 0.724 |
+
+The new interface already made the observed command accessible at initialization. Joint updates added roughly 0.08 and 0.13 R² for dense SLWM. Erasing the actual command history removed most of that recoverability. The fresh Push-T endpoint test below asks the harder question of whether these features help predict an external consequence.
+
 ## Fresh-task transfer
 
 These development accuracies use 32 labels per class. The digit benchmark has a single development speaker. Its group bootstrap has only one possible resample, so it gives no speaker-population precision estimate.
