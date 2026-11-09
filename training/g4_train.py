@@ -1,7 +1,7 @@
 """Compiled and resumable JAX training with fixed-negative microbatches and bounded host transfers."""
 import argparse
 from dataclasses import asdict
-from functools import partial
+from functools import lru_cache, partial
 import hashlib
 import json
 import os
@@ -21,7 +21,8 @@ CFG=Path("configs/t4/crossmodal_tpu.json")
 KEYS=("a","v","n","x","ok","has","family","cap")
 PROFILES={"gpt2-cross":("gpt2","cross",4),"gpt2-self":("gpt2","self",4),
           "signal-cross":("signal","cross",4),"signal-self":("signal","self",4),
-          "sparse-cross":("grouped","cross",4),"gpt2-matched":("gpt2","cross",1)}
+          "sparse-cross":("grouped","cross",4),"gpt2-matched":("gpt2","cross",1),
+          "gpt2-motion":("gpt2","motion",4),"signal-motion":("signal","motion",4)}
 
 
 def read(path):
@@ -68,26 +69,30 @@ class Data:
         self.device={k:jax.device_put(np.array(v,copy=True)) for k,v in self.host.items()}
         jax.block_until_ready(self.device)
 
-    def stats(self):
-        data=np.asarray(self.host["n"][self.pools[4]],np.float32)
-        mask=self.host["ok"][self.pools[4]].astype(bool)
+    def stats(self,robot_indices=None):
+        indices=self.pools[4] if robot_indices is None else robot_indices
+        data=np.asarray(self.host["n"][indices],np.float32)
+        mask=self.host["ok"][indices].astype(bool)
         values=data[mask]
         return np.stack([values.mean(0),np.maximum(values.std(0),.025)]).astype(np.float32)
 
 
 class Sampler:
-    def __init__(self,data,batch,seed,mixture):
+    def __init__(self,data,batch,seed,mixture,fraction=1.):
         self.data,self.batch,self.seed=data,batch,seed
         self.counts=np.array(mixture)*batch//16
         if self.counts.sum()!=batch:
             raise ValueError("Batch must preserve the registered source proportions")
         self.orders={}
+        if not 0<fraction<=1: raise ValueError("Invalid unique-data fraction")
+        self.pools=data.pools if fraction==1 else [
+            pool[np.argsort(data.uid[pool])[:max(1,int(len(pool)*fraction))]] for pool in data.pools]
 
     def sample(self,step):
         chunks=[]
         for fam,count in enumerate(self.counts):
             if not count: continue
-            pool=self.data.pools[fam]
+            pool=self.pools[fam]
             absolute=step*count+np.arange(count)
             sample=np.empty(count,np.int32)
             for epoch in np.unique(absolute//len(pool)):
@@ -115,6 +120,7 @@ class Sampler:
         return tuple(np.stack(a) for a in zip(*batches))
 
 
+@lru_cache(maxsize=16)
 def make_block(spec,policy,micro,effective,negatives,lr,horizon):
     if effective%micro or micro%negatives:
         raise ValueError("Microbatch must divide the effective batch and contain complete contrastive groups")
@@ -187,7 +193,7 @@ def archive(run,step,files,spool):
         capture(spool,run,step,files)
 
 
-def run(args):
+def run(args, data=None, numerics=None):
     dev=backend(args.backend)
     cfg=read(CFG)
     scale,profile=args.scale,args.profile
@@ -195,12 +201,14 @@ def run(args):
     tag=f"g4-{args.label}-{scale}-{profile}-{args.seed}"
     out=args.output/tag
     out.mkdir(parents=True,exist_ok=True)
-    data=Data(args.data,"train",args.limit,verify=not args.checked_data)
-    stats=data.stats()
+    if data is None:
+        data=Data(args.data,"train",args.limit,verify=not args.checked_data)
     effective=args.batch
-    sampler=Sampler(data,effective,cfg["seed"],cfg["mixture_16"])
-    lr=.0006*(256/spec.width)**.5
-    opt,step_block=make_block(spec,policy,args.micro,effective,args.negatives,lr,args.steps)
+    sampler=Sampler(data,effective,cfg["seed"],cfg["mixture_16"],args.data_fraction)
+    stats=data.stats(sampler.pools[4]) if numerics is None or args.data_fraction!=1 else numerics
+    lr=args.fixed_lr if args.fixed_lr is not None else .0006*(256/spec.width)**.5
+    horizon=args.schedule_steps or args.steps
+    opt,step_block=make_block(spec,policy,args.micro,effective,args.negatives,lr,horizon)
     p=initialize(spec,args.seed)
     state=(p,opt.init(p),jnp.int32(0))
     card={"name":tag,"profile":profile,"policy":policy,"spec":asdict(spec),"seed":args.seed,
@@ -208,8 +216,15 @@ def run(args):
           "limit_per_family":args.limit,"lr":lr,"train_data":sha_file(data.dir/"card.json"),
           "sources":{path:sha_file(Path(path)) for path in ("models/g4_shared.py","training/g4_train.py",str(CFG))},
           "params":sum(x.size for x in p.values()),"label":args.label}
+    if args.fixed_lr is not None or args.data_fraction!=1 or args.schedule_steps:
+        card["scaling"]={"fixed_lr":lr,"horizon":horizon,"unique_fraction":args.data_fraction,
+                         "eligible":[len(pool) for pool in sampler.pools],
+                         "unique_seen":[min(len(pool),int(n)*args.steps) for pool,n in zip(sampler.pools,sampler.counts)]}
     identity=hashlib.sha256(json.dumps(card,sort_keys=True).encode()).hexdigest()
-    write(out/"config.json",card)
+    existing=out/"config.json"
+    if existing.exists() and read(existing)!=card:
+        raise ValueError("Refusing to overwrite an existing run with a different identity")
+    if not existing.exists(): write(existing,card)
     if (out/"resume.npz").exists():
         state=restore(out/"resume.npz",state,identity)
     start=int(state[-1])
@@ -243,6 +258,9 @@ def run(args):
             archive(tag,done,{"resume.npz":path,"config.json":out/"config.json","progress.json":out/"progress.json"},args.spool)
             print(json.dumps(result),flush=True)
     if args.steps:
+        if start==args.steps:
+            archive(tag,args.steps,{"resume.npz":out/"resume.npz","config.json":existing,
+                                     "progress.json":out/"progress.json"},args.spool)
         write(out/"complete.json",{"run":tag,"step":args.steps,"weight_file_sha256":sha_file(out/"resume.npz"),
                                   "timing":timing,"params":card["params"],"device":dev.device_kind})
 
@@ -260,6 +278,8 @@ def parser():
     p.add_argument("--precision",choices=["bfloat16","float32"],default="bfloat16")
     p.add_argument("--limit",type=int,default=0); p.add_argument("--spool",type=Path)
     p.add_argument("--checked-data",action="store_true",help="Supervisor has already verified the immutable local arrays")
+    p.add_argument("--fixed-lr",type=float); p.add_argument("--schedule-steps",type=int)
+    p.add_argument("--data-fraction",type=float,default=1.)
     return p
 
 

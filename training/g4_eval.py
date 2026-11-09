@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+from functools import lru_cache
 from pathlib import Path
 import time
 
@@ -20,7 +21,11 @@ def weights(run):
     cfg=read(run/"config.json")
     complete=read(run/"complete.json")
     path=run/"resume.npz"
-    if sha_file(path)!=complete["weight_file_sha256"]:
+    expected=complete["weight_file_sha256"]
+    if not path.is_file() and "inference_sha256" in complete:
+        path=run/"model.npz"
+        expected=complete["inference_sha256"]
+    if sha_file(path)!=expected:
         raise ValueError("Endpoint checksum changed")
     with np.load(path,allow_pickle=False) as f:
         identity=hashlib.sha256(json.dumps(cfg,sort_keys=True).encode()).hexdigest()
@@ -64,6 +69,7 @@ def paired_ci(value,groups):
     return [float(means.mean()),*map(float,np.quantile(boot,[.025,.975]))]
 
 
+@lru_cache(maxsize=12)
 def compiled_metrics(spec):
     @jax.jit
     def calculate(p,stats,arrays,ids,wrong_ids,source):
@@ -95,11 +101,11 @@ def check_lock(lock,run,complete):
         raise ValueError("Endpoint or evaluation code differs from the confirmation lock")
 
 
-def evaluate(run,root,role,batch_size,device,lock=None,cap=0):
+def evaluate(run,root,role,batch_size,device,lock=None,cap=0,data_cache=None):
     dev=backend(device)
     cfg,complete,spec,p,stats=weights(run)
     if role=="test": check_lock(lock,run,complete)
-    data=Data(root,role)
+    data=Data(root,role) if data_cache is None else data_cache
     calc=compiled_metrics(spec)
     results={}; arrays={}
     count=0; elapsed=0; compile_s=None

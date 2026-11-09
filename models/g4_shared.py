@@ -181,18 +181,45 @@ def alignment(p,z,paired,text_pair,batch,block):
     return .5*(direction(score,allowed,positive)+direction(score.swapaxes(-1,-2),allowed.swapaxes(-1,-2),positive.swapaxes(-1,-2)))
 
 
+def motion_term(prediction,target,valid,eligible):
+    """Centered motion plus same-recording temporal foils. The decoder sees only the observed source."""
+    mask=valid.astype(jnp.float32)[...,None]
+    def center(x):
+        return (x-(x*mask).sum(1,keepdims=True)/jnp.maximum(mask.sum(1,keepdims=True),1))*mask
+    y,truth=center(prediction),center(target)
+    energy=jnp.sum(truth*truth,axis=(1,2))/jnp.maximum(mask.sum((1,2))*truth.shape[-1],1)
+    mse=jnp.sum((y-truth)**2,axis=(1,2))/jnp.maximum(mask.sum((1,2))*truth.shape[-1],1)
+    valid3=mask[:,16:]*mask[:,8:-8]*mask[:,:-16]
+    query=y[:,8:-8]*valid3
+    def cosine(x):
+        x=x*valid3
+        return jnp.sum(query*x,axis=(1,2))*jax.lax.rsqrt(jnp.sum(query**2,axis=(1,2))*jnp.sum(x*x,axis=(1,2))+.01)
+    logits=jnp.stack([cosine(truth[:,8:-8]),cosine(truth[:,:-16]),cosine(truth[:,16:])],-1)/.15
+    keep=eligible & (energy>.001)
+    per=jnp.minimum(mse/jnp.maximum(energy,.0025),12.)-.5*jax.nn.log_softmax(logits)[:,0]
+    return jnp.sum(per*keep)/jnp.maximum(keep.sum(),1)
+
+
 def objective(p,spec,batch,views,stats,policy,block=32):
     inputs=jax.tree.map(lambda x:jnp.concatenate([x,x],axis=0),batch)
     sources=jnp.concatenate([views[:,0],views[:,1]],axis=0)
     erase=jnp.concatenate([views[:,2],views[:,3]]).astype(bool)
     z,_=encode(p,spec,inputs,sources,stats,erase=erase)
-    err,change,forecast,_=errors(p,spec,z,inputs,stats)
+    err,change,forecast,pred=errors(p,spec,z,inputs,stats)
     has=inputs["has"].astype(bool)
     self_mask=jax.nn.one_hot(sources,4,dtype=jnp.bool_)
     multiple=has.sum(1)>1
-    score=has & (jnp.where(multiple[:,None],~self_mask,self_mask) if policy=="cross" else self_mask)
+    score=has & (jnp.where(multiple[:,None],~self_mask,self_mask) if policy in ("cross","motion") else self_mask)
     per=(err+.25*change)*score
     supervised=(per.sum(1)/jnp.maximum(score.sum(1),1)).mean()
+    if policy=="motion":
+        a,v,_=unpack(inputs,stats)
+        b,t=pred.shape[:2]
+        face=lambda x:x.reshape(b,t,4,4,4,4).mean((3,5)).reshape(b,t,16)
+        bands=lambda x:x.reshape(b,t,10,10).mean(-1)
+        av=(inputs["family"]==0)&~erase
+        supervised=supervised+.12*motion_term(face(pred[:,:,100:356]),face(v),inputs["ok"],av&(sources==0))
+        supervised=supervised+.12*motion_term(bands(pred[:,:,:100]),bands(a),inputs["ok"],av&(sources==1))
     # An explicit one-step dynamics term is available wherever the robot stream exists.
     robot=has[:,2] & (inputs["family"]==4)
     future=(forecast*robot).sum()/jnp.maximum(robot.sum(),1)
