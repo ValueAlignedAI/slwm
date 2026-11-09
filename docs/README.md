@@ -35,6 +35,7 @@ Agents should follow the reading order in `../AGENTS.md`:
 
 ## Training
 
+- Colab SSH, verified optimizer recovery, direct Drive transfers and Fedora disk protection are covered in the [recovery runbook](training/colab_recovery.md).
 - `training/preprocessing.md` — T2 audio/visual latent preprocessing and dataset plan.
 - `training/t1_text_code_training.md` — T1 text/code training protocol and current evidence.
 - `training/video_repair.md` — actual speech-repair checkpoints, waveform isolation and reproduction.
