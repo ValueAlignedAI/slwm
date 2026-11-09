@@ -23,8 +23,21 @@ def companion_health(root, group):
     except (OSError,subprocess.TimeoutExpired):
         service="unavailable"
     stage=read(root/group/"status.json")
+    matched={}; unequal=[]
+    for card in (root/group).glob("*/step-*.json"):
+        reference=root/card.parent.name/card.name
+        if not reference.is_file():
+            continue
+        expected=read(reference).get("exposure_sha256")
+        actual=read(card).get("exposure_sha256")
+        if expected and expected==actual:
+            budget=card.stem.removeprefix("step-")
+            matched[budget]=matched.get(budget,0)+1
+        else:
+            unequal.append(f"{card.parent.name}/{card.stem}")
     return {"service":service,"phase":stage.get("phase","starting"),
-            "needs_attention":stage.get("phase")!="complete" and service in ("failed","inactive")}
+            "matched_endpoints":matched,"unequal_endpoints":sorted(unequal),
+            "needs_attention":bool(unequal) or (stage.get("phase")!="complete" and service in ("failed","inactive"))}
 
 
 def pusht_health(root):
