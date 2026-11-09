@@ -1,0 +1,8 @@
+{
+  "pattern": "largest two absolute weights in each consecutive group of four input coordinates",
+  "layers": "both feed-forward weight matrices of every shared SLWM block",
+  "seeds": [81, 82],
+  "milestones": [100, 1000, 8000],
+  "profile": "signal-dense",
+  "kernel_probe_rows": 1536
+}

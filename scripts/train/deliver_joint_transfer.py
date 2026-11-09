@@ -49,7 +49,7 @@ def collect():
     REL.mkdir(parents=True,exist_ok=True)
     OPS.mkdir(parents=True,exist_ok=True)
     include = ["*/","step-*.pt","step-*.json","*-32shot-head.npz","dev.json","test.json","status.json","training_lock.json",
-        "confirmation_lock.json","summary-*.json","summary-*.md","depth-*.json","results.json","lock.json","progress.json","inference_check.json","config.json"]
+        "confirmation_lock.json","summary-*.json","summary-*.md","depth-*.json","structured-*.json","kernel.json","kernel_unavailable.json","results.json","lock.json","progress.json","inference_check.json","config.json"]
     patterns = ["--exclude=*.tmp*"]
     patterns += ["--include="+x for x in include]+["--exclude=*"]
     cmd = ["rsync","-art","--partial","--timeout=90","-e","ssh -o BatchMode=yes -o ConnectTimeout=8",*patterns,
@@ -74,24 +74,29 @@ def collect():
         if role=="test":
             paths.append(REL/"confirmation_lock.json")
         commit_files(paths,f"research: publish verified {stage}-update {role} transfer comparison")
-    depth = REL/"depth6"
-    for stage,role in ((100,"dev"),(1000,"dev"),(8000,"test")):
-        report = depth/f"depth-{stage}-{role}.json"
-        if report.exists():
-            proof = depth/f"verified-{stage}.json"
+    for folder,prefix in (("depth6","depth"),("structured","structured")):
+        variant = REL/folder
+        for stage,role in ((100,"dev"),(1000,"dev"),(8000,"test")):
+            report = variant/f"{prefix}-{stage}-{role}.json"
+            if not report.exists():
+                continue
+            proof = variant/f"verified-{stage}.json"
             if not proof.exists():
                 hashes = {}
                 for run in read(report)["rows"]:
-                    card = read(depth/run/f"step-{stage}.json")
-                    local = depth/run/f"step-{stage}.pt"
+                    card = read(variant/run/f"step-{stage}.json")
+                    local = variant/run/f"step-{stage}.pt"
                     if sha(local)!=card["delta_sha256"]:
-                        raise ValueError(f"Reduced-depth delta verification failed for {run}")
+                        raise ValueError(f"Variant delta verification failed for {folder}/{run}")
                     hashes[run] = {"delta_sha256":card["delta_sha256"],"parent_sha256":card["parent_sha256"],"bytes":local.stat().st_size}
                 write(proof,{"milestone":stage,"verified_inference_deltas":hashes})
-            paths = [report,proof,depth/"training_lock.json",depth/"config.json"]
+            paths = [report,proof,variant/"training_lock.json",variant/"config.json"]
             if role=="test":
-                paths.append(depth/"confirmation_lock.json")
-            commit_files(paths,f"research: publish matched retained-depth transfer at {stage} updates")
+                paths.append(variant/"confirmation_lock.json")
+            for kernel in ("kernel.json","kernel_unavailable.json"):
+                if (variant/kernel).exists():
+                    paths.append(variant/kernel)
+            commit_files(paths,f"research: publish matched {prefix} transfer at {stage} updates")
     for role in ("screen","scale"):
         r = REL/"pusht"/role/"results.json"
         if r.exists():
@@ -99,7 +104,7 @@ def collect():
     if git("rev-list","--count",f"origin/{BRANCH}..HEAD")!="0":
         git("push","origin",BRANCH)
     phase = read(REL/"status.json") if (REL/"status.json").exists() else {}
-    complete = (REL/"summary-8000-test.json").exists() and (REL/"pusht/scale/results.json").exists() and (depth/"depth-8000-test.json").exists()
+    complete = (REL/"summary-8000-test.json").exists() and (REL/"pusht/scale/results.json").exists() and (REL/"depth6/depth-8000-test.json").exists() and (REL/"structured/structured-8000-test.json").exists()
     write(OPS/"latest.json",{"time":datetime.now(timezone.utc).isoformat(),"main":phase,"complete":complete,"published":git("rev-parse","HEAD")})
     return complete
 
