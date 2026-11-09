@@ -14,7 +14,7 @@ import jax.numpy as jnp
 import numpy as np
 import optax
 
-from models.g4_shared import Spec, initialize, objective
+from models.g4_shared import Spec, effective_denominators, initialize, objective
 
 
 CFG=Path("configs/t4/crossmodal_tpu.json")
@@ -122,7 +122,7 @@ class Sampler:
 
 
 @lru_cache(maxsize=16)
-def make_block(spec,policy,micro,effective,negatives,lr,horizon):
+def make_block(spec,policy,micro,effective,negatives,lr,horizon,global_counts=True):
     if effective%micro or micro%negatives:
         raise ValueError("Microbatch must divide the effective batch and contain complete contrastive groups")
     acc=effective//micro
@@ -132,10 +132,11 @@ def make_block(spec,policy,micro,effective,negatives,lr,horizon):
         def step(state,items):
             p,opt,count=state
             ix,vs=items
+            norm=effective_denominators(data,ix,vs,acc,policy) if acc>1 and global_counts else None
             def gradient(pair):
                 ids,v=pair
                 batch=jax.tree.map(lambda x:x[ids],data)
-                return jax.value_and_grad(objective,has_aux=True)(p,spec,batch,v,stats,policy,negatives)
+                return jax.value_and_grad(objective,has_aux=True)(p,spec,batch,v,stats,policy,negatives,norm)
             if acc==1:
                 (_,metrics),grads=gradient((ix,vs))
             else:
@@ -209,7 +210,7 @@ def run(args, data=None, numerics=None):
     stats=data.stats(sampler.pools[4]) if numerics is None or args.data_fraction!=1 else numerics
     lr=args.fixed_lr if args.fixed_lr is not None else .0006*(256/spec.width)**.5
     horizon=args.schedule_steps or args.steps
-    opt,step_block=make_block(spec,policy,args.micro,effective,args.negatives,lr,horizon)
+    opt,step_block=make_block(spec,policy,args.micro,effective,args.negatives,lr,horizon,not args.legacy_micro_normalizers)
     p=initialize(spec,args.seed)
     state=(p,opt.init(p),jnp.int32(0))
     card={"name":tag,"profile":profile,"policy":policy,"spec":asdict(spec),"seed":args.seed,
@@ -217,6 +218,7 @@ def run(args, data=None, numerics=None):
           "limit_per_family":args.limit,"lr":lr,"train_data":sha_file(data.dir/"card.json"),
           "sources":{path:sha_file(Path(path)) for path in ("models/g4_shared.py","training/g4_train.py",str(CFG))},
           "params":sum(x.size for x in p.values()),"label":args.label}
+    card["auxiliary_count_scope"]="microbatch" if args.legacy_micro_normalizers else "effective_batch"
     if args.fixed_lr is not None or args.data_fraction!=1 or args.schedule_steps:
         card["scaling"]={"fixed_lr":lr,"horizon":horizon,"unique_fraction":args.data_fraction,
                          "eligible":[len(pool) for pool in sampler.pools],
@@ -281,6 +283,7 @@ def parser():
     p.add_argument("--checked-data",action="store_true",help="Supervisor has already verified the immutable local arrays")
     p.add_argument("--fixed-lr",type=float); p.add_argument("--schedule-steps",type=int)
     p.add_argument("--data-fraction",type=float,default=1.)
+    p.add_argument("--legacy-micro-normalizers",action="store_true",help="Original G4 per-microbatch normalization")
     return p
 
 

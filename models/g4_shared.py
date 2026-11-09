@@ -166,7 +166,7 @@ def centroid(z, batch):
     return (z.astype(jnp.float32)*m).sum(1)/jnp.maximum(m.sum(1),1)
 
 
-def alignment(p,z,paired,text_pair,batch,block,direct=False):
+def alignment(p,z,paired,text_pair,batch,block,direct=False,denom=None):
     if direct:
         mask=batch["ok"].reshape(len(z),4,-1,1).astype(jnp.float32)
         slots=z.astype(jnp.float32).reshape(len(z),4,-1,z.shape[-1])
@@ -189,11 +189,34 @@ def alignment(p,z,paired,text_pair,batch,block,direct=False):
     def direction(s,allow,pos):
         a=jax.nn.logsumexp(jnp.where(allow,s,-1e5),axis=-1)
         b=jax.nn.logsumexp(jnp.where(pos,s,-1e5),axis=-1)
-        return ((a-b)*ok).sum()/jnp.maximum(ok.sum(),1)
+        return ((a-b)*ok).sum()/(jnp.maximum(ok.sum(),1) if denom is None else denom)
     return .5*(direction(score,allowed,positive)+direction(score.swapaxes(-1,-2),allowed.swapaxes(-1,-2),positive.swapaxes(-1,-2)))
 
 
-def motion_term(prediction,target,valid,eligible):
+def motion_energy(x,valid):
+    mask=valid[...,None].astype(jnp.float32)
+    y=(x-(x*mask).sum(1,keepdims=True)/jnp.maximum(mask.sum(1,keepdims=True),1))*mask
+    return jnp.sum(y*y,axis=(1,2))/jnp.maximum(mask.sum((1,2))*x.shape[-1],1)
+
+
+def effective_denominators(data,ids,views,accumulations,policy):
+    """Divide by effective-batch counts when gradients are averaged across microbatches."""
+    aligned=(views[:,0]!=views[:,1])&~(views[:,2].astype(bool)|views[:,3].astype(bool))
+    family=data["family"][ids]
+    size=lambda n:jnp.maximum(n,1)/accumulations
+    den={"align":size(aligned.sum()),"future":size(2*((family==4)&data["has"][ids,2].astype(bool)).sum())}
+    if policy=="motion":
+        ok=data["ok"][ids]
+        a=((data["a"][ids].astype(jnp.float32)/16-7)/3).reshape(len(ids),64,10,10).mean(-1)
+        v=(data["v"][ids].astype(jnp.float32)/127.5-1).reshape(len(ids),64,4,4,4,4).mean((3,5)).reshape(len(ids),64,16)
+        for key,source,x in (("motion_v",0,v),("motion_a",1,a)):
+            eligible=(family==0)&(motion_energy(x,ok)>.001)
+            used=(views[:,:2]==source)&~views[:,2:].astype(bool)
+            den[key]=size((used&eligible[:,None]).sum())
+    return den
+
+
+def motion_term(prediction,target,valid,eligible,denom=None):
     """Centered motion plus same-recording temporal foils. The decoder sees only the observed source."""
     mask=valid.astype(jnp.float32)[...,None]
     def center(x):
@@ -209,10 +232,11 @@ def motion_term(prediction,target,valid,eligible):
     logits=jnp.stack([cosine(truth[:,8:-8]),cosine(truth[:,:-16]),cosine(truth[:,16:])],-1)/.15
     keep=eligible & (energy>.001)
     per=jnp.minimum(mse/jnp.maximum(energy,.0025),12.)-.5*jax.nn.log_softmax(logits)[:,0]
-    return jnp.sum(per*keep)/jnp.maximum(keep.sum(),1)
+    return jnp.sum(per*keep)/(jnp.maximum(keep.sum(),1) if denom is None else denom)
 
 
-def objective(p,spec,batch,views,stats,policy,block=32):
+def objective(p,spec,batch,views,stats,policy,block=32,normalizers=None):
+    den={} if normalizers is None else normalizers
     inputs=jax.tree.map(lambda x:jnp.concatenate([x,x],axis=0),batch)
     sources=jnp.concatenate([views[:,0],views[:,1]],axis=0)
     erase=jnp.concatenate([views[:,2],views[:,3]]).astype(bool)
@@ -230,12 +254,12 @@ def objective(p,spec,batch,views,stats,policy,block=32):
         face=lambda x:x.reshape(b,t,4,4,4,4).mean((3,5)).reshape(b,t,16)
         bands=lambda x:x.reshape(b,t,10,10).mean(-1)
         av=(inputs["family"]==0)&~erase
-        supervised=supervised+.12*motion_term(face(pred[:,:,100:356]),face(v),inputs["ok"],av&(sources==0))
-        supervised=supervised+.12*motion_term(bands(pred[:,:,:100]),bands(a),inputs["ok"],av&(sources==1))
+        supervised=supervised+.12*motion_term(face(pred[:,:,100:356]),face(v),inputs["ok"],av&(sources==0),den.get("motion_v"))
+        supervised=supervised+.12*motion_term(bands(pred[:,:,:100]),bands(a),inputs["ok"],av&(sources==1),den.get("motion_a"))
     # An explicit one-step dynamics term is available wherever the robot stream exists.
     robot=has[:,2] & (inputs["family"]==4)
-    future=(forecast*robot).sum()/jnp.maximum(robot.sum(),1)
+    future=(forecast*robot).sum()/den.get("future",jnp.maximum(robot.sum(),1))
     pair=(views[:,0]!=views[:,1]) & ~(views[:,2].astype(bool)|views[:,3].astype(bool))
-    align=alignment(p,z,pair,(views[:,0]==3)|(views[:,1]==3),inputs,block,spec.tied)
+    align=alignment(p,z,pair,(views[:,0]==3)|(views[:,1]==3),inputs,block,spec.tied,den.get("align"))
     loss=supervised+.12*align+.12*future
     return loss,jnp.stack([loss,supervised,align,future])

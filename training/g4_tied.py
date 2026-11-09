@@ -4,6 +4,7 @@ from pathlib import Path
 import time
 
 from training.g4_eval import evaluate
+from training.g4_checkpoint_budget import admit,parameters
 from training.g4_stages import monitor
 from training.g4_train import Data,archive,parser,run,write
 
@@ -17,7 +18,7 @@ def main():
     for seed in (81,82):
         for profile in (("signal-tied","gpt2-tied") if seed==81 else ("gpt2-tied","signal-tied")):
             tag=f"g4-v5e-tied-medium-{profile}-{seed}"; dest=a.out/tag
-            if time.time()+80>a.deadline:
+            if not (dest/"complete.json").exists() and not admit(a.out,a.spool,a.deadline,80,parameters(512,8),status):
                 write(status,{"stage":"budget_boundary","completed":done}); return
             if not (dest/"complete.json").is_file():
                 args=parser().parse_args(["--data",str(a.data),"--output",str(a.out),"--spool",str(a.spool),"--backend","tpu",

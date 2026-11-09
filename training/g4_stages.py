@@ -7,6 +7,7 @@ import time
 
 from training.g4_train import CFG, Data, archive, parser as train_parser, read, run as train, sha_file, write
 from training.g4_eval import evaluate
+from training.g4_checkpoint_budget import admit,parameters
 
 
 @contextmanager
@@ -66,7 +67,9 @@ def main():
         tag=f"g4-{a.label}-{a.stage}-{profile}-{seed}"
         run=a.out/tag; run.mkdir(exist_ok=True)
         if not (run/"complete.json").exists():
-            if time.time()+max(90,1.4*estimate+40)>a.deadline:
+            d,l=cfg["scales"][a.stage]
+            count=parameters(d,l,1 if profile=="gpt2-matched" else 4,4 if profile=="sparse-cross" else 1)
+            if not admit(a.out,a.spool,a.deadline,max(45,1.4*estimate),count,status):
                 write(status,{"stage":"reserved_time_for_uploads","pending":tag,"completed":done,"time":time.time()})
                 return
             start=time.monotonic()

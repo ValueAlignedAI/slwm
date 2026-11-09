@@ -7,6 +7,7 @@ import time
 import jax
 
 from training.g4_eval import evaluate
+from training.g4_checkpoint_budget import admit,parameters
 from training.g4_stages import monitor
 from training.g4_train import Data,archive,parser as train_parser,read,run,write
 
@@ -28,7 +29,8 @@ def main():
             tag=f"g4-{label}-{scale}-{profile}-{seed}"; output=a.out/tag
             micro=32 if scale=="anchor" else 128
             reserve={"pilot":55,"medium":100,"anchor":180}[scale]
-            if time.time()+reserve>a.deadline:
+            width,depth={"pilot":(256,4),"medium":(512,8),"anchor":(896,12)}[scale]
+            if not (output/"complete.json").exists() and not admit(a.out,a.spool,a.deadline,reserve,parameters(width,depth),status):
                 write(status,{"stage":"reserved_time_for_validation_and_backup","completed":done,"next":tag,"at":time.time()})
                 return
             if not (output/"complete.json").exists():
