@@ -45,11 +45,42 @@ def commit_files(paths,message):
         git("commit","--only","-m",message,"--",*paths)
 
 
-def collect():
+def archive_files(archive, group, stage):
+    if not archive:
+        return None
+    folder = f"{archive.rstrip('/')}/runs/g3-{group}-exports"
+    prefix = f"{stage:012d}-"
+    names = subprocess.check_output(["rclone","lsf","--files-only",folder],text=True).splitlines()
+    markers = sorted({n for n in names if n.startswith(prefix) and n.endswith(".json")})
+    if len(markers)!=1:
+        raise ValueError(f"Expected one committed Drive generation for {group}/{stage}, found {len(markers)}")
+    body = subprocess.check_output(["rclone","cat",folder+"/"+markers[0]])
+    if markers[0] != prefix+hashlib.sha256(body).hexdigest()+".json":
+        raise ValueError("Drive delivery manifest checksum failed")
+    manifest = json.loads(body)
+    if (manifest["schema"],manifest["run"],manifest["step"]) != (1,f"g3-{group}-exports",stage):
+        raise ValueError("Drive delivery manifest identity failed")
+    return manifest["files"]
+
+
+def verified_size(local, run, expected, archived):
+    if archived is None:
+        actual, size = sha(local), local.stat().st_size
+    else:
+        entry = archived.get(run+".pt",{})
+        actual, size = entry.get("sha256"), entry.get("size")
+    if actual!=expected or type(size) is not int or size<=0:
+        raise ValueError(f"Delta verification failed for {run}")
+    return size
+
+
+def collect(archive=None):
     REL.mkdir(parents=True,exist_ok=True)
     OPS.mkdir(parents=True,exist_ok=True)
-    include = ["*/","step-*.pt","step-*.json","*-32shot-head.npz","dev.json","test.json","status.json","training_lock.json",
+    include = ["*/","step-*.json","dev.json","test.json","status.json","training_lock.json",
         "confirmation_lock.json","summary-*.json","summary-*.md","depth-*.json","structured-*.json","kernel.json","kernel_unavailable.json","results.json","lock.json","progress.json","inference_check.json","config.json"]
+    if not archive:
+        include.extend(["step-*.pt","*-32shot-head.npz"])
     patterns = ["--exclude=*.tmp*"]
     patterns += ["--include="+x for x in include]+["--exclude=*"]
     cmd = ["rsync","-art","--partial","--timeout=90","-e","ssh -o BatchMode=yes -o ConnectTimeout=8",*patterns,
@@ -61,14 +92,14 @@ def collect():
             continue
         proof = REL/f"verified-{stage}.json"
         if not proof.exists():
+            archived = archive_files(archive,"main",stage)
             hashes = {}
             for run in read(report)["rows"]:
                 card = read(REL/run/f"step-{stage}.json")
                 local = REL/run/f"step-{stage}.pt"
-                if sha(local)!=card["delta_sha256"]:
-                    raise ValueError(f"Delta verification failed for {run}")
+                size = verified_size(local,run,card["delta_sha256"],archived)
                 hashes[run] = {"delta_sha256":card["delta_sha256"],"parent_sha256":card["parent_sha256"],
-                               "bytes":local.stat().st_size,"exposure_sha256":card["exposure_sha256"]}
+                               "bytes":size,"exposure_sha256":card["exposure_sha256"]}
             write(proof,{"milestone":stage,"verified_inference_deltas":hashes})
         paths = [report,report.with_suffix(".md"),proof,REL/"training_lock.json"]
         if role=="test":
@@ -82,13 +113,13 @@ def collect():
                 continue
             proof = variant/f"verified-{stage}.json"
             if not proof.exists():
+                archived = archive_files(archive,folder,stage)
                 hashes = {}
                 for run in read(report)["rows"]:
                     card = read(variant/run/f"step-{stage}.json")
                     local = variant/run/f"step-{stage}.pt"
-                    if sha(local)!=card["delta_sha256"]:
-                        raise ValueError(f"Variant delta verification failed for {folder}/{run}")
-                    hashes[run] = {"delta_sha256":card["delta_sha256"],"parent_sha256":card["parent_sha256"],"bytes":local.stat().st_size}
+                    size = verified_size(local,run,card["delta_sha256"],archived)
+                    hashes[run] = {"delta_sha256":card["delta_sha256"],"parent_sha256":card["parent_sha256"],"bytes":size}
                 write(proof,{"milestone":stage,"verified_inference_deltas":hashes})
             paths = [report,proof,variant/"training_lock.json",variant/"config.json"]
             if role=="test":
@@ -112,13 +143,14 @@ def collect():
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--watch",action="store_true")
+    p.add_argument("--drive-archive",help="Publish using verified Drive manifests and collect only compact reports")
     a = p.parse_args()
     OPS.mkdir(parents=True,exist_ok=True)
     with (OPS/"watch.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         while True:
             try:
-                if collect() or not a.watch:
+                if collect(a.drive_archive) or not a.watch:
                     return
             except (OSError,ValueError,subprocess.CalledProcessError) as e:
                 if not a.watch:
