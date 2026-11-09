@@ -15,6 +15,8 @@
   "seeds": [81, 82],
   "effective_batch": 256,
   "throughput_batches": [32, 64, 128, 256],
+  "screen_profiles": ["gpt2-cross","signal-cross","gpt2-self","signal-self","sparse-cross","gpt2-matched"],
+  "transfer": {"tasks": ["ESC-50","CIFAR-10"], "shots": [1,4,8], "ridge": 0.1, "esc50_revision": "33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6","cifar10_binary_md5":"c32a1d4ab5d03f1284b67883e8d87530"},
   "screen_updates": 256,
   "medium_updates": 1024,
   "anchor_updates": 512,
