@@ -139,7 +139,7 @@ print(json.dumps(files))
     save(checkout/PROOF,proof)
     card={k:v for k,v in proof['final_verification'].items() if k!='files'};card.update(verified_files=len(files),verified_bytes=sum(v['bytes'] for v in files.values()),archived_milestones=len(proof['archived_milestones']))
     save(destination/'delivery_summary.json',card)
-    selected=[destination/n for n in ('REPORT.md','findings.json','gates.json','study_complete.json','evaluation_lock.json','source_hashes.json','environment.json','delivery_summary.json','readouts/evaluation_summary.json','consequences/summary.json','alignment/summary.json','speech_retention/summary.json','operational/summary.json','exports/actual_checkpoint_inference.json')]
+    selected=[destination/n for n in ('REPORT.md','findings.json','gates.json','study_complete.json','evaluation_lock.json','source_hashes.json','environment.json','delivery_summary.json','readouts/evaluation_summary.json','readouts/precision_erratum.json','readouts/precision_v2_source_hashes.json','consequences/summary.json','alignment/summary.json','speech_retention/summary.json','operational/summary.json','exports/actual_checkpoint_inference.json')]
     selected += list(destination.glob('G2-*/complete.json'))+list(destination.glob('G2-*/curves.json'))+list(destination.glob('operational/G2-*/summary.json'))
     publish(checkout,selected,'research: publish frozen predictive-state transfer and dynamics findings')
     proof['delivered_and_published']=True;save(checkout/PROOF,proof)
@@ -160,6 +160,7 @@ def main():
                 copy_names(checkout,names);publish(checkout,[checkout/n for n in names],'research: record frozen large-model predictive-state training screen');proof['screen_published']=True;save(checkout/PROOF,proof)
             if ready['complete'] and ready['status'].get('phase')=='complete':final_delivery(checkout,proof);return
             if ready['status'].get('phase')=='failed':save(base/'needs_attention.json',ready['status'])
+            elif (base/'needs_attention.json').exists():(base/'needs_attention.json').unlink()
         except Exception as exc:
             save(base/'delivery_retry.json',{'unix':time.time(),'error':repr(exc),'traceback':traceback.format_exc()});print(traceback.format_exc(),flush=True)
         time.sleep(60)
