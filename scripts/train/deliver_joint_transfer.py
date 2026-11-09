@@ -143,7 +143,12 @@ def collect(archive=None):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--watch",action="store_true")
-    p.add_argument("--drive-archive",help="Publish using verified Drive manifests and collect only compact reports")
+    settings_path = OPS/"storage.json"
+    settings = read(settings_path) if settings_path.exists() else {}
+    if settings.get("rclone_config"):
+        os.environ.setdefault("RCLONE_CONFIG",str(Path(settings["rclone_config"]).expanduser()))
+    p.add_argument("--drive-archive",default=settings.get("drive_archive"),
+                   help="Publish using verified Drive manifests and collect only compact reports")
     a = p.parse_args()
     OPS.mkdir(parents=True,exist_ok=True)
     with (OPS/"watch.lock").open("a") as lock:
