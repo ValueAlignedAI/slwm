@@ -22,7 +22,8 @@ KEYS=("a","v","n","x","ok","has","family","cap")
 PROFILES={"gpt2-cross":("gpt2","cross",4),"gpt2-self":("gpt2","self",4),
           "signal-cross":("signal","cross",4),"signal-self":("signal","self",4),
           "sparse-cross":("grouped","cross",4),"gpt2-matched":("gpt2","cross",1),
-          "gpt2-motion":("gpt2","motion",4),"signal-motion":("signal","motion",4)}
+          "gpt2-motion":("gpt2","motion",4),"signal-motion":("signal","motion",4),
+          "gpt2-tied":("gpt2","cross",4),"signal-tied":("signal","cross",4)}
 
 
 def read(path):
@@ -159,7 +160,7 @@ def make_block(spec,policy,micro,effective,negatives,lr,horizon):
 def config_spec(cfg,scale,profile,precision):
     core,policy,expansion=PROFILES[profile]
     width,depth=cfg["scales"][scale]
-    return Spec(core,width,depth,precision,expansion),policy
+    return Spec(core,width,depth,precision,expansion,profile.endswith("-tied")),policy
 
 
 def checkpoint(out,state,manifest,stats):

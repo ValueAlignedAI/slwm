@@ -122,12 +122,12 @@ class Writer:
         return stats
 
 
-def grid(writer, root, role, cap):
+def grid(writer, root, role, cap, source_split=None):
     import torch
     import torchaudio
     from vocos.feature_extractors import MelSpectrogramFeatures
     torch.set_num_threads(3)
-    split={"train":"train","dev":"validation","test":"test"}[role]
+    split=source_split if source_split is not None else {"train":"train","dev":"validation","test":"test"}[role]
     original=read(root/(split+".json"))
     ids=sorted(range(len(original)),key=lambda j:number(original[j]["sample_id"]))[:cap]
     mouth=mapped(root/(split+"_mouth.npy"))

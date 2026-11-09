@@ -13,6 +13,7 @@ class Spec:
     depth: int
     dtype: str = "bfloat16"
     expansion: int = 4
+    tied: bool = False
 
     @property
     def groups(self):
@@ -125,7 +126,13 @@ def encode(p, spec, batch, source, stats, *, erase=None, memory=None, offset=0, 
             u=jax.nn.gelu(jnp.einsum("btgi,gih->btgh",z,p[name+"up"].astype(dtype)))
             u=jnp.einsum("btgh,ghi->btgi",u,p[name+"down"].astype(dtype)).reshape(b,t,-1)
         x=(x+u)*valid[...,None]
-    return norm(x,p["norm"],p["bias"],dtype),tuple(carried)
+    field=norm(x,p["norm"],p["bias"],dtype)
+    if spec.tied:
+        basis=p["align"].astype(dtype)
+        code=(field@basis).astype(jnp.float32)
+        code=code*jax.lax.rsqrt((code*code).mean(-1,keepdims=True)+1e-5)
+        field=(code.astype(dtype)@basis.T)*(spec.width/128)**.5
+    return field,tuple(carried)
 
 
 def errors(p,spec,z,batch,stats):
@@ -159,9 +166,14 @@ def centroid(z, batch):
     return (z.astype(jnp.float32)*m).sum(1)/jnp.maximum(m.sum(1),1)
 
 
-def alignment(p,z,paired,text_pair,batch,block):
-    projection=p["align"].astype(z.dtype)
-    vec=(centroid(z,batch).astype(z.dtype)@projection).astype(jnp.float32)
+def alignment(p,z,paired,text_pair,batch,block,direct=False):
+    if direct:
+        mask=batch["ok"].reshape(len(z),4,-1,1).astype(jnp.float32)
+        slots=z.astype(jnp.float32).reshape(len(z),4,-1,z.shape[-1])
+        vec=((slots*mask).sum(2)/jnp.maximum(mask.sum(2),1)).reshape(len(z),-1)
+    else:
+        projection=p["align"].astype(z.dtype)
+        vec=(centroid(z,batch).astype(z.dtype)@projection).astype(jnp.float32)
     vec=vec*jax.lax.rsqrt((vec*vec).sum(-1,keepdims=True)+1e-8)
     a,b=jnp.split(vec,2,axis=0)
     a,b=(x.reshape(-1,block,x.shape[-1]) for x in (a,b))
@@ -224,6 +236,6 @@ def objective(p,spec,batch,views,stats,policy,block=32):
     robot=has[:,2] & (inputs["family"]==4)
     future=(forecast*robot).sum()/jnp.maximum(robot.sum(),1)
     pair=(views[:,0]!=views[:,1]) & ~(views[:,2].astype(bool)|views[:,3].astype(bool))
-    align=alignment(p,z,pair,(views[:,0]==3)|(views[:,1]==3),inputs,block)
+    align=alignment(p,z,pair,(views[:,0]==3)|(views[:,1]==3),inputs,block,spec.tied)
     loss=supervised+.12*align+.12*future
     return loss,jnp.stack([loss,supervised,align,future])
