@@ -1,6 +1,7 @@
 """A new speaker split for the decoded-state intervention, with all eight compared weights bound first."""
 import argparse
 import json
+import os
 from pathlib import Path
 import tempfile
 import time
@@ -9,6 +10,7 @@ from training.g4_data import Writer,grid,read
 
 
 def prepare(repo,data):
+    os.chdir(repo)
     dest=data/"bridge"
     if (dest/"card.json").exists(): return
     root=repo/"artifacts/t2_audio_visual/grid_content_v1"
