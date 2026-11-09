@@ -58,3 +58,10 @@ Using only 32 demonstration episodes to fit each readout, we predicted object di
 The raw readout scored 14.09 when the plan was withheld and 18.27 when plans were permuted across episodes. The recorded plan contains predictive information. The early learned representations have yet to extract a physical prediction advantage over the raw control. For dense signal seed 81 the paired episode error reduction against raw was −0.53 with a 95% interval from −0.95 to −0.14. All ten configurations missed the physical-transfer gate.
 
 The 8,000-update physical confirmation uses a separate 94 episodes. The three-task final evaluation uses official visual and text test sets and two different spoken-digit speakers. Model selection and threshold changes on these outcomes would require a new study.
+
+
+## Sparse backbone and deployment checks
+
+The additional 2-of-4 experiment removes 28,311,552 weight positions across both feed-forward matrices in all twelve shared SLWM blocks. Dense GPT-2 references retain all their weights. On the 3090, the first packed FP16 matrix at 1,536 input positions agreed with the identical zero-masked dense matrix to relative L2 error 0.000021. Its median time was 0.458 ms, compared with 0.279 ms for dense execution. At this shape the hardware kernel made inference slower. Training uses dense kernels on the fixed masked weights.
+
+All four original language parents, four six-layer parents and two structured parents were SHA-verified on the Mac. The ten initial 12-layer joint deltas were verified separately. A sparse-adapter checkpoint loaded independently for both text continuation and next-audio prediction from a real held-speaker observation. These checks establish artifact usability.
