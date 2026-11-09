@@ -1,0 +1,10 @@
+{
+  "url": "https://diffusion-policy.cs.columbia.edu/data/training/pusht.zip",
+  "archive_sha256": "63d52a114a3f010861f0181309d165b7d69133ccae426ece2fc94caed147bdf9",
+  "decoder": "numcodecs==0.16.3",
+  "split_salt": "G3-PUSHT-20261109-A",
+  "episodes": {"fit": 32, "reserve": 16, "screen": 64, "scale": 94},
+  "history": 16, "horizon": 8, "windows": 8,
+  "ridge": 0.1, "bootstrap": 2000,
+  "budgets": {"screen": 100, "scale": 8000}
+}
