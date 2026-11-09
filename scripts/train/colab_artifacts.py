@@ -5,6 +5,7 @@ sources share a filesystem. Only the separate sync process reads the large files
 """
 import argparse
 import contextlib
+import errno
 import fcntl
 import hashlib
 import json
@@ -62,7 +63,10 @@ def capture(spool, run, step, files):
     with lock(spool / "locks" / f"{run}.lock"):
         if target.exists():
             entries = {path.name for path in target.iterdir()}
-            if entries == set(files) and all((target / k).samefile(p) for k, p in files.items()):
+            if entries == set(files) and all(
+                (target/k).samefile(p) or ((target/k).stat().st_size == p.stat().st_size and sha256(target/k) == sha256(p))
+                for k,p in files.items()
+            ):
                 return
             raise IntegrityError(f"Different files already staged for {run}/{step}")
         with tempfile.TemporaryDirectory(dir=root, prefix=".capture-") as directory:
@@ -72,7 +76,13 @@ def capture(spool, run, step, files):
                 safe_name(name)
                 if not source.is_file() or source.is_symlink():
                     raise ValueError(f"Expected a regular published file: {source}")
-                os.link(source, generation / name)
+                try:
+                    os.link(source, generation / name)
+                except OSError as error:
+                    # Small run cards may reside in the Git checkout on another disk.
+                    if error.errno != errno.EXDEV or source.stat().st_size > 8 * 1024**2:
+                        raise
+                    shutil.copyfile(source, generation / name)
             generation.rename(target)
 
 
@@ -105,12 +115,9 @@ def manifest_for(directory, run, step):
         for p in sorted(directory.iterdir())}}
 
 
-def publish(spool, remote, directory):
+def publish(spool, remote, directory, replica=None):
     run, step = safe_name(directory.parent.name), int(directory.name)
     manifest = manifest_for(directory, run, step)
-    for name, info in manifest["files"].items():
-        digest = info["sha256"]
-        put_verified(directory / name, f"{remote}/objects/{digest}", digest)
     body = encode(manifest)
     digest = hashlib.sha256(body).hexdigest()
     marker = f"{step:012d}-{digest}.json"
@@ -123,7 +130,11 @@ def publish(spool, remote, directory):
         pending = Path(out.name)
         out.write(body)
     try:
-        put_verified(pending, f"{remote}/runs/{run}/{marker}", digest)
+        for store in ([replica, remote] if replica is not None else [remote]):
+            for name, info in manifest["files"].items():
+                blob = info["sha256"]
+                put_verified(directory / name, f"{store}/objects/{blob}", blob)
+            put_verified(pending, f"{store}/runs/{run}/{marker}", digest)
         pending.replace(receipts / marker)
     finally:
         pending.unlink(missing_ok=True)
@@ -132,11 +143,18 @@ def publish(spool, remote, directory):
     print(f"verified {run} step={step} files={len(manifest['files'])}", flush=True)
 
 
-def sync(spool, remote):
+def sync(spool, remote, replica=None):
     with lock(spool / "locks" / "uploader"):
         for directory in sorted((spool / "pending").glob("*/*")):
             if re.fullmatch("[0-9]{12}", directory.name):
-                publish(spool, remote, directory)
+                publish(spool, remote, directory, replica)
+
+
+def mounted_replica(path, uuid):
+    if not path.is_dir() or subprocess.check_output(
+            ["findmnt","-nro","UUID","-T",str(path)], text=True).strip() != uuid:
+        raise OSError(f"Checkpoint replica volume is unavailable: {path}")
+    return str(path)
 
 
 def unpack(remote, marker, run, staging):
@@ -204,6 +222,8 @@ def main():
     push = commands.add_parser("sync")
     push.add_argument("--spool", type=Path, required=True)
     push.add_argument("--watch", action="store_true")
+    push.add_argument("--replica", type=Path)
+    push.add_argument("--replica-uuid")
     pull = commands.add_parser("restore")
     pull.add_argument("--run", required=True)
     pull.add_argument("--to", type=Path, required=True)
@@ -221,10 +241,13 @@ def main():
     elif args.command == "restore":
         restore(args.remote.rstrip("/"), args.run, args.to)
     else:
+        if bool(args.replica) != bool(args.replica_uuid):
+            parser.error("Supply both --replica and --replica-uuid")
         delay = 15
         while True:
             try:
-                sync(args.spool, args.remote.rstrip("/"))
+                replica = mounted_replica(args.replica, args.replica_uuid) if args.replica else None
+                sync(args.spool, args.remote.rstrip("/"), replica)
                 delay = 15
             except (OSError, subprocess.CalledProcessError, IntegrityError) as error:
                 if not args.watch:

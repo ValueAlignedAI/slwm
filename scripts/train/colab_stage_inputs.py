@@ -35,9 +35,31 @@ def stage(repo, parents, spool):
     capture(spool, "g3-fineweb-edu", 0, files)
 
 
+def stage_derived(repo, spool):
+    config = json.loads((repo/"configs/t4/joint_transfer.json").read_text())
+    for group, folder in (("depth6","depth_parents"), ("structured","structured_parents")):
+        cfg = repo/config["output"]/group/"config.json"
+        parents = json.loads(cfg.read_text())["parents"]
+        for name, expected in parents.values():
+            run = f"g3-parent-{group}-{name}"
+            if any((spool/"receipts"/run).glob("000000000000-*.json")):
+                continue
+            # Use the physical mount, since Linux forbids hard links across bind aliases.
+            src = (repo/config["data"]/folder/name).resolve()
+            model = checked(src/"best.pt",expected)
+            capture(spool,run,0,{"best.pt":model,"best.json":src/"best.json","config.json":cfg})
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    for field in ("repo", "parents", "spool"):
+    for field in ("repo", "spool"):
         parser.add_argument(f"--{field}", type=Path, required=True)
+    parser.add_argument("--parents",type=Path)
+    parser.add_argument("--derived-only",action="store_true")
     args = parser.parse_args()
-    stage(args.repo, args.parents, args.spool)
+    if args.derived_only:
+        stage_derived(args.repo,args.spool)
+    elif args.parents is not None:
+        stage(args.repo, args.parents, args.spool)
+    else:
+        parser.error("Provide --parents or select --derived-only")

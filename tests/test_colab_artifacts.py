@@ -1,5 +1,6 @@
 """Crash boundaries and restore selection using the real rclone local backend."""
 import hashlib
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -88,3 +89,47 @@ def test_conflicting_step_and_path_traversal_fail_closed(tmp_path):
     with pytest.raises(vault.IntegrityError, match="Conflicting manifests"):
         vault.restore(str(remote), "model", tmp_path / "out")
     assert not (tmp_path / "out").exists()
+
+
+def test_independent_replica_can_restore_before_drive_recovers(tmp_path, monkeypatch):
+    local, cloud = str(tmp_path/"hdd"), str(tmp_path/"drive")
+    stage(tmp_path, 3, b"real optimizer")
+    original = vault.put_verified
+    def outage(source, dest, sha):
+        if dest.startswith(cloud + "/"):
+            raise subprocess.CalledProcessError(5, ["rclone"])
+        original(source, dest, sha)
+    with monkeypatch.context() as m:
+        m.setattr(vault, "put_verified", outage)
+        with pytest.raises(subprocess.CalledProcessError):
+            vault.sync(tmp_path/"spool", cloud, local)
+    assert vault.restore(local, "model", tmp_path/"offline")["step"] == 3
+    vault.sync(tmp_path/"spool", cloud, local)
+    assert vault.restore(cloud, "model", tmp_path/"online")["step"] == 3
+
+
+def test_prepared_inventory_follows_original_robot_links_and_checks_their_targets(tmp_path):
+    from scripts.train import colab_pack_joint_data as pack
+    g2, cache = tmp_path/pack.G2, tmp_path/pack.CACHE
+    g2.mkdir(parents=True)
+    for name in ("normalizers.npz", "dataset_contract.json"):
+        (g2/name).write_bytes(b"fixture")
+    (g2/"robot_rows.json").write_text(json.dumps([{"id":"robot-1"}]))
+    for family in ("coco","speech","ami","clotho","pamap2"):
+        (cache/family).mkdir(parents=True)
+        (cache/family/"rows.json").write_text("[]")
+    original = cache/"droid_expanded"/"robot-1"
+    alias = cache/"droid_g2"/"robot-1"
+    original.mkdir(parents=True)
+    alias.mkdir(parents=True)
+    for name in ("trajectory.npz","rgb.npy"):
+        (original/name).write_bytes(b"data")
+        (alias/name).symlink_to(original/name)
+    files = pack.inventory(tmp_path)
+    assert files[str((alias/"rgb.npy").relative_to(tmp_path))] == 4
+    (alias/"rgb.npy").unlink()
+    other = tmp_path/"unrelated"
+    other.write_bytes(b"data")
+    (alias/"rgb.npy").symlink_to(other)
+    with pytest.raises(ValueError, match="regular prepared file"):
+        pack.inventory(tmp_path)
