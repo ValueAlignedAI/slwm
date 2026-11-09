@@ -1,0 +1,122 @@
+{
+  "paired_person_effects": {
+    "G2-201_vs_G2-202": {
+      "equal_person_phone_error_gain": 0.005792198390541827,
+      "gain_95ci": [
+        -0.0029436154975442524,
+        0.01467534325569293
+      ],
+      "people": 32
+    },
+    "G2-201_vs_G2-205": {
+      "equal_person_phone_error_gain": 0.0030506768227386034,
+      "gain_95ci": [
+        -0.007827331887988648,
+        0.01343877139803161
+      ],
+      "people": 32
+    },
+    "G2-203_vs_G2-204": {
+      "equal_person_phone_error_gain": -0.00029232367054829315,
+      "gain_95ci": [
+        -0.010623654217107446,
+        0.009573247134356542
+      ],
+      "people": 32
+    },
+    "G2-203_vs_G2-207": {
+      "equal_person_phone_error_gain": -0.003631692128094669,
+      "gain_95ci": [
+        -0.012067610195650629,
+        0.004595164803131215
+      ],
+      "people": 32
+    }
+  },
+  "runs": {
+    "G2-201": {
+      "nonsilent_hidden_phone_error": 0.9265712981281388,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-201",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-202": {
+      "nonsilent_hidden_phone_error": 0.9330391112463856,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-202",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-203": {
+      "nonsilent_hidden_phone_error": 0.9325825597321564,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-203",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-204": {
+      "nonsilent_hidden_phone_error": 0.9334195708415767,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-204",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-205": {
+      "nonsilent_hidden_phone_error": 0.9305280779181251,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-205",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-206": {
+      "nonsilent_hidden_phone_error": 0.9331152031654238,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-206",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-207": {
+      "nonsilent_hidden_phone_error": 0.9287779637802466,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-207",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-208": {
+      "nonsilent_hidden_phone_error": 0.9313650890275452,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-208",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-209": {
+      "nonsilent_hidden_phone_error": 0.8637193730025872,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-209",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-210": {
+      "nonsilent_hidden_phone_error": 0.8639476487597018,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-210",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-211": {
+      "nonsilent_hidden_phone_error": 0.9261147466139096,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-211",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    },
+    "G2-212": {
+      "nonsilent_hidden_phone_error": 0.9307563536752397,
+      "people": 32,
+      "phone_frames": 13142,
+      "run": "G2-212",
+      "scope": "Audio-only repaired-context phone classification on core-unexposed voices; no waveform intelligibility claim and no external decoder"
+    }
+  }
+}
