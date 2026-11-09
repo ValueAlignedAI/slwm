@@ -45,7 +45,7 @@ def main():
     put(a.out/"data_and_endpoints.json",{"data":data,"runs":{tag:{k:v for k,v in val.items() if k not in ("development","confirmation","frozen_transfer","live","action_history_audit")} for tag,val in rows.items()}})
     put(a.out/"development.json",{tag:v["development"] for tag,v in rows.items()})
     put(a.out/"confirmation.json",{tag:{k:v[k] for k in ("confirmation","frozen_transfer","live","action_history_audit") if k in v} for tag,v in rows.items() if "confirmation" in v})
-    for name in ("new-speaker-summary.json","motion-confirmation-summary.json","speech-content.json","final-artifact-audit.json"):
+    for name in ("exposure-counts.json","new-speaker-summary.json","motion-confirmation-summary.json","speech-content.json","final-artifact-audit.json"):
         if (source/name).exists(): put(a.out/name,read(source/name))
     print("validated",len(rows),"endpoints",flush=True)
 

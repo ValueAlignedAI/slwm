@@ -1,0 +1,140 @@
+{
+  "clips": 32,
+  "conditions": {
+    "codec_reference": {
+      "by_speaker": {
+        "GRID-25": 0.5833333333333333,
+        "GRID-26": 0.5833333333333334,
+        "GRID-27": 0.5833333333333334,
+        "GRID-28": 0.7083333333333334,
+        "GRID-29": 0.375,
+        "GRID-30": 0.7500000000000001,
+        "GRID-31": 0.5833333333333334,
+        "GRID-32": 0.49999999999999994
+      },
+      "mean_clip_wer": 0.5833333333333334
+    },
+    "g4-v5e-fair-all-medium-gpt2-cross-81__text": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-fair-all-medium-gpt2-cross-81__video": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-fair-all-medium-gpt2-motion-81__text": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-fair-all-medium-gpt2-motion-81__video": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-pilot-gpt2-cross-81__text": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-pilot-gpt2-cross-81__video": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-pilot-signal-cross-81__text": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "g4-v5e-pilot-signal-cross-81__video": {
+      "by_speaker": {
+        "GRID-25": 1.0,
+        "GRID-26": 1.0,
+        "GRID-27": 1.0,
+        "GRID-28": 1.0,
+        "GRID-29": 1.0,
+        "GRID-30": 1.0,
+        "GRID-31": 1.0,
+        "GRID-32": 1.0
+      },
+      "mean_clip_wer": 1.0
+    },
+    "original_pcm": {
+      "by_speaker": {
+        "GRID-25": 0.41666666666666663,
+        "GRID-26": 0.5416666666666666,
+        "GRID-27": 0.37499999999999994,
+        "GRID-28": 0.7083333333333333,
+        "GRID-29": 0.375,
+        "GRID-30": 0.625,
+        "GRID-31": 0.5416666666666666,
+        "GRID-32": 0.37499999999999994
+      },
+      "mean_clip_wer": 0.49479166666666663
+    }
+  },
+  "recognizer": "openai/whisper-tiny.en",
+  "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "source_selection": "four lowest fixed sample hashes per held-out actor with a complete 64-tick window",
+  "speakers": 8,
+  "words_per_clip": 6
+}

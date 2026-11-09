@@ -1,5 +1,7 @@
 # G4 conditional generation and shared-state transfer
 
+The completed study includes forty trained endpoints, held-out speech and action controls, three parameter scales, portable weights, long output artifacts and matched TPU/3090 timings. [Measured results](../../experiments/multimodal/t4/crossmodal-state-tpu-20261109/report.md)
+
 The frozen G3 1,000-update development screen recovered useful signal information. The dense signal model beat dense GPT-2 on the three reported tasks in both seeds. Raw features still scored higher on Fashion, and the sparse spoken-digit advantage reversed between seeds. In G3 the continuous heads reconstruct and predict streams that the encoder also receives. The separate caption alignment term does not directly train a video-only field to generate sound. This motivates a controlled intervention. [G3 study](joint_transfer_20261109.md)
 
 ## Registered test
