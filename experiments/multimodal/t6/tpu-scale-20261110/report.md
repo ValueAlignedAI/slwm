@@ -2,7 +2,7 @@
 
 **The hybrid learned useful visual action dynamics and transferred some speech-command content across input modalities. Increasing its backbone from 116.50M to 202.35M parameters did not improve its terminal action error. Real event timing overfit sharply, and generated speech remained unintelligible on the fixed recognizer.**
 
-Two native Google Colab v5e-1 sessions trained eight models. Each seed compared the hybrid and an all-dense GPT-2-style Transformer on the same chip, with the same data order, physical priors, decoder, learning rate, 128-dimensional shared state and effective batch of 256. Each model completed 8,192 updates, 2,097,152 example exposures and 134,217,728 multimodal clock positions. The study used real text, audio, images and video, robot sensors and actions, alongside controlled simulator interventions. The training pool contained 337,403 rows or histories. [Registered design](protocol.md) · [Exact data exposure](../../t5/interventional-world-20261110/metrics/data-exposure.json)
+Two native Google Colab v5e-1 sessions trained eight matched models. Each seed compared the hybrid and an all-dense GPT-2-style Transformer on the same chip, with the same data order, physical priors, decoder, learning rate, 128-dimensional shared state and effective batch of 256. Each model completed 8,192 updates, 2,097,152 example exposures and 134,217,728 multimodal clock positions. The study used real text, audio, images and video, robot sensors and actions, alongside controlled simulator interventions. The training pool contained 337,403 rows or histories. [Registered design](protocol.md) · [Exact data exposure](../../t5/interventional-world-20261110/metrics/data-exposure.json)
 
 ## Forecasting and scale
 
@@ -17,7 +17,7 @@ These development measurements use 256 simulator scenes and 668 real impact wind
 
 ![Learning curves for action forecasts and real visual contact timing](scale-curves.png)
 
-The contact failure is consistent with overfitting to the training recordings. For the 202.35M hybrid, training-date AP rose from 0.161 to 0.810 at seed 511 and from 0.151 to 0.802 at seed 512 between 2,048 and 8,192 updates. Over the same interval, held-date AP fell from 0.0548 to 0.0420 and from 0.0577 to 0.0468. Held class-weighted loss also worsened. The eight learned weights were fixed before this post hoc training-date diagnosis. [Audit design](contact-generalization.md) · [Seed 511 readouts](supplemental/terminal-v5e-larger-511.json) · [Seed 512 readouts](supplemental/terminal-v5e-larger-512.json)
+The contact failure is consistent with overfitting to the training recordings. For the 202.35M hybrid, training-date AP rose from 0.161 to 0.810 at seed 511 and from 0.151 to 0.802 at seed 512 between 2,048 and 8,192 updates. Over the same interval, held-date AP fell from 0.0548 to 0.0420 and from 0.0577 to 0.0468. Held class-weighted loss also worsened. This post hoc diagnosis evaluated frozen checkpoints with unchanged weights, priors and data selection. [Audit design](contact-generalization.md) · [Seed 511 readouts](supplemental/terminal-v5e-larger-511.json) · [Seed 512 readouts](supplemental/terminal-v5e-larger-512.json)
 
 ## Does the camera change a useful decision?
 
