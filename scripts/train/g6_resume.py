@@ -37,7 +37,7 @@ def emit(generation,seed):
                     files[f"{tag}/{k}"]=(stage/k,row["sha256"][k])
     record={"generation":generation,"seed":seed,"steps":snapshots,"files":{k:v[1] for k,v in files.items()}}
     payload=json.dumps(record,sort_keys=True).encode()
-    with tarfile.open(mode="w|",fileobj=sys.stdout.buffer) as tar:
+    with tarfile.open(mode="w|",fileobj=sys.stdout.buffer,dereference=True) as tar:
         hdr=tarfile.TarInfo("restore.json"); hdr.size=len(payload); tar.addfile(hdr,io.BytesIO(payload))
         for name,(path,digest) in files.items():
             tar.add(path,arcname=name,recursive=False)
