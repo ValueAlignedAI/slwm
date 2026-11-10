@@ -13,6 +13,14 @@ At 116,502,025 parameters the two-seed shared-content gate was unmet. Each linke
 
 At 202,346,377 parameters the two-seed shared-content gate passed. Each linked result includes all nine directional cells, source-specific raw baselines, within-speaker shuffles and retrieval.
 
+## Independent speaker and sentence confirmation
+
+The same heads are evaluated on eight different speakers and sentence combinations excluded from both support and development. Each readout retains its original support and requires no adaptation.
+
+| Parameters | Seed | Hybrid | Dense | Hybrid gain, pp | Speaker-paired interval, pp |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 202,346,377 | [511](supplemental/speakers-v5e-larger-511.json) | 31.04% | 23.98% | 7.05 | 6.50 to 8.04 |
+
 ## Final checkpoints on 32 unseen goal-reaching scenes
 
 All rules ran 24 successive decisions per scene. Lower final distance is better. The speech diagnostic uses the same frozen recognizer and held development speakers as G5.
