@@ -11,7 +11,9 @@ import shutil
 import subprocess
 import tarfile
 
-URL="https://openslr.trmal.net/resources/12/train-clean-360.tar.gz"
+URLS=("https://www.openslr.org/resources/12/train-clean-360.tar.gz",
+      "https://openslr.trmal.net/resources/12/train-clean-360.tar.gz",
+      "https://openslr.elda.org/resources/12/train-clean-360.tar.gz")
 TOTAL=23049477885
 EXPECTED="c0e676e450a7ff2f54aeade5171606fa"
 BLOCK=64*1024**2
@@ -36,12 +38,19 @@ def acquire(root,jobs):
         if path.exists() and path.stat().st_size==size:
             return path
         part=path.with_suffix(".partial"); head=path.with_suffix(".headers")
-        subprocess.run(["curl","--silent","--show-error","--location","--fail","--connect-timeout","12","--max-time","420",
-                        "--retry","3","--retry-delay","4","--retry-all-errors","--max-filesize",str(size),
-                        "--range",f"{lo}-{hi}","--dump-header",head,"--output",part,URL],check=True)
-        headers=head.read_text(errors="replace").lower()
-        if not re.search(r"^http/\S+ 206\b",headers,re.M) or f"content-range: bytes {lo}-{hi}/{TOTAL}" not in headers or part.stat().st_size!=size:
-            raise ValueError(f"Official mirror returned a different range at {lo}")
+        last=None
+        for url in URLS:
+            result=subprocess.run(["curl","--silent","--show-error","--location","--fail","--connect-timeout","8","--max-time","420",
+                                   "--retry","2","--retry-delay","5","--retry-all-errors","--max-filesize",str(size),
+                                   "--range",f"{lo}-{hi}","--dump-header",head,"--output",part,url])
+            headers=head.read_text(errors="replace").lower() if head.exists() else ""
+            if result.returncode==0 and re.search(r"^http/\S+ 206\b",headers,re.M) and f"content-range: bytes {lo}-{hi}/{TOTAL}" in headers and part.stat().st_size==size:
+                break
+            last=(url,result.returncode)
+            if re.search(r"^http/\S+ 429\b",headers,re.M):
+                raise RuntimeError("Official mirror requested rate backoff; verified pieces retained")
+        else:
+            raise RuntimeError(f"No official mirror verified bytes {lo}-{hi}: {last}")
         part.replace(path); head.unlink(missing_ok=True)
         return path
     with ThreadPoolExecutor(max_workers=jobs) as io:
@@ -72,6 +81,7 @@ def index(root,archive,old_rows):
     existing=json.loads(old_rows.read_bytes())
     used={r["id"] for r in existing if r["role"]=="train"}
     held={r["group"].removeprefix("LIBRI-") for r in existing if r["role"]!="train"}
+    train_speakers={r["group"].removeprefix("LIBRI-") for r in existing if r["role"]=="train"}
     speakers=set(); accepted_speakers=set(); audio=set(); transcripts={}
     with tarfile.open(archive,mode="r|gz") as tar:
         for member in tar:
@@ -101,6 +111,7 @@ def index(root,archive,old_rows):
     card={"release":"LibriSpeech train-clean-360","official_md5":EXPECTED,"archive_bytes":TOTAL,
           "paired_utterances":len(transcripts),"speakers":len(speakers),"existing_train_id_overlap":overlaps,
           "removed_for_existing_held_speaker":held_rows,"eligible_utterances":n,"eligible_speakers":len(accepted_speakers),
+          "eligible_speakers_absent_from_previous_training":len(accepted_speakers-train_speakers),
           "use":"Staged for future training; excluded from locked G5/G6.","source":"https://openslr.org/12/"}
     (root/"libri360-card.json").write_text(json.dumps(card,indent=2,sort_keys=True)+"\n")
     print(json.dumps(card),flush=True)
