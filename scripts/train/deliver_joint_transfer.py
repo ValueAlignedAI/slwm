@@ -15,6 +15,10 @@ REMOTE = os.environ.get("SLWM_G3_REMOTE","db@192.168.1.200:/home/db/dev/slwm-g3"
 OPS = Path("artifacts/joint_transfer/g3/delivery")
 
 
+class PendingArchive(ValueError):
+    """The artifact writer has not yet committed a manifest for this milestone."""
+
+
 def read(path):
     return json.loads(path.read_text())
 
@@ -50,8 +54,15 @@ def archive_files(archive, group, stage):
         return None
     folder = f"{archive.rstrip('/')}/runs/g3-{group}-exports"
     prefix = f"{stage:012d}-"
-    names = subprocess.check_output(["rclone","lsf","--files-only",folder],text=True).splitlines()
+    try:
+        names = subprocess.check_output(["rclone","lsf","--files-only",folder],text=True).splitlines()
+    except subprocess.CalledProcessError as exc:
+        if exc.returncode==3:
+            raise PendingArchive(f"Awaiting Drive folder for {group}/{stage}") from exc
+        raise
     markers = sorted({n for n in names if n.startswith(prefix) and n.endswith(".json")})
+    if not markers:
+        raise PendingArchive(f"Awaiting committed Drive generation for {group}/{stage}")
     if len(markers)!=1:
         raise ValueError(f"Expected one committed Drive generation for {group}/{stage}, found {len(markers)}")
     body = subprocess.check_output(["rclone","cat",folder+"/"+markers[0]])
@@ -86,13 +97,18 @@ def collect(archive=None):
     cmd = ["rsync","-art","--partial","--timeout=90","-e","ssh -o BatchMode=yes -o ConnectTimeout=8",*patterns,
            REMOTE+"/"+str(REL)+"/",str(REL)+"/"]
     subprocess.run(cmd,check=True)
+    pending = []
     for stage,role in ((100,"dev"),(1000,"dev"),(8000,"test")):
         report = REL/f"summary-{stage}-{role}.json"
         if not report.exists():
             continue
         proof = REL/f"verified-{stage}.json"
         if not proof.exists():
-            archived = archive_files(archive,"main",stage)
+            try:
+                archived = archive_files(archive,"main",stage)
+            except PendingArchive:
+                pending.append(f"main/{stage}")
+                continue
             hashes = {}
             for run in read(report)["rows"]:
                 card = read(REL/run/f"step-{stage}.json")
@@ -113,7 +129,11 @@ def collect(archive=None):
                 continue
             proof = variant/f"verified-{stage}.json"
             if not proof.exists():
-                archived = archive_files(archive,folder,stage)
+                try:
+                    archived = archive_files(archive,folder,stage)
+                except PendingArchive:
+                    pending.append(f"{folder}/{stage}")
+                    continue
                 hashes = {}
                 for run in read(report)["rows"]:
                     card = read(variant/run/f"step-{stage}.json")
@@ -135,8 +155,11 @@ def collect(archive=None):
     if git("rev-list","--count",f"origin/{BRANCH}..HEAD")!="0":
         git("push","origin",BRANCH)
     phase = read(REL/"status.json") if (REL/"status.json").exists() else {}
-    complete = (REL/"summary-8000-test.json").exists() and (REL/"pusht/scale/results.json").exists() and (REL/"depth6/depth-8000-test.json").exists() and (REL/"structured/structured-8000-test.json").exists()
-    write(OPS/"latest.json",{"time":datetime.now(timezone.utc).isoformat(),"main":phase,"complete":complete,"published":git("rev-parse","HEAD")})
+    finals = ("summary-8000-test.json","verified-8000.json","depth6/depth-8000-test.json","depth6/verified-8000.json",
+              "structured/structured-8000-test.json","structured/verified-8000.json","pusht/screen/results.json","pusht/scale/results.json")
+    complete = not pending and all((REL/name).is_file() for name in finals)
+    write(OPS/"latest.json",{"time":datetime.now(timezone.utc).isoformat(),"main":phase,"complete":complete,
+                             "pending_drive_generations":pending,"published":git("rev-parse","HEAD")})
     return complete
 
 
@@ -155,7 +178,13 @@ def main():
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         while True:
             try:
-                if collect(a.drive_archive) or not a.watch:
+                finished = collect(a.drive_archive)
+                if not a.watch:
+                    pending = read(OPS/"latest.json")["pending_drive_generations"]
+                    if pending:
+                        raise PendingArchive("Awaiting Drive generations "+", ".join(pending))
+                    return
+                if finished:
                     return
             except (OSError,ValueError,subprocess.CalledProcessError) as e:
                 if not a.watch:

@@ -16,9 +16,10 @@ from training.joint_evaluate import EVAL_FILES,TASKS,evaluate
 from training.joint_results import effects
 from training.joint_sources import CONFIG,digest
 from training.joint_train import SOURCE,atomic,gpu,seed_all,train
+from training.joint_variant_config import read_variant_config
 
 SPEC = Path("configs/t4/joint_structured.json")
-EXTRA = [str(SPEC),"training/joint_structured.py","docs/research/joint_structured_20261109.md"]
+EXTRA = [str(SPEC),"training/joint_structured.py","training/joint_variant_config.py","docs/research/joint_structured_20261109.md"]
 
 
 def prune(weight):
@@ -63,10 +64,12 @@ def prepare(base):
             raise ValueError("Structured checkpoint changed")
         parents[key] = [name,m["checkpoint_sha256"]]
         audits[key] = m
-    cfg = {**base,"output":str(root),"parents":parents,"profiles":{"signal-dense":base["profiles"]["signal-dense"]}}
+    cfg = {**base,"output":str(root),"parents":parents,"profiles":{"signal-dense":base["profiles"]["signal-dense"]},
+           "training_family_order":list(base["families"])}
     atomic(root/"config.json",cfg)
     lock = {"sources":{p:digest(Path(p)) for p in [*EXTRA,*SOURCE]},
-            "main_lock_sha256":digest(Path(base["output"])/"training_lock.json"),"parents":audits}
+            "main_lock_sha256":digest(Path(base["output"])/"training_lock.json"),"parents":audits,
+            "training_family_order":cfg["training_family_order"]}
     p = root/"training_lock.json"
     if p.exists() and read(p)!=lock:
         raise ValueError("Structured protocol changed")
@@ -194,7 +197,7 @@ if __name__=="__main__":
             follow()
     else:
         root=Path(base["output"])/"structured"
-        cfg=read(root/"config.json")
+        cfg=read_variant_config(root/"config.json",base)
         with gpu():
             if a.phase=="train":
                 train(cfg,"signal-dense",a.seed,a.step,digest(root/"training_lock.json"))

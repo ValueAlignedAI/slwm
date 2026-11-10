@@ -1,0 +1,83 @@
+{
+  "batch": 64,
+  "data": "artifacts/joint_transfer/g3",
+  "families": {
+    "ami": 5,
+    "cifar": 10,
+    "clotho": 5,
+    "coco": 25,
+    "droid": 10,
+    "pamap2": 10,
+    "speech": 15,
+    "text": 20
+  },
+  "few_shot": [
+    1,
+    8,
+    32
+  ],
+  "fsdd": {
+    "dev": [
+      "nicolas"
+    ],
+    "test": [
+      "theo",
+      "yweweler"
+    ],
+    "train": [
+      "george",
+      "jackson",
+      "lucas"
+    ]
+  },
+  "lr": 0.0003,
+  "milestones": [
+    100,
+    1000,
+    8000
+  ],
+  "output": "experiments/multimodal/t4/joint-transfer-20261109/structured",
+  "parents": {
+    "slwm-81": [
+      "EXP-T1-232",
+      "c268feee41bf816d6eef9d2a7e749f12ea55e20265ed3935125dd95c1250aa81"
+    ],
+    "slwm-82": [
+      "EXP-T1-234",
+      "a20aea57ce0f251b1b2e4aaefd2e9ec263efe3547210aa8becc787a5500d9171"
+    ]
+  },
+  "profiles": {
+    "signal-dense": {
+      "core": "slwm",
+      "experts": 1,
+      "rank": 192
+    }
+  },
+  "ridge": 0.1,
+  "screen_updates": 100,
+  "seeds": [
+    81,
+    82
+  ],
+  "signal_steps": 24,
+  "source_revisions": {
+    "banking": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+    "cifar_binary_md5": "03b5dce01913d631647c71ecec9e9cb8",
+    "fashion": "b2617bb6d3ffa2e429640350f613e3291e10b141",
+    "fsdd": "26eb9aaf76e81b692f806f9140c2d2777410d7a1"
+  },
+  "study": "G3",
+  "text_length": 96,
+  "training_family_order": [
+    "text",
+    "coco",
+    "cifar",
+    "speech",
+    "ami",
+    "clotho",
+    "pamap2",
+    "droid"
+  ],
+  "weight_decay": 0.01
+}
