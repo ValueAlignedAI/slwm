@@ -31,6 +31,22 @@ for seed in 511 512; do
     markers=$(rclone lsf --files-only "slwm-drive:SLWM/g5/resumable/runs/$name" 2>/dev/null || true)
     if [[ -n $markers && ! -e $path ]]; then
         python scripts/train/colab_artifacts.py restore --remote slwm-drive:SLWM/g5/resumable --run "$name" --to "$path"
+        # A verified terminal optimizer may predate its separate inference export.
+        # Supply the recovered counter only; missing timing or loss must stay unknown.
+        python - "$path" <<'RECOVER'
+import json
+from pathlib import Path
+import sys
+import numpy as np
+
+folder=Path(sys.argv[1])
+card=json.loads((folder/"config.json").read_bytes())
+with np.load(folder/"resume.npz",allow_pickle=False) as f:
+    count=int(f["step"])
+if count==card["steps"] and not (folder/"progress.json").exists():
+    (folder/"progress.json").write_text(json.dumps({"run":card["run"],"step":count,"target":count,
+        "restored_from_verified_optimizer":True,"timing_available":False},sort_keys=True)+"\n")
+RECOVER
     fi
     python -u -m training.g5_residual_fit --backend tpu --data /content/g5-data --output /content/g5-out \
         --core "$core" --seed "$seed" --scale "$scale" --steps "$steps" --micro "$micro" --label residual-v6e \
