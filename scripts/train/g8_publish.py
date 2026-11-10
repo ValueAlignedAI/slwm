@@ -9,7 +9,6 @@ import subprocess
 import sys
 import time
 from g8_state import update
-from g8_writeup import report,readme
 
 HOST="db@192.168.1.200"
 SOURCE="/mnt/slwm-checkpoints-a/SLWM/g8"
@@ -70,6 +69,7 @@ def main(repo,ctl):
            "remaining_under_original_allowance":round(100-prior-units,5),"owned_assignments":owned,"single_chip_hours":sum(item["seconds"] for item in owned)/3600,
            "scope":"Time of G8-named endpoints times their measured generation rates. Other processes excluded.","scientific":receipt["gates"],
            "private_drive_state":{k:v for k,v in drive.items() if k in ("phase","reason","verified_files","pending_files")},"new_data_mirrors":inv}
+    from g8_writeup import report,readme
     store(REPORT/"metrics/release.json",final);summary=report(REPORT);readme(repo,summary,final)
     paths=[str(REPORT/"metrics"/n) for n in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","release.json")]
     paths+=["README.md",str(REPORT/"report.md"),str(REPORT/"decision-effects.png"),str(REPORT/"examples/pusht.webm"),str(REPORT/"examples/puck_barrier.webm")]
