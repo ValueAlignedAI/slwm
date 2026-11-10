@@ -16,6 +16,7 @@ Every row uses the same chip, data order, updates, and parameter budget for both
 | TPU v5 lite | 512 | 202,346,377 | [512](metrics/v5e-512-larger-512.json) | 21.118 | 21.415 | 0.05746 | 0.05805 |
 | TPU v5 lite | 512 | 116,502,025 | [2,048](metrics/v5e-512-anchor-2048.json) | 10.977 | 16.551 | 0.05821 | 0.06219 |
 | TPU v5 lite | 512 | 202,346,377 | [2,048](metrics/v5e-512-larger-2048.json) | 12.316 | 14.720 | 0.05766 | 0.06149 |
+| TPU v5 lite | 512 | 202,346,377 | [8,192](metrics/v5e-512-larger-8192.json) | 6.466 | 7.697 | 0.04680 | 0.04509 |
 
 ## Parameter effect at the same exposure
 
