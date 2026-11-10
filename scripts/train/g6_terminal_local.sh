@@ -30,6 +30,9 @@ while (( $(date +%s) < deadline )); do
                 mkdir -p "$work"
                 for core in hybrid gpt2; do
                     ckpt="$root/g6-$gen-$scale-$core-$s/step-008192"
+                    if [[ ! -s $work/text-$core.json ]]; then
+                        flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g6_text_probe --run "$ckpt" --data "$data" --out "$work/text-$core.json"
+                    fi
                     if [[ ! -s $work/scene-$core/scene-controls.json ]]; then
                         flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g6_scene_probe score --run "$ckpt" --data "$data" --scenes "$data/g6-unseen-600000" --output "$work/scene-$core"
                     fi

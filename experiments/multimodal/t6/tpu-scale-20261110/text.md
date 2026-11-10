@@ -1,0 +1,5 @@
+# Text-only prediction inside the multimodal model
+
+Score both terminal sizes, cores and seeds on all available held FineWeb development windows from the pinned joint pack. Measure teacher-forced bits per real next UTF-8 byte, excluding padding and EOS targets. The softmax retains the entire registered vocabulary. Compare the complete model with its learned bigram row alone and with add-0.1 empirical unigram and bigram distributions fitted from training-only text windows. This is a byte-level test of the joint model. Its loss cannot be directly compared with a pretrained BPE GPT-2's token perplexity.
+
+For a context control, select one eligible next-byte position per window after at least eight preceding bytes, using a stable sample-ID rule. Keep that position’s input byte and target unchanged and permute only the earlier prefix in the same window. Report the paired change in log loss and a window-bootstrap interval. Score the same targets with both architectures. We make no training decision using this diagnostic.
