@@ -27,7 +27,7 @@ When the original sound outside a missing span was copied into the result, raw i
 
 ## Replication on complete utterances
 
-A third panel used 80 whole test-clean utterances from 40 additional readers, totaling 1,954 reference words and 719.9 seconds. All readers were disjoint from both preceding G8 audiobook panels and G7 training. Selection used only speaker, a fixed identifier hash and a 4–18-second duration range. Neither recognizer selected the clips or word boundaries. The codec and both recognizers were frozen. [Prospective replication protocol](full-utterance-protocol.md) · [Paired edit counts and speaker intervals](metrics/full-utterance.json)
+A third panel used 80 whole test-clean utterances from 40 additional readers, totaling 1,954 reference words and 719.9 seconds. All readers were disjoint from both preceding G8 audiobook panels and G7 training. The cleaner corpus and longer utterances change the recognition difficulty relative to the cropped dev-other experiment. Selection used only speaker, a fixed identifier hash and a 4–18-second duration range. Neither recognizer selected the clips or word boundaries. The codec and both recognizers were frozen. [Prospective replication protocol](full-utterance-protocol.md) · [Paired edit counts and speaker intervals](metrics/full-utterance.json)
 
 | Recognizer | Original audio | Fine-mel reference | Equal at 2.25 kbit/s | Optimized at 2.25 kbit/s | Optimized at 9 kbit/s |
 |---|---:|---:|---:|---:|---:|
@@ -46,5 +46,7 @@ The long example concatenates adjacent published utterance files from one held L
 | Observed audio, 9 kbit/s acoustic stream | [Listen for 48 seconds](examples/speech/chapter-192.ogg) · [Packed stream](examples/speech/chapter-192.slwma) |
 | Text-only input, whole-waveform prediction | [Listen](examples/speech/text-conditioned.ogg) |
 | Video-only input, whole-waveform prediction | [Listen](examples/speech/video-conditioned.ogg) |
+
+The chapter audio is adapted from LibriSpeech by Vassil Panayotov, Guoguo Chen, Daniel Povey and Sanjeev Khudanpur, licensed under CC BY 4.0. The release joins, crops, compresses and transcodes the listed source utterances. [LibriSpeech release](https://www.openslr.org/12/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 The last two examples use the first predetermined utterance in their respective confirmation sets and the first hybrid seed. Their models receive the declared text or video source. The compressed examples above them receive source audio.
