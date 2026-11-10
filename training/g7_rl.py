@@ -76,10 +76,10 @@ def roll(spec,p,h,prior,q,seeds,cycles,mode,stochastic,noise_seed,step_fn,actor_
         if mode=="oracle":
             n[:,:,12:14]=goals[:,None]/.21;n[:,:,14]=1
         bank=np.stack([actions(np.random.default_rng([int(s),t,8119])) for s in np.repeat(seeds,2)])
-        if mode=="reset":memory,decision=zeros(spec,count);prev=v[:,0].astype(np.float32)
-        score,ctx,phi,memory,decision=step_fn(p,h,prior,n,v,bank,memory,decision,prev,np.int32(0 if mode=="reset" else t*H))
+        if mode in ("reset","rl-reset"):memory,decision=zeros(spec,count);prev=v[:,0].astype(np.float32)
+        score,ctx,phi,memory,decision=step_fn(p,h,prior,n,v,bank,memory,decision,prev,np.int32(0 if mode in ("reset","rl-reset") else t*H))
         prev=v[:,-1].astype(np.float32); lg,val=actor_fn(q,score,ctx,phi)
-        effective=lg if mode=="rl" else score
+        effective=lg if mode in ("rl","rl-reset") else score
         probs=np.asarray(jax.nn.softmax(effective,-1)); probs=probs/probs.sum(-1,keepdims=True)
         if mode=="passive":choice=np.full(count,8,int)
         elif stochastic:choice=np.array([sample.choice(K,p=x.astype(float)/x.sum(dtype=float)) for x in probs])
@@ -168,14 +168,14 @@ def fit(a):
     with np.load(dest/"best.npz") as f:q={k:jax.device_put(f[k]) for k in f.files}
     write(dest/"test-lock.json",{"policy":sha_file(dest/"best.npz"),"sft":chosen["sha256"],"start":860000,"count":64,"cycles":24})
     results={}
-    for mode in ("rl","sft","reset","shuffled","passive","oracle"):
+    for mode in ("rl","sft","reset","rl-reset","shuffled","passive","oracle"):
         chunks=[]
         for s in range(860000,860064,16):
             _,v=roll(spec,p,h,prior,q,np.arange(s,s+16),24,mode,False,31,step,action);chunks.append(v)
         vals={k:sum((r[k] for r in chunks),[]) for k in ("final_cm","final_success","ever_success")}
         results[mode]={"mean":aggregate(vals),"by_start":vals,"seconds":chunks[0]["simulated_seconds"]}
     rng=np.random.default_rng(71191);bi=rng.integers(64,size=(4000,64));effects={}
-    for name in ("sft","passive","reset"):
+    for name in ("sft","passive","reset","rl-reset"):
         delta=np.array(results["rl"]["by_start"]["final_success"])-results[name]["by_start"]["final_success"]
         effects[name]={"success_gain":float(delta.mean()),"ci95":np.quantile(delta[bi].mean(1),[.025,.975]).tolist()}
     long={}
