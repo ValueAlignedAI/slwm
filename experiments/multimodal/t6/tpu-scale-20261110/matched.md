@@ -9,6 +9,7 @@ Every row uses the same chip, data order, updates, and parameter budget for both
 | TPU v5 lite | 511 | 202,346,377 | [512](metrics/v5e-511-larger-512.json) | 20.180 | 21.511 | 0.05663 | 0.05943 |
 | TPU v5 lite | 511 | 116,502,025 | [2,048](metrics/v5e-511-anchor-2048.json) | 10.659 | 16.435 | 0.05106 | 0.05915 |
 | TPU v5 lite | 511 | 202,346,377 | [2,048](metrics/v5e-511-larger-2048.json) | 12.037 | 16.819 | 0.05477 | 0.05897 |
+| TPU v5 lite | 511 | 202,346,377 | [8,192](metrics/v5e-511-larger-8192.json) | 6.522 | 8.453 | 0.04203 | 0.04590 |
 | TPU v5 lite | 512 | 202,346,377 | [128](metrics/v5e-512-larger-128.json) | 21.550 | 21.519 | 0.05814 | 0.05805 |
 | TPU v5 lite | 512 | 116,502,025 | [512](metrics/v5e-512-anchor-512.json) | 21.456 | 21.744 | 0.05808 | 0.05828 |
 | TPU v5 lite | 512 | 202,346,377 | [512](metrics/v5e-512-larger-512.json) | 21.118 | 21.415 | 0.05746 | 0.05805 |
