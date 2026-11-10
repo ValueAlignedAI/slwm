@@ -58,7 +58,13 @@ def archive(name,tag,step,expected):
 
 
 def monitor(name,ctl,revision,expected):
-    stream(name,["git","archive",revision,"scripts/train/g9_storage.py"],"set -eu; cd /content/g9-code; tar -xf -")
+    for attempt in range(10):
+        try:
+            stream(name,["git","archive",revision,"scripts/train/g9_storage.py"],"set -eu; cd /content/g9-code; tar -xf -")
+            break
+        except (OSError,RuntimeError,subprocess.SubprocessError):
+            if attempt==9:raise
+            time.sleep(min(30,4+3*attempt))
     receipts=ctl/"receipts";receipts.mkdir(exist_ok=True)
     while True:
         b=json.loads((ctl/"budget.json").read_text())

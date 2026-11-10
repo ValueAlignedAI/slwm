@@ -1,4 +1,5 @@
 """Paired, 51.2 s closed loops and sensor-identical action-history counterfactuals."""
+from functools import lru_cache
 import jax
 import jax.numpy as jnp
 import numpy as np
@@ -35,7 +36,8 @@ def raw(obs,sign,seen):
     return action.astype(jnp.int32),sign,seen
 
 
-def live(p,spec,mode,b=128,stall=True,seed=180013,steps=512):
+@lru_cache(maxsize=100)
+def _live_kernel(spec,mode,b,stall,seed,steps):
     def run(params):
         ids=jnp.arange(b)
         state=initial(ids,seed);image=camera(state["stations"],state["tint"])
@@ -59,7 +61,11 @@ def live(p,spec,mode,b=128,stall=True,seed=180013,steps=512):
             return (nxt,mem,estimate,seen),record
         init=(state,memory,jnp.zeros((b,2),jnp.int32),jnp.zeros(b,bool))
         return jax.lax.scan(step,init,jnp.arange(steps))[1]
-    return np.asarray(jax.jit(run)(p))
+    return jax.jit(run)
+
+
+def live(p,spec,mode,b=128,stall=True,seed=180013,steps=512):
+    return np.asarray(_live_kernel(spec,mode,b,stall,seed,steps)(p))
 
 
 def paired_histories(p,spec,b=256,seed=180044):
