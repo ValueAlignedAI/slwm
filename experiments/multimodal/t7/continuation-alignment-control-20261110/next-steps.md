@@ -1,0 +1,19 @@
+# Decision for the next iteration
+
+## Isolate transfer from extra task data
+
+The fresh G7 arm changes five families at once. Its matched 116.50M development result shows that this mixture improved action prediction in both architectures and seeds. The direct addition of 16,384 new simulator starts is a plausible explanation. A cross-modal transfer claim requires independently varying that factor. [Paired development result](metrics/anchor-development.json) · [Exact exposure](metrics/data.json)
+
+Use a two-by-two comparison at 116.50M with the same eight-thousand-update continuation schedule, parent weights, per-row modality masks and optimizer. The factors are new simulator starts and new examples from the other four eligible families. G7 already supplies the all-replay and five-family-fresh corners. The two missing conditions are simulator-only replacement and replacement of the speech, text and real-event families with simulator data held fixed. With two seeds and both the hybrid and dense GPT-2 backbone, these conditions require eight additional fits. Evaluate all four conditions on common, newly reserved starts and a prospectively selected second task. Report the non-simulator data effect at each level of simulator freshness, the interaction, and whole-start uncertainty. Keep actual TPU time and corpus identities in the released comparison.
+
+A second positive action result driven entirely by new simulator starts would support buying more physical interaction data. A reduction in goal regret from the non-simulator intervention, repeated on an unseen task while the action data stay fixed, would support investment in the shared representation itself. Either result changes what to fund.
+
+## Preserve timing and test waveform content before preference tuning
+
+The identical timing head was substantially more effective on projected raw sensors than on either frozen shared field. Train a shared state with an explicit short-timescale prediction target and retain the existing causal state for slower context. Keep the total latent width, trainable parameter count and observed frames matched. Test timing after moving raw footage onto identical clocks, include the raw-feature control, and repeat lexical retrieval at fixed duration and speaker. Verify that the cross-modal decoder depends on the shared state by exchanging or erasing it. [Independent timing confirmation](physical-time.md)
+
+The current synthesis path yielded 85% and 99% word error with the correct acoustic units. Compare a learned, multi-rate acoustic representation with the existing semantic units, using a common renderer budget and an oracle-versus-predicted content panel. Report bit rate, recognition on original waveforms, speaker separation and word recovery on fresh utterances. Listener preference becomes informative about naturalness once listeners or a fixed recognizer can recover the intended words. [Waveform measurements](alignment-and-control.md) · [Masked multimodal prediction](https://arxiv.org/abs/2201.02184) · [Learned acoustic compression](https://arxiv.org/abs/2210.13438)
+
+## Establish useful multistep dynamics before another RL run
+
+The exact simulator benefited from a second decision of lookahead. The learned transition lost that benefit even with raw state and an explicitly retained goal. Fit on policy-visited consecutive transitions and score position, velocity, uncertainty and goal-distance error over successively longer rollouts. First require the model-based raw-state planner to improve terminal success over one-step planning on independent episodes. Then replace raw state with the decoded shared state and compare both architectures. This orders the experiments so that a dynamics failure, a state-readout failure and a policy-optimization failure can be told apart. [Independent planning controls](transfer-and-planning.md)
