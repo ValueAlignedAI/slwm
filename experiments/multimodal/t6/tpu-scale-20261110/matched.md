@@ -17,5 +17,6 @@ Positive values favor the 202.35M model in both columns. The linked records incl
 | --- | ---: | --- | ---: | ---: | ---: |
 | TPU v5 lite | 511 | gpt2 | [512](metrics/v5e-511-size-gpt2-512.json) | 0.164 | 0.00145 |
 | TPU v5 lite | 511 | hybrid | [512](metrics/v5e-511-size-hybrid-512.json) | 1.386 | -0.00044 |
+| TPU v5 lite | 511 | hybrid | [2,048](metrics/v5e-511-size-hybrid-2048.json) | -1.378 | 0.00370 |
 
 These are development measurements. An architecture claim requires the two-seed, two-endpoint gate. [Study protocol](protocol.md)
