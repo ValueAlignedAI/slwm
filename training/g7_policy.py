@@ -94,26 +94,31 @@ def update_memory(h,z,previous):
     return keep*previous+(1-keep)*jnp.tanh(both@h["proposal"])
 
 
-def choose(h,final,mem,bank):
+def choose(h,final,mem,bank,physical=None):
     context=jnp.concatenate((final,mem),-1)
     phi=jnp.stack((bank[...,0],bank[...,1],bank[...,0]**2,bank[...,1]**2,bank[...,0]*bank[...,1]),-1)
     end=(context@h["common"])[...,None,:]+jnp.einsum("...kf,...fd->...kd",phi,(context@h["response"]).reshape(*context.shape[:-1],5,2))
+    if physical is not None:end=physical+.1*end
     goal=mem@h["goal"]
     rank=-jnp.sqrt(jnp.sum((end-goal[...,None,:])**2,-1)+1e-5)+.04*jnp.einsum("...kf,...f->...k",phi,mem@h["choice"])
     return rank,end,goal,(mem@h["value"])[...,0]
 
 
-def outputs(p,h,spec,b,raw,reset=False):
+def outputs(p,h,spec,b,raw,reset=False,prior=None):
     z=policy_fields(p,h,spec,b,raw,reset); prev=jnp.zeros((len(z),96),jnp.float32)
+    if prior is not None:
+        from training.g7_reacher_prior import infer
+        physical=infer(prior,b["n"],b["bank"])
+    else:physical=None
     outputs=[]
     for i in range(z.shape[1]):
         prev=update_memory(h,z[:,i],jnp.zeros_like(prev) if reset else prev)
-        outputs.append(choose(h,z[:,i,-1],prev,b["bank"][:,i]))
+        outputs.append(choose(h,z[:,i,-1],prev,b["bank"][:,i],None if physical is None else physical[:,i]))
     return tuple(jnp.stack(parts,axis=1) for parts in zip(*outputs))
 
 
-def objective(p,h,spec,b,raw):
-    score,pos,goal,_=outputs(p,h,spec,b,raw); true=b["end"]; target=b["goal"]
+def objective(p,h,spec,b,raw,prior=None):
+    score,pos,goal,_=outputs(p,h,spec,b,raw,prior=prior); true=b["end"]; target=b["goal"]
     costs=jnp.linalg.norm(true-target[:,None,None],axis=-1)
     rank=-(jax.nn.softmax(-costs/.14,-1)*jax.nn.log_softmax(score/.14,-1)).sum(-1).mean()
     delta=(pos-pos.mean(-2,keepdims=True))-(true-true.mean(-2,keepdims=True))
@@ -126,11 +131,11 @@ def save_weights(out,h,**meta):
     out.with_suffix(".part").replace(out)
 
 
-def evaluate(p,h,spec,rows,raw):
+def evaluate(p,h,spec,rows,raw,prior=None):
     @jax.jit
-    def field(b):return outputs(p,h,spec,b,raw)
+    def field(b):return outputs(p,h,spec,b,raw,prior=prior)
     @jax.jit
-    def reset(b):return outputs(p,h,spec,b,raw,True)
+    def reset(b):return outputs(p,h,spec,b,raw,True,prior=prior)
     results={}
     costs_all=np.linalg.norm(rows["end"][:,:,None]-rows["goals"][:,None,:,None],axis=-1)
     # The same observation/action histories are paired with opposite true goals.
@@ -166,12 +171,15 @@ def fit(a):
     raw=a.mode=="raw"; adapted=a.mode=="adapter"
     spec,p,cal,stats,parent=base_weights(a.parents,a.core,a.seed)
     train=data(a.data/"reacher/train"); dev=data(a.data/"reacher/dev")
+    prior=None
+    if a.prior is not None:
+        with np.load(a.prior) as f:prior={k:jax.device_put(f[k]) for k in f.files}
     h=init_head(spec,a.seed,adapted); opt=optax.chain(optax.clip_by_global_norm(1.),optax.adamw(.001,weight_decay=.001));ost=opt.init(h)
     replay=JointData(a.replay,"train",verify=False,stats=stats);held=JointData(a.replay,"dev",verify=False,stats=stats)
     @jax.jit
     def learn(p,h,ost,b,ref):
         def loss(h):
-            v,m=objective(p,h,spec,b,raw)
+            v,m=objective(p,h,spec,b,raw,prior)
             if adapted:
                 w=adjusted(p,h,spec); src=ref["source"]
                 base,_=encode(p,spec,ref,src);new,_=encode(w,spec,ref,src)
@@ -203,9 +211,9 @@ def fit(a):
             ck.with_suffix(".part").replace(ck);print(a.core,a.mode,a.seed,step+1,metric,flush=True)
     save_weights(folder/"weights.npz",h,parent=np.array(parent))
     after=np.mean([np.asarray(ref_loss(p,h,held.requests(j,32))) for j in range(12)],axis=0)
-    result=evaluate(p,h,spec,dev,raw)
+    result=evaluate(p,h,spec,dev,raw,prior)
     write(folder/"dev.json",{"core":a.core,"mode":a.mode,"seed":a.seed,"steps":a.steps,"parent":parent,
-        "params":sum(v.size for v in h.values()),"foundation_held_before":before.tolist(),"foundation_held_after":after.tolist(),
+        "prior_sha256":sha_file(a.prior) if a.prior else None,"params":sum(v.size for v in h.values()),"foundation_held_before":before.tolist(),"foundation_held_after":after.tolist(),
         "weights_sha256":sha_file(folder/"weights.npz"),"optimizer_sha256":sha_file(ck),"results":result})
     print("Policy gate",a.core,a.mode,a.seed,result["gate"],flush=True)
 
@@ -214,4 +222,4 @@ if __name__=="__main__":
     q=argparse.ArgumentParser();q.add_argument("--core",required=True,choices=("hybrid","gpt2"));q.add_argument("--mode",required=True,choices=("raw","frozen","adapter"))
     q.add_argument("--seed",required=True,type=int);q.add_argument("--steps",type=int,default=1024)
     for k in ("out","data","replay","parents"):q.add_argument("--"+k,type=Path,required=True)
-    fit(q.parse_args())
+    q.add_argument("--prior",type=Path);fit(q.parse_args())
