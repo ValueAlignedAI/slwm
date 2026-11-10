@@ -1,0 +1,46 @@
+{
+  "configs/t4/joint_depth.json": "f5c59c2197a4b2f52dfef7ca250c50af35e15c70e1c28ef61356b08f3d31e858",
+  "configs/t4/joint_transfer.json": "ce4a47f2e73afd1d2087328d771140030e72504882e11563a1c4d716bdfe8642",
+  "docs/research/joint_depth_20261109.md": "41e4b94fe4e8d958bb1024561e59b86e63506e653d507b5f99efa7399f3a6933",
+  "docs/research/joint_transfer_20261109.md": "64df71d3b000b32ef43a27f9f97f5f440e288cfddcd90347d3f729521b39f44b",
+  "main_training_lock_sha256": "8c3c183ab319ca4c045a78e58f2e50e05200a3c69bb7036f329434267ec88774",
+  "models/joint_transfer.py": "7d1387fb0a764d49062cdc1353c14bafe159d7116395f9a18e2fdc5562b0ea1d",
+  "parents": {
+    "gpt2-81": [
+      "EXP-T1-231",
+      "c8c08e8cfd4586fb04cb53747c59ff98395e037b79650f72ba35f7f07d66b6ae"
+    ],
+    "gpt2-82": [
+      "EXP-T1-233",
+      "5982324c3e7d382681c8ce5cfe8fbc2897f0939f602bb1479561825054a7ec38"
+    ],
+    "slwm-81": [
+      "EXP-T1-232",
+      "0a888c76a1e4c43d8721d0309586bbc4b900b8c4b5f5109fe37b48f43458c75a"
+    ],
+    "slwm-82": [
+      "EXP-T1-234",
+      "2224187bfe8b94254873f2a3d9c508fb446498563f2f1d5fbaf11ad4ff252eb4"
+    ]
+  },
+  "training/general_batch.py": "9ed0cb64b259b120f5f7f71f6a3d13987f954562159e6d3181d606ffe73ca111",
+  "training/general_data.py": "3cfaaabe119ab596a959ae155581aec5707d41e78327e9b92a060981b8d2bd49",
+  "training/general_readout_data.py": "9842253a1f1a9a4fc3790f90a1317c37eda87d4034aae3a8af0ce1b5df19447b",
+  "training/joint_data.py": "e9fbda3078ae6289c750dd4dda35fc1c17af8d4276aa989f62426597afd34802",
+  "training/joint_depth.py": "48751607a29a0721da45193ab3ea9d3fe880a3ab0bcdacb2f7a33fd0a668365f",
+  "training/joint_sources.py": "623b4725ed6ecc6adcaf39c2d49dd70e79b3c345235495fe3a37981c81978330",
+  "training/joint_train.py": "51c57a0f9025e19f8a9d2a0398be16c2076aabfc3504e125cac9f9da725573c0",
+  "training/joint_variant_config.py": "a74178915f4cdb8f4119309a877acfee6ff742599f574c347fec7ba6f3b65357",
+  "training/scale_text_train.py": "406974424b9d11efbba4800adcc60fbb87380489df54a2b46067fd9328372f45",
+  "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875",
+  "training_family_order": [
+    "text",
+    "coco",
+    "cifar",
+    "speech",
+    "ami",
+    "clotho",
+    "pamap2",
+    "droid"
+  ]
+}

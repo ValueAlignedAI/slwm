@@ -1,0 +1,26 @@
+{
+  "depth_sources": {
+    "configs/t4/joint_depth.json": "f5c59c2197a4b2f52dfef7ca250c50af35e15c70e1c28ef61356b08f3d31e858",
+    "docs/research/joint_depth_20261109.md": "41e4b94fe4e8d958bb1024561e59b86e63506e653d507b5f99efa7399f3a6933",
+    "training/joint_depth.py": "48751607a29a0721da45193ab3ea9d3fe880a3ab0bcdacb2f7a33fd0a668365f",
+    "training/joint_variant_config.py": "a74178915f4cdb8f4119309a877acfee6ff742599f574c347fec7ba6f3b65357"
+  },
+  "endpoints": {
+    "gpt2-dense-81": "6e6ffa6178244d246b9188f78a120ffaaaa6c5223ccf2bdc86e719c293596308",
+    "gpt2-dense-82": "aa5fe4d23ceba5393eea690839ba2ba5a09da67c1d009dfe0315761429583332",
+    "signal-dense-81": "b2ff7a23c97b25c8a7777d5448ce60c246340742f260ec42823ee1c3e34ecd34",
+    "signal-dense-82": "2b24ae5c0ff0eb561477a543c4a83203b05e9493d5c404c0e300510eebf0df53",
+    "signal-sparse-81": "a0a886a15b184b3455d6a6a3726722b4ae10d4adf24dbfbdad57453cc34acb1e",
+    "signal-sparse-82": "a7999b356020b3f41bb2e699308adcad50ebabd0678b49246ff3ae4fb9712cf7"
+  },
+  "evaluation": {
+    "configs/t4/joint_transfer.json": "ce4a47f2e73afd1d2087328d771140030e72504882e11563a1c4d716bdfe8642",
+    "docs/research/joint_transfer_20261109.md": "64df71d3b000b32ef43a27f9f97f5f440e288cfddcd90347d3f729521b39f44b",
+    "training/joint_benchmarks.py": "32b4ee8d3945b86790528eee9d518c05ac9ad473bffe18148fb6a26820fca197",
+    "training/joint_evaluate.py": "ba388c7ed1530fa53d987be59301e3de4dec97fe142a539c41520595afb4f444",
+    "training/joint_g2_anchor.py": "756d8de5036d1e53bc95dd0476e663abc947d2e30f555634ace5020096dddd07",
+    "training/joint_results.py": "c964006cfec39d886c0dadb7b1dcd8bb41303e409170451d93af30abef861730",
+    "training/joint_study.py": "7645869bb3403f5ad90fa56f669c2953d840e16e860b39ccf713876de58fbf91"
+  },
+  "full_endpoint_lock_sha256": "50b5a202d6950f8494efbf9c56f8efb5bc9170e540d3ec6017dd2073352df314"
+}

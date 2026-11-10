@@ -16,10 +16,11 @@ from training.joint_evaluate import EVAL_FILES, TASKS, evaluate
 from training.joint_results import effects
 from training.joint_sources import CONFIG,digest
 from training.joint_train import SOURCE,atomic,gpu,train
+from training.joint_variant_config import read_variant_config
 
 SPEC = Path("configs/t4/joint_depth.json")
 PROTOCOL = Path("docs/research/joint_depth_20261109.md")
-EXTRA = [str(SPEC),str(PROTOCOL),"training/joint_depth.py"]
+EXTRA = [str(SPEC),str(PROTOCOL),"training/joint_depth.py","training/joint_variant_config.py"]
 
 
 def parent_dir(base):
@@ -57,12 +58,14 @@ def prepare(base,spec):
             raise ValueError("Reduced parent provenance changed")
         parents[key] = [name,m["derived_parent_sha256"]]
     cfg = {**base,"output":str(Path(base["output"])/"depth6"),"parents":parents,
-           "profiles":{k:base["profiles"][k] for k in spec["profiles"]}}
+           "profiles":{k:base["profiles"][k] for k in spec["profiles"]},
+           "training_family_order":list(base["families"])}
     root = Path(cfg["output"])
     atomic(root/"config.json",cfg)
     provenance = {p:digest(Path(p)) for p in [*SOURCE,*EXTRA]}
     provenance["main_training_lock_sha256"] = digest(Path(base["output"])/"training_lock.json")
     provenance["parents"] = parents
+    provenance["training_family_order"] = cfg["training_family_order"]
     lock = root/"training_lock.json"
     if lock.exists() and read(lock)!=provenance:
         raise RuntimeError("Reduced-depth study changed")
@@ -151,8 +154,9 @@ if __name__=="__main__":
             fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
             follow()
     else:
-        root = Path(read(CONFIG)["output"])/"depth6"
-        cfg = read(root/"config.json")
+        primary = read(CONFIG)
+        root = Path(primary["output"])/"depth6"
+        cfg = read_variant_config(root/"config.json",primary)
         with gpu():
             if a.stage=="train":
                 train(cfg,a.profile,a.seed,a.step,digest(root/"training_lock.json"))

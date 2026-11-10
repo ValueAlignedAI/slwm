@@ -1,0 +1,294 @@
+{
+  "role": "test",
+  "rows": {
+    "gpt2-dense-81": {
+      "exposure_sha256": "8efd774f769ebd48c5ccd9bbac2d98ab284557bc860b226e038a86a105ecbd62",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129018568,
+        "total": 129018568,
+        "trainable": 4578760,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4578760
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 84712648,
+        "total": 84712648,
+        "trainable": 2800072,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2800072
+      },
+      "six_layer_scores": {
+        "banking": 0.49372644898960694,
+        "fashion": 0.7229,
+        "fsdd": 0.394
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.17895832237937498,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.1956536446010128,
+            -0.16203292321713367
+          ]
+        },
+        "fashion": {
+          "gain": -0.034499999999999996,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.0409,
+            -0.028
+          ]
+        },
+        "fsdd": {
+          "gain": -0.14600000000000005,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.17,
+            -0.12200000000000003
+          ]
+        }
+      },
+      "training_seconds_full": 1732.2751092209946,
+      "training_seconds_six": 1321.8349622720852
+    },
+    "gpt2-dense-82": {
+      "exposure_sha256": "fcee0ee111d24b8f928f54de9a9c008cdb6e66c6336969c7de4eae5f57a4ea4c",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129018568,
+        "total": 129018568,
+        "trainable": 4578760,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4578760
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 84712648,
+        "total": 84712648,
+        "trainable": 2800072,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2800072
+      },
+      "six_layer_scores": {
+        "banking": 0.5002795450163872,
+        "fashion": 0.7292,
+        "fsdd": 0.3779999999999999
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.18839143312827525,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.20559177664440806,
+            -0.17145538671854454
+          ]
+        },
+        "fashion": {
+          "gain": -0.028700000000000003,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.034800000000000005,
+            -0.022497500000000014
+          ]
+        },
+        "fsdd": {
+          "gain": -0.095,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.14,
+            -0.05000000000000001
+          ]
+        }
+      },
+      "training_seconds_full": 1741.741781083867,
+      "training_seconds_six": 1235.5722878141096
+    },
+    "signal-dense-81": {
+      "exposure_sha256": "8efd774f769ebd48c5ccd9bbac2d98ab284557bc860b226e038a86a105ecbd62",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129709768,
+        "total": 129709768,
+        "trainable": 4578760,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4578760
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 85058248,
+        "total": 85058248,
+        "trainable": 2800072,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2800072
+      },
+      "six_layer_scores": {
+        "banking": 0.43854522670312135,
+        "fashion": 0.7417,
+        "fsdd": 0.62
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.2552692921113973,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.2721357589778641,
+            -0.23862463194700023
+          ]
+        },
+        "fashion": {
+          "gain": -0.019999999999999997,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.026799999999999997,
+            -0.01339750000000001
+          ]
+        },
+        "fsdd": {
+          "gain": 0.008,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.014000000000000004,
+            0.03
+          ]
+        }
+      },
+      "training_seconds_full": 2316.1117370729335,
+      "training_seconds_six": 1494.9133087750524
+    },
+    "signal-dense-82": {
+      "exposure_sha256": "fcee0ee111d24b8f928f54de9a9c008cdb6e66c6336969c7de4eae5f57a4ea4c",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129709768,
+        "total": 129709768,
+        "trainable": 4578760,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4578760
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 85058248,
+        "total": 85058248,
+        "trainable": 2800072,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2800072
+      },
+      "six_layer_scores": {
+        "banking": 0.4302215328531119,
+        "fashion": 0.7472000000000001,
+        "fsdd": 0.437
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.26781376518218625,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.28605386937623756,
+            -0.25088820171056997
+          ]
+        },
+        "fashion": {
+          "gain": -0.0083,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.014400000000000001,
+            -0.0019000000000000002
+          ]
+        },
+        "fsdd": {
+          "gain": -0.11700000000000002,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.176,
+            -0.05800000000000001
+          ]
+        }
+      },
+      "training_seconds_full": 2231.443113090936,
+      "training_seconds_six": 1482.3151170469355
+    },
+    "signal-sparse-81": {
+      "exposure_sha256": "8efd774f769ebd48c5ccd9bbac2d98ab284557bc860b226e038a86a105ecbd62",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129746632,
+        "total": 140363464,
+        "trainable": 15232456,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4615624
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 85076680,
+        "total": 90385096,
+        "trainable": 8126920,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2818504
+      },
+      "six_layer_scores": {
+        "banking": 0.42208624708624704,
+        "fashion": 0.7344999999999999,
+        "fsdd": 0.472
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.27788045288045293,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.2954201281174964,
+            -0.26100549669628587
+          ]
+        },
+        "fashion": {
+          "gain": -0.016200000000000003,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.023,
+            -0.0093
+          ]
+        },
+        "fsdd": {
+          "gain": -0.124,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.134,
+            -0.11399999999999999
+          ]
+        }
+      },
+      "training_seconds_full": 4010.735331797041,
+      "training_seconds_six": 2385.3447223359253
+    },
+    "signal-sparse-82": {
+      "exposure_sha256": "fcee0ee111d24b8f928f54de9a9c008cdb6e66c6336969c7de4eae5f57a4ea4c",
+      "full_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 129746632,
+        "total": 140363464,
+        "trainable": 15232456,
+        "trainable_nonexpert_plus_one_expert_per_layer": 4615624
+      },
+      "six_layer_parameters": {
+        "nonexpert_plus_one_expert_per_layer": 85076680,
+        "total": 90385096,
+        "trainable": 8126920,
+        "trainable_nonexpert_plus_one_expert_per_layer": 2818504
+      },
+      "six_layer_scores": {
+        "banking": 0.4195672748304326,
+        "fashion": 0.7443,
+        "fsdd": 0.373
+      },
+      "six_minus_full": {
+        "banking": {
+          "gain": -0.2690191387559809,
+          "groups": 77,
+          "paired_95_interval": [
+            -0.2859603335261227,
+            -0.251112429237429
+          ]
+        },
+        "fashion": {
+          "gain": -0.005499999999999999,
+          "groups": 10,
+          "paired_95_interval": [
+            -0.0122025,
+            0.0009999999999999996
+          ]
+        },
+        "fsdd": {
+          "gain": -0.196,
+          "groups": 2,
+          "paired_95_interval": [
+            -0.27599999999999997,
+            -0.11600000000000002
+          ]
+        }
+      },
+      "training_seconds_full": 3756.7983499349793,
+      "training_seconds_six": 2242.4527254031273
+    }
+  },
+  "updates": 8000
+}

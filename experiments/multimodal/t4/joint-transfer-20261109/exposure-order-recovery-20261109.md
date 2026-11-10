@@ -1,0 +1,15 @@
+# Recovery of the G3 depth and 2:4 comparisons
+
+The exposure gate correctly rejected the first 100-update runs for all six reduced-depth models and both structured-backbone models. The primary ten-model study has matching tensor hashes within seed at its completed common milestones. The Push-T screen and its frozen dependency on the primary confirmation lock use a separate path.
+
+The companion preparation code wrote a derived configuration as sorted JSON. The sampler uses the order of the eight source families both to construct its shuffled cycle and to seed each family's row permutation. Sorting the mapping changed both seeds' streams starting at update zero. Each screen still received the registered source counts and 6,400 presentations, so checking counts alone would have missed the problem.
+
+An independent CPU replay consumed the real batch tensors for 100 updates per seed. It reproduced the recorded primary hashes and the rejected variant hashes. Passing the ordered family manifest through the corrected loader reproduced the original primary hashes exactly for both seeds. The four depth-derived parents and two pruned parents matched their registered SHA-256 values. [Replay and rejected checkpoint identities](exposure-order-audit-20261109.json)
+
+The rejected model files, optimizer states, evaluation products, original training locks and original variant driver sources are retained outside the active result tree. The matching Mac mirrors were also archived. The recovery reuses the verified frozen parents and the same seeds, data, optimizer, evaluation code, budgets and confirmation gates. Each corrected companion has new source provenance and explicitly binds the family order. Optimizer backup names include the companion's new training-lock fingerprint. The old immutable Drive checkpoints remain identifiable as the rejected generation.
+
+The two published ten-model primary inference packages and all six parent bundles were independently checked against the Drive manifests, server file hashes and the second HDD. The twenty Mac inference deltas contained 877,038,522 matching bytes. [Mirror verification](exposure-order-mirrors-20261109.json)
+
+The first corrected seed-81 GPU checkpoints from both companions now match the primary 100-update tensor hash across all 6,400 presentations. Their delta, parent and new training-lock checksums were independently verified. The primary had seven of ten 8,000-update endpoints at this check. [GPU verification](exposure-order-gpu-check-20261109.json)
+
+Both companion supervisors have resumed under the shared 3090 lock. The stage monitor now checks their process state and each new endpoint's exposure hash, and checks the Push-T worker while its scale result is pending. The original rejected weights supply no matched-architecture scores. A corrected performance comparison is publishable after its complete registered matrix passes these checks.
