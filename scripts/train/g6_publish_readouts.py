@@ -21,9 +21,12 @@ terminal={}
 for p in (root/'terminal').glob('*/decisions.json'):
     d=p.parent
     scenes={c:d/('scene-'+c)/'scene-controls.json' for c in ('hybrid','gpt2')}
-    if (d/'speech-dev.json').is_file() and (d/'weights.json').is_file() and all(v.is_file() for v in scenes.values()):
+    texts={c:d/('text-'+c+'.json') for c in ('hybrid','gpt2')}
+    contacts={c:d/('contact-'+c+'.json') for c in ('hybrid','gpt2')}
+    if (d/'speech-dev.json').is_file() and (d/'weights.json').is_file() and all(v.is_file() for v in (*scenes.values(),*texts.values(),*contacts.values())):
         terminal[d.name]={'decisions':read(p),'speech':read(d/'speech-dev.json'),'weights':read(d/'weights.json'),
-                          'scene_controls':{k:read(v) for k,v in scenes.items()}}
+                          'scene_controls':{k:read(v) for k,v in scenes.items()},'text':{k:read(v) for k,v in texts.items()},
+                          'contact_generalization':{k:read(v) for k,v in contacts.items()}}
 print(json.dumps({'probes':probes,'terminal':terminal},separators=(',',':')))
 """
 
@@ -90,6 +93,13 @@ def report(path):
             for core,v in r["scene_controls"].items():
                 contrast=v["paired_contrasts"]["video_correct-over-video_erased"]
                 lines.append(f"| {r['decisions']['params']:,} | {r['decisions']['seed']} | {core} | {contrast['endpoint_px']['reduction']:.2f} | {contrast['regret_px']['reduction']:.2f} | {'passed' if v['positive_visual_contribution'] else 'unmet'} |")
+    if terminal:
+        lines+=["","## Held text and decoded speech","","The text score is bits per real next byte. The speech score is word error for audio generated from video. The linked JSON also contains transcript conditioning, original and codec speech controls, learned and empirical bigrams, and the earlier-prefix intervention.","",
+                "| Parameters | Seed | Core | Full text BPB | Empirical bigram BPB | Video-to-speech WER |",
+                "| ---: | ---: | --- | ---: | ---: | ---: |"]
+        for r in sorted(terminal,key=lambda v:(v["decisions"]["params"],v["decisions"]["seed"])):
+            for core,v in r["text"].items():
+                lines.append(f"| {r['decisions']['params']:,} | {r['decisions']['seed']} | {core} | {v['bpb']['full']:.3f} | {v['bpb']['raw_bigram']:.3f} | {r['speech']['results'][core+'-video']['wer']:.2%} |")
     return "\n".join(lines+["","[Frozen readout protocol](shared-state.md) · [Fresh decision protocol](decisions.md) · [Conditional generation protocol](generation.md)"])+"\n"
 
 
@@ -114,6 +124,8 @@ def run(a):
                         if t and t["decisions"]["complete"] and hashes(8192)==[t["weights"][c] for c in ("hybrid","gpt2")]:
                             if t["weights"]!=t["decisions"]["weights_sha256"]: raise ValueError("Speech and decision checkpoints differ")
                             if t["weights"]!={c:v["inference_sha256"] for c,v in t["scene_controls"].items()}: raise ValueError("Visual grounding endpoints differ")
+                            if t["weights"]!={c:v["inference_sha256"] for c,v in t["text"].items()} or t["weights"]!={c:v["steps"]["8192"]["weights"] for c,v in t["contact_generalization"].items()}:
+                                raise ValueError("Text or contact diagnostic weights differ")
                             t["kind"]="terminal"; write_new(dest/f"terminal-{key}.json",t); nterm+=1
             if nprobe or nterm:
                 md=BASE/"transfer-and-decisions.md"; md.write_text(report(dest))
