@@ -28,6 +28,12 @@ while (( $(date +%s) < deadline )); do
                 second="$root/g6-$gen-$scale-gpt2-$s/step-008192"
                 [[ -f $first/verified.json && -f $second/verified.json ]] || continue
                 mkdir -p "$work"
+                for core in hybrid gpt2; do
+                    ckpt="$root/g6-$gen-$scale-$core-$s/step-008192"
+                    if [[ ! -s $work/scene-$core/scene-controls.json ]]; then
+                        flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g6_scene_probe score --run "$ckpt" --data "$data" --scenes "$data/g6-unseen-600000" --output "$work/scene-$core"
+                    fi
+                done
                 if [[ ! -f $work/decisions.json ]]; then
                     flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g6_decision_probe --root "$root" --data "$data" --sim-site "$sim" --output "$work/decisions.json" --scale "$scale" --generation "$gen" --seed "$s"
                 fi
