@@ -73,7 +73,7 @@ def main(folder):
             elif (folder/"release").exists():stop="explicit release"
             elif now>=cfg["deadline"]-90:stop="wave wall limit"
             elif any(now-v["started_bound"]>=10.95*3600 for v in active):stop="session time limit"
-            elif failures>=3 and active:stop="unreconciled native assignments"
+            # A failed poll continues to accrue the last known owned rates. The project and wall bounds still apply.
         if stop:
             for item in active:
                 try: api("stop","-s",item["name"])

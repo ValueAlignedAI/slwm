@@ -35,8 +35,9 @@ def mirror():
             for f in mark.parent.rglob("*"):
                 if f.is_file() and f.suffix in (".npz",".pt",".json",".wav"):
                     copy(a,b,f.relative_to(a),inventory)
-    for f in (a/"supervised-confirmation").glob("*.json"):
-        copy(a,b,f.relative_to(a),inventory)
+    for area in ("supervised-confirmation","timing-audit","retrieval","planning"):
+        for f in (a/area).rglob("*"):
+            if f.is_file() and f.suffix in (".json",".npz"):copy(a,b,f.relative_to(a),inventory)
     for key in ("alignment/test-lock.json","policy-prior/sft-lock.json","camera/lock.json","scale-test-lock.json",
                 "alignment-audit/crema-oracle.json","alignment-audit/libri-oracle.json","reacher-oracle.json"):
         if (a/key).exists():copy(a,b,Path(key),inventory)
