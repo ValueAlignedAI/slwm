@@ -1,6 +1,7 @@
 """Assemble registered outcomes and artifacts after the complete prospective evaluation."""
 import argparse
 import json
+import shutil
 from pathlib import Path
 import numpy as np
 from training.g8_models import read,CONFIG,G8_DATA,sealed
@@ -75,7 +76,15 @@ def assemble():
     add=["examples/pusht.webm","examples/puck_barrier.webm"]
     paths=["factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-effects.png",*add]
     receipt={"complete":True,"gates":m,"public_sha256":{k:sha(pub/k) for k in paths},"inference_example_seconds":read(pub/"rollout-examples.json")["puck_barrier"]["duration_seconds"]}
-    put(pub/"release-ready.json",receipt);print(json.dumps(m),flush=True)
+    for name,pin in receipt["public_sha256"].items():
+        target=b/"public"/name;target.parent.mkdir(exist_ok=True,parents=True)
+        if not target.exists() or sha(target)!=pin:
+            temporary=target.with_name("."+target.name+".copy");shutil.copyfile(pub/name,temporary)
+            if sha(temporary)!=pin:raise ValueError("Secondary public artifact readback failed")
+            temporary.replace(target)
+    receipt["independently_verified_public_files"]=len(paths)
+    for disk in (a,b):put(disk/"public/release-ready.json",receipt)
+    print(json.dumps(m),flush=True)
 
 
 if __name__=="__main__":
