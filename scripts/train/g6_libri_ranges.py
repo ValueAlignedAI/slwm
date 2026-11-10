@@ -1,5 +1,6 @@
 """Resume the official 360-hour release with parallel verified byte ranges on Fedora's data SSD."""
 import argparse
+import errno
 from concurrent.futures import ThreadPoolExecutor
 import gzip
 import hashlib
@@ -58,10 +59,40 @@ def acquire(root,jobs):
             if i%12==0 or i==len(ranges): print("verified ranges",i,"/",len(ranges),flush=True)
     if prefix.exists() and prefix.stat().st_size!=prefix_size:
         raise ValueError("Original download changed while range workers ran")
+    # A reboot can leave logical holes inside an otherwise correctly sized compressed prefix.
+    # Recover only those bytes on a private copy and retain the original until the full publisher MD5 passes.
+    gaps=[]
+    effective_prefix=prefix
+    if prefix_size:
+        with prefix.open("rb") as pf:
+            at=0
+            while at<prefix_size:
+                try: start=os.lseek(pf.fileno(),at,os.SEEK_HOLE)
+                except OSError as ex:
+                    if ex.errno in (errno.EINVAL,errno.ENOTSUP,errno.ENXIO): break
+                    raise
+                if start>=prefix_size: break
+                try: end=os.lseek(pf.fileno(),start,os.SEEK_DATA)
+                except OSError as ex:
+                    if ex.errno!=errno.ENXIO: raise
+                    end=prefix_size
+                for left in range(start,end,BLOCK):
+                    gaps.append((left,min(left+BLOCK,end)-1))
+                at=end
+        if gaps:
+            effective_prefix=sources/"libri360-prefix.repair"
+            subprocess.run(["cp","--reflink=auto","--",prefix,effective_prefix],check=True)
+            with effective_prefix.open("r+b") as fixed:
+                for left,right in gaps:
+                    part=fetch((left,right))
+                    fixed.seek(left)
+                    with part.open("rb") as reader: shutil.copyfileobj(reader,fixed,1024**2)
+                fixed.flush(); os.fsync(fixed.fileno())
+            print("Reacquired sparse prefix intervals",gaps,flush=True)
     pending=archive.with_suffix(".assembling")
     md5=hashlib.md5(); sha=hashlib.sha256()
     with pending.open("wb") as out:
-        for path in ([prefix] if prefix.exists() else [])+[parts/f"{l}-{h}.bin" for l,h in ranges]:
+        for path in ([effective_prefix] if prefix.exists() else [])+[parts/f"{l}-{h}.bin" for l,h in ranges]:
             with path.open("rb") as reader:
                 while chunk:=reader.read(8*1024**2):
                     out.write(chunk); md5.update(chunk); sha.update(chunk)
@@ -70,7 +101,12 @@ def acquire(root,jobs):
         raise ValueError("Full original release checksum failed; original prefix retained")
     pending.replace(archive)
     (sources/(archive.name+".sha256")).write_text(sha.hexdigest()+"  "+archive.name+"\n")
-    for l,h in ranges: (parts/f"{l}-{h}.bin").unlink()
+    if gaps:
+        proof={"publisher_md5":md5.hexdigest(),"archive_sha256":sha.hexdigest(),"repaired_intervals":gaps,
+               "bytes_reacquired":sum(hi-lo+1 for lo,hi in gaps)}
+        (sources/"libri360-prefix-repair.json").write_text(json.dumps(proof,indent=2,sort_keys=True)+"\n")
+        effective_prefix.unlink()
+    for l,h in ranges+gaps: (parts/f"{l}-{h}.bin").unlink()
     parts.rmdir()
     prefix.unlink(missing_ok=True)
     print("Verified release",TOTAL,sha.hexdigest(),flush=True)
