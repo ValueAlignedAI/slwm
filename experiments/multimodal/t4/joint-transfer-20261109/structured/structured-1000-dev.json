@@ -1,0 +1,144 @@
+{
+  "role": "dev",
+  "rows": {
+    "signal-dense-81": {
+      "balanced_accuracy": {
+        "banking": 0.7002164502164501,
+        "fashion": 0.7460000000000001,
+        "fsdd": 0.25
+      },
+      "comparisons": {
+        "gpt2-dense": {
+          "banking": {
+            "gain": 0.01479076479076479,
+            "groups": 77,
+            "paired_95_interval": [
+              -1.1438332919722038e-18,
+              0.029761904761904767
+            ]
+          },
+          "fashion": {
+            "gain": 0.009000000000000001,
+            "groups": 10,
+            "paired_95_interval": [
+              -0.008,
+              0.026024999999999868
+            ]
+          },
+          "fsdd": {
+            "gain": 0.072,
+            "groups": 1,
+            "paired_95_interval": [
+              0.072,
+              0.072
+            ]
+          }
+        },
+        "signal-dense": {
+          "banking": {
+            "gain": -0.004329004329004329,
+            "groups": 77,
+            "paired_95_interval": [
+              -0.014623917748917754,
+              0.006493506493506495
+            ]
+          },
+          "fashion": {
+            "gain": 0.0,
+            "groups": 10,
+            "paired_95_interval": [
+              -0.014,
+              0.013024999999999868
+            ]
+          },
+          "fsdd": {
+            "gain": -0.006,
+            "groups": 1,
+            "paired_95_interval": [
+              -0.006,
+              -0.006
+            ]
+          }
+        }
+      },
+      "delta_sha256": "6f9ad387ccf7cdd9f90a29796700080cf3c56320009f8c57406d6e15388caef2",
+      "exposure_sha256": "28702a7a5049e35d2981a90805f676041236386cecee765459cb1e1d2c377104",
+      "seconds": 300.91985483211465,
+      "text": {
+        "context": 96,
+        "nll": 4.316324353218079,
+        "tokens": 12288
+      }
+    },
+    "signal-dense-82": {
+      "balanced_accuracy": {
+        "banking": 0.6984126984126984,
+        "fashion": 0.747,
+        "fsdd": 0.442
+      },
+      "comparisons": {
+        "gpt2-dense": {
+          "banking": {
+            "gain": 0.007575757575757575,
+            "groups": 77,
+            "paired_95_interval": [
+              -0.007034632034632035,
+              0.022727272727272724
+            ]
+          },
+          "fashion": {
+            "gain": 0.022000000000000002,
+            "groups": 10,
+            "paired_95_interval": [
+              0.0049749999999999985,
+              0.041
+            ]
+          },
+          "fsdd": {
+            "gain": 0.005999999999999997,
+            "groups": 1,
+            "paired_95_interval": [
+              0.005999999999999997,
+              0.005999999999999997
+            ]
+          }
+        },
+        "signal-dense": {
+          "banking": {
+            "gain": -0.006493506493506492,
+            "groups": 77,
+            "paired_95_interval": [
+              -0.018939393939393947,
+              0.005952380952380954
+            ]
+          },
+          "fashion": {
+            "gain": 0.004999999999999999,
+            "groups": 10,
+            "paired_95_interval": [
+              -0.011000000000000003,
+              0.021000000000000005
+            ]
+          },
+          "fsdd": {
+            "gain": -0.011999999999999995,
+            "groups": 1,
+            "paired_95_interval": [
+              -0.011999999999999995,
+              -0.011999999999999995
+            ]
+          }
+        }
+      },
+      "delta_sha256": "e81b7814504df1755c14af5072f878677d50b3cb07dea14f7bcdd77e1f3533c0",
+      "exposure_sha256": "8ea8b0ee1c0aadd4d4ee0e83ca2e6a61da8b5def18202d49cacec3ed5e462712",
+      "seconds": 288.68459380196873,
+      "text": {
+        "context": 96,
+        "nll": 4.322026312351227,
+        "tokens": 12288
+      }
+    }
+  },
+  "step": 1000
+}
