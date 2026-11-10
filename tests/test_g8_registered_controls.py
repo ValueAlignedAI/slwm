@@ -57,3 +57,22 @@ def test_lossless_optimizer_packet_preserves_even_and_odd_array_boundaries():
         assert unframe(encoded,size)==data
         with pytest.raises(ValueError):unframe(encoded+b"x",size)
         with pytest.raises(ValueError):unframe(encoded,size+1)
+
+
+def test_released_audio_file_roundtrip_preserves_samples_and_detects_corruption(tmp_path):
+    from pathlib import Path
+    pytest.importorskip("vocos")
+    import soundfile as sf
+    from training.g8_audio_codec import PUBLIC,encode_audio,decode_audio
+    renderer=Path("artifacts/decoders/vocos-mel-24khz")
+    if not (renderer/"pytorch_model.bin").is_file():pytest.skip("External frozen Vocos fixture unavailable")
+    path=tmp_path/"input.wav";stream=tmp_path/"clip.slwma";decoded=tmp_path/"decoded.wav"
+    samples=np.sin(2*np.pi*337*np.arange(2333)/16000).astype(np.float32)*.06
+    sf.write(path,samples,16000)
+    meta=encode_audio(path,stream,PUBLIC,48)
+    assert meta["samples"]==3500
+    result=decode_audio(stream,decoded,PUBLIC,renderer,"cpu")
+    audio,sr=sf.read(decoded)
+    assert sr==24000 and len(audio)==3500 and result==meta and np.isfinite(audio).all()
+    content=bytearray(stream.read_bytes());content[-1]^=1;stream.write_bytes(content)
+    with pytest.raises(ValueError,match="checksum"):decode_audio(stream,decoded,PUBLIC,renderer,"cpu")
