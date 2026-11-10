@@ -43,7 +43,10 @@ def main(ctl):
                 if len([v for v in stages if v[1]==1024])==16:return
                 time.sleep(15);continue
             # Small intermediate checkpoints first, freeing the equal-exposure analysis quickly.
-            tag,step,expected=min(todo,key=lambda v:(not v[0].startswith("exposure"),v[0]))
+            # The native drain takes ascending tags. Work from the other end of each tier.
+            small=[v for v in todo if v[0].startswith("exposure")]
+            if len(todo)==1 and sum(v[1]==1024 for v in stages)==16:return
+            tag,step,expected=max(small or todo,key=lambda v:v[0])
             write(ctl/"intermediate-transfer.json",dict(phase="copying",tag=tag,step=step))
             record=copy(name,tag,step,expected);write(receipts/f"{tag}-{step}.json",record)
         except (OSError,ValueError,StopIteration,subprocess.SubprocessError,RuntimeError) as exc:

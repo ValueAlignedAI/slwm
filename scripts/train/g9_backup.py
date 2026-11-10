@@ -29,10 +29,18 @@ def drive():
     end=time.time()+26*3600;delay=300
     while time.time()<end:
         files=[]
-        for name in ("starss-train.npz","starss-dev.npz","starss-test.npz","contact/roma-cal.npz","contact/roma-held.npz"):
+        for name in ("starss-train.npz","starss-dev.npz","starss-test.npz","starss-invariance.npz","contact/roma-cal.npz","contact/roma-held.npz","contact/force-cal-uncapped.npz","contact/force-held-uncapped.npz"):
             p=data/name
-            if p.is_file() and p.stat().st_size>100000:files.append((p,"data/"+name,None))
-        for p in sorted(a.glob("*/step-*/verified.json"),key=lambda f:("confirm" not in f.as_posix(),"04096" not in f.as_posix())):
+            if p.is_file() and (p.stat().st_size>100000 or "uncapped" in name):files.append((p,"data/"+name,None))
+        aux=root/"auxiliary/verified.json"
+        if aux.exists():
+            for name,key in json.loads(aux.read_text()).items():
+                src=aux.parent/name;files.append((src,str(src.relative_to(root)),key))
+        portable=root/"portable/portable.json"
+        if portable.exists():
+            for tag,meta in json.loads(portable.read_text()).items():
+                src=portable.parent/(tag+".npz");files.append((src,str(src.relative_to(root)),meta["sha256"]))
+        for p in sorted([*a.glob("*/step-*/verified.json"),*(root/"dose").glob("*/step-*/verified.json")],key=lambda f:("confirm" not in f.as_posix(),"04096" not in f.as_posix())):
             d=json.loads(p.read_text())
             for n,k in (("weights.npz","inference_sha256"),("optimizer.npz","optimizer_sha256")):
                 path=p.parent/n;files.append((path,str(path.relative_to(root)),d[k]))

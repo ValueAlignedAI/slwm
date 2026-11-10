@@ -17,7 +17,7 @@ weights="$study/inference/exposure-hybrid-z128-gelu-s911-fresh.npz"
 PYTHONPATH=. python scripts/infer/g9_world.py "$weights" --mission --worlds 4 --output missions.json
 ```
 
-Run cross-modal inference on the supplied 51.2-second synchronized sensor stream. The example below exposes audio and goal words. The output includes emitted states, RGB forecasts of the hidden camera input, physical estimates, event logits, action logits and candidate-conditioned next audio and physical measurements.
+Run cross-modal inference on the supplied 51.2-second synchronized sensor stream. The example below exposes audio and goal words. The output includes emitted states, RGB estimates of the hidden camera input, physical estimates, event logits, action logits and candidate-conditioned next audio and physical measurements.
 
 ```bash
 PYTHONPATH=. python scripts/infer/g9_world.py "$weights" \
