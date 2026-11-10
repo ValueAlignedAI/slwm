@@ -29,7 +29,7 @@ def allocation(costs,budget):
     d,maxbits=costs.shape;maxbits-=1
     dp=np.full((d+1,budget+1),np.inf);dp[0,0]=0;back=np.zeros((d+1,budget+1),np.int16)
     for i in range(d):
-        for bits in range(maxbits+1):
+        for bits in range(min(maxbits,budget)+1):
             alt=dp[i,:budget+1-bits]+costs[i,bits];view=dp[i+1,bits:];improves=alt<view
             view[improves]=alt[improves];back[i+1,bits:][improves]=bits
     remaining=budget;parts=np.zeros(d,np.int16)
