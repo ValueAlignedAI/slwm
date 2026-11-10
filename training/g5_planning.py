@@ -74,18 +74,22 @@ def planner(run):
     return candidates
 
 
-def experiment(root,data,out,sim_site,memory_study=False):
+def experiment(root,data,out,sim_site,memory_study=False,runs=None,first_seed=None):
     sys.path.append(str(sim_site))
     from gym_pusht.envs.pusht import PushTEnv
     with np.load(data/"prior.npz") as f:
         w=f["coef"][-1]
-    seeds=np.arange(401000,401032) if memory_study else np.arange(400000,400032)
+    first_seed=(401000 if memory_study else 400000) if first_seed is None else first_seed
+    seeds=np.arange(first_seed,first_seed+32)
     rules=("passive","prior","hybrid","hybrid-reset","hybrid-local","gpt2","gpt2-reset","gpt2-local") if memory_study else ("random","geometry","prior","hybrid","gpt2")
+    if runs is not None:
+        rules=("passive","prior","hybrid","hybrid-reset","gpt2","gpt2-reset")
     output={}
     for rule in rules:
         core=rule.split("-")[0]
         learned=core in ("hybrid","gpt2")
-        model=planner(root/f"g5-medium-{core}-511-residual-gpu") if learned else None
+        run=(runs[core] if runs is not None else root/f"g5-medium-{core}-511-residual-gpu") if learned else None
+        model=planner(run) if learned else None
         envs=[PushTEnv(obs_type="state",render_mode="rgb_array",observation_width=16,observation_height=16) for _ in seeds]
         poses=[]; frames=[]; goals=[]; rng_sample=np.random.default_rng(30303)
         gray=np.array([.299,.587,.114])
