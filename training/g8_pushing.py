@@ -6,7 +6,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from models.g5_residual import world
-from training.g5_batches import load_pack
+from training.g5_batches import JointData,load_pack
 from training.g5_eval import raw_features
 from training.g4_train import write
 from training.g8_models import G8_DATA,read
@@ -18,27 +18,28 @@ VIEWS={"joint":(1,1),"state":(0,1),"video":(1,0),"joint_wrong_camera":(1,1),"vid
 @lru_cache(maxsize=4)
 def kernel(spec):
     @jax.jit
-    def apply(p,cal,n,v,u,source,erase):
-        b=len(n);ok=jnp.broadcast_to(jnp.arange(64)<32,(b,64)).astype(jnp.uint8)
-        sense=jnp.broadcast_to(jnp.arange(64)<16,(b,64)).astype(jnp.uint8)
-        features={"a":jnp.zeros((b,64,100),jnp.uint8),"v":jnp.pad(v,((0,0),(0,48),(0,0))),"n":jnp.pad(n,((0,0),(0,48),(0,11))),
-                  "u":jnp.pad(u,((0,0),(16,32),(0,0))),"source":source,"sense":sense*(1-erase),"ok":ok,
-                  "input_x":jnp.zeros((b,64),jnp.int32),"family":jnp.full((b,),8,jnp.uint8)}
-        _,_,dy=world(p,spec,features,source,cal)
-        return dy[:,-1]*64
+    def apply(p,cal,observations):
+        return world(p,spec,observations,observations["source"],cal)[2][:,-1]*64
     return apply
 
 
-def predictions(spec,p,cal,n,v,plans,condition="joint"):
-    """n/v describe observed 16-tick histories. No future observations enter this function."""
+def observed_batch(n,v,plans,condition):
+    """Use the training sampler's physical input layout. Future outcomes are replaced by zero placeholders."""
     use_v,use_n=VIEWS[condition];b,k=plans.shape[:2]
-    n=np.repeat(n,k,axis=0);v=np.repeat(v,k,axis=0);u=plans.reshape(b*k,16,2)
-    if not use_n:n=np.zeros_like(n)
-    if not use_v or condition=="erased_camera_only":v=np.zeros_like(v)
-    if condition=="no_plan":u=np.zeros_like(u)
-    src=np.tile(np.array([0,use_v,use_n,0],np.uint8),(len(n),1))
-    result=kernel(spec)(p,cal,n,v,u,src,np.uint8(condition=="erased_camera_only"))
-    return np.asarray(result).reshape(b,k,2)
+    sampler=object.__new__(JointData)
+    sampler.packs=[None,None,{"n":n,"v":v,"plan":plans,"outcome":np.zeros((b,k,16,2),np.float32)}]
+    ix=np.repeat(np.arange(b),k);branches=np.tile(np.arange(k),b)
+    obs=sampler.gather(np.full(b*k,8),ix,branches);obs["source"][:,1]=use_v;obs["source"][:,2]=use_n
+    if not use_n:obs["n"][:]=0
+    if not use_v or condition=="erased_camera_only":obs["v"][:]=0
+    if condition=="no_plan":obs["u"][:]=0
+    if condition=="erased_camera_only":obs["sense"][:]=0
+    return obs
+
+
+def predictions(spec,p,cal,n,v,plans,condition="joint"):
+    b,k=plans.shape[:2];obs=observed_batch(n,v,plans,condition)
+    return np.asarray(kernel(spec)(p,cal,obs)).reshape(b,k,2)
 
 
 class Geometry:
