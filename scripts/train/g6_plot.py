@@ -40,8 +40,8 @@ def draw(metrics,out):
             for side in ("right","top"): ax.spines[side].set_visible(False)
             ax.tick_params(axis="both",labelsize=9)
         axes[1,col].set_xlabel("Multimodal positions per arm (millions)",fontsize=10)
-    axes[0,0].set_ylabel("16-action endpoint error (pixels)",fontsize=10)
-    axes[1,0].set_ylabel("Visual contact average precision",fontsize=10)
+    axes[0,0].set_ylabel("Endpoint error (pixels)",fontsize=10)
+    axes[1,0].set_ylabel("Contact average precision",fontsize=10)
     fig.suptitle("Matched world-state training on Colab v5e",x=.09,y=.985,ha="left",fontsize=17,fontweight="bold")
     items=[Line2D([0],[0],color=colors["hybrid"],lw=2,label="Shared hybrid"),
            Line2D([0],[0],color=colors["gpt2"],lw=2,label="Dense GPT-2"),
