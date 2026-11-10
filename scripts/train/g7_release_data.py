@@ -49,7 +49,21 @@ def timing(root,data,out):
                     counts=np.bincount(ix);w=np.bincount(ix,weights=delta);draw=np.random.default_rng(77163).integers(len(g),size=(2000,len(g)))
                     ci=np.quantile(w[draw].sum(1)/counts[draw].sum(1),[.025,.975])
                     diffs[label+"/"+family]={"balanced_minus_older_only_four_way":float(delta.mean()),"group_ci95":ci.tolist(),"groups":len(g)}
-    write(out/"physical-timing.json",{"source_cards":source,"heads":d,"paired_sign_intervention":diffs})
+    architectures={}
+    for seed in (711,712):
+        for first,second in (("raw","hybrid"),("raw","gpt2"),("hybrid","gpt2")):
+            for family in ("crema","events"):
+                a=root/"physical-time"/f"{first}-{seed}"/"both-signs"/(family+"-predictions.npz")
+                b=root/"physical-time"/f"{second}-{seed}"/"both-signs"/(family+"-predictions.npz")
+                if not a.is_file() or not b.is_file():continue
+                with np.load(a) as aa,np.load(b) as bb:
+                    np.testing.assert_array_equal(aa["uid"],bb["uid"]);g,ix=np.unique(aa["group"],return_inverse=True)
+                    def win(v):
+                        t=v==v.max(1,keepdims=True);return t[:,0]/t.sum(1)
+                    change=win(aa["scores"])-win(bb["scores"]);m=np.bincount(ix);z=np.bincount(ix,weights=change)
+                    sel=np.random.default_rng(77163).integers(len(g),size=(2000,len(g)))
+                    architectures[f"{first}-minus-{second}-{seed}-{family}"]={"accuracy_delta":float(change.mean()),"ci95":np.quantile(z[sel].sum(1)/m[sel].sum(1),[.025,.975]).tolist()}
+    write(out/"physical-timing.json",{"source_cards":source,"heads":d,"paired_sign_intervention":diffs,"paired_architectures":architectures})
 
 
 def camera_pixels(data):
