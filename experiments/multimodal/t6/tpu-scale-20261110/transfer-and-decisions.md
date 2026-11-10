@@ -19,6 +19,7 @@ All rules ran 24 successive decisions per scene. Lower final distance is better.
 
 | Parameters | Seed | Hybrid, px | Dense, px | Prior, px | Hybrid reset, px | Dense reset, px |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 116,502,025 | [511](supplemental/terminal-v5e-anchor-511.json) | 81.26 | 144.13 | 152.56 | 73.78 | 74.49 |
 | 202,346,377 | [511](supplemental/terminal-v5e-larger-511.json) | 85.97 | 167.20 | 152.56 | 65.54 | 72.42 |
 
 ## Visual contribution beyond the identical action plan
@@ -27,6 +28,8 @@ The controls use 512 additional independent scenes. Positive reductions favor co
 
 | Parameters | Seed | Core | Error reduction vs erased, px | Regret reduction vs erased, px | Visual gate |
 | ---: | ---: | --- | ---: | ---: | --- |
+| 116,502,025 | 511 | gpt2 | 10.56 | 3.11 | unmet |
+| 116,502,025 | 511 | hybrid | 11.05 | 1.77 | passed |
 | 202,346,377 | 511 | gpt2 | 16.26 | 3.88 | unmet |
 | 202,346,377 | 511 | hybrid | 10.87 | 3.50 | passed |
 
@@ -36,6 +39,8 @@ The text score is bits per real next byte. The speech score is word error for au
 
 | Parameters | Seed | Core | Full text BPB | Empirical bigram BPB | Video-to-speech WER |
 | ---: | ---: | --- | ---: | ---: | ---: |
+| 116,502,025 | 511 | gpt2 | 2.117 | 3.708 | 100.00% |
+| 116,502,025 | 511 | hybrid | 2.002 | 3.708 | 100.00% |
 | 202,346,377 | 511 | gpt2 | 2.202 | 3.708 | 100.00% |
 | 202,346,377 | 511 | hybrid | 2.011 | 3.708 | 100.00% |
 
