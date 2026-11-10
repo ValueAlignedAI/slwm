@@ -53,7 +53,7 @@ def report(folder):
     for task,title in (("live_pusht","Push-T"),("live_puck_barrier","Puck + barrier")):
         values=[f"{100*raw[task][name]['success']:.1f}%" for name in ("first_proposal","uniform","passive","geometry")]
         lines.append(f"| {title} | "+" | ".join(values+[f"{raw[task]['geometry']['mean_final_px']:.2f} px"])+" |")
-    lines+=["","The previews replay the measured actions on the first predetermined start. Every decision endpoint is compared numerically with its saved trajectory. The red goal overlay was added for viewing. [Push-T replay](examples/pusht.webm) · [Puck-and-barrier replay](examples/puck_barrier.webm) · [Replay hashes and error](metrics/rollout-examples.json)",
+    lines+=["","The previews replay the measured actions on the first predetermined start. Every decision endpoint is compared numerically with its saved trajectory. The red goal overlay was added for viewing. [Push-T replay](examples/pusht.webm) · [Puck-and-barrier replay](examples/puck_barrier.webm) · [Replay hashes and error](metrics/rollout-examples.json) · [Run decision inference on the supplied observation](inference/decisions.md)",
       "","## Other modalities","","This secondary panel reuses the fixed G7 held examples. Byte NLL is lower when next-byte predictions improve. Video-to-audio feature MSE and real-event AP are diagnostic losses; waveform intelligibility was measured independently.",
       "","| Core and seed | Replay byte NLL | Sim only | Other only | Both fresh | Both fresh video→audio MSE | Both fresh Tokyo event AP |","|---|---:|---:|---:|---:|---:|---:|"]
     for core in ("hybrid","gpt2"):

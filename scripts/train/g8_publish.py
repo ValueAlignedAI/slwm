@@ -47,15 +47,16 @@ def main(repo,ctl):
         time.sleep(40)
     if not until_release:raise TimeoutError("G8 release gates remain incomplete")
     store(status,{"phase":"rendering_and_verifying","utc_unix":time.time()})
+    remote("cd /home/db/dev/slwm-g8 && flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g8_decide --examples",400)
     remote("cd /home/db/dev/slwm-g8 && OPENBLAS_NUM_THREADS=1 SDL_VIDEODRIVER=dummy /home/db/dev/slwm-g5/.sim/bin/python -m scripts.train.g8_rollout_media",900)
     remote("cd /home/db/dev/slwm-g8 && /home/db/dev/slwm/.research-venv/bin/python scripts/train/g8_plot.py "+SOURCE+"/public/factorial.json "+SOURCE+"/public/decision-effects.png",200)
     remote("cd /home/db/dev/slwm-g8 && OPENBLAS_NUM_THREADS=1 "+python+" -m scripts.train.g8_archive",1100)
     remote(command+"assemble",500)
     receipt=json.loads(remote("cat "+SOURCE+"/public/release-ready.json"))
     for source,pin in receipt["public_sha256"].items():
-        if source in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json"):
+        if source in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-examples.json"):
             target=REPORT/"metrics"/source
-        elif source in ("decision-effects.png","examples/pusht.webm","examples/puck_barrier.webm"):target=REPORT/source
+        elif source in ("decision-effects.png","examples/pusht.webm","examples/puck_barrier.webm","examples/pusht-input.npz","examples/puck_barrier-input.npz"):target=REPORT/source
         else:raise ValueError("Unexpected scientific release artifact")
         target.parent.mkdir(exist_ok=True,parents=True)
         subprocess.run(["rsync","-a",HOST+":"+SOURCE+"/public/"+source,str(target)],check=True,timeout=200)
@@ -71,8 +72,8 @@ def main(repo,ctl):
            "private_drive_state":{k:v for k,v in drive.items() if k in ("phase","reason","verified_files","pending_files")},"new_data_mirrors":inv}
     from g8_writeup import report,readme
     store(REPORT/"metrics/release.json",final);summary=report(REPORT);readme(repo,summary,final)
-    paths=[str(REPORT/"metrics"/n) for n in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","release.json")]
-    paths+=["README.md",str(REPORT/"report.md"),str(REPORT/"decision-effects.png"),str(REPORT/"examples/pusht.webm"),str(REPORT/"examples/puck_barrier.webm")]
+    paths=[str(REPORT/"metrics"/n) for n in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-examples.json","release.json")]
+    paths+=["README.md",str(REPORT/"report.md"),str(REPORT/"decision-effects.png"),str(REPORT/"examples/pusht.webm"),str(REPORT/"examples/puck_barrier.webm"),str(REPORT/"examples/pusht-input.npz"),str(REPORT/"examples/puck_barrier-input.npz")]
     git("add","-f","--",*paths);changed=subprocess.run(["git","diff","--cached","--quiet","--",*paths]).returncode
     if changed==1:git("commit","--only","-m","Publish complete matched G8 transfer, new-task policies, verified weights and live inference artifacts","--",*paths)
     elif changed!=0:raise RuntimeError("Cannot verify scientific release diff")

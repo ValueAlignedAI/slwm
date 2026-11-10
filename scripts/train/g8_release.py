@@ -73,7 +73,7 @@ def assemble():
     put(pub/"artifact-inventory.json",source)
     for name in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-effects.png"):
         if not (pub/name).is_file():raise ValueError("Missing public evidence: "+name)
-    add=["examples/pusht.webm","examples/puck_barrier.webm"]
+    add=["examples/pusht.webm","examples/puck_barrier.webm","examples/pusht-input.npz","examples/puck_barrier-input.npz","decision-examples.json"]
     paths=["factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-effects.png",*add]
     receipt={"complete":True,"gates":m,"public_sha256":{k:sha(pub/k) for k in paths},"inference_example_seconds":read(pub/"rollout-examples.json")["puck_barrier"]["duration_seconds"]}
     for name,pin in receipt["public_sha256"].items():
