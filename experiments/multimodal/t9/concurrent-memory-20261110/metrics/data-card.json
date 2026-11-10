@@ -1,0 +1,185 @@
+{
+  "external_contact": {
+    "calibration_ticks": 750,
+    "failed": {},
+    "held_ticks": 2530,
+    "max_camera_age_s": 0.11866998672485352,
+    "max_force_age_s": 0.08716225624084473,
+    "revision": "b738c7c2ca20c5e1f9b975c92749da0e51ac4e22",
+    "selected_scenes": [
+      "b28",
+      "b99",
+      "b90",
+      "b75",
+      "b35",
+      "b79",
+      "b87",
+      "b17",
+      "b41",
+      "b20",
+      "b71",
+      "b4",
+      "b100",
+      "b52",
+      "b98",
+      "b49",
+      "b88",
+      "b1",
+      "b22",
+      "b3",
+      "b62",
+      "b67",
+      "b2",
+      "b36"
+    ],
+    "training_use": "external ridge calibration only, six scenes",
+    "trials": 48,
+    "verbs": [
+      "clench",
+      "collide",
+      "lift",
+      "press",
+      "rotate",
+      "shake"
+    ]
+  },
+  "per_tick": {
+    "maximum_word_slots": 8,
+    "physical_channels": 12,
+    "quantized_rgb_values": 768,
+    "spectral_values": 64
+  },
+  "runs": {
+    "911-1024": {
+      "all_four_fraction": 0.5012741088867188,
+      "all_four_real_fraction": 0.5032958984375,
+      "all_four_sim_fraction": 0.5006001790364584,
+      "real_distinct_clock_bins": 103091,
+      "real_distinct_window_starts": 27910,
+      "real_sampled_clock_positions": 1048576,
+      "real_windows_sampled": 32768,
+      "sim_fresh_episodes": 98304,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 3145728,
+      "source_fraction_audio_vision_physical_words": [
+        0.7496719360351562,
+        0.7523193359375,
+        0.7488632202148438,
+        0.7509689331054688
+      ],
+      "total_sampled_clock_positions": 4194304
+    },
+    "911-384": {
+      "all_four_fraction": 0.5028483072916666,
+      "all_four_real_fraction": 0.507080078125,
+      "all_four_sim_fraction": 0.5014377170138888,
+      "real_distinct_clock_bins": 100459,
+      "real_distinct_window_starts": 11558,
+      "real_sampled_clock_positions": 393216,
+      "real_windows_sampled": 12288,
+      "sim_fresh_episodes": 36864,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 1179648,
+      "source_fraction_audio_vision_physical_words": [
+        0.7508138020833334,
+        0.7508138020833334,
+        0.7495930989583334,
+        0.7508951822916666
+      ],
+      "total_sampled_clock_positions": 1572864
+    },
+    "911-4096": {
+      "all_four_fraction": 0.5002250671386719,
+      "all_four_real_fraction": 0.49993133544921875,
+      "all_four_sim_fraction": 0.5003229777018229,
+      "real_distinct_clock_bins": 103278,
+      "real_distinct_window_starts": 73709,
+      "real_sampled_clock_positions": 4194304,
+      "real_windows_sampled": 131072,
+      "sim_fresh_episodes": 393216,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 12582912,
+      "source_fraction_audio_vision_physical_words": [
+        0.7501564025878906,
+        0.7505607604980469,
+        0.7492885589599609,
+        0.7502765655517578
+      ],
+      "total_sampled_clock_positions": 16777216
+    },
+    "912-1024": {
+      "all_four_fraction": 0.49900054931640625,
+      "all_four_real_fraction": 0.497589111328125,
+      "all_four_sim_fraction": 0.4994710286458333,
+      "real_distinct_clock_bins": 103048,
+      "real_distinct_window_starts": 27970,
+      "real_sampled_clock_positions": 1048576,
+      "real_windows_sampled": 32768,
+      "sim_fresh_episodes": 98304,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 3145728,
+      "source_fraction_audio_vision_physical_words": [
+        0.7498931884765625,
+        0.7494659423828125,
+        0.7501144409179688,
+        0.748260498046875
+      ],
+      "total_sampled_clock_positions": 4194304
+    },
+    "912-384": {
+      "all_four_fraction": 0.4996744791666667,
+      "all_four_real_fraction": 0.497314453125,
+      "all_four_sim_fraction": 0.5004611545138888,
+      "real_distinct_clock_bins": 100587,
+      "real_distinct_window_starts": 11579,
+      "real_sampled_clock_positions": 393216,
+      "real_windows_sampled": 12288,
+      "sim_fresh_episodes": 36864,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 1179648,
+      "source_fraction_audio_vision_physical_words": [
+        0.7510986328125,
+        0.7503865559895834,
+        0.7509765625,
+        0.7507527669270834
+      ],
+      "total_sampled_clock_positions": 1572864
+    },
+    "912-4096": {
+      "all_four_fraction": 0.5003871917724609,
+      "all_four_real_fraction": 0.50067138671875,
+      "all_four_sim_fraction": 0.5002924601236979,
+      "real_distinct_clock_bins": 103269,
+      "real_distinct_window_starts": 73559,
+      "real_sampled_clock_positions": 4194304,
+      "real_windows_sampled": 131072,
+      "sim_fresh_episodes": 393216,
+      "sim_replay_unique_episodes": 2048,
+      "sim_sampled_clock_positions": 12582912,
+      "source_fraction_audio_vision_physical_words": [
+        0.7501049041748047,
+        0.7501316070556641,
+        0.7501792907714844,
+        0.7500972747802734
+      ],
+      "total_sampled_clock_positions": 16777216
+    }
+  },
+  "training_starss": {
+    "clock_bins": 103359,
+    "event_annotated_clock_fraction": 0.8234212792306427,
+    "mean_observed_event_words": 1.0273319207809672,
+    "recorded_hours": 2.8710833333333334,
+    "recordings": 50,
+    "rooms": [
+      "room12",
+      "room13",
+      "room14",
+      "room4",
+      "room6",
+      "room7",
+      "room9"
+    ],
+    "valid_training_window_starts": 101759
+  }
+}
