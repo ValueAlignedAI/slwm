@@ -21,6 +21,28 @@ def progress():
             "durable_rungs":audit.get("verified_rungs",0),"analysis":(p/"factorial.json").is_file(),"replays":(p/"rollout-examples.json").is_file()}
 
 
+def development_curves(doc):
+    from scripts.train.g8_analysis import CONTRASTS,effect,estimate
+    results={}
+    for core in ("hybrid","gpt2"):
+        for seed in (511,512):
+            visits={}
+            for step in (10240,12288,16384):
+                cells={};ids=None
+                for arm in ("replay","sim","other","fresh"):
+                    rec=doc["models"][f"{core}-{seed}-{arm}"]
+                    stage=Path(rec["root"]).parent/f"step-{step:06d}"
+                    proof=read(stage/"verified.json");file=stage/"dev-predictions.npz"
+                    if sha(file)!=proof["sha256"]["dev-predictions.npz"]:raise ValueError("Changed development predictions")
+                    with np.load(file) as f:
+                        if ids is not None:np.testing.assert_array_equal(ids,f["sim_group"])
+                        ids=np.array(f["sim_group"]);cells[arm]=np.array(f["push_joint"],np.float64)
+                draw=np.random.default_rng(810251).integers(len(ids),size=(4000,len(ids)),dtype=np.int32)
+                visits[str(step)]={"original_development_starts":len(ids),"endpoint_px":{k:float(x.mean()) for k,x in cells.items()},
+                                   "effects_px":{k:estimate(effect(cells,CONTRASTS[k]),draw) for k in ("other_main","sim_main","interaction")}}
+            results[f"{core}-{seed}"]=visits
+    return results
+
 def assemble():
     a,b=roots("g8");pub=a/"public";m=progress()
     if any(m[k]!=n for k,n in EXPECTED.items()) or not all(m[k] for k in ("archive_complete","analysis","replays")):raise ValueError(f"Pending G8 evidence: {m}")
@@ -46,7 +68,7 @@ def assemble():
             "live_control_input":"16 observed ticks and an exogenous goal-directed three-proposal bank per decision",
             "readout_heads":heads,"confirmation_lock":sha(a/"confirmation-lock.json"),"held_panels":doc["panels"],"training_audit":doc["training_audit"],
             "rungs":archive["rungs"],"inference_and_optimizer_bytes_per_disk":archive["optimizer_and_inference_bytes_per_disk"],
-            "registered_training_seconds_excluding_bridges_and_transfer":raw_seconds,"per_rung_timing":tim,"development_smoke":read(G8_DATA/"development-smoke/verified.json")}
+            "registered_development_learning_curves":development_curves(doc),"registered_training_seconds_excluding_bridges_and_transfer":raw_seconds,"per_rung_timing":tim,"development_smoke":read(G8_DATA/"development-smoke/verified.json")}
     put(pub/"artifact-inventory.json",source)
     for name in ("factorial.json","raw-and-live.json","retention.json","paired-scenes.npz","artifact-inventory.json","rollout-examples.json","decision-effects.png"):
         if not (pub/name).is_file():raise ValueError("Missing public evidence: "+name)
