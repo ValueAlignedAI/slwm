@@ -1,0 +1,50 @@
+{
+  "study": "G9",
+  "base": "e26a8d383dff02fe4b910b8bb474a110031834d0",
+  "seeds": [
+    911,
+    912
+  ],
+  "cores": [
+    "hybrid",
+    "gpt2"
+  ],
+  "widths": [
+    128,
+    512
+  ],
+  "activation": [
+    "gelu",
+    "snake"
+  ],
+  "sequence": 32,
+  "batch": 128,
+  "sim_rows": 96,
+  "real_rows": 32,
+  "pilot": {
+    "width": 512,
+    "depth": 4,
+    "updates": 384
+  },
+  "confirm": {
+    "width": 896,
+    "depth": 12,
+    "updates": 4096,
+    "rungs": [
+      1024,
+      4096
+    ]
+  },
+  "replay_episodes": 2048,
+  "real_train": "dev-train-tau",
+  "real_development": "dev-test-tau",
+  "real_test": "dev-test-sony",
+  "prior_owned_units": 33.37924,
+  "study_limit_units": 66.62076,
+  "real_source": "https://doi.org/10.5281/zenodo.7880637",
+  "external_source": "https://huggingface.co/datasets/GeWu-Lab/ROMA/tree/b738c7c2ca20c5e1f9b975c92749da0e51ac4e22",
+  "primary": "paired realized goal occupancy on held slip dynamics across scene/mission seeds",
+  "live_ticks": 512,
+  "live_hz": 10,
+  "live_worlds": 128
+}
