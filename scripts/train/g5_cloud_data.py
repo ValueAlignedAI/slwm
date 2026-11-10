@@ -1,6 +1,8 @@
 """Download only the registered G5 role, verify its frozen archive hashes, and extract regular files."""
 import argparse
 import hashlib
+import json
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import subprocess
 import tarfile
@@ -23,7 +25,31 @@ def fetch(root,role,pins):
         with tempfile.TemporaryDirectory(dir=target.parent) as d:
             d=Path(d)
             local=d/name
-            subprocess.run(["rclone","copyto","--multi-thread-streams","8",f"slwm-drive:SLWM/g5/data/{name}",local],check=True)
+            chunks=pins/(role+"-blocks.json")
+            if chunks.exists():
+                entry=json.loads(chunks.read_bytes())[name]
+                if entry["sha256"]!=expected:
+                    raise ValueError("G5 manifest disagreement")
+                def download(item):
+                    ix,sha=item
+                    if len(sha)!=64 or any(c not in "0123456789abcdef" for c in sha):
+                        raise ValueError("Invalid object hash")
+                    part=d/f"part-{ix}"
+                    subprocess.run(["rclone","copyto",f"slwm-drive:SLWM/g5/data-blocks/objects/{sha}",part],check=True)
+                    with part.open("rb") as reader:
+                        if hashlib.file_digest(reader,"sha256").hexdigest()!=sha:
+                            raise ValueError("Corrupt G5 transfer object")
+                    return part
+                import shutil
+                with ThreadPoolExecutor(max_workers=5) as io,local.open("wb") as dest:
+                    for part in io.map(download,enumerate(entry["parts"])):
+                        with part.open("rb") as reader:
+                            shutil.copyfileobj(reader,dest,1024**2)
+                        part.unlink()
+                if local.stat().st_size!=entry["bytes"]:
+                    raise ValueError("Truncated G5 archive")
+            else:
+                subprocess.run(["rclone","copyto","--multi-thread-streams","8",f"slwm-drive:SLWM/g5/data/{name}",local],check=True)
             with local.open("rb") as f:
                 if hashlib.file_digest(f,"sha256").hexdigest()!=expected:
                     raise ValueError(f"Cloud data changed: {name}")
