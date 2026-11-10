@@ -21,8 +21,11 @@ def update(ctl,event=None,phase=None,receipt=None):
         d["current_study"]="G8";d["updated_utc"]=now
         if receipt:
             d["integration"].setdefault("completed_merges",{})[str(receipt["number"])]=receipt
-            d["integration"].update(phase="completed",last_verified_main=receipt["main_sha"]);g["in_flight"]=[];g["release"]=receipt
-            d["active_goal"]="G8 factorial study complete, artifacts verified, README and revised research priorities integrated."
+            d["integration"].update(phase="completed" if phase=="integrated" else "integrating_verified_studies",last_verified_main=receipt["main_sha"])
+            g.setdefault("merged_milestones",{})[str(receipt["number"])]=receipt
+            if phase=="integrated":
+                g["in_flight"]=[];g["release"]=receipt
+                d["active_goal"]="G8 factorial study complete, artifacts verified, README and revised research priorities integrated."
         if event:
             item={"utc":now,"study":"G8","event":event};d["last_event"]=item
             with (root/"research-journal.jsonl").open("a") as f:f.write(json.dumps(item,sort_keys=True)+"\n")
