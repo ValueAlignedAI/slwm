@@ -99,7 +99,7 @@ def operations(a):
                     report(key,"archiving",session=name,run=job["run"],step=job["step"])
                     transfer(a.repo,name,job["run"],job["step"],job["sha"],receipt_dir)
                 failures=0
-                if phase=="failed":
+                if phase=="failed" and job is None:
                     report(key,"failed",diagnostic=info.get("diagnostic"),session=name)
                     return
                 if phase=="draining" and not job:
@@ -125,6 +125,19 @@ def operations(a):
         if not bound(2400):
             report(key,"budget_bound"); return
         names=list(zip(SECONDARY,("v6e","v5e")))
+        current=live()
+        active=[(name,gen) for name,gen in names if assigned(current,name)]
+        if active:
+            name,generation=active[0]
+            try:
+                info=inventory(name)
+                if info["lane"]:
+                    watch(name,generation,key,512)
+                else:
+                    prepare(name,generation); watch(name,generation,key,512)
+            finally:
+                stop(name)
+            return
         for name,generation in names:
             listing=live()
             if not assigned(listing,name):
