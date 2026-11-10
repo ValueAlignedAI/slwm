@@ -17,7 +17,7 @@ FILES=[f"{f}-{s}.tar.zst" for s in ("dev","train") for f in ("paired","impact","
 CODE=["models/g4_shared.py","models/g5_shared.py","models/g5_residual.py","training/g4_data.py","training/g4_train.py",
       "training/g5_batches.py","training/g5_priors.py","training/g5_eval.py","training/g6_train.py","training/g6_checkpoint.py",
       "configs/t5/joint_world.json","configs/t6/tpu_scale.json","scripts/train/g5_cloud_data.py",
-      "scripts/train/g6_artifacts.py","scripts/train/g6_lane.py","scripts/train/g6_ram_inputs.py"]
+      "scripts/train/g6_artifacts.py","scripts/train/g6_resume.py","scripts/train/g6_lane.py","scripts/train/g6_ram_inputs.py"]
 
 
 def write(path,value):
@@ -37,6 +37,11 @@ def operations(a):
         return (data["phase"]=="watching" and time.time()-data["checked_unix"]<140 and
                 data["account_spend"]+data["reserve"]<data["credit_limit"] and
                 time.time()+margin<data["deadline_unix"] and not (a.budget.parent/"release").exists())
+    def active_allowed():
+        b=json.loads(a.budget.read_bytes())
+        return (b["phase"] in ("watching","accounting_retry") and time.time()-b["checked_unix"]<150
+                and time.time()<b["deadline_unix"]-120 and b["account_spend"]+b["reserve"]<b["credit_limit"]
+                and not (a.budget.parent/"release").exists())
     def report(key,phase,**values):
         write(a.control/(key+".json"),dict(phase=phase,utc_unix=time.time(),**values))
         print(key,phase,values,flush=True)
@@ -79,10 +84,17 @@ def operations(a):
               "python scripts/train/g5_cloud_data.py train --root /content/g6-data --pins /content/g5-landing; wait \"$devpid\"; "
               "cp /content/g5-landing/prior.npz /content/g6-data/prior.npz; python -u scripts/train/g6_ram_inputs.py /content/g6-data; "
               "touch /content/g6-data-verified",timeout=700)
+        if list((a.control/"receipts").glob(f"g6-{generation}-*-512-*.json")):
+            restore=f" -m scripts.train.g6_resume {{action}} --generation {generation} --seed 512"
+            sender=[*FEDORA,"cd /home/db/dev/slwm-g5 && python3"+restore.format(action="send")]
+            with subprocess.Popen(sender,stdout=subprocess.PIPE) as stream:
+                try: shell(name,"cd /content/g6-code && python"+restore.format(action="receive"),timeout=2500,stdin=stream.stdout)
+                finally: stream.stdout.close()
+                if stream.wait(timeout=30): raise OSError("Cross-session recovery transport failed")
         launch(name,generation,512)
     def watch(name,generation,key,seed):
         failures=0; second_reused=False; receipt_dir=a.control/"receipts"
-        while bound():
+        while active_allowed():
             job=None
             try:
                 info=inventory(name)
