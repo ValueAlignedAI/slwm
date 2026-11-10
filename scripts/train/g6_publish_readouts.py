@@ -17,6 +17,7 @@ from pathlib import Path
 root=Path('/mnt/slwm-checkpoints-a/SLWM/g6')
 def read(p): return json.loads(p.read_bytes())
 probes={p.stem:read(p) for p in (root/'shared-probes').glob('g6-*.json')}
+confirmation={p.stem:read(p) for p in (root/'speaker-confirmation').glob('g6-*.json')}
 terminal={}
 for p in (root/'terminal').glob('*/decisions.json'):
     d=p.parent
@@ -27,15 +28,18 @@ for p in (root/'terminal').glob('*/decisions.json'):
         terminal[d.name]={'decisions':read(p),'speech':read(d/'speech-dev.json'),'weights':read(d/'weights.json'),
                           'scene_controls':{k:read(v) for k,v in scenes.items()},'text':{k:read(v) for k,v in texts.items()},
                           'contact_generalization':{k:read(v) for k,v in contacts.items()}}
-print(json.dumps({'probes':probes,'terminal':terminal},separators=(',',':')))
+print(json.dumps({'probes':probes,'terminal':terminal,'confirmation':confirmation},separators=(',',':')))
 """
 
 
-def paired(h,d):
-    for k in ("step","seed","scale_params","development_clips","development_speakers","classes"):
+def paired(h,d,confirmation=False):
+    people="held_speakers" if confirmation else "development_speakers"
+    clips="held_clips" if confirmation else "development_clips"
+    for k in ("step","seed","scale_params",clips,people,"classes"):
         if h[k]!=d[k]:
             raise ValueError("Unmatched frozen comparison")
-    if h["development_speakers"]!=4: raise ValueError("Speaker split changed")
+    if h[people]!=(8 if confirmation else 4): raise ValueError("Speaker split changed")
+    if confirmation and h["lock_sha256"]!=d["lock_sha256"]: raise ValueError("Speaker locks differ")
     scores={}
     for shots in ("8","32"):
         a=h["shots"][shots]; b=d["shots"][shots]
@@ -47,7 +51,7 @@ def paired(h,d):
         scores[shots]={"hybrid":a["mean_cross_view"],"dense":b["mean_cross_view"],"gap":a["mean_cross_view"]-b["mean_cross_view"],
                        "equal_speaker_mean_gap":statistics.mean(delta),"paired_speaker_ci95":[boot[99],boot[3899]]}
     eight=scores["8"]
-    return {"kind":"frozen","params":h["scale_params"],"step":h["step"],"seed":h["seed"],"shots":scores,
+    return {"kind":"speaker_confirmation" if confirmation else "frozen","params":h["scale_params"],"step":h["step"],"seed":h["seed"],"shots":scores,
             "registered_seed_pass":eight["hybrid"]>.25 and eight["gap"]>=.03 and eight["paired_speaker_ci95"][0]>0,
             "arms":[h,d]}
 
@@ -75,6 +79,19 @@ def report(path):
         if set(both)=={511,512}:
             passed=all(v["registered_seed_pass"] for v in both.values())
             lines+=["",f"At {size:,} parameters the two-seed shared-content gate {'passed' if passed else 'was unmet'}. Each linked result includes all nine directional cells, source-specific raw baselines, within-speaker shuffles and retrieval."]
+    confirms=sorted((r for r in results if r["kind"]=="speaker_confirmation"),key=lambda v:(v["params"],v["seed"]))
+    if confirms:
+        lines+=["","## Independent speaker and sentence confirmation","","The same heads are evaluated on eight different speakers and sentence combinations excluded from both support and development. Each readout retains its original support and requires no adaptation.","",
+                "| Parameters | Seed | Hybrid | Dense | Hybrid gain, pp | Speaker-paired interval, pp |",
+                "| ---: | ---: | ---: | ---: | ---: | ---: |"]
+        for r in confirms:
+            e=r["shots"]["8"]; gen,scale=r["arms"][0]["run"].split("-")[1:3]; seed=r["seed"]
+            lo,hi=e["paired_speaker_ci95"]; loc=f"supplemental/speakers-{gen}-{scale}-{seed}.json"
+            lines.append(f"| {r['params']:,} | [{seed}]({loc}) | {e['hybrid']:.2%} | {e['dense']:.2%} | {e['gap']*100:.2f} | {lo*100:.2f} to {hi*100:.2f} |")
+        for size in sorted({r["params"] for r in confirms}):
+            matched=[r for r in confirms if r["params"]==size]
+            if {r["seed"] for r in matched}=={511,512}:
+                lines+=["",f"The eight-speaker replication at {size:,} parameters {'passed' if all(r['registered_seed_pass'] for r in matched) else 'did not pass'} the original two-seed shared-content gate."]
     terminal=[r for r in results if r["kind"]=="terminal"]
     if terminal:
         lines+=["","## Final checkpoints on 32 unseen goal-reaching scenes","","All rules ran 24 successive decisions per scene. Lower final distance is better. The speech diagnostic uses the same frozen recognizer and held development speakers as G5.","",
@@ -109,7 +126,7 @@ def run(a):
         try:
             command=["ssh","-o","BatchMode=yes","-o","ConnectTimeout=8","db@192.168.1.200","python3","-"]
             payload=json.loads(subprocess.check_output(command,input=COLLECT,text=True,timeout=40))
-            nterm=0; nprobe=0
+            nterm=0; nprobe=0; nconf=0
             for seed in (511,512):
                 for gen in ("v5e","v6e"):
                     for scale in ("anchor","larger"):
@@ -120,6 +137,9 @@ def run(a):
                             return [json.loads(f.read_bytes())["sha256"]["inference.npz"] for f in files] if all(f.is_file() for f in files) else []
                         if all(probes) and hashes(2048)==[p["inference_sha256"] for p in probes]:
                             write_new(dest/f"frozen-{key}.json",paired(*probes)); nprobe+=1
+                        test=[payload["confirmation"].get(k) for k in names]
+                        if all(test) and hashes(2048)==[p["inference_sha256"] for p in test]:
+                            write_new(dest/f"speakers-{key}.json",paired(*test,confirmation=True)); nconf+=1
                         t=payload["terminal"].get(key)
                         if t and t["decisions"]["complete"] and hashes(8192)==[t["weights"][c] for c in ("hybrid","gpt2")]:
                             if t["weights"]!=t["decisions"]["weights_sha256"]: raise ValueError("Speech and decision checkpoints differ")
@@ -137,7 +157,7 @@ def run(a):
                 env=dict(os.environ,GIT_SSH_COMMAND="ssh -o BatchMode=yes -o UserKnownHostsFile=/Users/db/dev/slwm-g2/artifacts/predictive_world/g2/github_known_hosts -o StrictHostKeyChecking=yes")
                 if subprocess.check_output(["git","rev-list","--count","@{upstream}..HEAD"],text=True).strip()!="0":
                     subprocess.run(["git","push","origin",BRANCH],env=env,check=True,timeout=100)
-            if nterm>=4 and nprobe>=4: return
+            if nterm>=4 and nprobe>=4 and nconf>=4: return
         except (OSError,ValueError,KeyError,subprocess.SubprocessError) as e:
             print(type(e).__name__,str(e)[:200],flush=True)
         time.sleep(75)

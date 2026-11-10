@@ -11,13 +11,22 @@ from models.g4_shared import Spec
 from models.g5_shared import encode
 from training.g4_train import sha_file,write
 from training.g4_transfer import balanced,ridge,support
-from training.g5_batches import JointData
+from training.g5_batches import JointData,load_pack
 
 VIEWS={"audio":0,"video":1,"text":3}
 WORDS=("bin","lay","place","set")
 
 
-def evaluate(data_root,run,out):
+class GridViews(JointData):
+    """Use only GRID from the paired pack. No action or impact confirmation pack is opened."""
+    def __init__(self,data_root,role,stats):
+        base,_=load_pack(data_root/"paired"/role,False)
+        self.packs=[base]
+        self.pools=[np.flatnonzero(base["family"]==0)]
+        self.stats=stats
+
+
+def evaluate(data_root,run,out,confirmation=None):
     receipt=json.loads((run/"verified.json").read_bytes())
     card=json.loads((run/"config.json").read_bytes())
     if receipt["step"]!=2048 or sha_file(run/"inference.npz")!=receipt["sha256"]["inference.npz"]:
@@ -27,7 +36,21 @@ def evaluate(data_root,run,out):
         params={k:jax.device_put(f[k]) for k in f if k!="stats" and not k.startswith("prior_")}
         stats=np.array(f["stats"])
     train=JointData(data_root,"train",verify=False,stats=stats)
-    dev=JointData(data_root,"dev",verify=False,stats=stats)
+    if confirmation is None:
+        dev=JointData(data_root,"dev",verify=False,stats=stats)
+    else:
+        lock=json.loads(confirmation.read_bytes())
+        if len(lock["sha256"])!=8 or lock["sha256"].get(card["run"])!=receipt["sha256"]["inference.npz"]:
+            raise ValueError("Speaker confirmation requires all eight fixed weights")
+        dev=GridViews(data_root,"test",stats)
+        target=dev.packs[0]; ids=dev.pools[0]
+        valid_people=set(target["group"][ids].tolist()); valid_sentences={tuple(s) for s in target["x"][ids]}
+        if len(valid_people)!=8: raise ValueError("Unexpected confirmation subjects")
+        for source in (train,GridViews(data_root,"dev",stats)):
+            orig=source.packs[0]; rows=source.pools[0]
+            if valid_people.intersection(orig["group"][rows].tolist()) or valid_sentences.intersection(tuple(s) for s in orig["x"][rows]):
+                raise ValueError("A speaker or sentence leaked from support or development")
+
     selected={}; labels={}; groups={}; captions={}; arrays={}
     for role,pack in (("train",train),("dev",dev)):
         a=pack.packs[0]; idx=pack.pools[0]
@@ -106,9 +129,11 @@ def evaluate(data_root,run,out):
                 best.extend(cap[ids[scores.argmax(1)]]==cap[ids])
                 chance.extend((cap[ids,None]==cap[None,ids]).mean(1))
             retrieval[s+"-to-"+t]={"same_caption_top1":float(np.mean(best)),"conditioned_chance":float(np.mean(chance))}
+    population=({"development_speakers":len(unique),"development_clips":len(y)} if confirmation is None else
+                {"held_speakers":len(unique),"held_clips":len(y),"role":"speaker-and-sentence confirmation","lock_sha256":sha_file(confirmation)})
     write(out,{"run":card["run"],"scale_params":card["params"],"seed":card["seed"],"step":receipt["step"],
                "inference_sha256":receipt["sha256"]["inference.npz"],"support_speakers":len(np.unique(groups["train"])),
-               "development_speakers":len(unique),"development_clips":len(y),"classes":WORDS,"chance":.25,
+               **population,"classes":WORDS,"chance":.25,
                "shots":result,"same_speaker_retrieval":retrieval})
     print(card["run"],"8-shot cross-view",result["8"]["mean_cross_view"],"32-shot",result["32"]["mean_cross_view"],flush=True)
 
