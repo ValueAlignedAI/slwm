@@ -35,9 +35,40 @@ def metrics_file(root,task,model,live):
     return ids,vals,meta
 
 
+def donor_draws(task):
+    from training.g8_models import G8_DATA
+    with np.load(G8_DATA/"panels"/task/"scenes.npz") as f:donor=f["wrong"]
+    n=len(donor);cycle=np.empty(n,np.int32);cycle[0]=0
+    for j in range(1,n):cycle[j]=donor[cycle[j-1]]
+    if donor[cycle[-1]]!=0 or len(np.unique(cycle))!=n or n%8:raise ValueError("Expected a single matched donor cycle")
+    starts=np.random.default_rng(810259).integers(n,size=(4000,n//8),dtype=np.int32)
+    return cycle[((starts[:,:,None]+np.arange(8,dtype=np.int32))%n).reshape(4000,n)]
+
+
+def controls_for_arm(cells,task,live,draw,blocks,comparators):
+    out={}
+    if not live and task!="reacher":
+        for a,b in (("state","joint"),("joint_wrong_camera","joint"),("no_plan","joint"),("erased_camera_only","video"),("video_wrong_camera","video")):
+            for metric in ("regret_px","endpoint_px"):
+                difference=cells[a+"_"+metric].astype(float)-cells[b+"_"+metric]
+                measure=estimate(difference,blocks if "wrong" in a else draw)
+                out[a+"_minus_"+b+"__"+metric]={"mean":measure["mean"],"ci95":measure["paired_ci95"]}
+    metric="terminal_distance_px" if live else "regret_cm" if task=="reacher" else "joint_regret_px"
+    for name,control in comparators.items():
+        delta=cells[metric].astype(float)-control
+        measure=estimate(delta,draw)
+        out["trained_minus_"+name+"__"+metric]={"mean":measure["mean"],"ci95":measure["paired_ci95"]}
+    return out
+
 def compare_task(root,task,live):
     cfg=read(CONFIG);expected=np.arange(*cfg["panels"][("live_"+task) if live else "reacher_test" if task=="reacher" else task])
     draw=np.random.default_rng(cfg["bootstrap_seed"]).integers(len(expected),size=(cfg["draws"],len(expected)),dtype=np.int32)
+    blocks=donor_draws(task) if not live and task!="reacher" else None
+    def baseline(name,field):
+        ix,values,_=metrics_file(root,task,name,live);np.testing.assert_array_equal(ix,expected);return values[field]
+    if live:comparators={c:baseline(c,"terminal_distance_px") for c in ("geometry","first_proposal","uniform","passive")}
+    elif task=="reacher":comparators={"physical":baseline("physical","regret_cm")}
+    else:comparators={"geometry":baseline("raw","geometry_regret_px"),"uniform":baseline("raw","persistence_regret_px")}
     results={};data={};allrows={"start":expected}
     for core in cfg["cores"]:
         for seed in cfg["seeds"]:
@@ -53,7 +84,10 @@ def compare_task(root,task,live):
                 series={arm:v[metric].astype(float) for arm,v in vals.items()}
                 if live or task=="reacher" or metric in ("joint_regret_px","joint_endpoint_px","joint_best_plan_rate","state_regret_px","video_regret_px"):
                     comparisons[metric]={k:estimate(effect(series,w),draw) for k,w in CONTRASTS.items()}
-            results[f"{core}-{seed}"]={"cells":means,"paired_contrasts":comparisons};data[core,seed]=vals
+            refs=dict(comparators)
+            if task=="reacher":refs["matched_raw"]=baseline(f"raw-{seed}","regret_cm")
+            controls={arm:controls_for_arm(v,task,live,draw,blocks,refs) for arm,v in vals.items()}
+            results[f"{core}-{seed}"]={"cells":means,"paired_contrasts":comparisons,"paired_controls":controls};data[core,seed]=vals
     interactions={};architecture={}
     for seed in cfg["seeds"]:
         h,d=data["hybrid",seed],data["gpt2",seed];interactions[str(seed)]={};architecture[str(seed)]={}
