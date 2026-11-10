@@ -169,7 +169,7 @@ def fit(a):
     h=init_head(spec,a.seed,adapted); opt=optax.chain(optax.clip_by_global_norm(1.),optax.adamw(.001,weight_decay=.001));ost=opt.init(h)
     replay=JointData(a.replay,"train",verify=False,stats=stats);held=JointData(a.replay,"dev",verify=False,stats=stats)
     @jax.jit
-    def learn(h,ost,b,ref):
+    def learn(p,h,ost,b,ref):
         def loss(h):
             v,m=objective(p,h,spec,b,raw)
             if adapted:
@@ -182,8 +182,8 @@ def fit(a):
         (_,m),gr=jax.value_and_grad(loss,has_aux=True)(h);ud,st=opt.update(gr,ost,h)
         return optax.apply_updates(h,ud),st,m
     @jax.jit
-    def ref_loss(h,b):return foundation_loss(adjusted(p,h,spec),spec,b,cal)[1]
-    before=np.mean([np.asarray(ref_loss(h,held.requests(j,32))) for j in range(12)],axis=0)
+    def ref_loss(p,h,b):return foundation_loss(adjusted(p,h,spec),spec,b,cal)[1]
+    before=np.mean([np.asarray(ref_loss(p,h,held.requests(j,32))) for j in range(12)],axis=0)
     first=0; ck=folder/"optimizer.npz"
     if ck.exists():
         with np.load(ck) as f:
@@ -193,7 +193,7 @@ def fit(a):
         rng=np.random.default_rng([721,step]);ix=rng.integers(len(train["seed"]),size=24)
         b=batch(train,ix); ref=replay.requests(step,32)
         # Keep replay physically observed and stratified; both supervised alternatives see the same policy rows.
-        h,ost,m=learn(h,ost,b,ref)
+        h,ost,m=learn(p,h,ost,b,ref)
         if (step+1)%128==0 or step+1==a.steps:
             metric=np.asarray(m)
             if not np.isfinite(metric).all():raise FloatingPointError(metric)
@@ -202,7 +202,7 @@ def fit(a):
             with ck.with_suffix(".part").open("wb") as f:np.savez(f,**values,step=step+1,parent=parent)
             ck.with_suffix(".part").replace(ck);print(a.core,a.mode,a.seed,step+1,metric,flush=True)
     save_weights(folder/"weights.npz",h,parent=np.array(parent))
-    after=np.mean([np.asarray(ref_loss(h,held.requests(j,32))) for j in range(12)],axis=0)
+    after=np.mean([np.asarray(ref_loss(p,h,held.requests(j,32))) for j in range(12)],axis=0)
     result=evaluate(p,h,spec,dev,raw)
     write(folder/"dev.json",{"core":a.core,"mode":a.mode,"seed":a.seed,"steps":a.steps,"parent":parent,
         "params":sum(v.size for v in h.values()),"foundation_held_before":before.tolist(),"foundation_held_after":after.tolist(),
