@@ -76,3 +76,16 @@ def test_released_audio_file_roundtrip_preserves_samples_and_detects_corruption(
     assert sr==24000 and len(audio)==3500 and result==meta and np.isfinite(audio).all()
     content=bytearray(stream.read_bytes());content[-1]^=1;stream.write_bytes(content)
     with pytest.raises(ValueError,match="checksum"):decode_audio(stream,decoded,PUBLIC,renderer,"cpu")
+
+
+def test_registered_paired_effects_distinguish_two_factors_and_interaction():
+    from scripts.train.g8_analysis import CONTRASTS,effect,estimate
+    baseline=np.array([5.,8.,11.])
+    cells={"replay":baseline,"sim":baseline-2,"other":baseline+3,"fresh":baseline,"parent":baseline+1}
+    draws=np.random.default_rng(8).integers(0,3,size=(20,3))
+    for name,value in (("other_at_replayed_sim",3),("other_at_fresh_sim",2),("sim_at_replayed_other",-2),("sim_at_fresh_other",-3),
+                       ("other_main",2.5),("sim_main",-2.5),("interaction",-1)):
+        differences=effect(cells,CONTRASTS[name])
+        np.testing.assert_array_equal(differences,np.full(3,value))
+        result=estimate(differences,draws)
+        assert result["mean"]==value and result["paired_ci95"]==[value,value]
