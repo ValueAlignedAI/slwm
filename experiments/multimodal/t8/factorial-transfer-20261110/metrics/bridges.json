@@ -1,0 +1,58 @@
+{
+  "gpt2-511": {
+    "arm": "fresh",
+    "core": "gpt2",
+    "exact": true,
+    "expected_optimizer": "1e41af9eeb3b5d449ea8a74cf1756434c81a983fd12f004ec3e5e739356c5d2e",
+    "expected_weights": "d25185d12fce5d9743e41b171f9766615e95c829ee117cb7ef9ae68f6e4c131c",
+    "observed": {
+      "config.json": "9b4e811b5c6c90eeebf086bf7614caa9073db2d693540d17bef4675e88f4f237",
+      "inference.npz": "d25185d12fce5d9743e41b171f9766615e95c829ee117cb7ef9ae68f6e4c131c",
+      "progress.json": "f0e013492fbb8324194c0cc36843ca4d65cea1a8b10d71e9ac5ec2d4cec0ea0e",
+      "resume.npz": "1e41af9eeb3b5d449ea8a74cf1756434c81a983fd12f004ec3e5e739356c5d2e"
+    },
+    "seed": 511
+  },
+  "gpt2-512": {
+    "arm": "replay",
+    "core": "gpt2",
+    "exact": true,
+    "expected_optimizer": "51f5c394f659ec5c622576fcd6a8a9c9b0846929550d7516ec2a541a1c356f92",
+    "expected_weights": "320b817507929fb0dcc83a002dcf6dccf42683019700db6c05b576e9c9e133bd",
+    "observed": {
+      "config.json": "8d51a58605f92e3ca15285a8f0d2d1b360f6fa205ce501cbaed038b1deea8506",
+      "inference.npz": "320b817507929fb0dcc83a002dcf6dccf42683019700db6c05b576e9c9e133bd",
+      "progress.json": "96bdc249127fcedaf9c633a992f463c453e8e7fe828c69bee378c146d362f503",
+      "resume.npz": "51f5c394f659ec5c622576fcd6a8a9c9b0846929550d7516ec2a541a1c356f92"
+    },
+    "seed": 512
+  },
+  "hybrid-511": {
+    "arm": "replay",
+    "core": "hybrid",
+    "exact": true,
+    "expected_optimizer": "5063a7fff2646e7a856a568d3305cb602ee6876f3167c95a958631cf5b4cf8ef",
+    "expected_weights": "eb5ded20a63028e989aff167085ad93f63d6d67eb4649cb1b01c48537e76d0ac",
+    "observed": {
+      "config.json": "cd35df778a32090bc971c8dc75cc15bb561864c8fc7cfc2c021a945a9b2b81fa",
+      "inference.npz": "eb5ded20a63028e989aff167085ad93f63d6d67eb4649cb1b01c48537e76d0ac",
+      "progress.json": "10f7da7a2147d387d6b3f54251bb5181c8ded8990fe4a5c7a41f147ae4ddfcbe",
+      "resume.npz": "5063a7fff2646e7a856a568d3305cb602ee6876f3167c95a958631cf5b4cf8ef"
+    },
+    "seed": 511
+  },
+  "hybrid-512": {
+    "arm": "fresh",
+    "core": "hybrid",
+    "exact": true,
+    "expected_optimizer": "1e0a53b86a6fb4d2626de50e12e44b663d7606bf8f12e09f4693d512d9e38736",
+    "expected_weights": "43f23b0d4f504ca4acaff63467b3c0c9a56db1085e73849489057811672b969f",
+    "observed": {
+      "config.json": "f8f2308aa06b348a901f8cfdb5c72315c62a996fb834428a61ea0296a06818c6",
+      "inference.npz": "43f23b0d4f504ca4acaff63467b3c0c9a56db1085e73849489057811672b969f",
+      "progress.json": "7c556636a645fd2cd29f73cbb63a08849a6f280cc315112ce3fc6e8740138f31",
+      "resume.npz": "1e0a53b86a6fb4d2626de50e12e44b663d7606bf8f12e09f4693d512d9e38736"
+    },
+    "seed": 512
+  }
+}
