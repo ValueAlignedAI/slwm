@@ -66,6 +66,25 @@ def compare_task(root,task,live):
             "hybrid_minus_dense_by_cell":architecture},allrows
 
 
+def primary_snapshot(root,doc):
+    cfg=read(CONFIG);estimates={}
+    for task in ("pusht","puck_barrier"):
+        expected=np.arange(*cfg["panels"][task]);draw=np.random.default_rng(cfg["bootstrap_seed"]).integers(len(expected),size=(cfg["draws"],len(expected)),dtype=np.int32)
+        for core in cfg["cores"]:
+            for seed in cfg["seeds"]:
+                cells={}
+                for arm in ("replay","sim","other","fresh"):
+                    tag=key(core,seed,arm);ix,vals,card=metrics_file(root,task,tag,False);np.testing.assert_array_equal(expected,ix)
+                    if card["weight"]!=doc["models"][tag]["weights"]:raise ValueError("Outside frozen decision panel")
+                    cells[arm]=vals["joint_regret_px"].astype(float)
+                estimates[f"{task}-{core}-{seed}"]={"cell_regrets_px":{k:float(v.mean()) for k,v in cells.items()},
+                    "other":estimate(effect(cells,CONTRASTS["other_main"]),draw),"sim":estimate(effect(cells,CONTRASTS["sim_main"]),draw)}
+    good=sum(v["other"]["simultaneous_upper_one_sided"]<0 for k,v in estimates.items() if "-hybrid-" in k)
+    out=root/"public";out.mkdir(exist_ok=True)
+    put(out/"primary-confirmation.json",{"estimates":estimates,"passing_hybrid_cells":good,"required":4,"all_pass":good==4,"lock_sha256":sha(root/"confirmation-lock.json")})
+    print("All prospective zero-shot decision panels completed",good,"of 4 required hybrid bounds below zero",flush=True)
+
+
 def analyze(out):
     root,_=roots("g8");doc=sealed();out.mkdir(parents=True,exist_ok=True)
     results={};packed={};controls={}
