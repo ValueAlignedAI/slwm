@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 import jax
 import jax.numpy as jnp
-import numpy as np
 from models.g9_portable import pack,load
 from models.g9_shared import Spec
 from evals.g9_live import live,paired_histories

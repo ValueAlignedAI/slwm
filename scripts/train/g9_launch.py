@@ -3,7 +3,6 @@ import argparse
 import shlex
 import subprocess
 import time
-from pathlib import Path
 from g7_inputs import FED, shell, stream
 
 NAMES={"slwm-g9-aurora","slwm-g9-boreal"}

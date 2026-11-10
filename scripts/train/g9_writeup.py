@@ -2,7 +2,6 @@
 import argparse
 import json
 from pathlib import Path
-import statistics
 
 STUDY=Path("experiments/multimodal/t9/concurrent-memory-20261110")
 
@@ -89,7 +88,7 @@ The ROMA transfer panel froze every backbone and fitted a common ridge head on s
 - Fitting a 66,567-parameter decision head on 16,384 parent-visited states reduced fresh-cohort occupancy in all four wide large parents. In the two hybrids, 14,705 and 14,364 training labels requested hold, compared with 975 for random trajectories. Visit distribution changed materially. The experiment does not isolate label imbalance as the cause. [Head weights and controls](metrics/followups/heads)
 - The four-layer gated recurrent control was tested at 384 updates. Its wide-field occupancy was {score('pilot','gated',512,'live/carry/occupancy',100,1)}%. Establish its equal-exposure performance and compare stronger recurrent baselines before generalizing the architecture ranking.
 
-The next decision experiment is to train both architectures on matched 32–512-step context distributions at equal exposure, then test unpredictable goal changes and actuator recalibration. The next data investment is additional independently recorded, synchronized natural instructions, contacts and outcomes across sites. Keep whole sites and novel dynamics held, compare wrong-time and wrong-instruction inputs, and require performance above a physical and persistence reference. The action result supports sustained-memory research. The real cross-modal results justify more diverse grounded data before increasing the shared width again.
+The next decision experiment is to train both architectures on matched 32–512-step context distributions at equal exposure, then test unpredictable goal changes and actuator recalibration. The next data investment is additional independently recorded, synchronized natural instructions, contacts and outcomes across sites. Test an alignment target that distinguishes the correct event from same-room, wrong-time evidence. Require better direct retrieval and conditional prediction on new rooms while preserving the learned action memory. Keep whole sites and novel dynamics held, compare wrong-time and wrong-instruction inputs, and require performance above a physical and persistence reference. The action result supports sustained-memory research. The real cross-modal results justify more diverse grounded data before increasing the shared width again.
 
 ## Artifacts and compute
 

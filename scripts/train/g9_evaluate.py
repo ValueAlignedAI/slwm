@@ -2,13 +2,12 @@
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import time
 import jax
 import jax.numpy as jnp
 import numpy as np
-from evals.g9_live import live,paired_histories,raw_receipt
+from evals.g9_live import live,paired_histories
 from evals.g9_transfer import records,room,robot
 from models.g9_shared import Spec,encode
 from models.g9_tabletop import ACTIONS,sim_batch

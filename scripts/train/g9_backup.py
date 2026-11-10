@@ -1,6 +1,5 @@
 """Mirror local G9 terminals and independently queue verified data and weights for private Drive."""
 import argparse
-import hashlib
 import json
 import os
 import subprocess

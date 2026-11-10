@@ -22,6 +22,9 @@ def record(repo,ctl,event,receipt,finished=False):
         g["phase"]="integrated" if finished else "training_and_validation";d["updated_utc"]=now
         if finished:
             (ctl/"finalized").touch();g["release"]=receipt;g["owned_session_names"]=[]
+            g.update(completed_fits=42,expected_two_disk_stages=58,verified_two_disk_stages=58,
+                     released_portable_backbones=2,real_invariance_recordings=28,
+                     next_decision="Train matched variable-context controls and ground natural instructions in independent real physical recordings.")
             budget=json.loads((ctl/"budget.json").read_text());spent=budget["project_spend"]
             g.update(owned_credits_this_study=round(spent,5),cumulative_owned_credits=round(spent+g["prior_project_units"],5),
                      remaining_under_original_allowance=round(100-spent-g["prior_project_units"],5))

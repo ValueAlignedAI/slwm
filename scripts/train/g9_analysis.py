@@ -1,6 +1,5 @@
 """Aggregate paired mission, recording and physical-scene effects while preserving every registered seed."""
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import numpy as np
@@ -65,7 +64,6 @@ def summarize(scores,dest,final=False):
             item,arrays=metrics(doc);k=key+"/"+role
             all_rows[k]=item;vectors[k]=arrays
     comparisons={}
-    lookup=lambda d:"/".join([d["tag"],str(d["step"]),d["role"]])
     def add(family,key,left,right):
         if right not in vectors or left not in vectors:return
         a,b=vectors[left],vectors[right]

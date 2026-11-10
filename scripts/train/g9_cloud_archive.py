@@ -10,7 +10,7 @@ import zlib
 import hashlib
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from g7_inputs import FED,stream
+from g7_inputs import FED
 from g8_file_transfer import file_data
 from g9_storage import CHUNK,FILES,location,write
 
