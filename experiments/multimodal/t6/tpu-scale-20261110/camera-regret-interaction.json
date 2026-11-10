@@ -1,0 +1,390 @@
+{
+  "action_horizon": 16,
+  "bootstrap": {
+    "method": "paired circular blocks along the fixed wrong-scene donor cycle",
+    "replicates": 10000,
+    "reported_block_length": 8,
+    "scope": "conditional on these fitted weights, task, proposal bank and camera permutation",
+    "seed_rule": "27141 + block length"
+  },
+  "candidate_plans": 3,
+  "comparisons": {
+    "v5e-anchor-511": {
+      "conditions": {
+        "correct": {
+          "dense_minus_hybrid_px": 0.8795518248566734,
+          "dense_regret_px": 2.666163470075131,
+          "hybrid_regret_px": 1.7866116452184575,
+          "paired_ci95_px": [
+            0.25169444167463034,
+            1.5210361236553553
+          ]
+        },
+        "delayed": {
+          "dense_minus_hybrid_px": 1.092506797426919,
+          "dense_regret_px": 3.0811814948604828,
+          "hybrid_regret_px": 1.9886746974335636,
+          "paired_ci95_px": [
+            0.4492122981298767,
+            1.797041501479282
+          ]
+        },
+        "erased": {
+          "dense_minus_hybrid_px": 2.215405326708606,
+          "dense_regret_px": 5.7744168688969,
+          "hybrid_regret_px": 3.5590115421882933,
+          "paired_ci95_px": [
+            1.1138049304200495,
+            3.3468318737592924
+          ]
+        },
+        "wrong": {
+          "dense_minus_hybrid_px": -2.438402312537405,
+          "dense_regret_px": 3.23949544131374,
+          "hybrid_regret_px": 5.677897753851145,
+          "paired_ci95_px": [
+            -3.5893231398278997,
+            -1.2575122028752146
+          ]
+        }
+      },
+      "interactions": {
+        "delayed_vs_correct": {
+          "excess_hybrid_penalty_px": -0.21295497257024565,
+          "paired_ci95_px": [
+            -0.7492663512597992,
+            0.3243339023966163
+          ]
+        },
+        "erased_vs_correct": {
+          "excess_hybrid_penalty_px": -1.3358535018519329,
+          "paired_ci95_px": [
+            -2.7004011241266745,
+            0.060918611870179315
+          ]
+        },
+        "wrong_vs_correct": {
+          "ci95_by_block_length": {
+            "1": [
+              2.062697147905247,
+              4.617901401801114
+            ],
+            "16": [
+              2.0228132507895755,
+              4.6030974616363425
+            ],
+            "32": [
+              1.9839306681726394,
+              4.625719530793027
+            ],
+            "8": [
+              2.010272621511915,
+              4.625279371221215
+            ]
+          },
+          "excess_hybrid_penalty_px": 3.3179541373940777,
+          "four_cell_bonferroni_interval_px": [
+            1.6738341823158287,
+            4.999638129417947
+          ],
+          "paired_ci95_px": [
+            2.010272621511915,
+            4.625279371221215
+          ]
+        }
+      },
+      "row_sha256": {
+        "dense": "1eeff8765c3f2224151d89190301833bfe366363132e7403f2c5a013bd1383c2",
+        "hybrid": "04b02e728ea6e76f593a49adce87e5e8873f1d6c47fc3378a206344b64e04b05"
+      },
+      "weights_sha256": {
+        "dense": "c36aaafe4323696ed0e45f49bb26c4f7d4d5732fe6c37c2ed65880cd361e0b02",
+        "hybrid": "9f9223c4ae96a2d38773f18d0ba91df7b6337dbf0060c1eb40e837878f2ab194"
+      }
+    },
+    "v5e-anchor-512": {
+      "conditions": {
+        "correct": {
+          "dense_minus_hybrid_px": 1.202844529880218,
+          "dense_regret_px": 2.9175077518207235,
+          "hybrid_regret_px": 1.714663221940505,
+          "paired_ci95_px": [
+            0.5616872138844227,
+            1.8785306395265948
+          ]
+        },
+        "delayed": {
+          "dense_minus_hybrid_px": 0.8189481208609644,
+          "dense_regret_px": 2.9646726957608376,
+          "hybrid_regret_px": 2.145724574899873,
+          "paired_ci95_px": [
+            0.2409980021611176,
+            1.4319644372502796
+          ]
+        },
+        "erased": {
+          "dense_minus_hybrid_px": 2.4587237745696453,
+          "dense_regret_px": 5.941186960758669,
+          "hybrid_regret_px": 3.4824631861890243,
+          "paired_ci95_px": [
+            1.4390879117539748,
+            3.504759222480241
+          ]
+        },
+        "wrong": {
+          "dense_minus_hybrid_px": -1.0049657270704975,
+          "dense_regret_px": 3.9121591935885545,
+          "hybrid_regret_px": 4.917124920659051,
+          "paired_ci95_px": [
+            -1.9441059938855436,
+            -0.08973360446639506
+          ]
+        }
+      },
+      "interactions": {
+        "delayed_vs_correct": {
+          "excess_hybrid_penalty_px": 0.3838964090192538,
+          "paired_ci95_px": [
+            -0.2725993686472829,
+            1.0405130745764957
+          ]
+        },
+        "erased_vs_correct": {
+          "excess_hybrid_penalty_px": -1.255879244689427,
+          "paired_ci95_px": [
+            -2.5121884814998685,
+            -0.003277811798529233
+          ]
+        },
+        "wrong_vs_correct": {
+          "ci95_by_block_length": {
+            "1": [
+              1.13267531129635,
+              3.331044298121749
+            ],
+            "16": [
+              1.0724379119001277,
+              3.310431499020225
+            ],
+            "32": [
+              1.0429448441645548,
+              3.310451201666218
+            ],
+            "8": [
+              1.1117400817741447,
+              3.355842028204743
+            ]
+          },
+          "excess_hybrid_penalty_px": 2.207810256950715,
+          "four_cell_bonferroni_interval_px": [
+            0.7714432268922062,
+            3.6894899082411667
+          ],
+          "paired_ci95_px": [
+            1.1117400817741447,
+            3.355842028204743
+          ]
+        }
+      },
+      "row_sha256": {
+        "dense": "b082e8028d1d0ff2bea6eb53f997bbe81058aa75999dcaf8612849766fc592e9",
+        "hybrid": "6b846315db5175d1c56ba895b5f84f88c2bbd880791fe99e24e1c8aa46cbb386"
+      },
+      "weights_sha256": {
+        "dense": "e8359124e06582972edb853333d3bec853d1b85d7e1f4c4156f9fe9e361caa33",
+        "hybrid": "3e91b908dba3115592ca8a57092259d088596976fc4cb0cbe5584828696bb487"
+      }
+    },
+    "v5e-larger-511": {
+      "conditions": {
+        "correct": {
+          "dense_minus_hybrid_px": 1.0107104585311302,
+          "dense_regret_px": 2.7591526923740526,
+          "hybrid_regret_px": 1.7484422338429224,
+          "paired_ci95_px": [
+            0.5034506977581655,
+            1.5992304949256197
+          ]
+        },
+        "delayed": {
+          "dense_minus_hybrid_px": 0.8783104672650517,
+          "dense_regret_px": 2.8780559203223812,
+          "hybrid_regret_px": 1.999745453057329,
+          "paired_ci95_px": [
+            0.29984745083400255,
+            1.5347985365685402
+          ]
+        },
+        "erased": {
+          "dense_minus_hybrid_px": 1.3834794646392203,
+          "dense_regret_px": 6.636571677705847,
+          "hybrid_regret_px": 5.253092213066628,
+          "paired_ci95_px": [
+            -0.038619530924461055,
+            2.8732428561875616
+          ]
+        },
+        "wrong": {
+          "dense_minus_hybrid_px": -2.8050136239269667,
+          "dense_regret_px": 3.244041704291278,
+          "hybrid_regret_px": 6.049055328218245,
+          "paired_ci95_px": [
+            -3.8713611573518296,
+            -1.7843748035022977
+          ]
+        }
+      },
+      "interactions": {
+        "delayed_vs_correct": {
+          "excess_hybrid_penalty_px": 0.13239999126607854,
+          "paired_ci95_px": [
+            -0.3559926293377027,
+            0.5878682370506568
+          ]
+        },
+        "erased_vs_correct": {
+          "excess_hybrid_penalty_px": -0.37276900610809,
+          "paired_ci95_px": [
+            -1.9688013982710286,
+            1.1572457067257562
+          ]
+        },
+        "wrong_vs_correct": {
+          "ci95_by_block_length": {
+            "1": [
+              2.6218831365865682,
+              5.086173131702386
+            ],
+            "16": [
+              2.758790548481829,
+              4.911916302384248
+            ],
+            "32": [
+              2.8461574307642956,
+              4.883533349256845
+            ],
+            "8": [
+              2.658579004636022,
+              5.003928556120018
+            ]
+          },
+          "excess_hybrid_penalty_px": 3.8157240824580967,
+          "four_cell_bonferroni_interval_px": [
+            2.3301261058047382,
+            5.368068620702603
+          ],
+          "paired_ci95_px": [
+            2.658579004636022,
+            5.003928556120018
+          ]
+        }
+      },
+      "row_sha256": {
+        "dense": "452dc62584d748bf22244b76efaa22676585a0e07f0e320d9180c8eb23bc023e",
+        "hybrid": "42c75273012c39e4054fa5d6c3852ce51332e1da5c5242cfdc1c7e7b2f37def5"
+      },
+      "weights_sha256": {
+        "dense": "b1c5e18c1a35e0a0804c32779340369300317f782b626a3adf3451e2b2ce70f9",
+        "hybrid": "5b8c96162554ad1d87429d4ce9d4fb8940ef7715a59b856d68269f5b63c4745b"
+      }
+    },
+    "v5e-larger-512": {
+      "conditions": {
+        "correct": {
+          "dense_minus_hybrid_px": 1.2627217524317986,
+          "dense_regret_px": 2.811405077982362,
+          "hybrid_regret_px": 1.5486833255505634,
+          "paired_ci95_px": [
+            0.7949471543403146,
+            1.7667233412495158
+          ]
+        },
+        "delayed": {
+          "dense_minus_hybrid_px": 1.03887198642308,
+          "dense_regret_px": 3.003881451217013,
+          "hybrid_regret_px": 1.965009464793933,
+          "paired_ci95_px": [
+            0.583512260278463,
+            1.5494793261743665
+          ]
+        },
+        "erased": {
+          "dense_minus_hybrid_px": 1.42075284350854,
+          "dense_regret_px": 5.076054394473972,
+          "hybrid_regret_px": 3.6553015509654316,
+          "paired_ci95_px": [
+            0.4312274153582977,
+            2.419406340473279
+          ]
+        },
+        "wrong": {
+          "dense_minus_hybrid_px": -1.0204179755791312,
+          "dense_regret_px": 4.957850437581165,
+          "hybrid_regret_px": 5.978268413160295,
+          "paired_ci95_px": [
+            -2.2069715654195936,
+            0.14065012236671176
+          ]
+        }
+      },
+      "interactions": {
+        "delayed_vs_correct": {
+          "excess_hybrid_penalty_px": 0.22384976600871878,
+          "paired_ci95_px": [
+            -0.29112891014822273,
+            0.754082252849305
+          ]
+        },
+        "erased_vs_correct": {
+          "excess_hybrid_penalty_px": -0.15803109107674113,
+          "paired_ci95_px": [
+            -1.2119914296642382,
+            0.8927198241118368
+          ]
+        },
+        "wrong_vs_correct": {
+          "ci95_by_block_length": {
+            "1": [
+              1.088139707470208,
+              3.4981169617727788
+            ],
+            "16": [
+              0.9580882735535322,
+              3.539422313449977
+            ],
+            "32": [
+              0.8082195238598358,
+              3.7108886469228595
+            ],
+            "8": [
+              1.0374916873983286,
+              3.531056465826122
+            ]
+          },
+          "excess_hybrid_penalty_px": 2.28313972801093,
+          "four_cell_bonferroni_interval_px": [
+            0.6837486191747502,
+            3.925947670305268
+          ],
+          "paired_ci95_px": [
+            1.0374916873983286,
+            3.531056465826122
+          ]
+        }
+      },
+      "row_sha256": {
+        "dense": "6535e92dc54966dea36b0b16f252051e5ea3b67752e1d377d64b95a4127461e7",
+        "hybrid": "0fc5e0937f20e50974026194723fd87f4a64ff9fe0146b4b61d091f6cb2cb373"
+      },
+      "weights_sha256": {
+        "dense": "22bf86437f3922d76f448b76b11adf0d0bfc5618aa9329b6f6dbb8976beda94c",
+        "hybrid": "81ccc97355f92c5dabb570c5be2a8ba5918b83584ce71b707a889d4d365d8a03"
+      }
+    }
+  },
+  "input": "Video history and the prospective action plan with numerical state withheld",
+  "role": "Post hoc publication assessment on existing unseen-scene outcomes",
+  "scene_sha256": "0aa3fc905743755fa92c5c8bdb870bc57b69a31bd6ad5f49989190ed4a34ed41",
+  "scenes": 512,
+  "scoring": "Excess final distance to the goal in pixels over the best available plan"
+}

@@ -1,0 +1,325 @@
+{
+  "beats_fitted_raw_and_motion": false,
+  "joint_architecture_win": false,
+  "label": "residual-gpu",
+  "matched": {
+    "batch": 256,
+    "code": {
+      "configs/t5/joint_world.json": "1cca5119eba59131f690a36d3335d6f353547864d7b90dc061811c8e67d13826",
+      "models/g4_shared.py": "1f3ccf4cbdba3204f7181cff0e719f823cb9a4f6ea7d8a6220cba8a5d0d56bd6",
+      "models/g5_residual.py": "70419df6727ddabdd8bc6d00af01ce6e05409248948d072e0bc332000607176b",
+      "models/g5_shared.py": "b4fe999112314410678caf9d3f1d694123d73f8a673b8bac9b21f0441b39f253",
+      "training/g5_batches.py": "6454821c8a31360f16d25a5ecbddcf780d8ae535d207598fcddd6582bb812f18",
+      "training/g5_priors.py": "6c5401359fdc8b8ce2e983984ff53b13697b5a485091c948747b59d8ee427134",
+      "training/g5_residual_fit.py": "002b586701e34c01587d10fa71ac665172695c19a8d19e0591a97d5a8ac906e3"
+    },
+    "data": "45a7ee916b93bc0cc49b01d91f00ee2c35ed6fd3024b1291790d68787b3dd505",
+    "data_seed": 51110,
+    "lr": 0.00032071349029490925,
+    "params": 116502025,
+    "steps": 8192
+  },
+  "promote": true,
+  "scale": "anchor",
+  "seeds": {
+    "511": {
+      "controls": {
+        "gpt2": {
+          "impact": {
+            "correct": 0.04637840276760042,
+            "erase": 0.03353164502979923,
+            "raw_motion": 0.058142121434251674,
+            "shift": 0.03052626998834596
+          },
+          "push": {
+            "joint": {
+              "branch_difference_px": 11.29399707309977,
+              "endpoint_px": 8.281958196862604
+            },
+            "persistence": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 24.732292744592343
+            },
+            "ridge": {
+              "branch_difference_px": 33.11982136315049,
+              "endpoint_px": 21.423653477949657
+            },
+            "state": {
+              "branch_difference_px": 11.107215766072516,
+              "endpoint_px": 8.381515725742805
+            },
+            "unplanned": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 27.190303847960063
+            },
+            "velocity": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 30.095747748492485
+            },
+            "video": {
+              "branch_difference_px": 29.569739703855937,
+              "endpoint_px": 20.831209916673053
+            }
+          }
+        },
+        "hybrid": {
+          "impact": {
+            "correct": 0.04001517015611923,
+            "erase": 0.03403969694081315,
+            "raw_motion": 0.058142121434251674,
+            "shift": 0.034159748843165874
+          },
+          "push": {
+            "joint": {
+              "branch_difference_px": 8.01441673276328,
+              "endpoint_px": 6.237966616240333
+            },
+            "persistence": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 24.732292744592343
+            },
+            "ridge": {
+              "branch_difference_px": 33.11982136315049,
+              "endpoint_px": 21.423653477949657
+            },
+            "state": {
+              "branch_difference_px": 7.706191144468183,
+              "endpoint_px": 6.036049077250582
+            },
+            "unplanned": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 27.346855026439762
+            },
+            "velocity": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 30.095747748492485
+            },
+            "video": {
+              "branch_difference_px": 23.763597556487255,
+              "endpoint_px": 14.621158815490176
+            }
+          }
+        }
+      },
+      "examples": {
+        "impact_dates": 3,
+        "impact_ticks": 37408,
+        "impact_windows": 668,
+        "positive_ticks": 1247,
+        "scenes": 256
+      },
+      "hybrid_gain": {
+        "dense": {
+          "branch_difference_improvement_px": 3.279580340336489,
+          "branch_difference_paired_ci95": [
+            2.5351445998203874,
+            4.0324096164676115
+          ],
+          "endpoint_error_improvement_px": 2.043991580622271,
+          "endpoint_paired_ci95": [
+            1.6245501558014068,
+            2.4740877316725602
+          ],
+          "endpoint_relative": 0.24680051891551225,
+          "impact_ap_gain": -0.0063632326114811885,
+          "impact_ap_paired_ci95": [
+            -0.011431338488646234,
+            0.0007184945615208715
+          ],
+          "impact_relative": -0.13720249581183275
+        },
+        "negative": {
+          "branch_difference_improvement_px": 31.66544714543622,
+          "branch_difference_paired_ci95": [
+            29.318210161494097,
+            33.917490809943914
+          ],
+          "endpoint_error_improvement_px": 18.49432612835201,
+          "endpoint_paired_ci95": [
+            16.941246736383373,
+            20.02593854857779
+          ],
+          "endpoint_relative": 0.7477804957001308,
+          "impact_ap_gain": 0.005855421312953357,
+          "impact_ap_paired_ci95": [
+            0.0021369843679529058,
+            0.010205417657509985
+          ],
+          "impact_relative": 0.17141289123162906
+        },
+        "raw": {
+          "branch_difference_improvement_px": 25.105404630387213,
+          "branch_difference_paired_ci95": [
+            23.376638946127546,
+            26.78178011748955
+          ],
+          "endpoint_error_improvement_px": 15.185686861709325,
+          "endpoint_paired_ci95": [
+            14.39783768537346,
+            16.00163419802266
+          ],
+          "endpoint_relative": 0.7088280660130741,
+          "impact_ap_gain": -0.018126951278132443,
+          "impact_ap_paired_ci95": [
+            -0.019962227375098236,
+            -0.000427434890794845
+          ],
+          "impact_relative": -0.31176969176521674
+        }
+      }
+    },
+    "512": {
+      "controls": {
+        "gpt2": {
+          "impact": {
+            "correct": 0.04709417166364591,
+            "erase": 0.03353879653281063,
+            "raw_motion": 0.058142121434251674,
+            "shift": 0.03235543153738252
+          },
+          "push": {
+            "joint": {
+              "branch_difference_px": 10.541646188599222,
+              "endpoint_px": 7.8013035530998165
+            },
+            "persistence": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 24.732292744592343
+            },
+            "ridge": {
+              "branch_difference_px": 33.11982136315049,
+              "endpoint_px": 21.423653477949657
+            },
+            "state": {
+              "branch_difference_px": 10.031029436803227,
+              "endpoint_px": 7.584929162251675
+            },
+            "unplanned": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 26.51200849223495
+            },
+            "velocity": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 30.095747748492485
+            },
+            "video": {
+              "branch_difference_px": 28.484771168167793,
+              "endpoint_px": 19.564461199076305
+            }
+          }
+        },
+        "hybrid": {
+          "impact": {
+            "correct": 0.04864824110543814,
+            "erase": 0.03352486428370768,
+            "raw_motion": 0.058142121434251674,
+            "shift": 0.032223996764618484
+          },
+          "push": {
+            "joint": {
+              "branch_difference_px": 7.970817370523065,
+              "endpoint_px": 6.3584162639785475
+            },
+            "persistence": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 24.732292744592343
+            },
+            "ridge": {
+              "branch_difference_px": 33.11982136315049,
+              "endpoint_px": 21.423653477949657
+            },
+            "state": {
+              "branch_difference_px": 7.423317561868519,
+              "endpoint_px": 5.921836283433662
+            },
+            "unplanned": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 27.431514003277847
+            },
+            "velocity": {
+              "branch_difference_px": 39.6798638781995,
+              "endpoint_px": 30.095747748492485
+            },
+            "video": {
+              "branch_difference_px": 23.998595939076814,
+              "endpoint_px": 14.830216926719292
+            }
+          }
+        }
+      },
+      "examples": {
+        "impact_dates": 3,
+        "impact_ticks": 37408,
+        "impact_windows": 668,
+        "positive_ticks": 1247,
+        "scenes": 256
+      },
+      "hybrid_gain": {
+        "dense": {
+          "branch_difference_improvement_px": 2.570828818076159,
+          "branch_difference_paired_ci95": [
+            1.9030081797853666,
+            3.2777619519957866
+          ],
+          "endpoint_error_improvement_px": 1.4428872891212692,
+          "endpoint_paired_ci95": [
+            1.0926587653346398,
+            1.8221717774948458
+          ],
+          "endpoint_relative": 0.18495463986245525,
+          "impact_ap_gain": 0.001554069441792226,
+          "impact_ap_paired_ci95": [
+            -0.0034030442212577144,
+            0.012315095495170417
+          ],
+          "impact_relative": 0.03299918836860827
+        },
+        "negative": {
+          "branch_difference_improvement_px": 31.709046507676437,
+          "branch_difference_paired_ci95": [
+            29.39457432560656,
+            33.96842160640366
+          ],
+          "endpoint_error_improvement_px": 18.3738764806138,
+          "endpoint_paired_ci95": [
+            16.82435789830632,
+            19.963872082284293
+          ],
+          "endpoint_relative": 0.7429103589529201,
+          "impact_ap_gain": 0.016424244340819655,
+          "impact_ap_paired_ci95": [
+            0.010806392564792055,
+            0.02913482697444477
+          ],
+          "impact_relative": 0.5096898581759186
+        },
+        "raw": {
+          "branch_difference_improvement_px": 25.149003992627428,
+          "branch_difference_paired_ci95": [
+            23.528222841164595,
+            26.74668867926433
+          ],
+          "endpoint_error_improvement_px": 15.065237213971113,
+          "endpoint_paired_ci95": [
+            14.265906300089267,
+            15.867352363323917
+          ],
+          "endpoint_relative": 0.7032057921155718,
+          "impact_ap_gain": -0.009493880328813535,
+          "impact_ap_paired_ci95": [
+            -0.011388381268567782,
+            0.013865691475330316
+          ],
+          "impact_relative": -0.16328747721304615
+        }
+      }
+    }
+  },
+  "sha256": {
+    "g5-anchor-gpt2-511-residual-gpu": "504dbfa1402c43108f7b90720f9ce1a507cd8dcb1053a0f33923b43325ea6b7b",
+    "g5-anchor-gpt2-512-residual-gpu": "d851a8862520b84f7c62aaf71fb4ef99722c79711e26a5e6f4e4b9d9dc471db5",
+    "g5-anchor-hybrid-511-residual-gpu": "4a87085793edd0da88df95390a8214e3464fadfcd6684fa968907767c6cdd299",
+    "g5-anchor-hybrid-512-residual-gpu": "0e1ba2eb309ace1166dd4482d2c2b972fad77ebed8133923ce2ba1813cc59af1"
+  },
+  "split": "dev"
+}

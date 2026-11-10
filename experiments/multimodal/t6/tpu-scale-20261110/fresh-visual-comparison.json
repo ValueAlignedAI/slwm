@@ -1,0 +1,1114 @@
+{
+  "v5e-anchor-511": {
+    "conditions": {
+      "joint_correct": {
+        "branch_difference_px": {
+          "dense": 9.220402866579882,
+          "hybrid": 7.397483165622443,
+          "hybrid_improvement": 1.8229197009574396,
+          "paired_ci95": [
+            1.3808654493133687,
+            2.2698162748765576
+          ]
+        },
+        "endpoint_px": {
+          "dense": 6.987372005794656,
+          "hybrid": 5.8934922624810655,
+          "hybrid_improvement": 1.09387974331359,
+          "paired_ci95": [
+            0.8596914023265989,
+            1.337747611818892
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.833984375,
+          "hybrid": 0.857421875,
+          "hybrid_improvement": 0.0234375,
+          "paired_ci95": [
+            -0.0078125,
+            0.0546875
+          ]
+        },
+        "regret_px": {
+          "dense": 0.8153404875653478,
+          "hybrid": 0.42683277714027007,
+          "hybrid_improvement": 0.38850771042507776,
+          "paired_ci95": [
+            0.07666733618563225,
+            0.7579722553243018
+          ]
+        }
+      },
+      "joint_wrong": {
+        "branch_difference_px": {
+          "dense": 9.702904404836703,
+          "hybrid": 8.81784342742202,
+          "hybrid_improvement": 0.8850609774146819,
+          "paired_ci95": [
+            0.40829008276769413,
+            1.3726090512846534
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.322066763360375,
+          "hybrid": 6.7175756531543325,
+          "hybrid_improvement": 0.6044911102060415,
+          "paired_ci95": [
+            0.3443353564654724,
+            0.8763224861988488
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.841796875,
+          "hybrid": 0.833984375,
+          "hybrid_improvement": -0.0078125,
+          "paired_ci95": [
+            -0.03911132812499998,
+            0.025390625
+          ]
+        },
+        "regret_px": {
+          "dense": 0.719503723066921,
+          "hybrid": 0.5843964977468645,
+          "hybrid_improvement": 0.13510722532005642,
+          "paired_ci95": [
+            -0.15630591518261022,
+            0.46425168960359475
+          ]
+        }
+      },
+      "state": {
+        "branch_difference_px": {
+          "dense": 9.563719961208918,
+          "hybrid": 7.394740774359102,
+          "hybrid_improvement": 2.1689791868498176,
+          "paired_ci95": [
+            1.8065814617278741,
+            2.5336469021267995
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.132920513376207,
+          "hybrid": 5.782107724841021,
+          "hybrid_improvement": 1.350812788535186,
+          "paired_ci95": [
+            1.1488102735153116,
+            1.5535379957959567
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.82421875,
+          "hybrid": 0.859375,
+          "hybrid_improvement": 0.03515625,
+          "paired_ci95": [
+            0.001953125,
+            0.06640625
+          ]
+        },
+        "regret_px": {
+          "dense": 0.5206629998305627,
+          "hybrid": 0.44540767064454856,
+          "hybrid_improvement": 0.07525532918601424,
+          "paired_ci95": [
+            -0.07967319606593583,
+            0.23485869279486146
+          ]
+        }
+      },
+      "video_correct": {
+        "branch_difference_px": {
+          "dense": 29.983807145613568,
+          "hybrid": 22.689265883991546,
+          "hybrid_improvement": 7.2945412616220215,
+          "paired_ci95": [
+            6.405930749744249,
+            8.128703523678231
+          ]
+        },
+        "endpoint_px": {
+          "dense": 21.066728683193617,
+          "hybrid": 14.343789293906408,
+          "hybrid_improvement": 6.72293938928721,
+          "paired_ci95": [
+            6.123853653563601,
+            7.303285954439404
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.708984375,
+          "hybrid": 0.76171875,
+          "hybrid_improvement": 0.052734375,
+          "paired_ci95": [
+            0.021435546875000017,
+            0.08598632812500018
+          ]
+        },
+        "regret_px": {
+          "dense": 2.666163470075131,
+          "hybrid": 1.7866116452184575,
+          "hybrid_improvement": 0.8795518248566734,
+          "paired_ci95": [
+            0.27175381272666604,
+            1.5295745014953888
+          ]
+        }
+      },
+      "video_delayed": {
+        "branch_difference_px": {
+          "dense": 31.08466852755752,
+          "hybrid": 25.2918715546165,
+          "hybrid_improvement": 5.792796972941021,
+          "paired_ci95": [
+            4.891381333722656,
+            6.695881192389623
+          ]
+        },
+        "endpoint_px": {
+          "dense": 22.362506290254007,
+          "hybrid": 16.337680682856725,
+          "hybrid_improvement": 6.024825607397283,
+          "paired_ci95": [
+            5.383399931483544,
+            6.65429850553699
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.6953125,
+          "hybrid": 0.755859375,
+          "hybrid_improvement": 0.060546875,
+          "paired_ci95": [
+            0.03125,
+            0.091796875
+          ]
+        },
+        "regret_px": {
+          "dense": 3.0811814948604828,
+          "hybrid": 1.9886746974335636,
+          "hybrid_improvement": 1.092506797426919,
+          "paired_ci95": [
+            0.47398854552002745,
+            1.795540096534812
+          ]
+        }
+      },
+      "video_erased": {
+        "branch_difference_px": {
+          "dense": 37.27942272439867,
+          "hybrid": 34.44874648705789,
+          "hybrid_improvement": 2.8306762373407803,
+          "paired_ci95": [
+            1.8410348814655968,
+            3.7979702890558675
+          ]
+        },
+        "endpoint_px": {
+          "dense": 31.62998720758556,
+          "hybrid": 25.38956810460161,
+          "hybrid_improvement": 6.240419102983947,
+          "paired_ci95": [
+            5.327955311375052,
+            7.17600437296053
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.611328125,
+          "hybrid": 0.669921875,
+          "hybrid_improvement": 0.05859375,
+          "paired_ci95": [
+            0.017578125,
+            0.099609375
+          ]
+        },
+        "regret_px": {
+          "dense": 5.7744168688969,
+          "hybrid": 3.5590115421882933,
+          "hybrid_improvement": 2.215405326708606,
+          "paired_ci95": [
+            1.1118289007953581,
+            3.3852238789058906
+          ]
+        }
+      },
+      "video_wrong": {
+        "branch_difference_px": {
+          "dense": 35.064536974082785,
+          "hybrid": 36.52515786319541,
+          "hybrid_improvement": -1.460620889112624,
+          "paired_ci95": [
+            -2.3847270191703243,
+            -0.5048509444960649
+          ]
+        },
+        "endpoint_px": {
+          "dense": 27.56496074356169,
+          "hybrid": 27.353441266366435,
+          "hybrid_improvement": 0.21151947719525538,
+          "paired_ci95": [
+            -0.4653418860536001,
+            0.9033399742373008
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.693359375,
+          "hybrid": 0.609375,
+          "hybrid_improvement": -0.083984375,
+          "paired_ci95": [
+            -0.123046875,
+            -0.04296875
+          ]
+        },
+        "regret_px": {
+          "dense": 3.23949544131374,
+          "hybrid": 5.677897753851145,
+          "hybrid_improvement": -2.438402312537405,
+          "paired_ci95": [
+            -3.632296944422649,
+            -1.2165215747982216
+          ]
+        }
+      }
+    },
+    "paired_bootstrap": 4000,
+    "scene_sha256": "0aa3fc905743755fa92c5c8bdb870bc57b69a31bd6ad5f49989190ed4a34ed41",
+    "scenes": 512,
+    "seed_for_bootstrap": 610736,
+    "weights_sha256": [
+      "9f9223c4ae96a2d38773f18d0ba91df7b6337dbf0060c1eb40e837878f2ab194",
+      "c36aaafe4323696ed0e45f49bb26c4f7d4d5732fe6c37c2ed65880cd361e0b02"
+    ]
+  },
+  "v5e-anchor-512": {
+    "conditions": {
+      "joint_correct": {
+        "branch_difference_px": {
+          "dense": 10.5992547547276,
+          "hybrid": 7.435626283647958,
+          "hybrid_improvement": 3.1636284710796407,
+          "paired_ci95": [
+            2.693349062218136,
+            3.6414510702873617
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.925664776043064,
+          "hybrid": 5.838421343439039,
+          "hybrid_improvement": 2.0872434326040255,
+          "paired_ci95": [
+            1.814519848946228,
+            2.374808330696966
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.8046875,
+          "hybrid": 0.849609375,
+          "hybrid_improvement": 0.044921875,
+          "paired_ci95": [
+            0.013671875,
+            0.078125
+          ]
+        },
+        "regret_px": {
+          "dense": 0.7266633470869357,
+          "hybrid": 0.390310009073795,
+          "hybrid_improvement": 0.33635333801314077,
+          "paired_ci95": [
+            0.05624297801768047,
+            0.6220808061770419
+          ]
+        }
+      },
+      "joint_wrong": {
+        "branch_difference_px": {
+          "dense": 11.000778991865968,
+          "hybrid": 9.309495576163968,
+          "hybrid_improvement": 1.6912834157019998,
+          "paired_ci95": [
+            1.144529379638698,
+            2.2279561725976063
+          ]
+        },
+        "endpoint_px": {
+          "dense": 8.150556093827511,
+          "hybrid": 6.993161504736854,
+          "hybrid_improvement": 1.1573945890906558,
+          "paired_ci95": [
+            0.8520959866077283,
+            1.4623996081772104
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.80859375,
+          "hybrid": 0.80859375,
+          "hybrid_improvement": 0.0,
+          "paired_ci95": [
+            -0.033203125,
+            0.03515625
+          ]
+        },
+        "regret_px": {
+          "dense": 0.8712180272945291,
+          "hybrid": 0.697881079464842,
+          "hybrid_improvement": 0.17333694782968714,
+          "paired_ci95": [
+            -0.046381482064659085,
+            0.396564218730096
+          ]
+        }
+      },
+      "state": {
+        "branch_difference_px": {
+          "dense": 10.750147400831542,
+          "hybrid": 7.088161120168088,
+          "hybrid_improvement": 3.6619862806634544,
+          "paired_ci95": [
+            3.2074277241077795,
+            4.11671405167309
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.9490263038227535,
+          "hybrid": 5.656866471116484,
+          "hybrid_improvement": 2.292159832706269,
+          "paired_ci95": [
+            2.015482742628029,
+            2.558403362352416
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.81640625,
+          "hybrid": 0.8671875,
+          "hybrid_improvement": 0.05078125,
+          "paired_ci95": [
+            0.015625,
+            0.087890625
+          ]
+        },
+        "regret_px": {
+          "dense": 0.8486989507597924,
+          "hybrid": 0.39327534585511364,
+          "hybrid_improvement": 0.45542360490467865,
+          "paired_ci95": [
+            0.2263852333993645,
+            0.7091873323885501
+          ]
+        }
+      },
+      "video_correct": {
+        "branch_difference_px": {
+          "dense": 30.030152946183897,
+          "hybrid": 22.787759490178797,
+          "hybrid_improvement": 7.242393456005104,
+          "paired_ci95": [
+            6.289708714827553,
+            8.190693317543872
+          ]
+        },
+        "endpoint_px": {
+          "dense": 21.35828336568799,
+          "hybrid": 14.261623405880403,
+          "hybrid_improvement": 7.096659959807582,
+          "paired_ci95": [
+            6.411566619816929,
+            7.766447792932875
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.703125,
+          "hybrid": 0.751953125,
+          "hybrid_improvement": 0.048828125,
+          "paired_ci95": [
+            0.015625,
+            0.083984375
+          ]
+        },
+        "regret_px": {
+          "dense": 2.9175077518207235,
+          "hybrid": 1.714663221940505,
+          "hybrid_improvement": 1.202844529880218,
+          "paired_ci95": [
+            0.5425670339265841,
+            1.9037502431724425
+          ]
+        }
+      },
+      "video_delayed": {
+        "branch_difference_px": {
+          "dense": 30.702633079659513,
+          "hybrid": 25.172179243831245,
+          "hybrid_improvement": 5.53045383582826,
+          "paired_ci95": [
+            4.540845693581841,
+            6.496116697461203
+          ]
+        },
+        "endpoint_px": {
+          "dense": 22.313398410177186,
+          "hybrid": 16.20830632446888,
+          "hybrid_improvement": 6.1050920857083035,
+          "paired_ci95": [
+            5.426229829015261,
+            6.774488206966519
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.6953125,
+          "hybrid": 0.734375,
+          "hybrid_improvement": 0.0390625,
+          "paired_ci95": [
+            0.0078125,
+            0.072265625
+          ]
+        },
+        "regret_px": {
+          "dense": 2.9646726957608376,
+          "hybrid": 2.145724574899873,
+          "hybrid_improvement": 0.8189481208609644,
+          "paired_ci95": [
+            0.26720877200652376,
+            1.369839587934896
+          ]
+        }
+      },
+      "video_erased": {
+        "branch_difference_px": {
+          "dense": 36.04559445048892,
+          "hybrid": 35.442041976472616,
+          "hybrid_improvement": 0.603552474016303,
+          "paired_ci95": [
+            -0.20592579893036278,
+            1.4214469502529643
+          ]
+        },
+        "endpoint_px": {
+          "dense": 30.078591674775012,
+          "hybrid": 25.97853550635167,
+          "hybrid_improvement": 4.1000561684233485,
+          "paired_ci95": [
+            3.3796050238953255,
+            4.840554667730786
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.59765625,
+          "hybrid": 0.677734375,
+          "hybrid_improvement": 0.080078125,
+          "paired_ci95": [
+            0.037109375,
+            0.123046875
+          ]
+        },
+        "regret_px": {
+          "dense": 5.941186960758669,
+          "hybrid": 3.4824631861890243,
+          "hybrid_improvement": 2.4587237745696453,
+          "paired_ci95": [
+            1.1946265938564056,
+            3.7743818653621792
+          ]
+        }
+      },
+      "video_wrong": {
+        "branch_difference_px": {
+          "dense": 34.75192539254353,
+          "hybrid": 36.1048054587378,
+          "hybrid_improvement": -1.352880066194269,
+          "paired_ci95": [
+            -2.3241347943127066,
+            -0.3954334056729989
+          ]
+        },
+        "endpoint_px": {
+          "dense": 27.56114377589339,
+          "hybrid": 26.853811489118577,
+          "hybrid_improvement": 0.7073322867748135,
+          "paired_ci95": [
+            -0.061096320246435555,
+            1.4575579564796022
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.66015625,
+          "hybrid": 0.607421875,
+          "hybrid_improvement": -0.052734375,
+          "paired_ci95": [
+            -0.091796875,
+            -0.01171875
+          ]
+        },
+        "regret_px": {
+          "dense": 3.9121591935885545,
+          "hybrid": 4.917124920659051,
+          "hybrid_improvement": -1.0049657270704975,
+          "paired_ci95": [
+            -1.9242118275841709,
+            -0.07751181583383134
+          ]
+        }
+      }
+    },
+    "paired_bootstrap": 4000,
+    "scene_sha256": "0aa3fc905743755fa92c5c8bdb870bc57b69a31bd6ad5f49989190ed4a34ed41",
+    "scenes": 512,
+    "seed_for_bootstrap": 610736,
+    "weights_sha256": [
+      "3e91b908dba3115592ca8a57092259d088596976fc4cb0cbe5584828696bb487",
+      "e8359124e06582972edb853333d3bec853d1b85d7e1f4c4156f9fe9e361caa33"
+    ]
+  },
+  "v5e-larger-511": {
+    "conditions": {
+      "joint_correct": {
+        "branch_difference_px": {
+          "dense": 11.121930438377365,
+          "hybrid": 7.850940685725723,
+          "hybrid_improvement": 3.270989752651641,
+          "paired_ci95": [
+            2.8052977335049385,
+            3.763781769325989
+          ]
+        },
+        "endpoint_px": {
+          "dense": 8.136711285317022,
+          "hybrid": 6.122132353036257,
+          "hybrid_improvement": 2.0145789322807657,
+          "paired_ci95": [
+            1.7571982122116268,
+            2.2681012252872264
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.794921875,
+          "hybrid": 0.849609375,
+          "hybrid_improvement": 0.0546875,
+          "paired_ci95": [
+            0.021484375,
+            0.08793945312500018
+          ]
+        },
+        "regret_px": {
+          "dense": 0.9627734313641149,
+          "hybrid": 0.4858530088928494,
+          "hybrid_improvement": 0.4769204224712656,
+          "paired_ci95": [
+            0.2111499843874178,
+            0.8018566598301118
+          ]
+        }
+      },
+      "joint_wrong": {
+        "branch_difference_px": {
+          "dense": 11.625604206101505,
+          "hybrid": 9.881028217667422,
+          "hybrid_improvement": 1.7445759884340828,
+          "paired_ci95": [
+            1.1894670347131069,
+            2.288104252625322
+          ]
+        },
+        "endpoint_px": {
+          "dense": 8.590133413513712,
+          "hybrid": 7.442165081081816,
+          "hybrid_improvement": 1.1479683324318963,
+          "paired_ci95": [
+            0.8443874643157213,
+            1.4518667547619883
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.818359375,
+          "hybrid": 0.814453125,
+          "hybrid_improvement": -0.00390625,
+          "paired_ci95": [
+            -0.0390625,
+            0.03125
+          ]
+        },
+        "regret_px": {
+          "dense": 0.845330013250114,
+          "hybrid": 0.6825000385050162,
+          "hybrid_improvement": 0.16282997474509792,
+          "paired_ci95": [
+            -0.18351472857338483,
+            0.5308289478025188
+          ]
+        }
+      },
+      "state": {
+        "branch_difference_px": {
+          "dense": 11.18591373468647,
+          "hybrid": 7.512272329323899,
+          "hybrid_improvement": 3.6736414053625683,
+          "paired_ci95": [
+            3.21399150855713,
+            4.125982999783947
+          ]
+        },
+        "endpoint_px": {
+          "dense": 8.238812095507498,
+          "hybrid": 5.905926164480622,
+          "hybrid_improvement": 2.332885931026876,
+          "paired_ci95": [
+            2.092402649132724,
+            2.576372420515864
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.80859375,
+          "hybrid": 0.8515625,
+          "hybrid_improvement": 0.04296875,
+          "paired_ci95": [
+            0.009765625,
+            0.080078125
+          ]
+        },
+        "regret_px": {
+          "dense": 0.8050206849578541,
+          "hybrid": 0.507262874241954,
+          "hybrid_improvement": 0.29775781071590013,
+          "paired_ci95": [
+            0.015043105330608163,
+            0.5878764556018987
+          ]
+        }
+      },
+      "video_correct": {
+        "branch_difference_px": {
+          "dense": 30.203906921044137,
+          "hybrid": 22.541254846240726,
+          "hybrid_improvement": 7.662652074803409,
+          "paired_ci95": [
+            6.741122989659585,
+            8.576116862882914
+          ]
+        },
+        "endpoint_px": {
+          "dense": 21.296347108864843,
+          "hybrid": 14.052935491800229,
+          "hybrid_improvement": 7.243411617064614,
+          "paired_ci95": [
+            6.575705107553944,
+            7.947318578421616
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.705078125,
+          "hybrid": 0.755859375,
+          "hybrid_improvement": 0.05078125,
+          "paired_ci95": [
+            0.01953125,
+            0.083984375
+          ]
+        },
+        "regret_px": {
+          "dense": 2.7591526923740526,
+          "hybrid": 1.7484422338429224,
+          "hybrid_improvement": 1.0107104585311302,
+          "paired_ci95": [
+            0.4774236175323146,
+            1.634300246763515
+          ]
+        }
+      },
+      "video_delayed": {
+        "branch_difference_px": {
+          "dense": 30.679121525141724,
+          "hybrid": 25.352463047471037,
+          "hybrid_improvement": 5.326658477670689,
+          "paired_ci95": [
+            4.336288451004511,
+            6.260832579705135
+          ]
+        },
+        "endpoint_px": {
+          "dense": 21.883842152536282,
+          "hybrid": 16.160573342060893,
+          "hybrid_improvement": 5.723268810475392,
+          "paired_ci95": [
+            5.052962203554884,
+            6.391228910213353
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.70703125,
+          "hybrid": 0.748046875,
+          "hybrid_improvement": 0.041015625,
+          "paired_ci95": [
+            0.009765625,
+            0.072265625
+          ]
+        },
+        "regret_px": {
+          "dense": 2.8780559203223812,
+          "hybrid": 1.999745453057329,
+          "hybrid_improvement": 0.8783104672650517,
+          "paired_ci95": [
+            0.31832863760501545,
+            1.490286015966184
+          ]
+        }
+      },
+      "video_erased": {
+        "branch_difference_px": {
+          "dense": 37.494456918033656,
+          "hybrid": 34.73060145534924,
+          "hybrid_improvement": 2.763855462684424,
+          "paired_ci95": [
+            1.6624429161136995,
+            3.913788183369305
+          ]
+        },
+        "endpoint_px": {
+          "dense": 37.55388208611961,
+          "hybrid": 24.923504916292217,
+          "hybrid_improvement": 12.630377169827387,
+          "paired_ci95": [
+            11.618108021131153,
+            13.617344535176047
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.5703125,
+          "hybrid": 0.615234375,
+          "hybrid_improvement": 0.044921875,
+          "paired_ci95": [
+            -0.00390625,
+            0.091796875
+          ]
+        },
+        "regret_px": {
+          "dense": 6.636571677705847,
+          "hybrid": 5.253092213066628,
+          "hybrid_improvement": 1.3834794646392203,
+          "paired_ci95": [
+            -0.09987136023426647,
+            2.7883126459562417
+          ]
+        }
+      },
+      "video_wrong": {
+        "branch_difference_px": {
+          "dense": 35.228192646912774,
+          "hybrid": 35.987257582655744,
+          "hybrid_improvement": -0.7590649357429768,
+          "paired_ci95": [
+            -1.6986033981904811,
+            0.22987264623163509
+          ]
+        },
+        "endpoint_px": {
+          "dense": 28.019100405318213,
+          "hybrid": 26.471765662392247,
+          "hybrid_improvement": 1.5473347429259647,
+          "paired_ci95": [
+            0.8310726409977441,
+            2.2791896674796686
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.68359375,
+          "hybrid": 0.59375,
+          "hybrid_improvement": -0.08984375,
+          "paired_ci95": [
+            -0.130859375,
+            -0.048828125
+          ]
+        },
+        "regret_px": {
+          "dense": 3.244041704291278,
+          "hybrid": 6.049055328218245,
+          "hybrid_improvement": -2.8050136239269667,
+          "paired_ci95": [
+            -3.9199842480761,
+            -1.7514341207916218
+          ]
+        }
+      }
+    },
+    "paired_bootstrap": 4000,
+    "scene_sha256": "0aa3fc905743755fa92c5c8bdb870bc57b69a31bd6ad5f49989190ed4a34ed41",
+    "scenes": 512,
+    "seed_for_bootstrap": 610736,
+    "weights_sha256": [
+      "5b8c96162554ad1d87429d4ce9d4fb8940ef7715a59b856d68269f5b63c4745b",
+      "b1c5e18c1a35e0a0804c32779340369300317f782b626a3adf3451e2b2ce70f9"
+    ]
+  },
+  "v5e-larger-512": {
+    "conditions": {
+      "joint_correct": {
+        "branch_difference_px": {
+          "dense": 10.022782781912866,
+          "hybrid": 7.714266725949914,
+          "hybrid_improvement": 2.3085160559629516,
+          "paired_ci95": [
+            1.9128006342664818,
+            2.7252137836687487
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.4066810081058945,
+          "hybrid": 6.013901296145129,
+          "hybrid_improvement": 1.3927797119607654,
+          "paired_ci95": [
+            1.1667125818236896,
+            1.6243595276259422
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.82421875,
+          "hybrid": 0.86328125,
+          "hybrid_improvement": 0.0390625,
+          "paired_ci95": [
+            0.005859375,
+            0.072265625
+          ]
+        },
+        "regret_px": {
+          "dense": 0.782017175199302,
+          "hybrid": 0.46359952328905596,
+          "hybrid_improvement": 0.31841765191024607,
+          "paired_ci95": [
+            0.014984259204407695,
+            0.657474582479992
+          ]
+        }
+      },
+      "joint_wrong": {
+        "branch_difference_px": {
+          "dense": 10.943014393822502,
+          "hybrid": 10.930973703903348,
+          "hybrid_improvement": 0.012040689919153524,
+          "paired_ci95": [
+            -0.5519220906204809,
+            0.5813646116577248
+          ]
+        },
+        "endpoint_px": {
+          "dense": 8.022433927294248,
+          "hybrid": 8.091537189848705,
+          "hybrid_improvement": -0.06910326255445626,
+          "paired_ci95": [
+            -0.4045489219692398,
+            0.26738244235796893
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.82421875,
+          "hybrid": 0.828125,
+          "hybrid_improvement": 0.00390625,
+          "paired_ci95": [
+            -0.029296875,
+            0.037109375
+          ]
+        },
+        "regret_px": {
+          "dense": 0.6724470543278669,
+          "hybrid": 0.7170211669024558,
+          "hybrid_improvement": -0.044574112574588876,
+          "paired_ci95": [
+            -0.29731730571250564,
+            0.2030192529057675
+          ]
+        }
+      },
+      "state": {
+        "branch_difference_px": {
+          "dense": 9.654404002284501,
+          "hybrid": 7.284178719895432,
+          "hybrid_improvement": 2.370225282389071,
+          "paired_ci95": [
+            1.9800738049559938,
+            2.7809809552056084
+          ]
+        },
+        "endpoint_px": {
+          "dense": 7.193427013844392,
+          "hybrid": 5.748779804023405,
+          "hybrid_improvement": 1.4446472098209875,
+          "paired_ci95": [
+            1.2232069306507158,
+            1.6685770853328172
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.8515625,
+          "hybrid": 0.87109375,
+          "hybrid_improvement": 0.01953125,
+          "paired_ci95": [
+            -0.01171875,
+            0.05078125
+          ]
+        },
+        "regret_px": {
+          "dense": 0.5564933479970026,
+          "hybrid": 0.4611462988008019,
+          "hybrid_improvement": 0.09534704919620071,
+          "paired_ci95": [
+            -0.06582426786121597,
+            0.2644872372579296
+          ]
+        }
+      },
+      "video_correct": {
+        "branch_difference_px": {
+          "dense": 28.02868158513893,
+          "hybrid": 23.01418079759118,
+          "hybrid_improvement": 5.01450078754775,
+          "paired_ci95": [
+            4.141956426844251,
+            5.888165577085092
+          ]
+        },
+        "endpoint_px": {
+          "dense": 19.14482423845849,
+          "hybrid": 14.479203464503811,
+          "hybrid_improvement": 4.665620773954679,
+          "paired_ci95": [
+            4.084013216192079,
+            5.272342730860631
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.70703125,
+          "hybrid": 0.763671875,
+          "hybrid_improvement": 0.056640625,
+          "paired_ci95": [
+            0.02734375,
+            0.087890625
+          ]
+        },
+        "regret_px": {
+          "dense": 2.811405077982362,
+          "hybrid": 1.5486833255505634,
+          "hybrid_improvement": 1.2627217524317986,
+          "paired_ci95": [
+            0.7583285249010154,
+            1.8282729164667582
+          ]
+        }
+      },
+      "video_delayed": {
+        "branch_difference_px": {
+          "dense": 29.192773345024147,
+          "hybrid": 25.701234945188315,
+          "hybrid_improvement": 3.4915383998358305,
+          "paired_ci95": [
+            2.5187550192406083,
+            4.41968545849787
+          ]
+        },
+        "endpoint_px": {
+          "dense": 20.450345997194276,
+          "hybrid": 16.628281783298334,
+          "hybrid_improvement": 3.8220642138959415,
+          "paired_ci95": [
+            3.149755935339962,
+            4.508245288085146
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.701171875,
+          "hybrid": 0.75,
+          "hybrid_improvement": 0.048828125,
+          "paired_ci95": [
+            0.01953125,
+            0.078125
+          ]
+        },
+        "regret_px": {
+          "dense": 3.003881451217013,
+          "hybrid": 1.965009464793933,
+          "hybrid_improvement": 1.03887198642308,
+          "paired_ci95": [
+            0.604095634899267,
+            1.5144739004071803
+          ]
+        }
+      },
+      "video_erased": {
+        "branch_difference_px": {
+          "dense": 36.76997876345014,
+          "hybrid": 35.070647937643045,
+          "hybrid_improvement": 1.699330825807095,
+          "paired_ci95": [
+            0.5928958086693459,
+            2.833928314822925
+          ]
+        },
+        "endpoint_px": {
+          "dense": 33.39720165995884,
+          "hybrid": 25.35139803274609,
+          "hybrid_improvement": 8.045803627212742,
+          "paired_ci95": [
+            7.237104226699707,
+            8.854069769254195
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.62890625,
+          "hybrid": 0.65625,
+          "hybrid_improvement": 0.02734375,
+          "paired_ci95": [
+            -0.013671875,
+            0.068359375
+          ]
+        },
+        "regret_px": {
+          "dense": 5.076054394473972,
+          "hybrid": 3.6553015509654316,
+          "hybrid_improvement": 1.42075284350854,
+          "paired_ci95": [
+            0.40761699946106605,
+            2.4801834151523243
+          ]
+        }
+      },
+      "video_wrong": {
+        "branch_difference_px": {
+          "dense": 37.36136912853844,
+          "hybrid": 36.78325542166708,
+          "hybrid_improvement": 0.5781137068713575,
+          "paired_ci95": [
+            -0.43588536512361903,
+            1.6529328548156785
+          ]
+        },
+        "endpoint_px": {
+          "dense": 29.08674099170569,
+          "hybrid": 26.737125923015576,
+          "hybrid_improvement": 2.3496150686901127,
+          "paired_ci95": [
+            1.555167736791522,
+            3.1682472055742212
+          ]
+        },
+        "optimal_rate": {
+          "dense": 0.62890625,
+          "hybrid": 0.59375,
+          "hybrid_improvement": -0.03515625,
+          "paired_ci95": [
+            -0.07421875,
+            0.00390625
+          ]
+        },
+        "regret_px": {
+          "dense": 4.957850437581165,
+          "hybrid": 5.978268413160295,
+          "hybrid_improvement": -1.0204179755791312,
+          "paired_ci95": [
+            -2.1887627047595983,
+            0.09899727165224341
+          ]
+        }
+      }
+    },
+    "paired_bootstrap": 4000,
+    "scene_sha256": "0aa3fc905743755fa92c5c8bdb870bc57b69a31bd6ad5f49989190ed4a34ed41",
+    "scenes": 512,
+    "seed_for_bootstrap": 610736,
+    "weights_sha256": [
+      "81ccc97355f92c5dabb570c5be2a8ba5918b83584ce71b707a889d4d365d8a03",
+      "22bf86437f3922d76f448b76b11adf0d0bfc5618aa9329b6f6dbb8976beda94c"
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "base_examples": 323010,
+  "independence_limits": {
+    "ami_training_source_groups": 5,
+    "clotho_training_source_groups": 1072,
+    "impact_train_dates": 22,
+    "impact_train_recordings": 832,
+    "plans_per_scene": 3,
+    "simulation_training_scenes": 4096,
+    "simulator_anchor_visits_per_possible_plan": 37.3333
+  },
+  "scales": {
+    "completed-medium": {
+      "batch": 128,
+      "families": {
+        "ami": {
+          "available_rows": 2024,
+          "distinct_rows": 2024,
+          "mean_visits_per_available_row": 8.0949,
+          "visits_per_arm_seed": 16384
+        },
+        "clotho": {
+          "available_rows": 1440,
+          "distinct_rows": 1440,
+          "mean_visits_per_available_row": 22.7556,
+          "visits_per_arm_seed": 32768
+        },
+        "coco": {
+          "available_rows": 118272,
+          "distinct_rows": 49152,
+          "mean_visits_per_available_row": 0.4156,
+          "visits_per_arm_seed": 49152
+        },
+        "droid": {
+          "available_rows": 7305,
+          "distinct_rows": 7305,
+          "mean_visits_per_available_row": 6.7285,
+          "visits_per_arm_seed": 49152
+        },
+        "grid": {
+          "available_rows": 12704,
+          "distinct_rows": 12704,
+          "mean_visits_per_available_row": 3.869,
+          "visits_per_arm_seed": 49152
+        },
+        "impact": {
+          "available_rows": 10297,
+          "distinct_rows": 10297,
+          "mean_visits_per_available_row": 11.138,
+          "visits_per_arm_seed": 114688
+        },
+        "libri": {
+          "available_rows": 50193,
+          "distinct_rows": 49152,
+          "mean_visits_per_available_row": 0.9793,
+          "visits_per_arm_seed": 49152
+        },
+        "pusht": {
+          "available_rows": 4096,
+          "distinct_rows": 4096,
+          "mean_visits_per_available_row": 28.0,
+          "visits_per_arm_seed": 114688
+        },
+        "text": {
+          "available_rows": 131072,
+          "distinct_rows": 49152,
+          "mean_visits_per_available_row": 0.375,
+          "visits_per_arm_seed": 49152
+        }
+      },
+      "positions_per_arm_seed": 33554432,
+      "updates": 4096
+    },
+    "target-anchor": {
+      "batch": 256,
+      "families": {
+        "ami": {
+          "available_rows": 2024,
+          "distinct_rows": 2024,
+          "mean_visits_per_available_row": 32.3794,
+          "visits_per_arm_seed": 65536
+        },
+        "clotho": {
+          "available_rows": 1440,
+          "distinct_rows": 1440,
+          "mean_visits_per_available_row": 91.0222,
+          "visits_per_arm_seed": 131072
+        },
+        "coco": {
+          "available_rows": 118272,
+          "distinct_rows": 118272,
+          "mean_visits_per_available_row": 1.6623,
+          "visits_per_arm_seed": 196608
+        },
+        "droid": {
+          "available_rows": 7305,
+          "distinct_rows": 7305,
+          "mean_visits_per_available_row": 26.9142,
+          "visits_per_arm_seed": 196608
+        },
+        "grid": {
+          "available_rows": 12704,
+          "distinct_rows": 12704,
+          "mean_visits_per_available_row": 15.4761,
+          "visits_per_arm_seed": 196608
+        },
+        "impact": {
+          "available_rows": 10297,
+          "distinct_rows": 10297,
+          "mean_visits_per_available_row": 44.552,
+          "visits_per_arm_seed": 458752
+        },
+        "libri": {
+          "available_rows": 50193,
+          "distinct_rows": 50193,
+          "mean_visits_per_available_row": 3.917,
+          "visits_per_arm_seed": 196608
+        },
+        "pusht": {
+          "available_rows": 4096,
+          "distinct_rows": 4096,
+          "mean_visits_per_available_row": 112.0,
+          "visits_per_arm_seed": 458752
+        },
+        "text": {
+          "available_rows": 131072,
+          "distinct_rows": 131072,
+          "mean_visits_per_available_row": 1.5,
+          "visits_per_arm_seed": 196608
+        }
+      },
+      "positions_per_arm_seed": 134217728,
+      "updates": 8192
+    }
+  },
+  "source": "Frozen training-set identity reported by the models. The sampler visits each family in seeded permutations before repeating.",
+  "total_rows": 337403
+}

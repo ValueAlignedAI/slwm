@@ -1,0 +1,18 @@
+{
+  "seed": 51110,
+  "ticks": 64,
+  "families": ["grid", "libri", "coco", "clotho", "droid", "text", "ami", "impact", "pusht"],
+  "mixture_32": [3, 3, 3, 2, 3, 3, 1, 7, 7],
+  "train_caps": [16000, 50193, 118272, 2000, 8192, 131072, 2048],
+  "dev_caps": [384, 384, 384, 192, 384, 384, 192],
+  "test_caps": [768, 512, 512, 256, 512, 512, 384],
+  "sources": {"grid": "artifacts/t2_audio_visual/grid_content_v1", "cache": "artifacts/general_world/diverse_v1/prepared", "g2": "artifacts/predictive_world/g2", "text": "artifacts/text/fineweb_edu_scale_v1"},
+  "split": {"impact": "sha256 rank of recording date, last 20 percent dev/test by date; nonoverlapping consecutive windows", "pusht": {"train":[100000,104096],"dev":[200000,200256],"test":[300000,300512]}},
+  "pusht": {"actions":3,"history":16,"horizon":16,"simulator":"e49cf07fd32ad6e69443af2921dd8343b0f9ad7d"},
+  "scales": {"pilot":[128,4],"medium":[512,8],"anchor":[896,12]},
+  "stage_updates": {"pilot":192,"medium":2048,"anchor":8192},
+  "batch": {"pilot":64,"medium":128,"anchor":256},
+  "seeds":[511,512],
+  "thresholds": {"relative_improvement":0.05,"paired_bootstrap":2000,"confidence":0.95},
+  "limits": {"account_compute_units_total":100,"credit_reserve":4,"max_wall_hours":10,"v6e_sessions":2}
+}

@@ -1,0 +1,24 @@
+{
+  "run": "g5-medium-hybrid-511-residual-gpu",
+  "recording": "2015-03-15-18-29-36",
+  "role": "development",
+  "source": "Owens et al., Greatest Hits (CC BY 4.0)",
+  "source_url": "https://andrewowens.com/vis/",
+  "video_size": [
+    16,
+    16
+  ],
+  "ticks": 1024,
+  "seconds": 43.690666666666665,
+  "readout": "one shared 128-D state per tick",
+  "prompts": [
+    "A stick taps metal repeatedly.",
+    "Rain falls on a wooden surface.",
+    "Someone drags an object across stone.",
+    "Water splashes."
+  ],
+  "weights_sha256": "05761b427e3151beb473da3f6f9586a9f85f843762ca97518950aa865a32a40c",
+  "prompt_effect_rms_mel": 1.6569936275482178,
+  "video_from_audio_frame_change": 3.0041086673736572,
+  "source_frame_change": 0.6087984176441837
+}

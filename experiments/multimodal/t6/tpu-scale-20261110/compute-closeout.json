@@ -1,0 +1,36 @@
+{
+  "accelerators": [
+    {
+      "durable_and_release_requested_utc": "2026-11-10T10:20:31.728160+00:00",
+      "estimated_units_from_elapsed_time": 6.722,
+      "first_observed_utc_approximate": "2026-11-10T08:10:00+00:00",
+      "hardware": "v5e-1",
+      "seed": 511,
+      "verified_rungs": 14
+    },
+    {
+      "durable_and_release_requested_utc": "2026-11-10T10:48:34.431712+00:00",
+      "estimated_units_from_elapsed_time": 6.021,
+      "first_observed_utc_approximate": "2026-11-10T08:51:40+00:00",
+      "hardware": "v5e-1",
+      "seed": 512,
+      "verified_rungs": 14
+    }
+  ],
+  "attribution": "Time-based TPU estimate; the account-wide debit includes an L4 outside this study. Google showed only the L4 after both study TPUs were released.",
+  "balance_at_project_release": 181.7,
+  "billing_rate_each_observed": 3.09,
+  "clock_positions_per_model": 134217728,
+  "credit_limit": 100.0,
+  "effective_batch": 256,
+  "estimated_study_units": 12.7,
+  "examples_per_model": 2097152,
+  "positions_across_eight_training_runs": 1073741824,
+  "stages_verified_twice": 28,
+  "starting_account_balance": 196.2,
+  "study_assignments_remaining": 0,
+  "training_steps_per_model": 8192,
+  "unique_models": 8,
+  "v6e": "Native allocation returned no matching assignment. The second v5e was the authorized fallback.",
+  "whole_account_debit": 14.5
+}

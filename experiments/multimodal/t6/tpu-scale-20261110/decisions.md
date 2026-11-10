@@ -1,0 +1,7 @@
+# Independent sustained decisions at the final exposure
+
+Freeze this evaluation before the eight 8,192-update endpoints and before generating any decisions on these starts. Use 32 previously unused simulator reset seeds 402000–402031. They are disjoint from model training, both G5 live probes, and the original sealed physics comparison. Run the same ten candidates, goal construction, sixteen-action plans and 24 decisions as the published G5 planner. That is 38.4 simulated seconds per scene. Give all rules identical observations and starts.
+
+At each size and training seed, evaluate the matched hybrid and dense checkpoints on the same 3090 with carried memory and with a fresh training window at each decision. Include the fitted training-only action prior and the passive agent. The primary result is final block-center distance to the requested goal, in pixels. Report successful final states within 30 pixels, ever entering that radius, all per-scene distances and paired episode intervals. Distinguish improvement over the dense controller from improvement over the fitted physical rule. A sustained-policy advantage requires a 5% reduction in final distance against both the dense controller and the prior, positive paired 95% intervals, and replication at both training seeds. Reset is a prespecified ablation. The model chooses from the fixed action library.
+
+Only independently archived terminal weights enter this probe. The separate G5 test runs take priority on the local GPU. No G6 training update or checkpoint selection uses these decisions.

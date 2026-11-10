@@ -1,0 +1,36 @@
+{
+  "audio_log_rms_envelope": {
+    "aligned": -0.030361852415518285,
+    "shifted_95pct": 0.07779834684477772,
+    "shifted_median": 0.001920837078498068,
+    "ticks": 1024
+  },
+  "clips": {
+    "audio-to-video": {
+      "bytes": 1864184,
+      "seconds": 43.690667,
+      "sha256": "bbe6f122b4ec6ce71c5541689216306a3dd1ff83b0f6f7dd881c48e8e4b5d0f2"
+    },
+    "text-to-audio-video": {
+      "bytes": 2446402,
+      "seconds": 43.690667,
+      "sha256": "951a894f0843833c326a016e019656208f02b6c5b004d926dd4420cd78a651d3"
+    },
+    "video-to-audio": {
+      "bytes": 771614,
+      "seconds": 43.690667,
+      "sha256": "09b64b3301a3180b1cb49e8b5e831d8edf6cd3bb18efc75ae89135178c1c9e4d"
+    }
+  },
+  "frame_absolute_motion_envelope": {
+    "aligned": 0.02265726689083938,
+    "shifted_95pct": 0.07549774190816788,
+    "shifted_median": -0.0012754631897342228,
+    "ticks": 1023
+  },
+  "inference_sha256": "b1c5e18c1a35e0a0804c32779340369300317f782b626a3adf3451e2b2ce70f9",
+  "prompt_effect_rms_mel": 3.351541519165039,
+  "recording": "2015-03-15-18-29-36",
+  "role": "one development clip",
+  "run": "g6-v5e-larger-gpt2-511"
+}

@@ -1,0 +1,22 @@
+{
+  "bootstrap_seed": 51110,
+  "replicates": 4000,
+  "reset_vs_carried": {
+    "gpt2": {
+      "mean_reduction_px": 68.23584812613879,
+      "paired_percentile_ci95_px": [
+        38.78693729296796,
+        98.65660018858914
+      ],
+      "scenes": 32
+    },
+    "hybrid": {
+      "mean_reduction_px": 26.845544306494958,
+      "paired_percentile_ci95_px": [
+        5.439056839410097,
+        52.863194446300156
+      ],
+      "scenes": 32
+    }
+  }
+}

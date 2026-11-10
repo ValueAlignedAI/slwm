@@ -1,0 +1,39 @@
+{
+  "clips": 32,
+  "recognizer": "openai/whisper-tiny.en",
+  "results": {
+    "codec": {
+      "wer": 0.65625,
+      "word_edits": 126,
+      "words": 192
+    },
+    "gpt2-text": {
+      "wer": 1.0,
+      "word_edits": 192,
+      "words": 192
+    },
+    "gpt2-video": {
+      "wer": 1.0,
+      "word_edits": 192,
+      "words": 192
+    },
+    "hybrid-text": {
+      "wer": 1.0,
+      "word_edits": 192,
+      "words": 192
+    },
+    "hybrid-video": {
+      "wer": 1.0,
+      "word_edits": 192,
+      "words": 192
+    },
+    "original": {
+      "wer": 0.515625,
+      "word_edits": 99,
+      "words": 192
+    }
+  },
+  "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "role": "development",
+  "speakers": 4
+}
