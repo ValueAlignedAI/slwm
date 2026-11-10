@@ -62,7 +62,9 @@ def main(a):
             while not endpoint and attempts<3 and bounds():
                 if attempts:
                     # Supply errors back off across a single account; do not switch users or regions.
-                    until=time.time()+[0,1800,3600][attempts]
+                    previous=json.loads(path.read_bytes()) if path.is_file() else old
+                    until=previous.get("next_attempt_unix",time.time()+[0,1800,3600][attempts])
+                    report(core,"capacity_backoff",attempts=attempts,next_attempt_unix=until)
                     while time.time()<until and bounds():
                         time.sleep(min(45,max(.1,until-time.time())))
                 if not bounds():
@@ -86,10 +88,17 @@ def main(a):
                             report(core,"refused",attempts=attempts)
                             return
                 endpoint=live().get(name)
+                if not endpoint and attempts<3:
+                    report(core,"capacity_backoff",attempts=attempts,next_attempt_unix=time.time()+[0,1800,3600][attempts])
             if not endpoint:
                 report(core,"capacity_unavailable",attempts=attempts)
                 return
-            report(core,"preparing",attempts=attempts,endpoint=endpoint)
+            if a.stage_gate and a.stage_gate.is_file():
+                gate=json.loads(a.stage_gate.read_bytes())
+                expected={f"g5-medium-{c}-{s}-residual-gpu" for c in ("hybrid","gpt2") for s in (511,512)}
+                if gate.get("advance_to_anchor") and set(gate.get("matched_sha256",{}))==expected:
+                    scale="anchor"
+            report(core,"preparing",attempts=attempts,endpoint=endpoint,scale=scale)
             call([*wrapper,"prepare",name],timeout=300,stdout=subprocess.DEVNULL)
             call([*wrapper,"exec",name,"-f","scripts/train/g4_colab_topology.py","--timeout","90"],timeout=150)
             with tempfile.TemporaryDirectory(dir=roots) as temp:
@@ -121,7 +130,7 @@ def main(a):
             deadline=int(json.loads(a.state.read_bytes())["deadline_unix"])
             job=f"cd /content/g5-code && bash scripts/train/g5_cloud_lane.sh {core} {deadline} {scale}; echo $? > /content/g5-exit"
             call([*wrapper,"ssh",name,"bash","-c",'nohup bash -c "$1" </dev/null >/content/g5-lane.log 2>&1 &',"launch",job],timeout=100)
-            report(core,"training",endpoint=endpoint,attempts=attempts)
+            report(core,"training",endpoint=endpoint,attempts=attempts,scale=scale)
             fails=0
             while time.time()<deadline-180 and not (roots/"release").exists():
                 time.sleep(60)
@@ -157,4 +166,5 @@ if __name__=="__main__":
     p.add_argument("--repo",required=True,type=Path); p.add_argument("--state",required=True,type=Path)
     p.add_argument("--pins",required=True,type=Path); p.add_argument("--revision",required=True)
     p.add_argument("--scale",choices=["medium","anchor"],default="medium")
+    p.add_argument("--stage-gate",type=Path)
     main(p.parse_args())
