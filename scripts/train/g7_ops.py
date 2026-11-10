@@ -53,7 +53,7 @@ def main(a):
                                      f"python scripts/train/g7_extract_fresh.py /content/{file} {sha} /content/g7-fresh {role}")
                             stream(name,[*FED,"cat","/mnt/slwm-data/SLWM/g7/packets/"+file],extract)
                         fresh.add(role)
-                    job=next((v for v in sorted(info["rungs"],key=lambda r:(r["step"],"fresh" not in r["run"],r["run"]))
+                    job=next((v for v in sorted(info["rungs"],key=lambda r:(r["step"]!=16384,r["step"],"fresh" not in r["run"],r["run"]))
                               if v["evaluated"] and not (receipts/(v["run"]+"-"+str(v["step"])+".json")).exists()),None)
                     if job:
                         note("archiving",run=job["run"],step=job["step"])

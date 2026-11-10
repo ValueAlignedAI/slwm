@@ -22,8 +22,10 @@ for arm in fresh replay; do
       PYTHONPATH="$deps" "$py" -m training.g5_live render --starss --data "$data" --repo "$HOME/dev/slwm-g3" --out "$out"
       PYTHONPATH="$deps" "$py" scripts/train/g6_media_metrics.py "$out" "$stage"
     fi
+    if [[ -s "$out/previews.json" ]]; then continue; fi
     ffmpeg -y -v error -i "$out/audio-to-video.mp4" -an -vf scale=128:128:flags=neighbor -c:v libvpx-vp9 -b:v 36k -crf 40 "$out/previews/audio-to-video.webm"
     ffmpeg -y -v error -i "$out/video-to-audio.wav" -c:a libopus -b:a 40k "$out/previews/video-to-audio.ogg"
     ffmpeg -y -v error -i "$out/text-to-audio-video.mp4" -vf scale=128:128:flags=neighbor -c:v libvpx-vp9 -b:v 36k -crf 40 -c:a libopus -b:a 40k "$out/previews/text-to-audio-video.webm"
+    python3 scripts/train/g7_check_previews.py "$out"
   done
 done

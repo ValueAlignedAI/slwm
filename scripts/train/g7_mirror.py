@@ -35,6 +35,11 @@ def mirror():
             for f in mark.parent.rglob("*"):
                 if f.is_file() and f.suffix in (".npz",".pt",".json",".wav"):
                     copy(a,b,f.relative_to(a),inventory)
+    for pattern in ("physical-time/*/*/confirm.json","live/*/previews.json"):
+        for marker in a.glob(pattern):
+            for f in marker.parent.rglob("*"):
+                if f.is_file() and f.suffix in (".json",".npz",".pt",".wav",".mp4",".ogg",".webm"):
+                    copy(a,b,f.relative_to(a),inventory)
     for area in ("supervised-confirmation","timing-audit","retrieval","planning"):
         for f in (a/area).rglob("*"):
             if f.is_file() and f.suffix in (".json",".npz"):copy(a,b,f.relative_to(a),inventory)
