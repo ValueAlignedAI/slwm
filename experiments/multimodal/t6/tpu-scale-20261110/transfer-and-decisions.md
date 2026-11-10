@@ -19,9 +19,12 @@ The same heads are evaluated on eight different speakers and sentence combinatio
 
 | Parameters | Seed | Hybrid | Dense | Hybrid gain, pp | Speaker-paired interval, pp |
 | ---: | ---: | ---: | ---: | ---: | ---: |
+| 116,502,025 | [511](supplemental/speakers-v5e-anchor-511.json) | 27.00% | 27.38% | -0.38 | -1.45 to 1.06 |
 | 116,502,025 | [512](supplemental/speakers-v5e-anchor-512.json) | 25.88% | 24.26% | 1.62 | 0.69 to 3.10 |
 | 202,346,377 | [511](supplemental/speakers-v5e-larger-511.json) | 31.04% | 23.98% | 7.05 | 6.50 to 8.04 |
 | 202,346,377 | [512](supplemental/speakers-v5e-larger-512.json) | 25.81% | 22.81% | 3.00 | 1.71 to 4.44 |
+
+The eight-speaker replication at 116,502,025 parameters did not pass the original two-seed shared-content gate.
 
 The eight-speaker replication at 202,346,377 parameters passed the original two-seed shared-content gate.
 
