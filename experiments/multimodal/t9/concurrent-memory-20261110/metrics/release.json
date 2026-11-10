@@ -1,0 +1,60 @@
+{
+  "additional_dose_fits": 4,
+  "all_owned_released": true,
+  "complete": true,
+  "cuda_environment": {
+    "driver": "615.78.08",
+    "hardware": "RTX 3090",
+    "jax": "0.12.0.1",
+    "jaxlib": "0.12.0.1",
+    "numpy": "2.5.4",
+    "python": "3.12.15"
+  },
+  "cumulative_owned_units": 37.501280916544204,
+  "drive_at_release": {
+    "pending": 146,
+    "phase": "backoff",
+    "reason": "shared_drive_project_query_limit",
+    "verified_files": 0
+  },
+  "media_durations_seconds": {
+    "closed_loop": 51.2,
+    "cross_modal": 40
+  },
+  "owned_endpoints": [
+    {
+      "active": false,
+      "hardware": "V5E1",
+      "name": "slwm-g9-boreal",
+      "rate": 3.09,
+      "seconds": 4802.3777668476105,
+      "units": 4.122040916544202
+    }
+  ],
+  "owned_units": 4.122040916544202,
+  "primary_fits": 38,
+  "primary_frozen_stages": 54,
+  "prior_owned_units": 33.37924,
+  "scope": "Named G9 endpoints only; other account activity excluded",
+  "score_panels": {
+    "development": 54,
+    "dose": 4,
+    "held": 38,
+    "primary": 54,
+    "source_invariance": 8,
+    "uncapped": 8
+  },
+  "supplemental_frozen_stages": 4,
+  "total_fits": 42,
+  "tpu_environment": {
+    "hardware": "v5e-1",
+    "jax": "0.11.2",
+    "jaxlib": "0.11.2",
+    "libtpu": "0.0.50",
+    "numpy": "2.4.6",
+    "python": "3.13.18"
+  },
+  "two_disk_checkpoints": 58,
+  "verified_adapter_files": 8,
+  "verified_portable_models": 2
+}
