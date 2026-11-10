@@ -11,6 +11,14 @@ import torch
 from colab_artifacts import capture, sha256
 
 
+def variant_optimizer_prefix(group, config, lock, primary):
+    if config.get("training_family_order") != list(primary["families"]) or config.get("families") != primary["families"]:
+        return None
+    # Rejected historical generations are immutable. Bind new optimizer names to
+    # their own training provenance before checking receipts at the same step.
+    return f"g3-{group}-{sha256(lock)[:12]}"
+
+
 def stage_optimizers(output, config, spool, seen, prefix):
     cfg = json.loads(config.read_text())
     training_lock = output / "training_lock.json"
@@ -59,7 +67,10 @@ def stage_runs(root, spool, seen, checkpoint_root=None):
     for group in ("depth6", "structured"):
         variant = output/group
         if (variant/"config.json").exists() and (variant/"training_lock.json").exists():
-            stage_optimizers(variant, variant/"config.json", spool, seen, f"g3-{group}")
+            current = json.loads((variant/"config.json").read_bytes())
+            prefix = variant_optimizer_prefix(group,current,variant/"training_lock.json",cfg)
+            if prefix:
+                stage_optimizers(variant, variant/"config.json", spool, seen, prefix)
     # Each completed comparison is also an inference package. Receipts from
     # these groups let the Mac publish results without downloading the weights.
     for folder, prefix in (("", "summary"), ("depth6", "depth"), ("structured", "structured")):
@@ -76,6 +87,11 @@ def stage_runs(root, spool, seen, checkpoint_root=None):
             for name in json.loads(report.read_text())["rows"]:
                 files[f"{name}.pt"] = source / name / f"step-{step}.pt"
                 files[f"{name}.json"] = source / name / f"step-{step}.json"
+                if folder:
+                    paired = json.loads((output/name/f"step-{step}.json").read_bytes())
+                    actual = json.loads(files[f"{name}.json"].read_bytes())
+                    if actual["exposure_sha256"] != paired["exposure_sha256"]:
+                        raise ValueError(f"Unequal exposure in export {folder}/{name}/{step}")
                 for head in (source / name / f"eval-{step}").glob("*-32shot-head.npz"):
                     files[f"{name}-{head.name}"] = head
             capture(spool, run, step, files)
