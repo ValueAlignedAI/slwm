@@ -1,0 +1,1477 @@
+{
+  "inputs": {
+    "joint": "past video, proprioception and prospective plan",
+    "state": "past proprioception and prospective plan",
+    "unplanned": "past video and proprioception, prospective plan zeroed",
+    "video": "past camera and prospective plan"
+  },
+  "models": {
+    "g6-v5e-anchor-gpt2-511": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.654171631475786,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 16.771162184724794,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            15.755790488095402,
+            17.764832207700564
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.339473489657397,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            13.749808030420484,
+            14.90142650182297
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.05131017827975613,
+          "endpoint_px": 6.602861453196031,
+          "paired_scene_ci95_px": [
+            -0.24882142523448833,
+            0.15870607558023775
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 18.702832516381093,
+          "endpoint_px": 25.35700414785688,
+          "paired_scene_ci95_px": [
+            17.707518704282922,
+            19.64192660247818
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.080486817667776,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            19.805066051458315,
+            22.30029521919565
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 13.602305707157008,
+          "endpoint_px": 20.256477338632795,
+          "paired_scene_ci95_px": [
+            12.81986193221689,
+            14.39795019863121
+          ]
+        }
+      },
+      "weights": "c36aaafe4323696ed0e45f49bb26c4f7d4d5732fe6c37c2ed65880cd361e0b02"
+    },
+    "g6-v5e-anchor-gpt2-512": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 7.325589796581117,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 16.099744019619465,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            15.106582466451014,
+            17.052877079115675
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 13.668055324552064,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            13.110879463287333,
+            14.199580146098
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": 0.22039301977978223,
+          "endpoint_px": 7.5459828163609,
+          "paired_scene_ci95_px": [
+            -0.03833641352485488,
+            0.47243168355512644
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 18.195130895064317,
+          "endpoint_px": 25.520720691645433,
+          "paired_scene_ci95_px": [
+            17.21819394983818,
+            19.15146057822552
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 20.409068652562446,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            19.182374956011795,
+            21.59774274777192
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 13.032751961287998,
+          "endpoint_px": 20.358341757869116,
+          "paired_scene_ci95_px": [
+            12.25282147686322,
+            13.803880637525326
+          ]
+        }
+      },
+      "weights": "e8359124e06582972edb853333d3bec853d1b85d7e1f4c4156f9fe9e361caa33"
+    },
+    "g6-v5e-anchor-hybrid-511": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.25769397419231,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.16763984200827,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.171227100191302,
+            19.172864675705984
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.735951146940874,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.159419537242098,
+            16.300915408577403
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.08325344295328395,
+          "endpoint_px": 5.174440531239027,
+          "paired_scene_ci95_px": [
+            -0.2603267795838312,
+            0.0844528282131708
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.821923144395633,
+          "endpoint_px": 26.079617118587944,
+          "paired_scene_ci95_px": [
+            19.94436364592592,
+            21.700733619367828
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.476964474951252,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.191009747625,
+            23.68671273751801
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.179052484208055,
+          "endpoint_px": 13.436746458400366,
+          "paired_scene_ci95_px": [
+            7.578281314463398,
+            8.747901658551298
+          ]
+        }
+      },
+      "weights": "9f9223c4ae96a2d38773f18d0ba91df7b6337dbf0060c1eb40e837878f2ab194"
+    },
+    "g6-v5e-anchor-hybrid-512": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.275061170989927,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.150272645210656,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.147695208036794,
+            19.130025582315596
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.718583950143255,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.123112563445973,
+            16.266915157073047
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.17310792002993897,
+          "endpoint_px": 5.101953250959989,
+          "paired_scene_ci95_px": [
+            -0.327351355261146,
+            -0.019783141600595775
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.19661054515923,
+          "endpoint_px": 26.47167171614916,
+          "paired_scene_ci95_px": [
+            20.31009475566184,
+            22.05322601541692
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.45959727815363,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.199110957253772,
+            23.664098001947288
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.2793120053456,
+          "endpoint_px": 13.55437317633553,
+          "paired_scene_ci95_px": [
+            7.716685277466755,
+            8.850142933487284
+          ]
+        }
+      },
+      "weights": "3e91b908dba3115592ca8a57092259d088596976fc4cb0cbe5584828696bb487"
+    },
+    "g6-v5e-larger-gpt2-511": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 7.650092388680282,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 15.7752414275203,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            14.715507941231683,
+            16.742080645931434
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 13.3435527324529,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            12.77448183558153,
+            13.89231449617285
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.15573020610060634,
+          "endpoint_px": 7.494362182579676,
+          "paired_scene_ci95_px": [
+            -0.39007142356520397,
+            0.09217876928149293
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 18.405102392142993,
+          "endpoint_px": 26.055194780823278,
+          "paired_scene_ci95_px": [
+            17.421299097067834,
+            19.31682559311343
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 20.08456606046328,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            18.829539835593188,
+            21.29871632708672
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 12.570633515664687,
+          "endpoint_px": 20.22072590434497,
+          "paired_scene_ci95_px": [
+            11.773912050583188,
+            13.36805160885674
+          ]
+        }
+      },
+      "weights": "b1c5e18c1a35e0a0804c32779340369300317f782b626a3adf3451e2b2ce70f9"
+    },
+    "g6-v5e-larger-gpt2-512": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.9793291154948225,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 16.44600470070576,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            15.44114923631011,
+            17.42124272396388
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.01431600563836,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            13.471737983075176,
+            14.535527573513802
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.19514159425808003,
+          "endpoint_px": 6.784187521236744,
+          "paired_scene_ci95_px": [
+            -0.3922240653634309,
+            1.3264380794764418e-05
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 18.760627767264644,
+          "endpoint_px": 25.739956882759472,
+          "paired_scene_ci95_px": [
+            17.85211139857037,
+            19.700302789159288
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 20.75532933364874,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            19.552299655075053,
+            21.928135527431273
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 11.93903508527225,
+          "endpoint_px": 18.918364200767073,
+          "paired_scene_ci95_px": [
+            11.105804325235956,
+            12.734444793001602
+          ]
+        }
+      },
+      "weights": "22bf86437f3922d76f448b76b11adf0d0bfc5618aa9329b6f6dbb8976beda94c"
+    },
+    "g6-v5e-larger-hybrid-511": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.469845363395914,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.955488452804673,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.951326431640254,
+            18.959963498947047
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.523799757737269,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.93435944094707,
+            16.071772624189432
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.14634453264214908,
+          "endpoint_px": 5.323500830753765,
+          "paired_scene_ci95_px": [
+            -0.29553882360075734,
+            0.0014769523681243662
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.126118604837707,
+          "endpoint_px": 26.59596396823362,
+          "paired_scene_ci95_px": [
+            20.233382198495075,
+            21.99256142595634
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.264813085747647,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.004811162742403,
+            23.510486080158003
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.127406752575101,
+          "endpoint_px": 13.597252115971013,
+          "paired_scene_ci95_px": [
+            7.538880641538024,
+            8.738299241322983
+          ]
+        }
+      },
+      "weights": "5b8c96162554ad1d87429d4ce9d4fb8940ef7715a59b856d68269f5b63c4745b"
+    },
+    "g6-v5e-larger-hybrid-512": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.341940365265469,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.083393450935112,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.08877055683644,
+            19.03831336787009
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.651704755867716,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.060252882157801,
+            16.191757435560483
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.0049568563404672195,
+          "endpoint_px": 5.336983508925002,
+          "paired_scene_ci95_px": [
+            -0.17847238017304898,
+            0.17072176502751238
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 19.764011389397837,
+          "endpoint_px": 25.10595175466331,
+          "paired_scene_ci95_px": [
+            18.84896859999696,
+            20.679159578063082
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.392718083878094,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.10282904083218,
+            23.616467622131204
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.264470103440281,
+          "endpoint_px": 13.60641046870575,
+          "paired_scene_ci95_px": [
+            7.673237038277948,
+            8.851895153946565
+          ]
+        }
+      },
+      "weights": "81ccc97355f92c5dabb570c5be2a8ba5918b83584ce71b707a889d4d365d8a03"
+    },
+    "g7-v5e-anchor-gpt2-511-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.481230720074265,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.94410309612632,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.94853453537835,
+            18.883606263880882
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.512414401058919,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.934665973871088,
+            16.059138214540184
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.00939765597906514,
+          "endpoint_px": 5.4718330640952,
+          "paired_scene_ci95_px": [
+            -0.19511788919849327,
+            0.1776901756756493
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.13157078049769,
+          "endpoint_px": 25.61280150057196,
+          "paired_scene_ci95_px": [
+            19.10817553694971,
+            21.089762018341208
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.253427729069294,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.012579156639028,
+            23.4479512801138
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.143780195675289,
+          "endpoint_px": 13.625010915749552,
+          "paired_scene_ci95_px": [
+            7.5685487184561495,
+            8.72150019806568
+          ]
+        }
+      },
+      "weights": "dac86edd77d2ae20a3cc309a9d6ebcaf7db0993ce442206eca2ad61ef977c89e"
+    },
+    "g7-v5e-anchor-gpt2-511-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.015379913873545,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.40995390232704,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.418316395545432,
+            18.401101650725025
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.97826520725964,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.39272160749134,
+            15.528060120236681
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.2958853894604674,
+          "endpoint_px": 5.7194945244130775,
+          "paired_scene_ci95_px": [
+            -0.5131260539700457,
+            -0.07798592300424212
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 19.03383035729938,
+          "endpoint_px": 25.049210271172925,
+          "paired_scene_ci95_px": [
+            18.0672166878764,
+            19.991327800489398
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.719278535270018,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.4777019671904,
+            22.947767321767397
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.64787429009063,
+          "endpoint_px": 14.663254203964176,
+          "paired_scene_ci95_px": [
+            8.012837354535657,
+            9.27983985741505
+          ]
+        }
+      },
+      "weights": "906dd5a3178ecdfbf0c6d2be4c50a6c9cf40a73edab8a091112fb208c21c5d17"
+    },
+    "g7-v5e-anchor-gpt2-512-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.890123273822943,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.53521054237764,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.515080737415616,
+            18.52272933638334
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.10352184731024,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.523496557715534,
+            15.65462160307776
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": 0.06957740494750925,
+          "endpoint_px": 5.959700678770452,
+          "paired_scene_ci95_px": [
+            -0.1425020736549227,
+            0.2715034405254551
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.14826181494082,
+          "endpoint_px": 26.03838508876376,
+          "paired_scene_ci95_px": [
+            19.16568957892254,
+            21.127248210850684
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.844535175320615,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.59458772340903,
+            23.064531688340246
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.460183201674885,
+          "endpoint_px": 14.350306475497828,
+          "paired_scene_ci95_px": [
+            7.866480202493684,
+            9.098888283190757
+          ]
+        }
+      },
+      "weights": "d597b4f1059965fc2b41e2aa19a4a8485bba2ad7bab2a8f306f733564265262d"
+    },
+    "g7-v5e-anchor-gpt2-512-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.433431613236389,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 16.99190220296419,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            15.974251972866456,
+            17.978161525519553
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.560213507896794,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            13.964845482256312,
+            15.107472423657361
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.28841665896038804,
+          "endpoint_px": 6.145014954276001,
+          "paired_scene_ci95_px": [
+            -0.5343050324108324,
+            -0.056312533822348125
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 18.808132506865434,
+          "endpoint_px": 25.241564120101824,
+          "paired_scene_ci95_px": [
+            17.83052729495653,
+            19.74006376847506
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.301226835907173,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.010541467136846,
+            22.51932971699477
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 9.005902590648441,
+          "endpoint_px": 15.43933420388483,
+          "paired_scene_ci95_px": [
+            8.304218944017334,
+            9.686670381003829
+          ]
+        }
+      },
+      "weights": "478473d6da26514bf7836494e21a4e54c2ad5ad7c2bb79fb5b52604b798fa3fe"
+    },
+    "g7-v5e-anchor-hybrid-511-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.378988142706232,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 19.04634567349435,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            18.055805312447607,
+            20.01307188671602
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.61465697842695,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            16.020332505977166,
+            17.153994437787265
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": 0.01791811349758976,
+          "endpoint_px": 4.396906256203821,
+          "paired_scene_ci95_px": [
+            -0.13846482494985188,
+            0.17715386885236598
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 22.392738062948695,
+          "endpoint_px": 26.771726205654925,
+          "paired_scene_ci95_px": [
+            21.526536273064956,
+            23.277396708630828
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 23.355670306437325,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            22.081765147603463,
+            24.579569965537424
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.851171287532878,
+          "endpoint_px": 12.230159430239109,
+          "paired_scene_ci95_px": [
+            7.334935988122252,
+            8.408349470127764
+          ]
+        }
+      },
+      "weights": "5460237bff3a8bf0451244449af46159a642bf7f2259bc20df47158e822bf822"
+    },
+    "g7-v5e-anchor-hybrid-511-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.770022894149399,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.655310922051186,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.657727223775645,
+            19.62487717164633
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.223622226983785,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.653139577249547,
+            16.783708140163537
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.1338656547947358,
+          "endpoint_px": 4.636157239354663,
+          "paired_scene_ci95_px": [
+            -0.2909364555932219,
+            0.025400523679331675
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.89552956309469,
+          "endpoint_px": 26.66555245724409,
+          "paired_scene_ci95_px": [
+            21.012751347721686,
+            22.80314514044774
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.96463555499416,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.68894516266714,
+            24.173085248249066
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.784727883335709,
+          "endpoint_px": 12.554750777485108,
+          "paired_scene_ci95_px": [
+            7.202551362626906,
+            8.409669615584969
+          ]
+        }
+      },
+      "weights": "9c140f5c9f266dffb7207cd09ad20e0f2e75366d3750b45f4f93ad1c47c323b5"
+    },
+    "g7-v5e-anchor-hybrid-512-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.408169080595913,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 19.01716473560467,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            18.004778690493545,
+            20.017529624537445
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.58547604053727,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.995442778780422,
+            17.176965278407216
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.07841789466415938,
+          "endpoint_px": 4.329751185931754,
+          "paired_scene_ci95_px": [
+            -0.22567339125310953,
+            0.0540556559922034
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.43747214395154,
+          "endpoint_px": 25.84564122454745,
+          "paired_scene_ci95_px": [
+            20.466619721373934,
+            22.41505988334512
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 23.326489368547648,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            22.040184202664058,
+            24.538692206339274
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.895123370860132,
+          "endpoint_px": 12.303292451456045,
+          "paired_scene_ci95_px": [
+            7.324196754357881,
+            8.457946051262109
+          ]
+        }
+      },
+      "weights": "1b25bd42a7752c72a41ad394caf6800b08a8cfe5c264f9dfd32f08f4787e12ce"
+    },
+    "g7-v5e-anchor-hybrid-512-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.873344231725023,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.55198958447556,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.54967942335512,
+            19.55822215250062
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.12030088940816,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.516923515181524,
+            16.703547733572947
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.34227594677087053,
+          "endpoint_px": 4.531068284954152,
+          "paired_scene_ci95_px": [
+            -0.49644169260143284,
+            -0.19280321563867114
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.736827767462838,
+          "endpoint_px": 26.610171999187866,
+          "paired_scene_ci95_px": [
+            20.75107633279464,
+            22.73899684414963
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.86131421741854,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.562657858018564,
+            24.080392309591325
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.893564227369167,
+          "endpoint_px": 12.76690845909419,
+          "paired_scene_ci95_px": [
+            7.313254729433653,
+            8.483210894871474
+          ]
+        }
+      },
+      "weights": "fe8548ea8206d2a76e35a5c4874056a7e48ed4102751de17b7b9b6e64e334c95"
+    },
+    "g7-v5e-larger-gpt2-511-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.073269043178426,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.352064773022157,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.34786695486753,
+            18.338295629888112
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.920376077954757,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.347345739772331,
+            15.452749511189682
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": 0.002917312498236544,
+          "endpoint_px": 6.076186355676663,
+          "paired_scene_ci95_px": [
+            -0.19755535499360058,
+            0.20768793410288067
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.684685432751344,
+          "endpoint_px": 26.757954475929772,
+          "paired_scene_ci95_px": [
+            19.70982013453501,
+            21.616662509414944
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.661389405965135,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.426012177702713,
+            22.860584841522094
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.57008386292068,
+          "endpoint_px": 14.643352906099107,
+          "paired_scene_ci95_px": [
+            7.939859901596583,
+            9.20493592537332
+          ]
+        }
+      },
+      "weights": "d67b60267b779c4c2cfd9fbcbd2dc6ba8e1f4caf227c55dba96ab7e6521fa1bd"
+    },
+    "g7-v5e-larger-gpt2-511-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.59367036387024,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 16.83166345233034,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            15.808616083378773,
+            17.825695636679686
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.399974757262942,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            13.827349871284644,
+            14.964898324189097
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.4163094389813338,
+          "endpoint_px": 6.177360924888907,
+          "paired_scene_ci95_px": [
+            -0.661297973537389,
+            -0.16229378579198853
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.502027162096066,
+          "endpoint_px": 27.095697525966308,
+          "paired_scene_ci95_px": [
+            19.58367939462011,
+            21.44103403176492
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.140988085273317,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            19.88488798651453,
+            22.35482541757741
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.747400206420263,
+          "endpoint_px": 15.341070570290505,
+          "paired_scene_ci95_px": [
+            8.045243296825733,
+            9.48222857065149
+          ]
+        }
+      },
+      "weights": "79764c13e701876af0f87bd24c54994b313f91505f97b9ac6fece71ea824806f"
+    },
+    "g7-v5e-larger-gpt2-512-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 5.6635136777427295,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.761820138457853,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.773343729794398,
+            18.734297520161107
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 15.330131443390455,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.769377095960232,
+            15.845121542873612
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.16617085179915037,
+          "endpoint_px": 5.497342825943578,
+          "paired_scene_ci95_px": [
+            -0.3464730083954165,
+            0.0007802836833071083
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 19.90585501926313,
+          "endpoint_px": 25.569368697005856,
+          "paired_scene_ci95_px": [
+            19.00867227613344,
+            20.827426885414948
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.07114477140083,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.81033199275647,
+            23.279524673156747
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 8.330116191817545,
+          "endpoint_px": 13.993629869560273,
+          "paired_scene_ci95_px": [
+            7.778103007885716,
+            8.905732606448336
+          ]
+        }
+      },
+      "weights": "f88e139f941f174b2677bc6076a49df471b17c14d6ffafe2fdedd5ff941bcd91"
+    },
+    "g7-v5e-larger-gpt2-512-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 6.108039797884148,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 17.317294018316435,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            16.319318421685946,
+            18.3044315551245
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 14.885605323249035,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            14.309719098123153,
+            15.429946416512792
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.3000313531363804,
+          "endpoint_px": 5.808008444747768,
+          "paired_scene_ci95_px": [
+            -0.5023147281203677,
+            -0.10739671595814915
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 20.056353188656118,
+          "endpoint_px": 26.164392986540264,
+          "paired_scene_ci95_px": [
+            19.120294817450933,
+            20.98677616585754
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 21.626618651259413,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            20.396934082400175,
+            22.817516400297887
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 9.03872644936801,
+          "endpoint_px": 15.146766247252156,
+          "paired_scene_ci95_px": [
+            8.397713042624797,
+            9.670206826290265
+          ]
+        }
+      },
+      "weights": "94611acbaf7a0e80a0bd1e92806a5d0c94fcc47ac9b0a07439d9e579ef9e9cbd"
+    },
+    "g7-v5e-larger-hybrid-511-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.527894895621877,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.897438920578708,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.91825414909986,
+            19.88444037293942
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.465750225511307,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.875674667882004,
+            17.026760681440784
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.1061457218399186,
+          "endpoint_px": 4.421749173781959,
+          "paired_scene_ci95_px": [
+            -0.2472553513437596,
+            0.030935812452848516
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 22.05051188410532,
+          "endpoint_px": 26.578406779727196,
+          "paired_scene_ci95_px": [
+            21.166724531551534,
+            22.985999778851713
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 23.206763553521682,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.919348759860675,
+            24.426400588965734
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.83784718439166,
+          "endpoint_px": 12.365742080013536,
+          "paired_scene_ci95_px": [
+            7.3329710507006665,
+            8.387447905689319
+          ]
+        }
+      },
+      "weights": "7364c3263a66f7eb2845dcb060281b66c75beb611ba0de45df2f758235b3b3e3"
+    },
+    "g7-v5e-larger-hybrid-511-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.886972251982495,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.538361564218086,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.534409979974743,
+            19.55516328748456
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.106672869150692,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.514543563618114,
+            16.654257581626865
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.23091971348584178,
+          "endpoint_px": 4.6560525384966525,
+          "paired_scene_ci95_px": [
+            -0.3890474002917834,
+            -0.06953097810902195
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.487389279916204,
+          "endpoint_px": 26.3743615318987,
+          "paired_scene_ci95_px": [
+            20.58443016156743,
+            22.397956076892495
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.847686197161067,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.593126104358763,
+            24.082562325708942
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.782822224928447,
+          "endpoint_px": 12.66979447691094,
+          "paired_scene_ci95_px": [
+            7.204764240392724,
+            8.43035418122051
+          ]
+        }
+      },
+      "weights": "79a5c899815906f3946f2d854218f28fed0eb09e77fcb7c0d07b860da7e063ec"
+    },
+    "g7-v5e-larger-hybrid-512-fresh": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.37561460808981,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 19.049719208110773,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            18.0464531068147,
+            19.995562903010633
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.618030513043376,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            16.02207312951859,
+            17.170989501318413
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": 0.030949632595967592,
+          "endpoint_px": 4.4065642406857775,
+          "paired_scene_ci95_px": [
+            -0.09207105585133216,
+            0.15879422916938926
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.408458114454834,
+          "endpoint_px": 25.784072722544643,
+          "paired_scene_ci95_px": [
+            20.473679433338383,
+            22.316549221414952
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 23.35904384105375,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            22.07917997302389,
+            24.588448023781634
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.766584990128208,
+          "endpoint_px": 12.142199598218017,
+          "paired_scene_ci95_px": [
+            7.233809730080046,
+            8.303606737818138
+          ]
+        }
+      },
+      "weights": "8eed6e9a2eef93c39eb42539d55ec563472e9b30b009d9df639ee555be3394e6"
+    },
+    "g7-v5e-larger-hybrid-512-replay": {
+      "conditions": {
+        "joint": {
+          "condition_minus_joint_px": 0.0,
+          "endpoint_px": 4.886434209342912,
+          "paired_scene_ci95_px": [
+            0.0,
+            0.0
+          ]
+        },
+        "persistence": {
+          "condition_minus_joint_px": 18.53889960685767,
+          "endpoint_px": 23.425333816200585,
+          "paired_scene_ci95_px": [
+            17.555404211575397,
+            19.52198815757072
+          ]
+        },
+        "ridge": {
+          "condition_minus_joint_px": 16.10721091179027,
+          "endpoint_px": 20.993645121133184,
+          "paired_scene_ci95_px": [
+            15.491576088352677,
+            16.67651779177479
+          ]
+        },
+        "state": {
+          "condition_minus_joint_px": -0.0955890467281506,
+          "endpoint_px": 4.790845162614763,
+          "paired_scene_ci95_px": [
+            -0.24233910662106783,
+            0.05472000388262234
+          ]
+        },
+        "unplanned": {
+          "condition_minus_joint_px": 21.0870070615803,
+          "endpoint_px": 25.973441270923217,
+          "paired_scene_ci95_px": [
+            20.13757582014859,
+            22.041154160403156
+          ]
+        },
+        "velocity": {
+          "condition_minus_joint_px": 22.848224239800647,
+          "endpoint_px": 27.73465844914356,
+          "paired_scene_ci95_px": [
+            21.557494403145842,
+            24.088825231295
+          ]
+        },
+        "video": {
+          "condition_minus_joint_px": 7.613428994687619,
+          "endpoint_px": 12.499863204030532,
+          "paired_scene_ci95_px": [
+            7.017756173754748,
+            8.211429393040543
+          ]
+        }
+      },
+      "weights": "cbff0fa0eb691af30085fa62a2e564f707000598aee8fe9a2c76a51d17f3886b"
+    }
+  },
+  "role": "512 independently held G7 simulator starts, all 16 terminal checkpoints and eight parents",
+  "target": "Error in predicting final displacement under a proposed action; lower is better.",
+  "uncertainty": "Paired whole-scene intervals on condition minus joint. Positive state-minus-joint favors adding the camera to proprioception."
+}

@@ -27,8 +27,8 @@ def draw(metrics,out):
                     ax.plot(x,y.mean(0),c=color,ls=ls,lw=1.9,marker="o",ms=3.4)
                     ax.fill_between(x,y.min(0),y.max(0),color=color,alpha=.085,linewidth=0)
         vals=d[f"g6-v5e-{size}-hybrid-511"][0]["fresh_dev"]
-        for i,(metric,mult) in enumerate((("raw_ridge_px",1),("raw_motion_ap",1000))):
-            axes[i,j].axhline(vals[metric]*mult,c="#58615d",lw=1,ls=":")
+        axes[0,j].text(.98,.95,f"Raw ridge {vals['raw_ridge_px']:.1f} px",transform=axes[0,j].transAxes,ha="right",va="top",fontsize=8,color="#454e55")
+        axes[1,j].axhline(vals["raw_motion_ap"]*1000,c="#58615d",lw=1,ls=":")
         count=d[f"g6-v5e-{size}-hybrid-511"][0]["params"]
         axes[0,j].set_title(f"{count/1e6:.2f}M parameters",fontsize=13,loc="left",fontweight="bold")
     for ax in axes.ravel():
@@ -38,7 +38,7 @@ def draw(metrics,out):
     axes[1,0].set_ylabel("Event average precision × 1,000")
     for ax in axes[1]:ax.set_xlabel("Total optimizer updates")
     handles=[Line2D([0],[0],color=v,lw=2,label=k) for k,v in (("Hybrid SLWM",colors["hybrid"]),("Dense GPT-2",colors["gpt2"]))]
-    handles.extend([Line2D([0],[0],color="#555",ls=ls,label=name) for name,ls in (("Fresh mixture","-"),("Replay","--"),("Raw control",":"))])
+    handles.extend([Line2D([0],[0],color="#555",ls=ls,label=name) for name,ls in (("Fresh mixture","-"),("Replay","--"),("Raw frame motion",":"))])
     fig.suptitle("Fresh-domain generalization through continued training",x=.085,ha="left",y=.985,fontsize=16,fontweight="bold")
     fig.legend(handles=handles,ncol=5,loc="upper left",bbox_to_anchor=(.076,.94),frameon=False,fontsize=9)
     fig.text(.085,.018,"Curves show the mean of two independent initializations. Shading spans those seeds. The initial point is the common parent.\nDevelopment uses 256 new simulator starts and five held Finnish rooms. Lower error and higher average precision are favorable.",fontsize=8,color="#37454d")

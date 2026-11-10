@@ -15,7 +15,8 @@ def ci(x):return np.quantile(x,[.025,.975]).tolist()
 def metrics(m):
     ap=m["impact"]["average_precision"]
     return {"endpoint_px":m["push"]["joint"]["endpoint_px"],"branch_error_px":m["push"]["joint"]["branch_difference_px"],
-            "video_endpoint_px":m["push"]["video"]["endpoint_px"],"raw_ridge_px":m["push"]["ridge"]["endpoint_px"],
+            "video_endpoint_px":m["push"]["video"]["endpoint_px"],"state_only_px":m["push"]["state"]["endpoint_px"],
+            "no_prospective_plan_px":m["push"]["unplanned"]["endpoint_px"],"persistence_px":m["push"]["persistence"]["endpoint_px"],"raw_ridge_px":m["push"]["ridge"]["endpoint_px"],
             "event_ap":ap["correct"],"erased_ap":ap["erase"],"shifted_ap":ap["shift"],"raw_motion_ap":ap["raw_motion"],
             "prevalence":m["impact"]["positive_prevalence"]}
 
