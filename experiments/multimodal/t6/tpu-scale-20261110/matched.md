@@ -7,4 +7,12 @@ Every row uses the same chip, data order, updates, and parameter budget for both
 | TPU v5 lite | 511 | 202,346,377 | [128](metrics/v5e-511-larger-128.json) | 21.604 | 21.496 | 0.05819 | 0.05806 |
 | TPU v5 lite | 511 | 202,346,377 | [512](metrics/v5e-511-larger-512.json) | 20.180 | 21.511 | 0.05663 | 0.05943 |
 
+## Parameter effect at the same exposure
+
+Positive values favor the 202.35M model in both columns. The linked records include paired 95% intervals.
+
+| TPU | Seed | Core | Updates | Action error reduction, px | Contact AP gain |
+| --- | ---: | --- | ---: | ---: | ---: |
+| TPU v5 lite | 511 | hybrid | [512](metrics/v5e-511-size-hybrid-512.json) | 1.386 | -0.00044 |
+
 These are development measurements. An architecture claim requires the two-seed, two-endpoint gate. [Study protocol](protocol.md)
