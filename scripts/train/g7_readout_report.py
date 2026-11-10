@@ -71,6 +71,15 @@ def collect(root,data,out):
     cards["sha256"]={r:read(data/"packets"/(r+".verified.json")) for r in ("train","dev","test")}
     if (data/"exposure.json").is_file():cards["complete_exposure"]=read(data/"exposure.json")
     write(out/"data.json",cards)
+    for group in ("retrieval","timing-audit"):
+        panels={p.stem:read(p) for p in sorted((root/group).glob("*.json"))}
+        write(out/(group+".json"),panels)
+    planner={}
+    for f in sorted((root/"planning").glob("*/complete.json")):
+        name=f.parent.name;planner[name]={"training":read(f)}
+        if (f.parent/"test.json").is_file():
+            d=read(f.parent/"test.json");planner[name]["evaluation"]={**d,"results":{k:{n:v for n,v in z.items() if n!="by_start"} for k,z in d["results"].items()}}
+    write(out/"planning.json",planner)
     print("Supervised",sum(len(policies[f]) for f in ("policy","policy-prior")),"RL",len(rl),"heads",len(align),flush=True)
 
 
