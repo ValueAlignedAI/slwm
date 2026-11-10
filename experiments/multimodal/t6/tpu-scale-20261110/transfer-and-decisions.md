@@ -13,4 +13,30 @@ At 116,502,025 parameters the two-seed shared-content gate was unmet. Each linke
 
 At 202,346,377 parameters the two-seed shared-content gate passed. Each linked result includes all nine directional cells, source-specific raw baselines, within-speaker shuffles and retrieval.
 
+## Final checkpoints on 32 unseen goal-reaching scenes
+
+All rules ran 24 successive decisions per scene. Lower final distance is better. The speech diagnostic uses the same frozen recognizer and held development speakers as G5.
+
+| Parameters | Seed | Hybrid, px | Dense, px | Prior, px | Hybrid reset, px | Dense reset, px |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 202,346,377 | [511](supplemental/terminal-v5e-larger-511.json) | 85.97 | 167.20 | 152.56 | 65.54 | 72.42 |
+
+## Visual contribution beyond the identical action plan
+
+The controls use 512 additional independent scenes. Positive reductions favor correct video. The gate requires positive paired intervals for error and decision regret against both erased and wrong-scene input.
+
+| Parameters | Seed | Core | Error reduction vs erased, px | Regret reduction vs erased, px | Visual gate |
+| ---: | ---: | --- | ---: | ---: | --- |
+| 202,346,377 | 511 | gpt2 | 16.26 | 3.88 | unmet |
+| 202,346,377 | 511 | hybrid | 10.87 | 3.50 | passed |
+
+## Held text and decoded speech
+
+The text score is bits per real next byte. The speech score is word error for audio generated from video. The linked JSON also contains transcript conditioning, original and codec speech controls, learned and empirical bigrams, and the earlier-prefix intervention.
+
+| Parameters | Seed | Core | Full text BPB | Empirical bigram BPB | Video-to-speech WER |
+| ---: | ---: | --- | ---: | ---: | ---: |
+| 202,346,377 | 511 | gpt2 | 2.202 | 3.708 | 100.00% |
+| 202,346,377 | 511 | hybrid | 2.011 | 3.708 | 100.00% |
+
 [Frozen readout protocol](shared-state.md) · [Fresh decision protocol](decisions.md) · [Conditional generation protocol](generation.md)
