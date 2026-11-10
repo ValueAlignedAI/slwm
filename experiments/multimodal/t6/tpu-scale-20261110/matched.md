@@ -16,6 +16,7 @@ Every row uses the same chip, data order, updates, and parameter budget for both
 | TPU v5 lite | 512 | 202,346,377 | [512](metrics/v5e-512-larger-512.json) | 21.118 | 21.415 | 0.05746 | 0.05805 |
 | TPU v5 lite | 512 | 116,502,025 | [2,048](metrics/v5e-512-anchor-2048.json) | 10.977 | 16.551 | 0.05821 | 0.06219 |
 | TPU v5 lite | 512 | 202,346,377 | [2,048](metrics/v5e-512-larger-2048.json) | 12.316 | 14.720 | 0.05766 | 0.06149 |
+| TPU v5 lite | 512 | 116,502,025 | [8,192](metrics/v5e-512-anchor-8192.json) | 6.305 | 8.255 | 0.04490 | 0.04577 |
 | TPU v5 lite | 512 | 202,346,377 | [8,192](metrics/v5e-512-larger-8192.json) | 6.466 | 7.697 | 0.04680 | 0.04509 |
 
 ## Parameter effect at the same exposure
@@ -35,5 +36,6 @@ Positive values favor the 202.35M model in both columns. The linked records incl
 | TPU v5 lite | 512 | gpt2 | [2,048](metrics/v5e-512-size-gpt2-2048.json) | 1.831 | -0.00070 |
 | TPU v5 lite | 512 | hybrid | [2,048](metrics/v5e-512-size-hybrid-2048.json) | -1.339 | -0.00055 |
 | TPU v5 lite | 512 | gpt2 | [8,192](metrics/v5e-512-size-gpt2-8192.json) | 0.558 | -0.00068 |
+| TPU v5 lite | 512 | hybrid | [8,192](metrics/v5e-512-size-hybrid-8192.json) | -0.162 | 0.00190 |
 
 These are development measurements. An architecture claim requires the two-seed, two-endpoint gate. [Study protocol](protocol.md)
