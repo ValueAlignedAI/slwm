@@ -67,7 +67,38 @@
         "unique_fresh_rows_seen": 98304
       }
     },
+    "modalities": {
+      "conditioning_rows": {
+        "audio": 524595,
+        "numeric": 442080,
+        "text": 641294,
+        "video": 899854
+      },
+      "conditioning_ticks": {
+        "audio": 33561632,
+        "numeric": 11783952,
+        "text": 41030675,
+        "video": 41086545
+      },
+      "cross_or_language_target_rows": {
+        "audio": 523981,
+        "numeric": 98299,
+        "text": 639574,
+        "video": 557938
+      },
+      "present_rows": {
+        "audio": 1048576,
+        "numeric": 655360,
+        "text": 1084260,
+        "video": 1572864
+      }
+    },
+    "modality_note": "Several modalities can be present, conditioning, or targets on one row. Target counts precede per-row objective weighting. Text-only rows include next-byte prediction.",
     "rows_per_arm": 2097152,
+    "specialized_supervision_rows": {
+      "action_conditioned_future": 458752,
+      "video_only_event_timing": 229303
+    },
     "updates": [
       8192,
       16384

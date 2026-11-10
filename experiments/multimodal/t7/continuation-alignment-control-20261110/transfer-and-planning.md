@@ -1,6 +1,6 @@
 # State transfer, camera substitution and planning
 
-The 512-scene supervised confirmation repeated the earlier cue effect with all 20 weights locked. Uniform action choice incurred 9.47 cm mean regret. With the common physical prior, the two hybrid adapters incurred 0.21 and 0.32 cm, the dense adapters 0.17 and 0.56 cm, and the raw recurrent heads 0.06 and 0.07 cm. The six-channel physical forecast used actual robot state through an explicit prior. This establishes recoverable goal history in both architectures. It leaves a large role for the task-specific physical model. [Independent results](metrics/supervised.json)
+The 512-scene supervised confirmation repeated the earlier cue effect with all 20 weights locked. Uniform action choice incurred 9.47 cm mean regret. With the common physical prior, the two hybrid adapters incurred 0.21 and 0.32 cm, the dense adapters 0.17 and 0.56 cm, and the raw recurrent heads 0.06 and 0.07 cm. The endpoint predictor received actual robot state through an explicit prior. This establishes recoverable goal history in both architectures. It leaves a large role for the task-specific physical model. [Independent results](metrics/supervised.json)
 
 ## Camera substitution on a second simulator
 
