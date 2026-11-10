@@ -1,0 +1,60 @@
+{
+  "all_owned_released": true,
+  "ceiling": 100,
+  "complete": true,
+  "cumulative_owned_units": 33.37924,
+  "new_data_mirrors": {
+    "confirmation_members": 60,
+    "files": {
+      "dev-other.tar.gz": {
+        "bytes": 314305928,
+        "sha256": "12661c48e8c3fe1de2c1caa4c3e135193bfb1811584f11f569dd12645aa84365"
+      },
+      "g8-confirmation-inputs.tar.zst": {
+        "bytes": 60340935,
+        "sha256": "cfedec3361abe96a5ac680dbf0fed55c2fae73d659b8a70592a7f62c67351b15"
+      },
+      "test-other.tar.gz": {
+        "bytes": 328757843,
+        "sha256": "d09c181bba5cf717b3dee7d4d592af11a3ee3a09e08ae025c5506f6ebe961c29"
+      }
+    },
+    "shared_training_source": "Original G5/G7 data identities and masks are recorded in data-and-mask-audit.json. This package contains new G8 evaluation data.",
+    "source_archives": "OpenSLR12 test-other and dev-other, CC BY 4.0"
+  },
+  "owned_assignments": [
+    {
+      "hardware": "V5E1",
+      "name": "slwm-g8-a-1110",
+      "rate": 3.09,
+      "seconds": 10366.917991876602,
+      "units": 8.898271276360747
+    }
+  ],
+  "prior_project_units": 24.480965258091718,
+  "private_drive_state": {
+    "pending_files": 624,
+    "phase": "backoff",
+    "reason": "drive_project_query_limit",
+    "verified_files": 0
+  },
+  "remaining_under_original_allowance": 66.62076,
+  "scientific": {
+    "analysis": true,
+    "archive_complete": true,
+    "durable_rungs": 24,
+    "factorial_analysis": true,
+    "initial_speech_panels": 10,
+    "live_controllers": 48,
+    "live_oracle_followup": true,
+    "models": 20,
+    "pushing_results": 42,
+    "rate_speech_panels": 10,
+    "reacher_results": 23,
+    "replays": true,
+    "retention": 20
+  },
+  "scope": "Time of G8-named endpoints times their measured generation rates. Other processes excluded.",
+  "single_chip_hours": 2.879699442187945,
+  "study_units": 8.89827
+}
