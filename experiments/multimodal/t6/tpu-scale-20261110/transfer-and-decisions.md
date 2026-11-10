@@ -20,6 +20,9 @@ The same heads are evaluated on eight different speakers and sentence combinatio
 | Parameters | Seed | Hybrid | Dense | Hybrid gain, pp | Speaker-paired interval, pp |
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 202,346,377 | [511](supplemental/speakers-v5e-larger-511.json) | 31.04% | 23.98% | 7.05 | 6.50 to 8.04 |
+| 202,346,377 | [512](supplemental/speakers-v5e-larger-512.json) | 25.81% | 22.81% | 3.00 | 1.71 to 4.44 |
+
+The eight-speaker replication at 202,346,377 parameters passed the original two-seed shared-content gate.
 
 ## Final checkpoints on 32 unseen goal-reaching scenes
 
