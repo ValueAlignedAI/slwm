@@ -104,6 +104,20 @@ def main(a):
                 call(["tar","-rf",str(tree),"-C",str(a.pins.parent),a.pins.name])
                 with tree.open("rb") as fd:
                     call([*wrapper,"ssh",name,"bash","-c","mkdir -p /content/g5-code && tar -xf - -C /content/g5-code"],timeout=160,stdin=fd)
+            # The Mac transports bytes between two authorized SSH sessions without creating a data file.
+            # This path is independent of Drive query quotas. Each runtime verifies the frozen archive hashes.
+            if not all((a.pins/(role+"-blocks.json")).is_file() for role in ("train","dev")):
+                report(core,"streaming_verified_inputs",endpoint=endpoint,attempts=attempts)
+                files=[f"{family}-{role}.tar.zst" for role in ("dev","train") for family in ("paired","impact","pusht")]
+                with subprocess.Popen(["ssh","-o","BatchMode=yes","db@192.168.1.200",
+                        "tar","-cf","-","-C","/mnt/slwm-data/SLWM/g5/local-packs",*files],stdout=subprocess.PIPE) as source:
+                    try:
+                        call([*wrapper,"ssh",name,"bash","-c","mkdir -p /content/g5-landing && tar -xf - -C /content/g5-landing"],
+                             stdin=source.stdout,timeout=1000)
+                    finally:
+                        source.stdout.close()
+                    if source.wait(timeout=30):
+                        raise OSError("Fedora input transport did not complete")
             deadline=int(json.loads(a.state.read_bytes())["deadline_unix"])
             job=f"cd /content/g5-code && bash scripts/train/g5_cloud_lane.sh {core} {deadline} {scale}; echo $? > /content/g5-exit"
             call([*wrapper,"ssh",name,"bash","-c",'nohup bash -c "$1" </dev/null >/content/g5-lane.log 2>&1 &',"launch",job],timeout=100)
