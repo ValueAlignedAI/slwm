@@ -1,5 +1,6 @@
 """Drain named G9 runtime milestones without storing model or optimizer bytes on the Mac."""
 import argparse
+import base64
 import json
 import shlex
 import subprocess
@@ -23,9 +24,14 @@ def notebook(name,script,timeout=100):
         return subprocess.check_output([*WRAP,"exec",name,"-f",f.name,"--timeout",str(timeout)],stderr=subprocess.DEVNULL,text=True,timeout=timeout+40)
 
 
-def archive(name,tag,step,expected):
+def archive(name,tag,step,expected,source_root="/content/g9-out"):
     relative=location(tag,step)
-    notebook(name,"import sys\nsys.path.insert(0,'/content/g9-code/scripts/train')\nfrom g9_storage import bundle\nbundle(%r,%d)"%(tag,step),240)
+    # The native notebook kernel is persistent across the original and equal-exposure epochs.
+    # Reload the installed protocol and require its success marker before requesting a file.
+    code="import sys,importlib\nsys.path.insert(0,'/content/g9-code/scripts/train')\nimport g9_storage as storage\nimportlib.reload(storage).bundle(%r,%d,%r)\nprint('G9_BUNDLE_OK')"%(tag,step,source_root)
+    confirmation=notebook(name,code,240)
+    if not any(line.strip()=="G9_BUNDLE_OK" for line in confirmation.splitlines()):
+        raise RuntimeError("Native archive builder did not confirm "+tag+"/"+str(step))
     path="/content/g9-packets/"+str(relative)
     doc=json.loads(file_data(name,path+"/manifest.json",2**21))
     receipt=doc["receipt"]
@@ -58,9 +64,11 @@ def archive(name,tag,step,expected):
 
 
 def monitor(name,ctl,revision,expected):
+    payload=base64.b64encode(subprocess.check_output(["git","show",revision+":scripts/train/g9_storage.py"])).decode()
+    setup="import base64,pathlib\np=pathlib.Path('/content/g9-code/scripts/train/g9_storage.py');p.write_bytes(base64.b64decode(%r));print('G9_STORAGE_READY')"%payload
     for attempt in range(10):
         try:
-            stream(name,["git","archive",revision,"scripts/train/g9_storage.py"],"set -eu; cd /content/g9-code; tar -xf -")
+            if "G9_STORAGE_READY" not in notebook(name,setup,60):raise RuntimeError("Runtime did not install checkpoint protocol")
             break
         except (OSError,RuntimeError,subprocess.SubprocessError):
             if attempt==9:raise
@@ -80,6 +88,8 @@ def monitor(name,ctl,revision,expected):
                 receipt=archive(name,tag,step,sha);write(receipts/f"{tag}-{step}.json",receipt)
                 continue
             if len(status["completed"])==expected and all(sum(x[1]==t for x in status["completed"])==expected//2 for t in (1024,4096)):
+                if (ctl/"dose-required").exists() and not (ctl/"dose-verified.json").exists():
+                    time.sleep(12);continue
                 subprocess.run([*WRAP,"stop",name],check=True,timeout=120)
                 write(ctl/(name+"-transfer.json"),dict(phase="released",verified=expected));return
             time.sleep(20)
