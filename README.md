@@ -1,10 +1,14 @@
 # SLWM
 
-SLWM is a research project for **Signal-Latent World Models**: models that process shared latent signal fields for text/code, audio, and visual/video instead of treating tokens as the only modeling substrate.
+SLWM tests whether a shared predictive state can carry useful knowledge between text, audio, video, numeric observations and actions. The current comparison gives a recurrent–attention hybrid and a dense GPT-2-style Transformer the same data, parameter count and 128-dimensional shared state. The original SLWM-124M target and larger fit checks are documented separately. [Architecture](docs/model_spec.md)
 
-The original anchor remains the GPT-2-small-scale `SLWM-124M` comparison target, but the repository now tracks multiple scale profiles. Current configs include near-124M strict/core comparison runs and a 700M+ fit-check profile for later large-run training. Every result must report its parameter accounting mode, data budget, and claim limits.
+## Verified studies
 
-The project is evidence-first: no capability claim is accepted without registered experiments, baselines, ablations, and failure-case analysis.
+### G6 multimodal scaling
+
+Eight models completed 8,192 updates at 116.50M and 202.35M parameters, with two training seeds per architecture and size. On 512 new Push-T starts, the 116.50M hybrid predicted joint action endpoints to 5.89 and 5.84 pixels. The 202.35M hybrid reached 6.12 and 6.01 pixels, compared with 8.14 and 7.41 for its matched dense control. Video helped with action-conditioned prediction in this simulator. Held real-event timing and generated speech remained weak. [Results and learning curves](experiments/multimodal/t6/tpu-scale-20261110/report.md) · [Transfer and decisions](experiments/multimodal/t6/tpu-scale-20261110/transfer-and-decisions.md)
+
+The release includes verified inference and optimizer hashes, long cross-modal generations, source-substitution controls and the measured compute cost. The broader claim depends on replication across different environments and on intelligible generated content. [Artifact inventory](experiments/multimodal/t6/tpu-scale-20261110/artifact-inventory.json) · [Publication assessment](experiments/multimodal/t6/tpu-scale-20261110/publication-assessment.md)
 
 ## Core Idea
 
@@ -38,8 +42,7 @@ mask: BoolTensor[B, T]
 - `visual_video` — image/video patch, tube, or latent streams.
 - `noop` — valid committed policy behavior.
 
-Recorded active-sensing and persistent-memory experiments are in progress.
-Physical robotics/action control remains future work.
+Recorded active-sensing and persistent-memory experiments include closed-loop simulation. Physical-robot deployment remains an open research question.
 
 ## Documentation
 
@@ -59,7 +62,7 @@ Project documentation is organized under `docs/`:
 - `docs/exploration/` — diagnostic probe and exploration protocol.
 - `docs/process/` — sprint playbook and agent prompts.
 
-## Current Sprint Status
+## Study history
 
 | Sprint | Status | Main artifacts | Gate status |
 |---|---|---|---|
@@ -70,8 +73,10 @@ Project documentation is organized under `docs/`:
 | T1 — Text baseline and scale | Four124M/125M continuations complete at151M tokens/run | `experiments/text/t1/extended-throughput-20261105/report.md` | Test NLL improves3.64–3.67% at equal tokens, at1.47–1.49x continuation time. Small timer-matched validation gains; severe undertraining and repetitive samples remain. |
 | T2 — Speech content and video timing | Ten new runs pass fresh-speaker content, timing rejection and spectral-video gates | `experiments/multimodal/t2/content-sync-20261105/report_v2.md`, `docs/training/content_and_scale.md` | 749 new GRID clips/eight people and unseen complete sentence combinations. Word readout +9.7–12.4pp; video gap-spectrum error −11–12%; ±240ms admission below 1%. Practical speech-recognition gate fails. Restricted grammar; 7.71M deployed video weights. |
 | T2-B1 / P1-S1 — Broader shared fields and continuous sensing | Complete; all three capability gates fail | `docs/research/operational_findings_20261106.md` |24M fields and paired Transformers, fresh-speaker tests,248 long outputs and eight sensing actors. Technical audits pass; speech repairs worsen WER and decision benefit does not replicate. |
+| T3 / T4 — Predictive state and native TPU comparisons | Matched transfer and modality probes completed | [Cross-modal report](experiments/multimodal/t4/crossmodal-state-tpu-20261109/report.md) | Source substitution and erasure exposed dependence on the task and modality. |
+| T5 / T6 — Action-conditioned multimodal scaling | Eight two-size controls completed | [G6 results](experiments/multimodal/t6/tpu-scale-20261110/report.md) | Visual action dynamics transferred on Push-T. Event timing and speech generation failed broader gates. |
 
-## Latest completed research — 2026-11-06
+## Earlier speech and text results — 2026-11-06
 
 The new [151M-token text comparison](experiments/text/t1/extended-throughput-20261105/report.md)
 is complete: SLWM test NLL is3.64–3.67% lower than the matched GPT-2-style model,
@@ -167,16 +172,13 @@ python -m training.t2_train_latents --config configs/t2/slwm_700m_audio_visual_2
 
 The generated T2 fixture is for pipeline validation only and must not be used as evidence of real audio/video quality.
 
-## Next Training Focus
+## Current research questions
 
-The next training workstream is **T1-T2 refinement, dataset gathering, T3 implementation, and large-run training**.
+- At fixed exposure and fixed accelerator time, does a larger core benefit more from independent examples or additional passes through existing data?
+- Which speech and event information survives the shared state when the input speaker, scene or timing changes?
+- Can retained observations support consecutive goal-directed decisions on a new environment?
 
-Immediate priorities:
-
-1. Refine T1 and T2 configs, registry outputs, and matched baseline/ablation coverage.
-2. Gather and pin external text/code and audio/video datasets with licenses, split hashes, leakage checks, and feature-extractor versions.
-3. Implement T3 joint SLWM training for mixed-modality latent batches after T1/T2 inputs are reproducible.
-4. Run larger 124M and 700M+ training profiles only after dataset cards, baselines, checkpoints, and claim language are registered.
+The experimental designs specify the data splits, matched dense controls and promotion criteria. [Next iteration](experiments/multimodal/t6/tpu-scale-20261110/next-iteration.md)
 
 ## Scientific Guardrails
 
@@ -186,9 +188,9 @@ Immediate priorities:
 - Do not merge sprint scopes unless the sprint explicitly requires it.
 - No main-weight continual learning or online inference-time weight updates in the initial phase.
 
-## Branch Workflow
+## Branch workflow
 
-Use focused feature branches and merge through pull requests. `main` is the accepted project trunk for completed, reviewed work; integration branches may still be used for larger multi-sprint staging.
+Active trainings use focused research branches. Completed studies enter `main` through pull requests after their controls, artifact integrity, tests and README summary have been checked.
 
 ## License
 
