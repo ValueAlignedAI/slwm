@@ -69,12 +69,17 @@ def evaluate(run,root,out,role,device,gate=None):
     spec=Spec(**card["spec"])
     with np.load(run/"inference.npz",allow_pickle=False) as f:
         stats=np.array(f["stats"])
-        p={k:jax.device_put(f[k]) for k in f if k!="stats"}
+        p={k:jax.device_put(f[k]) for k in f if k!="stats" and not k.startswith("prior_")}
+        cal={k[6:]:jax.device_put(f[k]) for k in f if k.startswith("prior_")}
     data=JointData(root,role,stats=stats)
     train,_=load_pack(root/"pusht/train",True)
     imp,sim=data.packs[1:]
     @jax.jit
     def infer(b):
+        if card.get("variant")=="physical-residual":
+            from models.g5_residual import world
+            _,onset,delta=world(p,spec,b,b["source"],cal)
+            return onset,delta[:,-1]
         pred=decoded(p,spec,b,b["source"])
         return pred[:,:,632],pred[:,31,633:635]
     def outputs(family,indices,branches,source,condition="correct"):
