@@ -11,6 +11,8 @@ from training.g7_units import put
 
 
 def decide(spec,p,cal,n,v,plans,goal,condition="joint"):
+    if n is None and condition=="video":n=np.zeros((16,6),np.float32)
+    if v is None and condition=="state":v=np.zeros((16,256),np.uint8)
     n=np.asarray(n,np.float32);v=np.asarray(v);plans=np.asarray(plans,np.float32);goal=np.asarray(goal,np.float64)
     if n.shape!=(16,6) or v.shape!=(16,256) or v.dtype!=np.uint8 or goal.shape!=(2,) or plans.ndim!=3 or plans.shape[1:]!=(16,2) or not len(plans):
         raise ValueError("Expected a 16-tick history, 16×256 uint8 images, a two-coordinate displacement goal and at least one 16×2 action plan")
@@ -54,7 +56,7 @@ def main():
     if not a.input or not a.checkpoint:args.error("Supply a checkpoint directory and an input NPZ")
     meta=read(a.checkpoint/"complete.json");rec={"root":str(a.checkpoint),"weights":meta["sha256"]["inference.npz"]}
     spec,p,cal,_=load_model(rec)
-    with np.load(a.input,allow_pickle=False) as f:output=decide(spec,p,cal,f["n"],f["v"],f["plan"],f["goal_displacement_px"],a.source)
+    with np.load(a.input,allow_pickle=False) as f:output=decide(spec,p,cal,f.get("n"),f.get("v"),f["plan"],f["goal_displacement_px"],a.source)
     print(json.dumps({**output,"weights_sha256":rec["weights"]},indent=2,allow_nan=False))
 
 

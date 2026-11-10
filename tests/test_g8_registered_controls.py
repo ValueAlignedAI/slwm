@@ -89,3 +89,17 @@ def test_registered_paired_effects_distinguish_two_factors_and_interaction():
         np.testing.assert_array_equal(differences,np.full(3,value))
         result=estimate(differences,draws)
         assert result["mean"]==value and result["paired_ci95"]==[value,value]
+
+
+def test_single_sensor_decision_accepts_only_present_data_and_changes_with_goal(monkeypatch):
+    pytest.importorskip("jax")
+    from training import g8_decide
+    def predict(spec,p,cal,state,video,plans,condition):
+        assert state.shape==(1,16,6) and video.shape==(1,16,256)
+        return plans[:,:,-1,:]
+    monkeypatch.setattr(g8_decide,"predictions",predict)
+    plan=np.zeros((2,16,2),np.float32);plan[0,:,0]=-1.;plan[1,:,0]=1.
+    camera=np.zeros((16,256),np.uint8);state=np.zeros((16,6),np.float32)
+    assert g8_decide.decide(None,None,None,None,camera,plan,np.array([1.,0.]),"video")["chosen_plan"]==1
+    assert g8_decide.decide(None,None,None,state,None,plan,np.array([-1.,0.]),"state")["chosen_plan"]==0
+    with pytest.raises(ValueError):g8_decide.decide(None,None,None,state,None,plan,np.zeros(2),"joint")

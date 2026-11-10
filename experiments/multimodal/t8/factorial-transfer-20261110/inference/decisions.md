@@ -17,4 +17,6 @@ The command verifies `inference.npz` against `complete.json`, prints the chosen 
 | `plan` | candidates × 16 × 2 | Proposed pusher x/y waypoints at future ticks, in the same normalized position units. |
 | `goal_displacement_px` | 2 | Desired object displacement from its last observed position, in simulator pixels. |
 
+Use `--source state` to evaluate proprioception without camera input, or `--source video` to use the camera alone. The unselected sensor array can be omitted. Both sources are required in the default joint mode.
+
 The input file contains observations, proposed controls and the goal. The measured future is used only afterward to check the choice. The first reserved start in each task is selected in advance. Compare the two new non-simulator-only checkpoints, their issued controls and measured regret in the [decision example receipt](../metrics/decision-examples.json).
