@@ -1,0 +1,56 @@
+{
+  "examples": {
+    "192": {
+      "decoded_pcm_file_sha256": "a2f99a425d0efe7408444152d2996d2b0e330c200d5843c7766b86a127d1a554",
+      "duration_seconds": 48.0065,
+      "packet_sha256": "6867d11a28bdebc07db56554f7a6b8ada82fcc23f186dc532c868630334e12c3",
+      "payload_bytes": 54000,
+      "preview_sha256": "8cc894d195626f8a4cad8ed370b998f958699dc65e2deadf65591fb646766f48",
+      "stream_bytes_with_header": 54267
+    },
+    "48": {
+      "decoded_pcm_file_sha256": "cd485d23f2cd8abec5f7d23fdf81f2e2e7ab488b76b659449909dd9e36782471",
+      "duration_seconds": 48.0065,
+      "packet_sha256": "92e7a810eb194c447c609068a7a054d88282286b11bf59e0237fccb4c46de06a",
+      "payload_bytes": 13500,
+      "preview_sha256": "80dc11ac4135b25b674d392d62e5d0d7c33e5376bdc1b3bc0640ec354e336cc1",
+      "stream_bytes_with_header": 13766
+    },
+    "text-conditioned": {
+      "core": "hybrid-711, G6 parent seed 511",
+      "frozen_recognizer": " you",
+      "original_prediction_wav_sha256": "f5c63da7a6e92a5f8e52fd88de5019f02b2db26ea86ec380c02a123679bddcbd",
+      "preview_sha256": "ee48d581cb60b77dcd18680ccde0a6e61c9e2eb8f3be489c26681782030b649f",
+      "reference": "RELIGION IS THE SCIENCE OF THE CHILD",
+      "source_id": "116-288047-0017"
+    },
+    "video-conditioned": {
+      "core": "hybrid-711, G6 parent seed 511",
+      "frozen_recognizer": " you",
+      "original_prediction_wav_sha256": "51ed66132becb92f85421c70100e791c5cb401541e7d8e9f4114111cb040bfc6",
+      "preview_sha256": "2483dc052cc06c0fb05a9c94ec529b003daafe8b1a52bcf7c91e50d0138a0840",
+      "reference": "I THINK I HAVE A DOCTOR'S APPOINTMENT",
+      "source_id": "1003_ITH_SAD_XX"
+    }
+  },
+  "known_waveform_samples_preserved_only_by_gap_repair": true,
+  "source": {
+    "construction": "Adjacent published utterance files from one chapter, concatenated and cropped at 48 seconds.",
+    "ids_in_chapter_order": [
+      "116-288047-0000",
+      "116-288047-0001",
+      "116-288047-0002",
+      "116-288047-0003",
+      "116-288047-0004",
+      "116-288047-0005",
+      "116-288047-0006",
+      "116-288047-0007",
+      "116-288047-0008",
+      "116-288047-0009",
+      "116-288047-0010"
+    ],
+    "seconds": 48.0,
+    "source": "OpenSLR LibriSpeech dev-other, CC BY 4.0"
+  },
+  "weights": "e4e3f423d10bb5e099da05d042a20ee80cc4e58bcb91cab128113291b6096cb0"
+}
