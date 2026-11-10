@@ -41,19 +41,24 @@ def _live_kernel(spec,mode,b,stall,seed,steps):
     def run(params):
         ids=jnp.arange(b)
         state=initial(ids,seed);image=camera(state["stations"],state["tint"])
-        init_goal=state["goal"];memory=initial_memory(spec,b) if mode in ("carry","wrong") else ()
+        init_goal=state["goal"]
+        window=512 if mode=="full" else 64
+        persistent=mode in ("carry","wrong","full","block32")
+        memory=initial_memory(spec,b,window) if persistent else ()
         keep=jnp.ones((b,4),bool)
         def step(c,tick):
             st,mem,estimate,seen=c
             st={**st,"goal":(init_goal+tick//64)%3}
             obs=observation(st,image,tick)
             raw_action,estimate,seen=raw(obs,estimate,seen)
-            if mode in ("carry","reset","wrong"):
+            if mode in ("carry","reset","wrong","full","block32"):
                 if mode=="wrong":obs={**obs,"u":jnp.where(obs["u"]>=5,11-obs["u"],obs["u"])}
+                if mode=="block32":
+                    mem=jax.tree.map(lambda a:jnp.where(tick%32==0,jnp.zeros_like(a),a),mem)
                 z,new=encode(params,spec,{k:v[:,None] for k,v in obs.items()},keep,
-                             memory=mem if mode!="reset" else None,offset=tick)
+                             memory=mem if persistent else None,offset=tick,window=window)
                 action=jnp.argmax((z[:,0]@params["read"][:,-ACTIONS:].astype(z.dtype)).astype(jnp.float32),-1)
-                mem=new if mode!="reset" else ()
+                mem=new if persistent else ()
             else:action=raw_action if mode=="raw" else jnp.zeros(b,jnp.int32)
             nxt=advance(st,action,tick,stall)
             reached=(nxt["pos"]==target(st)).all(-1)
