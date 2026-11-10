@@ -47,3 +47,13 @@ def test_partial_mixtures_restore_every_excluded_family():
     values=data.requests(8192,9)
     for k in ("a","v","x","input_x","n","u","outcome","target_n","event"):
         np.testing.assert_array_equal(values[k].ravel(),[0,1,2,3,4,5,6,7,18])
+
+
+def test_lossless_optimizer_packet_preserves_even_and_odd_array_boundaries():
+    from scripts.train.g8_file_blocks import frame,unframe
+    rng=np.random.default_rng(888)
+    for size in (1,2,3,4,17,4096,8201):
+        data=rng.integers(0,256,size,dtype=np.uint8).tobytes();encoded=frame(data)
+        assert unframe(encoded,size)==data
+        with pytest.raises(ValueError):unframe(encoded+b"x",size)
+        with pytest.raises(ValueError):unframe(encoded,size+1)

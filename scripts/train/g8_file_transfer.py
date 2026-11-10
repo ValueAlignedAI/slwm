@@ -5,6 +5,7 @@ import fcntl
 import hashlib
 import json
 import os
+import select
 from pathlib import Path
 import subprocess
 import sys
@@ -27,10 +28,25 @@ def file_data(session,remote,limit):
     except BaseException:
         os.close(reader);raise
     finally:os.close(writer)
-    with os.fdopen(reader,"rb") as f:data=f.read(limit+1)
-    rc=proc.wait(timeout=60)
-    if rc or len(data)>limit:raise OSError("Native file download was refused, interrupted, or oversized")
-    return data
+    data=bytearray();deadline=time.monotonic()+160
+    try:
+        while True:
+            remaining=deadline-time.monotonic()
+            if remaining<=0:raise TimeoutError("Native file request exceeded its deadline")
+            if not select.select([reader],[],[],min(remaining,10))[0]:continue
+            part=os.read(reader,min(1<<20,limit+1-len(data)))
+            if not part:break
+            data.extend(part)
+            if len(data)>limit:raise ValueError("Oversized native file packet")
+        rc=proc.wait(timeout=20)
+        if rc:raise OSError("Native file download refused or interrupted")
+        return data
+    finally:
+        os.close(reader)
+        if proc.poll() is None:
+            proc.terminate()
+            try:proc.wait(timeout=6)
+            except subprocess.TimeoutExpired:proc.kill();proc.wait()
 
 
 def unpack_chunk(session,path,block):
