@@ -1,0 +1,14 @@
+{
+  "seed": 20261104,
+  "source_revision": "1658cd342dff90010aa843eaeebd53610a08b1dc",
+  "output_dir": "artifacts/t2_audio_visual/cremad_real_v1",
+  "actor_count": 48,
+  "clips_per_emotion_per_actor": 5,
+  "train_actor_count": 34,
+  "validation_actor_count": 7,
+  "steps_per_clip": 32,
+  "visual_pca_dim": 64,
+  "download_workers": 8,
+  "decode_workers": 4,
+  "device": "cuda"
+}

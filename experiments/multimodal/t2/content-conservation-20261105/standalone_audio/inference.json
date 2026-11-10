@@ -1,0 +1,15 @@
+{
+  "audio_sha256": "32c8f2fb1850c0a0b7f944f83b699dfd7762b1aa0cd2e7418cbb1b158c87a04d",
+  "checkpoint_sha256": "b4bfe63d5b1e0c5473904143a4685a22bddf4f9542f1d38f3fd149efe503cee5",
+  "device": "cpu",
+  "missing_packet_fraction": 0.25882352941176473,
+  "note": "Centered 64ms mel windows can overlap packet boundaries. This does not establish sample-exact waveform inpainting. No source waveform samples are inserted into generated audio.",
+  "run": {
+    "arm": "signal",
+    "aux_weight": 0.5,
+    "id": "EXP-T2-521",
+    "seed": 51
+  },
+  "task": "simultaneous feature-packet restoration, not causal future prediction",
+  "video_sha256": null
+}

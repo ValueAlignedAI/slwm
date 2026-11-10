@@ -1,0 +1,147 @@
+{
+  "action_first6_vs_cartesian_velocity_max_error": 3.40251362323761,
+  "action_first6_vs_first6_joint_velocity_max_error": 3.660285532474518,
+  "action_gripper_vs_commanded_position_max_error": 0.0,
+  "features": {
+    "episode_metadata/file_path": {
+      "kind": "bytes_list",
+      "values": 1
+    },
+    "episode_metadata/recording_folderpath": {
+      "kind": "bytes_list",
+      "values": 1
+    },
+    "steps/action": {
+      "kind": "float_list",
+      "values": 1162
+    },
+    "steps/action_dict/cartesian_position": {
+      "kind": "float_list",
+      "values": 996
+    },
+    "steps/action_dict/cartesian_velocity": {
+      "kind": "float_list",
+      "values": 996
+    },
+    "steps/action_dict/gripper_position": {
+      "kind": "float_list",
+      "values": 166
+    },
+    "steps/action_dict/gripper_velocity": {
+      "kind": "float_list",
+      "values": 166
+    },
+    "steps/action_dict/joint_position": {
+      "kind": "float_list",
+      "values": 1162
+    },
+    "steps/action_dict/joint_velocity": {
+      "kind": "float_list",
+      "values": 1162
+    },
+    "steps/discount": {
+      "kind": "float_list",
+      "values": 166
+    },
+    "steps/is_first": {
+      "kind": "int64_list",
+      "values": 166
+    },
+    "steps/is_last": {
+      "kind": "int64_list",
+      "values": 166
+    },
+    "steps/is_terminal": {
+      "kind": "int64_list",
+      "values": 166
+    },
+    "steps/language_instruction": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/language_instruction_2": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/language_instruction_3": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/observation/cartesian_position": {
+      "kind": "float_list",
+      "values": 996
+    },
+    "steps/observation/exterior_image_1_left": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/observation/exterior_image_2_left": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/observation/gripper_position": {
+      "kind": "float_list",
+      "values": 166
+    },
+    "steps/observation/joint_position": {
+      "kind": "float_list",
+      "values": 1162
+    },
+    "steps/observation/wrist_image_left": {
+      "kind": "bytes_list",
+      "values": 166
+    },
+    "steps/reward": {
+      "kind": "float_list",
+      "values": 166
+    }
+  },
+  "fitted_model": false,
+  "id": "DROID-DEBUG-1",
+  "images": {
+    "exterior_image_1_left": {
+      "first_image_decoded": true,
+      "frames": 166,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    },
+    "exterior_image_2_left": {
+      "first_image_decoded": true,
+      "frames": 166,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    },
+    "wrist_image_left": {
+      "first_image_decoded": true,
+      "frames": 166,
+      "source_dimensions": [
+        180,
+        320,
+        3
+      ]
+    }
+  },
+  "language": {
+    "language_instruction": [
+      "Put the marker in the pot"
+    ],
+    "language_instruction_2": [
+      "Get the marker from the table and put it inside the silver pot"
+    ],
+    "language_instruction_3": [
+      "Put the marker inside the silver pot"
+    ]
+  },
+  "metadata": {
+    "episode_metadata/file_path": "/nfs/kun2/datasets/r2d2/r2d2-data-full/RAIL/success/2023-04-17/Mon_Apr_17_14:48:05_2023/trajectory.h5",
+    "episode_metadata/recording_folderpath": "/nfs/kun2/datasets/r2d2/r2d2-data-full/RAIL/success/2023-04-17/Mon_Apr_17_14:48:05_2023/recordings/MP4"
+  },
+  "physical_timestamps_available": false,
+  "steps": 166
+}

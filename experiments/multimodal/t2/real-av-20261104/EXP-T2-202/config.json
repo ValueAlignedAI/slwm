@@ -1,0 +1,120 @@
+{
+  "matrix": {
+    "artifact_dir": "experiments/multimodal/t2/real-av-20261104",
+    "corpus_dir": "artifacts/t2_audio_visual/cremad_real_v1",
+    "cycle": "real-av-20261104",
+    "gates": {
+      "architecture_improvement": 0.05,
+      "cross_modal_improvement": 0.02,
+      "prediction_improvement": 0.05,
+      "retrieval_absolute_improvement": 0.05
+    },
+    "model": {
+      "architecture_flags": {
+        "local_kernel_size": 3,
+        "long_kernel_size": 15,
+        "mlp_ratio": 4,
+        "spectral_kernel_size": 15,
+        "use_attention_binding": true,
+        "use_gated_mlp": true,
+        "use_local_temporal_mixer": true,
+        "use_long_conv": true,
+        "use_spectral_mixer": true
+      },
+      "context_length": 64,
+      "dropout": 0.0,
+      "latent_dim": 256,
+      "n_head": 8,
+      "n_layer": 4
+    },
+    "protocol": "docs/research/real_av_pilot_20261104.md",
+    "runs": [
+      {
+        "arm": "full",
+        "experiment_id": "EXP-T2-201",
+        "seed": 41
+      },
+      {
+        "arm": "vanilla",
+        "experiment_id": "EXP-T2-202",
+        "seed": 41
+      },
+      {
+        "arm": "no_spectral",
+        "experiment_id": "EXP-T2-203",
+        "seed": 41
+      },
+      {
+        "arm": "no_longconv",
+        "experiment_id": "EXP-T2-204",
+        "seed": 41
+      },
+      {
+        "arm": "shuffled",
+        "experiment_id": "EXP-T2-205",
+        "seed": 41
+      },
+      {
+        "arm": "audio_only",
+        "experiment_id": "EXP-T2-206",
+        "seed": 41
+      },
+      {
+        "arm": "visual_only",
+        "experiment_id": "EXP-T2-207",
+        "seed": 41
+      },
+      {
+        "arm": "full",
+        "experiment_id": "EXP-T2-208",
+        "seed": 42
+      },
+      {
+        "arm": "vanilla",
+        "experiment_id": "EXP-T2-209",
+        "seed": 42
+      }
+    ],
+    "source_commit": "418ebc4",
+    "sprint": "T2",
+    "training": {
+      "alignment_weight": 0.1,
+      "batch_size": 32,
+      "bootstrap_samples": 2000,
+      "context_steps": 16,
+      "eval_every": 100,
+      "grad_clip": 1.0,
+      "learning_rate": 0.0005,
+      "modality_dropout_probability": 0.25,
+      "precision": "bf16",
+      "steps": 600,
+      "warmup_steps": 30,
+      "weight_decay": 0.05
+    }
+  },
+  "model": {
+    "architecture_flags": {
+      "local_kernel_size": 3,
+      "long_kernel_size": 15,
+      "mlp_ratio": 4,
+      "spectral_kernel_size": 15,
+      "use_attention_binding": true,
+      "use_gated_mlp": true,
+      "use_local_temporal_mixer": false,
+      "use_long_conv": false,
+      "use_spectral_mixer": false
+    },
+    "context_length": 64,
+    "dropout": 0.0,
+    "latent_dim": 256,
+    "n_head": 8,
+    "n_layer": 4,
+    "name": "slwm-real-av-vanilla",
+    "variant": "vanilla"
+  },
+  "run": {
+    "arm": "vanilla",
+    "experiment_id": "EXP-T2-202",
+    "seed": 41
+  }
+}

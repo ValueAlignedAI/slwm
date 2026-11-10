@@ -1,0 +1,20 @@
+"""All fixed cases, accepted/rejected status and genuine model word probes."""
+import json
+import html
+from pathlib import Path
+
+
+def main():
+    cfg=json.loads(Path("configs/t2/content_sync.json").read_text()); root=Path(cfg["artifacts"]); cases=json.loads((root/"exploration/audio_cases.json").read_text()); summary=json.loads((root/"summary_v2.json").read_text()); cards=[]
+    def player(case,name,label): return f'<div><label>{html.escape(label)}</label><audio controls preload="none" src="exploration/{case["sample_id"]}/{name}.wav"></audio></div>'
+    for i,c in enumerate(cases):
+        accept=c["audit"]["video71"]["windows"][0]["accepted"]; main="".join(player(c,n,label) for n,label in (("reference","Recorded reference"),("silence","Erased speech"),("audio71","Strong audio repair"),("video71","Calibrated audio + video")))
+        controls="".join(player(c,n,label) for n,label in (("raw_video71","Video without rejection"),("shift71","Mistimed video with rejection"),("raw_shift71","Mistimed video without rejection"),("wrong71","Different utterance video"),("audio72","Audio, second seed"),("video72","Video, second seed"),("plain71","Base without unit objective"),("content71","Base with unit objective"),("timed_text71","Provided timed text · diagnostic"),("oracle_spectrum","Reference spectrum · diagnostic")))
+        probes=json.loads((root/"exploration"/c["sample_id"]/"word_probes.json").read_text()); words=html.escape(probes["video71"]["predicted_context_words"])
+        cards.append(f'<article><h2>{i+1:02d} · {html.escape(c["sample_id"])}</h2><p>Video {"accepted" if accept else "rejected; strong audio fallback"} · gap {c["gap_seconds"][0]:.2f}–{c["gap_seconds"][1]:.2f}s</p><p class="meta">Reference transcript: {html.escape(c["transcript"])}</p><div class="players">{main}</div><details><summary>Controls, second seed and explicitly supplied-text diagnostics</summary><div class="players">{controls}</div></details><details><summary>Model word probe and recorded video</summary><p>Predicted context words: <code>{words}</code></p><p class="meta">Closed-vocabulary SLWM probe in the 1.28s context, not an external recognizer or full transcript.</p><img src="exploration/{c["sample_id"]}/recorded_video.png" alt="Actual recorded video frames around the erased interval"></details></article>')
+    gates=' · '.join(k.replace('_',' ')+': '+('PASS' if summary[k] else 'FAIL') for k in ('content_gate_passes','rejection_gate_passes','video_gate_passes','practical_speech_gate_passes'))
+    body='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SLWM content and timing · fixed listening set</title><style>body{font:16px/1.5 system-ui,sans-serif;background:#f3f5f7;color:#1d2937;margin:0}main{max-width:1160px;margin:auto;padding:28px 20px}header,article{background:white;border:1px solid #d7dee6;border-radius:10px;padding:22px;margin-bottom:18px}h1{font-size:31px;line-height:1.2}h2{font-size:18px}.meta{color:#536273;font-size:14px}.players{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:16px}audio{width:100%}label{display:block;font-size:14px;margin-bottom:5px}details{margin-top:18px}summary{cursor:pointer;color:#225b8f}img{max-width:100%;margin-top:12px}a{color:#225b8f}</style><main><header><h1>Speech content and rejecting mistimed video</h1><p>GATES</p><p>All 32 examples were fixed before final scores. Test people and complete sentence combinations are new. Every output preserves observed PCM on the video-aligned timeline. Rejection selects the strong audio candidate exactly.</p><p><a href="report_v2.md">Full results</a> · <a href="summary_v2.json">Measurements</a></p><img src="content_and_rejection_v2.png" alt="Fresh-speaker video benefit and acceptance coverage"></header>CARDS</main><script>document.addEventListener('play',e=>document.querySelectorAll('audio').forEach(a=>{if(a!==e.target)a.pause()}),true)</script></html>'''
+    (root/"listen.html").write_text(body.replace('GATES',html.escape(gates)).replace('CARDS',''.join(cards)))
+
+
+if __name__=="__main__": main()

@@ -1,0 +1,15 @@
+{
+  "all_missing_video_equal_strong_audio": true,
+  "all_observed_pcm_exact": true,
+  "calibration_sha256": "82c3e1c850cbb1837179a97f4fa9a43deba2b45b2fddef34b2312da4a33d3020",
+  "cases": 32,
+  "fixed_ids_sha256": "14046341bd0297af9126898ee51b844a75e4b111c12367fa1920a9eec0218eab",
+  "reference_clock": "Video PTS aligned decoded PCM; initial source audio trim/pad is recorded per clip",
+  "source_hashes": {
+    "exploration/content_sync_infer.py": "6594fb77a2248f0b2b8dd0ea564217d558bc6014ceca0faf63930227b5b5ee44",
+    "exploration/content_sync_outputs.py": "d41c449673e6610fe4242ff7e30fb4f4868f51613a632d4408d5f192dcfbc13b",
+    "exploration/video_repair_audio.py": "3a6e460735e8949474c2cfaed6540548c81932605a103632a33b7946507a4005",
+    "exploration/video_repair_infer.py": "600246434d475ab4e7166660dbab9abcda78a1a022d9bff593c0454e8651c76d"
+  },
+  "waveforms": 640
+}

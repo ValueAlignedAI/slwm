@@ -1,0 +1,13 @@
+{
+  "source_sample": "01-01-01-01-01-01-01",
+  "actual_external_files": true,
+  "cpu_inference_passed": [
+    "raw-residual audio",
+    "video to audio",
+    "audio plus one seed to motion"
+  ],
+  "video_predictions_exactly_invariant_to_changed_audio_for_pixel_identical_video": true,
+  "counterfactual_decoded_video_sha256": "41fb3e01536087adb98ec75954c9a175c3d54ecebb55b36b5bf6c930cfa5fefc",
+  "motion_first_frame_matches_only_observed_seed": true,
+  "container_note": "Removing audio while changing container changed the decoded frame timeline; counterfactuals use identical container, timestamps and decoded pixels."
+}

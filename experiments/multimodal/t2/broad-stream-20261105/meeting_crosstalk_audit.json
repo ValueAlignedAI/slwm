@@ -1,0 +1,35 @@
+{
+  "correlation_lag_samples": -141,
+  "external_evaluation_parameters": 37760256,
+  "external_recognizer_revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "independent_single_example_cpu_recognition": " the table, Andrew, marketing, Kendra, the design, the vision and space and then came to do the industrial design. What's certainly",
+  "interpretation": "Distinct headset files can contain another participant's audible speech. Cross-channel correlation and independently decoded text support crosstalk here. Empty owner annotations are not acoustic silence; no-reference insertion counts must not automatically be called hallucinations. This is one diagnostic interval, not an audit of all AMI audio.",
+  "interval_seconds": [
+    80,
+    100
+  ],
+  "maximum_absolute_cross_channel_correlation_within_50ms": 0.2540560595053271,
+  "original_batched_first_chunk": "the table, Andrew, marketing, Kendra, the design, the vision and space and then came to do the industrial design. What's certainly",
+  "own_speaker_annotations": {
+    "ES2012a-A": "th the table andrew marketing um m kendra with the uh um designing the the the user interface uh uh and kate with the the industrial design um what's uh the",
+    "ES2012a-B": ""
+  },
+  "rms_by_channel": {
+    "ES2012a-A": 0.006454630754888058,
+    "ES2012a-B": 0.0002907566085923463
+  },
+  "scope": "Post-test source/readout audit only; no training, filtering, weight/threshold selection or primary gate change",
+  "source_rows": {
+    "ES2012a-A": {
+      "actor": "AMI-MEE045",
+      "raw_path": "artifacts/t2_audio_visual/ami_stream_v1/sources/ES2012a/ES2012a.Headset-0.wav",
+      "raw_sha256": "ae021b82742d15ce6848d0831a223f903c94aee4b0a77f2ec7834c11a32f510f"
+    },
+    "ES2012a-B": {
+      "actor": "AMI-FEE046",
+      "raw_path": "artifacts/t2_audio_visual/ami_stream_v1/sources/ES2012a/ES2012a.Headset-1.wav",
+      "raw_sha256": "540e23abf465d37798eeccde2310ffdee12078339f90e1104e1b534f7293c277"
+    }
+  },
+  "source_sha256": "86a951808081a22f079fbabb81ef89744110794885dd24f1926e1de34e3ef222"
+}

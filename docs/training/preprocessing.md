@@ -137,3 +137,61 @@ T2 acceptance requires registered artifacts showing:
 6. configs and checkpoints are saved when not running a no-checkpoint smoke.
 
 Even if those pass, T2 supports only latent-prediction/correspondence mechanics and metrics. It does not support claims about text/code quality, hallucination reduction, policy behavior, or external-output grounding.
+
+
+## 9. Recorded CREMA-D pilot and fresh holdout
+
+`training/t2_prepare_cremad.py` pins the public source snapshot, selects balanced
+real clips, splits people before preprocessing, records raw/feature hashes and
+failures, and produces `[N,32,64]` audio/video feature arrays. Audio is log-mel
+with context/target halves featurized separately: no FFT window crosses the
+observation boundary. Visual frames are encoded independently by a frozen
+ImageNet ResNet18; PCA to 64 dimensions and feature normalization fit only on
+training people. No temporal encoder has access to future frames.
+
+The discovery corpus has 1,019 train / 210 validation / 210 test clips from
+34 / 7 / 7 disjoint people. One selected source clip failed decoding and was
+excluded. The follow-up reuses byte-identical train/validation arrays and
+normalizer/PCA, and adds 210 clips from seven entirely unused test people.
+There are 1,649 unique usable recordings across the two cycles.
+
+Source: https://github.com/CheyneyComputerScience/CREMA-D at
+`1658cd342dff90010aa843eaeebd53610a08b1dc`; ODbL 1.0 database / DbCL 1.0
+contents. Source README and license are retained with both corpora. Transcripts,
+emotions, and person IDs are metadata, never predictive model inputs.
+
+The deployed pooled visual encoder has 11,176,512 frozen parameters. The
+original cards counted all 11,689,512 parameters of the downloaded checkpoint,
+including the unused classifier. Cycle `parameter_accounting.json` files
+record the correction; immutable card hashes are preserved.
+
+Normalized-time speech clips can reward timing, identity and background
+shortcuts. Always retain train-time-profile, last-observation, independently
+encoded retrieval, and within-person shuffled controls. Re-running preparation
+verifies existing files and preserves checkpoint-bound hashes. A changed
+configuration requires a new versioned output directory.
+
+
+## T2-V1 support-aware waveform gaps and higher-resolution video
+
+`training/video_repair_data.py` prepares original96×64 mouth pixels from the
+previously fixed CREMA/RAV crops. It retains the original CREMA5,061/210/240
+people-disjoint split, adds240 RAV training clips from actors07,08,19,20,
+repurposes the128 earlier R1 RAV test clips as validation, and reserves128
+new-person test clips from09,10,11,12,21,22,23,24. No codec/PCA is refitted.
+The old48×32 PCA input is a separate, smaller approximate ablation.
+
+The new gap is a physical waveform interval. Every centered64ms coarse FFT
+window intersecting it is hidden; delta features are formed only after
+observed-only interpolation. Fine targets retain the original100Hz mel
+representation. Practical file inference erases the whole missing waveform
+before analysis, then reconstructs phase with hard observed-sample constraints.
+The existing≤3 missing terminal subframe edge-padding rule also applies to
+ordinary-file inputs; the repeated frame is from the already erased recording.
+
+Raw SHA256, new RAV member CRCs, exact byte ranges, spaced official source
+requests, split identities and every array hash are recorded. ZIP MD5 values
+are source-declared, not full-archive verifications. Training arrays stay on
+Fedora; source cards, all trained checkpoints, actual outputs and audits are
+mirrored locally. See [the protocol](../research/video_repair_protocol_20261105.md),
+[the guide](video_repair.md) and `video_repair_v1/dataset_card.json`.

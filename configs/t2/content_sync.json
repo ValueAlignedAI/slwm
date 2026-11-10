@@ -1,0 +1,21 @@
+{
+  "sprint":"T2-C1",
+  "protocol":"docs/research/content_sync_protocol_20261105.md",
+  "data_config":"configs/t2/grid_content_data.json",
+  "corpus":"artifacts/t2_audio_visual/grid_content_v1",
+  "legacy_video":"artifacts/t2_audio_visual/video_repair_v1",
+  "restoration_config":"configs/t2/signal_restoration.json",
+  "artifacts":"experiments/multimodal/t2/content-sync-20261105",
+  "experts":{
+    "71":{"path":"experiments/multimodal/t2/content-conservation-20261105/EXP-T2-521/best.pt","sha256":"b4bfe63d5b1e0c5473904143a4685a22bddf4f9542f1d38f3fd149efe503cee5"},
+    "72":{"path":"experiments/multimodal/t2/content-conservation-20261105/EXP-T2-522/best.pt","sha256":"67776c537620defe5c107bdc84bc7e786c9045b3a1b4dc5ff935f8f0f44d6e8c"}
+  },
+  "training":{"base_steps":4000,"candidate_steps":3000,"batch_size":32,"grid_batch":24,"base_crema_batch":4,"base_libri_batch":4,"lr":0.0004,"core_lr":0.0001,"warmup":80,"eval_every":400,"observed_content_weight":0.5,"timed_text_weight":0.25,"hint_word_weight":0.1,"sync_weight":0.5,"overfit_patience":3,"overfit_relative_rise":0.05,"audio_front_width":512},
+  "base_runs":[{"id":"EXP-T2-701","seed":71,"unit_weight":0.0},{"id":"EXP-T2-702","seed":71,"unit_weight":0.2},{"id":"EXP-T2-703","seed":72,"unit_weight":0.0},{"id":"EXP-T2-704","seed":72,"unit_weight":0.2}],
+  "candidate_runs":[{"id":"EXP-T2-711","seed":71,"arm":"audio","unit_weight":0.2},{"id":"EXP-T2-712","seed":72,"arm":"audio","unit_weight":0.2},{"id":"EXP-T2-713","seed":71,"arm":"video","unit_weight":0.2},{"id":"EXP-T2-714","seed":72,"arm":"video","unit_weight":0.2},{"id":"EXP-T2-715","seed":71,"arm":"video","unit_weight":0.0},{"id":"EXP-T2-716","seed":71,"arm":"shuffled","unit_weight":0.2}],
+  "base_by_seed":{"71":"EXP-T2-702","72":"EXP-T2-704"},
+  "audio_by_seed":{"71":"EXP-T2-711","72":"EXP-T2-712"},
+  "video_by_seed":{"71":"EXP-T2-713","72":"EXP-T2-714"},
+  "calibration":{"max_shift_acceptance":0.05,"required_correct_coverage":0.5,"threshold_grid_points":1001,"training_shift_sizes":[2,3,5,6,8],"test_shift_sizes":[4,6]},
+  "gaps":{"primary_packets":8,"secondary_packets":[4,12],"training_lengths":[4,8,12],"training_probabilities":[0.25,0.5,0.25]}
+}

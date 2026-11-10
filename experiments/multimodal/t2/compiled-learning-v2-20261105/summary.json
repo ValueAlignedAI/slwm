@@ -1,0 +1,116 @@
+{
+  "slwm": {
+    "clears_exploratory_learning_check": true,
+    "cold_inclusive_speedup": 1.173775909331722,
+    "compiled_endpoint": {
+      "peak_gpu_bytes": 5843938304,
+      "positive_windows": 51200,
+      "seconds": 182.28604999295203,
+      "step": 400,
+      "training": {
+        "activity": 0.16155262619256974,
+        "audio": 0.5977074193954468,
+        "ctc": 2.481735849380493,
+        "future": 0.8904837030172348,
+        "motion": 0.02968760231509805,
+        "phone": 2.131531774401665,
+        "risk": 0.22249903663992882,
+        "video": 0.9339998522400856
+      },
+      "validation": {
+        "audio_prediction": 1.4458413124084473,
+        "phone_ce": 2.821652889251709,
+        "repair_mae": 0.7838931679725647,
+        "selection_loss": 1.4324727416038514,
+        "text_prediction": 0.5479010343551636,
+        "video_prediction": 0.543742299079895
+      }
+    },
+    "compiled_id": "EXP-T2-841",
+    "eager_endpoint": {
+      "peak_gpu_bytes": 5149289472,
+      "positive_windows": 51200,
+      "seconds": 213.96297408896498,
+      "step": 400,
+      "training": {
+        "activity": 0.16417165119200944,
+        "audio": 0.5988243716955185,
+        "ctc": 2.492160977125168,
+        "future": 0.8910631960630417,
+        "motion": 0.02968976913485676,
+        "phone": 2.1406769835948944,
+        "risk": 0.22379744328558446,
+        "video": 0.9341972708702088
+      },
+      "validation": {
+        "audio_prediction": 1.4446911811828613,
+        "phone_ce": 2.8303332328796387,
+        "repair_mae": 0.7817169427871704,
+        "selection_loss": 1.4310017824172974,
+        "text_prediction": 0.5489757061004639,
+        "video_prediction": 0.5451740026473999
+      }
+    },
+    "eager_id": "EXP-T2-843",
+    "exact_data_rng_matches": true,
+    "fresh_test_read": false,
+    "relative_validation_loss_change": 0.0010279226795015806
+  },
+  "transformer": {
+    "clears_exploratory_learning_check": true,
+    "cold_inclusive_speedup": 1.2897970369300824,
+    "compiled_endpoint": {
+      "peak_gpu_bytes": 4854878208,
+      "positive_windows": 51200,
+      "seconds": 111.08484893798595,
+      "step": 400,
+      "training": {
+        "activity": 0.17164720043540002,
+        "audio": 0.6028172242641449,
+        "ctc": 2.5204053103923796,
+        "future": 0.8909395506978035,
+        "motion": 0.02969211362302303,
+        "phone": 2.2039194971323015,
+        "risk": 0.21724106676876545,
+        "video": 0.9356059339642525
+      },
+      "validation": {
+        "audio_prediction": 1.4469585418701172,
+        "phone_ce": 2.88285493850708,
+        "repair_mae": 0.7793843150138855,
+        "selection_loss": 1.4288337111473084,
+        "text_prediction": 0.5399215221405029,
+        "video_prediction": 0.5396531820297241
+      }
+    },
+    "compiled_id": "EXP-T2-842",
+    "eager_endpoint": {
+      "peak_gpu_bytes": 4147259392,
+      "positive_windows": 51200,
+      "seconds": 143.2769090080401,
+      "step": 400,
+      "training": {
+        "activity": 0.16859721936285496,
+        "audio": 0.6017133611440658,
+        "ctc": 2.5007319295406343,
+        "future": 0.8895579272508621,
+        "motion": 0.029696403709240256,
+        "phone": 2.1798967444896697,
+        "risk": 0.21926649317145347,
+        "video": 0.9353368157148361
+      },
+      "validation": {
+        "audio_prediction": 1.4470552206039429,
+        "phone_ce": 2.8692080974578857,
+        "repair_mae": 0.782263457775116,
+        "selection_loss": 1.4307939887046814,
+        "text_prediction": 0.540744423866272,
+        "video_prediction": 0.5375509858131409
+      }
+    },
+    "eager_id": "EXP-T2-844",
+    "exact_data_rng_matches": true,
+    "fresh_test_read": false,
+    "relative_validation_loss_change": -0.001370062757355961
+  }
+}

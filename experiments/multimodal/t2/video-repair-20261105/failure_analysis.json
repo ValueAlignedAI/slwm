@@ -1,0 +1,482 @@
+{
+  "scope": "Post-hoc descriptive analysis; no model, selection, threshold or primary gate changes",
+  "source_sha256": "eb4b6ea7f6d5bde9318326539aa49eff1ada2e238e233e2cb91261f345d7b01b",
+  "splits": {
+    "crema_test": {
+      "61": {
+        "control_harm": {
+          "correct": {
+            "mean_gate": 0.7478994727134705,
+            "mean_per_clip_relative_harm": -0.09304083562918644,
+            "person_cluster_95_interval": [
+              -0.11788434068557577,
+              -0.06710457205665851
+            ]
+          },
+          "gap_shuffle": {
+            "mean_gate": 0.741777777671814,
+            "mean_per_clip_relative_harm": 0.05541328267026397,
+            "person_cluster_95_interval": [
+              0.03108635420206414,
+              0.07868065382512412
+            ]
+          },
+          "no_video": {
+            "mean_gate": 0.7478994727134705,
+            "mean_per_clip_relative_harm": 0.012079222018300265,
+            "person_cluster_95_interval": [
+              0.00919023742431773,
+              0.015364775529759131
+            ]
+          },
+          "occluded": {
+            "mean_gate": 0.7096506357192993,
+            "mean_per_clip_relative_harm": -0.04751746720320351,
+            "person_cluster_95_interval": [
+              -0.08405046645927945,
+              -0.015611931068519509
+            ]
+          },
+          "shift_minus": {
+            "mean_gate": 0.5283876657485962,
+            "mean_per_clip_relative_harm": 0.12803010914303417,
+            "person_cluster_95_interval": [
+              0.10712935542995354,
+              0.15586364518871984
+            ]
+          },
+          "shift_plus": {
+            "mean_gate": 0.5196900367736816,
+            "mean_per_clip_relative_harm": 0.11040501975085126,
+            "person_cluster_95_interval": [
+              0.08613777003542336,
+              0.13625992323269195
+            ]
+          },
+          "static": {
+            "mean_gate": 0.005130109377205372,
+            "mean_per_clip_relative_harm": 0.012097155223064931,
+            "person_cluster_95_interval": [
+              0.009216937120346217,
+              0.015379868163107758
+            ]
+          },
+          "wrong": {
+            "mean_gate": 0.5356555581092834,
+            "mean_per_clip_relative_harm": 0.11432035368236115,
+            "person_cluster_95_interval": [
+              0.08535313931465899,
+              0.13951304205262838
+            ]
+          }
+        },
+        "per_person": {
+          "1026": {
+            "audio_mse": 0.4995791971683502,
+            "clips": 25,
+            "video_gain_vs_audio": 0.09570332443305571,
+            "video_mse": 0.4427920138835907
+          },
+          "1029": {
+            "audio_mse": 0.5734481245279313,
+            "clips": 20,
+            "video_gain_vs_audio": 0.04903368671671185,
+            "video_mse": 0.5384013772010803
+          },
+          "1036": {
+            "audio_mse": 0.5976414446319852,
+            "clips": 28,
+            "video_gain_vs_audio": 0.1263893960002175,
+            "video_mse": 0.5331433905022485
+          },
+          "1039": {
+            "audio_mse": 0.5228121051830905,
+            "clips": 28,
+            "video_gain_vs_audio": 0.10675856913362984,
+            "video_mse": 0.45684970170259476
+          },
+          "1046": {
+            "audio_mse": 0.5221311095215025,
+            "clips": 21,
+            "video_gain_vs_audio": 0.06628422843833723,
+            "video_mse": 0.48110220829645794
+          },
+          "1054": {
+            "audio_mse": 0.35298103029313294,
+            "clips": 23,
+            "video_gain_vs_audio": 0.056481508637347355,
+            "video_mse": 0.32535973903925525
+          },
+          "1064": {
+            "audio_mse": 0.5794917067577099,
+            "clips": 29,
+            "video_gain_vs_audio": 0.06395062729945387,
+            "video_mse": 0.5356313981886568
+          },
+          "1081": {
+            "audio_mse": 0.43704555715833393,
+            "clips": 28,
+            "video_gain_vs_audio": 0.15525847287996694,
+            "video_mse": 0.3654884919524193
+          }
+        }
+      },
+      "62": {
+        "control_harm": {
+          "correct": {
+            "mean_gate": 0.7602248191833496,
+            "mean_per_clip_relative_harm": -0.09106220774253385,
+            "person_cluster_95_interval": [
+              -0.1154511068187611,
+              -0.0650351212606236
+            ]
+          },
+          "gap_shuffle": {
+            "mean_gate": 0.7548548579216003,
+            "mean_per_clip_relative_harm": 0.07072093577672628,
+            "person_cluster_95_interval": [
+              0.05411863946161811,
+              0.08631384985443562
+            ]
+          },
+          "no_video": {
+            "mean_gate": 0.7602248191833496,
+            "mean_per_clip_relative_harm": 0.023180219565741338,
+            "person_cluster_95_interval": [
+              0.017603411427346293,
+              0.02924930410841559
+            ]
+          },
+          "occluded": {
+            "mean_gate": 0.7284638285636902,
+            "mean_per_clip_relative_harm": -0.04255308067496054,
+            "person_cluster_95_interval": [
+              -0.07537531467095743,
+              -0.010312856310936426
+            ]
+          },
+          "shift_minus": {
+            "mean_gate": 0.5224945545196533,
+            "mean_per_clip_relative_harm": 0.14859696020915675,
+            "person_cluster_95_interval": [
+              0.13504531804087347,
+              0.16351111991583775
+            ]
+          },
+          "shift_plus": {
+            "mean_gate": 0.5137905478477478,
+            "mean_per_clip_relative_harm": 0.13683750276174822,
+            "person_cluster_95_interval": [
+              0.11166999693638331,
+              0.1614764544368241
+            ]
+          },
+          "static": {
+            "mean_gate": 0.00249120662920177,
+            "mean_per_clip_relative_harm": 0.02312768174108331,
+            "person_cluster_95_interval": [
+              0.017548834387123607,
+              0.029190166345120585
+            ]
+          },
+          "wrong": {
+            "mean_gate": 0.5308414101600647,
+            "mean_per_clip_relative_harm": 0.12312303364343061,
+            "person_cluster_95_interval": [
+              0.09408927327819205,
+              0.15007726986826633
+            ]
+          }
+        },
+        "per_person": {
+          "1026": {
+            "audio_mse": 0.4914871335029602,
+            "clips": 25,
+            "video_gain_vs_audio": 0.09632528824627608,
+            "video_mse": 0.43227242171764374
+          },
+          "1029": {
+            "audio_mse": 0.5751320168375968,
+            "clips": 20,
+            "video_gain_vs_audio": 0.05778572802576497,
+            "video_mse": 0.5347868129611015
+          },
+          "1036": {
+            "audio_mse": 0.604357186704874,
+            "clips": 28,
+            "video_gain_vs_audio": 0.11148964499798295,
+            "video_mse": 0.5533844743456159
+          },
+          "1039": {
+            "audio_mse": 0.511361796941076,
+            "clips": 28,
+            "video_gain_vs_audio": 0.11849879905188963,
+            "video_mse": 0.44472531069602284
+          },
+          "1046": {
+            "audio_mse": 0.5128193682148343,
+            "clips": 21,
+            "video_gain_vs_audio": 0.050930947334568724,
+            "video_mse": 0.47826953587077914
+          },
+          "1054": {
+            "audio_mse": 0.35461053252220154,
+            "clips": 23,
+            "video_gain_vs_audio": 0.0689319979961748,
+            "video_mse": 0.3254945789990218
+          },
+          "1064": {
+            "audio_mse": 0.5708781963792341,
+            "clips": 29,
+            "video_gain_vs_audio": 0.05098281344326039,
+            "video_mse": 0.5364413297381895
+          },
+          "1081": {
+            "audio_mse": 0.43342389379228863,
+            "clips": 28,
+            "video_gain_vs_audio": 0.15205554736181043,
+            "video_mse": 0.35839635665927616
+          }
+        }
+      }
+    },
+    "rav_test": {
+      "61": {
+        "control_harm": {
+          "correct": {
+            "mean_gate": 0.7707607746124268,
+            "mean_per_clip_relative_harm": -0.04997587348682936,
+            "person_cluster_95_interval": [
+              -0.1109932001107486,
+              0.01682444918635773
+            ]
+          },
+          "gap_shuffle": {
+            "mean_gate": 0.7656019926071167,
+            "mean_per_clip_relative_harm": 0.11588917430607436,
+            "person_cluster_95_interval": [
+              0.08238124058688424,
+              0.14280177447991022
+            ]
+          },
+          "no_video": {
+            "mean_gate": 0.7707607746124268,
+            "mean_per_clip_relative_harm": 0.02408468810299163,
+            "person_cluster_95_interval": [
+              0.009249685620599066,
+              0.040479819086696144
+            ]
+          },
+          "occluded": {
+            "mean_gate": 0.7494676113128662,
+            "mean_per_clip_relative_harm": -0.040763932589853794,
+            "person_cluster_95_interval": [
+              -0.09971351479491372,
+              0.023702647547061452
+            ]
+          },
+          "shift_minus": {
+            "mean_gate": 0.5050451159477234,
+            "mean_per_clip_relative_harm": 0.17704808004375303,
+            "person_cluster_95_interval": [
+              0.09249094513210385,
+              0.27216588674576586
+            ]
+          },
+          "shift_plus": {
+            "mean_gate": 0.46122515201568604,
+            "mean_per_clip_relative_harm": 0.14624651093115504,
+            "person_cluster_95_interval": [
+              0.12007197905844967,
+              0.1699064334639852
+            ]
+          },
+          "static": {
+            "mean_gate": 0.0006340625113807619,
+            "mean_per_clip_relative_harm": 0.024085275756309126,
+            "person_cluster_95_interval": [
+              0.009248033063794764,
+              0.04047823815276873
+            ]
+          },
+          "wrong": {
+            "mean_gate": 0.5678348541259766,
+            "mean_per_clip_relative_harm": 0.15647330152419003,
+            "person_cluster_95_interval": [
+              0.07728050640893455,
+              0.2287546600667954
+            ]
+          }
+        },
+        "per_person": {
+          "RAVDESS-09": {
+            "audio_mse": 0.8189814873039722,
+            "clips": 16,
+            "video_gain_vs_audio": 0.14145095786780712,
+            "video_mse": 0.6703472845256329
+          },
+          "RAVDESS-10": {
+            "audio_mse": 0.6910074353218079,
+            "clips": 16,
+            "video_gain_vs_audio": -0.09216356052693714,
+            "video_mse": 0.7394798956811428
+          },
+          "RAVDESS-11": {
+            "audio_mse": 0.8163262382149696,
+            "clips": 16,
+            "video_gain_vs_audio": 0.07258238177163974,
+            "video_mse": 0.7456901594996452
+          },
+          "RAVDESS-12": {
+            "audio_mse": 0.6726259998977184,
+            "clips": 16,
+            "video_gain_vs_audio": 0.01948068233319818,
+            "video_mse": 0.6582057774066925
+          },
+          "RAVDESS-21": {
+            "audio_mse": 0.8271199427545071,
+            "clips": 16,
+            "video_gain_vs_audio": -0.06902966001919844,
+            "video_mse": 0.872816801071167
+          },
+          "RAVDESS-22": {
+            "audio_mse": 0.7175395339727402,
+            "clips": 16,
+            "video_gain_vs_audio": 0.13740579324312652,
+            "video_mse": 0.6135732997208834
+          },
+          "RAVDESS-23": {
+            "audio_mse": 0.8447805866599083,
+            "clips": 16,
+            "video_gain_vs_audio": 0.16558219550702463,
+            "video_mse": 0.6576190050691366
+          },
+          "RAVDESS-24": {
+            "audio_mse": 0.7454501707106829,
+            "clips": 16,
+            "video_gain_vs_audio": 0.024498197717974204,
+            "video_mse": 0.7253159806132317
+          }
+        }
+      },
+      "62": {
+        "control_harm": {
+          "correct": {
+            "mean_gate": 0.7757055759429932,
+            "mean_per_clip_relative_harm": -0.04872743164563682,
+            "person_cluster_95_interval": [
+              -0.11442013113026898,
+              0.026530133520566757
+            ]
+          },
+          "gap_shuffle": {
+            "mean_gate": 0.7736274003982544,
+            "mean_per_clip_relative_harm": 0.13214163904058146,
+            "person_cluster_95_interval": [
+              0.09575680247683716,
+              0.16767205211889896
+            ]
+          },
+          "no_video": {
+            "mean_gate": 0.7757055759429932,
+            "mean_per_clip_relative_harm": 0.03267856166383733,
+            "person_cluster_95_interval": [
+              0.009752421697804485,
+              0.05410309582771166
+            ]
+          },
+          "occluded": {
+            "mean_gate": 0.7465101480484009,
+            "mean_per_clip_relative_harm": -0.014844419680455915,
+            "person_cluster_95_interval": [
+              -0.0746926238390721,
+              0.05414524202370412
+            ]
+          },
+          "shift_minus": {
+            "mean_gate": 0.4841618835926056,
+            "mean_per_clip_relative_harm": 0.2645891478375594,
+            "person_cluster_95_interval": [
+              0.1898864668846992,
+              0.33717782247548195
+            ]
+          },
+          "shift_plus": {
+            "mean_gate": 0.42594772577285767,
+            "mean_per_clip_relative_harm": 0.2232684560771775,
+            "person_cluster_95_interval": [
+              0.1979035717183033,
+              0.24466890188744014
+            ]
+          },
+          "static": {
+            "mean_gate": 0.0004149931774009019,
+            "mean_per_clip_relative_harm": 0.03267919388768869,
+            "person_cluster_95_interval": [
+              0.009751055601708785,
+              0.05410408625752417
+            ]
+          },
+          "wrong": {
+            "mean_gate": 0.5602774620056152,
+            "mean_per_clip_relative_harm": 0.1916840695580977,
+            "person_cluster_95_interval": [
+              0.11152274341250497,
+              0.26285194604391693
+            ]
+          }
+        },
+        "per_person": {
+          "RAVDESS-09": {
+            "audio_mse": 0.8345155380666256,
+            "clips": 16,
+            "video_gain_vs_audio": 0.18925733673031364,
+            "video_mse": 0.6386121530085802
+          },
+          "RAVDESS-10": {
+            "audio_mse": 0.7237080298364162,
+            "clips": 16,
+            "video_gain_vs_audio": -0.09201676900676618,
+            "video_mse": 0.7674710378050804
+          },
+          "RAVDESS-11": {
+            "audio_mse": 0.7457104362547398,
+            "clips": 16,
+            "video_gain_vs_audio": 0.08303484076777755,
+            "video_mse": 0.6789006143808365
+          },
+          "RAVDESS-12": {
+            "audio_mse": 0.6430859919637442,
+            "clips": 16,
+            "video_gain_vs_audio": 0.03188062845833081,
+            "video_mse": 0.6253733728080988
+          },
+          "RAVDESS-21": {
+            "audio_mse": 0.8542660735547543,
+            "clips": 16,
+            "video_gain_vs_audio": -0.11003849301181615,
+            "video_mse": 0.9251882880926132
+          },
+          "RAVDESS-22": {
+            "audio_mse": 0.7061734348535538,
+            "clips": 16,
+            "video_gain_vs_audio": 0.11316600412260655,
+            "video_mse": 0.6232925467193127
+          },
+          "RAVDESS-23": {
+            "audio_mse": 0.81188072450459,
+            "clips": 16,
+            "video_gain_vs_audio": 0.14745649424509472,
+            "video_mse": 0.6755983717739582
+          },
+          "RAVDESS-24": {
+            "audio_mse": 0.7437189426273108,
+            "clips": 16,
+            "video_gain_vs_audio": 0.027079410859553683,
+            "video_mse": 0.7188136149197817
+          }
+        }
+      }
+    }
+  }
+}

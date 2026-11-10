@@ -1,0 +1,504 @@
+{
+  "conditions_mean_wer": {
+    "audio_reconstruction": 0.830026455026455,
+    "codec_audio": 0.2777777777777778,
+    "null_audio": 1.0,
+    "reference_audio": 0.34722222222222215,
+    "video_to_audio": 1.1851851851851851
+  },
+  "examples": [
+    {
+      "actual_sentence": "It's eleven o'clock.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Time to climb.",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "It's 11 o'clock.",
+          "word_error_rate": 0.3333333333333333
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "So I'm gonna clock.",
+          "word_error_rate": 1.3333333333333333
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1015_IEO_SAD_LO"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I'm still getting chatted!",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget to jack it!",
+          "word_error_rate": 0.75
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "you",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1015_DFA_DIS_XX"
+    },
+    {
+      "actual_sentence": "I wonder what this is about.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I'm gonna get this suit out!",
+          "word_error_rate": 0.8333333333333334
+        },
+        "codec_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1072_IWW_HAP_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to check!",
+          "word_error_rate": 0.5
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget to jack it!",
+          "word_error_rate": 0.75
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget to check it!",
+          "word_error_rate": 0.75
+        },
+        "video_to_audio": {
+          "recognizer_text": "I'm going to go to the next one.",
+          "word_error_rate": 2.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1026_DFA_FEA_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I'll forget what's happening!",
+          "word_error_rate": 0.75
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1046_DFA_ANG_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to tap it!",
+          "word_error_rate": 0.75
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "Bye!",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-301",
+      "sample_id": "1081_DFA_ANG_XX"
+    },
+    {
+      "actual_sentence": "It's eleven o'clock.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Small crock!",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "It's 11 o'clock.",
+          "word_error_rate": 0.3333333333333333
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "So I'm gonna clock.",
+          "word_error_rate": 1.3333333333333333
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1015_IEO_SAD_LO"
+    },
+    {
+      "actual_sentence": "I wonder what this is about.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I want to go pieces of love.",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "I'm going to go to the next one.",
+          "word_error_rate": 1.3333333333333333
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1048_IWW_HAP_XX"
+    },
+    {
+      "actual_sentence": "I wonder what this is about.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I don't like your sister pal!",
+          "word_error_rate": 0.8333333333333334
+        },
+        "codec_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1072_IWW_HAP_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to check it!",
+          "word_error_rate": 0.75
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget to jack it!",
+          "word_error_rate": 0.75
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget to check it!",
+          "word_error_rate": 0.75
+        },
+        "video_to_audio": {
+          "recognizer_text": "I'm going to go to the next one.",
+          "word_error_rate": 2.0
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1026_DFA_FEA_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Y'all forget about Jack-It!",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "I'm getting this shot!",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1046_DFA_ANG_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to drop it!",
+          "word_error_rate": 0.75
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-308",
+      "sample_id": "1081_DFA_ANG_XX"
+    },
+    {
+      "actual_sentence": "It's eleven o'clock.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "It's overclock!",
+          "word_error_rate": 0.6666666666666666
+        },
+        "codec_audio": {
+          "recognizer_text": "It's 11 o'clock.",
+          "word_error_rate": 0.3333333333333333
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "So I'm gonna clock.",
+          "word_error_rate": 1.3333333333333333
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1015_IEO_SAD_LO"
+    },
+    {
+      "actual_sentence": "I'm on my way to the meeting.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I'm gonna be here!",
+          "word_error_rate": 0.8571428571428571
+        },
+        "codec_audio": {
+          "recognizer_text": "I thought I waited for you.",
+          "word_error_rate": 1.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "I'm on my way to the meeting.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1069_IOM_FEA_XX"
+    },
+    {
+      "actual_sentence": "I wonder what this is about.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "I'm gonna let you sit down!",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "I wonder what this is about.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1072_IWW_HAP_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to check!",
+          "word_error_rate": 0.5
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget to jack it!",
+          "word_error_rate": 0.75
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget to check it!",
+          "word_error_rate": 0.75
+        },
+        "video_to_audio": {
+          "recognizer_text": "I'm going to go to the next one.",
+          "word_error_rate": 2.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1026_DFA_FEA_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Self-recamp with Champions!",
+          "word_error_rate": 1.0
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket.",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1046_DFA_ANG_XX"
+    },
+    {
+      "actual_sentence": "Don't forget a jacket.",
+      "conditions": {
+        "audio_reconstruction": {
+          "recognizer_text": "Don't forget to jack it!",
+          "word_error_rate": 0.75
+        },
+        "codec_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "null_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        },
+        "reference_audio": {
+          "recognizer_text": "Don't forget a jacket!",
+          "word_error_rate": 0.0
+        },
+        "video_to_audio": {
+          "recognizer_text": "You",
+          "word_error_rate": 1.0
+        }
+      },
+      "experiment_id": "EXP-T2-309",
+      "sample_id": "1081_DFA_ANG_XX"
+    }
+  ],
+  "external_evaluation_parameters": 37760256,
+  "limitations": "Recognizer can hallucinate on distorted/silent inputs; compare original and codec controls before attributing errors to SLWM.",
+  "never_used_for_slwm_generation": true,
+  "recognizer": "openai/whisper-tiny.en",
+  "revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "scope": "Exploratory external recognizer on selected diagnostic gallery; not a benchmark or human intelligibility judgment",
+  "status": "completed"
+}

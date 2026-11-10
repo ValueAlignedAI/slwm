@@ -1,0 +1,1452 @@
+{
+  "audio": {
+    "external": {
+      "EXP-T2-401": {
+        "correct_vs_wrong_gain": -0.00309481262229383,
+        "gate_pass": false,
+        "mean_clip_wer": 1.0208333333333335,
+        "mel100_mse": 2.0797901153564453,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.1375541090965271,
+        "wer_relative_improvement_vs_old": -0.2098765432098768,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.010400583036243916,
+          0.0028067559469491243
+        ]
+      },
+      "EXP-T2-402": {
+        "correct_vs_wrong_gain": -0.030849020928144455,
+        "gate_pass": false,
+        "mean_clip_wer": 1.0104166666666667,
+        "mel100_mse": 2.430034637451172,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.10021134465932846,
+        "wer_relative_improvement_vs_old": 0.010204081632653184,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.04960515722632408,
+          -0.011058671399950981
+        ]
+      },
+      "EXP-T2-403": {
+        "correct_vs_wrong_gain": 0.8133156299591064,
+        "gate_pass": true,
+        "mean_clip_wer": 0.14583333333333331,
+        "mel100_mse": 0.2667401432991028,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.05233455449342728,
+        "wer_relative_improvement_vs_old": 0.8271604938271605,
+        "wrong_gain_person_cluster_95_interval": [
+          0.7864208221435547,
+          0.857895016670227
+        ]
+      },
+      "EXP-T2-404": {
+        "correct_vs_wrong_gain": 0.028435811400413513,
+        "gate_pass": false,
+        "mean_clip_wer": 1.0,
+        "mel100_mse": 2.229586124420166,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.09620789438486099,
+        "wer_relative_improvement_vs_old": 0.020408163265306256,
+        "wrong_gain_person_cluster_95_interval": [
+          0.010551375336945057,
+          0.050551511347293854
+        ]
+      },
+      "EXP-T2-405": {
+        "correct_vs_wrong_gain": 0.26354140043258667,
+        "gate_pass": false,
+        "mean_clip_wer": 0.0625,
+        "mel100_mse": 3.643810749053955,
+        "richer_input_diagnostic": true,
+        "temporal_mse": 0.034195058047771454,
+        "wer_relative_improvement_vs_old": 0.9259259259259259,
+        "wrong_gain_person_cluster_95_interval": [
+          0.15952086448669434,
+          0.38877326250076294
+        ]
+      }
+    },
+    "test": {
+      "EXP-T2-401": {
+        "correct_vs_wrong_gain": 0.9244019985198975,
+        "gate_pass": true,
+        "mean_clip_wer": 0.609375,
+        "mel100_mse": 0.08426859229803085,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.028202775865793228,
+        "wer_relative_improvement_vs_old": 0.4105793450881611,
+        "wrong_gain_person_cluster_95_interval": [
+          0.9158405214548111,
+          0.9320986270904541
+        ]
+      },
+      "EXP-T2-402": {
+        "correct_vs_wrong_gain": 0.12257888168096542,
+        "gate_pass": false,
+        "mean_clip_wer": 1.0,
+        "mel100_mse": 0.8452675342559814,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.04768098518252373,
+        "wer_relative_improvement_vs_old": 0.2727272727272727,
+        "wrong_gain_person_cluster_95_interval": [
+          0.08978090435266495,
+          0.15587701797485345
+        ]
+      },
+      "EXP-T2-403": {
+        "correct_vs_wrong_gain": 0.956082284450531,
+        "gate_pass": true,
+        "mean_clip_wer": 0.6354166666666667,
+        "mel100_mse": 0.05256928876042366,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.024958109483122826,
+        "wer_relative_improvement_vs_old": 0.38539042821158676,
+        "wrong_gain_person_cluster_95_interval": [
+          0.9524466961622238,
+          0.9594238460063934
+        ]
+      },
+      "EXP-T2-404": {
+        "correct_vs_wrong_gain": 0.14231035113334656,
+        "gate_pass": false,
+        "mean_clip_wer": 1.03125,
+        "mel100_mse": 0.8366615772247314,
+        "richer_input_diagnostic": false,
+        "temporal_mse": 0.04724853113293648,
+        "wer_relative_improvement_vs_old": 0.25,
+        "wrong_gain_person_cluster_95_interval": [
+          0.1099183339625597,
+          0.17311703152954577
+        ]
+      },
+      "EXP-T2-405": {
+        "correct_vs_wrong_gain": 0.9545443058013916,
+        "gate_pass": true,
+        "mean_clip_wer": 0.5104166666666667,
+        "mel100_mse": 0.057311758399009705,
+        "richer_input_diagnostic": true,
+        "temporal_mse": 0.017554881051182747,
+        "wer_relative_improvement_vs_old": 0.5062972292191434,
+        "wrong_gain_person_cluster_95_interval": [
+          0.9500112101435662,
+          0.9588892459869385
+        ]
+      }
+    }
+  },
+  "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+  "core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+  "external_frozen_alignment": {
+    "accuracy": 0.53125,
+    "candidate_count": 7,
+    "chance": 0.14285714285714285,
+    "eligible_clips": 64,
+    "improvement_over_baseline_interval": [
+      0.3125,
+      0.703125
+    ],
+    "motion_energy_baseline_accuracy": 0.03125,
+    "per_clip": [
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-02-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-02-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-03-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-03-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-04-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-04-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-05-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-05-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-08-01-01-01-01"
+      },
+      {
+        "actor": "RAVDESS-01",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-08-01-02-01-01"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-01-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-02-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-02-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 1.0,
+        "correct": 1.0,
+        "sample_id": "01-01-03-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-03-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-04-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-04-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-05-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-05-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-06-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-08-01-01-01-02"
+      },
+      {
+        "actor": "RAVDESS-02",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-08-01-02-01-02"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-02-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-02-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-03-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-03-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-04-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-04-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 1.0,
+        "correct": 1.0,
+        "sample_id": "01-01-05-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-05-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-07-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-08-01-01-01-13"
+      },
+      {
+        "actor": "RAVDESS-13",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-08-01-02-01-13"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-01-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-01-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-02-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-02-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-03-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-03-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-04-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-04-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-05-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-05-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-06-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 1.0,
+        "sample_id": "01-01-06-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-07-01-02-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-08-01-01-01-14"
+      },
+      {
+        "actor": "RAVDESS-14",
+        "baseline_correct": 0.0,
+        "correct": 0.0,
+        "sample_id": "01-01-08-01-02-01-14"
+      }
+    ],
+    "person_cluster_accuracy_interval": [
+      0.328125,
+      0.765625
+    ]
+  },
+  "independent_recognizer": {
+    "external": {
+      "mean_clip_wer": {
+        "EXP-T2-401": 1.0208333333333335,
+        "EXP-T2-402": 1.0104166666666667,
+        "EXP-T2-403": 0.14583333333333331,
+        "EXP-T2-404": 1.0,
+        "EXP-T2-405": 0.0625,
+        "codec100": 0.010416666666666666,
+        "codec25": 0.12499999999999999,
+        "null_video": 1.0,
+        "old_audio": 0.84375,
+        "old_video": 1.0208333333333335,
+        "reference": 0.0,
+        "wrong_video": 1.0104166666666667
+      },
+      "paired_changes": {
+        "EXP-T2-401_vs_old_audio": {
+          "absolute_wer_reduction": -0.17708333333333331,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.34375,
+            -0.020833333333333322
+          ],
+          "relative_wer_reduction": -0.20987654320987653
+        },
+        "EXP-T2-402_vs_null_video": {
+          "absolute_wer_reduction": -0.010416666666666671,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.031250000000000014,
+            0.0
+          ],
+          "relative_wer_reduction": -0.010416666666666671
+        },
+        "EXP-T2-402_vs_old_video": {
+          "absolute_wer_reduction": 0.010416666666666671,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.0,
+            0.031250000000000014
+          ],
+          "relative_wer_reduction": 0.010204081632653064
+        },
+        "EXP-T2-402_vs_wrong_video": {
+          "absolute_wer_reduction": 0.0,
+          "person_cluster_absolute_reduction_95_interval": [
+            -0.031250000000000014,
+            0.031250000000000014
+          ],
+          "relative_wer_reduction": 0.0
+        },
+        "codec100_vs_codec25": {
+          "absolute_wer_reduction": 0.11458333333333331,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.041666666666666664,
+            0.1875
+          ],
+          "relative_wer_reduction": 0.9166666666666666
+        }
+      },
+      "people": 4,
+      "samples": 16
+    },
+    "test": {
+      "mean_clip_wer": {
+        "EXP-T2-401": 0.609375,
+        "EXP-T2-402": 1.0,
+        "EXP-T2-403": 0.6354166666666667,
+        "EXP-T2-404": 1.03125,
+        "EXP-T2-405": 0.5104166666666667,
+        "codec100": 0.40625,
+        "codec25": 0.6588541666666666,
+        "null_video": 1.0,
+        "old_audio": 1.0338541666666665,
+        "old_video": 1.375,
+        "reference": 0.36979166666666663,
+        "wrong_video": 1.0
+      },
+      "paired_changes": {
+        "EXP-T2-401_vs_old_audio": {
+          "absolute_wer_reduction": 0.42447916666666663,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.2734375,
+            0.5651041666666666
+          ],
+          "relative_wer_reduction": 0.41057934508816124
+        },
+        "EXP-T2-402_vs_null_video": {
+          "absolute_wer_reduction": 0.0,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.0,
+            0.0
+          ],
+          "relative_wer_reduction": 0.0
+        },
+        "EXP-T2-402_vs_old_video": {
+          "absolute_wer_reduction": 0.375,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.18489583333333334,
+            0.5365234374999996
+          ],
+          "relative_wer_reduction": 0.2727272727272727
+        },
+        "EXP-T2-402_vs_wrong_video": {
+          "absolute_wer_reduction": 0.0,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.0,
+            0.0
+          ],
+          "relative_wer_reduction": 0.0
+        },
+        "codec100_vs_codec25": {
+          "absolute_wer_reduction": 0.25260416666666663,
+          "person_cluster_absolute_reduction_95_interval": [
+            0.140625,
+            0.40625
+          ],
+          "relative_wer_reduction": 0.38339920948616596
+        }
+      },
+      "people": 8,
+      "samples": 32
+    }
+  },
+  "limitations": [
+    "CREMA test reused in earlier research cycles",
+    "external set has four people and two fixed prompts",
+    "one real visual seed is additional conditioning",
+    "100Hz input diagnostic has richer observations",
+    "Whisper tiny.en can hallucinate; text is evaluator output, never model transcription",
+    "grid_sample CUDA backward is not bitwise deterministic",
+    "these are short simultaneous translations, not autonomous future rollouts",
+    "no policy or uncertainty gate trained"
+  ],
+  "paired_core_comparisons": {
+    "external": {
+      "EXP-T2-401_vs_EXP-T2-403": {
+        "mean_per_clip_relative_gain": -7.868515421830319,
+        "person_cluster_95_interval": [
+          -9.196081988973114,
+          -6.577133132531585
+        ]
+      },
+      "EXP-T2-402_vs_EXP-T2-404": {
+        "mean_per_clip_relative_gain": -0.22393116078064762,
+        "person_cluster_95_interval": [
+          -0.5028789550750952,
+          0.07225499794371393
+        ]
+      },
+      "EXP-T2-411_vs_EXP-T2-412": {
+        "mean_per_clip_relative_gain": -0.03374858260361851,
+        "person_cluster_95_interval": [
+          -0.08947305976628167,
+          0.019000278761389496
+        ]
+      },
+      "EXP-T2-411_vs_EXP-T2-413": {
+        "mean_per_clip_relative_gain": -0.05884893618935376,
+        "person_cluster_95_interval": [
+          -0.0753363610948735,
+          -0.042361511283834016
+        ]
+      },
+      "EXP-T2-416_vs_EXP-T2-413": {
+        "mean_per_clip_relative_gain": -0.09241864972775125,
+        "person_cluster_95_interval": [
+          -0.11114633405711019,
+          -0.06845935663192004
+        ]
+      }
+    },
+    "test": {
+      "EXP-T2-401_vs_EXP-T2-403": {
+        "mean_per_clip_relative_gain": -0.6562118628917261,
+        "person_cluster_95_interval": [
+          -0.7116837694263309,
+          -0.6053147785118221
+        ]
+      },
+      "EXP-T2-402_vs_EXP-T2-404": {
+        "mean_per_clip_relative_gain": -0.026025074747016763,
+        "person_cluster_95_interval": [
+          -0.05732924509626644,
+          0.0004698966286036196
+        ]
+      },
+      "EXP-T2-411_vs_EXP-T2-412": {
+        "mean_per_clip_relative_gain": 0.01988375915307043,
+        "person_cluster_95_interval": [
+          0.0023372352311360057,
+          0.04172316988404108
+        ]
+      },
+      "EXP-T2-411_vs_EXP-T2-413": {
+        "mean_per_clip_relative_gain": 0.0005216826384677344,
+        "person_cluster_95_interval": [
+          -0.03802799148065384,
+          0.05268929134004174
+        ]
+      },
+      "EXP-T2-416_vs_EXP-T2-413": {
+        "mean_per_clip_relative_gain": -0.04252224638996751,
+        "person_cluster_95_interval": [
+          -0.07895467758201663,
+          0.005162597455368033
+        ]
+      }
+    }
+  },
+  "runs": [
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "298eae0f34b7c7c257c2506b6fb211749f288f26431fb3d76f8212346be66b54",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-401",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "field_audio",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 548352,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-401",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "audio"
+      },
+      "run_hash": "1bdff37f8bde8aee5eb93a0997a109d74d78fb6527cab78274d2d27901bd233d",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 9.811971161980182,
+      "windows_seen": 51200
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "b46eb817e53158ef33f730a31be42f1cb9afb759cad39d3be8b7686325f066c7",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-402",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "field_video",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 548352,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-402",
+        "input": "field_video",
+        "seed": 41,
+        "task": "audio"
+      },
+      "run_hash": "7313a69c2c7e2c3b2fff627a6a6e5f17ba5ed6579672d87b9d17505617a38099",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 8.550546175043564,
+      "windows_seen": 51200
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "ce1425ec4169f33bb1c52e428fff4bf32474c1386fae59c5531f78601ff55023",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-403",
+      "frozen_core_sha256": null,
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "audio_coarse",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 548352,
+        "external_generation_parameters": 0,
+        "frozen_core": 0
+      },
+      "run": {
+        "id": "EXP-T2-403",
+        "input": "audio_coarse",
+        "seed": 41,
+        "task": "audio"
+      },
+      "run_hash": "c12f28303706f902d4ea6d44717c3be0e54d88089be04ed107d95e986edc9832",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 7.635763993952423,
+      "windows_seen": 51200
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "8f52d0f1ea0486d8235df028f79016a9664bf929e3d5660354e61ca157cbc405",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-404",
+      "frozen_core_sha256": null,
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "video_coarse",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 548352,
+        "external_generation_parameters": 0,
+        "frozen_core": 0
+      },
+      "run": {
+        "id": "EXP-T2-404",
+        "input": "video_coarse",
+        "seed": 41,
+        "task": "audio"
+      },
+      "run_hash": "353b851de0f0ad7f6fc234b1253e3c713a198f086649200c0fa401a0b39af56d",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 7.518452895979863,
+      "windows_seen": 51200
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "132fdea2fbc9726d52114fc38b12ac58ee4aea666bbbfe9bc010d8a800ee18cb",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-405",
+      "frozen_core_sha256": null,
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "mel100",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 548352,
+        "external_generation_parameters": 0,
+        "frozen_core": 0
+      },
+      "run": {
+        "id": "EXP-T2-405",
+        "input": "mel100",
+        "richer_input_diagnostic": true,
+        "seed": 41,
+        "task": "audio"
+      },
+      "run_hash": "933227d292afb8ebf9006c2a1d8f4075dd2957ef5047f4eb6839f6aaaf8ee94d",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 7.467508494039066,
+      "windows_seen": 51200
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "7511cc1c0756e038141fbe113c790603ffa87cfe34735bb1de8d7baa9da76538",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-411",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "field_audio + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-411",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      "run_hash": "dac6132539eb5509679abc0a2f898ae0ff27704cfe4baa2a6e4fbd435bbc3b1d",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 56.35618710302515,
+      "windows_seen": 25600
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "507e297685f04ec8ddb2e8e07be88045ac02367fcc17496fcf241cfa522a809e",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-412",
+      "frozen_core_sha256": null,
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "audio_coarse + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 0
+      },
+      "run": {
+        "id": "EXP-T2-412",
+        "input": "audio_coarse",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      "run_hash": "1de347f8eee22983411b67889756672936c3b0eb38297df12bf8aaf87bf73e58",
+      "selected_step": 1400,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 56.08494832197903,
+      "windows_seen": 25600
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "0acd3013aea634a76f1a817dfdbce0eb01402d904f58055d4146edcf956252ea",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-413",
+      "frozen_core_sha256": null,
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "time_only + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 0
+      },
+      "run": {
+        "id": "EXP-T2-413",
+        "input": "time_only",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      "run_hash": "6e0dd67904b0b94e7256f9c6bce430dfd60af603c3b2ee5001caf1d57b7cf97b",
+      "selected_step": 1400,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 55.905311477021314,
+      "windows_seen": 25600
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "84be18c747f76e5492eba9b4c52bc55a5052ae54cf39040799fe7c9e26b2652f",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-414",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "field_audio + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-414",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "visual",
+        "warp": false
+      },
+      "run_hash": "a07db64459bb6fe6eb575b34b5a2133f17acfc6ef63ece3f5ee75d0807786a01",
+      "selected_step": 1600,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 54.82549941900652,
+      "windows_seen": 25600
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "4f67c1329ad02712fe03652b75b592191b5a9df5a39ccfb7b43b0e8b71167635",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-415",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "corrected_validation_metrics.json",
+        "corrected_test_metrics.json",
+        "corrected_external_metrics.json"
+      ],
+      "observations": "field_audio + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-415",
+        "input": "field_audio",
+        "seed": 41,
+        "shuffled": true,
+        "task": "visual",
+        "warp": true
+      },
+      "run_hash": "0bf6fa457456eb99174b86d1ea98d707d67f0bc23a8c61e2a48ecc6de029e75f",
+      "selected_step": 1400,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 56.1165359110455,
+      "windows_seen": 25600
+    },
+    {
+      "accounting_mode": "core frozen; decoder trained, separate counts",
+      "checkpoint_sha256": "45b35e169d2997ef02e50c9c950c7561757b24e7dda8a387348fc693c81dc93e",
+      "claim_scope": "diagnostic simultaneous conditional generation, no policy commit",
+      "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+      "device": "NVIDIA GeForce RTX 3090",
+      "experiment_id": "EXP-T2-416",
+      "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+      "metrics_files": [
+        "validation_metrics.json",
+        "test_metrics.json",
+        "external_metrics.json"
+      ],
+      "observations": "field_audio + one observed starting frame",
+      "parameter_accounting": {
+        "codec_fitted_values": 249376,
+        "decoder_trainable": 213699,
+        "external_generation_parameters": 0,
+        "frozen_core": 4741089
+      },
+      "run": {
+        "id": "EXP-T2-416",
+        "input": "field_audio",
+        "seed": 42,
+        "task": "visual",
+        "warp": true
+      },
+      "run_hash": "efedff59863003d96ec1afc869e8cfc5b07be4d34cabb39e92d356f97da29d6b",
+      "selected_step": 1200,
+      "source_hashes": {
+        "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+        "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+        "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+        "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+        "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+        "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+        "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+        "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+        "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+        "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+      },
+      "sprint": "T2-G1",
+      "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+      "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "wall_seconds": 56.05652791302418,
+      "windows_seen": 25600
+    }
+  ],
+  "sprint": "T2-G1",
+  "total_decoder_training_wall_seconds": 376.3292528660968,
+  "visual": {
+    "external": {
+      "EXP-T2-411": {
+        "correct_vs_wrong_gain": 0.007232199888676405,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.16285547086011476,
+        "improvement_vs_time_only": -0.055185763122388654,
+        "motion_energy_ratio": 0.06936466118158233,
+        "roi_mse": 0.010497070848941803,
+        "temporal_mse": 0.0011463110568001866,
+        "whole_frame_mse": 0.014121128246188164,
+        "wrong_gain_person_cluster_95_interval": [
+          0.0012395428493618965,
+          0.014481368474662304
+        ]
+      },
+      "EXP-T2-412": {
+        "correct_vs_wrong_gain": -0.004377426579594612,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.1776082928166549,
+        "improvement_vs_time_only": -0.03659044636099895,
+        "motion_energy_ratio": 0.020766796205074035,
+        "roi_mse": 0.010312083177268505,
+        "temporal_mse": 0.0010861445916816592,
+        "whole_frame_mse": 0.01409955881536007,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.025371361523866653,
+          0.01661650650203228
+        ]
+      },
+      "EXP-T2-413": {
+        "correct_vs_wrong_gain": 0.0,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.2066377709051912,
+        "improvement_vs_time_only": 0.0,
+        "motion_energy_ratio": 0.0036615139701332462,
+        "roi_mse": 0.00994807854294777,
+        "temporal_mse": 0.0010746795451268554,
+        "whole_frame_mse": 0.013967359438538551,
+        "wrong_gain_person_cluster_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "EXP-T2-414": {
+        "correct_vs_wrong_gain": 0.0017460957169532776,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.12644761355210565,
+        "improvement_vs_time_only": -0.10107634875002658,
+        "motion_energy_ratio": 0.024607711248666807,
+        "roi_mse": 0.010953593999147415,
+        "temporal_mse": 0.0011030221357941628,
+        "whole_frame_mse": 0.015000399202108383,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.002536697778850794,
+          0.007172479294240475
+        ]
+      },
+      "EXP-T2-415": {
+        "correct_vs_wrong_gain": 0.00329246511682868,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.2012508804165719,
+        "improvement_vs_time_only": -0.006789950782967624,
+        "motion_energy_ratio": 0.017509318187580822,
+        "roi_mse": 0.01001562550663948,
+        "temporal_mse": 0.0010883999057114124,
+        "whole_frame_mse": 0.014009986072778702,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.0014102829154580832,
+          0.008828489133156836
+        ]
+      },
+      "EXP-T2-416": {
+        "correct_vs_wrong_gain": 0.00706271268427372,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.14193878591603837,
+        "improvement_vs_time_only": -0.08155037209544425,
+        "motion_energy_ratio": 0.0508899752540012,
+        "roi_mse": 0.010759348049759865,
+        "temporal_mse": 0.0011275515425950289,
+        "whole_frame_mse": 0.014285193756222725,
+        "wrong_gain_person_cluster_95_interval": [
+          0.003372233361005783,
+          0.010753192007541656
+        ]
+      }
+    },
+    "test": {
+      "EXP-T2-411": {
+        "correct_vs_wrong_gain": 0.036672480404376984,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.21713787278703323,
+        "improvement_vs_time_only": -0.00026340351578424404,
+        "motion_energy_ratio": 0.026457066231400445,
+        "roi_mse": 0.008707249537110329,
+        "temporal_mse": 0.0008598899003118277,
+        "whole_frame_mse": 0.00500288512557745,
+        "wrong_gain_person_cluster_95_interval": [
+          0.014774552546441555,
+          0.0662991801276803
+        ]
+      },
+      "EXP-T2-412": {
+        "correct_vs_wrong_gain": 0.03594087436795235,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.19719826043254396,
+        "improvement_vs_time_only": -0.025740258028457808,
+        "motion_energy_ratio": 0.027268305364836848,
+        "roi_mse": 0.008929024450480938,
+        "temporal_mse": 0.0008645853376947343,
+        "whole_frame_mse": 0.0050860242918133736,
+        "wrong_gain_person_cluster_95_interval": [
+          0.01653228416107595,
+          0.06133716003969311
+        ]
+      },
+      "EXP-T2-413": {
+        "correct_vs_wrong_gain": 0.0,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.2173440271219389,
+        "improvement_vs_time_only": 0.0,
+        "motion_energy_ratio": 0.004422395068947412,
+        "roi_mse": 0.008704956620931625,
+        "temporal_mse": 0.0008520056144334376,
+        "whole_frame_mse": 0.005035265814512968,
+        "wrong_gain_person_cluster_95_interval": [
+          0.0,
+          0.0
+        ]
+      },
+      "EXP-T2-414": {
+        "correct_vs_wrong_gain": 0.03359304368495941,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.19362681660947456,
+        "improvement_vs_time_only": -0.030303493916042035,
+        "motion_energy_ratio": 0.013179207245360681,
+        "roi_mse": 0.008968747220933437,
+        "temporal_mse": 0.0008521346608176827,
+        "whole_frame_mse": 0.005171710159629583,
+        "wrong_gain_person_cluster_95_interval": [
+          0.015084752812981606,
+          0.05665742270648478
+        ]
+      },
+      "EXP-T2-415": {
+        "correct_vs_wrong_gain": 0.0008167140185832977,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.22272388490559225,
+        "improvement_vs_time_only": 0.006873847475883932,
+        "motion_energy_ratio": 0.007109849695146611,
+        "roi_mse": 0.008645120076835155,
+        "temporal_mse": 0.0008541361894458532,
+        "whole_frame_mse": 0.005002980120480061,
+        "wrong_gain_person_cluster_95_interval": [
+          -0.002954038232564926,
+          0.00534360522869974
+        ]
+      },
+      "EXP-T2-416": {
+        "correct_vs_wrong_gain": 0.03559078276157379,
+        "gate_pass": false,
+        "improvement_vs_persistence": 0.18515631849220293,
+        "improvement_vs_time_only": -0.04112625437632844,
+        "motion_energy_ratio": 0.023606801765502547,
+        "roi_mse": 0.009062958881258965,
+        "temporal_mse": 0.0008598337299190462,
+        "whole_frame_mse": 0.005144757218658924,
+        "wrong_gain_person_cluster_95_interval": [
+          0.014990575728006661,
+          0.06368554811924695
+        ]
+      }
+    }
+  }
+}

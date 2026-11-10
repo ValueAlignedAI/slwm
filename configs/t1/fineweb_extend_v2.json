@@ -1,0 +1,49 @@
+{
+  "sprint": "T1-S4",
+  "artifacts": "experiments/text/t1/extended-throughput-20261105",
+  "parent": "experiments/text/t1/scale-20261105",
+  "parent_config": "configs/t1/fineweb_scale.json",
+  "protocol": "docs/research/text_throughput_protocol_20261105.md",
+  "additional_updates": 8192,
+  "slice_updates": 512,
+  "lr": 0.0002,
+  "lr_floor": 2e-05,
+  "warmup": 128,
+  "test_window_start": 512,
+  "test_batches": 128,
+  "runs": [
+    {
+      "id": "EXP-T1-221",
+      "parent": "EXP-T1-201",
+      "variant": "gpt2",
+      "seed": 81,
+      "resume": "EXP-T1-211"
+    },
+    {
+      "id": "EXP-T1-222",
+      "parent": "EXP-T1-202",
+      "variant": "slwm",
+      "seed": 81,
+      "resume": "EXP-T1-212"
+    },
+    {
+      "id": "EXP-T1-223",
+      "parent": "EXP-T1-203",
+      "variant": "gpt2",
+      "seed": 82,
+      "resume": "EXP-T1-213"
+    },
+    {
+      "id": "EXP-T1-224",
+      "parent": "EXP-T1-204",
+      "variant": "slwm",
+      "seed": 82,
+      "resume": "EXP-T1-214"
+    }
+  ],
+  "resume_root": "experiments/text/t1/extended-20261105",
+  "initial_small_updates": 512,
+  "micro_batch": 64,
+  "global_batch": 64,
+  "fused_loss_version": "liger-kernel==0.8.5"
+}

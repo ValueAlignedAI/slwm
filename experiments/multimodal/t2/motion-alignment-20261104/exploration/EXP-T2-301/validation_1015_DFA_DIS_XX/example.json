@@ -1,0 +1,38 @@
+{
+  "actor": "1015",
+  "actual_emotion": "DIS",
+  "actual_sentence": "Don't forget a jacket.",
+  "audio_only_identity": "Unknown; appearance is a model average, and integrated motion uses a training-mean face prior",
+  "duration_seconds": 2.16,
+  "folder": "experiments/multimodal/t2/motion-alignment-20261104/exploration/EXP-T2-301/validation_1015_DFA_DIS_XX",
+  "generation": "Actual saved model outputs. Inverse PCA / Griffin-Lim diagnostics, not realistic media synthesis or open language.",
+  "probes": {
+    "audio_emotion": {
+      "confidence": 0.5880246758460999,
+      "label": "FEA",
+      "scope": "closed-set frozen recognition probe",
+      "text": "FEA"
+    },
+    "audio_sentence": {
+      "confidence": 0.7389113903045654,
+      "label": "DFA",
+      "scope": "closed-set frozen recognition probe",
+      "text": "Don't forget a jacket."
+    },
+    "video_emotion": {
+      "confidence": 0.27418774366378784,
+      "label": "SAD",
+      "scope": "closed-set frozen recognition probe",
+      "text": "SAD"
+    },
+    "video_sentence": {
+      "confidence": 0.6566160321235657,
+      "label": "IEO",
+      "scope": "closed-set frozen recognition probe",
+      "text": "It's eleven o'clock."
+    }
+  },
+  "sample_id": "1015_DFA_DIS_XX",
+  "source_sha256": "ee2ca48293bcbb027a52c2938dfbac1dd51da41b26ac59bb2c306f8aa216a058",
+  "split": "validation"
+}

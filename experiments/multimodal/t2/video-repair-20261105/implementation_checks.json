@@ -1,0 +1,94 @@
+{
+  "disposable_training_smokes": [
+    {
+      "completed": true,
+      "counts": {
+        "codec_fitted_values": 249376,
+        "frozen": 5100289,
+        "graph_connected_trainable": 1430080,
+        "total": 6567522,
+        "trainable": 1467233
+      },
+      "id": "EXP-T2-601",
+      "steps": 2
+    },
+    {
+      "completed": true,
+      "counts": {
+        "codec_fitted_values": 249376,
+        "frozen": 6567522,
+        "graph_connected_trainable": 1430080,
+        "total": 8034755,
+        "trainable": 1467233
+      },
+      "id": "EXP-T2-611",
+      "steps": 2
+    },
+    {
+      "completed": true,
+      "counts": {
+        "codec_fitted_values": 249376,
+        "frozen": 6567522,
+        "graph_connected_trainable": 1068833,
+        "total": 7636355,
+        "trainable": 1068833
+      },
+      "id": "EXP-T2-613",
+      "steps": 2
+    },
+    {
+      "completed": true,
+      "counts": {
+        "codec_fitted_values": 249376,
+        "frozen": 6567522,
+        "graph_connected_trainable": 1423025,
+        "total": 7990547,
+        "trainable": 1423025
+      },
+      "id": "EXP-T2-614",
+      "steps": 2
+    },
+    {
+      "completed": true,
+      "counts": {
+        "codec_fitted_values": 249376,
+        "frozen": 6567522,
+        "graph_connected_trainable": 1398256,
+        "total": 7990547,
+        "trainable": 1423025
+      },
+      "id": "EXP-T2-616",
+      "steps": 2
+    }
+  ],
+  "ordinary_file_cpu_smoke": {
+    "checkpoint_sha256": "23ab23d8b10086b6a03bdc437413e4ed45da8224529d847ab89bddc4e0038d97",
+    "device": "cpu",
+    "hidden_original_used": false,
+    "hidden_samples": 5120,
+    "input_sha256": "c1de08b986fc58f257eae136c448df5d98f7e5616d61a3ba0a46ea2fbd703d99",
+    "observed_pcm_exact": true,
+    "phase_iterations": 64,
+    "recognizer_used": false,
+    "run": {
+      "id": "EXP-T2-601",
+      "seed": 61
+    },
+    "task": "offline true waveform short-gap repair; 64ms analysis support guard; observed samples passed through exactly",
+    "video_sha256": null,
+    "windows": [
+      18
+    ]
+  },
+  "repository_tests": {
+    "log_sha256": "998ff523e12f3e9b4bda3e9eb911baa640761e0302f1bc1da81519a884ed28c5",
+    "passed": 123,
+    "seconds": 3.37
+  },
+  "repository_tests_revision2": {
+    "log_sha256": "6ba4ec9ac8408605be8dbeff7f7eba8d5ace02a22684c09362ea647652f02d9c",
+    "passed": 124,
+    "seconds": 2.94
+  },
+  "smoke_scope": "Two updates each on training-only CREMA replicas for actual optimizer paths; fake dataset aliases, no quality evidence; temporary weights never used in registered runs"
+}

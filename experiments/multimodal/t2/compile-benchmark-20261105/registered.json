@@ -1,0 +1,15 @@
+{
+  "batch": 128,
+  "compile_scope": "StreamWorld.process, shared across chunks and alignment views; fixed shapes 128 and 8",
+  "cuda": "13.0",
+  "data_seed": 718,
+  "first_gradient_cosine_minimum": 0.999,
+  "first_gradient_relative_tolerance": 0.02,
+  "first_loss_absolute_tolerance": 0.001,
+  "mode": "default",
+  "scope": "Future runtime candidate only; current registered B1 execution remains unchanged, no weights saved",
+  "source_sha256": "1ed0f8c9b7b10af2b4b294a3c47335a807caf1adb3e1aa5c2774d3251ae62254",
+  "timed_updates": 16,
+  "torch": "2.13.0+cu130",
+  "warmup_updates": 3
+}

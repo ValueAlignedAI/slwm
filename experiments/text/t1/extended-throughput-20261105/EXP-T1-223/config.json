@@ -1,0 +1,137 @@
+{
+  "extension": {
+    "additional_updates": 8192,
+    "artifacts": "experiments/text/t1/extended-throughput-20261105",
+    "fused_loss_version": "liger-kernel==0.8.5",
+    "global_batch": 64,
+    "initial_small_updates": 512,
+    "lr": 0.0002,
+    "lr_floor": 2e-05,
+    "micro_batch": 64,
+    "parent": "experiments/text/t1/scale-20261105",
+    "parent_config": "configs/t1/fineweb_scale.json",
+    "protocol": "docs/research/text_throughput_protocol_20261105.md",
+    "resume_root": "experiments/text/t1/extended-20261105",
+    "runs": [
+      {
+        "id": "EXP-T1-221",
+        "parent": "EXP-T1-201",
+        "resume": "EXP-T1-211",
+        "seed": 81,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-222",
+        "parent": "EXP-T1-202",
+        "resume": "EXP-T1-212",
+        "seed": 81,
+        "variant": "slwm"
+      },
+      {
+        "id": "EXP-T1-223",
+        "parent": "EXP-T1-203",
+        "resume": "EXP-T1-213",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-224",
+        "parent": "EXP-T1-204",
+        "resume": "EXP-T1-214",
+        "seed": 82,
+        "variant": "slwm"
+      }
+    ],
+    "slice_updates": 512,
+    "sprint": "T1-S4",
+    "test_batches": 128,
+    "test_window_start": 512,
+    "warmup": 128
+  },
+  "matrix": {
+    "artifacts": "experiments/text/t1/scale-20261105",
+    "corpus": "artifacts/text/fineweb_edu_scale_v1",
+    "model": {
+      "context_length": 1024,
+      "dropout": 0.0,
+      "n_embd": 768,
+      "n_head": 12,
+      "n_layer": 12,
+      "vocab_size": 50257
+    },
+    "prompts": [
+      "The relationship between sound and motion is",
+      "A scientist can test a hypothesis by",
+      "The purpose of a mathematical model is",
+      "When a prediction is uncertain,",
+      "A video recording contains",
+      "The experiment showed that"
+    ],
+    "protocol": "docs/research/text_scale_protocol_20261105.md",
+    "runs": [
+      {
+        "id": "EXP-T1-201",
+        "seed": 81,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-202",
+        "seed": 81,
+        "variant": "slwm"
+      },
+      {
+        "id": "EXP-T1-203",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-204",
+        "seed": 82,
+        "variant": "slwm"
+      }
+    ],
+    "sprint": "T1-S2",
+    "training": {
+      "eval_batches": 32,
+      "eval_every": 128,
+      "gradient_accumulation": 4,
+      "gradient_clip": 1.0,
+      "lr": 0.0006,
+      "micro_batch": 8,
+      "minimum_lr_fraction": 0.1,
+      "overfit_patience": 2,
+      "overfit_relative_rise": 0.05,
+      "sequence_length": 512,
+      "steps": 1024,
+      "warmup": 64,
+      "weight_decay": 0.1
+    }
+  },
+  "provenance": {
+    "dataset_card_sha256": "475db740d71aba0c4afdd4f8bb42d0a0ac5687555a4a8dc4c46cd642c12d04db",
+    "parameters": 124439808,
+    "parent_checkpoint_sha256": "3482a1343ee4d6340c647a4b4f4a8a2d51d37e3ed7f06431af7466c9c1ddce69",
+    "parent_run": "EXP-T1-203",
+    "resumed_initial_source": "experiments/text/t1/extended-throughput-20261105/EXP-T1-223/resume.pt",
+    "runtime_loss": "plain CE through512, Liger fused CE thereafter",
+    "runtime_revision": 2,
+    "source_hashes": {
+      "configs/t1/fineweb_extend_v2.json": "9799369bd0d8e4bdfb653041a15956516f3497adb1f6dbad255fd957087bacd2",
+      "configs/t1/fineweb_scale.json": "d4ca57bede3ea114e7a32460bd990ad4fddb3027916bc559407ad255f5e4ee43",
+      "docs/research/text_throughput_protocol_20261105.md": "1c50404c0cddfe6edd2aba3b88417219686b9385216508c296a5221a18059243",
+      "training/extend_text_train_v2.py": "c50f9603066ef63fe921d001dfeafcc9fb0266e8943669d404b9cd3ed7bb6a31",
+      "training/scale_text_train.py": "406974424b9d11efbba4800adcc60fbb87380489df54a2b46067fd9328372f45",
+      "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875",
+      "training/text_fused_loss.py": "ebc956ded4cd648c0da6baa33a8fd8a4a57bb592cbdbc4e58d4824de71949b07"
+    },
+    "token_equivalent_update_size": 16384,
+    "warm_restart": true
+  },
+  "run": {
+    "id": "EXP-T1-223",
+    "parent": "EXP-T1-203",
+    "resume": "EXP-T1-213",
+    "seed": 82,
+    "variant": "gpt2"
+  }
+}

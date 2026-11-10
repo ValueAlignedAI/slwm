@@ -8,3 +8,40 @@ artifacts/
 *.pth
 *.safetensors
 *.npz
+
+# Local environments, corpora and reproducible binary research artifacts
+.venv/
+.research-venv/
+*.npy
+*.wav
+*.mp3
+*.mp4
+*.mkv
+*.flv
+*.mpg
+*.zip
+*.tar
+*.bin
+
+# Per-run logs and generated media stay beside hashed research artifacts
+experiments/**/*.log
+experiments/**/*.gif
+experiments/**/*.webm
+experiments/**/exploration/**/*.png
+experiments/**/codec_preview/
+experiments/**/evaluation_correction/original_derived/
+
+# Operational research runs: retain complete artifacts locally/Fedora; explicitly
+# version curated reports, metrics and manifests with git add -f.
+experiments/text/t1/extended-20261105/
+experiments/text/t1/extended-throughput-20261105/
+experiments/multimodal/t2/broad-stream-20261105/
+experiments/multimodal/t2/concurrency-benchmark-20261105/
+experiments/multimodal/t2/copy-benchmark-20261105/
+experiments/multimodal/t2/folded-inference-20261105/
+experiments/multimodal/t2/compile-benchmark-20261105/
+experiments/multimodal/t2/compiled-learning-20261105/
+experiments/multimodal/t2/compiled-learning-v2-20261105/
+experiments/policy/continuous-sensing-20261105/
+experiments/policy/droid-source-probe-20261105/
+experiments/operational-20261105/

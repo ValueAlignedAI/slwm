@@ -1,0 +1,48 @@
+{
+  "best_validation_score": 0.5175622552633286,
+  "checkpoint_sha256": "9ceed2c62b9bfeffb9eb3b126b113b4d90f88a0b688a2f894fb5e275472bda29",
+  "last_checkpoint_sha256": "6bf63a398f2bb975032a9f103df4a6d86741fead2b8228555aa4abc41bf1652b",
+  "provenance": {
+    "config_hash": "969992b6527f02845cc319511f558b9985eaa2626149288ced5fd67fce77cb89",
+    "context": "exactly the same 32 packets; no cached external context",
+    "counts": {
+      "codec_fitted_values": 249376,
+      "decoder": 548352,
+      "frozen": 0,
+      "total": 5027521,
+      "trainable": 5027521
+    },
+    "data_manifests": {
+      "crema_train": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+      "crema_validation": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be",
+      "libri_train": "90bfbe7094932260328eb17e43b9452f41d4f4aa6abd91ede1ccdc38154e3515",
+      "libri_validation": "20d41d709e064f8831bbe7d4cfaaf6b314cbdefca2a009ecfcd4132447d25f02"
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "pretraining": "corresponding 1600-step M1 core",
+    "source_hashes": {
+      "configs/t2/signal_restoration.json": "ae8aac8002311f745fad4d8cc885e3d30ec22e561cb2a7593dfbfb0c317b6d48",
+      "docs/research/signal_restoration_protocol_20261105.md": "69f52d1a84c4e2d482b578172b2d7dd203d66594cbb6241d857783103193f8f1",
+      "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+      "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+      "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+      "training/generation_external.py": "e6094094567521765d48a2aa713f3732f922ae0f4be982e3c23eeac9b5c6f3cc",
+      "training/restoration_data.py": "859f73fe28426ca7e876b44ba8fa7cbe6dc62a0e89658228c94df799b8597008",
+      "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+      "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+      "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+      "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+      "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+      "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+      "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+    }
+  },
+  "run": {
+    "arm": "vanilla",
+    "id": "EXP-T2-503",
+    "seed": 51
+  },
+  "selected_step": 1600,
+  "wall_seconds": 55.63203719200101,
+  "windows_seen": 51200
+}

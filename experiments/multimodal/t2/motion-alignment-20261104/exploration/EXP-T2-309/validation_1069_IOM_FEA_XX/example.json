@@ -1,0 +1,38 @@
+{
+  "actor": "1069",
+  "actual_emotion": "FEA",
+  "actual_sentence": "I'm on my way to the meeting.",
+  "audio_only_identity": "Unknown; appearance is a model average, and integrated motion uses a training-mean face prior",
+  "duration_seconds": 2.08,
+  "folder": "experiments/multimodal/t2/motion-alignment-20261104/exploration/EXP-T2-309/validation_1069_IOM_FEA_XX",
+  "generation": "Actual saved model outputs. Inverse PCA / Griffin-Lim diagnostics, not realistic media synthesis or open language.",
+  "probes": {
+    "audio_emotion": {
+      "confidence": 0.3514449894428253,
+      "label": "NEU",
+      "scope": "closed-set frozen recognition probe",
+      "text": "NEU"
+    },
+    "audio_sentence": {
+      "confidence": 0.991192638874054,
+      "label": "IOM",
+      "scope": "closed-set frozen recognition probe",
+      "text": "I'm on my way to the meeting."
+    },
+    "video_emotion": {
+      "confidence": 0.24532896280288696,
+      "label": "HAP",
+      "scope": "closed-set frozen recognition probe",
+      "text": "HAP"
+    },
+    "video_sentence": {
+      "confidence": 0.20440968871116638,
+      "label": "IEO",
+      "scope": "closed-set frozen recognition probe",
+      "text": "It's eleven o'clock."
+    }
+  },
+  "sample_id": "1069_IOM_FEA_XX",
+  "source_sha256": "74884b05284555ac632dc70ca185385ff08c6fcbaf4227c7ed3e865e1a7fbc8c",
+  "split": "validation"
+}

@@ -1,0 +1,19 @@
+{
+  "audio_to_motion_pass_both_large_seeds": false,
+  "causal_audio_checks_pass_both_large_seeds": true,
+  "completed_runs": 10,
+  "multimodal_translation_gate_pass": false,
+  "scale_seed41": {
+    "limits": "Small model has one seed; scaling evidence is a controlled pilot, not a two-seed scaling law",
+    "person_cluster_gain_interval": [
+      -0.05528336125069794,
+      0.014494512452511599
+    ],
+    "synchronization_absolute_gain": -0.019801980198019802,
+    "train_time_ratio": 1.4207626234569737,
+    "video_to_audio_relative_error_gain": 0.040751481022019864
+  },
+  "synchronization_pass_both_large_seeds": true,
+  "training_seconds": 1250.0265295458958,
+  "video_to_audio_pass_both_large_seeds": true
+}

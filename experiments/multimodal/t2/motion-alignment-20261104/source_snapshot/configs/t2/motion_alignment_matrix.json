@@ -1,0 +1,154 @@
+{
+  "sprint": "T2-M1",
+  "source_commit": "418ebc4",
+  "protocol": "docs/research/motion_alignment_protocol_20261104.md",
+  "corpus": "artifacts/t2_audio_visual/cremad_motion_v3",
+  "artifacts": "experiments/multimodal/t2/motion-alignment-20261104",
+  "training": {
+    "steps": 1600,
+    "batch_size": 32,
+    "window": 32,
+    "lr": 0.0004,
+    "warmup_steps": 80,
+    "eval_every": 200
+  },
+  "evaluation": {
+    "offsets": [
+      -9,
+      -6,
+      -3,
+      0,
+      3,
+      6,
+      9
+    ]
+  },
+  "gates": {
+    "sync_accuracy": 0.3
+  },
+  "runs": [
+    {
+      "id": "EXP-T2-301",
+      "arm": "signal_small",
+      "seed": 41,
+      "model": {
+        "width": 256,
+        "layers": 4,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal"
+      }
+    },
+    {
+      "id": "EXP-T2-302",
+      "arm": "vanilla_small",
+      "seed": 41,
+      "model": {
+        "width": 256,
+        "layers": 4,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "vanilla"
+      }
+    },
+    {
+      "id": "EXP-T2-303",
+      "arm": "legacy_concat",
+      "seed": 41,
+      "model": {
+        "width": 256,
+        "layers": 4,
+        "heads": 8,
+        "packing": "concatenated",
+        "processor": "signal"
+      }
+    },
+    {
+      "id": "EXP-T2-304",
+      "arm": "no_local_alignment",
+      "seed": 41,
+      "model": {
+        "width": 256,
+        "layers": 4,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal"
+      },
+      "no_local_alignment": true
+    },
+    {
+      "id": "EXP-T2-305",
+      "arm": "shuffled_pairs",
+      "seed": 41,
+      "model": {
+        "width": 256,
+        "layers": 4,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal"
+      },
+      "shuffled": true
+    },
+    {
+      "id": "EXP-T2-306",
+      "arm": "signal_large",
+      "seed": 41,
+      "model": {
+        "width": 384,
+        "layers": 6,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal"
+      }
+    },
+    {
+      "id": "EXP-T2-307",
+      "arm": "vanilla_large",
+      "seed": 41,
+      "model": {
+        "width": 384,
+        "layers": 6,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "vanilla"
+      }
+    },
+    {
+      "id": "EXP-T2-308",
+      "arm": "signal_large",
+      "seed": 42,
+      "model": {
+        "width": 384,
+        "layers": 6,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal"
+      }
+    },
+    {
+      "id": "EXP-T2-309",
+      "arm": "vanilla_large",
+      "seed": 42,
+      "model": {
+        "width": 384,
+        "layers": 6,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "vanilla"
+      }
+    },
+    {
+      "id": "EXP-T2-310",
+      "arm": "large_no_spectral",
+      "seed": 41,
+      "model": {
+        "width": 384,
+        "layers": 6,
+        "heads": 8,
+        "packing": "aligned",
+        "processor": "signal",
+        "no_spectral": true
+      }
+    }
+  ]
+}

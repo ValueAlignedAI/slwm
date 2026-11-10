@@ -1,0 +1,39 @@
+{
+  "libri_root": "artifacts/t2_audio_visual/broad_speech_v1",
+  "ami_root": "artifacts/t2_audio_visual/ami_stream_v1",
+  "ami_meetings": {
+    "train": [
+      "ES2002a",
+      "ES2003a",
+      "ES2004a",
+      "ES2005a",
+      "ES2006a",
+      "ES2007a",
+      "ES2008a"
+    ],
+    "validation": [
+      "ES2009a"
+    ],
+    "calibration": [
+      "ES2010a"
+    ],
+    "test": [
+      "ES2011a",
+      "ES2012a",
+      "ES2014a"
+    ]
+  },
+  "held_out_media_inspection": "No holdout crop or architecture tuning; check participant identities from official metadata before training",
+  "sample_rate": 24000,
+  "hop_length": 256,
+  "n_fft": 1024,
+  "mel_bins": 100,
+  "video_fps": "375/16",
+  "vocoder_revision": "0feb3fdd929bcd6649e0e7c5a688cf7dd012ef21",
+  "vocoder": "charactr/vocos-mel-24khz",
+  "libri_archives": {
+    "train-clean-100": "2a93770f6d5c6c964bc36631d331a522",
+    "dev-other": "c8d0bcc9cca99d4f8b62fcc847357931"
+  },
+  "source_availability_revision": "Before fitting: ES2013a Headset2/Closeup3 returned403; replace the whole group by the next numbered disjoint group ES2014a; retain original downloads/logs unopened"
+}

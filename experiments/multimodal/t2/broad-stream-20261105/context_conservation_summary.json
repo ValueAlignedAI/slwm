@@ -1,0 +1,394 @@
+{
+  "test-clean|0.16": {
+    "EXP-T2-801": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.07074406124421885,
+      "original_mean_clip_wer": 0.07240959873292707,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0044884823848238475
+        ],
+        "person_mean": 0.0016655374887082203
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.009264103119870526,
+          -0.0006059428172213438
+        ],
+        "person_mean": -0.004522008559747291
+      }
+    },
+    "EXP-T2-802": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.06991072791088551,
+      "original_mean_clip_wer": 0.06991072791088551,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.007076515795045248,
+          -0.00047456143583996245
+        ],
+        "person_mean": -0.003688675226413958
+      }
+    },
+    "EXP-T2-803": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.07049653118032463,
+      "original_mean_clip_wer": 0.07144350087729433,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0028409090909090906
+        ],
+        "person_mean": 0.000946969696969697
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.008071591328170277,
+          -0.0009403286264988392
+        ],
+        "person_mean": -0.004274478495853076
+      }
+    },
+    "EXP-T2-804": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.07047379097394858,
+      "original_mean_clip_wer": 0.06991072791088551,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.0016891891891891893,
+          0.0
+        ],
+        "person_mean": -0.0005630630630630631
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.007910242797112528,
+          -0.0007158087807458439
+        ],
+        "person_mean": -0.004251738289477021
+      }
+    }
+  },
+  "test-clean|0.32": {
+    "EXP-T2-801": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.09336275450013597,
+      "original_mean_clip_wer": 0.09336275450013597,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.023669138071240988,
+          -0.0030327868016290904
+        ],
+        "person_mean": -0.01235736267263631
+      }
+    },
+    "EXP-T2-802": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.09259241291185678,
+      "original_mean_clip_wer": 0.09458508580446574,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.0013488162475134978,
+          0.005365078480887302
+        ],
+        "person_mean": 0.001992672892608954
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.022148924968295503,
+          -0.0024240932103882853
+        ],
+        "person_mean": -0.011587021084357135
+      }
+    },
+    "EXP-T2-803": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.08850452182271497,
+      "original_mean_clip_wer": 0.08804155885975201,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.0013888888888888892,
+          0.0
+        ],
+        "person_mean": -0.00046296296296296303
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.01869508854466,
+          0.003239013078539129
+        ],
+        "person_mean": -0.007499129995215316
+      }
+    },
+    "EXP-T2-804": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.09524031140486677,
+      "original_mean_clip_wer": 0.09962008838904879,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0010416666666666667,
+          0.00842023640293091
+        ],
+        "person_mean": 0.004379776984182019
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.025228679267572045,
+          -0.004827372987414722
+        ],
+        "person_mean": -0.014234919577367127
+      }
+    }
+  },
+  "test-other|0.16": {
+    "EXP-T2-801": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.1546288218359899,
+      "original_mean_clip_wer": 0.15660212630929435,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.000833333333333333,
+          0.006177849927849931
+        ],
+        "person_mean": 0.001973304473304474
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.027996042101650718,
+          -0.007482544276212686
+        ],
+        "person_mean": -0.01791958036567263
+      }
+    },
+    "EXP-T2-802": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.15128138783979964,
+      "original_mean_clip_wer": 0.14899096125249806,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.006820436507936508,
+          0.000992063492063492
+        ],
+        "person_mean": -0.0022904265873015875
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.025788652740289658,
+          -0.0006834539094499771
+        ],
+        "person_mean": -0.014572146369482382
+      }
+    },
+    "EXP-T2-803": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.1550392986331415,
+      "original_mean_clip_wer": 0.15314535923920208,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.005681818181818184,
+          0.0
+        ],
+        "person_mean": -0.0018939393939393946
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.027562415871037273,
+          -0.008789579686360642
+        ],
+        "person_mean": -0.01833005716282422
+      }
+    },
+    "EXP-T2-804": {
+      "baseline": "silence",
+      "conserved_context_mean_clip_wer": 0.15477319026252312,
+      "original_mean_clip_wer": 0.14728172492638866,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.01743938200280112,
+          -0.0008333333333333335
+        ],
+        "person_mean": -0.007491465336134454
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.025841238970385084,
+          -0.009916335116763864
+        ],
+        "person_mean": -0.018063948792205856
+      }
+    }
+  },
+  "test-other|0.32": {
+    "EXP-T2-801": {
+      "baseline": "interpolated_mel",
+      "conserved_context_mean_clip_wer": 0.213667491716127,
+      "original_mean_clip_wer": 0.2133643022585258,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.005985007639419407,
+          0.0055298255665902725
+        ],
+        "person_mean": -0.00030318945760122285
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.18428437427135566,
+          0.004391879657405178
+        ],
+        "person_mean": -0.062240744452915504
+      }
+    },
+    "EXP-T2-802": {
+      "baseline": "interpolated_mel",
+      "conserved_context_mean_clip_wer": 0.2144674132141332,
+      "original_mean_clip_wer": 0.21276088518756206,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.005394345238095237,
+          0.0016092653754291688
+        ],
+        "person_mean": -0.0017065280265711295
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.18379755785072,
+          0.000674051269817398
+        ],
+        "person_mean": -0.06304066595092168
+      }
+    },
+    "EXP-T2-803": {
+      "baseline": "interpolated_mel",
+      "conserved_context_mean_clip_wer": 0.16248934339718268,
+      "original_mean_clip_wer": 0.1582468454682749,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.008663106608918744,
+          0.00017119203165714766
+        ],
+        "person_mean": -0.004242497928907812
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.023480200958317706,
+          -0.0011833447878499932
+        ],
+        "person_mean": -0.011062596133971188
+      }
+    },
+    "EXP-T2-804": {
+      "baseline": "interpolated_mel",
+      "conserved_context_mean_clip_wer": 0.21540771179834625,
+      "original_mean_clip_wer": 0.21556528188283164,
+      "original_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.0028321812596006145,
+          0.003147321428571428
+        ],
+        "person_mean": 0.00015757008448540692
+      },
+      "scope": "Secondary decoder-context diagnostic; hidden mel proposals and trained weights unchanged; primary gate uses original readout",
+      "stronger_baseline_minus_conserved": {
+        "cases": 48,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.18439540668622664,
+          -0.00020619116973505044
+        ],
+        "person_mean": -0.06398096453513476
+      }
+    }
+  }
+}

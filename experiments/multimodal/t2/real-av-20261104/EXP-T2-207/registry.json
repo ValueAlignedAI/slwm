@@ -1,0 +1,44 @@
+{
+  "arm": "visual_only",
+  "batch_size": 32,
+  "best_step": 300,
+  "checkpoint": "experiments/multimodal/t2/real-av-20261104/EXP-T2-207/best.pt",
+  "checkpoint_sha256": "f83540f27bd7857c7fb452afa7287021a393df7dab2f1600aa414506ed5e3cb4",
+  "completed_steps": 600,
+  "config_sha256": "93a8d0a30183c69983b934094d9772d4ac7a402706bedbc2725e3e2966fe0e3c",
+  "dataset": "artifacts/t2_audio_visual/cremad_real_v1",
+  "dataset_card_sha256": "89bafaa4d28b31ccca95391dd1da9ab06250d9a4547a422676a4f34afbef6abe",
+  "experiment_id": "EXP-T2-207",
+  "frozen_encoder_parameters": 11689512,
+  "hardware": "NVIDIA GeForce RTX 3090",
+  "parameter_accounting_mode": "all trainable adapters+processor+embeddings+heads; frozen encoder separate",
+  "parameter_counts": {
+    "adapters": 33280,
+    "decoders": 0,
+    "embeddings": 17408,
+    "heads": 164481,
+    "policy": 0,
+    "processor": 4256256,
+    "total": 4471425
+  },
+  "planned_steps": 600,
+  "precision": "bf16",
+  "seed": 41,
+  "source_commit": "418ebc4",
+  "source_hashes": {
+    "/home/db/dev/slwm/training/t2_real_av.py": "f358ceef39d54d9925f4addcd4c120f549b1782ff1c18b0fe7c49ca4b03f252e",
+    "docs/research/real_av_pilot_20261104.md": "205a6136ffba5bd709c091cc7b0ca0c11ca06917d78cef26aeb7674b9a5e6937",
+    "training/t2_prepare_cremad.py": "6c27b2ebca5b890efa9a976141713894fa775cf9217a0868ad0d41c4b2780dc5",
+    "training/t2_train_latents.py": "97a670e44000e483d0a61d3aab0c38a5935d9a867db40cf3dcf6629292f5335a"
+  },
+  "split_counts": {
+    "test": 210,
+    "train": 1019,
+    "validation": 210
+  },
+  "sprint": "T2",
+  "status": "completed",
+  "torch": "2.13.0+cu130",
+  "training_seconds": 12.182864553004038,
+  "working_tree_state": "research changes on recorded base"
+}

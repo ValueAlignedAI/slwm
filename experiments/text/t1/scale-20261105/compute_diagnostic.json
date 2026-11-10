@@ -1,0 +1,35 @@
+{
+  "no_selection_changed": true,
+  "scope": "Post-hoc descriptive interpolation of fixed validation learning curves at equal process wall time, including IO/validation; not equal FLOPs or a measured checkpoint at interpolated steps",
+  "seeds": {
+    "81": {
+      "common_wall_seconds": 474.7857283040066,
+      "relative_slwm_nll_reduction": 0.008181050248717403,
+      "values": {
+        "gpt2": {
+          "interpolated_tokens": 16777216.0,
+          "interpolated_validation_nll": 5.648578763008118
+        },
+        "slwm": {
+          "interpolated_tokens": 11726112.238664502,
+          "interpolated_validation_nll": 5.60236745631411
+        }
+      }
+    },
+    "82": {
+      "common_wall_seconds": 476.80903626699,
+      "relative_slwm_nll_reduction": 0.005459120369798787,
+      "values": {
+        "gpt2": {
+          "interpolated_tokens": 16777216.0,
+          "interpolated_validation_nll": 5.644908159971237
+        },
+        "slwm": {
+          "interpolated_tokens": 11882265.134705683,
+          "interpolated_validation_nll": 5.614091926849495
+        }
+      }
+    }
+  },
+  "source_sha256": "b3bd71d524563462295512669a54cd8c5b112c5285ff02abdfa185cc6b6dc8d1"
+}

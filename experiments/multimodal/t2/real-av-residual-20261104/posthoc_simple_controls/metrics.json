@@ -1,0 +1,60 @@
+{
+  "status": "posthoc_exploratory_control; does not alter preregistered gates",
+  "regularization": 100.0,
+  "regularization_selected_without_test_tuning": true,
+  "controls": {
+    "train_time_profile": {
+      "validation": {
+        "audio_mse": 0.6220727086048937,
+        "visual_mse": 1.6416362505831603
+      },
+      "test": {
+        "audio_mse": 0.5529573646906385,
+        "visual_mse": 2.0486526733128163
+      }
+    },
+    "linear_joint": {
+      "input_dim": 2048,
+      "output_dim": 2048,
+      "fitted_coefficient_count": 4196352,
+      "fit_seconds": 0.658173069008626,
+      "validation": {
+        "audio_mse": 0.7146100048419182,
+        "visual_mse": 0.47684353845119215
+      },
+      "test": {
+        "audio_mse": 0.660952608006377,
+        "visual_mse": 0.5068466268535511
+      }
+    },
+    "linear_audio_only": {
+      "input_dim": 1024,
+      "output_dim": 2048,
+      "fitted_coefficient_count": 2099200,
+      "fit_seconds": 0.36443683999823406,
+      "validation": {
+        "audio_mse": 0.5379237320365923,
+        "visual_mse": 0.43516225202048037
+      },
+      "test": {
+        "audio_mse": 0.471077283311252,
+        "visual_mse": 0.45223836800279815
+      }
+    },
+    "linear_visual_only": {
+      "input_dim": 1024,
+      "output_dim": 2048,
+      "fitted_coefficient_count": 2099200,
+      "fit_seconds": 0.3571456400095485,
+      "validation": {
+        "audio_mse": 1.4651460651558301,
+        "visual_mse": 0.42577826125414225
+      },
+      "test": {
+        "audio_mse": 1.4311614407724895,
+        "visual_mse": 0.45727336048730644
+      }
+    }
+  },
+  "interpretation_limit": "Each linear control retains both targets' own observed persistence anchors; audio_only/visual_only name the residual-regressor inputs. No modality-deletion claim. These controls were added after discovery and some follow-up test outputs were seen; treat as exploratory, not new confirmation."
+}

@@ -38,7 +38,8 @@ mask: BoolTensor[B, T]
 - `visual_video` — image/video patch, tube, or latent streams.
 - `noop` — valid committed policy behavior.
 
-Optional sensor, robotics, action, and persistent-memory experiments are future-phase only.
+Recorded active-sensing and persistent-memory experiments are in progress.
+Physical robotics/action control remains future work.
 
 ## Documentation
 
@@ -66,8 +67,46 @@ Project documentation is organized under `docs/`:
 | R1 — Literature-to-design mapping | Complete as research/design specification | `docs/research/literature_map.md`, `docs/research/design_decisions.md` | Design choices are traceable to sources and R0 hypotheses; no empirical success claim is made. |
 | I0 — Repo skeleton and contracts | Complete by local validation | `docs/model_spec.md`, `docs/data_contract.md`, module stubs, config/registry utilities, tests | Shape tests pass; dummy adapter → latent field → processor → head → policy path works. |
 | I1 — Baselines | Implemented locally | `docs/evaluation/baselines.md`, baseline modules, baseline configs, tiny smoke registry entries | GPT-2-style and vanilla multimodal baselines overfit tiny batches and log metrics; no SLWM quality claim is made. |
-| T1 — Text/code baseline training | Full-stack mechanics implemented; larger corpus work remains | `training/t1_prepare_text_code.py`, `training/t1_torch_text.py`, `configs/t1/*`, `scripts/train/*`, `docs/training/t1_text_code_training.md` | Tiny and limited GPT-2-BPE runs are registered; full guardrail claims require matched GPT-2 and SLWM runs on pinned corpora. |
-| T2 — Audio/visual latent training | Mechanics implemented; external data run remains | `data/audio_visual_latents.py`, `training/t2_prepare_latents.py`, `training/t2_train_latents.py`, `configs/t2/*`, `docs/training/preprocessing.md` | Generated-fixture smoke run passes mechanics only; external curated audio/video corpora and matched baselines are required before hypothesis support. |
+| T1 — Text baseline and scale | Four124M/125M continuations complete at151M tokens/run | `experiments/text/t1/extended-throughput-20261105/report.md` | Test NLL improves3.64–3.67% at equal tokens, at1.47–1.49x continuation time. Small timer-matched validation gains; severe undertraining and repetitive samples remain. |
+| T2 — Speech content and video timing | Ten new runs pass fresh-speaker content, timing rejection and spectral-video gates | `experiments/multimodal/t2/content-sync-20261105/report_v2.md`, `docs/training/content_and_scale.md` | 749 new GRID clips/eight people and unseen complete sentence combinations. Word readout +9.7–12.4pp; video gap-spectrum error −11–12%; ±240ms admission below 1%. Practical speech-recognition gate fails. Restricted grammar; 7.71M deployed video weights. |
+| T2-B1 / P1-S1 — Broader shared fields and continuous sensing | Complete; all three capability gates fail | `docs/research/operational_findings_20261106.md` |24M fields and paired Transformers, fresh-speaker tests,248 long outputs and eight sensing actors. Technical audits pass; speech repairs worsen WER and decision benefit does not replicate. |
+
+## Latest completed research — 2026-11-06
+
+The new [151M-token text comparison](experiments/text/t1/extended-throughput-20261105/report.md)
+is complete: SLWM test NLL is3.64–3.67% lower than the matched GPT-2-style model,
+at1.47–1.49x continuation training time. Equal total timer-budget validation
+gains are only0.10–1.04%, with checkpoint-cadence and timer limits reported.
+All fixed raw continuations remain available and still show substantial
+repetition. These124/125M language weights are separate from the24M audiovisual
+fields and remain severely undertrained at roughly1.2 tokens per parameter.
+
+The [completed operational study](docs/research/operational_findings_20261106.md)
+finds real GPU headroom:3.6x more world parameters cost only23–28% more measured
+training/validation time. Fresh-speaker speech repair and replicated sensing
+utility nevertheless fail their gates. All248 long outputs and failures are in
+the [media gallery](experiments/multimodal/t2/broad-stream-20261105/watch.html).
+The [ordinary-file workflow](docs/training/operational_world.md) provides exact
+world/actor exports and a portable recorded-input continuous replay. Read the
+[scale budget](docs/research/scaling_budget_review_20261106.md) and
+[data access review](docs/research/data_scaling_access_review_20261106.md) before
+committing to a larger joint model. Physical action learning remains a separate,
+explicitly typed [next stage](docs/research/action_conditioned_next_stage_20261105.md).
+
+Read the [current findings](docs/research/findings.md),
+[corrected speech report](experiments/multimodal/t2/content-sync-20261105/report_v2.md),
+[32 fixed listening cases](experiments/multimodal/t2/content-sync-20261105/listen.html)
+and [early text-scale report](experiments/text/t1/scale-20261105/report.md).
+[Run and artifact instructions](docs/training/content_and_scale.md) cover portable
+speech/text checkpoints and both-seed full optimizer states. Code, compact evidence
+and reports are versioned; large model/media files remain in the local and Fedora
+experiment directories, with SHA256 delivery manifests.
+
+The speech and large text studies use separate trained weights. These results
+support further controlled research; they do not establish a unified multimodal
+124M world model or dependable speech repair. The original word-scoring result is
+retained beside revision 2, which excludes silence and short-pause labels without
+changing weights, calibration, spectra or waveforms.
 
 ## Validation
 
@@ -77,7 +116,15 @@ Current local validation evidence:
 pytest
 ```
 
-Latest result from the T1/T2 foundation branch:
+Latest complete suite on Fedora (2026-11-05):
+
+```text
+166 passed
+```
+
+The previous completed content/timing study passed133 tests.
+
+Earlier result from the T1/T2 foundation branch:
 
 ```text
 74 passed
@@ -146,3 +193,31 @@ Use focused feature branches and merge through pull requests. `main` is the acce
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for copyright holders and terms.
+
+## Earlier real audiovisual pilots — 2026-11-04
+
+[Findings and research decision](docs/research/findings.md) summarize 18 real-data
+GPU runs, including a fresh-person residual follow-up. Saved checkpoints, full
+metrics, source snapshots and diagnostic plots live under
+`experiments/multimodal/t2/real-av-20261104/` and
+`experiments/multimodal/t2/real-av-residual-20261104/`. The current recipe does
+not pass the multimodal or visual-dynamics gates; larger or joint text/code
+runs are not justified by these results.
+
+The final validation suite passes **84 tests**. See
+[the training workflow](training/README.md#real-recorded-audiovisual-pilots)
+for reproduction and checkpoint inference.
+
+## Motion-aware architecture and model outputs
+
+The new physical-time recipe learns real audio/video timing alignment without a
+pretrained neural encoder. Compare 4.74M and 15.23M models, matched baselines,
+ablations and input-corruption controls in the
+[research report](experiments/multimodal/t2/motion-alignment-20261104/report.md).
+Inspect the [actual conditional output gallery](experiments/multimodal/t2/motion-alignment-20261104/exploration/gallery.md)
+for audio→mouth, video→audio, codec/reconstruction/null controls, and bounded
+recognition probes. The current source passes **96 tests**.
+
+[Standalone inference](docs/training/motion_alignment.md) accepts an audio or
+video file with a saved checkpoint. Outputs are diagnostic predictions; larger
+parameter count has not resolved generation quality.

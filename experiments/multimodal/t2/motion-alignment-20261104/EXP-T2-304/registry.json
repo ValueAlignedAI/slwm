@@ -1,0 +1,38 @@
+{
+  "batch_size": 32,
+  "best_step": 1600,
+  "checkpoint": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-304/best.pt",
+  "checkpoint_sha256": "2cff6c63b0f19c1146f13da7fd9001c8ac892ef24975ebe756fc4c4480f0db6d",
+  "config_sha256": "e2885a865b035ee2e7957cbed0b67bf8f34d1db13f97e348872799b9911281c1",
+  "dataset_card_sha256": "64d89f41416af84ace7821abd09ec6e4aba279bb009af35692d40be35b4e68ac",
+  "experiment_id": "EXP-T2-304",
+  "fitted_codec_values": 249248,
+  "hardware": "NVIDIA GeForce RTX 3090",
+  "numpy": "2.3.5",
+  "parameter_counts": {
+    "adapters": 209920,
+    "frozen_neural_parameters": 0,
+    "processor": 4274688,
+    "total": 4741089
+  },
+  "precision": "BF16 autocast, FP32 parameters and optimizer",
+  "seed": 41,
+  "source_commit": "418ebc4",
+  "source_hashes": {
+    "docs/research/motion_alignment_protocol_20261104.md": "329e40cfb346b68df2f683f108d5c70da1a2cc9fa00e68123367ecd60190ab23",
+    "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+    "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+    "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+    "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+  },
+  "split_counts": {
+    "test": 240,
+    "train": 5061,
+    "validation": 210
+  },
+  "sprint": "T2-M1",
+  "status": "completed",
+  "torch": "2.13.0+cu130",
+  "training_seconds": 105.15687841299223,
+  "training_steps": 1600
+}

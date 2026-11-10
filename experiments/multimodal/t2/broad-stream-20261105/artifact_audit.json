@@ -1,0 +1,268 @@
+{
+  "actors": {
+    "EXP-P1-101": {
+      "export_identical": true,
+      "mode": "field",
+      "thresholds_identical": true,
+      "world": "EXP-T2-801"
+    },
+    "EXP-P1-102": {
+      "export_identical": true,
+      "mode": "field",
+      "thresholds_identical": true,
+      "world": "EXP-T2-802"
+    },
+    "EXP-P1-103": {
+      "export_identical": true,
+      "mode": "field",
+      "thresholds_identical": true,
+      "world": "EXP-T2-803"
+    },
+    "EXP-P1-104": {
+      "export_identical": true,
+      "mode": "field",
+      "thresholds_identical": true,
+      "world": "EXP-T2-804"
+    },
+    "EXP-P1-111": {
+      "export_identical": true,
+      "mode": "raw",
+      "thresholds_identical": true,
+      "world": "EXP-T2-801"
+    },
+    "EXP-P1-112": {
+      "export_identical": true,
+      "mode": "raw",
+      "thresholds_identical": true,
+      "world": "EXP-T2-802"
+    },
+    "EXP-P1-113": {
+      "export_identical": true,
+      "mode": "raw",
+      "thresholds_identical": true,
+      "world": "EXP-T2-803"
+    },
+    "EXP-P1-114": {
+      "export_identical": true,
+      "mode": "raw",
+      "thresholds_identical": true,
+      "world": "EXP-T2-804"
+    }
+  },
+  "language": {
+    "EXP-T1-221": {
+      "actual_optimizer_step": 5376,
+      "export_identical": true,
+      "neural_state_sha256": "8446574cd5736335157b2ecd2a21260aed90ee5d6bd46f9f7eaa17a435148665",
+      "selected_training_tokens": 150994944
+    },
+    "EXP-T1-222": {
+      "actual_optimizer_step": 5376,
+      "export_identical": true,
+      "neural_state_sha256": "205cc16253a829c7572609f9ed159363a9dcd38ecf2fc9c3380a87e8f34515a5",
+      "selected_training_tokens": 150994944
+    },
+    "EXP-T1-223": {
+      "actual_optimizer_step": 5376,
+      "export_identical": true,
+      "neural_state_sha256": "702bffe7dee7b55185f7bc1037257b70db6bb6d671fa57bc8891beacf6d0ae59",
+      "selected_training_tokens": 150994944
+    },
+    "EXP-T1-224": {
+      "actual_optimizer_step": 5376,
+      "export_identical": true,
+      "neural_state_sha256": "c9ae6e8cdd93086bfa741cb98360a1461e843e39e15a7870e1ed803407a6f4f7",
+      "selected_training_tokens": 150994944
+    }
+  },
+  "media": {
+    "all_observed_pcm_exact": true,
+    "frame_sample_clocks_match": true,
+    "long_media_cases": 248,
+    "maximum_long_seconds": 60.416,
+    "minimum_long_seconds": 40.96,
+    "observed_samples_checked": 1243440076,
+    "repaired_wavs_checked": 3936,
+    "secondary_hidden_mel_unchanged": true,
+    "secondary_observed_mel_exact": true
+  },
+  "paced_cpu": {
+    "arrival_order_respected": true,
+    "automatic_decisions": 30,
+    "missed_deadlines": 0,
+    "wall_seconds": 41.41957204701612,
+    "weights_unchanged": true
+  },
+  "sources": {
+    "experiments/multimodal/t2/broad-stream-20261105": {
+      "files": 17,
+      "live_and_snapshot_match": true
+    },
+    "experiments/multimodal/t2/broad-stream-20261105/evaluation": {
+      "files": 6,
+      "live_and_snapshot_match": true
+    },
+    "experiments/policy/continuous-sensing-20261105": {
+      "files": 4,
+      "live_and_snapshot_match": true
+    },
+    "experiments/text/t1/extended-throughput-20261105": {
+      "files": 7,
+      "live_and_snapshot_match": true
+    }
+  },
+  "worlds": {
+    "EXP-T2-801": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 4.887580871582031e-06,
+        "deployed_parameters": 23909657,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 23980313,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "88ff51607938a107325dbe86eacb74d3af8f263ff1ea8e027f336cbe4a04a076",
+      "parameters": 23980313,
+      "selected_step": 1800,
+      "weights_unchanged": true
+    },
+    "EXP-T2-802": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": null,
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "76f481679c865461dbc3472d2590c7a5d155122dc386c02bbf9cac5467113f1d",
+      "parameters": 23805209,
+      "selected_step": 1800,
+      "weights_unchanged": true
+    },
+    "EXP-T2-803": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 3.337860107421875e-06,
+        "deployed_parameters": 23909657,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 23980313,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "b2b5ea012e825aa71b270740c0ad2c98f2fad6bcc323dcc2daf3992dfb3b563b",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "weights_unchanged": true
+    },
+    "EXP-T2-804": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": null,
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "e890a66e8d35081ede9c1e66206e72f0f17dcbc2a66389e57001fd95467139cb",
+      "parameters": 23805209,
+      "selected_step": 1400,
+      "weights_unchanged": true
+    },
+    "EXP-T2-805": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": null,
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "a8dbe35f65857e064f4bf75ff72c19b514f62d99bfad756627480ab46c6521d7",
+      "parameters": 23805209,
+      "selected_step": 1800,
+      "weights_unchanged": true
+    },
+    "EXP-T2-806": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 3.814697265625e-06,
+        "deployed_parameters": 23909657,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 23980313,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "4b93e8c52dd28ea8c585b3d47d418cb2046d58280069728f65d00b781c0c8597",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "weights_unchanged": true
+    },
+    "EXP-T2-807": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 1.9073486328125e-06,
+        "deployed_parameters": 23909657,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 23980313,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "add7ef31e8719571ff796115f3a8cb17b6a8de77bb609ce5d8f31e3cbca37532",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "weights_unchanged": true
+    },
+    "EXP-T2-808": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 3.814697265625e-06,
+        "deployed_parameters": 23909657,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 23980313,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "3535931e85a641fe4800dd00a678ab9af1cd915f421ac8859ba7c0cb7db1db0d",
+      "parameters": 23980313,
+      "selected_step": 2000,
+      "weights_unchanged": true
+    },
+    "EXP-T2-809": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": {
+        "all_head_state_max_error": 6.67572021484375e-06,
+        "deployed_parameters": 6648601,
+        "function_equivalence_scope": "Real arithmetic; FP32/AMP numerical agreement measured separately",
+        "original_trained_parameters": 6683929,
+        "training_optimizer_equivalence_claimed": false,
+        "training_weights_modified": false
+      },
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "768af42258451424e2d858365d5fccd3cf2e317483f65787ce9a6866cbc3dfc0",
+      "parameters": 6683929,
+      "selected_step": 1800,
+      "weights_unchanged": true
+    },
+    "EXP-T2-810": {
+      "chunk_state_matches_full": true,
+      "export_identical": true,
+      "folding": null,
+      "future_chunk_isolation": true,
+      "hidden_audio_video_text_invariant": true,
+      "neural_state_sha256": "91a0d1f1bc7d9690cb383c21e52e23882797120e849ea68684d8d8f152d3e6f1",
+      "parameters": 6596377,
+      "selected_step": 1600,
+      "weights_unchanged": true
+    }
+  }
+}

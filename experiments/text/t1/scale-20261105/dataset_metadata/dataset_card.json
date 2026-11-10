@@ -1,0 +1,69 @@
+{
+  "dataset": "HuggingFaceFW/fineweb-edu",
+  "dedup": "Global NFKC/casefold whitespace-normalized exact text, first256-word prefix and canonical host/path; source dedup remains additional, near duplicates not guaranteed absent",
+  "documents": {
+    "test": 9554,
+    "train": 2474533,
+    "validation": 14037
+  },
+  "domain_counts": {
+    "test": 3792,
+    "train": 751997,
+    "validation": 3794
+  },
+  "files": {
+    "documents.tsv": "79ab6fc9cf9ec3c49515cfef0939adc1461e5389ee5e4ad92dd145feda9b5861",
+    "domains.json": "0cc559346c0bc49bcf76896d42f0be9a336f2b809f9006694562073626168e81",
+    "test.tokens.bin": "5758787c46df1c5a3ebf3280744e6f4645ca17766b0375aa8e10db55299ef0a6",
+    "train.tokens.bin": "d0f225c49e03aef97582b6d72821c1bc30107dbe1454b111803b1d4a47c9a754",
+    "validation.tokens.bin": "b5212de5845cccfb85e525b9b433523b6e97f174365142c797b2c1889e3c9c91"
+  },
+  "filters": {
+    "duplicate": 127362,
+    "scanned": 2681968,
+    "short": 56345
+  },
+  "license": "ODC-By",
+  "no_cross_split_domains": true,
+  "processed_sources": [
+    {
+      "documents_scanned": 726000,
+      "path": "artifacts/text/fineweb_edu_scale_v1/sources/000_00000.parquet",
+      "sha256": "b1ba7b2ce4cb5ea6ef42dca40263eabb85f37700d01693a68e9b30a31d78e871"
+    },
+    {
+      "documents_scanned": 729000,
+      "path": "artifacts/text/fineweb_edu_scale_v1/sources/001_00000.parquet",
+      "sha256": "3fcf2dc69cd52503986276d3d2d26a8c356d0f2ea28a0de4fdbda8cf87755693"
+    },
+    {
+      "documents_scanned": 727000,
+      "path": "artifacts/text/fineweb_edu_scale_v1/sources/002_00000.parquet",
+      "sha256": "547ae182d132c9f06b6ce63149567208ea9f57630bfd9b1a2938e504f0c9ebd7"
+    },
+    {
+      "documents_scanned": 499968,
+      "path": "artifacts/text/fineweb_edu_scale_v1/sources/003_00000.parquet",
+      "sha256": "22184e6eb25759ddd97783751ffc73e1705dfa2542e630dae1f2a8bac8ee6ddb"
+    }
+  ],
+  "revision": "87f09149ef4734204d70ed1d046ddc9ca3f2b8f9",
+  "scope": "English web text only; no code-quality or joint multimodal claim",
+  "seconds": 1283.107172012329,
+  "source_sha256": "691abc2906d51f5ed08a6805f830eba5464d74985297f444a7d6dea1ef0c1209",
+  "split": "Registrable-domain SHA256 buckets; train<990, validation990..994, test995..999",
+  "tokenizer": {
+    "eos": 50256,
+    "merge_ranks_sha256": "b6f6b50e93a1e8d8147eebb9ab8b67359ee15d725fad7c1fd0b32098d8ba4216",
+    "name": "gpt2",
+    "tiktoken_version": "0.14.0",
+    "trained_here": false,
+    "vocab": 50257
+  },
+  "tokens": {
+    "test": 10013422,
+    "train": 2600000000,
+    "validation": 14573946
+  },
+  "tokens_per_124m_parameter": 20.893635580022753
+}

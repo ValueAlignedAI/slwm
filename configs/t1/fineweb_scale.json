@@ -1,0 +1,10 @@
+{
+  "sprint":"T1-S2",
+  "protocol":"docs/research/text_scale_protocol_20261105.md",
+  "corpus":"artifacts/text/fineweb_edu_scale_v1",
+  "artifacts":"experiments/text/t1/scale-20261105",
+  "model":{"vocab_size":50257,"context_length":1024,"n_layer":12,"n_embd":768,"n_head":12,"dropout":0.0},
+  "training":{"steps":1024,"micro_batch":8,"gradient_accumulation":4,"sequence_length":512,"lr":0.0006,"warmup":64,"minimum_lr_fraction":0.1,"weight_decay":0.1,"eval_every":128,"eval_batches":32,"gradient_clip":1.0,"overfit_patience":2,"overfit_relative_rise":0.05},
+  "runs":[{"id":"EXP-T1-201","variant":"gpt2","seed":81},{"id":"EXP-T1-202","variant":"slwm","seed":81},{"id":"EXP-T1-203","variant":"gpt2","seed":82},{"id":"EXP-T1-204","variant":"slwm","seed":82}],
+  "prompts":["The relationship between sound and motion is","A scientist can test a hypothesis by","The purpose of a mathematical model is","When a prediction is uncertain,","A video recording contains","The experiment showed that"]
+}

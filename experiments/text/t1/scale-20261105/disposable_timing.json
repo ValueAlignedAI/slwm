@@ -1,0 +1,18 @@
+[
+  {
+    "model": "gpt2",
+    "parameters": 124439808,
+    "seconds_microbatch": 0.113355162210064,
+    "tokens_per_second": 36134.21674091474,
+    "peak_memory_bytes": 5621746176,
+    "scope": "Disposable random-token performance/shape check only; no language-quality evidence; no saved weights"
+  },
+  {
+    "model": "slwm",
+    "parameters": 125131008,
+    "seconds_microbatch": 0.16060386569588445,
+    "tokens_per_second": 25503.744771349935,
+    "peak_memory_bytes": 6349481472,
+    "scope": "Disposable random-token performance/shape check only; no language-quality evidence; no saved weights"
+  }
+]

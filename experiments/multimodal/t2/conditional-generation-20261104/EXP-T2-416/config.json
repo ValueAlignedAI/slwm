@@ -1,0 +1,133 @@
+{
+  "matrix": {
+    "artifacts": "experiments/multimodal/t2/conditional-generation-20261104",
+    "checkpoint": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-301/best.pt",
+    "checkpoint_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+    "corpus": "artifacts/t2_audio_visual/conditional_generation_v1",
+    "external_corpus": "artifacts/t2_audio_visual/ravdess_external_v1",
+    "external_crop": "fps=25,crop=iw*0.30:ih*0.24:iw*0.35:ih*0.54,scale=48:32",
+    "protocol": "docs/research/conditional_generation_protocol_20261104.md",
+    "runs": [
+      {
+        "id": "EXP-T2-401",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "audio"
+      },
+      {
+        "id": "EXP-T2-402",
+        "input": "field_video",
+        "seed": 41,
+        "task": "audio"
+      },
+      {
+        "id": "EXP-T2-403",
+        "input": "audio_coarse",
+        "seed": 41,
+        "task": "audio"
+      },
+      {
+        "id": "EXP-T2-404",
+        "input": "video_coarse",
+        "seed": 41,
+        "task": "audio"
+      },
+      {
+        "id": "EXP-T2-405",
+        "input": "mel100",
+        "richer_input_diagnostic": true,
+        "seed": 41,
+        "task": "audio"
+      },
+      {
+        "id": "EXP-T2-411",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      {
+        "id": "EXP-T2-412",
+        "input": "audio_coarse",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      {
+        "id": "EXP-T2-413",
+        "input": "time_only",
+        "seed": 41,
+        "task": "visual",
+        "warp": true
+      },
+      {
+        "id": "EXP-T2-414",
+        "input": "field_audio",
+        "seed": 41,
+        "task": "visual",
+        "warp": false
+      },
+      {
+        "id": "EXP-T2-415",
+        "input": "field_audio",
+        "seed": 41,
+        "shuffled": true,
+        "task": "visual",
+        "warp": true
+      },
+      {
+        "id": "EXP-T2-416",
+        "input": "field_audio",
+        "seed": 42,
+        "task": "visual",
+        "warp": true
+      }
+    ],
+    "source_corpus": "artifacts/t2_audio_visual/cremad_motion_v3",
+    "sprint": "T2-G1",
+    "training": {
+      "audio_batch": 32,
+      "eval_every": 200,
+      "lr": 0.0004,
+      "steps": 1600,
+      "visual_batch": 16,
+      "warmup_steps": 80,
+      "window": 32
+    }
+  },
+  "provenance": {
+    "config_hash": "d5bb1cf76fd38d11593b676405a818506c527dfe27b5b1498a283ae977122354",
+    "device": "NVIDIA GeForce RTX 3090",
+    "frozen_core_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+    "observations": "field_audio + one observed starting frame",
+    "parameter_accounting": {
+      "codec_fitted_values": 249376,
+      "decoder_trainable": 213699,
+      "external_generation_parameters": 0,
+      "frozen_core": 4741089
+    },
+    "run_hash": "efedff59863003d96ec1afc869e8cfc5b07be4d34cabb39e92d356f97da29d6b",
+    "source_hashes": {
+      "configs/t2/conditional_generation.json": "b8e669b9241c151ed5ffddd509efda33dc71fc5fd2d1e6f925a866ea6a6da77a",
+      "docs/research/conditional_generation_protocol_20261104.md": "faa301b9f621beac5b19adf1e6ebc9b9c4760e16c77fb93fdd7d047bc909ac11",
+      "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+      "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+      "training/t2_generation_train.py": "bdd3c4ab859254522cf7288ec566fd8830d15db046668f3703ca197479681930",
+      "training/t2_motion_train.py": "3a05dfe203f884e5845c8c0cc9d75dad2c8c0d7e26d241a56708f55c48d93a1e",
+      "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+      "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+      "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+      "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59"
+    },
+    "task": "simultaneous conditional generation; diagnostic proposal, no policy commit",
+    "training_manifest_sha256": "498fc9cc426a3b0ba0acf059a95beb7bd3dad2723305f17ba7b936402f82a028",
+    "validation_manifest_sha256": "db33f6dbd61864ba1326fb30a096996882f4455c333ca2cdedfe8af6469ca8be"
+  },
+  "run": {
+    "id": "EXP-T2-416",
+    "input": "field_audio",
+    "seed": 42,
+    "task": "visual",
+    "warp": true
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "EXP-T2-701": {
+    "checkpoint_sha256": "1afab1874e64e2656d9aa18dd88ac12683044c5f235891621ed07be993396de1",
+    "counts": {
+      "frozen": 0,
+      "graph_connected_trainable": 5084085,
+      "total": 5133942,
+      "trainable": 5133942
+    },
+    "extra_negative_windows": 0,
+    "kind": "base",
+    "last_sha256": "a293042e3f1b5a82386143e44652f6e8b4eef23c1a35d6b368ec9b6041eb5b6c",
+    "overfit_stop": false,
+    "positive_windows": 128000,
+    "run": {
+      "id": "EXP-T2-701",
+      "seed": 71,
+      "unit_weight": 0.0
+    },
+    "selected_step": 4000,
+    "selected_validation_mse": 0.9791998863220215,
+    "updates": 4000,
+    "wall_seconds": 119.46202586597065
+  },
+  "EXP-T2-702": {
+    "checkpoint_sha256": "a4d1d73bfeaaced2b3d9e7f752da33c6a86db65b63e49112ab24bca391e2c676",
+    "counts": {
+      "frozen": 0,
+      "graph_connected_trainable": 5084085,
+      "total": 5133942,
+      "trainable": 5133942
+    },
+    "extra_negative_windows": 0,
+    "kind": "base",
+    "last_sha256": "5cdcb0d863abcadf3872e396e5206a49780847ccd9be5fe81f85621f5003a611",
+    "overfit_stop": false,
+    "positive_windows": 128000,
+    "run": {
+      "id": "EXP-T2-702",
+      "seed": 71,
+      "unit_weight": 0.2
+    },
+    "selected_step": 4000,
+    "selected_validation_mse": 0.9335640668869019,
+    "updates": 4000,
+    "wall_seconds": 120.01313985104207
+  },
+  "EXP-T2-703": {
+    "checkpoint_sha256": "cbb47ac1e2e7d39b7eb8d856eee4f0f6c8727f9d275c90b901acdd51d3ab0ba9",
+    "counts": {
+      "frozen": 0,
+      "graph_connected_trainable": 5084085,
+      "total": 5133942,
+      "trainable": 5133942
+    },
+    "extra_negative_windows": 0,
+    "kind": "base",
+    "last_sha256": "2e4f53ecc771877f945cc3f0fe9241e3af9b5f0915c90ef632054bd5fe595ada",
+    "overfit_stop": false,
+    "positive_windows": 128000,
+    "run": {
+      "id": "EXP-T2-703",
+      "seed": 72,
+      "unit_weight": 0.0
+    },
+    "selected_step": 3200,
+    "selected_validation_mse": 0.9727627635002136,
+    "updates": 4000,
+    "wall_seconds": 119.51298171101371
+  },
+  "EXP-T2-704": {
+    "checkpoint_sha256": "f5ab616c0094e77bb349eb575c0374d6a8db13412ebe8f0f433b092490fa4296",
+    "counts": {
+      "frozen": 0,
+      "graph_connected_trainable": 5084085,
+      "total": 5133942,
+      "trainable": 5133942
+    },
+    "extra_negative_windows": 0,
+    "kind": "base",
+    "last_sha256": "8878547a6eb25a24e2f03c44ef28b0563a029640808b896cf771a97921b50b06",
+    "overfit_stop": false,
+    "positive_windows": 128000,
+    "run": {
+      "id": "EXP-T2-704",
+      "seed": 72,
+      "unit_weight": 0.2
+    },
+    "selected_step": 3200,
+    "selected_validation_mse": 0.9374913573265076,
+    "updates": 4000,
+    "wall_seconds": 120.5139759539743
+  },
+  "EXP-T2-711": {
+    "checkpoint_sha256": "86366c8253ae67be414689bc722d53801c7b48d23d6c4372ef19eeeacc385e82",
+    "counts": {
+      "frozen": 5133942,
+      "graph_connected_trainable": 1294570,
+      "total": 6428512,
+      "trainable": 1294570
+    },
+    "extra_negative_windows": 0,
+    "kind": "candidate",
+    "last_sha256": "d21d1c8bf2a3dc7e0894397c9ab6ff5cf0f18b1cd48c1a6fd8b7ad7d0285a429",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "audio",
+      "id": "EXP-T2-711",
+      "seed": 71,
+      "unit_weight": 0.2
+    },
+    "selected_step": 2800,
+    "selected_validation_mse": 0.872451901435852,
+    "updates": 3000,
+    "wall_seconds": 82.73340002802433
+  },
+  "EXP-T2-712": {
+    "checkpoint_sha256": "5441344e88a99f0117c47756391d3bdbaed70463382816a70a63f42eab921a68",
+    "counts": {
+      "frozen": 5133942,
+      "graph_connected_trainable": 1294570,
+      "total": 6428512,
+      "trainable": 1294570
+    },
+    "extra_negative_windows": 0,
+    "kind": "candidate",
+    "last_sha256": "c2d5584b88625ddac286baa7df8c275f5f2efa887a59b1f772680a74687f8c0a",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "audio",
+      "id": "EXP-T2-712",
+      "seed": 72,
+      "unit_weight": 0.2
+    },
+    "selected_step": 3000,
+    "selected_validation_mse": 0.877017617225647,
+    "updates": 3000,
+    "wall_seconds": 82.40397041401593
+  },
+  "EXP-T2-713": {
+    "checkpoint_sha256": "dbfb87a0614c3bb886a54d05341c16814d5a259a613fbb95cea7b48f0150e9bc",
+    "counts": {
+      "frozen": 6428512,
+      "graph_connected_trainable": 1285308,
+      "total": 7713820,
+      "trainable": 1285308
+    },
+    "extra_negative_windows": 96000,
+    "kind": "candidate",
+    "last_sha256": "103bd90f91ee2b8d9cde891441164743de62f4f7cce3ac662c02bf64df2efa03",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "video",
+      "id": "EXP-T2-713",
+      "seed": 71,
+      "unit_weight": 0.2
+    },
+    "selected_step": 3000,
+    "selected_validation_mse": 0.7760983109474182,
+    "updates": 3000,
+    "wall_seconds": 222.58367292798357
+  },
+  "EXP-T2-714": {
+    "checkpoint_sha256": "b17288cf1b4a123f9e87a2719a943cbcc2735e0ed37871d175f4020d8978fbae",
+    "counts": {
+      "frozen": 6428512,
+      "graph_connected_trainable": 1285308,
+      "total": 7713820,
+      "trainable": 1285308
+    },
+    "extra_negative_windows": 96000,
+    "kind": "candidate",
+    "last_sha256": "d86903bae4707ff48e89cfafee9257069a9813b51a4c0f7ea245de96a5dfbc82",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "video",
+      "id": "EXP-T2-714",
+      "seed": 72,
+      "unit_weight": 0.2
+    },
+    "selected_step": 2800,
+    "selected_validation_mse": 0.7824573516845703,
+    "updates": 3000,
+    "wall_seconds": 221.83321225299733
+  },
+  "EXP-T2-715": {
+    "checkpoint_sha256": "11dc7a93e84c25f4109e2a8f710947a81453c3dd6c258169fef72d9e6ab0db81",
+    "counts": {
+      "frozen": 6428512,
+      "graph_connected_trainable": 1285308,
+      "total": 7713820,
+      "trainable": 1285308
+    },
+    "extra_negative_windows": 96000,
+    "kind": "candidate",
+    "last_sha256": "0d02c771a7397b57cc7603feb16d32ada40c9da558204506e4ae43e23a69dbe1",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "video",
+      "id": "EXP-T2-715",
+      "seed": 71,
+      "unit_weight": 0.0
+    },
+    "selected_step": 3000,
+    "selected_validation_mse": 0.7740971446037292,
+    "updates": 3000,
+    "wall_seconds": 223.305481606978
+  },
+  "EXP-T2-716": {
+    "checkpoint_sha256": "964de39e196dada129a6ca40c64fc57c9ded596408c5a36ef8d539d2d1e37c0a",
+    "counts": {
+      "frozen": 6428512,
+      "graph_connected_trainable": 1285308,
+      "total": 7713820,
+      "trainable": 1285308
+    },
+    "extra_negative_windows": 96000,
+    "kind": "candidate",
+    "last_sha256": "bac49047992cec3d7366507771479c2a8bcb22295a41e8f479d97d9d8044797c",
+    "overfit_stop": false,
+    "positive_windows": 96000,
+    "run": {
+      "arm": "shuffled",
+      "id": "EXP-T2-716",
+      "seed": 71,
+      "unit_weight": 0.2
+    },
+    "selected_step": 2800,
+    "selected_validation_mse": 0.8741559386253357,
+    "updates": 3000,
+    "wall_seconds": 228.48765234899474
+  }
+}

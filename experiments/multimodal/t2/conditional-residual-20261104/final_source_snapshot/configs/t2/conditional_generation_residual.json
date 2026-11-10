@@ -1,0 +1,14 @@
+{
+  "sprint": "T2-G2",
+  "g1_config": "configs/t2/conditional_generation.json",
+  "protocol": "docs/research/conditional_residual_followup_20261104.md",
+  "corpus": "artifacts/t2_audio_visual/conditional_generation_v1",
+  "artifacts": "experiments/multimodal/t2/conditional-residual-20261104",
+  "training": {"steps": 1600, "batch_size": 32, "window": 32, "lr": 0.0004, "warmup_steps": 80, "eval_every": 200},
+  "runs": [
+    {"id": "EXP-T2-421", "input": "audio_coarse", "seed": 41},
+    {"id": "EXP-T2-422", "input": "field_audio", "seed": 41},
+    {"id": "EXP-T2-423", "input": "audio_coarse", "seed": 42},
+    {"id": "EXP-T2-424", "input": "field_audio", "seed": 42}
+  ]
+}

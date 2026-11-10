@@ -1,0 +1,80 @@
+{
+  "EXP-T2-841": {
+    "checkpoint_sha256": "0cc27cb434a9f87ffe6aa45d5260ad55d0d3393ea1bb8c382314ca111c36a729",
+    "last_sha256": "d624e17064852aaf0b27a73eb322e8adf1f7dd93e2afacfc73d896d516adeea4",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 51200,
+    "run": {
+      "compiled": true,
+      "contextual_b1_reference": "EXP-T2-801",
+      "eager_reference": "EXP-T2-843",
+      "id": "EXP-T2-841",
+      "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-831",
+      "seed": 91,
+      "variant": "slwm"
+    },
+    "selected_step": 400,
+    "selected_validation_loss": 1.4324727416038514,
+    "updates": 400,
+    "wall_seconds": 182.28604999295203
+  },
+  "EXP-T2-842": {
+    "checkpoint_sha256": "31b189d49c7d3fa76c0b49b43fce37ad7c5b64dc943e793ed4a0f8a0257902ee",
+    "last_sha256": "e23a0f9ecbf9513a58359f86c0b7cee0b4d5240e6641e5819b9ce9bd35b4c114",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 51200,
+    "run": {
+      "compiled": true,
+      "contextual_b1_reference": "EXP-T2-802",
+      "eager_reference": "EXP-T2-844",
+      "id": "EXP-T2-842",
+      "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-832",
+      "seed": 91,
+      "variant": "transformer"
+    },
+    "selected_step": 400,
+    "selected_validation_loss": 1.4288337111473084,
+    "updates": 400,
+    "wall_seconds": 111.08484893798595
+  },
+  "EXP-T2-843": {
+    "checkpoint_sha256": "439f8b37ce2530a9fbe13c448fbd0e8596e77dcfb94435a2e536acfd92c56134",
+    "last_sha256": "1f79fc02bec2036e104dc4beeef87b41e151890fb485e56eea5a468bc469774f",
+    "overfit_stop": false,
+    "parameters": 23980313,
+    "positive_windows": 51200,
+    "run": {
+      "compiled": false,
+      "contextual_b1_reference": "EXP-T2-801",
+      "id": "EXP-T2-843",
+      "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-833",
+      "seed": 91,
+      "variant": "slwm"
+    },
+    "selected_step": 400,
+    "selected_validation_loss": 1.4310017824172974,
+    "updates": 400,
+    "wall_seconds": 213.96297408896498
+  },
+  "EXP-T2-844": {
+    "checkpoint_sha256": "10ea85d1eea895784668e59985888eedbb28600a20ee60af8642b81c3fe41334",
+    "last_sha256": "6b0a1f34e08e01ac568e625533b777c958939feb262be892f2fa2aeef80f0336",
+    "overfit_stop": false,
+    "parameters": 23805209,
+    "positive_windows": 51200,
+    "run": {
+      "compiled": false,
+      "contextual_b1_reference": "EXP-T2-802",
+      "id": "EXP-T2-844",
+      "resume_if_present_from": "experiments/multimodal/t2/compiled-learning-20261105/EXP-T2-834",
+      "seed": 91,
+      "variant": "transformer"
+    },
+    "selected_step": 400,
+    "selected_validation_loss": 1.4307939887046814,
+    "updates": 400,
+    "wall_seconds": 143.2769090080401
+  }
+}

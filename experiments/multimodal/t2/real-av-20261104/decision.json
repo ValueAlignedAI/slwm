@@ -1,0 +1,44 @@
+{
+  "architecture_pass_both_seeds": true,
+  "comparisons": [
+    {
+      "architecture_pass": true,
+      "audio_person_cluster_95_interval": [
+        0.029311769162514528,
+        0.12447272542177897
+      ],
+      "audio_relative_error_improvement": 0.08045351118104349,
+      "baseline": "EXP-T2-202",
+      "full": "EXP-T2-201",
+      "mean_retrieval_r1_absolute_improvement": 0.011904761904761904,
+      "seed": 41,
+      "visual_person_cluster_95_interval": [
+        0.026793485174031642,
+        0.12337342935164206
+      ],
+      "visual_relative_error_improvement": 0.06457092388700247
+    },
+    {
+      "architecture_pass": true,
+      "audio_person_cluster_95_interval": [
+        0.006056748412654762,
+        0.1468789631937799
+      ],
+      "audio_relative_error_improvement": 0.07631361284018034,
+      "baseline": "EXP-T2-209",
+      "full": "EXP-T2-208",
+      "mean_retrieval_r1_absolute_improvement": 0.0023809523809523794,
+      "seed": 42,
+      "visual_person_cluster_95_interval": [
+        -0.0014465854017206815,
+        0.05732777171456742
+      ],
+      "visual_relative_error_improvement": 0.02728987194047716
+    }
+  ],
+  "cross_modal_pass_both_seeds": false,
+  "hybrid_scale_gate_pass": false,
+  "planned_runs_completed": 9,
+  "prediction_pass_both_seeds": true,
+  "train_seconds_total": 203.7114258041256
+}

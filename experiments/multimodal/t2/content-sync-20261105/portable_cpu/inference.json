@@ -1,0 +1,33 @@
+{
+  "checkpoint_sha256": "dbfb87a0614c3bb886a54d05341c16814d5a259a613fbb95cea7b48f0150e9bc",
+  "hidden_audio_used": false,
+  "hidden_samples": 5120,
+  "input_sha256": "b17c84264081926b8f845c709a3a8d0348a278c897f42448ee03dc5ee03b728a",
+  "kind": "candidate",
+  "observed_pcm_exact": true,
+  "recognizer_used": false,
+  "run": {
+    "arm": "video",
+    "id": "EXP-T2-713",
+    "seed": 71,
+    "unit_weight": 0.2
+  },
+  "scope": "Offline true short-gap repair; closed GRID text codes, no free-form language or policy claim",
+  "text_supplied": false,
+  "threshold": 0.0,
+  "timing": {
+    "audio_start_trim_samples": 0,
+    "stream_start_seconds": {
+      "audio": 0.0,
+      "video": 0.0
+    }
+  },
+  "windows": [
+    {
+      "accepted": true,
+      "predicted_offset": 0,
+      "quality": 0.5149003863334656,
+      "start_packet": 21
+    }
+  ]
+}

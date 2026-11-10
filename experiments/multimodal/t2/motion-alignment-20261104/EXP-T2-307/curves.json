@@ -1,0 +1,603 @@
+{
+  "curves": [
+    {
+      "step": 0,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.7783607244491577,
+          "audio_input_audio_mel": 1.0555943250656128,
+          "audio_input_video_appearance": 1.2950959205627441,
+          "audio_input_video_motion": 1.9949090480804443,
+          "video_input_audio_delta": 0.7758186459541321,
+          "video_input_audio_mel": 1.0424630641937256,
+          "video_input_video_appearance": 1.2943115234375,
+          "video_input_video_motion": 1.9962131977081299
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.009523809523809525,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.0
+        },
+        "samples": 210,
+        "selection_score": 1.0466054477189717,
+        "synchronization": {
+          "accuracy": 0.10526315789473684,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.3437793239718303,
+      "global_alignment": 3.0077857971191406,
+      "gradient_norm": 2.837489604949951,
+      "loss": 1.8325777053833008,
+      "prediction": 0.9078847169876099,
+      "step": 50,
+      "sync_alignment": 0.6764644980430603,
+      "sync_choice": 0.46875
+    },
+    {
+      "elapsed_seconds": 6.637758990982547,
+      "global_alignment": 2.634979248046875,
+      "gradient_norm": 1.9729419946670532,
+      "loss": 1.8607709407806396,
+      "prediction": 0.9827451109886169,
+      "step": 100,
+      "sync_alignment": 0.6896841526031494,
+      "sync_choice": 0.59375
+    },
+    {
+      "elapsed_seconds": 9.930430875974707,
+      "global_alignment": 2.388671875,
+      "gradient_norm": 1.692474365234375,
+      "loss": 2.2678139209747314,
+      "prediction": 1.4195023775100708,
+      "step": 150,
+      "sync_alignment": 0.7000153660774231,
+      "sync_choice": 0.53125
+    },
+    {
+      "elapsed_seconds": 13.222791163017973,
+      "global_alignment": 2.3521728515625,
+      "gradient_norm": 2.5613255500793457,
+      "loss": 1.879531741142273,
+      "prediction": 1.0760858058929443,
+      "step": 200,
+      "sync_alignment": 0.6437427997589111,
+      "sync_choice": 0.59375
+    },
+    {
+      "step": 200,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.4138745367527008,
+          "audio_input_audio_mel": 0.27668729424476624,
+          "audio_input_video_appearance": 1.2910475730895996,
+          "audio_input_video_motion": 1.9979201555252075,
+          "video_input_audio_delta": 0.7626140713691711,
+          "video_input_audio_mel": 0.7805454730987549,
+          "video_input_video_appearance": 1.2393758296966553,
+          "video_input_video_motion": 1.2071245908737183
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.01904761904761905,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.009523809523809525
+        },
+        "samples": 210,
+        "selection_score": 0.7810285445890929,
+        "synchronization": {
+          "accuracy": 0.35789473684210527,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 17.161817700020038,
+      "global_alignment": 2.3247299194335938,
+      "gradient_norm": 2.4099652767181396,
+      "loss": 1.6005064249038696,
+      "prediction": 1.036961555480957,
+      "step": 250,
+      "sync_alignment": 0.3069077134132385,
+      "sync_choice": 0.84375
+    },
+    {
+      "elapsed_seconds": 20.455704341991805,
+      "global_alignment": 1.7236557006835938,
+      "gradient_norm": 1.8710988759994507,
+      "loss": 1.2937968969345093,
+      "prediction": 0.8886362314224243,
+      "step": 300,
+      "sync_alignment": 0.20944616198539734,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 23.75728205498308,
+      "global_alignment": 1.6784133911132812,
+      "gradient_norm": 1.9483097791671753,
+      "loss": 1.5036306381225586,
+      "prediction": 1.061009168624878,
+      "step": 350,
+      "sync_alignment": 0.27265626192092896,
+      "sync_choice": 0.9375
+    },
+    {
+      "elapsed_seconds": 27.06104612001218,
+      "global_alignment": 1.664896011352539,
+      "gradient_norm": 2.1817169189453125,
+      "loss": 1.7799092531204224,
+      "prediction": 1.288977861404419,
+      "step": 400,
+      "sync_alignment": 0.34456712007522583,
+      "sync_choice": 0.8125
+    },
+    {
+      "step": 400,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.3377062976360321,
+          "audio_input_audio_mel": 0.20874208211898804,
+          "audio_input_video_appearance": 1.290273904800415,
+          "audio_input_video_motion": 1.9900321960449219,
+          "video_input_audio_delta": 0.7528484463691711,
+          "video_input_audio_mel": 0.8114022612571716,
+          "video_input_video_appearance": 1.1945308446884155,
+          "video_input_video_motion": 0.5309317708015442
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.014285714285714285,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.023809523809523808
+        },
+        "samples": 210,
+        "selection_score": 0.5137559333914206,
+        "synchronization": {
+          "accuracy": 0.6263157894736842,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 31.01749782799743,
+      "global_alignment": 1.166391372680664,
+      "gradient_norm": 1.9230331182479858,
+      "loss": 1.0042153596878052,
+      "prediction": 0.7063065767288208,
+      "step": 450,
+      "sync_alignment": 0.17564301192760468,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 34.325723682006355,
+      "global_alignment": 1.1907529830932617,
+      "gradient_norm": 1.7746927738189697,
+      "loss": 1.2173510789871216,
+      "prediction": 0.939250648021698,
+      "step": 500,
+      "sync_alignment": 0.1421249359846115,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 37.62912765098736,
+      "global_alignment": 1.238926887512207,
+      "gradient_norm": 2.6533429622650146,
+      "loss": 1.3022685050964355,
+      "prediction": 0.997632622718811,
+      "step": 550,
+      "sync_alignment": 0.1697096824645996,
+      "sync_choice": 0.90625
+    },
+    {
+      "elapsed_seconds": 40.94557901000371,
+      "global_alignment": 1.153214931488037,
+      "gradient_norm": 2.1756503582000732,
+      "loss": 1.3948135375976562,
+      "prediction": 1.0757660865783691,
+      "step": 600,
+      "sync_alignment": 0.20866456627845764,
+      "sync_choice": 0.90625
+    },
+    {
+      "step": 600,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.31099987030029297,
+          "audio_input_audio_mel": 0.172499880194664,
+          "audio_input_video_appearance": 1.2866841554641724,
+          "audio_input_video_motion": 1.9891040325164795,
+          "video_input_audio_delta": 0.7454790472984314,
+          "video_input_audio_mel": 0.739875853061676,
+          "video_input_video_appearance": 1.1489945650100708,
+          "video_input_video_motion": 0.32064202427864075
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.009523809523809525,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.023809523809523808
+        },
+        "samples": 210,
+        "selection_score": 0.4153963626999604,
+        "synchronization": {
+          "accuracy": 0.7210526315789474,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 44.88290417200187,
+      "global_alignment": 0.9723711013793945,
+      "gradient_norm": 2.0169034004211426,
+      "loss": 1.1826732158660889,
+      "prediction": 0.8388124704360962,
+      "step": 650,
+      "sync_alignment": 0.28286439180374146,
+      "sync_choice": 0.9375
+    },
+    {
+      "elapsed_seconds": 48.21163815201726,
+      "global_alignment": 0.6554794311523438,
+      "gradient_norm": 1.4485554695129395,
+      "loss": 1.4582345485687256,
+      "prediction": 1.2792093753814697,
+      "step": 700,
+      "sync_alignment": 0.11529044806957245,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 51.52473510801792,
+      "global_alignment": 0.9448356628417969,
+      "gradient_norm": 2.154339551925659,
+      "loss": 1.0126616954803467,
+      "prediction": 0.7508098483085632,
+      "step": 750,
+      "sync_alignment": 0.17160937190055847,
+      "sync_choice": 0.9375
+    },
+    {
+      "elapsed_seconds": 54.845907263981644,
+      "global_alignment": 0.5423965454101562,
+      "gradient_norm": 1.6438052654266357,
+      "loss": 1.0930211544036865,
+      "prediction": 0.9078390002250671,
+      "step": 800,
+      "sync_alignment": 0.1483180671930313,
+      "sync_choice": 0.96875
+    },
+    {
+      "step": 800,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.28989294171333313,
+          "audio_input_audio_mel": 0.15048593282699585,
+          "audio_input_video_appearance": 1.2850496768951416,
+          "audio_input_video_motion": 1.9886467456817627,
+          "video_input_audio_delta": 0.7399407029151917,
+          "video_input_audio_mel": 0.7134816646575928,
+          "video_input_video_appearance": 1.1256355047225952,
+          "video_input_video_motion": 0.26123449206352234
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.009523809523809525,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.009523809523809525
+        },
+        "samples": 210,
+        "selection_score": 0.361422209990652,
+        "synchronization": {
+          "accuracy": 0.7736842105263158,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 58.79191730101593,
+      "global_alignment": 0.8005021810531616,
+      "gradient_norm": 2.0063695907592773,
+      "loss": 1.245245099067688,
+      "prediction": 1.0234181880950928,
+      "step": 850,
+      "sync_alignment": 0.14535945653915405,
+      "sync_choice": 0.9375
+    },
+    {
+      "elapsed_seconds": 62.11238217400387,
+      "global_alignment": 0.5917105674743652,
+      "gradient_norm": 1.6803282499313354,
+      "loss": 1.145317792892456,
+      "prediction": 0.9931682348251343,
+      "step": 900,
+      "sync_alignment": 0.09056143462657928,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 65.43852919200435,
+      "global_alignment": 0.5754177570343018,
+      "gradient_norm": 1.1836838722229004,
+      "loss": 0.7280882000923157,
+      "prediction": 0.6155892610549927,
+      "step": 950,
+      "sync_alignment": 0.03740895912051201,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 68.77655780198984,
+      "global_alignment": 0.47746992111206055,
+      "gradient_norm": 1.1602693796157837,
+      "loss": 0.7267719507217407,
+      "prediction": 0.614519476890564,
+      "step": 1000,
+      "sync_alignment": 0.05804569646716118,
+      "sync_choice": 1.0
+    },
+    {
+      "step": 1000,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.2686254382133484,
+          "audio_input_audio_mel": 0.13002562522888184,
+          "audio_input_video_appearance": 1.2851322889328003,
+          "audio_input_video_motion": 1.9885822534561157,
+          "video_input_audio_delta": 0.7354581356048584,
+          "video_input_audio_mel": 0.72467041015625,
+          "video_input_video_appearance": 1.1047810316085815,
+          "video_input_video_motion": 0.2137933224439621
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.009523809523809525,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.01904761904761905
+        },
+        "samples": 210,
+        "selection_score": 0.34092579107535514,
+        "synchronization": {
+          "accuracy": 0.7947368421052632,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 72.75777231698157,
+      "global_alignment": 0.43293190002441406,
+      "gradient_norm": 1.815090298652649,
+      "loss": 1.4715336561203003,
+      "prediction": 1.3416202068328857,
+      "step": 1050,
+      "sync_alignment": 0.0928194671869278,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 76.10948007099796,
+      "global_alignment": 0.5658632516860962,
+      "gradient_norm": 1.9607772827148438,
+      "loss": 1.0091851949691772,
+      "prediction": 0.8510894775390625,
+      "step": 1100,
+      "sync_alignment": 0.10459466278553009,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 79.46329493797384,
+      "global_alignment": 0.4358639717102051,
+      "gradient_norm": 1.1202869415283203,
+      "loss": 0.7132158279418945,
+      "prediction": 0.6178220510482788,
+      "step": 1150,
+      "sync_alignment": 0.04287736117839813,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 82.81048623198876,
+      "global_alignment": 0.22721104323863983,
+      "gradient_norm": 0.8713691234588623,
+      "loss": 0.8073833584785461,
+      "prediction": 0.7474164962768555,
+      "step": 1200,
+      "sync_alignment": 0.03697885572910309,
+      "sync_choice": 1.0
+    },
+    {
+      "step": 1200,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.2534521818161011,
+          "audio_input_audio_mel": 0.11907199025154114,
+          "audio_input_video_appearance": 1.2869943380355835,
+          "audio_input_video_motion": 1.9882372617721558,
+          "video_input_audio_delta": 0.7343789935112,
+          "video_input_audio_mel": 0.7660655975341797,
+          "video_input_video_appearance": 1.066301941871643,
+          "video_input_video_motion": 0.1934879869222641
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.009523809523809525,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.004761904761904762
+        },
+        "samples": 210,
+        "selection_score": 0.3219256692811063,
+        "synchronization": {
+          "accuracy": 0.8157894736842105,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 86.78066018299432,
+      "global_alignment": 0.16524696350097656,
+      "gradient_norm": 0.8598074316978455,
+      "loss": 0.7859574556350708,
+      "prediction": 0.7321827411651611,
+      "step": 1250,
+      "sync_alignment": 0.04141099378466606,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 90.14866681001149,
+      "global_alignment": 0.2711446285247803,
+      "gradient_norm": 1.5819528102874756,
+      "loss": 0.8530400991439819,
+      "prediction": 0.7566397190093994,
+      "step": 1300,
+      "sync_alignment": 0.07961238920688629,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 93.48938277101843,
+      "global_alignment": 0.35974788665771484,
+      "gradient_norm": 1.0187121629714966,
+      "loss": 0.8665983080863953,
+      "prediction": 0.7981265783309937,
+      "step": 1350,
+      "sync_alignment": 0.02072795294225216,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 96.84126485598972,
+      "global_alignment": 0.158727765083313,
+      "gradient_norm": 0.7694836854934692,
+      "loss": 1.4934977293014526,
+      "prediction": 1.4580490589141846,
+      "step": 1400,
+      "sync_alignment": 0.0166278388351202,
+      "sync_choice": 1.0
+    },
+    {
+      "step": 1400,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.24613752961158752,
+          "audio_input_audio_mel": 0.11261139065027237,
+          "audio_input_video_appearance": 1.2857811450958252,
+          "audio_input_video_motion": 1.988376259803772,
+          "video_input_audio_delta": 0.733938455581665,
+          "video_input_audio_mel": 0.7290099859237671,
+          "video_input_video_appearance": 1.0595648288726807,
+          "video_input_video_motion": 0.17447485029697418
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.0,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.004761904761904762
+        },
+        "samples": 210,
+        "selection_score": 0.33586931228637695,
+        "synchronization": {
+          "accuracy": 0.8,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 100.67998033098411,
+      "global_alignment": 0.27688920497894287,
+      "gradient_norm": 1.136838674545288,
+      "loss": 0.9674039483070374,
+      "prediction": 0.9009480476379395,
+      "step": 1450,
+      "sync_alignment": 0.0356035977602005,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 104.00685350201093,
+      "global_alignment": 0.3805665969848633,
+      "gradient_norm": 1.8957024812698364,
+      "loss": 0.9066746234893799,
+      "prediction": 0.8145438432693481,
+      "step": 1500,
+      "sync_alignment": 0.05006540194153786,
+      "sync_choice": 0.96875
+    },
+    {
+      "elapsed_seconds": 107.31857994099846,
+      "global_alignment": 0.26068246364593506,
+      "gradient_norm": 0.707503616809845,
+      "loss": 0.8021475076675415,
+      "prediction": 0.7524615526199341,
+      "step": 1550,
+      "sync_alignment": 0.015119386836886406,
+      "sync_choice": 1.0
+    },
+    {
+      "elapsed_seconds": 110.64093312702607,
+      "global_alignment": 0.08899527788162231,
+      "gradient_norm": 1.091746211051941,
+      "loss": 0.746634304523468,
+      "prediction": 0.7070944309234619,
+      "step": 1600,
+      "sync_alignment": 0.03741510957479477,
+      "sync_choice": 1.0
+    },
+    {
+      "step": 1600,
+      "validation": {
+        "errors": {
+          "audio_input_audio_delta": 0.2452239692211151,
+          "audio_input_audio_mel": 0.11161239445209503,
+          "audio_input_video_appearance": 1.2858991622924805,
+          "audio_input_video_motion": 1.988366723060608,
+          "video_input_audio_delta": 0.7334434986114502,
+          "video_input_audio_mel": 0.7332883477210999,
+          "video_input_video_appearance": 1.0560966730117798,
+          "video_input_video_motion": 0.17261794209480286
+        },
+        "retrieval": {
+          "audio_to_video_r1": 0.004761904761904762,
+          "candidate_count": 210,
+          "chance_r1": 0.004761904761904762,
+          "independent": true,
+          "video_to_audio_r1": 0.014285714285714285
+        },
+        "samples": 210,
+        "selection_score": 0.32555643774961174,
+        "synchronization": {
+          "accuracy": 0.8105263157894737,
+          "candidate_count": 7,
+          "chance": 0.14285714285714285,
+          "eligible_clips": 190,
+          "motion_energy_baseline_accuracy": 0.2789473684210526
+        }
+      }
+    }
+  ]
+}

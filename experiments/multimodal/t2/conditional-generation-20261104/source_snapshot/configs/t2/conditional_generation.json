@@ -1,0 +1,25 @@
+{
+  "sprint": "T2-G1",
+  "protocol": "docs/research/conditional_generation_protocol_20261104.md",
+  "source_corpus": "artifacts/t2_audio_visual/cremad_motion_v3",
+  "external_corpus": "artifacts/t2_audio_visual/ravdess_external_v1",
+  "corpus": "artifacts/t2_audio_visual/conditional_generation_v1",
+  "checkpoint": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-301/best.pt",
+  "checkpoint_sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe",
+  "artifacts": "experiments/multimodal/t2/conditional-generation-20261104",
+  "external_crop": "fps=25,crop=iw*0.30:ih*0.24:iw*0.35:ih*0.54,scale=48:32",
+  "training": {"steps": 1600, "audio_batch": 32, "visual_batch": 16, "window": 32, "lr": 0.0004, "warmup_steps": 80, "eval_every": 200},
+  "runs": [
+    {"id": "EXP-T2-401", "task": "audio", "input": "field_audio", "seed": 41},
+    {"id": "EXP-T2-402", "task": "audio", "input": "field_video", "seed": 41},
+    {"id": "EXP-T2-403", "task": "audio", "input": "audio_coarse", "seed": 41},
+    {"id": "EXP-T2-404", "task": "audio", "input": "video_coarse", "seed": 41},
+    {"id": "EXP-T2-405", "task": "audio", "input": "mel100", "seed": 41, "richer_input_diagnostic": true},
+    {"id": "EXP-T2-411", "task": "visual", "input": "field_audio", "warp": true, "seed": 41},
+    {"id": "EXP-T2-412", "task": "visual", "input": "audio_coarse", "warp": true, "seed": 41},
+    {"id": "EXP-T2-413", "task": "visual", "input": "time_only", "warp": true, "seed": 41},
+    {"id": "EXP-T2-414", "task": "visual", "input": "field_audio", "warp": false, "seed": 41},
+    {"id": "EXP-T2-415", "task": "visual", "input": "field_audio", "warp": true, "shuffled": true, "seed": 41},
+    {"id": "EXP-T2-416", "task": "visual", "input": "field_audio", "warp": true, "seed": 42}
+  ]
+}

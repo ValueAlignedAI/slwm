@@ -1,0 +1,197 @@
+{
+  "claim_trace": {
+    "expected_decision": "untested",
+    "hypothesis_ids": [
+      "H-R0-1",
+      "H-R0-2",
+      "H-R0-3"
+    ]
+  },
+  "config": {
+    "bitwise_gpu_determinism_claimed": false,
+    "config_path": "configs/t2/broad_stream.json",
+    "config_sha256": "12fbdb025c870aa3d61953f3febfae3e53103f65a288e603bb895b8d29d62e15",
+    "deterministic_data_sampling": true,
+    "precision": "bf16 training; fp32 parameters/Adam states",
+    "protocol": "docs/research/broad_stream_protocol_20261105.md",
+    "protocol_sha256": "1264efca14ec820444a3c7d64399a0c99242f3686aa82dccbeda8320bec6be55",
+    "seed": 91
+  },
+  "created_at": "2026-11-05",
+  "data": {
+    "corpus": "artifacts/t2_audio_visual/broad_stream_prepared_v1",
+    "dataset_card_sha256": "869be7c68b68f57609e4eb973a86081230f82d7c465beae4736bec6a9bcdffce",
+    "split_notes": "Official participant IDs disjoint; fresh Libri people exclude prior SLWM exposure; separate world selection/head selection/calibration/test",
+    "test_selection_used_for_fitting": false
+  },
+  "evaluation": {
+    "all_cases_retained": true,
+    "metrics": "experiments/multimodal/t2/broad-stream-20261105/speech_summary.json",
+    "script": "exploration/broad_stream_evaluate.py"
+  },
+  "experiment_id": "EXP-T2-801",
+  "interpretation": {
+    "hypothesis_decision": "See frozen gates and complete reports; no generic world-model or convergence claim",
+    "known_limits": [
+      "CMU phonetic text edge; separate125M language weights",
+      "64x64 face/PCA video and sparse own-speaker paired speech",
+      "Recorded sensing is not physical-action control"
+    ]
+  },
+  "model": {
+    "external_renderer_parameters": 13531650,
+    "neural_parameters": 23980313,
+    "parameter_accounting_mode": "approximate",
+    "scope": "Exact trained-neural counts at prototype size; fitted codecs and fixed dictionary separate",
+    "variant": "slwm"
+  },
+  "registry_writer_sha256": "ead3cf71f5b8ffefbf7e3b62510b76c23d13f34a982542bc2e064bc7dce7992a",
+  "repository": {
+    "git_commit_at_registry_write": "9cb9f056ceb575a1322ef97d97a8f9adf553f429",
+    "source_hashes": {
+      "configs/t2/broad_stream.json": "12fbdb025c870aa3d61953f3febfae3e53103f65a288e603bb895b8d29d62e15",
+      "configs/t2/broad_stream_data.json": "9f49885b12447a11f302e5c0941226dcb693018bda9a254522f697d6c00d5f1d",
+      "docs/research/ami_decoded_clock_review_20261105.md": "7b1aaffb73bddbef4f96d5c6254a419284649e536b5d06ec9f5799c2f5cd1eea",
+      "docs/research/ami_source_availability_review_20261105.md": "602aeb984d9966f7ec89999640fb4841c08f84193966c2cee2e77047e9b0c0de",
+      "docs/research/broad_annotation_review_20261105.md": "b8085e5a1f468a1dc497a48e2b4b4b8b958e87a83d7a9dacc7813dd07585053d",
+      "docs/research/broad_stream_protocol_20261105.md": "1264efca14ec820444a3c7d64399a0c99242f3686aa82dccbeda8320bec6be55",
+      "models/slwm_stream.py": "048d85427b18114153d14315b306cd7780613f040dbf26081e497033abb74cc0",
+      "scripts/train/run_broad_stream_fedora.sh": "0d45cd2e5b2b15d562900e38ae994e7db194259b2675f9f2c701d13ef0e599ca",
+      "tests/test_broad_annotations.py": "d63db446c12d12f37bceae4dba90dc85eafc6b71204ee8743902c5f60c2cac3a",
+      "tests/test_stream_world.py": "b11f196d04e1fd7502966dfc76e84485c8c5bd81ff06f557cee09663a4686c35",
+      "training/broad_annotation_correction.py": "fe8491b60afca252a3db62be9c435ad4769f6fbf3e145264226c23737670ba42",
+      "training/broad_batch.py": "100e6462d8320febba6c7aaabad0df969924fc4748eb7cd7a74dba42e1d81fdd",
+      "training/broad_data.py": "5a8ae073e4a9ebb78451a9c33500bb8d2626f8d7ba6bcc38c39fd572feab26f5",
+      "training/broad_sources.py": "b38409ed53e0bf07624a9a457953d6023c4fd2849f570bf2ff1818ba7162d430",
+      "training/broad_stream_train.py": "b1033062098937a814a2f30542b3f4f6373c0f96c0c0b8478a9f25fe7734dec7",
+      "training/stream_codec.py": "5ff257ec1343b7c84851248d2c71a5899fa1bb5c4a9b52ee5c0effc249a29e5b",
+      "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875"
+    },
+    "source_snapshot": "experiments/multimodal/t2/broad-stream-20261105/source_snapshot",
+    "working_tree_state": "source snapshots authoritative; unrelated edits may exist"
+  },
+  "sprint": {
+    "id": "T2",
+    "name": "T2-B1",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "actual": {
+      "checkpoint_sha256": "633e0078f3de82fbd2c42a3363ce3451efc16a0aa0075592c724cf49d796882c",
+      "last_sha256": "b0d35303d5d921b28ab277017531045e0b3c71816df564d159f15c4bd61d8dbc",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-801",
+        "seed": 91,
+        "variant": "slwm"
+      },
+      "selected_step": 1800,
+      "selected_validation_loss": 1.3214560270309448,
+      "updates": 2000,
+      "wall_seconds": 1061.5408382320893
+    },
+    "checkpoints": {
+      "best": "experiments/multimodal/t2/broad-stream-20261105/EXP-T2-801/best.pt",
+      "last": "experiments/multimodal/t2/broad-stream-20261105/EXP-T2-801/last.pt",
+      "resume": "experiments/multimodal/t2/broad-stream-20261105/EXP-T2-801/resume.pt"
+    },
+    "registered_config": {
+      "artifacts": "experiments/multimodal/t2/broad-stream-20261105",
+      "corpus": "artifacts/t2_audio_visual/broad_stream_prepared_v1",
+      "long_probe_seconds": 40.96,
+      "long_probe_start": 80.0,
+      "model": {
+        "chunk": 32,
+        "heads": 8,
+        "layers": 6,
+        "memory": 8,
+        "phone_count": 41,
+        "width": 512
+      },
+      "primary_gap_seconds": 0.16,
+      "protocol": "docs/research/broad_stream_protocol_20261105.md",
+      "runs": [
+        {
+          "id": "EXP-T2-801",
+          "seed": 91,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T2-802",
+          "seed": 91,
+          "variant": "transformer"
+        },
+        {
+          "id": "EXP-T2-803",
+          "seed": 92,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T2-804",
+          "seed": 92,
+          "variant": "transformer"
+        },
+        {
+          "id": "EXP-T2-805",
+          "seed": 91,
+          "variant": "late_fusion"
+        },
+        {
+          "id": "EXP-T2-806",
+          "seed": 91,
+          "shuffled_pairs": true,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T2-807",
+          "no_content_loss": true,
+          "seed": 91,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T2-808",
+          "reset_memory": true,
+          "seed": 91,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T2-809",
+          "seed": 91,
+          "variant": "slwm",
+          "width": 256
+        },
+        {
+          "id": "EXP-T2-810",
+          "seed": 91,
+          "variant": "transformer",
+          "width": 256
+        }
+      ],
+      "secondary_gap_seconds": 0.32,
+      "sprint": "T2-B1",
+      "text_prompts": [
+        "The room is quiet at first. A person begins to explain the experiment. We hear a voice and see the face moving at the same time. The model should preserve the words while keeping the sound and motion together. After a short pause the speaker continues with another sentence. These are generated observations from a small model, and every unclear word or repeated movement is part of the evidence. We want to learn which details the shared representation preserves over time and which details it loses. We will listen to the whole sequence rather than selecting a fluent fragment. The sequence should continue through changing words, short pauses and longer thoughts. A repeated frame, a missing word and an unstable sound are measurable failures. We will compare the learned prediction with a Transformer that has the same data and a similar number of weights. We will also compare it with a simple fixed picture and a silent audio track. The useful result is an honest account of the information that survives each conversion, together with the failures that tell us what to train next.",
+        "A drone moves slowly through a corridor and waits when the next observation is uncertain. A useful model would remember the doorway, predict the result of moving forward and decide whether to look again. Our recordings contain people speaking in meetings, so the present video decoder can only propose a small face and its motion. It has no training target for a flying machine or a corridor. This prompt tests pronunciation and the limits of the representation, rather than demonstrating a learned ability to fly. We will listen to the whole sequence rather than selecting a fluent fragment. The sequence should continue through changing words, short pauses and longer thoughts. A repeated frame, a missing word and an unstable sound are measurable failures. We will compare the learned prediction with a Transformer that has the same data and a similar number of weights. We will also compare it with a simple fixed picture and a silent audio track. The useful result is an honest account of the information that survives each conversion, together with the failures that tell us what to train next."
+      ],
+      "training": {
+        "alignment_weight": 0.05,
+        "batch": 128,
+        "clip": 1.0,
+        "ctc_weight": 0.1,
+        "eval_every": 200,
+        "future_weight": 0.1,
+        "lr": 0.0003,
+        "micro_batch": 128,
+        "phoneme_weight": 0.2,
+        "steps": 2000,
+        "warmup": 100,
+        "weight_decay": 0.01,
+        "window": 128
+      }
+    }
+  },
+  "updated_at": "2026-11-06"
+}

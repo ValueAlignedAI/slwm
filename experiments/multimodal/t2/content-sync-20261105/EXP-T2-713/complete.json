@@ -1,0 +1,24 @@
+{
+  "checkpoint_sha256": "dbfb87a0614c3bb886a54d05341c16814d5a259a613fbb95cea7b48f0150e9bc",
+  "counts": {
+    "frozen": 6428512,
+    "graph_connected_trainable": 1285308,
+    "total": 7713820,
+    "trainable": 1285308
+  },
+  "extra_negative_windows": 96000,
+  "kind": "candidate",
+  "last_sha256": "103bd90f91ee2b8d9cde891441164743de62f4f7cce3ac662c02bf64df2efa03",
+  "overfit_stop": false,
+  "positive_windows": 96000,
+  "run": {
+    "arm": "video",
+    "id": "EXP-T2-713",
+    "seed": 71,
+    "unit_weight": 0.2
+  },
+  "selected_step": 3000,
+  "selected_validation_mse": 0.7760983109474182,
+  "updates": 3000,
+  "wall_seconds": 222.58367292798357
+}

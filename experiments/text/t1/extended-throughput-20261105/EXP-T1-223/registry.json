@@ -1,0 +1,148 @@
+{
+  "claim_trace": {
+    "expected_decision": "untested",
+    "hypothesis_ids": [
+      "G-R0-1",
+      "H-R0-3"
+    ]
+  },
+  "config": {
+    "bitwise_gpu_determinism_claimed": false,
+    "config_path": "configs/t1/fineweb_extend_v2.json",
+    "config_sha256": "9799369bd0d8e4bdfb653041a15956516f3497adb1f6dbad255fd957087bacd2",
+    "deterministic_data_sampling": true,
+    "precision": "bf16 training; fp32 parameters/Adam states",
+    "protocol": "docs/research/text_throughput_protocol_20261105.md",
+    "protocol_sha256": "1c50404c0cddfe6edd2aba3b88417219686b9385216508c296a5221a18059243",
+    "seed": 82
+  },
+  "created_at": "2026-11-05",
+  "data": {
+    "corpus": "artifacts/text/fineweb_edu_scale_v1",
+    "dataset_card_sha256": "475db740d71aba0c4afdd4f8bb42d0a0ac5687555a4a8dc4c46cd642c12d04db",
+    "split_notes": "Domain-disjoint and deduplicated; fixed fresh test windows",
+    "test_selection_used_for_fitting": false
+  },
+  "evaluation": {
+    "all_cases_retained": true,
+    "metrics": {
+      "nll": 4.327748764306307,
+      "perplexity": 75.77351038138087,
+      "tokens": 524288
+    },
+    "script": "training/extend_text_train_v2.py"
+  },
+  "experiment_id": "EXP-T1-223",
+  "interpretation": {
+    "hypothesis_decision": "See frozen gates and complete reports; no generic world-model or convergence claim",
+    "known_limits": [
+      "Two-seed early language learning, not convergence"
+    ]
+  },
+  "model": {
+    "external_renderer_parameters": 0,
+    "neural_parameters": 124439808,
+    "parameter_accounting_mode": "strict",
+    "scope": "All text weights, including tied embeddings; no pretrained LM initialization",
+    "variant": "gpt2"
+  },
+  "registry_writer_sha256": "ead3cf71f5b8ffefbf7e3b62510b76c23d13f34a982542bc2e064bc7dce7992a",
+  "repository": {
+    "git_commit_at_registry_write": "9cb9f056ceb575a1322ef97d97a8f9adf553f429",
+    "source_hashes": {
+      "configs/t1/fineweb_extend_v2.json": "9799369bd0d8e4bdfb653041a15956516f3497adb1f6dbad255fd957087bacd2",
+      "configs/t1/fineweb_scale.json": "d4ca57bede3ea114e7a32460bd990ad4fddb3027916bc559407ad255f5e4ee43",
+      "docs/research/text_throughput_protocol_20261105.md": "1c50404c0cddfe6edd2aba3b88417219686b9385216508c296a5221a18059243",
+      "training/extend_text_train_v2.py": "c50f9603066ef63fe921d001dfeafcc9fb0266e8943669d404b9cd3ed7bb6a31",
+      "training/scale_text_train.py": "406974424b9d11efbba4800adcc60fbb87380489df54a2b46067fd9328372f45",
+      "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875",
+      "training/text_fused_loss.py": "ebc956ded4cd648c0da6baa33a8fd8a4a57bb592cbdbc4e58d4824de71949b07"
+    },
+    "source_snapshot": "experiments/text/t1/extended-throughput-20261105/source_snapshot",
+    "working_tree_state": "source snapshots authoritative; unrelated edits may exist"
+  },
+  "sprint": {
+    "id": "T1",
+    "name": "T1-S4",
+    "owner_role": "training"
+  },
+  "status": "completed",
+  "training": {
+    "actual": {
+      "actual_optimizer_updates": 5376,
+      "checkpoint_sha256": "3c5af37526d7cfbba796eb85e94e31181c94cdd7e178f42705f39c5b1e1cb709",
+      "extension_token_equivalent_updates": 8192,
+      "last_sha256": "afe164c91595200c42195548d52cb80cc374044b21dd0593db3a92d6a19dbf39",
+      "overfit_stop": false,
+      "parameters": 124439808,
+      "parent_sha256": "3482a1343ee4d6340c647a4b4f4a8a2d51d37e3ed7f06431af7466c9c1ddce69",
+      "resume_sha256": "566ee3f037209330dc24f6d5b8915b74a96bb874399a4d753f57810b48028b07",
+      "run": {
+        "id": "EXP-T1-223",
+        "parent": "EXP-T1-203",
+        "resume": "EXP-T1-213",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      "selected_total_token_equivalent_step": 9216,
+      "selected_validation_nll": 4.397786810994148,
+      "tokens_seen": 150994944,
+      "wall_seconds": 3015.36512278422
+    },
+    "checkpoints": {
+      "best": "experiments/text/t1/extended-throughput-20261105/EXP-T1-223/best.pt",
+      "last": "experiments/text/t1/extended-throughput-20261105/EXP-T1-223/last.pt",
+      "resume": "experiments/text/t1/extended-throughput-20261105/EXP-T1-223/resume.pt"
+    },
+    "registered_config": {
+      "additional_updates": 8192,
+      "artifacts": "experiments/text/t1/extended-throughput-20261105",
+      "fused_loss_version": "liger-kernel==0.8.5",
+      "global_batch": 64,
+      "initial_small_updates": 512,
+      "lr": 0.0002,
+      "lr_floor": 2e-05,
+      "micro_batch": 64,
+      "parent": "experiments/text/t1/scale-20261105",
+      "parent_config": "configs/t1/fineweb_scale.json",
+      "protocol": "docs/research/text_throughput_protocol_20261105.md",
+      "resume_root": "experiments/text/t1/extended-20261105",
+      "runs": [
+        {
+          "id": "EXP-T1-221",
+          "parent": "EXP-T1-201",
+          "resume": "EXP-T1-211",
+          "seed": 81,
+          "variant": "gpt2"
+        },
+        {
+          "id": "EXP-T1-222",
+          "parent": "EXP-T1-202",
+          "resume": "EXP-T1-212",
+          "seed": 81,
+          "variant": "slwm"
+        },
+        {
+          "id": "EXP-T1-223",
+          "parent": "EXP-T1-203",
+          "resume": "EXP-T1-213",
+          "seed": 82,
+          "variant": "gpt2"
+        },
+        {
+          "id": "EXP-T1-224",
+          "parent": "EXP-T1-204",
+          "resume": "EXP-T1-214",
+          "seed": 82,
+          "variant": "slwm"
+        }
+      ],
+      "slice_updates": 512,
+      "sprint": "T1-S4",
+      "test_batches": 128,
+      "test_window_start": 512,
+      "warmup": 128
+    }
+  },
+  "updated_at": "2026-11-06"
+}

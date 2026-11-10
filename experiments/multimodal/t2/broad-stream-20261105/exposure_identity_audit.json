@@ -1,0 +1,540 @@
+{
+  "checkpoint_exposure_scope": "Both final training states and validation-selected weights. Equal maximum training budgets do not imply identical selected-checkpoint exposure; selection steps and exact RNG checks are explicit.",
+  "dataset_card_sha256": "869be7c68b68f57609e4eb973a86081230f82d7c465beae4736bec6a9bcdffce",
+  "exposure_definition": "Valid target coarse packets counted with repetition, independent of observation masks; union of sampled intervals additionally reports unique temporal coverage per source record. Nominal padded windows are separate. Parallel person tracks are not independent meeting events.",
+  "identity_scope": "Official corpus participant IDs and exact raw-audio hashes; no biometric identity claim",
+  "model_scores_read": false,
+  "prior_exposure_fresh_test_overlap": {
+    "libri_test-clean": 0,
+    "libri_test-other": 0
+  },
+  "sampled_training_exposure": {
+    "91|1600": {
+      "by_source": {
+        "ami_train": {
+          "available_source_records": 28,
+          "available_target_packet_hours": 8.23277037037037,
+          "mode_target_packet_hours": {
+            "audio": 15.596657777777779,
+            "null": 1.1969422222222224,
+            "repair": 38.83311407407407,
+            "text": 10.543407407407406,
+            "video": 11.502174814814815
+          },
+          "unique_source_records": 28,
+          "unique_temporal_target_packet_hours": 8.224497777777778,
+          "valid_target_packet_hours": 77.6722962962963,
+          "windows": 51200
+        },
+        "libri_train-clean-100": {
+          "available_source_records": 28515,
+          "available_target_packet_hours": 100.49423407407406,
+          "mode_target_packet_hours": {
+            "audio": 45.47882666666666,
+            "null": 3.3970725925925924,
+            "repair": 113.60304592592591,
+            "text": 64.96747851851852
+          },
+          "unique_source_records": 28397,
+          "unique_temporal_target_packet_hours": 78.9245511111111,
+          "valid_target_packet_hours": 227.4464237037037,
+          "windows": 153600
+        }
+      },
+      "checkpoint_roles": {
+        "last_training": [],
+        "validation_selected": [
+          "EXP-T2-810"
+        ]
+      },
+      "exact_checkpoint_rng_checks": [
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-810",
+          "step": 1600
+        }
+      ],
+      "nominal_window_hours": 310.6891851851852,
+      "runs": [
+        "EXP-T2-810"
+      ],
+      "steps": 1600,
+      "valid_target_packet_hours": 305.11872
+    },
+    "91|1800": {
+      "by_source": {
+        "ami_train": {
+          "available_source_records": 28,
+          "available_target_packet_hours": 8.23277037037037,
+          "mode_target_packet_hours": {
+            "audio": 17.52177777777778,
+            "null": 1.353197037037037,
+            "repair": 43.62543407407407,
+            "text": 11.923911111111112,
+            "video": 12.957013333333332
+          },
+          "unique_source_records": 28,
+          "unique_temporal_target_packet_hours": 8.22674962962963,
+          "valid_target_packet_hours": 87.38133333333333,
+          "windows": 57600
+        },
+        "libri_train-clean-100": {
+          "available_source_records": 28515,
+          "available_target_packet_hours": 100.49423407407406,
+          "mode_target_packet_hours": {
+            "audio": 51.29617777777778,
+            "null": 3.796242962962963,
+            "repair": 127.65513481481482,
+            "text": 73.13729185185186
+          },
+          "unique_source_records": 28456,
+          "unique_temporal_target_packet_hours": 81.35114666666665,
+          "valid_target_packet_hours": 255.8848474074074,
+          "windows": 172800
+        }
+      },
+      "checkpoint_roles": {
+        "last_training": [],
+        "validation_selected": [
+          "EXP-T2-801",
+          "EXP-T2-802",
+          "EXP-T2-805",
+          "EXP-T2-809"
+        ]
+      },
+      "exact_checkpoint_rng_checks": [
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-801",
+          "step": 1800
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-802",
+          "step": 1800
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-805",
+          "step": 1800
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-809",
+          "step": 1800
+        }
+      ],
+      "nominal_window_hours": 349.5253333333333,
+      "runs": [
+        "EXP-T2-801",
+        "EXP-T2-802",
+        "EXP-T2-805",
+        "EXP-T2-809"
+      ],
+      "steps": 1800,
+      "valid_target_packet_hours": 343.2661807407407
+    },
+    "91|2000": {
+      "by_source": {
+        "ami_train": {
+          "available_source_records": 28,
+          "available_target_packet_hours": 8.23277037037037,
+          "mode_target_packet_hours": {
+            "audio": 19.474204444444442,
+            "null": 1.5064177777777779,
+            "repair": 48.457197037037034,
+            "text": 13.192154074074073,
+            "video": 14.460397037037037
+          },
+          "unique_source_records": 28,
+          "unique_temporal_target_packet_hours": 8.227508148148148,
+          "valid_target_packet_hours": 97.09037037037037,
+          "windows": 64000
+        },
+        "libri_train-clean-100": {
+          "available_source_records": 28515,
+          "available_target_packet_hours": 100.49423407407406,
+          "mode_target_packet_hours": {
+            "audio": 56.961588148148145,
+            "null": 4.182613333333333,
+            "repair": 141.9018548148148,
+            "text": 81.3120948148148
+          },
+          "unique_source_records": 28480,
+          "unique_temporal_target_packet_hours": 83.22087111111111,
+          "valid_target_packet_hours": 284.3581511111111,
+          "windows": 192000
+        }
+      },
+      "checkpoint_roles": {
+        "last_training": [
+          "EXP-T2-801",
+          "EXP-T2-802",
+          "EXP-T2-805",
+          "EXP-T2-806",
+          "EXP-T2-807",
+          "EXP-T2-808",
+          "EXP-T2-809",
+          "EXP-T2-810"
+        ],
+        "validation_selected": [
+          "EXP-T2-806",
+          "EXP-T2-807",
+          "EXP-T2-808"
+        ]
+      },
+      "exact_checkpoint_rng_checks": [
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-801",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-802",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-805",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-806",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-807",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-808",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-809",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-810",
+          "step": 2000
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-806",
+          "step": 2000
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-807",
+          "step": 2000
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-808",
+          "step": 2000
+        }
+      ],
+      "nominal_window_hours": 388.36148148148146,
+      "runs": [
+        "EXP-T2-801",
+        "EXP-T2-802",
+        "EXP-T2-805",
+        "EXP-T2-806",
+        "EXP-T2-807",
+        "EXP-T2-808",
+        "EXP-T2-809",
+        "EXP-T2-810"
+      ],
+      "steps": 2000,
+      "valid_target_packet_hours": 381.44852148148146
+    },
+    "92|1400": {
+      "by_source": {
+        "ami_train": {
+          "available_source_records": 28,
+          "available_target_packet_hours": 8.23277037037037,
+          "mode_target_packet_hours": {
+            "audio": 13.568379259259258,
+            "null": 1.0103466666666667,
+            "repair": 33.917914074074076,
+            "text": 9.111324444444444,
+            "video": 10.355294814814814
+          },
+          "unique_source_records": 28,
+          "unique_temporal_target_packet_hours": 8.218322962962963,
+          "valid_target_packet_hours": 67.96325925925926,
+          "windows": 44800
+        },
+        "libri_train-clean-100": {
+          "available_source_records": 28515,
+          "available_target_packet_hours": 100.49423407407406,
+          "mode_target_packet_hours": {
+            "audio": 39.68392296296296,
+            "null": 3.007122962962963,
+            "repair": 99.3805037037037,
+            "text": 56.92136296296296
+          },
+          "unique_source_records": 28212,
+          "unique_temporal_target_packet_hours": 75.7516088888889,
+          "valid_target_packet_hours": 198.99291259259257,
+          "windows": 134400
+        }
+      },
+      "checkpoint_roles": {
+        "last_training": [],
+        "validation_selected": [
+          "EXP-T2-804"
+        ]
+      },
+      "exact_checkpoint_rng_checks": [
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-804",
+          "step": 1400
+        }
+      ],
+      "nominal_window_hours": 271.85303703703704,
+      "runs": [
+        "EXP-T2-804"
+      ],
+      "steps": 1400,
+      "valid_target_packet_hours": 266.9561718518518
+    },
+    "92|2000": {
+      "by_source": {
+        "ami_train": {
+          "available_source_records": 28,
+          "available_target_packet_hours": 8.23277037037037,
+          "mode_target_packet_hours": {
+            "audio": 19.349807407407408,
+            "null": 1.4275318518518518,
+            "repair": 48.56187259259259,
+            "text": 13.035899259259258,
+            "video": 14.715259259259259
+          },
+          "unique_source_records": 28,
+          "unique_temporal_target_packet_hours": 8.225931851851852,
+          "valid_target_packet_hours": 97.09037037037037,
+          "windows": 64000
+        },
+        "libri_train-clean-100": {
+          "available_source_records": 28515,
+          "available_target_packet_hours": 100.49423407407406,
+          "mode_target_packet_hours": {
+            "audio": 56.604717037037034,
+            "null": 4.2297955555555555,
+            "repair": 142.09116444444444,
+            "text": 81.4051437037037
+          },
+          "unique_source_records": 28469,
+          "unique_temporal_target_packet_hours": 83.22229333333333,
+          "valid_target_packet_hours": 284.33082074074076,
+          "windows": 192000
+        }
+      },
+      "checkpoint_roles": {
+        "last_training": [
+          "EXP-T2-803",
+          "EXP-T2-804"
+        ],
+        "validation_selected": [
+          "EXP-T2-803"
+        ]
+      },
+      "exact_checkpoint_rng_checks": [
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-803",
+          "step": 2000
+        },
+        {
+          "checkpoint": "resume.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-804",
+          "step": 2000
+        },
+        {
+          "checkpoint": "best.pt",
+          "exact_data_rng_match": true,
+          "run": "EXP-T2-803",
+          "step": 2000
+        }
+      ],
+      "nominal_window_hours": 388.36148148148146,
+      "runs": [
+        "EXP-T2-803",
+        "EXP-T2-804"
+      ],
+      "steps": 2000,
+      "valid_target_packet_hours": 381.4211911111111
+    }
+  },
+  "source_sha256": "7acbec2948ef5a507659febc698e02c0196d3f956216d8ac2b29e666d260eca5",
+  "split_pairs": {
+    "ami_calibration|ami_test": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|ami_train": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|ami_validation": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|libri_dev-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|libri_test-clean": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_calibration|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|ami_train": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|ami_validation": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|libri_dev-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|libri_test-clean": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_test|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_train|ami_validation": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_train|libri_dev-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_train|libri_test-clean": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_train|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_train|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_validation|libri_dev-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_validation|libri_test-clean": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_validation|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "ami_validation|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_dev-other|libri_test-clean": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_dev-other|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_dev-other|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_test-clean|libri_test-other": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_test-clean|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    },
+    "libri_test-other|libri_train-clean-100": {
+      "exact_nonempty_transcript_overlap": 0,
+      "participant_id_overlap": 0,
+      "raw_audio_sha256_overlap": 0
+    }
+  },
+  "transcript_overlap_policy": "Report exact nonempty strings, including common short utterances; no post-fit filtering"
+}

@@ -1,0 +1,7 @@
+{
+  "tests_passed": 166,
+  "elapsed_seconds": 6.71,
+  "command": "CUDA_VISIBLE_DEVICES= PYTHONPATH=.research-venv/lib/python3.12/site-packages OMP_NUM_THREADS=4 OPENBLAS_NUM_THREADS=4 /home/db/venvs/vllm/bin/python -m pytest -q",
+  "methods_commit": "9cb9f05",
+  "actual_artifact_audit": "experiments/multimodal/t2/broad-stream-20261105/artifact_audit.json"
+}

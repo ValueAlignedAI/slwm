@@ -1,0 +1,854 @@
+{
+  "EXP-T2-801": {
+    "independent_meetings": 3,
+    "mean_clip_wer": {
+      "aligned_video": 16.092163575492048,
+      "audio_only": 15.675496908825382,
+      "minus240ms": 16.092163575492048,
+      "plus240ms": 16.092163575492048,
+      "static_video": 16.07364505697353,
+      "wrong_time_video": 16.092163575492048
+    },
+    "meeting_cluster_sensitivity": {
+      "aligned_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "audio_only_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -1.25,
+          0.0
+        ],
+        "meeting_mean": -0.4166666666666667,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "minus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "plus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "static_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -0.055555555555555525,
+          0.0
+        ],
+        "meeting_mean": -0.018518518518518507,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "wrong_time_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      }
+    },
+    "nonempty_reference_people": 9,
+    "paired_changes": {
+      "aligned_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "audio_only_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -1.25,
+          0.0
+        ],
+        "person_mean": -0.4166666666666667
+      },
+      "minus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "plus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "static_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.055555555555555525,
+          0.0
+        ],
+        "person_mean": -0.018518518518518507
+      },
+      "wrong_time_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      }
+    },
+    "recognition": {
+      "aligned_video": {
+        "capped_recognizer_chunks": 9,
+        "cases": 12,
+        "mean_clip_wer": 16.092163575492048,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "audio_only": {
+        "capped_recognizer_chunks": 6,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "minus240ms": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 16.092163575492048,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "plus240ms": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 16.092163575492048,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "static_video": {
+        "capped_recognizer_chunks": 9,
+        "cases": 12,
+        "mean_clip_wer": 16.07364505697353,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4396551724137931,
+        "nonempty_reference_mean_clip_wer": 0.6537489648535991,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "wrong_time_video": {
+        "capped_recognizer_chunks": 9,
+        "cases": 12,
+        "mean_clip_wer": 16.092163575492048,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      }
+    },
+    "reference_words_by_person": {
+      "AMI-FEE041": 56,
+      "AMI-FEE042": 9,
+      "AMI-FEE043": 10,
+      "AMI-FEE044": 10,
+      "AMI-FEE046": 0,
+      "AMI-FEE047": 0,
+      "AMI-FEE055": 9,
+      "AMI-MEE045": 73,
+      "AMI-MEE048": 0,
+      "AMI-MEE053": 47,
+      "AMI-MEE054": 9,
+      "AMI-MEE056": 9
+    },
+    "scope": "Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"
+  },
+  "EXP-T2-802": {
+    "independent_meetings": 3,
+    "mean_clip_wer": {
+      "aligned_video": 16.08290431623279,
+      "audio_only": 15.508830242158716,
+      "minus240ms": 16.08290431623279,
+      "plus240ms": 16.08290431623279,
+      "static_video": 15.638459871788344,
+      "wrong_time_video": 15.666237649566122
+    },
+    "meeting_cluster_sensitivity": {
+      "aligned_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "audio_only_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -1.75,
+          0.027777777777777762
+        ],
+        "meeting_mean": -0.5740740740740741,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "minus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "plus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "static_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -1.25,
+          0.0
+        ],
+        "meeting_mean": -0.4444444444444444,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "wrong_time_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -1.25,
+          0.0
+        ],
+        "meeting_mean": -0.4166666666666667,
+        "meetings": 3,
+        "person_contributions": 12
+      }
+    },
+    "nonempty_reference_people": 9,
+    "paired_changes": {
+      "aligned_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "audio_only_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -1.75,
+          0.027777777777777762
+        ],
+        "person_mean": -0.5740740740740741
+      },
+      "minus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "plus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "static_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -1.3055555555555556,
+          0.0
+        ],
+        "person_mean": -0.4444444444444444
+      },
+      "wrong_time_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -1.25,
+          0.0
+        ],
+        "person_mean": -0.4166666666666667
+      }
+    },
+    "recognition": {
+      "aligned_video": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 16.08290431623279,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "audio_only": {
+        "capped_recognizer_chunks": 10,
+        "cases": 12,
+        "mean_clip_wer": 15.508830242158716,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 180,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "minus240ms": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 16.08290431623279,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "plus240ms": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 16.08290431623279,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "static_video": {
+        "capped_recognizer_chunks": 10,
+        "cases": 12,
+        "mean_clip_wer": 15.638459871788344,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.43103448275862066,
+        "nonempty_reference_mean_clip_wer": 0.6290576068289077,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "wrong_time_video": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 15.666237649566122,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      }
+    },
+    "reference_words_by_person": {
+      "AMI-FEE041": 56,
+      "AMI-FEE042": 9,
+      "AMI-FEE043": 10,
+      "AMI-FEE044": 10,
+      "AMI-FEE046": 0,
+      "AMI-FEE047": 0,
+      "AMI-FEE055": 9,
+      "AMI-MEE045": 73,
+      "AMI-MEE048": 0,
+      "AMI-MEE053": 47,
+      "AMI-MEE054": 9,
+      "AMI-MEE056": 9
+    },
+    "scope": "Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"
+  },
+  "EXP-T2-803": {
+    "independent_meetings": 3,
+    "mean_clip_wer": {
+      "aligned_video": 15.675496908825382,
+      "audio_only": 15.666237649566122,
+      "minus240ms": 15.675496908825382,
+      "plus240ms": 15.675496908825382,
+      "static_video": 16.092163575492048,
+      "wrong_time_video": 15.675496908825382
+    },
+    "meeting_cluster_sensitivity": {
+      "aligned_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "audio_only_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -0.027777777777777762,
+          0.0
+        ],
+        "meeting_mean": -0.009259259259259254,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "minus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "plus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "static_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          1.25
+        ],
+        "meeting_mean": 0.4166666666666667,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "wrong_time_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      }
+    },
+    "nonempty_reference_people": 9,
+    "paired_changes": {
+      "aligned_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "audio_only_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.027777777777777762,
+          0.0
+        ],
+        "person_mean": -0.009259259259259254
+      },
+      "minus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "plus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "static_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          1.25
+        ],
+        "person_mean": 0.4166666666666667
+      },
+      "wrong_time_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      }
+    },
+    "recognition": {
+      "aligned_video": {
+        "capped_recognizer_chunks": 9,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "audio_only": {
+        "capped_recognizer_chunks": 9,
+        "cases": 12,
+        "mean_clip_wer": 15.666237649566122,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "minus240ms": {
+        "capped_recognizer_chunks": 10,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "plus240ms": {
+        "capped_recognizer_chunks": 10,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "static_video": {
+        "capped_recognizer_chunks": 12,
+        "cases": 12,
+        "mean_clip_wer": 16.092163575492048,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 187,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "wrong_time_video": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      }
+    },
+    "reference_words_by_person": {
+      "AMI-FEE041": 56,
+      "AMI-FEE042": 9,
+      "AMI-FEE043": 10,
+      "AMI-FEE044": 10,
+      "AMI-FEE046": 0,
+      "AMI-FEE047": 0,
+      "AMI-FEE055": 9,
+      "AMI-MEE045": 73,
+      "AMI-MEE048": 0,
+      "AMI-MEE053": 47,
+      "AMI-MEE054": 9,
+      "AMI-MEE056": 9
+    },
+    "scope": "Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"
+  },
+  "EXP-T2-804": {
+    "independent_meetings": 3,
+    "mean_clip_wer": {
+      "aligned_video": 15.666237649566122,
+      "audio_only": 15.675496908825382,
+      "minus240ms": 15.666237649566122,
+      "plus240ms": 15.666237649566122,
+      "static_video": 15.656978390306863,
+      "wrong_time_video": 15.675496908825382
+    },
+    "meeting_cluster_sensitivity": {
+      "aligned_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "audio_only_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.027777777777777762
+        ],
+        "meeting_mean": 0.009259259259259254,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "minus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "plus240ms_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "meeting_mean": 0.0,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "static_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          -0.027777777777777735,
+          0.0
+        ],
+        "meeting_mean": -0.009259259259259245,
+        "meetings": 3,
+        "person_contributions": 12
+      },
+      "wrong_time_video_minus_aligned": {
+        "meeting_cluster_95_interval": [
+          0.0,
+          0.027777777777777762
+        ],
+        "meeting_mean": 0.009259259259259254,
+        "meetings": 3,
+        "person_contributions": 12
+      }
+    },
+    "nonempty_reference_people": 9,
+    "paired_changes": {
+      "aligned_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "audio_only_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.027777777777777762
+        ],
+        "person_mean": 0.009259259259259254
+      },
+      "minus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "plus240ms_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.0
+        ],
+        "person_mean": 0.0
+      },
+      "static_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          -0.027777777777777735,
+          0.0
+        ],
+        "person_mean": -0.009259259259259245
+      },
+      "wrong_time_video_minus_aligned": {
+        "cases": 12,
+        "people": 12,
+        "person_cluster_95_interval": [
+          0.0,
+          0.027777777777777762
+        ],
+        "person_mean": 0.009259259259259254
+      }
+    },
+    "recognition": {
+      "aligned_video": {
+        "capped_recognizer_chunks": 11,
+        "cases": 12,
+        "mean_clip_wer": 15.666237649566122,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "audio_only": {
+        "capped_recognizer_chunks": 12,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "minus240ms": {
+        "capped_recognizer_chunks": 7,
+        "cases": 12,
+        "mean_clip_wer": 15.666237649566122,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "plus240ms": {
+        "capped_recognizer_chunks": 5,
+        "cases": 12,
+        "mean_clip_wer": 15.666237649566122,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.44396551724137934,
+        "nonempty_reference_mean_clip_wer": 0.6660946438659447,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "static_video": {
+        "capped_recognizer_chunks": 6,
+        "cases": 12,
+        "mean_clip_wer": 15.656978390306863,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4396551724137931,
+        "nonempty_reference_mean_clip_wer": 0.6537489648535991,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      },
+      "wrong_time_video": {
+        "capped_recognizer_chunks": 7,
+        "cases": 12,
+        "mean_clip_wer": 15.675496908825382,
+        "no_reference_cases": 3,
+        "no_reference_insertions": 182,
+        "nonempty_reference_cases": 9,
+        "nonempty_reference_corpus_wer": 0.4482758620689655,
+        "nonempty_reference_mean_clip_wer": 0.6784403228782904,
+        "recognizer_chunks": 36,
+        "reference_words": 232
+      }
+    },
+    "reference_words_by_person": {
+      "AMI-FEE041": 56,
+      "AMI-FEE042": 9,
+      "AMI-FEE043": 10,
+      "AMI-FEE044": 10,
+      "AMI-FEE046": 0,
+      "AMI-FEE047": 0,
+      "AMI-FEE055": 9,
+      "AMI-MEE045": 73,
+      "AMI-MEE048": 0,
+      "AMI-MEE053": 47,
+      "AMI-MEE054": 9,
+      "AMI-MEE056": 9
+    },
+    "scope": "Secondary same-model fresh-person transfer probe, no new timing-rejection policy or primary gate"
+  }
+}

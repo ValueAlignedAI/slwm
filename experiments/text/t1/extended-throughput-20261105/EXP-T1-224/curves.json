@@ -1,0 +1,242 @@
+[
+  {
+    "extension_step": 512,
+    "global_batch": 32,
+    "micro_batch": 8,
+    "peak_gpu_bytes": 6863577088,
+    "seconds": 351.8155673320289,
+    "tokens": 25165824,
+    "total_token_equivalent_step": 1536,
+    "training_nll": 5.338111533550546,
+    "validation": {
+      "nll": 5.262115806341171,
+      "perplexity": 192.88917599593782,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1024,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 627.3039385830052,
+    "tokens": 33554432,
+    "total_token_equivalent_step": 2048,
+    "training_nll": 5.090402085334063,
+    "validation": {
+      "nll": 5.043243691325188,
+      "perplexity": 154.97188158369818,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 1536,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 902.5448989340221,
+    "tokens": 41943040,
+    "total_token_equivalent_step": 2560,
+    "training_nll": 4.901581021025777,
+    "validation": {
+      "nll": 4.87255372107029,
+      "perplexity": 130.65414547315996,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2048,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 1178.1813190910034,
+    "tokens": 50331648,
+    "total_token_equivalent_step": 3072,
+    "training_nll": 4.7585542649030685,
+    "validation": {
+      "nll": 4.741972357034683,
+      "perplexity": 114.660129514786,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 2560,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 1453.1554424259812,
+    "tokens": 58720256,
+    "total_token_equivalent_step": 3584,
+    "training_nll": 4.63768376596272,
+    "validation": {
+      "nll": 4.639657914638519,
+      "perplexity": 103.5089326355217,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3072,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 1728.1493609760073,
+    "tokens": 67108864,
+    "total_token_equivalent_step": 4096,
+    "training_nll": 4.539174335077405,
+    "validation": {
+      "nll": 4.555294036865234,
+      "perplexity": 95.13472423950769,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 3584,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 2003.6677752790274,
+    "tokens": 75497472,
+    "total_token_equivalent_step": 4608,
+    "training_nll": 4.473142383620143,
+    "validation": {
+      "nll": 4.4918830543756485,
+      "perplexity": 89.28942451410063,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4096,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 2279.0556643120362,
+    "tokens": 83886080,
+    "total_token_equivalent_step": 5120,
+    "training_nll": 4.408933851867914,
+    "validation": {
+      "nll": 4.438036933541298,
+      "perplexity": 84.60868606808192,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 4608,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 2554.0467135720537,
+    "tokens": 92274688,
+    "total_token_equivalent_step": 5632,
+    "training_nll": 4.35723090171814,
+    "validation": {
+      "nll": 4.393450230360031,
+      "perplexity": 80.91912753015802,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5120,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 2829.0510807000683,
+    "tokens": 100663296,
+    "total_token_equivalent_step": 6144,
+    "training_nll": 4.3144857827574015,
+    "validation": {
+      "nll": 4.355671361088753,
+      "perplexity": 77.91911964568177,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 5632,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 3104.129898019077,
+    "tokens": 109051904,
+    "total_token_equivalent_step": 6656,
+    "training_nll": 4.282423807308078,
+    "validation": {
+      "nll": 4.323658213019371,
+      "perplexity": 75.46418803175641,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6144,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 3379.107486675086,
+    "tokens": 117440512,
+    "total_token_equivalent_step": 7168,
+    "training_nll": 4.244542147964239,
+    "validation": {
+      "nll": 4.298906520009041,
+      "perplexity": 73.61924849515783,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 6656,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 3654.2003228641115,
+    "tokens": 125829120,
+    "total_token_equivalent_step": 7680,
+    "training_nll": 4.223211202770472,
+    "validation": {
+      "nll": 4.277137972414494,
+      "perplexity": 72.03398146119105,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7168,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 3929.592199905135,
+    "tokens": 134217728,
+    "total_token_equivalent_step": 8192,
+    "training_nll": 4.2130176294595,
+    "validation": {
+      "nll": 4.261538237333298,
+      "perplexity": 70.91898983174183,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 7680,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18795041280,
+    "seconds": 4205.147258969082,
+    "tokens": 142606336,
+    "total_token_equivalent_step": 8704,
+    "training_nll": 4.198826460167766,
+    "validation": {
+      "nll": 4.252474091947079,
+      "perplexity": 70.27907432208488,
+      "tokens": 131072
+    }
+  },
+  {
+    "extension_step": 8192,
+    "global_batch": 64,
+    "micro_batch": 64,
+    "peak_gpu_bytes": 18789415936,
+    "seconds": 4480.75852190709,
+    "tokens": 150994944,
+    "total_token_equivalent_step": 9216,
+    "training_nll": 4.180052921175957,
+    "validation": {
+      "nll": 4.243396520614624,
+      "perplexity": 69.64399784871581,
+      "tokens": 131072
+    }
+  }
+]

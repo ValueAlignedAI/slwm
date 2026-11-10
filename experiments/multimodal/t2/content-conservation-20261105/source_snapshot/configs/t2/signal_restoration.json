@@ -1,0 +1,29 @@
+{
+  "sprint": "T2-R1",
+  "protocol": "docs/research/signal_restoration_protocol_20261105.md",
+  "old_corpus": "artifacts/t2_audio_visual/cremad_motion_v3",
+  "generation_corpus": "artifacts/t2_audio_visual/conditional_generation_v1",
+  "new_corpus": "artifacts/t2_audio_visual/restoration_mixed_v1",
+  "artifacts": "experiments/multimodal/t2/signal-restoration-20261105",
+  "external_crop": "fps=25,crop=iw*0.30:ih*0.24:iw*0.35:ih*0.54,scale=48:32",
+  "external_actors": [3,4,5,6,15,16,17,18],
+  "checkpoints": {
+    "signal": {"path": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-301/best.pt", "sha256": "d7c09ab22281b9333b681606609d63e37bbb071dcd59fe17c7b20da993a1ddfe"},
+    "vanilla": {"path": "experiments/multimodal/t2/motion-alignment-20261104/EXP-T2-302/best.pt", "sha256": "d919c1ac9a9cadd73d3e95a8428033e30ed762025024b7211805bc184d064c13"}
+  },
+  "training": {"steps": 1600, "batch_size": 32, "crema_batch": 24, "window": 32, "core_lr": 0.0001, "head_lr": 0.0004, "warmup_steps": 80, "eval_every": 400, "alignment_every": 2, "alignment_weight": 0.15},
+  "mask": {"holes": 2, "hole_packets": 4, "missing_fraction": 0.25},
+  "augmentation": {"gain_db": 12, "eq_db": 6, "eq_knots": 4},
+  "model": {"width": 256, "layers": 4, "heads": 8, "packing": "aligned", "processor": "signal"},
+  "runs": [
+    {"id":"EXP-T2-501","arm":"signal","seed":51},
+    {"id":"EXP-T2-502","arm":"signal","seed":52},
+    {"id":"EXP-T2-503","arm":"vanilla","seed":51},
+    {"id":"EXP-T2-504","arm":"no_alignment","seed":51},
+    {"id":"EXP-T2-505","arm":"no_augmentation","seed":51},
+    {"id":"EXP-T2-506","arm":"no_skip","seed":51},
+    {"id":"EXP-T2-507","arm":"raw_audio","seed":51},
+    {"id":"EXP-T2-508","arm":"raw_av","seed":51},
+    {"id":"EXP-T2-509","arm":"frozen_core","seed":51}
+  ]
+}

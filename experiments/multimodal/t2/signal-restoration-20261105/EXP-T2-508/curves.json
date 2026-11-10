@@ -1,0 +1,182 @@
+[
+  {
+    "seconds": 0.02615092898486182,
+    "selection_score": 0.6094808876514435,
+    "step": 0,
+    "training_loss_since_last_eval": null,
+    "validation": {
+      "crema_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.39568257331848145,
+          "interpolation_mel_mse": 0.12734733521938324,
+          "interpolation_observed_mse": 0.03790224343538284,
+          "interpolation_temporal_mse": 0.029140908271074295,
+          "paired_hole_mse": 0.39568257331848145,
+          "paired_mel_mse": 0.12734733521938324,
+          "paired_observed_mse": 0.03790224343538284,
+          "paired_temporal_mse": 0.029140908271074295
+        },
+        "samples": 210,
+        "selection_score": 0.39568257331848145
+      },
+      "libri_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.8232792019844055,
+          "interpolation_mel_mse": 0.2628153860569,
+          "interpolation_observed_mse": 0.07599411904811859,
+          "interpolation_temporal_mse": 0.058188214898109436,
+          "paired_hole_mse": 0.8232792019844055,
+          "paired_mel_mse": 0.2628153860569,
+          "paired_observed_mse": 0.07599411904811859,
+          "paired_temporal_mse": 0.058188214898109436
+        },
+        "samples": 64,
+        "selection_score": 0.8232792019844055
+      }
+    }
+  },
+  {
+    "seconds": 2.5870843249722384,
+    "selection_score": 0.5620146840810776,
+    "step": 400,
+    "training_loss_since_last_eval": 0.40686474554240704,
+    "validation": {
+      "crema_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.39568257331848145,
+          "interpolation_mel_mse": 0.12734733521938324,
+          "interpolation_observed_mse": 0.03790224343538284,
+          "interpolation_temporal_mse": 0.029140908271074295,
+          "paired_hole_mse": 0.37039074301719666,
+          "paired_mel_mse": 0.12035155296325684,
+          "paired_observed_mse": 0.03700517117977142,
+          "paired_temporal_mse": 0.029195725917816162
+        },
+        "samples": 210,
+        "selection_score": 0.37039074301719666
+      },
+      "libri_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.8232792019844055,
+          "interpolation_mel_mse": 0.2628153860569,
+          "interpolation_observed_mse": 0.07599411904811859,
+          "interpolation_temporal_mse": 0.058188214898109436,
+          "paired_hole_mse": 0.7536386251449585,
+          "paired_mel_mse": 0.24379879236221313,
+          "paired_observed_mse": 0.07385215163230896,
+          "paired_temporal_mse": 0.05736568197607994
+        },
+        "samples": 64,
+        "selection_score": 0.7536386251449585
+      }
+    }
+  },
+  {
+    "seconds": 5.176491128979251,
+    "selection_score": 0.541785329580307,
+    "step": 800,
+    "training_loss_since_last_eval": 0.4003924603760243,
+    "validation": {
+      "crema_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.39568257331848145,
+          "interpolation_mel_mse": 0.12734733521938324,
+          "interpolation_observed_mse": 0.03790224343538284,
+          "interpolation_temporal_mse": 0.029140908271074295,
+          "paired_hole_mse": 0.36102646589279175,
+          "paired_mel_mse": 0.11777281016111374,
+          "paired_observed_mse": 0.036688245832920074,
+          "paired_temporal_mse": 0.02925180271267891
+        },
+        "samples": 210,
+        "selection_score": 0.36102646589279175
+      },
+      "libri_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.8232792019844055,
+          "interpolation_mel_mse": 0.2628153860569,
+          "interpolation_observed_mse": 0.07599411904811859,
+          "interpolation_temporal_mse": 0.058188214898109436,
+          "paired_hole_mse": 0.7225441932678223,
+          "paired_mel_mse": 0.23537224531173706,
+          "paired_observed_mse": 0.0729815810918808,
+          "paired_temporal_mse": 0.05700690671801567
+        },
+        "samples": 64,
+        "selection_score": 0.7225441932678223
+      }
+    }
+  },
+  {
+    "seconds": 7.728036992950365,
+    "selection_score": 0.5320715606212616,
+    "step": 1200,
+    "training_loss_since_last_eval": 0.39493593014776707,
+    "validation": {
+      "crema_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.39568257331848145,
+          "interpolation_mel_mse": 0.12734733521938324,
+          "interpolation_observed_mse": 0.03790224343538284,
+          "interpolation_temporal_mse": 0.029140908271074295,
+          "paired_hole_mse": 0.3491814136505127,
+          "paired_mel_mse": 0.1145937442779541,
+          "paired_observed_mse": 0.036397844552993774,
+          "paired_temporal_mse": 0.029024455696344376
+        },
+        "samples": 210,
+        "selection_score": 0.3491814136505127
+      },
+      "libri_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.8232792019844055,
+          "interpolation_mel_mse": 0.2628153860569,
+          "interpolation_observed_mse": 0.07599411904811859,
+          "interpolation_temporal_mse": 0.058188214898109436,
+          "paired_hole_mse": 0.7149617075920105,
+          "paired_mel_mse": 0.23293858766555786,
+          "paired_observed_mse": 0.07226422429084778,
+          "paired_temporal_mse": 0.056675985455513
+        },
+        "samples": 64,
+        "selection_score": 0.7149617075920105
+      }
+    }
+  },
+  {
+    "seconds": 10.29193587199552,
+    "selection_score": 0.5265484601259232,
+    "step": 1600,
+    "training_loss_since_last_eval": 0.3923150147497654,
+    "validation": {
+      "crema_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.39568257331848145,
+          "interpolation_mel_mse": 0.12734733521938324,
+          "interpolation_observed_mse": 0.03790224343538284,
+          "interpolation_temporal_mse": 0.029140908271074295,
+          "paired_hole_mse": 0.35039570927619934,
+          "paired_mel_mse": 0.11480510979890823,
+          "paired_observed_mse": 0.03627489134669304,
+          "paired_temporal_mse": 0.029164722189307213
+        },
+        "samples": 210,
+        "selection_score": 0.35039570927619934
+      },
+      "libri_validation": {
+        "metrics": {
+          "interpolation_hole_mse": 0.8232792019844055,
+          "interpolation_mel_mse": 0.2628153860569,
+          "interpolation_observed_mse": 0.07599411904811859,
+          "interpolation_temporal_mse": 0.058188214898109436,
+          "paired_hole_mse": 0.702701210975647,
+          "paired_mel_mse": 0.2297050952911377,
+          "paired_observed_mse": 0.07203973829746246,
+          "paired_temporal_mse": 0.05656910687685013
+        },
+        "samples": 64,
+        "selection_score": 0.702701210975647
+      }
+    }
+  }
+]

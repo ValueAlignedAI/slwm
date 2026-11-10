@@ -20,6 +20,10 @@ Agents should follow the reading order in `../AGENTS.md`:
 - `research/risks_and_assumptions.md` — assumptions, risks, mitigations, and stop conditions.
 - `research/literature_map.md` — literature-to-design mapping.
 - `research/design_decisions.md` — design decisions and ablation hooks.
+- `research/video_repair_protocol_20261105.md` — frozen true-gap video versus audio comparison.
+- `research/findings.md` — current decisions, including mixed video-repair evidence.
+- [151M-token text comparison](../experiments/text/t1/extended-throughput-20261105/report.md) — paired GPT-2-scale test and measured-time results.
+- [Next operational research questions](research/operational_next_questions_20261105.md) — train-only data/architecture diagnostics and the physical-action gap.
 
 ## Architecture
 
@@ -33,6 +37,10 @@ Agents should follow the reading order in `../AGENTS.md`:
 
 - `training/preprocessing.md` — T2 audio/visual latent preprocessing and dataset plan.
 - `training/t1_text_code_training.md` — T1 text/code training protocol and current evidence.
+- `training/video_repair.md` — actual speech-repair checkpoints, waveform isolation and reproduction.
+- [Broad fields and continuous sensing](training/operational_world.md) — completed long audio/video/text inference, paired worlds and bound decision actors.
+- [Operational findings](research/operational_findings_20261106.md) — GPU scale gains, failed capability gates, long-output limits and next experiments.
+- [Measured scale budgets](research/scaling_budget_review_20261106.md) and [paired-data access](research/data_scaling_access_review_20261106.md) — next-run resource and source requirements.
 - `../training/README.md` — runnable training command reference.
 
 ## Evaluation And Experiments
@@ -42,6 +50,15 @@ Agents should follow the reading order in `../AGENTS.md`:
 - `exploration/exploration.md` — diagnostic probe and latent-exploration protocol.
 
 ## Process
+
+Latest T2 generation research: [findings](research/findings.md),
+[conditional generation and standalone inference](training/conditional_generation.md),
+[G1 preregistration](research/conditional_generation_protocol_20261104.md), and
+[G2 residual follow-up](research/conditional_residual_followup_20261104.md).
+
+New shared-core work: [signal restoration and content conservation](training/signal_restoration.md),
+[R1 protocol](research/signal_restoration_protocol_20261105.md), and
+[R2 protocol](research/content_conservation_protocol_20261105.md).
 
 - `process/sprint_playbook_prompts.md` — sprint boundaries, KPIs, prompts, and gates.
 

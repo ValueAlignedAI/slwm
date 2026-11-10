@@ -410,3 +410,220 @@ limited-benchmark guardrail readings, but not converged text/code quality
 evidence. T2 currently has mechanics evidence only from a generated latent
 fixture; external audio/video results must use curated corpora, split hashes,
 and shuffled/null controls before changing H-R0-1/H-R0-2/H-R0-3 states.
+
+
+## 7. Real audiovisual cycles — 2026-11-04
+
+| Experiment IDs | Cycle | Data and budget | Status and decision |
+|---|---|---|---|
+| `EXP-T2-201`–`EXP-T2-209` | `experiments/multimodal/t2/real-av-20261104` | CREMA-D, 1,019 train / 210 validation / 210 test; 600×32 clips per arm; 4.47M full-model trainable parameters | Completed on RTX 3090. Audio beats matched Transformer in both seeds; paired-modality gate fails; video loses to persistence. Do not scale. |
+| `EXP-T2-211`–`EXP-T2-219` | `experiments/multimodal/t2/real-av-residual-20261104` | Same train/validation/preprocessing; 210 clips from seven fresh test people; residual-to-persistence prediction; same budget | Completed on RTX 3090. Paired-modality and visual-dynamics gates fail. Do not scale or advance to T3 on this recipe. |
+
+Each nine-arm matrix includes full SLWM, vanilla Transformer, no spectral,
+no long convolution, shuffled-pair training, audio-only, video-only, and
+second-seed full/vanilla. Exact counts, configurations, hashes, two-seed
+comparisons, person-cluster intervals, failure cases, checkpoint paths and
+source snapshots are in each cycle. All 18 best checkpoints are retained
+locally and on Fedora. See `docs/research/findings.md`.
+
+Metric correction: historical T2 code computed retrieval from already fused
+audio/video representations. Those retrieval values cannot establish
+independent cross-modal alignment. The new runner and the shared T2 loss
+encode each modality with its other stream absent, then evaluate against the
+full candidate set with shuffled-label and within-person controls. Historical
+generated-fixture records remain unchanged and continue to support mechanics
+only.
+
+An explicit accounting erratum removes the unused 513,000-parameter ImageNet
+classification head from the deployed frozen encoder count; original hashed
+cards/registries are preserved. Exploratory temporal-mean and fixed-ridge
+controls are separately labeled and do not modify preregistered decisions.
+
+
+## 8. Motion alignment and X0 conditional outputs — 2026-11-04
+
+`EXP-T2-301`–`EXP-T2-310`, under
+`experiments/multimodal/t2/motion-alignment-20261104`, complete ten registered
+1,600×32-window RTX 3090 runs. Exact neural sizes are 4,741,089 and 15,232,225
+parameters, with training-only PCA/statistics separate and no pretrained neural
+encoder. Compare full/vanilla, legacy packing, no local alignment, shuffled pairs,
+two larger full/vanilla seeds and a larger no-spectral arm.
+
+Physical-time synchronization passes on eight fresh test people: small 95.5%,
+larger 93.6/94.1%, energy/motion control 36.1%, chance 14.3%. Wrong/reversed/zeroed
+audio checks establish input dependence. Video→audio feature prediction passes;
+audio→motion fails. Increasing size does not improve timing; generation remains
+limited. These are narrow speech-domain results, not general world-model claims.
+
+`exploration/registry.json` separately registers X0-M1 frozen recognition probes
+and actual conditional media, with model/codec/source hashes. The 12-sentence
+readout is closed-set recognition. A later fixed-ridge decoder diagnosis and an
+external, fallible speech recognizer are explicitly exploratory and never alter
+primary checkpoints, thresholds, or outputs. All 18 gallery examples, original,
+codec, model-reconstruction and null controls are retained. See the current
+findings and full report for all results, failures and parameter/time accounting.
+
+## 9. Frozen-world generation and signal preservation — 2026-11-04
+
+| IDs | Cycle | Accounting and budget | Decision |
+|---|---|---|---|
+| `EXP-T2-401`–`405`, `411`–`416` | T2-G1, `conditional-generation-20261104` | 548,352 trained audio / 213,699 trained visual weights; 4,741,089 frozen core where used; 1,600 updates, batch 32 audio / 16 visual | Complete. Reconstruction improves within CREMA, but core transfer degrades on RAVDESS. Time-only control explains visual improvement. Cross-modal speech and visual gates fail. |
+| `EXP-T2-421`–`424` | T2-G2, `conditional-residual-20261104` | Two raw/core correction seeds; 548,352 trained weights + fixed signal skip; core separate; 1,600×32 windows each | Complete. Raw reconstruction gate passes both seeds, ~15% lower mel error CREMA / ~16% reused external vs interpolation. Core-benefit and frozen-core external gates fail. |
+
+G1 reserves 64 new RAVDESS clips from four people; G2 explicitly reuses them
+after observing G1's failure. No external fitting or selection. Every checkpoint,
+optimizer, source/config/data hash, curve, per-clip metric and actual media is
+retained. A separately labeled EXP-T2-415 evaluation correction disables the
+shuffled-training flag at inference, retaining original metrics/media and fixed
+selection. The independent recognizer uses 48 preregistered cases and never
+supplies generation. All 104 tests and real-file CPU isolation checks pass.
+
+## 10. Shared-field restoration and content conservation — 2026-11-05
+
+| IDs | Cycle | Data / accounting | Decision |
+|---|---|---|---|
+| `EXP-T2-501`–`509` | T2-R1, `signal-restoration-20261105` | 1,600×32 updates each; 24 CREMA + 8 Libri windows; signal core+head 5,083,841 weights, raw controls smaller, corresponding M1 core warmstarts disclosed | Complete. Clean output/timing gates pass; repair advantage over raw-AV AND vanilla and positive-video gates fail. Field-only readout exposes a bypass incentive problem. |
+| `EXP-T2-521`–`524` | T2-R2, `content-conservation-20261105` | Same data/windows/updates/warmstart, +16,448 auxiliary readout weights; .5 two seeds, zero and 2.0 controls | Complete. Both primary seeds pass content, clean-output, repair and timing guardrails. Fresh harder test-other sound-readout MSE improves ~81–83% over matched R1 full cores. This does not establish useful video-driven repair. |
+
+New R1 holdouts: 48 Libri test-clean clips/12 people and 128 RAVDESS clips/eight
+people. R2 explicitly reuses these after examining R1, and reserves 48 test-other
+clips/12 different Libri people as a fresh harder condition. No external fitting
+or checkpoint selection. Codec statistics remain CREMA-training-only. All best
+optimizer states, last weights, curves, hashes, per-clip scores and actual media
+are retained. Field-only linear readouts fit training clips only. The original
+fine-rate silence diagnostic is richer than model observations; the separately
+saved coarse-silence baseline corrects that comparison without replacing it.
+See current findings and full reports for intervals and all failed gates.
+
+
+## 11. True waveform gaps — video contribution, 2026-11-05
+
+| IDs | Role and fixed budget | Decision |
+|---|---|---|
+| `EXP-T2-601`–`602` | Two audio anchors;1,600×32 windows each, frozen R2 expert521/522 | Complete; adapt to physical-gap support masks. |
+| `EXP-T2-611`–`612`, `619` | Extra audio capacity;2,400×32, with619 doubled to4,800 | Complete; validation selects619 for seed61 and612 for62 before final scoring. |
+| `EXP-T2-613`–`618` | PCA video, two primary CNN seeds, ungated, shuffled-pair training, no-negative training;2,400×32 each | Complete. CREMA paired video/audio gains9.30% [6.71,11.79] and9.11% [6.50,11.55]; fresh RAV effects uncertain. Full feature and speech gates fail. |
+
+Artifacts: `experiments/multimodal/t2/video-repair-20261105/`. Config and frozen
+protocol: `configs/t2/video_repair.json` and
+`docs/research/video_repair_protocol_20261105.md`. Exact source/config/data
+hashes, counts, pretraining references, checkpoints and selected steps accompany
+every run. The primary model has7,990,547 neural weights:6,567,522 frozen
+expert+anchor and1,423,025 newly trainable video weights. Audio graph-connected
+capacity is within about1%; raw/PCA ablations and doubled exposure are labeled.
+The fixed fitted codec/PCA values are counted separately from neural weights.
+This is a small head/adaptation comparison, not a124M strict/core claim.
+
+Data: CREMA5,061 train/210 validation/240 reused test; RAV240 train/128
+repurposed validation/128 fresh-person test. Primary shifted controls use202
+CREMA and128 RAV length≥50 clips; all-clip and160/480ms diagnostics are retained.
+Training uses24 CREMA+8 RAV windows per update. Eleven runs total27,200
+updates/870,400 positive windows and16.18 measured GPU-process minutes including
+validation; five visual arms also see384,000 negative windows. Historical
+R2 training is separate and disclosed. No external generator is used.
+
+Keep all11 best optimizer checkpoints and11 final weights, plus a usable
+audio/video bundle. The fixed32-case recognizer diagnostic includes448 actual
+WAVs. CREMA WER improves in point estimates; the second seed interval crosses
+zero. Fresh RAV WER matches audio alone and loses to silence. Wrong/shifted
+video can harm either set despite the trained gate. No robust general speech
+repair, calibrated rejection, learned policy or world-model claim is allowed.
+
+The first render-only attempt failed on terminal subframe padding. Preserve
+its original source snapshot/log/partial outputs. Separately hashed revision2
+applies the existing edge rule and adds a short-tail waveform test; no trained
+weight, selected ID, gate or feature score changes. All124 tests and trained
+artifact audits pass, including6,007 raw-record hashes, frozen weights, actual
+CPU file inference, hidden-waveform/target/soundtrack isolation and exact
+observed PCM. See `report.md`, `failure_analysis.md`, `audit.json`,
+`render_correction.json` and `delivery_manifest.json` for complete evidence.
+
+## 12. Fresh-person content and calibrated timing — 2026-11-05
+
+| IDs | Role / fixed budget | Decision |
+|---|---|---|
+| `EXP-T2-701`–`704` | Unit CE 0/.2, seeds 71/72; 4,000×32 updates; 24 GRID +4 CREMA +4 Libri windows | Complete. Both content seeds pass field-word gain and spectral/clean guardrails. Both controls have the timed-text auxiliary interface. |
+| `EXP-T2-711`–`712` | Strong additional-audio candidates; 3,000×32; 24 GRID +8 CREMA | Complete. Exact frozen fallback for corresponding video candidates. |
+| `EXP-T2-713`–`716` | Primary video two seeds, no-unit-CE and shuffled-pair controls; 3,000×32 plus384,000 negative windows total | Complete. Fresh-person spectral-video and calibrated ±240ms rejection/coverage gates pass both seeds. Practical speech-recognition gate fails. |
+
+Artifacts: `experiments/multimodal/t2/content-sync-20261105/`. Frozen protocol
+`docs/research/content_sync_protocol_20261105.md`; current scoring report
+`report_v2.md`. GRID train12,704/16people; selection395/4; calibration278/3;
+primary test749/8, with complete sentence combinations also disjoint. Only51
+lexical words; no open-vocabulary claim. The strict source alarm and90 truncated
+training-person sources are documented with exact exclusions and failed logs.
+Historical R2 warmstarts and CREMA/Libri retention data are disclosed separately.
+
+Bases5,133,942 weights; matched audio6,428,512 / video7,713,820 deployed totals.
+Audio/video newly trained branches1,294,570 /1,285,308; extra video negatives
+are additional compute. The strong audio fallback is frozen and exact, including
+word/latent state. Fitted codecs are separate. Total34,000updates,
+1,088,000positive windows and25.68 measured training minutes including validation.
+All ten best optimizer/RNG checkpoints and final weights remain saved.
+
+Paired field lexical-word gains9.72pp [8.21,10.97] /12.43pp [10.95,13.92].
+Calibrated video spectral gains12.26% [9.65,14.86] /11.24% [8.24,14.21], with
+aligned coverage81.84% /83.85% and each ±240ms admission rate below1%.
+Wrong-utterance rejection remains incomplete (~3.5% spectral harm). WER is mixed
+and fails the practical gate. Revision2 excludes19 short-pause frames from word
+scoring using the original fitted probes; all original results/sources retained,
+with no weight, threshold, waveform or spectral change. Audits verify14,636 raw
+records and640 actual WAVs with exact observed PCM. Full suite133 passes.
+
+## 13. Early GPT-2-scale text comparison — 2026-11-05
+
+| IDs | Variant / exposure | Decision |
+|---|---|---|
+| `EXP-T1-201`, `203` | GPT-2-style124,439,808 weights, seeds81/82,16,777,216 tokens each | Complete. Random initialization; validation selection and frozen test evaluation. |
+| `EXP-T1-202`, `204` | Causal SLWM125,131,008 weights, paired initialization/windows/exposure | Complete. Early loss guardrail passes both seeds; ~3% lower NLL at equal tokens with ~40% more time/token. Not converged superiority. |
+
+Artifacts: `experiments/text/t1/scale-20261105/`; protocol
+`docs/research/text_scale_protocol_20261105.md`. Prepared pinned FineWeb-Edu
+corpus2.600B train /14.57M validation /10.01M test tokens, with disjoint registrable
+domains and global exact/prefix/URL deduplication. No guaranteed near-duplicate
+freedom. Available20.9tokens/parameter differs from actual0.13seen/parameter.
+Each run1024updates, global32×512; total67,108,864 training tokens and38.59
+training minutes including validation. Both-seed optimizer/RNG and final weights,
+fixed raw continuations, compute diagnostic and all data/source hashes retained.
+These are separate text-only weights; no jointly trained124M multimodal claim.
+
+## 14. Broad continuous fields and extended text — registered2026-11-05
+
+| IDs | Track / status | Registered comparison and artifacts |
+|---|---|---|
+| `EXP-T1-211`–`214` | T1-S3, superseded partial execution | Original32×512 extension; first three retain512 additional updates each, fourth was not started. No S3 final test or completed83.9M claim. `experiments/text/t1/extended-20261105/`. |
+| `EXP-T1-221`–`224` | T1-S4, completed | GPT-2/SLWM, seeds81/82,150,994,944 tokens/model and5376 actual updates including parents. All select the endpoint. Test NLL improves3.64–3.67% at1.47–1.49x continuation time; repetitive undertrained samples retained. `experiments/text/t1/extended-throughput-20261105/`. |
+| `EXP-T2-801`–`804` | T2-B1, completed; practical speech gate fails | Randomly initialized23,980,313-weight SLWM and23,805,209-weight Transformer, seeds91/92;2000×128 positive windows each. Validation selects1800/1800/2000/1400; selected exposure is separately RNG-audited. `experiments/multimodal/t2/broad-stream-20261105/`. |
+| `EXP-T2-805`–`808` | T2-B1, completed controls | Late fusion, shuffled pairs, removed phone/CTC losses, reset memory. Same positive plans/maximum exposure; selected steps vary. Late-fusion depth and reset pooling confounds are explicit; no-content CTC is an untrained head. |
+| `EXP-T2-809`–`810` | T2-B1, completed size probe | Width256 SLWM/Transformer, seed91, same maximum data/updates.3.6x larger counterparts take23–28% more training/validation time; this is not a quality scaling law. |
+| `EXP-P1-101`–`104` | P1-S1, completed; replicated utility fails | Frozen worlds801–804 and132,616-weight actors.22 people fit heads, six select, four new people calibrate and12 new people/three meetings test. No actor reliably beats its strongest fixed rule. `experiments/policy/continuous-sensing-20261105/`. |
+| `EXP-P1-111`–`114` | P1-S1, completed direct-sensor controls | Same-sized heads, observed statistics and running memory, identical training states/labels/people. Field-over-raw gain does not replicate across SLWM seeds. |
+| `EXP-X0-301` | Completed execution diagnostic | Text batch/fused-loss timings, objective/tied-gradient checks, slower alternatives and128-batch OOM. `experiments/text/t1/batch-benchmark-20261105/`. Throughput only. |
+| `EXP-X0-302`–`303` | Completed execution diagnostics | Isolated GPU concurrency and full-batch-copy avoidance. Both failed their numerical gates; copy gains below1%. Scientific B1 execution stays unchanged. Raw data retained in `concurrency-benchmark-20261105/` and `copy-benchmark-20261105/`. |
+| `EXP-X0-304` | Completed train/selection data audit | CTC feasibility and independent meeting diversity; no final test/model score read. `broad-stream-20261105/supervision_audit.json`. |
+| `EXP-X0-305` | Completed selected-state inference diagnostic | Algebraic31-tap collapse of B1's parallel linear branches. Final1800-update selected weights pass full FP32 equivalence, CUDA1.150x speedup; BF16 differences and original400-update prototype reports retained. Training/render paths unchanged. `folded-inference-20261105/`. |
+| `EXP-T2-831`–`834` | Auxiliary compiled-learning pilot, original failure retained | Shared Dynamo variant-limit failure;831 retains200 updates, other arms incomplete. No fresh test. `compiled-learning-20261105/`. |
+| `EXP-T2-841`–`844` | Auxiliary compiled/eager controls, completed400 updates each | Cache revision preserves original failure, source lineage and exact data RNG. Both compiled arms pass the registered≤1% endpoint selection-loss degradation check; no new primary test candidates. `compiled-learning-v2-20261105/`. |
+
+Primary trace: H-R0-1/2/3 and G-R0-1; P1 is a bounded H-R0-4 sensing probe,
+not a promotion to physical-action T3 or a hallucination-reduction claim. B1
+uses100.58h LibriSpeech/251 people and8.23 paired AMI person-track hours from
+28 people/seven meetings (2.05 common meeting hours, not8.23 independent event
+hours). Keep video scope and repeated-stream exposure explicit. Mel statistics,
+64D video PCA and duration regression fit training only; fixed CMU pronunciation
+is an external text edge. Vocos13,531,650 frozen neural weights are separately
+counted; no pretrained video generator or language model trains B1.
+
+Frozen configs/protocols and per-run source/config/data hashes govern these
+entries. B1 holds out fresh12-person Libri sets and12 AMI people, preserving
+physical-gap speech, independent within-person retrieval,40.96s media, both long
+text prompts, same-model video/±240ms controls, quiet cases and all failed outputs.
+Whisper is a pinned independent evaluator; its text never trains these models.
+Policy weights/thresholds froze before final B1/P1 scoring. All ticks
+count in sensing utility regardless of commitment. The inference actor chooses
+which recorded sensors to observe, not physical movement. Root reports and
+registry.json files record actual completion/selection and failed gates.
+The [completed findings](../research/operational_findings_20261106.md) retain the
+negative results and post-test crosstalk/presentation audit. The compiled pilots
+are auxiliary; the primary completed registry contains22 entries. No physical
+control or general world-model success follows from these runs.

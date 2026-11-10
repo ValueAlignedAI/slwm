@@ -1,0 +1,55 @@
+{
+  "anchor_only": false,
+  "best_validation": 0.5989691317081451,
+  "checkpoint_sha256": "a218407d4a4d68411e9f63ae765bd8e673d8b4041463534e2d5859a8fac303e7",
+  "last_checkpoint_sha256": "ad46d65838b0053ec5e18b56abc4d982b4f544b0cfdf67ccdc0fa4fba366f774",
+  "positive_windows": 76800,
+  "provenance": {
+    "config_hash": "064b7e1b81ae517f2d22fa280eb0a0e69593c43f04b36d45d2698ab1ecb78424",
+    "counts": {
+      "codec_fitted_values": 249376,
+      "frozen": 6567522,
+      "graph_connected_trainable": 1398256,
+      "total": 7990547,
+      "trainable": 1423025
+    },
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "historical_expert": {
+      "path": "experiments/multimodal/t2/content-conservation-20261105/EXP-T2-521/best.pt",
+      "sha256": "b4bfe63d5b1e0c5473904143a4685a22bddf4f9542f1d38f3fd149efe503cee5"
+    },
+    "manifests": {
+      "crema_train": "4f932b2be16331cc1539140a458d867e7128804f7bae3513f03fa791a120191b",
+      "crema_validation": "aeb646eec2913c97fcc7029dfe561757258a61fa67891c816ccde1b8fa4b79ce",
+      "rav_train": "d880eefdbec0271058974593af4e01bca12effe92ea91861683435658b4b6072",
+      "rav_validation": "c90b94b56ae30cafd30013bc176f7c5e1b610c8992482b2bf30b78a0b4f67720"
+    },
+    "source_hashes": {
+      "configs/t2/video_repair.json": "c11e59634a2ace0896826e96ec7153e3187a75cf08791cb6fa024762224c72fc",
+      "docs/research/video_repair_protocol_20261105.md": "31e631fae9630f4ba369b4def331b0d13f2d84acad1e5a0ef32b5167441dcaac",
+      "models/slwm_content.py": "66348d7380e0c9d9f0721a405df4c8a566ffb1bd1c84d53640ed878a9d63f882",
+      "models/slwm_generation.py": "d9528d4a372cc22f09f706039a5b1fb8e9dd257cf635eedff6cad7b07ca3f3d5",
+      "models/slwm_motion.py": "0c7170e0c225600e6e212a19ffbf4e6c36bd691eefda2fed1419ec4f22834c3c",
+      "models/slwm_restoration.py": "b52789d879ca8e75de8d41e95cb9b99a74b8d7a2516f91330b33e4f1c58228c7",
+      "models/slwm_video_repair.py": "79f2be0d2b3b778ca3fd8855d961b82cf26ce06b030606b6597de9e321170f95",
+      "training/restoration_train.py": "9e4a154c43aeec8a2a0bb42fea54aeea545ff94992b3e5d9a058270cd3af6d1b",
+      "training/t2_prepare_cremad.py": "8d419afcca219360e2d7d99199f2ad16ec605d6b77358c0fd67241b3fdd06c7b",
+      "training/t2_prepare_generation.py": "8eac19bb67cd1dbb57e0e2925aa153ffc0b2a32d04cbc74008ed8bf99fc34521",
+      "training/t2_prepare_motion.py": "d65f448fbb087b435d134031e5252e9e575e73fa74647b99233b73dde6fa514f",
+      "training/t2_real_av.py": "12c4bda2cb9ae7be55729832ad879b10137343f4337a5b9e13133fbc94bb854b",
+      "training/t2_train_latents.py": "c2067d1743d660b5f0af3709a6884a77fadf23bd1ea59047d2dfe1406bd84c59",
+      "training/video_repair_common.py": "2f46caff5d962c836d57985ce52ddd3e8b4bb29734e8494d642c8e9416fddcf3",
+      "training/video_repair_data.py": "6d615f60a3c44d202330824a6321988772d508cd4f1667efb27ad828e6eb8875",
+      "training/video_repair_train.py": "a4812dd3b71a4a1e3ed5885fb8ffdcb2372ab718870850bfaf6337478b6aa7f4"
+    },
+    "true_gap_support_guard": true
+  },
+  "run": {
+    "arm": "ungated_video",
+    "id": "EXP-T2-616",
+    "seed": 61
+  },
+  "selected_step": 2400,
+  "steps": 2400,
+  "wall_seconds": 128.70509091799613
+}

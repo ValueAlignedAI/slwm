@@ -1,0 +1,1307 @@
+{
+  "EXP-T2-801": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.03647088296415788,
+          0.14325693499533432
+        ],
+        "person_mean": 0.08132480157332288
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.9778007089998503,
+          -0.17120226265788055
+        ],
+        "person_mean": -0.5741408308684417
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7083799264556359,
+          1.0504833333903836
+        ],
+        "person_mean": 0.8597549679910853
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.0289745181798935,
+          0.18518072768809304
+        ],
+        "person_mean": 0.11216798412894446
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6264187975447307,
+      1.0377660705599674
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.25368396071500554,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.07142857142857142,
+            0.4107142857142857
+          ],
+          "person_mean": 0.23511904761904764
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.35714285714285715,
+          0.8928571428571429
+        ],
+        "person_mean": 0.6785714285714286,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.0
+          ],
+          "person_mean": 0.0
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.17857142857142858,
+          0.7410714285714286
+        ],
+        "person_mean": 0.44345238095238093,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.0
+          ],
+          "person_mean": 0.0
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.17857142857142858,
+          0.7410714285714286
+        ],
+        "person_mean": 0.44345238095238093,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "633e0078f3de82fbd2c42a3363ce3451efc16a0aa0075592c724cf49d796882c",
+      "last_sha256": "b0d35303d5d921b28ab277017531045e0b3c71816df564d159f15c4bd61d8dbc",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-801",
+        "seed": 91,
+        "variant": "slwm"
+      },
+      "selected_step": 1800,
+      "selected_validation_loss": 1.3214560270309448,
+      "updates": 2000,
+      "wall_seconds": 1061.5408382320893
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-802": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.0353839799673075,
+          0.1287051227889837
+        ],
+        "person_mean": 0.07844487413586608
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.9941794428529561,
+          -0.17574718133723116
+        ],
+        "person_mean": -0.5910960588882431
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7088960464452467,
+          1.0380239233019808
+        ],
+        "person_mean": 0.8568750405536284
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.02501103471195885,
+          0.15212842213019492
+        ],
+        "person_mean": 0.09521275610914305
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6201838326546573,
+      1.0700591266617292
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.227654333724532,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.08928571428571429,
+            0.4494047619047619
+          ],
+          "person_mean": 0.25892857142857145
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.4404761904761904,
+          0.9166666666666667
+        ],
+        "person_mean": 0.7023809523809524,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.026785714285714284
+          ],
+          "person_mean": 0.008928571428571428
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.1964285714285714,
+          0.7440476190476192
+        ],
+        "person_mean": 0.4523809523809524,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.05357142857142857,
+            0.0
+          ],
+          "person_mean": -0.017857142857142856
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.15178571428571427,
+          0.7351190476190477
+        ],
+        "person_mean": 0.4255952380952381,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "b9c0a2ae0ba230c58ebfafcb9f2ae82ea21109e4b508b768785c705d9f1cb790",
+      "last_sha256": "5f6f845429bcdf1a5acdfd55003463dfadc47f52b84118a1a830954fca949157",
+      "overfit_stop": false,
+      "parameters": 23805209,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-802",
+        "seed": 91,
+        "variant": "transformer"
+      },
+      "selected_step": 1800,
+      "selected_validation_loss": 1.3666821956634523,
+      "updates": 2000,
+      "wall_seconds": 694.6113982350216
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-803": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.037442337174619,
+          0.14780552235860672
+        ],
+        "person_mean": 0.08706386019254016
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.9324182053831882,
+          -0.16184882787227825
+        ],
+        "person_mean": -0.5527795726918575
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7150962385866376,
+          1.0553963125225096
+        ],
+        "person_mean": 0.8654940266103025
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.04229551530073563,
+          0.2125131549343231
+        ],
+        "person_mean": 0.13352924230552857
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6178656787604325,
+      1.033882528774498
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.24812695921160455,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.14285714285714285,
+            0.48809523809523814
+          ],
+          "person_mean": 0.318452380952381
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.5357142857142858,
+          0.9464285714285714
+        ],
+        "person_mean": 0.7619047619047619,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.05357142857142857,
+            0.03571428571428571
+          ],
+          "person_mean": -0.005952380952380953
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.16666666666666669,
+          0.7383184523809492
+        ],
+        "person_mean": 0.4375,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.125,
+            0.07142857142857142
+          ],
+          "person_mean": -0.008928571428571428
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.16666666666666669,
+          0.7380952380952381
+        ],
+        "person_mean": 0.4345238095238096,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "de38b8f2f6d1ec588606076fb26aac3921ed87d54e2717b1f231a9e2ae7868c7",
+      "last_sha256": "9608b15de9dc2fa2474c685be471bf2be15b1ad2985f059f3bd92786f593cb37",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-803",
+        "seed": 92,
+        "variant": "slwm"
+      },
+      "selected_step": 2000,
+      "selected_validation_loss": 1.321962308883667,
+      "updates": 2000,
+      "wall_seconds": 1057.2666142141097
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-804": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.03218032847202959,
+          0.13555538478410906
+        ],
+        "person_mean": 0.05026247294708376
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -1.024185408597236,
+          -0.18258274595341176
+        ],
+        "person_mean": -0.61499088658289
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7095323174371428,
+          0.9983742996340706
+        ],
+        "person_mean": 0.828692639364846
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.02114244964387682,
+          0.11697264583337875
+        ],
+        "person_mean": 0.07131792841449616
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6344240570022154,
+      1.1127486077620998
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.21459152809409207,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.1011904761904762,
+            0.44642857142857145
+          ],
+          "person_mean": 0.27083333333333337
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.4642857142857143,
+          0.9285714285714286
+        ],
+        "person_mean": 0.7142857142857143,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.03571428571428571
+          ],
+          "person_mean": 0.011904761904761904
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.19642857142857142,
+          0.75
+        ],
+        "person_mean": 0.45535714285714285,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.03571428571428571,
+            0.0
+          ],
+          "person_mean": -0.011904761904761904
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.15476190476190474,
+          0.738095238095238
+        ],
+        "person_mean": 0.431547619047619,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "359d3821b619ef314fcefba5f357bd9ddaf670941f4e29897e1a85eecc5d7d57",
+      "last_sha256": "d7d26ff883f6a9d3536a67ff65604a6b9aa57b355c482c9c3f372a3e96961c72",
+      "overfit_stop": false,
+      "parameters": 23805209,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-804",
+        "seed": 92,
+        "variant": "transformer"
+      },
+      "selected_step": 1400,
+      "selected_validation_loss": 1.3582528471946715,
+      "updates": 2000,
+      "wall_seconds": 697.5533160970663
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-805": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.058519516038220545,
+          0.15882211290891207
+        ],
+        "person_mean": 0.10127315101110275
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.9830479899038826,
+          -0.13911466130264757
+        ],
+        "person_mean": -0.5666636729270284
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7269262050588925,
+          1.069722568468442
+        ],
+        "person_mean": 0.8797033174288649
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.06291455046258985,
+          0.17090499010824023
+        ],
+        "person_mean": 0.1196451420703578
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6096561944992968,
+      1.0575143042229869
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.21981421892726144,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.05952380952380952,
+            0.4077380952380953
+          ],
+          "person_mean": 0.22321428571428573
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.35714285714285715,
+          0.8928571428571429
+        ],
+        "person_mean": 0.6666666666666667,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.05357142857142857,
+            0.0
+          ],
+          "person_mean": -0.017857142857142856
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.15178571428571427,
+          0.7351190476190477
+        ],
+        "person_mean": 0.4255952380952381,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.05357142857142857,
+            0.0
+          ],
+          "person_mean": -0.017857142857142856
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.15178571428571427,
+          0.7351190476190477
+        ],
+        "person_mean": 0.4255952380952381,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "e5cd6700a3d33115a7b8a365797ac9f3ed0a3eabba15d103c5154026701bc995",
+      "last_sha256": "7f68c24a39b2772ddc188427f82d62f497ec2ff5beaa4745ffb0a431f721a04a",
+      "overfit_stop": false,
+      "parameters": 23805209,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-805",
+        "seed": 91,
+        "variant": "late_fusion"
+      },
+      "selected_step": 1800,
+      "selected_validation_loss": 1.357145392894745,
+      "updates": 2000,
+      "wall_seconds": 843.3836303239223
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-806": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.06293077183562142,
+          0.1537562601623081
+        ],
+        "person_mean": 0.1025433922038665
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.8541004721801507,
+          -0.13036476889967508
+        ],
+        "person_mean": -0.4947180215665809
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7250025940260717,
+          1.0729243232469472
+        ],
+        "person_mean": 0.8809735586216288
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.06836293945236811,
+          0.2970530036807295
+        ],
+        "person_mean": 0.19159079343080523
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6067783496407576,
+      0.9727507838907168
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.24134817130343858,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.14285714285714285,
+            0.5
+          ],
+          "person_mean": 0.32738095238095244
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.5565476190476191,
+          0.9464285714285714
+        ],
+        "person_mean": 0.7708333333333333,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.026785714285714284,
+            0.0
+          ],
+          "person_mean": -0.008928571428571428
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.16071428571428573,
+          0.7380952380952381
+        ],
+        "person_mean": 0.4345238095238095,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.026785714285714284,
+            0.0
+          ],
+          "person_mean": -0.008928571428571428
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.16071428571428573,
+          0.7380952380952381
+        ],
+        "person_mean": 0.4345238095238095,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "494be4013c019c455d0b442276a85be801ef63b17bbe7f2744b732e10bf1e604",
+      "last_sha256": "3c49165b0016d8828cfee8fb83b67d32cb28453f019010b72cb8bcca0a3a91b5",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-806",
+        "seed": 91,
+        "shuffled_pairs": true,
+        "variant": "slwm"
+      },
+      "selected_step": 2000,
+      "selected_validation_loss": 1.3226083040237426,
+      "updates": 2000,
+      "wall_seconds": 1045.35263709008
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-807": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.02091879810073547,
+          0.15986810710598948
+        ],
+        "person_mean": 0.08115942124277355
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.9558289743089562,
+          -0.16821599370675916
+        ],
+        "person_mean": -0.5697710537585537
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7054630437540629,
+          1.0468864568642207
+        ],
+        "person_mean": 0.859589587660536
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.03650237974370756,
+          0.19370176866354916
+        ],
+        "person_mean": 0.11653776123883233
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6391591966845269,
+      1.05574960590795
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.019607575588621372,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.041666666666666664,
+            0.3958333333333334
+          ],
+          "person_mean": 0.20535714285714285
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.32738095238095244,
+          0.8928571428571429
+        ],
+        "person_mean": 0.6488095238095238,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.0
+          ],
+          "person_mean": 0.0
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.17857142857142858,
+          0.7410714285714286
+        ],
+        "person_mean": 0.44345238095238093,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.0
+          ],
+          "person_mean": 0.0
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.17857142857142858,
+          0.7410714285714286
+        ],
+        "person_mean": 0.44345238095238093,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "c64340024acfea1a5a51efc4c41c9adcaff08fa714829f27e9592538b2d7a833",
+      "last_sha256": "91a167929c44d2105caded6cac70e665079bce12f60ef9b056cd83da7965e73b",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-807",
+        "no_content_loss": true,
+        "seed": 91,
+        "variant": "slwm"
+      },
+      "selected_step": 2000,
+      "selected_validation_loss": 1.444444704055786,
+      "updates": 2000,
+      "wall_seconds": 1042.6143687659642
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-808": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.041252109266462784,
+          0.14827174444993335
+        ],
+        "person_mean": 0.08992170910572721
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.8242156089030601,
+          -0.1374805544554196
+        ],
+        "person_mean": -0.48407674946071305
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7070051821924391,
+          1.0639122075268201
+        ],
+        "person_mean": 0.8683518755234896
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.06471046389391025,
+          0.32182446902706513
+        ],
+        "person_mean": 0.2022320655366731
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6296480147875555,
+      0.9602834065986235
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.24705469469691432,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.07142857142857142,
+            0.4523809523809524
+          ],
+          "person_mean": 0.2619047619047619
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.42857142857142855,
+          0.9285714285714286
+        ],
+        "person_mean": 0.7053571428571429,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.23214285714285715,
+            0.023809523809523808
+          ],
+          "person_mean": -0.0773809523809524
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.08035714285714286,
+          0.7142857142857143
+        ],
+        "person_mean": 0.36607142857142855,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.0
+          ],
+          "person_mean": 0.0
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.17857142857142858,
+          0.7410714285714286
+        ],
+        "person_mean": 0.44345238095238093,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "b439c8116523a1e896435e20f446e36f1f897f4ff01e6be57432f9fcc0dcbea9",
+      "last_sha256": "af7a34f27e03f28091d5667298772f828421c4b8a20568eb0f7405fbb5f1a2d4",
+      "overfit_stop": false,
+      "parameters": 23980313,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-808",
+        "reset_memory": true,
+        "seed": 91,
+        "variant": "slwm"
+      },
+      "selected_step": 2000,
+      "selected_validation_loss": 1.3317108631134034,
+      "updates": 2000,
+      "wall_seconds": 1070.924378272961
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-809": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.01727538711635307,
+          0.13931972221545288
+        ],
+        "person_mean": 0.07235289470011753
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -1.181304600525353,
+          -0.292279919060791
+        ],
+        "person_mean": -0.7451118432914046
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.6993453172508568,
+          1.033919091203383
+        ],
+        "person_mean": 0.8507830611178798
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.09020786661477319,
+          -0.029706809847127834
+        ],
+        "person_mean": -0.058803028294018345
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.64227252771226,
+      1.2286585617897123
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.20530543996151104,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.10714285714285714,
+            0.4404761904761905
+          ],
+          "person_mean": 0.27380952380952384
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.4494047619047619,
+          0.9107142857142857
+        ],
+        "person_mean": 0.7172619047619048,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.026785714285714284
+          ],
+          "person_mean": 0.008928571428571428
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.1964285714285714,
+          0.7440476190476192
+        ],
+        "person_mean": 0.4523809523809524,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.0,
+            0.03571428571428571
+          ],
+          "person_mean": 0.011904761904761904
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.19642857142857142,
+          0.75
+        ],
+        "person_mean": 0.45535714285714285,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "84c7804f48a2e95583808544062294e45fc79f4a668a1a4aac0f67a022f59ef6",
+      "last_sha256": "b76d81febb23ef4d9b60bf6a0fbd04605f4ae7ae67a78ed663624155536cc3d2",
+      "overfit_stop": false,
+      "parameters": 6683929,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-809",
+        "seed": 91,
+        "variant": "slwm",
+        "width": 256
+      },
+      "selected_step": 1800,
+      "selected_validation_loss": 1.3722599983215331,
+      "updates": 2000,
+      "wall_seconds": 832.3437858299585
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  },
+  "EXP-T2-810": {
+    "future_gain_over_persistence": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.06206494155857299,
+          0.17175958098636737
+        ],
+        "person_mean": 0.10755186139177238
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -1.1902998248469163,
+          -0.27416891858222153
+        ],
+        "person_mean": -0.7441101845159007
+      }
+    ],
+    "future_gain_over_training_mean": [
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.7354344176276336,
+          1.0713239732715818
+        ],
+        "person_mean": 0.8859820278095347
+      },
+      {
+        "cases": 43,
+        "people": 7,
+        "person_cluster_95_interval": [
+          -0.07515072526912839,
+          -0.036230110696383884
+        ],
+        "person_mean": -0.05780136951851467
+      }
+    ],
+    "future_mean_audio_mae_video_mse": [
+      0.6075699218483859,
+      1.2343642209158383
+    ],
+    "persistence_mean_audio_mae_video_mse": [
+      0.6938209987657014,
+      0.49799456231819694
+    ],
+    "phone_accuracy_active": 0.20333994543829628,
+    "retrieval": {
+      "audio_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            0.125,
+            0.46130952380952384
+          ],
+          "person_mean": 0.29464285714285715
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.5119047619047619,
+          0.9285714285714286
+        ],
+        "person_mean": 0.7380952380952381,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "audio_to_video": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.026785714285714284,
+            0.11607142857142858
+          ],
+          "person_mean": 0.03273809523809524
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.2202380952380952,
+          0.761904761904762
+        ],
+        "person_mean": 0.47619047619047616,
+        "person_mean_chance": 0.44345238095238093
+      },
+      "video_to_text": {
+        "above_chance": {
+          "cases": 7,
+          "people": 7,
+          "person_cluster_95_interval": [
+            -0.14285714285714285,
+            0.0
+          ],
+          "person_mean": -0.047619047619047616
+        },
+        "cases": 7,
+        "people": 7,
+        "person_cluster_95_interval": [
+          0.11607142857142858,
+          0.7261904761904763
+        ],
+        "person_mean": 0.3958333333333333,
+        "person_mean_chance": 0.44345238095238093
+      }
+    },
+    "selection": {
+      "checkpoint_sha256": "b0ffefde97432f56b48095befbda8e8820d2ff5dad0a8a4d43b8afc04a0ffe81",
+      "last_sha256": "663d62f7d4652acc388bd18be113c07a78401a0b39b9989e3106d696d3ad1260",
+      "overfit_stop": false,
+      "parameters": 6596377,
+      "positive_windows": 256000,
+      "run": {
+        "id": "EXP-T2-810",
+        "seed": 91,
+        "variant": "transformer",
+        "width": 256
+      },
+      "selected_step": 1600,
+      "selected_validation_loss": 1.3871817708015441,
+      "updates": 2000,
+      "wall_seconds": 566.6583924330189
+    },
+    "training_mean_prior_audio_mae_video_mse": [
+      1.3639492360196377,
+      1.191475283614425
+    ]
+  }
+}
