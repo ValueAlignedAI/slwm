@@ -10,7 +10,7 @@ On 14 additional speakers, a timing head picked the correct camera among four al
 
 On 512 new Reacher starts, both architectures retained the initial goal cue after it disappeared. Raw observations with the common physical prior gave the lowest supervised action regret. None of four RL policies reliably improved final goal success. Exact two-step planning reached 45–48% in two diagnostic cohorts, and the learned transition lost that advantage. [Decisions and independent transfer](experiments/multimodal/t7/continuation-alignment-control-20261110/transfer-and-planning.md)
 
-The registered scaling comparison continues both sizes and both architectures from their exact G6 optimizer states. It separates additional exposure, independent examples and elapsed TPU time. [Study design](experiments/multimodal/t7/continuation-alignment-control-20261110/protocol.md)
+The registered scaling comparison continues both sizes and both architectures from their exact G6 optimizer states. It separates additional exposure, independent examples and elapsed TPU time. The two terminal architectures also generated 43.69-second clips from audio, video and text. [Study design](experiments/multimodal/t7/continuation-alignment-control-20261110/protocol.md) · [Inference previews](experiments/multimodal/t7/continuation-alignment-control-20261110/examples/README.md)
 
 ### G6 multimodal scaling
 
