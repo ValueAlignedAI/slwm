@@ -1,0 +1,397 @@
+{
+  "checked_unix": 1794328425.0605075,
+  "complete": true,
+  "expected": 48,
+  "optimizer_and_inference_bytes_per_disk": 122443777536,
+  "physical_disk_uuids": [
+    "fbbb53d9-dd42-4f19-95e6-dadab02a201e",
+    "c961a363-8d77-4fba-a48d-622b00a6d8c3"
+  ],
+  "rungs": {
+    "g7-v5e-anchor-gpt2-511-fresh/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "d25185d12fce5d9743e41b171f9766615e95c829ee117cb7ef9ae68f6e4c131c",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "1e41af9eeb3b5d449ea8a74cf1756434c81a983fd12f004ec3e5e739356c5d2e",
+      "run": "g7-v5e-anchor-gpt2-511-fresh",
+      "step": 10240
+    },
+    "g7-v5e-anchor-gpt2-511-fresh/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "29433dbc39ec1b957d67cd08ea2743da5ab30bc8b09d961596faa975be029318",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "2ce941ab765ff661ed2103ca031df8ded51b1c71b0024e04c35216db76102d70",
+      "run": "g7-v5e-anchor-gpt2-511-fresh",
+      "step": 12288
+    },
+    "g7-v5e-anchor-gpt2-511-fresh/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "dac86edd77d2ae20a3cc309a9d6ebcaf7db0993ce442206eca2ad61ef977c89e",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "f8679f7b617e461dd14b9a162a032c4ffbf3db632f57c91d8d3c811d595ae98a",
+      "run": "g7-v5e-anchor-gpt2-511-fresh",
+      "step": 16384
+    },
+    "g7-v5e-anchor-gpt2-511-replay/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "4258c0496a897292f7b949eced5a9a8f079877395f655563605fbf376c4258d0",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "72a2e45fde4581b94ccca2151ffb8ad809edad85555de336a2e5eeb5a633ad37",
+      "run": "g7-v5e-anchor-gpt2-511-replay",
+      "step": 10240
+    },
+    "g7-v5e-anchor-gpt2-511-replay/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "aab062193b8a8ff488346832d02bbbc9ad166f77ff9d546cfbb978c70e57da16",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "e37e1212589541f21fb41b7d6657d85733e45abb2a22103cd0363fc8bf296031",
+      "run": "g7-v5e-anchor-gpt2-511-replay",
+      "step": 12288
+    },
+    "g7-v5e-anchor-gpt2-511-replay/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "906dd5a3178ecdfbf0c6d2be4c50a6c9cf40a73edab8a091112fb208c21c5d17",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "e2f78e10abaa2ce05bfe99320819893dd5c4846a185b03c60f44fea11927bb4a",
+      "run": "g7-v5e-anchor-gpt2-511-replay",
+      "step": 16384
+    },
+    "g7-v5e-anchor-gpt2-512-fresh/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "c7888d3bda14a0ff144c6d5ac6238dd98351c6901ddffe5309d43b68a3bddf76",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "40c82c6d55f10054d07149391fddfccc392eb077023cc8425e429dc764b2543a",
+      "run": "g7-v5e-anchor-gpt2-512-fresh",
+      "step": 10240
+    },
+    "g7-v5e-anchor-gpt2-512-fresh/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "e1f2f487dcce215e745291016b1f02b842ad2d06c13bb3f9850e501ed83a9194",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "996f88ab79544dfec6856cab302803de37f9c12685def2b1d36918d61af70286",
+      "run": "g7-v5e-anchor-gpt2-512-fresh",
+      "step": 12288
+    },
+    "g7-v5e-anchor-gpt2-512-fresh/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "d597b4f1059965fc2b41e2aa19a4a8485bba2ad7bab2a8f306f733564265262d",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "d9946ebb31a9e3ed2900f6fcc2a26afc1e4e16c64d305975c99c1bebef5f74ee",
+      "run": "g7-v5e-anchor-gpt2-512-fresh",
+      "step": 16384
+    },
+    "g7-v5e-anchor-gpt2-512-replay/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "320b817507929fb0dcc83a002dcf6dccf42683019700db6c05b576e9c9e133bd",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "51f5c394f659ec5c622576fcd6a8a9c9b0846929550d7516ec2a541a1c356f92",
+      "run": "g7-v5e-anchor-gpt2-512-replay",
+      "step": 10240
+    },
+    "g7-v5e-anchor-gpt2-512-replay/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "c90dd7fceec3f486ad133fdb8b29e0be9540e9813e62c70eb401a2034ff17e46",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "36c925a3fc9250f22355eeee7962783d152062c5881f7689544d44959318696b",
+      "run": "g7-v5e-anchor-gpt2-512-replay",
+      "step": 12288
+    },
+    "g7-v5e-anchor-gpt2-512-replay/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "478473d6da26514bf7836494e21a4e54c2ad5ad7c2bb79fb5b52604b798fa3fe",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "de7bf38603016dd3956491b17127f6ca98d6a3083489e39846817b297945328c",
+      "run": "g7-v5e-anchor-gpt2-512-replay",
+      "step": 16384
+    },
+    "g7-v5e-anchor-hybrid-511-fresh/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "a3d17734ff76ad090fc5dc67ac758eaac1bd8056111a53f37fda63637ced86d3",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "84beb03c78df1fe8844544ee3218dc0cc209f81a0012cc1ec2b3752eb5400f39",
+      "run": "g7-v5e-anchor-hybrid-511-fresh",
+      "step": 10240
+    },
+    "g7-v5e-anchor-hybrid-511-fresh/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "b1619f954d320a3e690783f168b7550e04cc06dd6885ae2fe259d0740850964f",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "a78ed9a8221476cebf3cc16d2532823c5866bf3b60b78ef98d8575f4422813b9",
+      "run": "g7-v5e-anchor-hybrid-511-fresh",
+      "step": 12288
+    },
+    "g7-v5e-anchor-hybrid-511-fresh/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "5460237bff3a8bf0451244449af46159a642bf7f2259bc20df47158e822bf822",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "39b0c724f4108bfcf812686277dc57e1f5858b0795b1421cc921853633b0bdb2",
+      "run": "g7-v5e-anchor-hybrid-511-fresh",
+      "step": 16384
+    },
+    "g7-v5e-anchor-hybrid-511-replay/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "eb5ded20a63028e989aff167085ad93f63d6d67eb4649cb1b01c48537e76d0ac",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "5063a7fff2646e7a856a568d3305cb602ee6876f3167c95a958631cf5b4cf8ef",
+      "run": "g7-v5e-anchor-hybrid-511-replay",
+      "step": 10240
+    },
+    "g7-v5e-anchor-hybrid-511-replay/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "d71141a6b9676e206dc1b4b543a887d2f8766455586362891c24d0769708eb4b",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "3788719e66ac85fae2bcd4be4d463909822f4d479a94bc4bfede276040e8b07d",
+      "run": "g7-v5e-anchor-hybrid-511-replay",
+      "step": 12288
+    },
+    "g7-v5e-anchor-hybrid-511-replay/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "9c140f5c9f266dffb7207cd09ad20e0f2e75366d3750b45f4f93ad1c47c323b5",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "0100ae3cdef630f78b5517731e2d552ebf4333320235367d08fe53502ee3b71a",
+      "run": "g7-v5e-anchor-hybrid-511-replay",
+      "step": 16384
+    },
+    "g7-v5e-anchor-hybrid-512-fresh/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "43f23b0d4f504ca4acaff63467b3c0c9a56db1085e73849489057811672b969f",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "1e0a53b86a6fb4d2626de50e12e44b663d7606bf8f12e09f4693d512d9e38736",
+      "run": "g7-v5e-anchor-hybrid-512-fresh",
+      "step": 10240
+    },
+    "g7-v5e-anchor-hybrid-512-fresh/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "26ec0a50572504e919d4dca7bfdd2d590fe25d0d8b5bb1ad1d261d703c699ab2",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "d495951745b92a520ebba76e376c82127b1a1d9adac72c9c66fc9f0b04b4cc41",
+      "run": "g7-v5e-anchor-hybrid-512-fresh",
+      "step": 12288
+    },
+    "g7-v5e-anchor-hybrid-512-fresh/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "1b25bd42a7752c72a41ad394caf6800b08a8cfe5c264f9dfd32f08f4787e12ce",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "c0b7e29915039b7249b2c049d6100465e80d4e815eec58bce4b5c92a1ee51f3f",
+      "run": "g7-v5e-anchor-hybrid-512-fresh",
+      "step": 16384
+    },
+    "g7-v5e-anchor-hybrid-512-replay/step-010240": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "eba700ccbf8595a1e865d855d54253cd7efdf0c81352d6e547ca06a4a83b806f",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "e3900fd9a0a1a56a2f800a6097f865b4382d8b7ed381de1e9b12d64ec124e9d2",
+      "run": "g7-v5e-anchor-hybrid-512-replay",
+      "step": 10240
+    },
+    "g7-v5e-anchor-hybrid-512-replay/step-012288": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "80d4f8fcbe0bea7b9064c1f267cc8d9af3fd7d1613d4afb66acab3292098956b",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "ef16fc656cef12dca9d3e0182479e3ab267bdcd16c701e88664e90e34945def3",
+      "run": "g7-v5e-anchor-hybrid-512-replay",
+      "step": 12288
+    },
+    "g7-v5e-anchor-hybrid-512-replay/step-016384": {
+      "inference_bytes": 466037914,
+      "inference_sha256": "fe8548ea8206d2a76e35a5c4874056a7e48ed4102751de17b7b9b6e64e334c95",
+      "optimizer_bytes": 1398103276,
+      "optimizer_sha256": "e61003a1d57867baeafc05495c07be857f6fc5d26e6230b02e78445045971801",
+      "run": "g7-v5e-anchor-hybrid-512-replay",
+      "step": 16384
+    },
+    "g7-v5e-larger-gpt2-511-fresh/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "1dfb8b7f04f9b9f6fd3e1b099f7b3d4358d070a316d7305a9e0aa163d7b8168a",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "a876adae2ec3328540e75f4d5af8b804237820c1ff958bb4cf78be4c24f8606c",
+      "run": "g7-v5e-larger-gpt2-511-fresh",
+      "step": 10240
+    },
+    "g7-v5e-larger-gpt2-511-fresh/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "8ecb2e3ee13828d55194ba721f6d011a9396dcd111507e405fd800c85470a2ce",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "327404ce3183a95bd5b6460a6b7a949217b370c45a1e86967c9f9e5be08320c1",
+      "run": "g7-v5e-larger-gpt2-511-fresh",
+      "step": 12288
+    },
+    "g7-v5e-larger-gpt2-511-fresh/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "d67b60267b779c4c2cfd9fbcbd2dc6ba8e1f4caf227c55dba96ab7e6521fa1bd",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "bce0ae8eec90bfc0b68363db448a9a32a9385acbc977ee1e02168853011b447a",
+      "run": "g7-v5e-larger-gpt2-511-fresh",
+      "step": 16384
+    },
+    "g7-v5e-larger-gpt2-511-replay/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "9bdaf80074fc10c4abb6e85394cfcca1b8a0c23f0ccfccba76fb8f4f47a10da1",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "ddc12344dcc7f178c710984e35c941435d1d85cc5e179bf89dd76fa28c1b921d",
+      "run": "g7-v5e-larger-gpt2-511-replay",
+      "step": 10240
+    },
+    "g7-v5e-larger-gpt2-511-replay/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "e360d92dde347d9b1a944ab2aa8766f821efbb52df88858af7ab548ad87e7bd7",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "b27f1778fcff4056c22ccc5f240b8bdf8b0b29184bd480723aa19bc31bd0f6b2",
+      "run": "g7-v5e-larger-gpt2-511-replay",
+      "step": 12288
+    },
+    "g7-v5e-larger-gpt2-511-replay/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "79764c13e701876af0f87bd24c54994b313f91505f97b9ac6fece71ea824806f",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "1704e812486217b74ad2406399a506b98ec78d1ae9888a18279c66f83df0876d",
+      "run": "g7-v5e-larger-gpt2-511-replay",
+      "step": 16384
+    },
+    "g7-v5e-larger-gpt2-512-fresh/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "f1d5d159e498d3626a4ab57bede3e2839f7fd1ae1389b2ea0f4ef4b7b2bb6469",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "167c84966709a75f033160b647496ab891ea735b40e6c20be3fb146c6912ce12",
+      "run": "g7-v5e-larger-gpt2-512-fresh",
+      "step": 10240
+    },
+    "g7-v5e-larger-gpt2-512-fresh/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "da2aa183ee01e368ab737eec09d734b907de83d526158422a91804b0abce9401",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "60a492070531cc60a525c4971a4b95676dae82b28aafb09ccdf4c9921110341c",
+      "run": "g7-v5e-larger-gpt2-512-fresh",
+      "step": 12288
+    },
+    "g7-v5e-larger-gpt2-512-fresh/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "f88e139f941f174b2677bc6076a49df471b17c14d6ffafe2fdedd5ff941bcd91",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "6181f91b1b2342fcc3faa9430c555c43947ee52a9d56174f0d9c00af8b31be94",
+      "run": "g7-v5e-larger-gpt2-512-fresh",
+      "step": 16384
+    },
+    "g7-v5e-larger-gpt2-512-replay/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "ed01c67651674596e686105ad84ca04dc63f944503682bbf3d6f2ec71aa8e21d",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "729a9b1fa6e45c0c6cf94fb40f046ca647030a8757d8a3624f85faf8395a7b8f",
+      "run": "g7-v5e-larger-gpt2-512-replay",
+      "step": 10240
+    },
+    "g7-v5e-larger-gpt2-512-replay/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "c07b652571faa3936873f35908175bf0f3a064323edd00eb617c47b440f06804",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "be91bd873456210c782b9e57aa1fa5cf1bc54091ff8ae026ccdd1c8e735a6825",
+      "run": "g7-v5e-larger-gpt2-512-replay",
+      "step": 12288
+    },
+    "g7-v5e-larger-gpt2-512-replay/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "94611acbaf7a0e80a0bd1e92806a5d0c94fcc47ac9b0a07439d9e579ef9e9cbd",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "9d53ea8fad8ded1dfc06e848f65883a867da92d091052500603369347eee88cf",
+      "run": "g7-v5e-larger-gpt2-512-replay",
+      "step": 16384
+    },
+    "g7-v5e-larger-hybrid-511-fresh/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "fda0363ca2fee5a1d7fdb88fc61115e1eb6ba642ab87359887403bb4915c0462",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "5de11ca342c88a7e2c1f7dfda3c32087924ecc82a4fb56048be272636c64842f",
+      "run": "g7-v5e-larger-hybrid-511-fresh",
+      "step": 10240
+    },
+    "g7-v5e-larger-hybrid-511-fresh/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "6b76736b1e099f1c70bc89b622e5f9edd21387520ff6e9fe8b30be7e3b3d2a1b",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "8abfed0830fec5e74ea016bbc5bde4918bf722eb288d8d4364acf37dda60be95",
+      "run": "g7-v5e-larger-hybrid-511-fresh",
+      "step": 12288
+    },
+    "g7-v5e-larger-hybrid-511-fresh/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "7364c3263a66f7eb2845dcb060281b66c75beb611ba0de45df2f758235b3b3e3",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "aee29830f82b179a318538d37a1b66598f1998f705ac9f548181de99ce8a9cf1",
+      "run": "g7-v5e-larger-hybrid-511-fresh",
+      "step": 16384
+    },
+    "g7-v5e-larger-hybrid-511-replay/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "814568a9b3da4c1b80d425ecb83d84974dfe412c9c5ae08c7c2c27a79dc65dfb",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "b8985459d471319920989c511fbf0a8605103fa0718e4740d31c0bddd69bcf24",
+      "run": "g7-v5e-larger-hybrid-511-replay",
+      "step": 10240
+    },
+    "g7-v5e-larger-hybrid-511-replay/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "d907617ed36b2570eed784f204e12c6323bd855a13ded73dfff4a6acea9e13a9",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "3335a5ae8c6e11ab32b54078340804df89936a910203c46bd2a4047210d2e715",
+      "run": "g7-v5e-larger-hybrid-511-replay",
+      "step": 12288
+    },
+    "g7-v5e-larger-hybrid-511-replay/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "79a5c899815906f3946f2d854218f28fed0eb09e77fcb7c0d07b860da7e063ec",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "1590762b6255f7a5265d5c0df681ec5f562d58dcb014b83ba8439419eb568745",
+      "run": "g7-v5e-larger-hybrid-511-replay",
+      "step": 16384
+    },
+    "g7-v5e-larger-hybrid-512-fresh/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "8ff7695fbd89b3006131498774e430f37a434a91184f67812214992bee127f53",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "f2f14574293c28ea07db8e008ce88d4af279a3f25f4208f7849354644a4d2dff",
+      "run": "g7-v5e-larger-hybrid-512-fresh",
+      "step": 10240
+    },
+    "g7-v5e-larger-hybrid-512-fresh/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "53dc7240db035f3079f49e807125df853dd25c2c7b3b865aaa369ea74ff13d4a",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "36f15d73ec1c121384dc80d0d1f97c9deb2ba04f69a1626a41111bb7a676d9d0",
+      "run": "g7-v5e-larger-hybrid-512-fresh",
+      "step": 12288
+    },
+    "g7-v5e-larger-hybrid-512-fresh/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "8eed6e9a2eef93c39eb42539d55ec563472e9b30b009d9df639ee555be3394e6",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "a0cbf1223eeb7aa445155d69266c11186b8011722380895968e2e0dde5a4682a",
+      "run": "g7-v5e-larger-hybrid-512-fresh",
+      "step": 16384
+    },
+    "g7-v5e-larger-hybrid-512-replay/step-010240": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "e8288efabe44af3a98462ee13ff6917d0e58a38fdfea3c25277d2409d44a805d",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "08c864c997dc7ccb7f9eadb2eb828b66f18528c6af9e8abc6ebd20a49096659d",
+      "run": "g7-v5e-larger-hybrid-512-replay",
+      "step": 10240
+    },
+    "g7-v5e-larger-hybrid-512-replay/step-012288": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "c791fcdb66fadfeb93b50dbf299a64b3668cfc0ce8790e2b4817fcf91fba73c9",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "2f253da1e189b5019f800dc103a92771bbbebaeae79f26959671aba36e9c3f3d",
+      "run": "g7-v5e-larger-hybrid-512-replay",
+      "step": 12288
+    },
+    "g7-v5e-larger-hybrid-512-replay/step-016384": {
+      "inference_bytes": 809423178,
+      "inference_sha256": "cbff0fa0eb691af30085fa62a2e564f707000598aee8fe9a2c76a51d17f3886b",
+      "optimizer_bytes": 2428259696,
+      "optimizer_sha256": "0831b67f2f6179d34ad3833bd618b353ed16ce7c5b51753667e5a00e8330dbcb",
+      "run": "g7-v5e-larger-hybrid-512-replay",
+      "step": 16384
+    }
+  },
+  "verified_rungs": 48
+}
