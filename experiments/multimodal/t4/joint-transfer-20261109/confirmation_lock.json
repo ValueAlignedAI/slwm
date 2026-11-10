@@ -1,0 +1,48 @@
+{
+  "endpoints": {
+    "gpt2-dense-81": "ad3544f6ea85076990274cdd2f17c339281a1c17a66839332ebbcf49cfb9e593",
+    "gpt2-dense-82": "2fd5465797b3d37a6660a76cded6ad0d0fabd011b4fa93b1b14f953dc4f39085",
+    "gpt2-wide-81": "ac934193c8b26d8a7f85441b5c0e3e92d4dfd0d5bb0a76916d95c0d2cb5ce08c",
+    "gpt2-wide-82": "a2614878d42233b907920f9777e3143312c657c0fcea043d0f6a7e252a419a7e",
+    "signal-dense-81": "e27999c64a25886c4f139e2b7d669f39d46affe15da81ee75b8a3e089b31567e",
+    "signal-dense-82": "166f56850ad0953fdfacf74e66127fe53ba854ace17b5ec78df9d45f1bb0b0ae",
+    "signal-sparse-81": "00500a298f6a39b096f19f3ae1648ca3967f2b0fcdc6cb7120213520d1287c51",
+    "signal-sparse-82": "c04914e945e6d0ba3458c8716e02af6ed4d589b1ba7707cdda4be8696ba09abe",
+    "signal-wide-81": "701e5a8f1aa61464e023082ba63edf76d1bb49dd7e78570a6ca90c32c60a225e",
+    "signal-wide-82": "9edabf64ff2c8b78b24ebe739579dd2cdf4b88b49098a842cce8a884da066e24"
+  },
+  "evaluation": {
+    "configs/t4/joint_transfer.json": "ce4a47f2e73afd1d2087328d771140030e72504882e11563a1c4d716bdfe8642",
+    "docs/research/joint_transfer_20261109.md": "64df71d3b000b32ef43a27f9f97f5f440e288cfddcd90347d3f729521b39f44b",
+    "training/joint_benchmarks.py": "32b4ee8d3945b86790528eee9d518c05ac9ad473bffe18148fb6a26820fca197",
+    "training/joint_evaluate.py": "ba388c7ed1530fa53d987be59301e3de4dec97fe142a539c41520595afb4f444",
+    "training/joint_g2_anchor.py": "756d8de5036d1e53bc95dd0476e663abc947d2e30f555634ace5020096dddd07",
+    "training/joint_results.py": "c964006cfec39d886c0dadb7b1dcd8bb41303e409170451d93af30abef861730",
+    "training/joint_study.py": "7645869bb3403f5ad90fa56f669c2953d840e16e860b39ccf713876de58fbf91"
+  },
+  "g2_anchors": {
+    "G2-201": "e3c90e1cf5833cde93b536885bb571a7d856acf92707d8578e6ca952465f3448",
+    "G2-202": "6c8602c3868b9307ada1701f52012a7180bc4782f6dcdb8c9f5c582f6d33a7fb",
+    "G2-203": "750f4d54eb113225e7662145e9190248e73457946d111a96857d913e319ce391",
+    "G2-204": "a3118c51940a2482b47fece585b14b838699f7df5a6e040409bb4c74ba0b7619"
+  },
+  "parents": {
+    "gpt2-81": [
+      "EXP-T1-231",
+      "1794bbecb9bbb4ac36dfd1c95bd65e4fe287626d1c02fff9bd873ef06e61d4a0"
+    ],
+    "gpt2-82": [
+      "EXP-T1-233",
+      "3762073979836052e97a0ab70f55ed34c77ce85249188dcda53532a6678cc225"
+    ],
+    "slwm-81": [
+      "EXP-T1-232",
+      "43da7f5b05c9f4de57b4c80ca07b6a3612b9cabd562143a22267a794405b20b9"
+    ],
+    "slwm-82": [
+      "EXP-T1-234",
+      "385df60e383210ffbdb17f07c58b9d3aa744ffdd17d519ceee9eaa1bc7073bac"
+    ]
+  },
+  "training_lock_sha256": "8c3c183ab319ca4c045a78e58f2e50e05200a3c69bb7036f329434267ec88774"
+}
