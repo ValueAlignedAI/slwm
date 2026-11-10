@@ -19,7 +19,7 @@ def progress():
             "reacher_results":len(list((c/"reacher").glob("*/metrics.json"))),"live_controllers":len(list((a/"live").glob("*/*/metrics.json"))),
             "retention":len(list((a/"retention").glob("*/metrics.json"))),"initial_speech_panels":len(list((a/"speech-audit").glob("*/*/scores.json"))),
             "rate_speech_panels":len(list((a/"rate-audit").glob("*/*/scores.json"))),"archive_complete":audit.get("complete",False),
-            "durable_rungs":audit.get("verified_rungs",0),"analysis":(p/"factorial.json").is_file() and (root/"live-oracle/complete.json").is_file(),"factorial_analysis":(p/"factorial.json").is_file(),"live_oracle_followup":(root/"live-oracle/complete.json").is_file(),"replays":(p/"rollout-examples.json").is_file()}
+            "durable_rungs":audit.get("verified_rungs",0),"analysis":(p/"factorial.json").is_file() and (a/"live-oracle/complete.json").is_file(),"factorial_analysis":(p/"factorial.json").is_file(),"live_oracle_followup":(a/"live-oracle/complete.json").is_file(),"replays":(p/"rollout-examples.json").is_file()}
 
 
 def development_curves(doc):
