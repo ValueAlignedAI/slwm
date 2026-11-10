@@ -1,0 +1,175 @@
+{
+  "fresh_test_start_window": 4096,
+  "fresh_test_tokens_per_checkpoint": 524288,
+  "no_shared_multimodal_weights": true,
+  "paired_seeds": {
+    "81": {
+      "compute_match_scope": "Same151M-token parent exposures, then equal additional active time; parent compute differs. These are validation diagnostics, not a fresh time-matched test.",
+      "continuation_compute_matched_validation_only": {
+        "gpt2": {
+          "seconds": 9091.000706157589,
+          "tokens": 500006912,
+          "validation_nll": 4.003498941659927
+        },
+        "slwm": {
+          "seconds": 8865.153774746577,
+          "tokens": 367460352,
+          "validation_nll": 3.926950015127659
+        }
+      },
+      "continuation_time_ratio_slwm_over_gpt2": 1.4558760876538948,
+      "endpoint_test_nll_gain_gpt2_minus_slwm": 0.13471183739602566,
+      "perplexity_relative_reduction": 0.12603227978056109
+    },
+    "82": {
+      "compute_match_scope": "Same151M-token parent exposures, then equal additional active time; parent compute differs. These are validation diagnostics, not a fresh time-matched test.",
+      "continuation_compute_matched_validation_only": {
+        "gpt2": {
+          "seconds": 8954.45421251806,
+          "tokens": 500006912,
+          "validation_nll": 3.9923063591122627
+        },
+        "slwm": {
+          "seconds": 8787.987750927103,
+          "tokens": 359071744,
+          "validation_nll": 3.9383042007684708
+        }
+      },
+      "continuation_time_ratio_slwm_over_gpt2": 1.5002872033538555,
+      "endpoint_test_nll_gain_gpt2_minus_slwm": 0.11855385452508926,
+      "perplexity_relative_reduction": 0.11179601943480788
+    }
+  },
+  "runs": {
+    "EXP-T1-231": {
+      "continuation_active_hours": 2.5252779739326634,
+      "endpoint": {
+        "nll": 3.92340668477118,
+        "perplexity": 50.572435999351804,
+        "sha256": "8daf522de7db1b950656b9f72a44361527d8ad6807e3a43e8ed1f8eccf0268e9",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "endpoint_nll_improvement_over_151m_parent": 0.3974447697401047,
+      "parameters": 124439808,
+      "parent": {
+        "nll": 4.320851454511285,
+        "perplexity": 75.25267525144655,
+        "sha256": "dafed7c0b42d5fc19f5a65b850d3971ac2f0bd00ac3db7441cb6e2765ed59080",
+        "tokens": 524288,
+        "training_tokens": 150994944
+      },
+      "sample_file_sha256": "033931c1ca274d28e90efe119fe76dbd290ca68f3ed432cbab6a9917e11a85e4",
+      "seed": 81,
+      "selected": {
+        "nll": 3.92340668477118,
+        "perplexity": 50.572435999351804,
+        "sha256": "1794bbecb9bbb4ac36dfd1c95bd65e4fe287626d1c02fff9bd873ef06e61d4a0",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "selected_tokens": 500006912,
+      "target_reached": true,
+      "tokens": 500006912,
+      "variant": "gpt2"
+    },
+    "EXP-T1-232": {
+      "continuation_active_hours": 3.67649181692764,
+      "endpoint": {
+        "nll": 3.7886948473751545,
+        "perplexity": 44.19867659629698,
+        "sha256": "c0c8d8f49735f2e74adf26094d5373c7d97b16175dd87809e49eb991fb48b68f",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "endpoint_nll_improvement_over_151m_parent": 0.37082712166011333,
+      "parameters": 125131008,
+      "parent": {
+        "nll": 4.159521969035268,
+        "perplexity": 64.04090174761721,
+        "sha256": "79f887997a02a2c050baee2651b337505569e6c9280a1eab75fee032edf58c0e",
+        "tokens": 524288,
+        "training_tokens": 150994944
+      },
+      "sample_file_sha256": "ab553e6f68282e3cfaad3678b3cd159f1ad7d5d2d53cf82d003a72b0f379a928",
+      "seed": 81,
+      "selected": {
+        "nll": 3.7886948473751545,
+        "perplexity": 44.19867659629698,
+        "sha256": "43da7f5b05c9f4de57b4c80ca07b6a3612b9cabd562143a22267a794405b20b9",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "selected_tokens": 500006912,
+      "target_reached": true,
+      "tokens": 500006912,
+      "variant": "slwm"
+    },
+    "EXP-T1-233": {
+      "continuation_active_hours": 2.4873483923661275,
+      "endpoint": {
+        "nll": 3.910504963248968,
+        "perplexity": 49.92415547320148,
+        "sha256": "39b11eaeb751229e9da1e764202e52496a4c565dbbe180232bbac4fc9fe40f90",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "endpoint_nll_improvement_over_151m_parent": 0.407519344240427,
+      "parameters": 124439808,
+      "parent": {
+        "nll": 4.318024307489395,
+        "perplexity": 75.04022532980692,
+        "sha256": "3c5af37526d7cfbba796eb85e94e31181c94cdd7e178f42705f39c5b1e1cb709",
+        "tokens": 524288,
+        "training_tokens": 150994944
+      },
+      "sample_file_sha256": "7e02ef2cd2ea91ddc2ecb1ad60763f3863e0534ee4e1a439fde7cd6bb2dfa403",
+      "seed": 82,
+      "selected": {
+        "nll": 3.910504963248968,
+        "perplexity": 49.92415547320148,
+        "sha256": "3762073979836052e97a0ab70f55ed34c77ce85249188dcda53532a6678cc225",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "selected_tokens": 500006912,
+      "target_reached": true,
+      "tokens": 500006912,
+      "variant": "gpt2"
+    },
+    "EXP-T1-234": {
+      "continuation_active_hours": 3.7317369633496855,
+      "endpoint": {
+        "nll": 3.791951108723879,
+        "perplexity": 44.34283361765308,
+        "sha256": "52185e52f742531511ce2fc499c3a06d3db84695feb0ade04086b70d91e43309",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "endpoint_nll_improvement_over_151m_parent": 0.3664269708096981,
+      "parameters": 125131008,
+      "parent": {
+        "nll": 4.158378079533577,
+        "perplexity": 63.96768791467999,
+        "sha256": "a048ef7ff05b18f66019d459ddfb85b9408d692df5f9cf8fd3e3c2cd2cc67ad6",
+        "tokens": 524288,
+        "training_tokens": 150994944
+      },
+      "sample_file_sha256": "60c802364ae12c8bf15925ca44c3ca8841da6afb162c580c0c27a0453d20e736",
+      "seed": 82,
+      "selected": {
+        "nll": 3.791951108723879,
+        "perplexity": 44.34283361765308,
+        "sha256": "385df60e383210ffbdb17f07c58b9d3aa744ffdd17d519ceee9eaa1bc7073bac",
+        "tokens": 524288,
+        "training_tokens": 500006912
+      },
+      "selected_tokens": 500006912,
+      "target_reached": true,
+      "tokens": 500006912,
+      "variant": "slwm"
+    }
+  },
+  "source_sha256": "867a38705cbcd7c75ec7f924b72c4b0a28287f5584dd3679188dfe199957d8e7",
+  "warm_restart_recipe": true
+}

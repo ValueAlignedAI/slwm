@@ -1,0 +1,147 @@
+{
+  "continuation": {
+    "additional_updates": 10651,
+    "artifacts": "experiments/text/t1/500m-20261106",
+    "floor_lr": 1e-05,
+    "fused_loss_version": "0.8.5",
+    "global_batch": 64,
+    "micro_batch": 64,
+    "milestone_tokens": [
+      250019840,
+      375029760,
+      500006912
+    ],
+    "overfit_patience": 2,
+    "overfit_relative_rise": 0.05,
+    "parent_config": "configs/t1/fineweb_scale.json",
+    "parent_root": "experiments/text/t1/extended-throughput-20261105",
+    "parent_tokens": 150994944,
+    "peak_lr": 0.0001,
+    "protocol": "docs/research/text_500m_protocol_20261106.md",
+    "runs": [
+      {
+        "id": "EXP-T1-231",
+        "parent": "EXP-T1-221",
+        "parent_sha256": "dafed7c0b42d5fc19f5a65b850d3971ac2f0bd00ac3db7441cb6e2765ed59080",
+        "seed": 81,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-232",
+        "parent": "EXP-T1-222",
+        "parent_sha256": "79f887997a02a2c050baee2651b337505569e6c9280a1eab75fee032edf58c0e",
+        "seed": 81,
+        "variant": "slwm"
+      },
+      {
+        "id": "EXP-T1-233",
+        "parent": "EXP-T1-223",
+        "parent_sha256": "3c5af37526d7cfbba796eb85e94e31181c94cdd7e178f42705f39c5b1e1cb709",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-234",
+        "parent": "EXP-T1-224",
+        "parent_sha256": "a048ef7ff05b18f66019d459ddfb85b9408d692df5f9cf8fd3e3c2cd2cc67ad6",
+        "seed": 82,
+        "variant": "slwm"
+      }
+    ],
+    "sequence_length": 512,
+    "slice_updates": 256,
+    "sprint": "T1-S5",
+    "start_lr": 2e-05,
+    "target_tokens": 500006912,
+    "test_batches": 128,
+    "test_window_start": 4096,
+    "warmup_updates": 256
+  },
+  "matrix": {
+    "artifacts": "experiments/text/t1/scale-20261105",
+    "corpus": "artifacts/text/fineweb_edu_scale_v1",
+    "model": {
+      "context_length": 1024,
+      "dropout": 0.0,
+      "n_embd": 768,
+      "n_head": 12,
+      "n_layer": 12,
+      "vocab_size": 50257
+    },
+    "prompts": [
+      "The relationship between sound and motion is",
+      "A scientist can test a hypothesis by",
+      "The purpose of a mathematical model is",
+      "When a prediction is uncertain,",
+      "A video recording contains",
+      "The experiment showed that"
+    ],
+    "protocol": "docs/research/text_scale_protocol_20261105.md",
+    "runs": [
+      {
+        "id": "EXP-T1-201",
+        "seed": 81,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-202",
+        "seed": 81,
+        "variant": "slwm"
+      },
+      {
+        "id": "EXP-T1-203",
+        "seed": 82,
+        "variant": "gpt2"
+      },
+      {
+        "id": "EXP-T1-204",
+        "seed": 82,
+        "variant": "slwm"
+      }
+    ],
+    "sprint": "T1-S2",
+    "training": {
+      "eval_batches": 32,
+      "eval_every": 128,
+      "gradient_accumulation": 4,
+      "gradient_clip": 1.0,
+      "lr": 0.0006,
+      "micro_batch": 8,
+      "minimum_lr_fraction": 0.1,
+      "overfit_patience": 2,
+      "overfit_relative_rise": 0.05,
+      "sequence_length": 512,
+      "steps": 1024,
+      "warmup": 64,
+      "weight_decay": 0.1
+    }
+  },
+  "provenance": {
+    "dataset_card_sha256": "475db740d71aba0c4afdd4f8bb42d0a0ac5687555a4a8dc4c46cd642c12d04db",
+    "global_batch": 64,
+    "input_window_sequence_preserved": true,
+    "optimizer_preserved": true,
+    "parameters": 125131008,
+    "parent_checkpoint_sha256": "a048ef7ff05b18f66019d459ddfb85b9408d692df5f9cf8fd3e3c2cd2cc67ad6",
+    "parent_run": "EXP-T1-224",
+    "source_hashes": {
+      "configs/t1/fineweb_500m.json": "ea7f9ca6de4ad51f915c611ffcb76876e6c80eb7cc719ea39444ff034e07777a",
+      "configs/t1/fineweb_scale.json": "d4ca57bede3ea114e7a32460bd990ad4fddb3027916bc559407ad255f5e4ee43",
+      "docs/research/text_500m_protocol_20261106.md": "59e9d50cdfc160644950f0a20b5e55a565888a4f80b0c4e3781f0c8049035398",
+      "tests/test_text_500m.py": "fbc243af0f1cdebf1864dd897d7be74ef61addfb9a3745f54a12e9774e6c3043",
+      "training/scale_text_train.py": "406974424b9d11efbba4800adcc60fbb87380489df54a2b46067fd9328372f45",
+      "training/t1_torch_text.py": "2dca71a1d33e1affe7f199907ff1bdcc4881d9a54c557c6ca56b7d22adfb6875",
+      "training/text_500m.py": "3cb339c9640326a11bce38d5af6255b864a8be5926ed7445088e3a7fbd1e2643",
+      "training/text_fused_loss.py": "ebc956ded4cd648c0da6baa33a8fd8a4a57bb592cbdbc4e58d4824de71949b07"
+    },
+    "training_context": 512,
+    "warm_restart": true
+  },
+  "run": {
+    "id": "EXP-T1-234",
+    "parent": "EXP-T1-224",
+    "parent_sha256": "a048ef7ff05b18f66019d459ddfb85b9408d692df5f9cf8fd3e3c2cd2cc67ad6",
+    "seed": 82,
+    "variant": "slwm"
+  }
+}

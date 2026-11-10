@@ -28,7 +28,7 @@ def sha(path):
 
 def mirror(checkout,relative):
     destination=checkout/relative;destination.mkdir(parents=True,exist_ok=True)
-    subprocess.run(["rsync","-a","--partial","-e","ssh -o BatchMode=yes",HOST+":"+REMOTE+"/"+relative+"/",str(destination)+"/"],check=True)
+    subprocess.run(["rsync","-a","--partial","--exclude=resume.pt","-e","ssh -o BatchMode=yes",HOST+":"+REMOTE+"/"+relative+"/",str(destination)+"/"],check=True)
     return destination
 
 
@@ -44,8 +44,9 @@ def prepared_delivery(checkout):
         relative="artifacts/general_world/diverse_v1/prepared/"+family
         needed=int(remote("from pathlib import Path; print(sum(p.stat().st_size for p in Path("+repr(relative)+").rglob('*') if p.is_file()))").strip())
         free=shutil.disk_usage(checkout).free
-        if free-needed<8*1024**3:
-            results[family]={"copied":False,"remote_root":REMOTE+"/"+relative,"bytes":needed,"reason":"Trained artifacts take priority; cache retained on Fedora, source/hash metadata preserved locally,8GiB reserve"}
+        reserve_gib=int(os.environ.get("SLWM_PREPARED_DATA_RESERVE_GIB","8"))
+        if free-needed<reserve_gib*1024**3:
+            results[family]={"copied":False,"remote_root":REMOTE+"/"+relative,"bytes":needed,"reason":"Trained artifacts take priority; cache retained on Fedora, source/hash metadata preserved locally; configured reserve protects ongoing studies"}
             continue
         mirror(checkout,relative);proof=verify(checkout,relative)
         results[family]={"copied":True,**{k:v for k,v in proof.items() if k!="files"}}
@@ -58,14 +59,14 @@ def verify(checkout,relative):
     code="""from pathlib import Path
 import hashlib,json
 root=Path(ROOT_VALUE)
-files={str(p.relative_to(root)):{'bytes':p.stat().st_size,'sha256':hashlib.file_digest(p.open('rb'),'sha256').hexdigest()} for p in sorted(root.rglob('*')) if p.is_file() and p.name not in ('delivery_verification.json',) and not p.name.endswith('.tmp')}
+files={str(p.relative_to(root)):{'bytes':p.stat().st_size,'sha256':hashlib.file_digest(p.open('rb'),'sha256').hexdigest()} for p in sorted(root.rglob('*')) if p.is_file() and p.name not in ('delivery_verification.json','resume.pt') and not p.name.endswith('.tmp')}
 print(json.dumps(files))
 """.replace("ROOT_VALUE",repr(relative))
     files=json.loads(remote(code))
     for name,item in files.items():
         path=checkout/relative/name
         assert path.stat().st_size==item["bytes"] and sha(path)==item["sha256"],str(path)
-    result={"remote_root":REMOTE+"/"+relative,"mac_root":str(checkout/relative),"verified_files":len(files),"verified_bytes":sum(v["bytes"] for v in files.values()),"files":files,"scope":"Every retained remote study file; separately archived immutable milestones/media have their own byte proofs"}
+    result={"remote_root":REMOTE+"/"+relative,"mac_root":str(checkout/relative),"verified_files":len(files),"verified_bytes":sum(v["bytes"] for v in files.values()),"files":files,"scope":"Inference checkpoints/results verified locally; resumable optimizer/EMA states remain on Fedora and are identified by complete.json; separately archived milestones/media have byte proofs"}
     (checkout/relative/"delivery_verification.json").write_text(json.dumps(result,indent=2)+"\n")
     return result
 
