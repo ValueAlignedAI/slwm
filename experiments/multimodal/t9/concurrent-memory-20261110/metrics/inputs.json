@@ -1,0 +1,497 @@
+{
+  "contact_calibration_scenes": [
+    "b28",
+    "b99",
+    "b90",
+    "b75",
+    "b35",
+    "b79"
+  ],
+  "contact_held_scenes": [
+    "b87",
+    "b17",
+    "b41",
+    "b20",
+    "b71",
+    "b4",
+    "b100",
+    "b52",
+    "b98",
+    "b49",
+    "b88",
+    "b1",
+    "b22",
+    "b3",
+    "b62",
+    "b67",
+    "b2",
+    "b36"
+  ],
+  "contact_revision": "b738c7c2ca20c5e1f9b975c92749da0e51ac4e22",
+  "contact_trials": {
+    "b1/rectangular_block/clench": {
+      "max_camera_age_s": 0.026039838790893555,
+      "max_force_age_s": 0.05486273765563965,
+      "ticks": 33,
+      "verb": "clench"
+    },
+    "b1/rectangular_block/press": {
+      "max_camera_age_s": 0.023890018463134766,
+      "max_force_age_s": 0.05503439903259277,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b100/white_device/clench": {
+      "max_camera_age_s": 0.02426004409790039,
+      "max_force_age_s": 0.05656743049621582,
+      "ticks": 34,
+      "verb": "clench"
+    },
+    "b100/white_device/lift": {
+      "max_camera_age_s": 0.013979911804199219,
+      "max_force_age_s": 0.05582070350646973,
+      "ticks": 81,
+      "verb": "lift"
+    },
+    "b17/yellow_bottle/clench": {
+      "max_camera_age_s": 0.027050018310546875,
+      "max_force_age_s": 0.02337956428527832,
+      "ticks": 34,
+      "verb": "clench"
+    },
+    "b17/yellow_bottle/collide": {
+      "max_camera_age_s": 0.026489973068237305,
+      "max_force_age_s": 0.0519716739654541,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b2/pink_box/lift": {
+      "max_camera_age_s": 0.11249995231628418,
+      "max_force_age_s": 0.05364251136779785,
+      "ticks": 82,
+      "verb": "lift"
+    },
+    "b2/pink_box/rotate": {
+      "max_camera_age_s": 0.025339841842651367,
+      "max_force_age_s": 0.050719261169433594,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b20/green_box/collide": {
+      "max_camera_age_s": 0.11431002616882324,
+      "max_force_age_s": 0.054819345474243164,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b20/green_box/rotate": {
+      "max_camera_age_s": 0.025189876556396484,
+      "max_force_age_s": 0.05041956901550293,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b22/blue_bottle/clench": {
+      "max_camera_age_s": 0.024270057678222656,
+      "max_force_age_s": 0.02363300323486328,
+      "ticks": 36,
+      "verb": "clench"
+    },
+    "b22/blue_bottle/shake": {
+      "max_camera_age_s": 0.0250399112701416,
+      "max_force_age_s": 0.05695939064025879,
+      "ticks": 61,
+      "verb": "shake"
+    },
+    "b28/red_ball/clench": {
+      "max_camera_age_s": 0.02855992317199707,
+      "max_force_age_s": 0.02351856231689453,
+      "ticks": 35,
+      "verb": "clench"
+    },
+    "b28/red_ball/collide": {
+      "max_camera_age_s": 0.03197002410888672,
+      "max_force_age_s": 0.05606532096862793,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b3/green_cylinder/press": {
+      "max_camera_age_s": 0.026579856872558594,
+      "max_force_age_s": 0.04996538162231445,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b3/green_cylinder/rotate": {
+      "max_camera_age_s": 0.0238800048828125,
+      "max_force_age_s": 0.0581517219543457,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b35/cuboid/press": {
+      "max_camera_age_s": 0.023710012435913086,
+      "max_force_age_s": 0.05458235740661621,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b35/cuboid/shake": {
+      "max_camera_age_s": 0.020419836044311523,
+      "max_force_age_s": 0.056639909744262695,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b36/black_case/clench": {
+      "max_camera_age_s": 0.027879953384399414,
+      "max_force_age_s": 0.023195981979370117,
+      "ticks": 33,
+      "verb": "clench"
+    },
+    "b36/black_case/rotate": {
+      "max_camera_age_s": 0.023469924926757812,
+      "max_force_age_s": 0.051549673080444336,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b4/pig_doll/lift": {
+      "max_camera_age_s": 0.10452008247375488,
+      "max_force_age_s": 0.05237245559692383,
+      "ticks": 82,
+      "verb": "lift"
+    },
+    "b4/pig_doll/shake": {
+      "max_camera_age_s": 0.024230003356933594,
+      "max_force_age_s": 0.054747581481933594,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b41/blue_box/rotate": {
+      "max_camera_age_s": 0.027479887008666992,
+      "max_force_age_s": 0.05647468566894531,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b41/blue_box/shake": {
+      "max_camera_age_s": 0.02420973777770996,
+      "max_force_age_s": 0.05672049522399902,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b49/white_box/lift": {
+      "max_camera_age_s": 0.014879941940307617,
+      "max_force_age_s": 0.05868673324584961,
+      "ticks": 81,
+      "verb": "lift"
+    },
+    "b49/white_box/rotate": {
+      "max_camera_age_s": 0.10006999969482422,
+      "max_force_age_s": 0.0546870231628418,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b52/apple/clench": {
+      "max_camera_age_s": 0.02557992935180664,
+      "max_force_age_s": 0.02343463897705078,
+      "ticks": 35,
+      "verb": "clench"
+    },
+    "b52/apple/collide": {
+      "max_camera_age_s": 0.026259899139404297,
+      "max_force_age_s": 0.059152841567993164,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b62/red_can/collide": {
+      "max_camera_age_s": 0.02377009391784668,
+      "max_force_age_s": 0.053000688552856445,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b62/red_can/shake": {
+      "max_camera_age_s": 0.020769834518432617,
+      "max_force_age_s": 0.08716225624084473,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b67/green_can/rotate": {
+      "max_camera_age_s": 0.02249002456665039,
+      "max_force_age_s": 0.054738759994506836,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b67/green_can/shake": {
+      "max_camera_age_s": 0.022699832916259766,
+      "max_force_age_s": 0.05503654479980469,
+      "ticks": 61,
+      "verb": "shake"
+    },
+    "b71/pink_cup/clench": {
+      "max_camera_age_s": 0.027849912643432617,
+      "max_force_age_s": 0.055333614349365234,
+      "ticks": 33,
+      "verb": "clench"
+    },
+    "b71/pink_cup/shake": {
+      "max_camera_age_s": 0.027920007705688477,
+      "max_force_age_s": 0.05567193031311035,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b75/transparent_bottle/clench": {
+      "max_camera_age_s": 0.012069940567016602,
+      "max_force_age_s": 0.05600929260253906,
+      "ticks": 32,
+      "verb": "clench"
+    },
+    "b75/transparent_bottle/collide": {
+      "max_camera_age_s": 0.03951001167297363,
+      "max_force_age_s": 0.0560460090637207,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b79/blue_squeezer/rotate": {
+      "max_camera_age_s": 0.10003995895385742,
+      "max_force_age_s": 0.05566906929016113,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b79/blue_squeezer/shake": {
+      "max_camera_age_s": 0.011770009994506836,
+      "max_force_age_s": 0.05572366714477539,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b87/blue_round_box/press": {
+      "max_camera_age_s": 0.10742020606994629,
+      "max_force_age_s": 0.056264638900756836,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b87/blue_round_box/shake": {
+      "max_camera_age_s": 0.0391697883605957,
+      "max_force_age_s": 0.056015968322753906,
+      "ticks": 61,
+      "verb": "shake"
+    },
+    "b88/black_square_box/press": {
+      "max_camera_age_s": 0.02743983268737793,
+      "max_force_age_s": 0.05530047416687012,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b88/black_square_box/rotate": {
+      "max_camera_age_s": 0.024049997329711914,
+      "max_force_age_s": 0.057149410247802734,
+      "ticks": 122,
+      "verb": "rotate"
+    },
+    "b90/black_box/collide": {
+      "max_camera_age_s": 0.02432990074157715,
+      "max_force_age_s": 0.05257105827331543,
+      "ticks": 62,
+      "verb": "collide"
+    },
+    "b90/black_box/lift": {
+      "max_camera_age_s": 0.11866998672485352,
+      "max_force_age_s": 0.05502676963806152,
+      "ticks": 82,
+      "verb": "lift"
+    },
+    "b98/purple_box/clench": {
+      "max_camera_age_s": 0.008179903030395508,
+      "max_force_age_s": 0.05704188346862793,
+      "ticks": 33,
+      "verb": "clench"
+    },
+    "b98/purple_box/shake": {
+      "max_camera_age_s": 0.0285799503326416,
+      "max_force_age_s": 0.05740833282470703,
+      "ticks": 62,
+      "verb": "shake"
+    },
+    "b99/golf_ball/press": {
+      "max_camera_age_s": 0.023360013961791992,
+      "max_force_age_s": 0.05514407157897949,
+      "ticks": 54,
+      "verb": "press"
+    },
+    "b99/golf_ball/shake": {
+      "max_camera_age_s": 0.022439956665039062,
+      "max_force_age_s": 0.056238651275634766,
+      "ticks": 61,
+      "verb": "shake"
+    }
+  },
+  "prepared_room_banks": {
+    "dev": {
+      "recordings": [
+        "fold4_room10_mix001",
+        "fold4_room10_mix002",
+        "fold4_room10_mix003",
+        "fold4_room10_mix004",
+        "fold4_room10_mix005",
+        "fold4_room10_mix006",
+        "fold4_room10_mix007",
+        "fold4_room10_mix008",
+        "fold4_room10_mix009",
+        "fold4_room15_mix001",
+        "fold4_room15_mix002",
+        "fold4_room15_mix003",
+        "fold4_room15_mix004",
+        "fold4_room15_mix005",
+        "fold4_room15_mix006",
+        "fold4_room15_mix007",
+        "fold4_room15_mix008",
+        "fold4_room15_mix009",
+        "fold4_room15_mix010",
+        "fold4_room16_mix001",
+        "fold4_room16_mix002",
+        "fold4_room16_mix003",
+        "fold4_room16_mix004",
+        "fold4_room16_mix005",
+        "fold4_room16_mix006",
+        "fold4_room16_mix007",
+        "fold4_room16_mix008",
+        "fold4_room16_mix009",
+        "fold4_room16_mix010",
+        "fold4_room16_mix011",
+        "fold4_room16_mix012",
+        "fold4_room16_mix013",
+        "fold4_room16_mix014",
+        "fold4_room2_mix001",
+        "fold4_room2_mix002",
+        "fold4_room2_mix003",
+        "fold4_room2_mix004",
+        "fold4_room2_mix005",
+        "fold4_room2_mix006",
+        "fold4_room8_mix001",
+        "fold4_room8_mix002",
+        "fold4_room8_mix003",
+        "fold4_room8_mix004",
+        "fold4_room8_mix005",
+        "fold4_room8_mix006",
+        "fold4_room8_mix007",
+        "fold4_room8_mix008",
+        "fold4_room8_mix009"
+      ],
+      "sha256": "cb8888b9432b9ef1f858a94d406b01a211b64ae49036830beb0dde992c4090f8",
+      "ticks": 88110
+    },
+    "test": {
+      "recordings": [
+        "fold4_room23_mix001",
+        "fold4_room23_mix002",
+        "fold4_room23_mix003",
+        "fold4_room23_mix004",
+        "fold4_room23_mix005",
+        "fold4_room23_mix006",
+        "fold4_room23_mix007",
+        "fold4_room23_mix008",
+        "fold4_room23_mix009",
+        "fold4_room23_mix010",
+        "fold4_room23_mix011",
+        "fold4_room23_mix012",
+        "fold4_room23_mix013",
+        "fold4_room23_mix014",
+        "fold4_room24_mix001",
+        "fold4_room24_mix002",
+        "fold4_room24_mix003",
+        "fold4_room24_mix004",
+        "fold4_room24_mix005",
+        "fold4_room24_mix006",
+        "fold4_room24_mix007",
+        "fold4_room24_mix008",
+        "fold4_room24_mix009",
+        "fold4_room24_mix010",
+        "fold4_room24_mix011",
+        "fold4_room24_mix012",
+        "fold4_room24_mix013",
+        "fold4_room24_mix014",
+        "fold4_room24_mix015",
+        "fold4_room24_mix016"
+      ],
+      "sha256": "0e57466eb167c6d4467d0329c4d51a30c35fce272909de94a37977c976d0a426",
+      "ticks": 27803
+    },
+    "train": {
+      "recordings": [
+        "fold3_room12_mix001",
+        "fold3_room12_mix002",
+        "fold3_room12_mix003",
+        "fold3_room12_mix004",
+        "fold3_room12_mix005",
+        "fold3_room12_mix006",
+        "fold3_room12_mix007",
+        "fold3_room12_mix008",
+        "fold3_room12_mix009",
+        "fold3_room12_mix010",
+        "fold3_room13_mix001",
+        "fold3_room13_mix002",
+        "fold3_room13_mix003",
+        "fold3_room13_mix004",
+        "fold3_room13_mix005",
+        "fold3_room13_mix006",
+        "fold3_room13_mix007",
+        "fold3_room13_mix008",
+        "fold3_room13_mix009",
+        "fold3_room14_mix001",
+        "fold3_room14_mix002",
+        "fold3_room14_mix003",
+        "fold3_room14_mix004",
+        "fold3_room4_mix001",
+        "fold3_room4_mix004",
+        "fold3_room4_mix005",
+        "fold3_room4_mix006",
+        "fold3_room4_mix007",
+        "fold3_room4_mix008",
+        "fold3_room6_mix001",
+        "fold3_room6_mix002",
+        "fold3_room6_mix003",
+        "fold3_room6_mix004",
+        "fold3_room6_mix005",
+        "fold3_room6_mix006",
+        "fold3_room6_mix007",
+        "fold3_room7_mix001",
+        "fold3_room7_mix002",
+        "fold3_room7_mix003",
+        "fold3_room7_mix004",
+        "fold3_room7_mix005",
+        "fold3_room7_mix006",
+        "fold3_room9_mix001",
+        "fold3_room9_mix002",
+        "fold3_room9_mix003",
+        "fold3_room9_mix004",
+        "fold3_room9_mix005",
+        "fold3_room9_mix006",
+        "fold3_room9_mix007",
+        "fold3_room9_mix008"
+      ],
+      "sha256": "5aa519fb7782bb6d6e3451d6c144619446c6541418d4e7a9bc39c1faebca3089",
+      "ticks": 103359
+    }
+  },
+  "primary_mission_order": {
+    "development_seed": 160007,
+    "fresh_history_seed": 655073,
+    "index": "0 through 127",
+    "posttraining_eval_seed": 631120,
+    "test_seed": 180013
+  },
+  "starss_source": {
+    "archives": {
+      "foa_dev.zip": {
+        "bytes": 3406085425,
+        "sha256": "b8a4a51409982bd567529f06bd37399f6b404cdf035cb7adce52eb32d12bc81b"
+      },
+      "metadata_dev.zip": {
+        "bytes": 1165845,
+        "sha256": "2fa848545a520b4a9d490459de7f079aa49ae16daf0affc859c016f5146981d6"
+      },
+      "video_dev.zip": {
+        "bytes": 4102871214,
+        "sha256": "997ed5e12dff90b465674e5605dd77ae6bf832d7301082f824080dc72b2f87ec"
+      }
+    },
+    "doi": "10.5281/zenodo.7880637"
+  },
+  "training_source_revisions": {
+    "small_equal_exposure": "1c8f5a9",
+    "small_screen_and_large_weights": "f3e8a93"
+  }
+}

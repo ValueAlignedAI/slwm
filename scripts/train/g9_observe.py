@@ -15,6 +15,7 @@ def journal(ctl,phase,counts,receipts):
     base=Path.home()/".local/state/slwm";now=datetime.datetime.now(datetime.timezone.utc).isoformat()
     with (base/"research-state.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX);path=base/"research-state.json";doc=json.loads(path.read_text())
+        if (ctl/"finalized").exists():return
         g=doc["studies"]["G9"];b=json.loads((ctl/"budget.json").read_text())
         spent=b["project_spend"];g.update(phase=phase,owned_session_names=b["active"],owned_credits_this_study=round(spent,5),
             cumulative_owned_credits=round(spent+g["prior_project_units"],5),remaining_under_original_allowance=round(100-spent-g["prior_project_units"],5),

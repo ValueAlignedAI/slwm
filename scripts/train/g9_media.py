@@ -12,6 +12,12 @@ from models.g9_shared import Spec,encode,decode
 from scripts.train.g9_fit import numpy_weights
 
 
+def video_encoder():
+    listing=subprocess.check_output(["ffmpeg","-hide_banner","-encoders"],text=True,stderr=subprocess.DEVNULL)
+    available={line.split()[1] for line in listing.splitlines() if line.strip().startswith("V") and len(line.split())>=2}
+    return next(x for x in ("libx264","libopenh264","mpeg4") if x in available)
+
+
 def sound(bins,hz=16000):
     # A deterministic carrier renders predicted band energies. Raw phase and spoken phonemes are unavailable.
     centers=np.sqrt(np.geomspace(60,7900,17)[:-1]*np.geomspace(60,7900,17)[1:])
@@ -55,7 +61,7 @@ def render(stage,data,dest):
             frames=np.clip((v+1)*127.5,0,255).astype(np.uint8).reshape(400,16,16,3)
             cmd=["ffmpeg","-y","-loglevel","error","-f","rawvideo","-pix_fmt","rgb24","-s","16x16","-r","10","-i","pipe:0"]
             if mode=="text_only":cmd+=["-i",str(dest/(tag+".wav")),"-c:a","aac"]
-            cmd+=["-vf","scale=128:128:flags=neighbor","-c:v","libx264","-pix_fmt","yuv420p","-movflags","+faststart",str(dest/(tag+".mp4"))]
+            cmd+=["-vf","scale=128:128:flags=neighbor","-c:v",video_encoder(),"-pix_fmt","yuv420p","-movflags","+faststart",str(dest/(tag+".mp4"))]
             subprocess.run(cmd,input=frames.tobytes(),check=True)
         rows[tag]={"recording":name,"seconds":40,"inputs":mode,"emitted_field":spec.field,"weights_sha256":meta["inference_sha256"],
                    "visual_grid":[16,16],"audio":"four-channel spectral-envelope prediction, first-channel deterministic carrier"}

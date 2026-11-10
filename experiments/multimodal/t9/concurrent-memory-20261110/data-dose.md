@@ -1,0 +1,5 @@
+# Independent episode dose at a converged training budget
+
+The short 384-update replay comparison operated near the idle controller's occupancy. The equal-exposure experiment subsequently showed that a small trunk could learn the task by 4,096 updates. Use the remaining transfer time on the same owned TPU to revisit episode diversity at this more informative operating point.
+
+Train four additional 13M-class, 512-coordinate GELU models from the registered common initializations. For each architecture and seed, change only simulator episode indexing from 393,216 independent starts to cyclic replay of the first 2,048. Reuse the existing equal-exposure fresh parents. Keep 4,096 updates, batch size 128, real training windows, source masks, optimization schedule and prior controls identical. Score both treatments on 128 new closed-loop missions from cohort seed 857329, using native inference as the primary endpoint and equal 32-step resets as a secondary endpoint. Report mission-level fresh-minus-replay differences separately for both architectures and seeds. Full-terminal weights and optimizers use the two-disk custody protocol.

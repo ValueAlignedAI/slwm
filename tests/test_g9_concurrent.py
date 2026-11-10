@@ -38,3 +38,16 @@ def test_raw_controller_works_on_changed_dynamics():
     signal=live(None,spec,"raw",b=8,steps=64,seed=19)
     assert signal[:,:,4].all()
     assert signal[:,:,0].any(0).all()
+
+
+def test_portable_per_channel_quantization_round_trip(tmp_path):
+    from models.g9_portable import pack,load
+    rng=np.random.default_rng(55)
+    matrix=rng.normal(size=(512,128)).astype(np.float32)
+    source={"projection":matrix,"bias":np.zeros(128,np.float32)}
+    file=tmp_path/"field.npz";pack(file,source,{"field":128},"parent")
+    manifest,decoded=load(file)
+    assert manifest["parent_sha256"]=="parent"
+    error=np.max(abs(decoded["projection"]-matrix),axis=0)
+    assert np.all(error<=np.max(abs(matrix),axis=0)/14+1e-6)
+    np.testing.assert_array_equal(decoded["bias"],source["bias"])

@@ -7,6 +7,7 @@ import jax.numpy as jnp
 import numpy as np
 from PIL import Image,ImageDraw,ImageFont
 from models.g9_tabletop import initial
+from scripts.train.g9_media import video_encoder
 
 MOVES=np.array([[0,0],[1,0],[-1,0],[0,1],[0,-1],[0,0],[0,0]])
 LABELS=["hold","move +x","move -x","move +y","move -y","tap +","tap -"]
@@ -24,9 +25,13 @@ def main(scores,dest):
     panels["raw"]=[];positions={c:position.copy() for c in panels};seen=False;visit={c:0 for c in panels}
     dest.mkdir(parents=True,exist_ok=True);out=dest/"held-live-control.mp4"
     cmd=["ffmpeg","-y","-loglevel","error","-f","rawvideo","-pixel_format","rgb24","-video_size","660x256","-framerate","10","-i","pipe:0",
-         "-c:v","libx264","-pix_fmt","yuv420p","-movflags","+faststart",str(out)]
+         "-c:v",video_encoder(),"-pix_fmt","yuv420p","-movflags","+faststart",str(out)]
     proc=subprocess.Popen(cmd,stdin=subprocess.PIPE)
-    font=ImageFont.truetype("/usr/share/fonts/dejavu-sans-fonts/DejaVuSans.ttf",14)
+    try:
+        font_path=subprocess.check_output(["fc-match","-f","%{file}","sans"],text=True).strip()
+        font=ImageFont.truetype(font_path,14)
+    except (OSError,subprocess.SubprocessError):
+        font=ImageFont.load_default()
     try:
         for tick in range(512):
             goal=(first+tick//64)%3;delta=stations[goal]-positions["raw"];axis=int(abs(delta[1])>abs(delta[0]))

@@ -22,6 +22,9 @@ def record(repo,ctl,event,receipt,finished=False):
         g["phase"]="integrated" if finished else "training_and_validation";d["updated_utc"]=now
         if finished:
             (ctl/"finalized").touch();g["release"]=receipt;g["owned_session_names"]=[]
+            g.update(completed_fits=42,expected_two_disk_stages=58,verified_two_disk_stages=58,
+                     released_portable_backbones=2,real_invariance_recordings=28,
+                     next_decision="Train matched variable-context controls and ground natural instructions in independent real physical recordings.")
             budget=json.loads((ctl/"budget.json").read_text());spent=budget["project_spend"]
             g.update(owned_credits_this_study=round(spent,5),cumulative_owned_credits=round(spent+g["prior_project_units"],5),
                      remaining_under_original_allowance=round(100-spent-g["prior_project_units"],5))
@@ -42,7 +45,7 @@ def main(a):
         body="Releases the 22-fit small-screen milestone and first independently scored 116.70M pair. Includes sensor-identical action histories, a physical positive control, a real four-stream recording inventory, source masks, paired figures and a clearly labeled one-seed result. Full-history, equal-exposure, remaining seeds and robot transfer are tracked in the same study."
     else:
         report=json.loads(git("show",a.head+":"+BASE+"/metrics/release.json"))
-        if not report["complete"] or not report["all_owned_released"] or not report["two_disk_checkpoints"]==54:raise ValueError("Missing complete stage custody")
+        if not report["complete"] or not report["all_owned_released"] or not report["two_disk_checkpoints"]==58:raise ValueError("Missing complete stage custody")
         title="Publish verified G9 shared-state, full-history and equal-exposure experiments"
         body="Releases all matched training seeds, real cross-sensor scores, 51.2-second held interactive missions, history interventions, matched data exposure, independent robot contact transfer, decision adaptation and reproducible inference artifacts. Includes a project-only compute ledger, independently verified checkpoint hashes and revised research priorities."
     print(json.dumps(integrate(a.repo,a.control,BRANCH,a.head,title,body,final=a.stage=="final",recorder=record)),flush=True)

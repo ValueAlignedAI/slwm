@@ -1,6 +1,7 @@
 """Verified two-HDD checkpoint custody and lossless bounded Colab transfer packets."""
 import argparse
 import hashlib
+import fcntl
 import json
 import os
 import re
@@ -16,7 +17,7 @@ CHUNK=16*2**20
 
 
 def write(path,value):
-    tmp=path.with_suffix(".new");tmp.write_text(json.dumps(value,sort_keys=True,indent=2)+"\n");tmp.replace(path)
+    tmp=path.with_name("."+path.name+"."+str(os.getpid())+".new");tmp.write_text(json.dumps(value,sort_keys=True,indent=2)+"\n");tmp.replace(path)
 
 
 def sha(path):
@@ -30,13 +31,20 @@ def disks():
     return tuple(Path(m)/"SLWM/g9/runs" for m,_ in pair)
 
 
+def study_disks(tag):
+    a,b=disks()
+    if tag.startswith("exposure-") and tag.endswith("-replay"):return a.parent/"dose",b.parent/"dose"
+    return a,b
+
+
 def location(tag,step):
     if not VALID.fullmatch(tag) or step not in (384,1024,4096):raise ValueError("Unknown G9 generation")
     return Path(tag)/f"step-{step:05d}"
 
 
-def bundle(tag,step):
-    rel=location(tag,step);stage=Path("/content/g9-out")/rel;folder=Path("/content/g9-packets")/rel
+def bundle(tag,step,source_root="/content/g9-out"):
+    if source_root not in ("/content/g9-out","/content/g9-dose"):raise ValueError("Unregistered runtime stage root")
+    rel=location(tag,step);stage=Path(source_root)/rel;folder=Path("/content/g9-packets")/rel
     folder.mkdir(parents=True,exist_ok=True)
     manifest=folder/"manifest.json"
     if manifest.exists():return
@@ -58,31 +66,36 @@ def bundle(tag,step):
 def receive(tag,step,file,expected,size,offset):
     rel=location(tag,step)
     if file not in FILES or not re.fullmatch("[a-f0-9]{64}",expected) or not 0<size<2*2**30:raise ValueError("Unknown file")
-    stage=disks()[0]/rel;stage.mkdir(parents=True,exist_ok=True);p=stage/(file+".partial")
-    if offset!=(p.stat().st_size if p.exists() else 0):raise ValueError("Incoming offset changed")
-    with p.open("ab") as out:
-        shutil.copyfileobj(sys.stdin.buffer,out,1<<20);out.flush();os.fsync(out.fileno())
-    if p.stat().st_size!=size:raise ValueError("Incomplete incoming checkpoint")
-    if sha(p)!=expected:
-        p.rename(p.with_suffix(".invalid"));raise ValueError("Incoming checksum mismatch")
-    p.replace(stage/file)
+    stage=study_disks(tag)[0]/rel;stage.mkdir(parents=True,exist_ok=True);p=stage/(file+".partial")
+    with (stage/(file+".lock")).open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if offset!=(p.stat().st_size if p.exists() else 0):raise ValueError("Incoming offset changed")
+        with p.open("ab") as out:
+            shutil.copyfileobj(sys.stdin.buffer,out,1<<20);out.flush();os.fsync(out.fileno())
+        if p.stat().st_size!=size:raise ValueError("Incomplete incoming checkpoint")
+        if sha(p)!=expected:
+            p.rename(p.with_suffix(".invalid"));raise ValueError("Incoming checksum mismatch")
+        p.replace(stage/file)
 
 
 def mirror(tag,step):
-    rel=location(tag,step);a,b=disks();stage,second=a/rel,b/rel
+    rel=location(tag,step);a,b=study_disks(tag);stage,second=a/rel,b/rel
     receipt=json.loads((stage/"receipt.json").read_text())
     if receipt["tag"]!=tag or receipt["step"]!=step:raise ValueError("Conflicting local generation")
     second.mkdir(parents=True,exist_ok=True)
     if (second/"verified.json").exists() and (stage/"verified.json").exists():return
-    for file,field in FILES.items():
-        if sha(stage/file)!=receipt[field]:raise ValueError("Primary checksum mismatch")
-        if not (second/file).exists() or sha(second/file)!=receipt[field]:
-            tmp=second/(file+".partial");shutil.copyfile(stage/file,tmp)
-            if sha(tmp)!=receipt[field]:raise ValueError("Secondary checksum mismatch")
-            tmp.replace(second/file)
-    for p in (stage,second):
-        write(p/"receipt.json",receipt);write(p/"verified.json",{"tag":tag,"step":step,"inference_sha256":receipt["inference_sha256"],"optimizer_sha256":receipt["optimizer_sha256"],"verified_copies":2})
-    if step==receipt["goal_steps"]:write(stage.parent/"done.json",receipt)
+    with (stage/".mirror.lock").open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if (second/"verified.json").exists() and (stage/"verified.json").exists():return
+        for file,field in FILES.items():
+            if sha(stage/file)!=receipt[field]:raise ValueError("Primary checksum mismatch")
+            if not (second/file).exists() or sha(second/file)!=receipt[field]:
+                tmp=second/(file+".partial");shutil.copyfile(stage/file,tmp)
+                if sha(tmp)!=receipt[field]:raise ValueError("Secondary checksum mismatch")
+                tmp.replace(second/file)
+        for p in (stage,second):
+            write(p/"receipt.json",receipt);write(p/"verified.json",{"tag":tag,"step":step,"inference_sha256":receipt["inference_sha256"],"optimizer_sha256":receipt["optimizer_sha256"],"verified_copies":2})
+        if step==receipt["goal_steps"]:write(stage.parent/"done.json",receipt)
 
 
 if __name__=="__main__":
@@ -93,9 +106,9 @@ if __name__=="__main__":
     elif a.op=="receive":receive(a.tag,a.step,a.more[0],a.more[1],int(a.more[2]),int(a.more[3]))
     elif a.op=="offset":
         if a.more[0] not in FILES:raise ValueError("Unknown component")
-        stage=disks()[0]/location(a.tag,a.step);file=stage/a.more[0];partial=stage/(a.more[0]+".partial")
+        stage=study_disks(a.tag)[0]/location(a.tag,a.step);file=stage/a.more[0];partial=stage/(a.more[0]+".partial")
         print(-1 if file.is_file() and sha(file)==a.more[1] else partial.stat().st_size if partial.exists() else 0)
     else:
-        doc=json.load(sys.stdin);stage=disks()[0]/location(a.tag,a.step)
+        doc=json.load(sys.stdin);stage=study_disks(a.tag)[0]/location(a.tag,a.step)
         write(stage/"receipt.json",doc["receipt"]);write(stage.parent/"recipe.json",doc["receipt"])
         (stage.parent/"train.jsonl").write_text(doc["logs"]);mirror(a.tag,a.step)

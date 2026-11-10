@@ -1,0 +1,38 @@
+{
+  "confirm-gpt2-z512-gelu-s911-fresh-audio_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "audio_only",
+    "emitted_field": 512,
+    "weights_sha256": "2026e14bb3dd47904f0a9a85d0a597c983e709cda670eae1e9300db0d0f25fa0",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  },
+  "confirm-gpt2-z512-gelu-s911-fresh-video_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "video_only",
+    "emitted_field": 512,
+    "weights_sha256": "2026e14bb3dd47904f0a9a85d0a597c983e709cda670eae1e9300db0d0f25fa0",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  },
+  "confirm-gpt2-z512-gelu-s911-fresh-text_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "text_only",
+    "emitted_field": 512,
+    "weights_sha256": "2026e14bb3dd47904f0a9a85d0a597c983e709cda670eae1e9300db0d0f25fa0",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  }
+}

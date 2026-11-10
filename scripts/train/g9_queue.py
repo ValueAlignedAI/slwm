@@ -1,11 +1,10 @@
 """Drain verified G9 jobs into locked development and held scores on the research GPU."""
-import argparse
 import json
 from pathlib import Path
 import time
 import jax
 from scripts.train.g9_evaluate import evaluate
-from scripts.train.g9_storage import disks,mirror
+from scripts.train.g9_storage import disks
 from evals.g9_live import raw_receipt
 from scripts.train.g9_fit import save_json
 
