@@ -74,16 +74,18 @@ def planner(run):
     return candidates
 
 
-def experiment(root,data,out,sim_site):
+def experiment(root,data,out,sim_site,memory_study=False):
     sys.path.append(str(sim_site))
     from gym_pusht.envs.pusht import PushTEnv
     with np.load(data/"prior.npz") as f:
         w=f["coef"][-1]
-    seeds=np.arange(400000,400032)
+    seeds=np.arange(401000,401032) if memory_study else np.arange(400000,400032)
+    rules=("passive","prior","hybrid","hybrid-reset","hybrid-local","gpt2","gpt2-reset","gpt2-local") if memory_study else ("random","geometry","prior","hybrid","gpt2")
     output={}
-    for rule in ("random","geometry","prior","hybrid","gpt2"):
-        learned=rule in ("hybrid","gpt2")
-        model=planner(root/f"g5-medium-{rule}-511-residual-gpu") if learned else None
+    for rule in rules:
+        core=rule.split("-")[0]
+        learned=core in ("hybrid","gpt2")
+        model=planner(root/f"g5-medium-{core}-511-residual-gpu") if learned else None
         envs=[PushTEnv(obs_type="state",render_mode="rgb_array",observation_width=16,observation_height=16) for _ in seeds]
         poses=[]; frames=[]; goals=[]; rng_sample=np.random.default_rng(30303)
         gray=np.array([.299,.587,.114])
@@ -115,7 +117,10 @@ def experiment(root,data,out,sim_site):
             vel=geometry(np.repeat(history,c,0),plans.reshape(n*c,16,2)/256-1,[3,7,11,15])@w[1:]+w[0]
             future=poses[:,-1,None,2:4]+64*vel.reshape(n,c,2)
             if learned:
-                correction,branches=model(history,frames,plans,memory,cycle*32,prev_v,prev_n)
+                reset=rule.endswith("-reset")
+                clock=0 if reset or rule.endswith("-local") else cycle*32
+                correction,branches=model(history,frames,plans,None if reset else memory,clock,
+                                          None if reset else prev_v,None if reset else prev_n)
                 future+=correction
             behind=future-55*unit(goals[:,None]-future)
             cost=np.linalg.norm(future-goals[:,None],axis=-1)+.15*np.linalg.norm(plans[:,:,-1]-behind,axis=-1)
@@ -132,7 +137,10 @@ def experiment(root,data,out,sim_site):
             if learned:
                 memory=jax.tree.map(lambda a:a[np.arange(n)*c+pick],branches)
                 prev_n,prev_v=history[:,-1],frames[:,-1]
-            arr=[observe(env,plan[idx]) for env,plan,idx in zip(envs,plans,pick)]
+            actions=plans[np.arange(n),pick]
+            if rule=="passive":
+                actions=np.repeat(poses[:,-1,None,:2],16,axis=1)
+            arr=[observe(env,plan) for env,plan in zip(envs,actions)]
             poses=np.stack([q[0] for q in arr])
             frames=np.stack([q[1] for q in arr]) if learned else None
             distances.append(np.linalg.norm(poses[:,-1,2:4]-goals,axis=-1))
@@ -143,7 +151,7 @@ def experiment(root,data,out,sim_site):
                       "final_within_30_px":float((dist[-1]<=30).mean()),"ever_within_30_px":float((dist.min(0)<=30).mean()),
                       "final_distances_px":dist[-1].tolist()}
         print(rule,output[rule]["mean_final_px"],output[rule]["ever_within_30_px"],flush=True)
-        write(out,{"complete":len(output)==5,"cycles":24,"seconds":38.4,"episodes":len(seeds),"controls":output})
+        write(out,{"complete":len(output)==len(rules),"seed_range":[int(seeds[0]),int(seeds[-1])],"cycles":24,"seconds":38.4,"episodes":len(seeds),"controls":output})
         jax.clear_caches()
 
 
@@ -151,4 +159,5 @@ if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--root",type=Path,required=True); p.add_argument("--data",type=Path,required=True)
     p.add_argument("--out",type=Path,required=True); p.add_argument("--sim-site",type=Path,required=True)
-    a=p.parse_args(); experiment(a.root,a.data,a.out,a.sim_site)
+    p.add_argument("--memory-study",action="store_true")
+    a=p.parse_args(); experiment(a.root,a.data,a.out,a.sim_site,a.memory_study)
