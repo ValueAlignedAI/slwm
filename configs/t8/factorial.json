@@ -1,0 +1,92 @@
+{
+  "study": "G8",
+  "base_revision": "6bf74b47adddf1a7b98f9a42320d84ee1b198657",
+  "g7_scientific_merge": "3694db59894ba204eda9ee8fcef9e414193cf7ee",
+  "parent_steps": 8192,
+  "end_steps": 16384,
+  "rungs": [
+    10240,
+    12288,
+    16384
+  ],
+  "new_arms": {
+    "sim": [
+      8
+    ],
+    "other": [
+      0,
+      1,
+      5,
+      7
+    ]
+  },
+  "reused_arms": {
+    "replay": [],
+    "fresh": [
+      0,
+      1,
+      5,
+      7,
+      8
+    ]
+  },
+  "scale": "anchor",
+  "parameters": 116502025,
+  "cores": [
+    "hybrid",
+    "gpt2"
+  ],
+  "seeds": [
+    511,
+    512
+  ],
+  "effective_batch": 256,
+  "microbatch": 64,
+  "scan": 4,
+  "common_peak_lr": 0.00012,
+  "warmup_continuation_steps": 128,
+  "bridge": {
+    "511": {
+      "hybrid": "replay",
+      "gpt2": "fresh"
+    },
+    "512": {
+      "hybrid": "fresh",
+      "gpt2": "replay"
+    }
+  },
+  "panels": {
+    "pusht": [
+      1100000,
+      1102048
+    ],
+    "puck_barrier": [
+      1110000,
+      1112048
+    ],
+    "live_pusht": [
+      1120000,
+      1120064
+    ],
+    "live_puck_barrier": [
+      1130000,
+      1130064
+    ],
+    "reacher_readout_train": [
+      810000,
+      810512
+    ],
+    "reacher_test": [
+      1140000,
+      1140512
+    ]
+  },
+  "counterfactual_plans": 3,
+  "goals_per_scene": 4,
+  "draws": 4000,
+  "bootstrap_seed": 810251,
+  "live_decisions": 24,
+  "project_credits_authorized": 100,
+  "g7_charged": 24.48097,
+  "remaining_at_start": 75.51903
+}

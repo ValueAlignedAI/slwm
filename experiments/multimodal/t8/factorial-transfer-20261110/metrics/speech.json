@@ -1,0 +1,4846 @@
+{
+  "allocated": {
+    "cases": {
+      "crema": {
+        "clips": 56,
+        "controls": {
+          "allocated192": {
+            "clips": 56,
+            "edits": 29,
+            "speaker_ci95": [
+              0.05144694533762058,
+              0.15225496331198313
+            ],
+            "speakers": 14,
+            "word_error": 0.09764309764309764,
+            "words": 297
+          },
+          "allocated24": {
+            "clips": 56,
+            "edits": 239,
+            "speaker_ci95": [
+              0.7162046464272492,
+              0.8906765720491472
+            ],
+            "speakers": 14,
+            "word_error": 0.8047138047138047,
+            "words": 297
+          },
+          "allocated48": {
+            "clips": 56,
+            "edits": 73,
+            "speaker_ci95": [
+              0.1724137931034483,
+              0.3226978350130646
+            ],
+            "speakers": 14,
+            "word_error": 0.24579124579124578,
+            "words": 297
+          },
+          "allocated6": {
+            "clips": 56,
+            "edits": 297,
+            "speaker_ci95": [
+              1.0,
+              1.0
+            ],
+            "speakers": 14,
+            "word_error": 1.0,
+            "words": 297
+          },
+          "allocated96": {
+            "clips": 56,
+            "edits": 41,
+            "speaker_ci95": [
+              0.07920792079207921,
+              0.2070291800930899
+            ],
+            "speakers": 14,
+            "word_error": 0.13804713804713806,
+            "words": 297
+          },
+          "continuous-pca": {
+            "clips": 56,
+            "edits": 29,
+            "speaker_ci95": [
+              0.047454151740362514,
+              0.15625254478827363
+            ],
+            "speakers": 14,
+            "word_error": 0.09764309764309764,
+            "words": 297
+          },
+          "equal192": {
+            "clips": 56,
+            "edits": 46,
+            "speaker_ci95": [
+              0.08218745948748973,
+              0.24555316226509333
+            ],
+            "speakers": 14,
+            "word_error": 0.15488215488215487,
+            "words": 297
+          },
+          "equal24": {
+            "clips": 56,
+            "edits": 261,
+            "speaker_ci95": [
+              0.8064490527393753,
+              0.9565217391304348
+            ],
+            "speakers": 14,
+            "word_error": 0.8787878787878788,
+            "words": 297
+          },
+          "equal48": {
+            "clips": 56,
+            "edits": 258,
+            "speaker_ci95": [
+              0.8,
+              0.9377162629757786
+            ],
+            "speakers": 14,
+            "word_error": 0.8686868686868687,
+            "words": 297
+          },
+          "equal6": {
+            "clips": 56,
+            "edits": 296,
+            "speaker_ci95": [
+              0.9895104895104895,
+              1.0
+            ],
+            "speakers": 14,
+            "word_error": 0.9966329966329966,
+            "words": 297
+          },
+          "equal96": {
+            "clips": 56,
+            "edits": 87,
+            "speaker_ci95": [
+              0.2044613568123778,
+              0.3972759502218793
+            ],
+            "speakers": 14,
+            "word_error": 0.29292929292929293,
+            "words": 297
+          },
+          "fine": {
+            "clips": 56,
+            "edits": 26,
+            "speaker_ci95": [
+              0.04234527687296417,
+              0.1428693320331546
+            ],
+            "speakers": 14,
+            "word_error": 0.08754208754208755,
+            "words": 297
+          },
+          "original": {
+            "clips": 56,
+            "edits": 20,
+            "speaker_ci95": [
+              0.03215176436639459,
+              0.11187307713822232
+            ],
+            "speakers": 14,
+            "word_error": 0.06734006734006734,
+            "words": 297
+          },
+          "product48": {
+            "clips": 56,
+            "edits": 239,
+            "speaker_ci95": [
+              0.7303686361113407,
+              0.875
+            ],
+            "speakers": 14,
+            "word_error": 0.8047138047138047,
+            "words": 297
+          },
+          "raw-gap-interpolation": {
+            "clips": 56,
+            "edits": 132,
+            "speaker_ci95": [
+              0.40066198200918957,
+              0.4866666666666667
+            ],
+            "speakers": 14,
+            "word_error": 0.4444444444444444,
+            "words": 297
+          }
+        },
+        "correct_reliably_better_than_wrong_and_erased_at_both_seeds": {
+          "gpt2-masked-audio": false,
+          "gpt2-repair": false,
+          "gpt2-text": false,
+          "gpt2-video": false,
+          "hybrid-masked-audio": false,
+          "hybrid-repair": false,
+          "hybrid-text": false,
+          "hybrid-video": false
+        },
+        "excluded": [],
+        "rate_contrasts": {
+          "192": {
+            "clips": 56,
+            "edits": -17,
+            "speaker_ci95": [
+              -0.11864999407372288,
+              -0.016129032258064516
+            ],
+            "speakers": 14,
+            "word_error": -0.05723905723905724,
+            "words": 297
+          },
+          "24": {
+            "clips": 56,
+            "edits": -22,
+            "speaker_ci95": [
+              -0.1631241858445506,
+              0.0
+            ],
+            "speakers": 14,
+            "word_error": -0.07407407407407407,
+            "words": 297
+          },
+          "48": {
+            "clips": 56,
+            "edits": -185,
+            "speaker_ci95": [
+              -0.6948079462909971,
+              -0.546704776513395
+            ],
+            "speakers": 14,
+            "word_error": -0.622895622895623,
+            "words": 297
+          },
+          "6": {
+            "clips": 56,
+            "edits": 1,
+            "speaker_ci95": [
+              0.0,
+              0.01048951048951049
+            ],
+            "speakers": 14,
+            "word_error": 0.003367003367003367,
+            "words": 297
+          },
+          "96": {
+            "clips": 56,
+            "edits": -46,
+            "speaker_ci95": [
+              -0.22866894197952217,
+              -0.08881382477097179
+            ],
+            "speakers": 14,
+            "word_error": -0.15488215488215487,
+            "words": 297
+          }
+        },
+        "raw_source_selection": "69450b08d5c18a157856bcc9b02430cca4ee272abc64b25fa22a20238cc119e0",
+        "speakers": 14,
+        "variants": {
+          "gpt2-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 128,
+                "speaker_ci95": [
+                  0.34575958366511206,
+                  0.5627174943700368
+                ],
+                "speakers": 14,
+                "word_error": 0.43097643097643096,
+                "words": 297
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 130,
+                "speaker_ci95": [
+                  0.35064935064935066,
+                  0.5669253018108653
+                ],
+                "speakers": 14,
+                "word_error": 0.4377104377104377,
+                "words": 297
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 131,
+                "speaker_ci95": [
+                  0.35570096942580165,
+                  0.5695024890363874
+                ],
+                "speakers": 14,
+                "word_error": 0.44107744107744107,
+                "words": 297
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.019801980198019802,
+                  0.006802721088435374
+                ],
+                "speakers": 14,
+                "word_error": -0.006734006734006734,
+                "words": 297
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 56,
+                "edits": -4,
+                "speaker_ci95": [
+                  -0.09688581314878893,
+                  0.1103540640394089
+                ],
+                "speakers": 14,
+                "word_error": -0.013468013468013467,
+                "words": 297
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.020833333333333332,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": -0.010101010101010102,
+                "words": 297
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              }
+            },
+            "weights": "c0606e64864416b2a47aaac90c3bac8025bf69d4dba29770ac7d31cf902ac119"
+          },
+          "gpt2-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 132,
+                "speaker_ci95": [
+                  0.36212624584717606,
+                  0.5689061167296211
+                ],
+                "speakers": 14,
+                "word_error": 0.4444444444444444,
+                "words": 297
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 125,
+                "speaker_ci95": [
+                  0.37209302325581395,
+                  0.47163444546546973
+                ],
+                "speakers": 14,
+                "word_error": 0.4208754208754209,
+                "words": 297
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 131,
+                "speaker_ci95": [
+                  0.3586174365647365,
+                  0.5665616137095612
+                ],
+                "speakers": 14,
+                "word_error": 0.44107744107744107,
+                "words": 297
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": 7,
+                "speaker_ci95": [
+                  -0.03896421168408139,
+                  0.1298398169336385
+                ],
+                "speakers": 14,
+                "word_error": 0.02356902356902357,
+                "words": 297
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  -0.07433062299587724,
+                  0.1188852813852814
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 1,
+                "speaker_ci95": [
+                  0.0,
+                  0.010169491525423728
+                ],
+                "speakers": 14,
+                "word_error": 0.003367003367003367,
+                "words": 297
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              }
+            },
+            "weights": "397caff61b5a554613dcc92e354dc02db6658210bb9f2ebf97894ea230b01ae9"
+          },
+          "hybrid-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  0.9868421052631579,
+                  1.013745704467354
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 302,
+                "speaker_ci95": [
+                  0.9933554817275747,
+                  1.051733117816092
+                ],
+                "speakers": 14,
+                "word_error": 1.0168350168350169,
+                "words": 297
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 134,
+                "speaker_ci95": [
+                  0.3737024221453287,
+                  0.5738831615120275
+                ],
+                "speakers": 14,
+                "word_error": 0.4511784511784512,
+                "words": 297
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 123,
+                "speaker_ci95": [
+                  0.3636284995281535,
+                  0.4634146341463415
+                ],
+                "speakers": 14,
+                "word_error": 0.41414141414141414,
+                "words": 297
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 131,
+                "speaker_ci95": [
+                  0.35353535353535354,
+                  0.5724144023394664
+                ],
+                "speakers": 14,
+                "word_error": 0.44107744107744107,
+                "words": 297
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  -0.013157894736842105,
+                  0.013745704467353952
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": -5,
+                "speaker_ci95": [
+                  -0.056106479068959526,
+                  0.013559322033898305
+                ],
+                "speakers": 14,
+                "word_error": -0.016835016835016835,
+                "words": 297
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": 11,
+                "speaker_ci95": [
+                  -0.02857142857142857,
+                  0.14487760536692784
+                ],
+                "speakers": 14,
+                "word_error": 0.037037037037037035,
+                "words": 297
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 56,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.06840390879478828,
+                  0.1245674740484429
+                ],
+                "speakers": 14,
+                "word_error": 0.006734006734006734,
+                "words": 297
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 3,
+                "speaker_ci95": [
+                  -0.010033444816053512,
+                  0.034016507626941576
+                ],
+                "speakers": 14,
+                "word_error": 0.010101010101010102,
+                "words": 297
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              }
+            },
+            "weights": "4ab277d7affc099d1d6323cc1f9e50c1f8d8bafbea6d75e6aff4858253392f9a"
+          },
+          "hybrid-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 299,
+                "speaker_ci95": [
+                  0.9893578754018063,
+                  1.029419044845661
+                ],
+                "speakers": 14,
+                "word_error": 1.0067340067340067,
+                "words": 297
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 308,
+                "speaker_ci95": [
+                  1.0101694915254238,
+                  1.068259385665529
+                ],
+                "speakers": 14,
+                "word_error": 1.037037037037037,
+                "words": 297
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 130,
+                "speaker_ci95": [
+                  0.3523442551673393,
+                  0.5674836258032625
+                ],
+                "speakers": 14,
+                "word_error": 0.4377104377104377,
+                "words": 297
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 132,
+                "speaker_ci95": [
+                  0.36212624584717606,
+                  0.5689061167296211
+                ],
+                "speakers": 14,
+                "word_error": 0.4444444444444444,
+                "words": 297
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 115,
+                "speaker_ci95": [
+                  0.33221448071891707,
+                  0.44631172099712374
+                ],
+                "speakers": 14,
+                "word_error": 0.3872053872053872,
+                "words": 297
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 297,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 297
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.010642124598193784,
+                  0.029419044845661064
+                ],
+                "speakers": 14,
+                "word_error": 0.006734006734006734,
+                "words": 297
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": -9,
+                "speaker_ci95": [
+                  -0.0681859058207979,
+                  0.003401360544217687
+                ],
+                "speakers": 14,
+                "word_error": -0.030303030303030304,
+                "words": 297
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.029900332225913623,
+                  0.01003428654800117
+                ],
+                "speakers": 14,
+                "word_error": -0.006734006734006734,
+                "words": 297
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 56,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.09061905646765624,
+                  0.11824883463602978
+                ],
+                "speakers": 14,
+                "word_error": -0.006734006734006734,
+                "words": 297
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 15,
+                "speaker_ci95": [
+                  -0.0033333333333333335,
+                  0.14726027397260275
+                ],
+                "speakers": 14,
+                "word_error": 0.050505050505050504,
+                "words": 297
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 297
+              }
+            },
+            "weights": "81e0a956429084574a5565299117d2ce390f37c071cab85aeeaaf89b3283eecb"
+          }
+        }
+      },
+      "libri": {
+        "clips": 132,
+        "controls": {
+          "allocated192": {
+            "clips": 132,
+            "edits": 236,
+            "speaker_ci95": [
+              0.18867880690187278,
+              0.26398509862060204
+            ],
+            "speakers": 33,
+            "word_error": 0.224976167778837,
+            "words": 1049
+          },
+          "allocated24": {
+            "clips": 132,
+            "edits": 923,
+            "speaker_ci95": [
+              0.8343251050420168,
+              0.9245472582921963
+            ],
+            "speakers": 33,
+            "word_error": 0.8798856053384175,
+            "words": 1049
+          },
+          "allocated48": {
+            "clips": 132,
+            "edits": 490,
+            "speaker_ci95": [
+              0.38551365374602775,
+              0.5591464388374321
+            ],
+            "speakers": 33,
+            "word_error": 0.4671115347950429,
+            "words": 1049
+          },
+          "allocated6": {
+            "clips": 132,
+            "edits": 1039,
+            "speaker_ci95": [
+              0.9858078832900389,
+              0.9951076320939335
+            ],
+            "speakers": 33,
+            "word_error": 0.990467111534795,
+            "words": 1049
+          },
+          "allocated96": {
+            "clips": 132,
+            "edits": 290,
+            "speaker_ci95": [
+              0.22846642608030265,
+              0.3269059632627006
+            ],
+            "speakers": 33,
+            "word_error": 0.27645376549094375,
+            "words": 1049
+          },
+          "continuous-pca": {
+            "clips": 132,
+            "edits": 236,
+            "speaker_ci95": [
+              0.1830538769798359,
+              0.26930766042669696
+            ],
+            "speakers": 33,
+            "word_error": 0.224976167778837,
+            "words": 1049
+          },
+          "equal192": {
+            "clips": 132,
+            "edits": 308,
+            "speaker_ci95": [
+              0.24194748230478944,
+              0.3468088171008918
+            ],
+            "speakers": 33,
+            "word_error": 0.29361296472831266,
+            "words": 1049
+          },
+          "equal24": {
+            "clips": 132,
+            "edits": 1008,
+            "speaker_ci95": [
+              0.9330162942586154,
+              0.9886392924086224
+            ],
+            "speakers": 33,
+            "word_error": 0.9609151572926596,
+            "words": 1049
+          },
+          "equal48": {
+            "clips": 132,
+            "edits": 981,
+            "speaker_ci95": [
+              0.8959873947280078,
+              0.9724351805512781
+            ],
+            "speakers": 33,
+            "word_error": 0.9351763584366063,
+            "words": 1049
+          },
+          "equal6": {
+            "clips": 132,
+            "edits": 1059,
+            "speaker_ci95": [
+              0.9812206572769953,
+              1.0593006315110516
+            ],
+            "speakers": 33,
+            "word_error": 1.009532888465205,
+            "words": 1049
+          },
+          "equal96": {
+            "clips": 132,
+            "edits": 511,
+            "speaker_ci95": [
+              0.43721609836246234,
+              0.5407971971736644
+            ],
+            "speakers": 33,
+            "word_error": 0.4871306005719733,
+            "words": 1049
+          },
+          "fine": {
+            "clips": 132,
+            "edits": 224,
+            "speaker_ci95": [
+              0.17082357041972984,
+              0.25929456625357483
+            ],
+            "speakers": 33,
+            "word_error": 0.21353670162059105,
+            "words": 1049
+          },
+          "original": {
+            "clips": 132,
+            "edits": 235,
+            "speaker_ci95": [
+              0.1824950046894752,
+              0.2673976656776665
+            ],
+            "speakers": 33,
+            "word_error": 0.22402287893231648,
+            "words": 1049
+          },
+          "product48": {
+            "clips": 132,
+            "edits": 970,
+            "speaker_ci95": [
+              0.8770548316293131,
+              0.9719475042481498
+            ],
+            "speakers": 33,
+            "word_error": 0.9246901811248809,
+            "words": 1049
+          },
+          "raw-gap-interpolation": {
+            "clips": 132,
+            "edits": 558,
+            "speaker_ci95": [
+              0.4872249084207606,
+              0.5804845027612483
+            ],
+            "speakers": 33,
+            "word_error": 0.5319351763584366,
+            "words": 1049
+          }
+        },
+        "correct_reliably_better_than_wrong_and_erased_at_both_seeds": {
+          "gpt2-masked-audio": false,
+          "gpt2-repair": false,
+          "gpt2-text": false,
+          "hybrid-masked-audio": false,
+          "hybrid-repair": false,
+          "hybrid-text": false
+        },
+        "excluded": [],
+        "rate_contrasts": {
+          "192": {
+            "clips": 132,
+            "edits": -72,
+            "speaker_ci95": [
+              -0.09899242525210321,
+              -0.03951236137155494
+            ],
+            "speakers": 33,
+            "word_error": -0.06863679694947569,
+            "words": 1049
+          },
+          "24": {
+            "clips": 132,
+            "edits": -85,
+            "speaker_ci95": [
+              -0.13385214889485675,
+              -0.03160646853203913
+            ],
+            "speakers": 33,
+            "word_error": -0.08102955195424213,
+            "words": 1049
+          },
+          "48": {
+            "clips": 132,
+            "edits": -491,
+            "speaker_ci95": [
+              -0.5566149567912738,
+              -0.36483738410297956
+            ],
+            "speakers": 33,
+            "word_error": -0.4680648236415634,
+            "words": 1049
+          },
+          "6": {
+            "clips": 132,
+            "edits": -20,
+            "speaker_ci95": [
+              -0.06782128383644204,
+              0.008319089322403099
+            ],
+            "speakers": 33,
+            "word_error": -0.019065776930409915,
+            "words": 1049
+          },
+          "96": {
+            "clips": 132,
+            "edits": -221,
+            "speaker_ci95": [
+              -0.2495153146939714,
+              -0.17387209708744267
+            ],
+            "speakers": 33,
+            "word_error": -0.21067683508102955,
+            "words": 1049
+          }
+        },
+        "raw_source_selection": "69450b08d5c18a157856bcc9b02430cca4ee272abc64b25fa22a20238cc119e0",
+        "speakers": 33,
+        "variants": {
+          "gpt2-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 1040,
+                "speaker_ci95": [
+                  0.9819215486384849,
+                  1.0030677995994004
+                ],
+                "speakers": 33,
+                "word_error": 0.9914204003813155,
+                "words": 1049
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1051,
+                "speaker_ci95": [
+                  0.990078737191079,
+                  1.0168835103428542
+                ],
+                "speakers": 33,
+                "word_error": 1.001906577693041,
+                "words": 1049
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 536,
+                "speaker_ci95": [
+                  0.4681618019768522,
+                  0.5577699344609391
+                ],
+                "speakers": 33,
+                "word_error": 0.5109628217349858,
+                "words": 1049
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 530,
+                "speaker_ci95": [
+                  0.4635496954741153,
+                  0.5517576898932832
+                ],
+                "speakers": 33,
+                "word_error": 0.5052430886558628,
+                "words": 1049
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 530,
+                "speaker_ci95": [
+                  0.4669901751289079,
+                  0.5463445429908845
+                ],
+                "speakers": 33,
+                "word_error": 0.5052430886558628,
+                "words": 1049
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 1040,
+                "speaker_ci95": [
+                  0.9866910637326152,
+                  0.9960593070510678
+                ],
+                "speakers": 33,
+                "word_error": 0.9914204003813155,
+                "words": 1049
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1034,
+                "speaker_ci95": [
+                  0.9776744186046512,
+                  0.9928865396032257
+                ],
+                "speakers": 33,
+                "word_error": 0.9857006673021925,
+                "words": 1049
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.0070301863907522456,
+                  0.012536565487022026
+                ],
+                "speakers": 33,
+                "word_error": 0.0019065776930409914,
+                "words": 1049
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -11,
+                "speaker_ci95": [
+                  -0.024715416785751756,
+                  0.002748015873015876
+                ],
+                "speakers": 33,
+                "word_error": -0.010486177311725452,
+                "words": 1049
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": 6,
+                "speaker_ci95": [
+                  -0.010377358490566037,
+                  0.021114767817128167
+                ],
+                "speakers": 33,
+                "word_error": 0.005719733079122974,
+                "words": 1049
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 132,
+                "edits": -22,
+                "speaker_ci95": [
+                  -0.045162201567340986,
+                  0.006550034382569593
+                ],
+                "speakers": 33,
+                "word_error": -0.020972354623450904,
+                "words": 1049
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": 6,
+                "speaker_ci95": [
+                  -0.004892487699599985,
+                  0.020129693328172292
+                ],
+                "speakers": 33,
+                "word_error": 0.005719733079122974,
+                "words": 1049
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.004807807988450433,
+                  0.0
+                ],
+                "speakers": 33,
+                "word_error": -0.0019065776930409914,
+                "words": 1049
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": 4,
+                "speaker_ci95": [
+                  0.0,
+                  0.01032888118182781
+                ],
+                "speakers": 33,
+                "word_error": 0.0038131553860819827,
+                "words": 1049
+              }
+            },
+            "weights": "c0606e64864416b2a47aaac90c3bac8025bf69d4dba29770ac7d31cf902ac119"
+          },
+          "gpt2-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 1053,
+                "speaker_ci95": [
+                  0.9859275707012524,
+                  1.0265748031496063
+                ],
+                "speakers": 33,
+                "word_error": 1.003813155386082,
+                "words": 1049
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1036,
+                "speaker_ci95": [
+                  0.9782800511508951,
+                  0.9971939004583112
+                ],
+                "speakers": 33,
+                "word_error": 0.9876072449952336,
+                "words": 1049
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 536,
+                "speaker_ci95": [
+                  0.46895799175497505,
+                  0.5563268989942473
+                ],
+                "speakers": 33,
+                "word_error": 0.5109628217349858,
+                "words": 1049
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 539,
+                "speaker_ci95": [
+                  0.4754697710271369,
+                  0.5560838800185334
+                ],
+                "speakers": 33,
+                "word_error": 0.5138226882745471,
+                "words": 1049
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 543,
+                "speaker_ci95": [
+                  0.47443894045260193,
+                  0.5654368024553572
+                ],
+                "speakers": 33,
+                "word_error": 0.5176358436606292,
+                "words": 1049
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1041,
+                "speaker_ci95": [
+                  0.9860593869873665,
+                  0.9980544747081712
+                ],
+                "speakers": 33,
+                "word_error": 0.9923736892278361,
+                "words": 1049
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 15,
+                "speaker_ci95": [
+                  -0.004596546536826037,
+                  0.03883616141865665
+                ],
+                "speakers": 33,
+                "word_error": 0.014299332697807437,
+                "words": 1049
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": 17,
+                "speaker_ci95": [
+                  -0.0037146278603597737,
+                  0.04056006319447183
+                ],
+                "speakers": 33,
+                "word_error": 0.016205910390848427,
+                "words": 1049
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.018692025912941605,
+                  0.013347320984669843
+                ],
+                "speakers": 33,
+                "word_error": -0.002859866539561487,
+                "words": 1049
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 132,
+                "edits": -22,
+                "speaker_ci95": [
+                  -0.04532787641678016,
+                  0.007753452034883726
+                ],
+                "speakers": 33,
+                "word_error": -0.020972354623450904,
+                "words": 1049
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": -7,
+                "speaker_ci95": [
+                  -0.01893651254919893,
+                  0.0048692644342230905
+                ],
+                "speakers": 33,
+                "word_error": -0.00667302192564347,
+                "words": 1049
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 33,
+                "word_error": 0.0,
+                "words": 1049
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.0074418604651162795,
+                  0.0
+                ],
+                "speakers": 33,
+                "word_error": -0.002859866539561487,
+                "words": 1049
+              }
+            },
+            "weights": "397caff61b5a554613dcc92e354dc02db6658210bb9f2ebf97894ea230b01ae9"
+          },
+          "hybrid-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 1027,
+                "speaker_ci95": [
+                  0.9667924501178771,
+                  0.9906463348610376
+                ],
+                "speakers": 33,
+                "word_error": 0.9790276453765491,
+                "words": 1049
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1053,
+                "speaker_ci95": [
+                  0.99268671485836,
+                  1.0163115572541546
+                ],
+                "speakers": 33,
+                "word_error": 1.003813155386082,
+                "words": 1049
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 539,
+                "speaker_ci95": [
+                  0.4694637015111388,
+                  0.5617881597994824
+                ],
+                "speakers": 33,
+                "word_error": 0.5138226882745471,
+                "words": 1049
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 541,
+                "speaker_ci95": [
+                  0.4755510989411814,
+                  0.560080556519727
+                ],
+                "speakers": 33,
+                "word_error": 0.5157292659675882,
+                "words": 1049
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 533,
+                "speaker_ci95": [
+                  0.46774155828480035,
+                  0.5523809523809524
+                ],
+                "speakers": 33,
+                "word_error": 0.5081029551954243,
+                "words": 1049
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1035,
+                "speaker_ci95": [
+                  0.9787434474252235,
+                  0.9938904855934745
+                ],
+                "speakers": 33,
+                "word_error": 0.9866539561487131,
+                "words": 1049
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": -11,
+                "speaker_ci95": [
+                  -0.02343238222533351,
+                  0.001878111268933109
+                ],
+                "speakers": 33,
+                "word_error": -0.010486177311725452,
+                "words": 1049
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -26,
+                "speaker_ci95": [
+                  -0.041109299333464376,
+                  -0.009708737864077669
+                ],
+                "speakers": 33,
+                "word_error": -0.02478551000953289,
+                "words": 1049
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.026845781411634465,
+                  0.024486282875818926
+                ],
+                "speakers": 33,
+                "word_error": -0.0019065776930409914,
+                "words": 1049
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 132,
+                "edits": -19,
+                "speaker_ci95": [
+                  -0.04649042844120328,
+                  0.014000467289719628
+                ],
+                "speakers": 33,
+                "word_error": -0.01811248808388942,
+                "words": 1049
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": 6,
+                "speaker_ci95": [
+                  -0.019427650476901637,
+                  0.03300656001211857
+                ],
+                "speakers": 33,
+                "word_error": 0.005719733079122974,
+                "words": 1049
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 33,
+                "word_error": 0.0,
+                "words": 1049
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": 3,
+                "speaker_ci95": [
+                  -0.0019212295869356388,
+                  0.00983284169124877
+                ],
+                "speakers": 33,
+                "word_error": 0.002859866539561487,
+                "words": 1049
+              }
+            },
+            "weights": "4ab277d7affc099d1d6323cc1f9e50c1f8d8bafbea6d75e6aff4858253392f9a"
+          },
+          "hybrid-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 1024,
+                "speaker_ci95": [
+                  0.9591638295677293,
+                  0.9934333958724203
+                ],
+                "speakers": 33,
+                "word_error": 0.9761677788369876,
+                "words": 1049
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1046,
+                "speaker_ci95": [
+                  0.9838415837186778,
+                  1.0122324159021407
+                ],
+                "speakers": 33,
+                "word_error": 0.9971401334604385,
+                "words": 1049
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 546,
+                "speaker_ci95": [
+                  0.4807140050473748,
+                  0.5621329396744335
+                ],
+                "speakers": 33,
+                "word_error": 0.5204957102001907,
+                "words": 1049
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 527,
+                "speaker_ci95": [
+                  0.46529076799032454,
+                  0.5419022784836246
+                ],
+                "speakers": 33,
+                "word_error": 0.5023832221163013,
+                "words": 1049
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 533,
+                "speaker_ci95": [
+                  0.4672881882460009,
+                  0.551420386176018
+                ],
+                "speakers": 33,
+                "word_error": 0.5081029551954243,
+                "words": 1049
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835049044139725,
+                  0.994908350305499
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 1038,
+                "speaker_ci95": [
+                  0.9835107540045013,
+                  0.9949084797981158
+                ],
+                "speakers": 33,
+                "word_error": 0.9895138226882746,
+                "words": 1049
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1041,
+                "speaker_ci95": [
+                  0.9868048292722601,
+                  0.9971181556195965
+                ],
+                "speakers": 33,
+                "word_error": 0.9923736892278361,
+                "words": 1049
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": -14,
+                "speaker_ci95": [
+                  -0.030957574716592235,
+                  0.004812667920223263
+                ],
+                "speakers": 33,
+                "word_error": -0.01334604385128694,
+                "words": 1049
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -22,
+                "speaker_ci95": [
+                  -0.04011915430619822,
+                  -0.0009929504349867441
+                ],
+                "speakers": 33,
+                "word_error": -0.020972354623450904,
+                "words": 1049
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": 19,
+                "speaker_ci95": [
+                  0.005524355010390795,
+                  0.03291384317521781
+                ],
+                "speakers": 33,
+                "word_error": 0.01811248808388942,
+                "words": 1049
+              },
+              "repair-minus-raw-interpolation": {
+                "clips": 132,
+                "edits": -12,
+                "speaker_ci95": [
+                  -0.03725217153659987,
+                  0.014914657781951522
+                ],
+                "speakers": 33,
+                "word_error": -0.011439466158245948,
+                "words": 1049
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": 13,
+                "speaker_ci95": [
+                  -0.002935492619759991,
+                  0.028864059590316574
+                ],
+                "speakers": 33,
+                "word_error": 0.012392755004766444,
+                "words": 1049
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": 0,
+                "speaker_ci95": [
+                  -0.002801185894918715,
+                  0.002806426777099253
+                ],
+                "speakers": 33,
+                "word_error": 0.0,
+                "words": 1049
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.006789689527558314,
+                  0.000980392156862745
+                ],
+                "speakers": 33,
+                "word_error": -0.002859866539561487,
+                "words": 1049
+              }
+            },
+            "weights": "81e0a956429084574a5565299117d2ce390f37c071cab85aeeaaf89b3283eecb"
+          }
+        }
+      }
+    },
+    "condition_lock_sha256": "6135ce0409b76058ee219e2cf2895832b25283484ad5dc84304405f31e4cf701",
+    "pinned_weights": {
+      "allocator": "e4e3f423d10bb5e099da05d042a20ee80cc4e58bcb91cab128113291b6096cb0",
+      "code": {
+        "training/g8_rate_codec.py": "c37fbe9124c813f90612e071ba3fc16fc2ae02a5a4acf83c7ce4d06075e6810a",
+        "training/g8_rate_heads.py": "5b4c69f1f7aca0ce9d8ac85b5eb54bc9e29bb227aa8f95b569c35180030208d2",
+        "training/g8_rate_score.py": "8853afc28de313b8b7c651a3b1fa78ca2af0670ed778a5fa103b236cd1f21ffe",
+        "training/g8_speech_fields.py": "a07896d2db01dd10b0a8de091f3cf79db33f5b6dc37b5aae717722796044b199"
+      },
+      "fields": {
+        "gpt2-711/crema": "f34a243ba1a01a4c55d181dd649c1458b645b472ba0d9949cf50c01a8d979657",
+        "gpt2-711/libri": "5758ac5f25a952843951168f143408d629b58f7aff4398458763024977bd169d",
+        "gpt2-712/crema": "c88128d7dd059e03e51147ebcd7b77f45e128c41b7f2cf44350a7f20f18335cf",
+        "gpt2-712/libri": "6db0148731589c3f46c6d48590f258ee0613cd4eaa92a289095f81db57c12dcd",
+        "hybrid-711/crema": "c3a41213956a411cde47ddc696e162f40cf9164c5c9b2c47b7f1c6ea99daaefd",
+        "hybrid-711/libri": "c99996f2b503cc3f570c18c789d65f59f9e5cc0fd628bb1b751780f30913d781",
+        "hybrid-712/crema": "dd003bc56a8baaf2c642c923d5cfd801d8374d0fd13e52aa1c61dd85d6c04c6a",
+        "hybrid-712/libri": "88ee86bdb281361a2741dfc42fdc90fecb573c35c4408986ac5f357d1c1bc9bd"
+      },
+      "predictors": {
+        "gpt2-711": "c0606e64864416b2a47aaac90c3bac8025bf69d4dba29770ac7d31cf902ac119",
+        "gpt2-712": "397caff61b5a554613dcc92e354dc02db6658210bb9f2ebf97894ea230b01ae9",
+        "hybrid-711": "4ab277d7affc099d1d6323cc1f9e50c1f8d8bafbea6d75e6aff4858253392f9a",
+        "hybrid-712": "81e0a956429084574a5565299117d2ce390f37c071cab85aeeaaf89b3283eecb"
+      },
+      "product": "94cb956ea10fc03ddcd61ae2ba367b40f764d81cb9109ee7933b968904267059",
+      "recognizer": "87c7102498dcde7456f24cfd30239ca606ed9063",
+      "sources": {
+        "crema": "2d95330cdb6daf5bc1cede09dfa975b88316578501ebdf86e6f8bd6465976d75",
+        "libri": "d7e7cc1c26a003d242e93a85ce8bb534a45f00a0b223d8ac1e113cf7383cf424"
+      }
+    }
+  },
+  "allocated_codec": {
+    "meaning": "Fixed-rate scalar payloads. Static codebooks and byte alignment are excluded from nominal bit rate.",
+    "pca_parent": "94cb956ea10fc03ddcd61ae2ba367b40f764d81cb9109ee7933b968904267059",
+    "rates": {
+      "allocated192": {
+        "bits_per_coordinate": [
+          8,
+          7,
+          5,
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1
+        ],
+        "nominal_bps": 9000.0,
+        "training_pc_mse": 0.020849560338450868
+      },
+      "allocated24": {
+        "bits_per_coordinate": [
+          5,
+          4,
+          3,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 1125.0,
+        "training_pc_mse": 0.36289158886659834
+      },
+      "allocated48": {
+        "bits_per_coordinate": [
+          6,
+          4,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 2250.0,
+        "training_pc_mse": 0.2164990355416486
+      },
+      "allocated6": {
+        "bits_per_coordinate": [
+          3,
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 281.25,
+        "training_pc_mse": 0.7355767107385452
+      },
+      "allocated96": {
+        "bits_per_coordinate": [
+          6,
+          5,
+          4,
+          4,
+          4,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 4500.0,
+        "training_pc_mse": 0.09773937414113186
+      },
+      "equal192": {
+        "bits_per_coordinate": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "nominal_bps": 9000.0,
+        "training_pc_mse": 0.1336778617505265
+      },
+      "equal24": {
+        "bits_per_coordinate": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 1125.0,
+        "training_pc_mse": 1.137097152969517
+      },
+      "equal48": {
+        "bits_per_coordinate": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 2250.0,
+        "training_pc_mse": 1.0817634499600437
+      },
+      "equal6": {
+        "bits_per_coordinate": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nominal_bps": 281.25,
+        "training_pc_mse": 1.2807453806122013
+      },
+      "equal96": {
+        "bits_per_coordinate": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "nominal_bps": 4500.0,
+        "training_pc_mse": 0.41030447335937853
+      }
+    },
+    "train_frame_pairs": 131072,
+    "weights": "e4e3f423d10bb5e099da05d042a20ee80cc4e58bcb91cab128113291b6096cb0"
+  },
+  "product": {
+    "cases": {
+      "crema": {
+        "clips": 56,
+        "controls": {
+          "acoustic-oracle-1": {
+            "clips": 56,
+            "edits": 326,
+            "speaker_ci95": [
+              0.9646302250803859,
+              1.141026645768025
+            ],
+            "speakers": 14,
+            "word_error": 1.0415335463258786,
+            "words": 313
+          },
+          "acoustic-oracle-4": {
+            "clips": 56,
+            "edits": 265,
+            "speaker_ci95": [
+              0.7682482460068667,
+              0.9169400482406957
+            ],
+            "speakers": 14,
+            "word_error": 0.8466453674121406,
+            "words": 313
+          },
+          "acoustic-oracle-8": {
+            "clips": 56,
+            "edits": 265,
+            "speaker_ci95": [
+              0.7414157147802007,
+              0.942572401947402
+            ],
+            "speakers": 14,
+            "word_error": 0.8466453674121406,
+            "words": 313
+          },
+          "constant": {
+            "clips": 56,
+            "edits": 313,
+            "speaker_ci95": [
+              1.0,
+              1.0
+            ],
+            "speakers": 14,
+            "word_error": 1.0,
+            "words": 313
+          },
+          "fine": {
+            "clips": 56,
+            "edits": 16,
+            "speaker_ci95": [
+              0.02127498388136686,
+              0.08737864077669903
+            ],
+            "speakers": 14,
+            "word_error": 0.051118210862619806,
+            "words": 313
+          },
+          "known-audio-constant-gap": {
+            "clips": 56,
+            "edits": 136,
+            "speaker_ci95": [
+              0.3630573248407643,
+              0.5080398859509464
+            ],
+            "speakers": 14,
+            "word_error": 0.43450479233226835,
+            "words": 313
+          },
+          "original": {
+            "clips": 56,
+            "edits": 19,
+            "speaker_ci95": [
+              0.030864197530864196,
+              0.09355081454310067
+            ],
+            "speakers": 14,
+            "word_error": 0.06070287539936102,
+            "words": 313
+          },
+          "semantic-oracle": {
+            "clips": 56,
+            "edits": 230,
+            "speaker_ci95": [
+              0.6412637362637363,
+              0.8426229508196721
+            ],
+            "speakers": 14,
+            "word_error": 0.7348242811501597,
+            "words": 313
+          }
+        },
+        "correct_reliably_better_than_wrong_and_erased_at_both_seeds": {
+          "gpt2-masked-audio": false,
+          "gpt2-repair": false,
+          "gpt2-text": false,
+          "gpt2-video": false,
+          "hybrid-masked-audio": false,
+          "hybrid-repair": false,
+          "hybrid-text": false,
+          "hybrid-video": false
+        },
+        "excluded": [],
+        "rate_contrasts": {
+          "1": {
+            "clips": 56,
+            "edits": 96,
+            "speaker_ci95": [
+              0.15431667094076107,
+              0.46350350798626666
+            ],
+            "speakers": 14,
+            "word_error": 0.30670926517571884,
+            "words": 313
+          },
+          "4": {
+            "clips": 56,
+            "edits": 35,
+            "speaker_ci95": [
+              -0.015924838729370585,
+              0.23301513694593506
+            ],
+            "speakers": 14,
+            "word_error": 0.11182108626198083,
+            "words": 313
+          },
+          "8": {
+            "clips": 56,
+            "edits": 35,
+            "speaker_ci95": [
+              -0.03134796238244514,
+              0.2427338187702266
+            ],
+            "speakers": 14,
+            "word_error": 0.11182108626198083,
+            "words": 313
+          }
+        },
+        "raw_source_selection": "8965c328b824d96292f86f548e6e842b7e3dab2c9ba7ec29e030d7f4762ac367",
+        "speakers": 14,
+        "variants": {
+          "gpt2-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 312,
+                "speaker_ci95": [
+                  0.9810725552050473,
+                  1.009493670886076
+                ],
+                "speakers": 14,
+                "word_error": 0.9968051118210862,
+                "words": 313
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 135,
+                "speaker_ci95": [
+                  0.35044980468374165,
+                  0.5141088080852032
+                ],
+                "speakers": 14,
+                "word_error": 0.43130990415335463,
+                "words": 313
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 141,
+                "speaker_ci95": [
+                  0.3774193548387097,
+                  0.5243126707650274
+                ],
+                "speakers": 14,
+                "word_error": 0.4504792332268371,
+                "words": 313
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 131,
+                "speaker_ci95": [
+                  0.3398646125116713,
+                  0.504952150733468
+                ],
+                "speakers": 14,
+                "word_error": 0.4185303514376997,
+                "words": 313
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 307,
+                "speaker_ci95": [
+                  0.9647435897435898,
+                  0.9938654997091987
+                ],
+                "speakers": 14,
+                "word_error": 0.9808306709265175,
+                "words": 313
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 1,
+                "speaker_ci95": [
+                  -0.00949367088607595,
+                  0.01892744479495268
+                ],
+                "speakers": 14,
+                "word_error": 0.003194888178913738,
+                "words": 313
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": -6,
+                "speaker_ci95": [
+                  -0.06451861042183622,
+                  0.013289036544850499
+                ],
+                "speakers": 14,
+                "word_error": -0.019169329073482427,
+                "words": 313
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 4,
+                "speaker_ci95": [
+                  -0.00983687446074202,
+                  0.037269983165960426
+                ],
+                "speakers": 14,
+                "word_error": 0.012779552715654952,
+                "words": 313
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": -6,
+                "speaker_ci95": [
+                  -0.035256410256410256,
+                  -0.006134500290801296
+                ],
+                "speakers": 14,
+                "word_error": -0.019169329073482427,
+                "words": 313
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": -6,
+                "speaker_ci95": [
+                  -0.035256410256410256,
+                  -0.006134500290801296
+                ],
+                "speakers": 14,
+                "word_error": -0.019169329073482427,
+                "words": 313
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              }
+            },
+            "weights": "9a58d828ebfb73a09f939419b928550f283f7281086b2138024bd75d052cded5"
+          },
+          "gpt2-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  0.990796838131194,
+                  1.0097402597402598
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  0.9876160990712074,
+                  1.013029315960912
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 137,
+                "speaker_ci95": [
+                  0.3652660140245824,
+                  0.5097450976176142
+                ],
+                "speakers": 14,
+                "word_error": 0.43769968051118213,
+                "words": 313
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 138,
+                "speaker_ci95": [
+                  0.37462212266048095,
+                  0.507790618827206
+                ],
+                "speakers": 14,
+                "word_error": 0.44089456869009586,
+                "words": 313
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 139,
+                "speaker_ci95": [
+                  0.375,
+                  0.5171477296631307
+                ],
+                "speakers": 14,
+                "word_error": 0.4440894568690096,
+                "words": 313
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  -0.00920316186880604,
+                  0.00974025974025974
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  -0.01282051282051282,
+                  0.012698412698412698
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": -1,
+                "speaker_ci95": [
+                  -0.04839495182237118,
+                  0.03448546952938626
+                ],
+                "speakers": 14,
+                "word_error": -0.003194888178913738,
+                "words": 313
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": -2,
+                "speaker_ci95": [
+                  -0.02640482591305488,
+                  0.01286277357120631
+                ],
+                "speakers": 14,
+                "word_error": -0.006389776357827476,
+                "words": 313
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              }
+            },
+            "weights": "93c27f5b397a2f7b191cb6aaaa5def5318a37694c240b578069e1d88b1e48792"
+          },
+          "hybrid-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 314,
+                "speaker_ci95": [
+                  0.9777777777777777,
+                  1.0361871960222337
+                ],
+                "speakers": 14,
+                "word_error": 1.0031948881789137,
+                "words": 313
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 312,
+                "speaker_ci95": [
+                  0.980324622626197,
+                  1.013029315960912
+                ],
+                "speakers": 14,
+                "word_error": 0.9968051118210862,
+                "words": 313
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 141,
+                "speaker_ci95": [
+                  0.3672100020751193,
+                  0.543640114424029
+                ],
+                "speakers": 14,
+                "word_error": 0.4504792332268371,
+                "words": 313
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 126,
+                "speaker_ci95": [
+                  0.3386063549065513,
+                  0.46985020498265534
+                ],
+                "speakers": 14,
+                "word_error": 0.402555910543131,
+                "words": 313
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 139,
+                "speaker_ci95": [
+                  0.37723929138528056,
+                  0.52104249562311
+                ],
+                "speakers": 14,
+                "word_error": 0.4440894568690096,
+                "words": 313
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 324,
+                "speaker_ci95": [
+                  1.0,
+                  1.1103678929765886
+                ],
+                "speakers": 14,
+                "word_error": 1.035143769968051,
+                "words": 313
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": 1,
+                "speaker_ci95": [
+                  -0.022222222222222223,
+                  0.03618719602223382
+                ],
+                "speakers": 14,
+                "word_error": 0.003194888178913738,
+                "words": 313
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.025974025974025976,
+                  0.04167290419161679
+                ],
+                "speakers": 14,
+                "word_error": 0.006389776357827476,
+                "words": 313
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": 15,
+                "speaker_ci95": [
+                  0.018015328761597418,
+                  0.08090614886731391
+                ],
+                "speakers": 14,
+                "word_error": 0.04792332268370607,
+                "words": 313
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.025808539513519156,
+                  0.04430379746835443
+                ],
+                "speakers": 14,
+                "word_error": 0.006389776357827476,
+                "words": 313
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 11,
+                "speaker_ci95": [
+                  0.0,
+                  0.11036789297658862
+                ],
+                "speakers": 14,
+                "word_error": 0.03514376996805112,
+                "words": 313
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 11,
+                "speaker_ci95": [
+                  0.0,
+                  0.11036789297658862
+                ],
+                "speakers": 14,
+                "word_error": 0.03514376996805112,
+                "words": 313
+              }
+            },
+            "weights": "2059631d33ba5ac33fb54684066830f8ff9c0192912f264f7088915d688f8c76"
+          },
+          "hybrid-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 56,
+                "edits": 310,
+                "speaker_ci95": [
+                  0.9686520376175548,
+                  1.0132024129565274
+                ],
+                "speakers": 14,
+                "word_error": 0.9904153354632588,
+                "words": 313
+              },
+              "masked-audio-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "masked-audio-wrong": {
+                "clips": 56,
+                "edits": 307,
+                "speaker_ci95": [
+                  0.96,
+                  0.9967640150328845
+                ],
+                "speakers": 14,
+                "word_error": 0.9808306709265175,
+                "words": 313
+              },
+              "repair-correct": {
+                "clips": 56,
+                "edits": 137,
+                "speaker_ci95": [
+                  0.3538368580060423,
+                  0.525974025974026
+                ],
+                "speakers": 14,
+                "word_error": 0.43769968051118213,
+                "words": 313
+              },
+              "repair-erased": {
+                "clips": 56,
+                "edits": 136,
+                "speaker_ci95": [
+                  0.35690803662457843,
+                  0.5100722855566793
+                ],
+                "speakers": 14,
+                "word_error": 0.43450479233226835,
+                "words": 313
+              },
+              "repair-wrong": {
+                "clips": 56,
+                "edits": 134,
+                "speaker_ci95": [
+                  0.3516819571865443,
+                  0.5048231511254019
+                ],
+                "speakers": 14,
+                "word_error": 0.4281150159744409,
+                "words": 313
+              },
+              "text-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "text-erased": {
+                "clips": 56,
+                "edits": 321,
+                "speaker_ci95": [
+                  1.0,
+                  1.0643086816720257
+                ],
+                "speakers": 14,
+                "word_error": 1.02555910543131,
+                "words": 313
+              },
+              "text-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-correct": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-erased": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              },
+              "video-wrong": {
+                "clips": 56,
+                "edits": 313,
+                "speaker_ci95": [
+                  1.0,
+                  1.0
+                ],
+                "speakers": 14,
+                "word_error": 1.0,
+                "words": 313
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 56,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.03134796238244514,
+                  0.013202412956527444
+                ],
+                "speakers": 14,
+                "word_error": -0.009584664536741214,
+                "words": 313
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 56,
+                "edits": 3,
+                "speaker_ci95": [
+                  -0.01524390243902439,
+                  0.0380952380952381
+                ],
+                "speakers": 14,
+                "word_error": 0.009584664536741214,
+                "words": 313
+              },
+              "repair-minus-erased": {
+                "clips": 56,
+                "edits": 1,
+                "speaker_ci95": [
+                  -0.031055900621118012,
+                  0.0375
+                ],
+                "speakers": 14,
+                "word_error": 0.003194888178913738,
+                "words": 313
+              },
+              "repair-minus-wrong": {
+                "clips": 56,
+                "edits": 3,
+                "speaker_ci95": [
+                  -0.022508038585209004,
+                  0.041666666666666664
+                ],
+                "speakers": 14,
+                "word_error": 0.009584664536741214,
+                "words": 313
+              },
+              "text-minus-erased": {
+                "clips": 56,
+                "edits": -8,
+                "speaker_ci95": [
+                  -0.06430868167202572,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": -0.025559105431309903,
+                "words": 313
+              },
+              "text-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-erased": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              },
+              "video-minus-wrong": {
+                "clips": 56,
+                "edits": 0,
+                "speaker_ci95": [
+                  0.0,
+                  0.0
+                ],
+                "speakers": 14,
+                "word_error": 0.0,
+                "words": 313
+              }
+            },
+            "weights": "df108b63f9bcee38f3b476585c85d6be15f60716ac0d1a9e01adae530e1fb015"
+          }
+        }
+      },
+      "libri": {
+        "clips": 132,
+        "controls": {
+          "acoustic-oracle-1": {
+            "clips": 132,
+            "edits": 1036,
+            "speaker_ci95": [
+              1.0050863407604065,
+              1.1207864722450187
+            ],
+            "speakers": 33,
+            "word_error": 1.0539165818921667,
+            "words": 983
+          },
+          "acoustic-oracle-4": {
+            "clips": 132,
+            "edits": 967,
+            "speaker_ci95": [
+              0.9227513227513228,
+              1.0570632369253523
+            ],
+            "speakers": 33,
+            "word_error": 0.9837232960325534,
+            "words": 983
+          },
+          "acoustic-oracle-8": {
+            "clips": 132,
+            "edits": 984,
+            "speaker_ci95": [
+              0.9493034546345117,
+              1.0585832908135429
+            ],
+            "speakers": 33,
+            "word_error": 1.0010172939979654,
+            "words": 983
+          },
+          "constant": {
+            "clips": 132,
+            "edits": 974,
+            "speaker_ci95": [
+              0.9849246231155779,
+              0.9959719039311397
+            ],
+            "speakers": 33,
+            "word_error": 0.9908443540183113,
+            "words": 983
+          },
+          "fine": {
+            "clips": 132,
+            "edits": 250,
+            "speaker_ci95": [
+              0.21111353344236272,
+              0.30173292558613657
+            ],
+            "speakers": 33,
+            "word_error": 0.254323499491353,
+            "words": 983
+          },
+          "known-audio-constant-gap": {
+            "clips": 132,
+            "edits": 531,
+            "speaker_ci95": [
+              0.4949377157031924,
+              0.5853422229493892
+            ],
+            "speakers": 33,
+            "word_error": 0.5401831129196337,
+            "words": 983
+          },
+          "original": {
+            "clips": 132,
+            "edits": 251,
+            "speaker_ci95": [
+              0.21491347776243275,
+              0.2984933075065228
+            ],
+            "speakers": 33,
+            "word_error": 0.25534079348931843,
+            "words": 983
+          },
+          "semantic-oracle": {
+            "clips": 132,
+            "edits": 961,
+            "speaker_ci95": [
+              0.935282278897867,
+              1.0204312082869855
+            ],
+            "speakers": 33,
+            "word_error": 0.9776195320447609,
+            "words": 983
+          }
+        },
+        "correct_reliably_better_than_wrong_and_erased_at_both_seeds": {
+          "gpt2-masked-audio": false,
+          "gpt2-repair": false,
+          "gpt2-text": false,
+          "hybrid-masked-audio": false,
+          "hybrid-repair": false,
+          "hybrid-text": false
+        },
+        "excluded": [],
+        "rate_contrasts": {
+          "1": {
+            "clips": 132,
+            "edits": 75,
+            "speaker_ci95": [
+              0.008326409869083588,
+              0.15976715392603247
+            ],
+            "speakers": 33,
+            "word_error": 0.0762970498474059,
+            "words": 983
+          },
+          "4": {
+            "clips": 132,
+            "edits": 6,
+            "speaker_ci95": [
+              -0.06616937257878223,
+              0.08674983977889493
+            ],
+            "speakers": 33,
+            "word_error": 0.006103763987792472,
+            "words": 983
+          },
+          "8": {
+            "clips": 132,
+            "edits": 23,
+            "speaker_ci95": [
+              -0.04298957340983223,
+              0.09267168311035771
+            ],
+            "speakers": 33,
+            "word_error": 0.023397761953204477,
+            "words": 983
+          }
+        },
+        "raw_source_selection": "8965c328b824d96292f86f548e6e842b7e3dab2c9ba7ec29e030d7f4762ac367",
+        "speakers": 33,
+        "variants": {
+          "gpt2-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 976,
+                "speaker_ci95": [
+                  0.9850597609561753,
+                  1.0020876826722338
+                ],
+                "speakers": 33,
+                "word_error": 0.9928789420142421,
+                "words": 983
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 986,
+                "speaker_ci95": [
+                  0.9950396825396826,
+                  1.0120986144735982
+                ],
+                "speakers": 33,
+                "word_error": 1.0030518819938963,
+                "words": 983
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 536,
+                "speaker_ci95": [
+                  0.5,
+                  0.5929307152288024
+                ],
+                "speakers": 33,
+                "word_error": 0.5452695829094608,
+                "words": 983
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 553,
+                "speaker_ci95": [
+                  0.5112408983620628,
+                  0.6144204348227337
+                ],
+                "speakers": 33,
+                "word_error": 0.5625635808748728,
+                "words": 983
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 543,
+                "speaker_ci95": [
+                  0.50390625,
+                  0.6019528128210982
+                ],
+                "speakers": 33,
+                "word_error": 0.5523906408952187,
+                "words": 983
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 984,
+                "speaker_ci95": [
+                  0.9889776795315808,
+                  1.0182555780933062
+                ],
+                "speakers": 33,
+                "word_error": 1.0010172939979654,
+                "words": 983
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1000,
+                "speaker_ci95": [
+                  0.9917860251307662,
+                  1.0628819204909339
+                ],
+                "speakers": 33,
+                "word_error": 1.017293997965412,
+                "words": 983
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.007056807999348322,
+                  0.012358711924150893
+                ],
+                "speakers": 33,
+                "word_error": 0.002034587995930824,
+                "words": 983
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -10,
+                "speaker_ci95": [
+                  -0.02208835341365462,
+                  0.0020704470118752616
+                ],
+                "speakers": 33,
+                "word_error": -0.01017293997965412,
+                "words": 983
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": -17,
+                "speaker_ci95": [
+                  -0.04392294333343973,
+                  0.006154162384378213
+                ],
+                "speakers": 33,
+                "word_error": -0.017293997965412006,
+                "words": 983
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": -7,
+                "speaker_ci95": [
+                  -0.03242215168876815,
+                  0.014854129643733614
+                ],
+                "speakers": 33,
+                "word_error": -0.007121057985757884,
+                "words": 983
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": 10,
+                "speaker_ci95": [
+                  -0.002066169118086952,
+                  0.028451108141218397
+                ],
+                "speakers": 33,
+                "word_error": 0.01017293997965412,
+                "words": 983
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": -16,
+                "speaker_ci95": [
+                  -0.04776852917035079,
+                  0.0030706243602865915
+                ],
+                "speakers": 33,
+                "word_error": -0.01627670396744659,
+                "words": 983
+              }
+            },
+            "weights": "9a58d828ebfb73a09f939419b928550f283f7281086b2138024bd75d052cded5"
+          },
+          "gpt2-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 1000,
+                "speaker_ci95": [
+                  1.0039252248416233,
+                  1.0333341759352883
+                ],
+                "speakers": 33,
+                "word_error": 1.017293997965412,
+                "words": 983
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1024,
+                "speaker_ci95": [
+                  1.0058706980160803,
+                  1.1028763189244384
+                ],
+                "speakers": 33,
+                "word_error": 1.0417090539165819,
+                "words": 983
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 534,
+                "speaker_ci95": [
+                  0.49898151355547393,
+                  0.5885916158093577
+                ],
+                "speakers": 33,
+                "word_error": 0.54323499491353,
+                "words": 983
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 545,
+                "speaker_ci95": [
+                  0.5102025292875771,
+                  0.601025641025641
+                ],
+                "speakers": 33,
+                "word_error": 0.5544252288911495,
+                "words": 983
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 565,
+                "speaker_ci95": [
+                  0.5215646940822467,
+                  0.6314138453738386
+                ],
+                "speakers": 33,
+                "word_error": 0.5747711088504578,
+                "words": 983
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 971,
+                "speaker_ci95": [
+                  0.9814619321137736,
+                  0.9936910174164303
+                ],
+                "speakers": 33,
+                "word_error": 0.987792472024415,
+                "words": 983
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9824379881793688,
+                  0.9970589674225855
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 26,
+                "speaker_ci95": [
+                  0.011752895649290534,
+                  0.04294478527607362
+                ],
+                "speakers": 33,
+                "word_error": 0.026449643947100712,
+                "words": 983
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -24,
+                "speaker_ci95": [
+                  -0.0832498287084618,
+                  0.01673228346456693
+                ],
+                "speakers": 33,
+                "word_error": -0.024415055951169887,
+                "words": 983
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": -11,
+                "speaker_ci95": [
+                  -0.035033243937870155,
+                  0.010101010101010102
+                ],
+                "speakers": 33,
+                "word_error": -0.011190233977619531,
+                "words": 983
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": -31,
+                "speaker_ci95": [
+                  -0.06419986646447279,
+                  -0.000989689280515197
+                ],
+                "speakers": 33,
+                "word_error": -0.03153611393692777,
+                "words": 983
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.007529134051739267,
+                  0.0010330578512396695
+                ],
+                "speakers": 33,
+                "word_error": -0.003051881993896236,
+                "words": 983
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": -3,
+                "speaker_ci95": [
+                  -0.01024218106053668,
+                  0.006135283616614705
+                ],
+                "speakers": 33,
+                "word_error": -0.003051881993896236,
+                "words": 983
+              }
+            },
+            "weights": "93c27f5b397a2f7b191cb6aaaa5def5318a37694c240b578069e1d88b1e48792"
+          },
+          "hybrid-711": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 982,
+                "speaker_ci95": [
+                  0.9785153751119499,
+                  1.0275810483260113
+                ],
+                "speakers": 33,
+                "word_error": 0.9989827060020345,
+                "words": 983
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1021,
+                "speaker_ci95": [
+                  1.0135135135135136,
+                  1.0691507771962023
+                ],
+                "speakers": 33,
+                "word_error": 1.0386571719226856,
+                "words": 983
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 557,
+                "speaker_ci95": [
+                  0.5224594955288951,
+                  0.6158096455155616
+                ],
+                "speakers": 33,
+                "word_error": 0.5666327568667345,
+                "words": 983
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 555,
+                "speaker_ci95": [
+                  0.5086754586171117,
+                  0.6294472850011584
+                ],
+                "speakers": 33,
+                "word_error": 0.5645981688708036,
+                "words": 983
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 574,
+                "speaker_ci95": [
+                  0.5306703694135881,
+                  0.6410774578106172
+                ],
+                "speakers": 33,
+                "word_error": 0.5839267548321465,
+                "words": 983
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 996,
+                "speaker_ci95": [
+                  0.988819710879693,
+                  1.0511261533259262
+                ],
+                "speakers": 33,
+                "word_error": 1.0132248219735505,
+                "words": 983
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 1026,
+                "speaker_ci95": [
+                  0.9927079527661795,
+                  1.134312293597975
+                ],
+                "speakers": 33,
+                "word_error": 1.0437436419125128,
+                "words": 983
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 8,
+                "speaker_ci95": [
+                  -0.013660262188683133,
+                  0.03810549936426153
+                ],
+                "speakers": 33,
+                "word_error": 0.008138351983723296,
+                "words": 983
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -39,
+                "speaker_ci95": [
+                  -0.07895285087719298,
+                  -0.0019169553880124326
+                ],
+                "speakers": 33,
+                "word_error": -0.03967446592065107,
+                "words": 983
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": 2,
+                "speaker_ci95": [
+                  -0.048140781718539964,
+                  0.04424918785706285
+                ],
+                "speakers": 33,
+                "word_error": 0.002034587995930824,
+                "words": 983
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": -17,
+                "speaker_ci95": [
+                  -0.06543487195342663,
+                  0.026840869894504613
+                ],
+                "speakers": 33,
+                "word_error": -0.017293997965412006,
+                "words": 983
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": 22,
+                "speaker_ci95": [
+                  -0.00205766614537641,
+                  0.059906781353417794
+                ],
+                "speakers": 33,
+                "word_error": 0.022380467955239063,
+                "words": 983
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": -30,
+                "speaker_ci95": [
+                  -0.0892686892867021,
+                  0.00511770726714432
+                ],
+                "speakers": 33,
+                "word_error": -0.030518819938962362,
+                "words": 983
+              }
+            },
+            "weights": "2059631d33ba5ac33fb54684066830f8ff9c0192912f264f7088915d688f8c76"
+          },
+          "hybrid-712": {
+            "conditions": {
+              "masked-audio-correct": {
+                "clips": 132,
+                "edits": 999,
+                "speaker_ci95": [
+                  0.9751807923645135,
+                  1.0846268115828837
+                ],
+                "speakers": 33,
+                "word_error": 1.0162767039674465,
+                "words": 983
+              },
+              "masked-audio-erased": {
+                "clips": 132,
+                "edits": 974,
+                "speaker_ci95": [
+                  0.9849246231155779,
+                  0.9959719039311397
+                ],
+                "speakers": 33,
+                "word_error": 0.9908443540183113,
+                "words": 983
+              },
+              "masked-audio-wrong": {
+                "clips": 132,
+                "edits": 1034,
+                "speaker_ci95": [
+                  1.0,
+                  1.1241332659189802
+                ],
+                "speakers": 33,
+                "word_error": 1.051881993896236,
+                "words": 983
+              },
+              "repair-correct": {
+                "clips": 132,
+                "edits": 552,
+                "speaker_ci95": [
+                  0.5161891921075037,
+                  0.6076769345738007
+                ],
+                "speakers": 33,
+                "word_error": 0.5615462868769074,
+                "words": 983
+              },
+              "repair-erased": {
+                "clips": 132,
+                "edits": 551,
+                "speaker_ci95": [
+                  0.5116019858644115,
+                  0.6091485107556536
+                ],
+                "speakers": 33,
+                "word_error": 0.560528992878942,
+                "words": 983
+              },
+              "repair-wrong": {
+                "clips": 132,
+                "edits": 566,
+                "speaker_ci95": [
+                  0.5160873170028331,
+                  0.6442312906724512
+                ],
+                "speakers": 33,
+                "word_error": 0.5757884028484231,
+                "words": 983
+              },
+              "text-correct": {
+                "clips": 132,
+                "edits": 976,
+                "speaker_ci95": [
+                  0.988,
+                  0.996997072072072
+                ],
+                "speakers": 33,
+                "word_error": 0.9928789420142421,
+                "words": 983
+              },
+              "text-erased": {
+                "clips": 132,
+                "edits": 982,
+                "speaker_ci95": [
+                  0.9969198387256754,
+                  1.0
+                ],
+                "speakers": 33,
+                "word_error": 0.9989827060020345,
+                "words": 983
+              },
+              "text-wrong": {
+                "clips": 132,
+                "edits": 973,
+                "speaker_ci95": [
+                  0.9847398122828139,
+                  0.9948612538540597
+                ],
+                "speakers": 33,
+                "word_error": 0.9898270600203459,
+                "words": 983
+              }
+            },
+            "contrasts": {
+              "masked-audio-minus-erased": {
+                "clips": 132,
+                "edits": 25,
+                "speaker_ci95": [
+                  -0.01478130647365862,
+                  0.0920662991884857
+                ],
+                "speakers": 33,
+                "word_error": 0.0254323499491353,
+                "words": 983
+              },
+              "masked-audio-minus-wrong": {
+                "clips": 132,
+                "edits": -35,
+                "speaker_ci95": [
+                  -0.12071409989594173,
+                  0.05826974628768794
+                ],
+                "speakers": 33,
+                "word_error": -0.03560528992878942,
+                "words": 983
+              },
+              "repair-minus-erased": {
+                "clips": 132,
+                "edits": 1,
+                "speaker_ci95": [
+                  -0.022863147909926065,
+                  0.027199934782240455
+                ],
+                "speakers": 33,
+                "word_error": 0.001017293997965412,
+                "words": 983
+              },
+              "repair-minus-wrong": {
+                "clips": 132,
+                "edits": -14,
+                "speaker_ci95": [
+                  -0.0569028474999291,
+                  0.020695322159637333
+                ],
+                "speakers": 33,
+                "word_error": -0.014242115971515769,
+                "words": 983
+              },
+              "text-minus-erased": {
+                "clips": 132,
+                "edits": -6,
+                "speaker_ci95": [
+                  -0.010848126232741617,
+                  -0.002020100195503421
+                ],
+                "speakers": 33,
+                "word_error": -0.006103763987792472,
+                "words": 983
+              },
+              "text-minus-wrong": {
+                "clips": 132,
+                "edits": 3,
+                "speaker_ci95": [
+                  -0.0010460251046025104,
+                  0.007495250438730662
+                ],
+                "speakers": 33,
+                "word_error": 0.003051881993896236,
+                "words": 983
+              }
+            },
+            "weights": "df108b63f9bcee38f3b476585c85d6be15f60716ac0d1a9e01adae530e1fb015"
+          }
+        }
+      }
+    },
+    "condition_lock_sha256": "c0ea065908a919f4f725959ebb08c6bc3457b44e5adcdee35b18dd5d09f359e6",
+    "pinned_weights": {
+      "codec": "94cb956ea10fc03ddcd61ae2ba367b40f764d81cb9109ee7933b968904267059",
+      "features": {
+        "gpt2-711/crema": "612e6f65b4bcaae66857afb835bf9f22a4b63987e8b03b2ba540fdcdc42954ee",
+        "gpt2-711/libri": "1ca1da8977d469c971c3bc5d66d76fe751c07c7f567656f4aa7922f520916167",
+        "gpt2-712/crema": "8d7c686149b35c0f7abb2062fed96c7119481f482bdf04c1649f9c35060043f2",
+        "gpt2-712/libri": "9e38ae86b4e281781b1a70a9a1e3bf487ad058c57d353de0601a941d3e51728e",
+        "hybrid-711/crema": "22ffa902520c0845a60cdbc5f72907e652313c21e184deab48be954e5262c034",
+        "hybrid-711/libri": "fae6992fe5e8b8088f41c8b450a6c581396d71f90aa16e4660a2a6a3ef9f8b0e",
+        "hybrid-712/crema": "37ea0e7af4b195a3ddeac7e9290ddb696bf814e0eaf4c1b62b592f9a5ed6f073",
+        "hybrid-712/libri": "5899a91e3b38de4948b99878040d9623b2a8ef367ec88116fc834c8f7ef532a6"
+      },
+      "heads": {
+        "gpt2-711": "9a58d828ebfb73a09f939419b928550f283f7281086b2138024bd75d052cded5",
+        "gpt2-712": "93c27f5b397a2f7b191cb6aaaa5def5318a37694c240b578069e1d88b1e48792",
+        "hybrid-711": "2059631d33ba5ac33fb54684066830f8ff9c0192912f264f7088915d688f8c76",
+        "hybrid-712": "df108b63f9bcee38f3b476585c85d6be15f60716ac0d1a9e01adae530e1fb015"
+      },
+      "panels": {
+        "crema": "0444ac8409a494ebd7f08b9337b4afcad37666af30107aa15dae6037630d3ec5",
+        "libri": "43fe668ea6ac41091e1c65d7321ef859a5e89dec8a74fbfd6e85e0e25ccbb892"
+      },
+      "recognizer": "87c7102498dcde7456f24cfd30239ca606ed9063",
+      "source_code": {
+        "training/g8_acoustic_codec.py": "ab904667232156119bfd60e338273854968f20d8ef0159a71890eedf739a2d72",
+        "training/g8_acoustic_head.py": "6e785f39f660cff0a57feff119adb2619acd036e6936456077ce5826f912f3a7",
+        "training/g8_speech_fields.py": "4879fc6196533143d5ef97ff1932274901c57252de11dc1652df7b71dc3c9839",
+        "training/g8_speech_score.py": "65ec4e17a176c2227c48939c323218e64c9a54323831a265b2dcd3a511d9f8ff"
+      }
+    }
+  },
+  "product_codec": {
+    "balanced_samples_per_corpus": 65536,
+    "centers_per_group": 64,
+    "groups": 8,
+    "hash": "94cb956ea10fc03ddcd61ae2ba367b40f764d81cb9109ee7933b968904267059",
+    "nominal_rates_bps": [
+      281.25,
+      1125.0,
+      2250.0
+    ],
+    "paired_fine_frames": 2,
+    "pca_explained_fraction": 0.9817884593111337,
+    "symbols_per_second": 46.875,
+    "train_samples": 131072,
+    "training_sources": {
+      "crema": "da62caf67dc4120e280ed96377e673f6377f9d14e28a0ec64a200396ad5c0e8a",
+      "libri": "684c03c928984edce0071163a6f7ea7d01e7b1bb6f639e901d3606517edb26b0"
+    }
+  }
+}

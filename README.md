@@ -4,6 +4,12 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G8 acoustic coding and action-transfer study
+
+A 652 kB trained acoustic codebook now has a portable encoder and decoder. At the same 2,250-bit/s payload, allocating bits by training distortion reduced word error from 93.5% to 46.7% on 33 new audiobook speakers. At 9,000 bits/s it reached 22.5%, close to the 22.4% original-audio result. The text- and video-conditioned predictors still failed the word-content gate. [Fresh-speaker results and listening examples](experiments/multimodal/t8/factorial-transfer-20261110/speech.md) · [Weights and usage](experiments/multimodal/t8/factorial-transfer-20261110/inference/README.md)
+
+The G8 action experiment holds physical training trajectories fixed while changing the other modalities, and vice versa. Four TPU reproductions recovered the original optimizer and weights byte for byte at 10,240 updates. New confirmation covers standard pushing, puck–barrier physics, articulated-arm transfer and sustained decisions. [Registered comparison](experiments/multimodal/t8/factorial-transfer-20261110/protocol.md) · [Reproduction receipts](experiments/multimodal/t8/factorial-transfer-20261110/metrics/bridges.json)
+
 ### G7 shared state, speech and control
 
 On 14 additional speakers, a timing head picked the correct camera among four alternatives in 43–44% of trials with the hybrid and 40–43% with dense GPT-2. The same head applied to raw sensor features reached 65–69%. All alternatives used identical clocks. Moving encoded positions along with images had inflated an earlier alignment score. Supplying the true acoustic units still yielded 85% word error for acted speech and 99% for audiobooks. [Clock-controlled confirmation](experiments/multimodal/t7/continuation-alignment-control-20261110/physical-time.md) · [Speech synthesis controls](experiments/multimodal/t7/continuation-alignment-control-20261110/alignment-and-control.md)

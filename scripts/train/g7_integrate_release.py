@@ -61,17 +61,17 @@ def merge_checked(number,head,base,title):
         time.sleep(2**attempt)
 
 
-def finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final):
+def finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final,recorder=record):
     git("fetch","-q","origin","main")
     subprocess.run(["git","merge-base","--is-ancestor",head,"origin/main"],check=True)
     if git("rev-parse",merged["mergeCommit"]["oid"]+"^{tree}")!=tree:
         raise ValueError("Merged tree differs from the tested tree")
     receipt={"number":num,"url":merged["url"],"head":head,"main_sha":merged["mergeCommit"]["oid"],"tests_passed":verdict["passed"],"tested_tree":tree,"historical_or_held_controls":True,"merged_at":merged["mergedAt"]}
-    record(repo,ctl,"Merged "+title+" after exact-tree review.",receipt,finished=final)
+    recorder(repo,ctl,"Merged "+title+" after exact-tree review.",receipt,finished=final)
     return receipt
 
 
-def integrate(repo,ctl,branch,head,title,body,final=False):
+def integrate(repo,ctl,branch,head,title,body,final=False,recorder=record):
     for attempt in range(6):
         git("fetch","-q","origin","main",branch)
         remote_head=git("rev-parse","origin/"+branch)
@@ -83,7 +83,7 @@ def integrate(repo,ctl,branch,head,title,body,final=False):
             merged=next((p for p in history if p["headRefOid"]==head),None)
             if not merged:raise ValueError("No merged pull request matches the verified candidate")
             tree=git("rev-parse",merged["mergeCommit"]["oid"]+"^{tree}")
-            return finish_merge(repo,ctl,head,title,tree,review(tree),merged["number"],merged,final)
+            return finish_merge(repo,ctl,head,title,tree,review(tree),merged["number"],merged,final,recorder)
         tree=git("merge-tree","--write-tree",base,head).splitlines()[0]
         verdict=review(tree)
         details=body+"\n\nFedora tested the exact proposed merge tree `"+tree+"` with pinned dependencies and real prepared fixtures. "+verdict["summary"]+"."
@@ -102,7 +102,7 @@ def integrate(repo,ctl,branch,head,title,body,final=False):
         else:raise TimeoutError("GitHub review/check requirements remain pending: "+pr["url"])
         merged=json.loads(gh("pr","view",str(num),"--repo",GH,"--json","state,mergeCommit,url,mergedAt"))
         if merged["state"]!="MERGED":continue
-        return finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final)
+        return finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final,recorder)
     raise RuntimeError("Main kept changing during exact-tree checks")
 
 
