@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import jax
+import jax.numpy as jnp
 import numpy as np
 
 from models.g4_shared import Spec
@@ -35,7 +36,7 @@ def predict(a):
         @jax.jit
         def infer(p,b):
             shared,_,_=world(p,spec,b,b["source"],cal)
-            return shared[:,:,:100].astype(jax.numpy.float32)*3-5
+            return shared[:,:,:100].astype(jnp.float32)*3-5
         for view,ix in (("video",1),("text",3)):
             b=d.gather(np.zeros(len(picked),int),picked,np.zeros(len(picked),int))
             b["source"][:,ix]=1

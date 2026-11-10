@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # One set of recorded decisions and conditional media tests per verified final pair.
 set -euo pipefail
+deadline=${1:?absolute finish time in Unix seconds}
 root=/mnt/slwm-checkpoints-a/SLWM/g6
 data=/mnt/slwm-data/SLWM/g5
 test "$(findmnt -nro TARGET -T "$root")" = /mnt/slwm-checkpoints-a
@@ -12,8 +13,11 @@ mkdir -p "$root/terminal"
 sim=/home/db/dev/slwm-g5/.sim/lib/python3.12/site-packages
 py=/home/db/venvs/vllm/bin/python
 media=/home/db/dev/slwm/.research-venv/lib/python3.12/site-packages
-until test -s /mnt/slwm-checkpoints-a/SLWM/g5/terminal-test.json; do sleep 40; done
-while (( $(date +%s) < 1794334202 )); do
+until test -s /mnt/slwm-checkpoints-a/SLWM/g5/terminal-test.json; do
+    (( $(date +%s) < deadline )) || exit 0
+    sleep 40
+done
+while (( $(date +%s) < deadline )); do
     completed=0
     for s in 511 512; do
         for scale in larger anchor; do
