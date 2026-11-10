@@ -1,0 +1,202 @@
+{
+  "g7-v5e-anchor-gpt2-511-fresh": {
+    "audio_log_rms_envelope": {
+      "aligned": 0.10158654544759645,
+      "shifted_95pct": 0.09442919711157904,
+      "shifted_median": -0.0020298114170635585,
+      "ticks": 1024
+    },
+    "clips": {
+      "audio-to-video": {
+        "bytes": 2999364,
+        "seconds": 43.690667,
+        "sha256": "9068d943b1c7028c20fa8eeb4691d6e05e9f2f7860d41de9a40206b7874c9dce"
+      },
+      "text-to-audio-video": {
+        "bytes": 2041035,
+        "seconds": 43.690667,
+        "sha256": "ab4c3000571bedfad3fc1d2805d8a9c46161f5017036a78cbf31dace7396f148"
+      },
+      "video-to-audio": {
+        "bytes": 582703,
+        "seconds": 43.690667,
+        "sha256": "234c3ead3ede4267526973f52780c99548fc890e8f01b211833afa2a9fedf071"
+      }
+    },
+    "frame_absolute_motion_envelope": {
+      "aligned": 0.022512737774919356,
+      "shifted_95pct": 0.05560388673391917,
+      "shifted_median": 0.0003789794667855134,
+      "ticks": 1023
+    },
+    "inference_sha256": "dac86edd77d2ae20a3cc309a9d6ebcaf7db0993ce442206eca2ad61ef977c89e",
+    "previews": {
+      "audio-to-video.webm": {
+        "bytes": 92060,
+        "sha256": "2f3f4162692a03b717f93570bfff7560736e5240dd2fe09b2d6c1a4f9357b852"
+      },
+      "text-to-audio-video.webm": {
+        "bytes": 297981,
+        "sha256": "4f39e0f536f09e17ec49d7bca782a092622a5bf599606db23ce3a1ee687fdad3"
+      },
+      "video-to-audio.ogg": {
+        "bytes": 196757,
+        "sha256": "bfcf79792f6a18fff6581334dbb865e9533573b966b0f2c7576c7321beecf465"
+      }
+    },
+    "prompt_effect_rms_mel": 1.5764389038085938,
+    "recording": "fold4_room10_mix001",
+    "role": "held Finnish room, development diagnostic",
+    "run": "g7-v5e-anchor-gpt2-511-fresh"
+  },
+  "g7-v5e-anchor-gpt2-511-replay": {
+    "audio_log_rms_envelope": {
+      "aligned": 0.22647420955616993,
+      "shifted_95pct": 0.12820029453133344,
+      "shifted_median": -0.0010076407546387451,
+      "ticks": 1024
+    },
+    "clips": {
+      "audio-to-video": {
+        "bytes": 2246454,
+        "seconds": 43.690667,
+        "sha256": "05f4533ca01d37824325a0c27638d2829531e249a38a01360bc655fcecd529d6"
+      },
+      "text-to-audio-video": {
+        "bytes": 1906070,
+        "seconds": 43.690667,
+        "sha256": "011b8529840c88968fac126fe6676f24307ea1b7081515f691af75cbf40ad3f8"
+      },
+      "video-to-audio": {
+        "bytes": 598731,
+        "seconds": 43.690667,
+        "sha256": "b84809ca755115a932c831f41449f22133f18b51f4a66409e089997badb63bba"
+      }
+    },
+    "frame_absolute_motion_envelope": {
+      "aligned": -0.018787793574504334,
+      "shifted_95pct": 0.05832927899358357,
+      "shifted_median": -0.0020479824672657155,
+      "ticks": 1023
+    },
+    "inference_sha256": "906dd5a3178ecdfbf0c6d2be4c50a6c9cf40a73edab8a091112fb208c21c5d17",
+    "previews": {
+      "audio-to-video.webm": {
+        "bytes": 76612,
+        "sha256": "8210fff18aef70f60aeac928bc6edb3e1ae7f88c90fafcd254b9f0ea7975a2a2"
+      },
+      "text-to-audio-video.webm": {
+        "bytes": 339017,
+        "sha256": "68a7aca83f86de614cb3829ec29fdd83e22d024ee0292ed334d165f1f84343d3"
+      },
+      "video-to-audio.ogg": {
+        "bytes": 214823,
+        "sha256": "32241903cca88c3f9a62ac4a288f97c3c5a6dd00edc8a0227f1e660c33e6f893"
+      }
+    },
+    "prompt_effect_rms_mel": 1.7905422449111938,
+    "recording": "fold4_room10_mix001",
+    "role": "held Finnish room, development diagnostic",
+    "run": "g7-v5e-anchor-gpt2-511-replay"
+  },
+  "g7-v5e-anchor-hybrid-511-fresh": {
+    "audio_log_rms_envelope": {
+      "aligned": 0.4166678822728914,
+      "shifted_95pct": 0.3098689120140768,
+      "shifted_median": -0.052272595314088496,
+      "ticks": 1024
+    },
+    "clips": {
+      "audio-to-video": {
+        "bytes": 3224734,
+        "seconds": 43.690667,
+        "sha256": "42210aec209ee91d40b8a1b2909a9779614d737511564dbb745cbcb086adf884"
+      },
+      "text-to-audio-video": {
+        "bytes": 2112163,
+        "seconds": 43.690667,
+        "sha256": "27aa06ae6b7ab3e354472c40a6420240615a43e6484f80ec335c6e57bd8ea907"
+      },
+      "video-to-audio": {
+        "bytes": 564113,
+        "seconds": 43.690667,
+        "sha256": "e21270d1c2501a606a9c0b2233dda0eaa3fce838e3749a521176012510f6c5eb"
+      }
+    },
+    "frame_absolute_motion_envelope": {
+      "aligned": 0.046586163772232125,
+      "shifted_95pct": 0.057378507502363965,
+      "shifted_median": 0.0031614522221937707,
+      "ticks": 1023
+    },
+    "inference_sha256": "5460237bff3a8bf0451244449af46159a642bf7f2259bc20df47158e822bf822",
+    "previews": {
+      "audio-to-video.webm": {
+        "bytes": 94108,
+        "sha256": "36ce2bba38bb9d89d77051eeacf7bbc1d644d3305253af0607d2d1040e63269d"
+      },
+      "text-to-audio-video.webm": {
+        "bytes": 283516,
+        "sha256": "fd796e9b97866a9ec936c3e9c3e329a0c2f02f83ba4cb70ffe2870317f793f57"
+      },
+      "video-to-audio.ogg": {
+        "bytes": 264007,
+        "sha256": "5d97aca51da24ba645723c1629a90d1f9ec81e8d455f53b510faee2551256808"
+      }
+    },
+    "prompt_effect_rms_mel": 4.777077674865723,
+    "recording": "fold4_room10_mix001",
+    "role": "held Finnish room, development diagnostic",
+    "run": "g7-v5e-anchor-hybrid-511-fresh"
+  },
+  "g7-v5e-anchor-hybrid-511-replay": {
+    "audio_log_rms_envelope": {
+      "aligned": 0.4319033983084107,
+      "shifted_95pct": 0.33139133514781244,
+      "shifted_median": -0.03488643141417686,
+      "ticks": 1024
+    },
+    "clips": {
+      "audio-to-video": {
+        "bytes": 2376364,
+        "seconds": 43.690667,
+        "sha256": "bddbf5c444e0f0c268eb613449ca67141f52795ebf9cada09dfba5a63c64240a"
+      },
+      "text-to-audio-video": {
+        "bytes": 2010737,
+        "seconds": 43.690667,
+        "sha256": "898ae7110234092bb0498bb970a8dbc10aa8fb0a7633022649a029b140807b93"
+      },
+      "video-to-audio": {
+        "bytes": 562174,
+        "seconds": 43.690667,
+        "sha256": "08b188d3c59b051fef1fb6167c784b5ac64de0eecb35045f2f54e8ce24f62615"
+      }
+    },
+    "frame_absolute_motion_envelope": {
+      "aligned": -0.01272527792019217,
+      "shifted_95pct": 0.05790603598498886,
+      "shifted_median": 0.0006756411889513772,
+      "ticks": 1023
+    },
+    "inference_sha256": "9c140f5c9f266dffb7207cd09ad20e0f2e75366d3750b45f4f93ad1c47c323b5",
+    "previews": {
+      "audio-to-video.webm": {
+        "bytes": 94840,
+        "sha256": "8a881a5b57aa56f533ba83dabf40e3fbe88151a4feca05ad6b4870bb24ecd461"
+      },
+      "text-to-audio-video.webm": {
+        "bytes": 279325,
+        "sha256": "897f216c54c8ce35e0b99bf6f3d2bc6a4afe9e7c44b71bed5c924cbb333bad42"
+      },
+      "video-to-audio.ogg": {
+        "bytes": 243350,
+        "sha256": "ee8c081c857808ec1319c1301f85b7621f6c8a8c571cf91641989c9ef1f8e26b"
+      }
+    },
+    "prompt_effect_rms_mel": 4.21839714050293,
+    "recording": "fold4_room10_mix001",
+    "role": "held Finnish room, development diagnostic",
+    "run": "g7-v5e-anchor-hybrid-511-replay"
+  }
+}
