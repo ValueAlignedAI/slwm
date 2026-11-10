@@ -10,7 +10,7 @@ On 14 additional speakers, a timing head picked the correct camera among four al
 
 On 512 new Reacher starts, both architectures retained the initial goal cue after it disappeared. Raw observations with the common physical prior gave the lowest supervised action regret. None of four RL policies reliably improved final goal success. Exact two-step planning reached 45–48% in two diagnostic cohorts, and the learned transition lost that advantage. [Decisions and independent transfer](experiments/multimodal/t7/continuation-alignment-control-20261110/transfer-and-planning.md)
 
-The registered scaling comparison continues both sizes and both architectures from their exact G6 optimizer states. It separates additional exposure, independent examples and elapsed TPU time. The two terminal architectures also generated 43.69-second clips from audio, video and text. [Study design](experiments/multimodal/t7/continuation-alignment-control-20261110/protocol.md) · [Inference previews](experiments/multimodal/t7/continuation-alignment-control-20261110/examples/README.md)
+Sixteen exact continuations completed at 16,384 updates on two named Colab v5e assignments, using 24.48 project compute units. On 512 fresh Push-T starts, the 116.50M hybrid reached 4.38 and 4.41 pixels with independent examples versus 4.77 and 4.87 on replay. The matched dense fresh-data models reached 5.48 and 5.89 pixels. The release includes the larger model, equal-TPU-time analyses, held-room results and 43.69-second cross-modal examples. [Matched scaling results](experiments/multimodal/t7/continuation-alignment-control-20261110/report.md) · [Inference previews](experiments/multimodal/t7/continuation-alignment-control-20261110/examples/README.md)
 
 ### G6 multimodal scaling
 
