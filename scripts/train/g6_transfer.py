@@ -12,7 +12,8 @@ def transfer(repo,session,tag,step,digest,control):
     study=tag[:2]
     patterns={"g6":r"g6-(?:v5e|v6e)-(?:larger|anchor)-(?:hybrid|gpt2)-(?:511|512)",
               "g7":r"g7-(?:v5e|v6e)-(?:larger|anchor)-(?:hybrid|gpt2)-(?:511|512)-(?:replay|fresh)"}
-    stages={"g6":(128,512,2048,8192),"g7":(10240,12288,16384)}
+    patterns["g8"]=r"g8-v5e-anchor-(?:hybrid|gpt2)-(?:511|512)-(?:sim|other|replay|fresh)"
+    stages={"g8":(10240,12288,16384),"g6":(128,512,2048,8192),"g7":(10240,12288,16384)}
     if study not in patterns or not re.fullmatch(rf"slwm-{study}-[a-z0-9-]+",session) or not re.fullmatch(patterns[study],tag) or not re.fullmatch("[a-f0-9]{64}",digest):
         raise ValueError("Invalid registered artifact")
     if step not in stages[study]: raise ValueError("Unregistered milestone")
@@ -20,7 +21,7 @@ def transfer(repo,session,tag,step,digest,control):
     meta=control/f"{tag}-{step}.json"
     bridge=["ssh","-o","BatchMode=yes","-o","ConnectTimeout=12","-o","ServerAliveInterval=30","db@192.168.1.200"]
     opts=f" --run {tag} --step {step} --sha {digest}"
-    checkout="slwm-g7" if study=="g7" else "slwm-g5"
+    checkout={"g6":"slwm-g5","g7":"slwm-g7","g8":"slwm-g8"}[study]
     receive=f"cd /home/db/dev/{checkout} && python3 -m scripts.train.g6_artifacts "
     with meta.with_suffix(".lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)

@@ -36,19 +36,21 @@ def write(p,doc):
 G7_TAG=re.compile(r"g7-(v5e|v6e)-(larger|anchor)-(hybrid|gpt2)-(511|512)-(replay|fresh)")
 
 
+G8_TAG=re.compile(r"g8-v5e-anchor-(hybrid|gpt2)-(511|512)-(sim|other|replay|fresh)")
+
 def metadata_files(tag):
-    return SMALL+("wall.json",) if G7_TAG.fullmatch(tag) else SMALL
+    return SMALL+("wall.json",) if G7_TAG.fullmatch(tag) or G8_TAG.fullmatch(tag) else SMALL
 
 
 def stage_name(tag,step):
-    if G7_TAG.fullmatch(tag) and step in {10240,12288,16384}: return Path(tag)/f"step-{step:06d}"
+    if (G7_TAG.fullmatch(tag) or G8_TAG.fullmatch(tag)) and step in {10240,12288,16384}: return Path(tag)/f"step-{step:06d}"
     if not TAG.fullmatch(tag) or step not in {128,512,2048,8192}:
         raise ValueError("Unregistered checkpoint name or update")
     return Path(tag)/f"step-{step:06d}"
 
 
 def roots(study="g6"):
-    if study not in ("g6","g7"): raise ValueError("Unknown archive study")
+    if study not in ("g6","g7","g8"): raise ValueError("Unknown archive study")
     for m,u in zip(DISKS,UUIDS):
         got=subprocess.check_output(["findmnt","-nro","UUID","-M",m],text=True).strip()
         if got!=u:
