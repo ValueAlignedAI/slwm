@@ -41,12 +41,7 @@ while (( $(date +%s) < deadline )); do
                     for core in hybrid gpt2; do
                         ckpt="$root/g6-$gen-$scale-$core-$s/step-008192"
                         folder="$work/live-$core"
-                        if [[ ! -s $folder/predictions.npz ]]; then
-                            flock /tmp/slwm_research_gpu.lock bash scripts/train/g4_cuda.sh -m training.g5_live predict --data "$data" --run "$ckpt" --out "$folder"
-                        fi
-                        if [[ ! -s $folder/text-to-audio-video.mp4 ]]; then
-                            PYTHONPATH="$repo:/home/db/dev/slwm-g2/.g2-deps:$media" "$py" -u "$repo/training/g5_live.py" render --data "$data" --repo /home/db/dev/slwm-g3 --out "$folder"
-                        fi
+                        bash scripts/train/g6_live_media.sh "$ckpt" "$folder" gpu
                     done
                 fi
                 completed=$((completed+1))

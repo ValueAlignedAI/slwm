@@ -63,7 +63,7 @@ def predict(root,run,out):
     np.savez_compressed(out/"predictions.npz",record=record,sha=digest,orig_v=rec["v"].reshape(-1,256),
                         orig_a=rec["a"].reshape(-1,100),**outputs)
     base=outputs["text_blank"]
-    stats={"run":run.name,"recording":record,"role":"development","source":"Owens et al., Greatest Hits (CC BY 4.0)",
+    stats={"run":card.get("run",run.name),"recording":record,"role":"development","source":"Owens et al., Greatest Hits (CC BY 4.0)",
            "source_url":"https://andrewowens.com/vis/","video_size":[16,16],"ticks":1024,"seconds":1024*DT,
            "readout":"one shared 128-D state per tick","prompts":PROMPTS,"weights_sha256":digest,
            "prompt_effect_rms_mel":float(np.sqrt(np.mean((outputs["text"][:,:100]-base[:,:100])**2))*3),
