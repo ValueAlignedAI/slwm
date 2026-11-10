@@ -6,5 +6,8 @@ A single fixed ridge head is fitted on eight training examples per command from 
 | ---: | ---: | ---: | ---: | ---: | ---: |
 | 116,502,025 | [511](supplemental/frozen-v5e-anchor-511.json) | 28.44% | 26.78% | 1.66 | 0.35 to 3.27 |
 | 202,346,377 | [511](supplemental/frozen-v5e-larger-511.json) | 32.18% | 24.15% | 8.02 | 6.40 to 8.44 |
+| 202,346,377 | [512](supplemental/frozen-v5e-larger-512.json) | 26.48% | 23.03% | 3.46 | 2.37 to 4.11 |
+
+At 202,346,377 parameters the two-seed shared-content gate passed. Each linked result includes all nine directional cells, source-specific raw baselines, within-speaker shuffles and retrieval.
 
 [Frozen readout protocol](shared-state.md) · [Fresh decision protocol](decisions.md) · [Conditional generation protocol](generation.md)
