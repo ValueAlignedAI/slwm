@@ -1,0 +1,38 @@
+{
+  "confirm-hybrid-z512-gelu-s911-fresh-audio_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "audio_only",
+    "emitted_field": 512,
+    "weights_sha256": "227d4aa908b573068f15fc297b23f78ea622df18342e765a6b48f610284661d6",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  },
+  "confirm-hybrid-z512-gelu-s911-fresh-video_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "video_only",
+    "emitted_field": 512,
+    "weights_sha256": "227d4aa908b573068f15fc297b23f78ea622df18342e765a6b48f610284661d6",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  },
+  "confirm-hybrid-z512-gelu-s911-fresh-text_only": {
+    "recording": "fold4_room23_mix001",
+    "seconds": 40,
+    "inputs": "text_only",
+    "emitted_field": 512,
+    "weights_sha256": "227d4aa908b573068f15fc297b23f78ea622df18342e765a6b48f610284661d6",
+    "visual_grid": [
+      16,
+      16
+    ],
+    "audio": "four-channel spectral-envelope prediction, first-channel deterministic carrier"
+  }
+}

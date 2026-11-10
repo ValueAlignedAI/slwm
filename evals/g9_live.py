@@ -3,7 +3,7 @@ from functools import lru_cache
 import jax
 import jax.numpy as jnp
 import numpy as np
-from models.g9_shared import encode
+from models.g9_shared import encode,decision_scores
 from models.g9_tabletop import ACTIONS, advance, camera, expert, initial, observation, target
 
 
@@ -38,7 +38,7 @@ def raw(obs,sign,seen):
 
 @lru_cache(maxsize=100)
 def _live_kernel(spec,mode,b,stall,seed,steps):
-    def run(params):
+    def run(params,head):
         ids=jnp.arange(b)
         state=initial(ids,seed);image=camera(state["stations"],state["tint"])
         init_goal=state["goal"]
@@ -57,7 +57,7 @@ def _live_kernel(spec,mode,b,stall,seed,steps):
                     mem=jax.tree.map(lambda a:jnp.where(tick%32==0,jnp.zeros_like(a),a),mem)
                 z,new=encode(params,spec,{k:v[:,None] for k,v in obs.items()},keep,
                              memory=mem if persistent else None,offset=tick,window=window)
-                action=jnp.argmax((z[:,0]@params["read"][:,-ACTIONS:].astype(z.dtype)).astype(jnp.float32),-1)
+                action=decision_scores(z[:,0],params["read"][:,-ACTIONS:],head).argmax(-1)
                 mem=new if persistent else ()
             else:action=raw_action if mode=="raw" else jnp.zeros(b,jnp.int32)
             nxt=advance(st,action,tick,stall)
@@ -69,8 +69,8 @@ def _live_kernel(spec,mode,b,stall,seed,steps):
     return jax.jit(run)
 
 
-def live(p,spec,mode,b=128,stall=True,seed=180013,steps=512):
-    return np.asarray(_live_kernel(spec,mode,b,stall,seed,steps)(p))
+def live(p,spec,mode,b=128,stall=True,seed=180013,steps=512,head=None):
+    return np.asarray(_live_kernel(spec,mode,b,stall,seed,steps)(p,head))
 
 
 def paired_histories(p,spec,b=256,seed=180044):

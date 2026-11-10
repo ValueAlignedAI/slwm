@@ -7,7 +7,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from evals.g9_live import initial_memory,live
-from models.g9_shared import Spec,encode
+from models.g9_shared import Spec,encode,decision_scores as action_scores
 from models.g9_tabletop import ACTIONS,advance,camera,expert,initial,observation,target
 from scripts.train.g9_fit import numpy_weights,save_json,weights
 
@@ -19,11 +19,6 @@ def initial_head(field,seed):
     r=np.random.default_rng(seed)
     return dict(w=jnp.asarray(r.normal(0,field**-.5,(field,128)).astype("f4")),b=jnp.zeros(128),
                 a=jnp.zeros((128,ACTIONS)),c=jnp.zeros(ACTIONS))
-
-
-def action_scores(z,read,head):
-    x=z.astype(jnp.float32)
-    return (z@read.astype(z.dtype)).astype(jnp.float32)+jax.nn.gelu(x@head["w"]+head["b"])@head["a"]+head["c"]
 
 
 @lru_cache(maxsize=16)

@@ -109,6 +109,13 @@ def decode(p,z,plan):
     return dict(a=a,v=v,n=n,w=w,policy=policy,next_a=future[...,:AUDIO],next_n=future[...,AUDIO:])
 
 
+def decision_scores(z,read,head):
+    base=(z@read.astype(z.dtype)).astype(jnp.float32)
+    if head is None:return base
+    x=z.astype(jnp.float32)
+    return base+jax.nn.gelu(x@head["w"]+head["b"])@head["a"]+head["c"]
+
+
 def errors(pred,r):
     mse=lambda a,b:jnp.mean(jnp.square(a-b),-1)
     tags=tag_targets(r["w"])
