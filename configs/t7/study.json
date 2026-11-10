@@ -1,0 +1,15 @@
+{
+  "study": "G7",
+  "parent_commit": "0882733e74adeeac29bb8ce05dc497916d089ee0",
+  "parent_steps":8192, "end_steps":16384, "rungs":[10240,12288,16384],
+  "scales":{"anchor":[896,12],"larger":[1024,16]},"cores":["hybrid","gpt2"],"seeds":[511,512],
+  "effective_batch":256,"scan":4,"common_peak_lr":0.00012,"warmup_continuation_steps":128,
+  "budget_units":100,"shutdown_reserve_units":5,"maximum_assignment_hours":11,
+  "mixture_32":[3,3,3,2,3,3,1,7,7],
+  "replace_probability":0.5,"fresh_families":{"0":"CREMA-D synchronous acted speech","1":"new LibriSpeech speakers","5":"new FineWeb blocks","7":"STARSS23 human-timed visible sound events","8":"new replay-checked Push-T resets"},
+  "new_pusht":{"train":[710000,726384],"dev":[730000,730256],"test":[740000,740512]},
+  "fresh_split_salt":"g7-20261110-roles-v1","unit_count":64,"alignment_seed":711,
+  "policy":{"seeds":[711,712],"cue_cycles":4,"evaluation_decisions":24,"train":[810000,814096],"dev":[820000,820256],"test":[830000,830512]},
+  "starss_record":"7880637","starss_md5":{"foa_dev.zip":"316b834ee6393c22862c314cc3c7ebb0","metadata_dev.zip":"e73af95a6d5f3f7e009ac6a70804f44a","video_dev.zip":"b92295e162600adb545ed99bdc0a9c76"},
+  "starss_contact_classes":[2,6,7,12],"paired_bootstrap":2000
+}

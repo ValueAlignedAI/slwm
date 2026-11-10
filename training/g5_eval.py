@@ -64,7 +64,10 @@ def evaluate(run,root,out,role,device,gate=None):
         if gate is None:
             raise ValueError("Sealed role requires the previous four-weights promotion lock")
         lock=json.loads(gate.read_bytes())
-        if not lock["promote"] or lock["sha256"].get(run.name)!=sha or len(lock["sha256"])!=4:
+        if lock.get("study")=="G7":
+            from scripts.train.g7_scale_lock import verify
+            verify(lock,run,sha,root)
+        elif not lock["promote"] or lock["sha256"].get(run.name)!=sha or len(lock["sha256"])!=4:
             raise ValueError("The run is outside the frozen confirmation")
     spec=Spec(**card["spec"])
     with np.load(run/"inference.npz",allow_pickle=False) as f:

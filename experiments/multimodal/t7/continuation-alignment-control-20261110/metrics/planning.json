@@ -1,0 +1,329 @@
+{
+  "gpt2-711": {
+    "evaluation": {
+      "decisions": 24,
+      "distinct_scenes": 64,
+      "explicit_cue_gain": {
+        "change": 0.015625,
+        "ci95": [
+          0.0,
+          0.0390625
+        ]
+      },
+      "future_proposals": "known exogenous controls; no future observation supplied",
+      "goals_per_scene": 2,
+      "latent_horizon_gain": {
+        "change": -0.015625,
+        "ci95": [
+          -0.0390625,
+          0.0
+        ]
+      },
+      "locked_weights": {
+        "gpt2-711": "8602059be19244b69e66f9637cc0a3c71d3b86153b79ed9b4b455134c5373f30",
+        "gpt2-712": "b05ec5c90f02bfb3c435efe0b1302564cd6227b53a040f5b0c6a4711a5fb6a4e",
+        "hybrid-711": "8ad1372ac8ccccd324e5363e6069566e4fbb240feddb99de43b8615d2f636495",
+        "hybrid-712": "2c2ad1205bd5100cd1ae4556c06906d4b7028c85f1f05a57e1edb7ec901c4aaf",
+        "transition": "550fd338f055b38dfba147181a6bd8d69c0d067bc49bcec0bba9b1f8d672880c"
+      },
+      "raw_horizon_gain": {
+        "change": -0.0078125,
+        "ci95": [
+          -0.1015625,
+          0.0859375
+        ]
+      },
+      "results": {
+        "latent-one": {
+          "ever_success": 0.3125,
+          "final_cm": 16.661013741395436,
+          "success": 0.015625
+        },
+        "latent-two": {
+          "ever_success": 0.28125,
+          "final_cm": 18.090991530334577,
+          "success": 0.0
+        },
+        "latent-two-cue-held": {
+          "ever_success": 0.2890625,
+          "final_cm": 16.59147225727793,
+          "success": 0.015625
+        },
+        "raw-one-cue-held": {
+          "ever_success": 0.796875,
+          "final_cm": 10.26368089223979,
+          "success": 0.1328125
+        },
+        "raw-two-cue-held": {
+          "ever_success": 0.8203125,
+          "final_cm": 8.799627576081548,
+          "success": 0.125
+        }
+      }
+    },
+    "training": {
+      "dev_state_rmse": [
+        0.28825733065605164,
+        0.2887848913669586,
+        0.29817071557044983,
+        0.34954190254211426,
+        0.6481396555900574,
+        0.35081207752227783
+      ],
+      "optimizer": "2a5dd8b5a7c0f3898b137f803e4ea79d8fb5ce493f6291945c2d19f803bc67af",
+      "sft": "45f55efff7de5163a4d4c34e71a4843441b239824df1ad2ee0999a8f77f43301",
+      "updates": 1200,
+      "weights": "8602059be19244b69e66f9637cc0a3c71d3b86153b79ed9b4b455134c5373f30"
+    }
+  },
+  "gpt2-712": {
+    "evaluation": {
+      "decisions": 24,
+      "distinct_scenes": 64,
+      "explicit_cue_gain": {
+        "change": 0.015625,
+        "ci95": [
+          0.0,
+          0.0390625
+        ]
+      },
+      "future_proposals": "known exogenous controls; no future observation supplied",
+      "goals_per_scene": 2,
+      "latent_horizon_gain": {
+        "change": -0.0234375,
+        "ci95": [
+          -0.0546875,
+          0.0
+        ]
+      },
+      "locked_weights": {
+        "gpt2-711": "8602059be19244b69e66f9637cc0a3c71d3b86153b79ed9b4b455134c5373f30",
+        "gpt2-712": "b05ec5c90f02bfb3c435efe0b1302564cd6227b53a040f5b0c6a4711a5fb6a4e",
+        "hybrid-711": "8ad1372ac8ccccd324e5363e6069566e4fbb240feddb99de43b8615d2f636495",
+        "hybrid-712": "2c2ad1205bd5100cd1ae4556c06906d4b7028c85f1f05a57e1edb7ec901c4aaf",
+        "transition": "550fd338f055b38dfba147181a6bd8d69c0d067bc49bcec0bba9b1f8d672880c"
+      },
+      "raw_horizon_gain": {
+        "change": -0.0078125,
+        "ci95": [
+          -0.1015625,
+          0.0859375
+        ]
+      },
+      "results": {
+        "latent-one": {
+          "ever_success": 0.3671875,
+          "final_cm": 17.36286358191137,
+          "success": 0.0234375
+        },
+        "latent-two": {
+          "ever_success": 0.2734375,
+          "final_cm": 18.275893325335346,
+          "success": 0.0
+        },
+        "latent-two-cue-held": {
+          "ever_success": 0.3203125,
+          "final_cm": 15.882625470112544,
+          "success": 0.015625
+        },
+        "raw-one-cue-held": {
+          "ever_success": 0.796875,
+          "final_cm": 10.26368089223979,
+          "success": 0.1328125
+        },
+        "raw-two-cue-held": {
+          "ever_success": 0.8203125,
+          "final_cm": 8.799627576081548,
+          "success": 0.125
+        }
+      }
+    },
+    "training": {
+      "dev_state_rmse": [
+        0.34475165605545044,
+        0.36006250977516174,
+        0.28308892250061035,
+        0.3515395224094391,
+        0.6707475185394287,
+        0.41908735036849976
+      ],
+      "optimizer": "54bf1253dccd0abe3d498ac94b9458c1f7345cba00106f00764ff4d6310376dc",
+      "sft": "4b4af562b27a0ca17fe47784c91591f37a241cc7978f6fb548faf4938dceff35",
+      "updates": 1200,
+      "weights": "b05ec5c90f02bfb3c435efe0b1302564cd6227b53a040f5b0c6a4711a5fb6a4e"
+    }
+  },
+  "hybrid-711": {
+    "evaluation": {
+      "decisions": 24,
+      "distinct_scenes": 64,
+      "explicit_cue_gain": {
+        "change": 0.0078125,
+        "ci95": [
+          0.0,
+          0.0234375
+        ]
+      },
+      "future_proposals": "known exogenous controls; no future observation supplied",
+      "goals_per_scene": 2,
+      "latent_horizon_gain": {
+        "change": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "locked_weights": {
+        "gpt2-711": "8602059be19244b69e66f9637cc0a3c71d3b86153b79ed9b4b455134c5373f30",
+        "gpt2-712": "b05ec5c90f02bfb3c435efe0b1302564cd6227b53a040f5b0c6a4711a5fb6a4e",
+        "hybrid-711": "8ad1372ac8ccccd324e5363e6069566e4fbb240feddb99de43b8615d2f636495",
+        "hybrid-712": "2c2ad1205bd5100cd1ae4556c06906d4b7028c85f1f05a57e1edb7ec901c4aaf",
+        "transition": "550fd338f055b38dfba147181a6bd8d69c0d067bc49bcec0bba9b1f8d672880c"
+      },
+      "raw_horizon_gain": {
+        "change": -0.0078125,
+        "ci95": [
+          -0.1015625,
+          0.0859375
+        ]
+      },
+      "results": {
+        "latent-one": {
+          "ever_success": 0.5,
+          "final_cm": 16.67036301223561,
+          "success": 0.0
+        },
+        "latent-two": {
+          "ever_success": 0.34375,
+          "final_cm": 16.604129994811956,
+          "success": 0.0
+        },
+        "latent-two-cue-held": {
+          "ever_success": 0.390625,
+          "final_cm": 16.61667739826953,
+          "success": 0.0078125
+        },
+        "raw-one-cue-held": {
+          "ever_success": 0.796875,
+          "final_cm": 10.26368089223979,
+          "success": 0.1328125
+        },
+        "raw-two-cue-held": {
+          "ever_success": 0.8203125,
+          "final_cm": 8.799627576081548,
+          "success": 0.125
+        }
+      }
+    },
+    "training": {
+      "dev_state_rmse": [
+        0.1437462568283081,
+        0.13338471949100494,
+        0.16557089984416962,
+        0.16051225364208221,
+        0.22953520715236664,
+        0.14386361837387085
+      ],
+      "optimizer": "4c45a0264ed3035d4f4b36cdbfad782d16a78eb9ca150b2d877245d6af9a5c40",
+      "sft": "5cb9facffc8bd7c1f32369d73f0bda690e707fbec36e8201ed62a2395320b44d",
+      "updates": 1200,
+      "weights": "8ad1372ac8ccccd324e5363e6069566e4fbb240feddb99de43b8615d2f636495"
+    }
+  },
+  "hybrid-712": {
+    "evaluation": {
+      "decisions": 24,
+      "distinct_scenes": 64,
+      "explicit_cue_gain": {
+        "change": 0.0234375,
+        "ci95": [
+          -0.0078125,
+          0.0703125
+        ]
+      },
+      "future_proposals": "known exogenous controls; no future observation supplied",
+      "goals_per_scene": 2,
+      "latent_horizon_gain": {
+        "change": -0.0078125,
+        "ci95": [
+          -0.03125,
+          0.015625
+        ]
+      },
+      "locked_weights": {
+        "gpt2-711": "8602059be19244b69e66f9637cc0a3c71d3b86153b79ed9b4b455134c5373f30",
+        "gpt2-712": "b05ec5c90f02bfb3c435efe0b1302564cd6227b53a040f5b0c6a4711a5fb6a4e",
+        "hybrid-711": "8ad1372ac8ccccd324e5363e6069566e4fbb240feddb99de43b8615d2f636495",
+        "hybrid-712": "2c2ad1205bd5100cd1ae4556c06906d4b7028c85f1f05a57e1edb7ec901c4aaf",
+        "transition": "550fd338f055b38dfba147181a6bd8d69c0d067bc49bcec0bba9b1f8d672880c"
+      },
+      "raw_horizon_gain": {
+        "change": -0.0078125,
+        "ci95": [
+          -0.1015625,
+          0.0859375
+        ]
+      },
+      "results": {
+        "latent-one": {
+          "ever_success": 0.4375,
+          "final_cm": 17.38877288371441,
+          "success": 0.015625
+        },
+        "latent-two": {
+          "ever_success": 0.265625,
+          "final_cm": 17.48515157296424,
+          "success": 0.0078125
+        },
+        "latent-two-cue-held": {
+          "ever_success": 0.3671875,
+          "final_cm": 19.49535735329846,
+          "success": 0.03125
+        },
+        "raw-one-cue-held": {
+          "ever_success": 0.796875,
+          "final_cm": 10.26368089223979,
+          "success": 0.1328125
+        },
+        "raw-two-cue-held": {
+          "ever_success": 0.8203125,
+          "final_cm": 8.799627576081548,
+          "success": 0.125
+        }
+      }
+    },
+    "training": {
+      "dev_state_rmse": [
+        0.1262020766735077,
+        0.15465454757213593,
+        0.18735957145690918,
+        0.1919552981853485,
+        0.2813282012939453,
+        0.1603350043296814
+      ],
+      "optimizer": "af7f7803793842260f6e7959706a45d2e397eee698c00be20cab4c7da9948495",
+      "sft": "dbd3af9f67d5aa3518bf601537a3c504d10838f203a570e7b0432351c98d2c72",
+      "updates": 1200,
+      "weights": "2c2ad1205bd5100cd1ae4556c06906d4b7028c85f1f05a57e1edb7ec901c4aaf"
+    }
+  },
+  "transition": {
+    "training": {
+      "branch_endpoints": 147456,
+      "dev_component_rmse": [
+        0.1558506041765213,
+        0.14837908744812012,
+        0.15932056307792664,
+        0.1767854243516922,
+        0.11998364329338074,
+        0.13332499563694,
+        0.1649618297815323,
+        0.29480889439582825
+      ],
+      "full_next_states": 12288,
+      "optimizer": "7f6df8fe2414b78d170b578d3c58f53b7ade2822f1384a31232032232dfb6363",
+      "updates": 3600,
+      "weights": "550fd338f055b38dfba147181a6bd8d69c0d067bc49bcec0bba9b1f8d672880c"
+    }
+  }
+}

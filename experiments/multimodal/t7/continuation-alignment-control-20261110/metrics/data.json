@@ -1,0 +1,242 @@
+{
+  "complete_exposure": {
+    "actual_changed": 752149,
+    "changed_fraction": 0.35865259170532227,
+    "counts": {
+      "ami": {
+        "eligible_pool": 0,
+        "fresh_presentations": 0,
+        "maximum_repeats": 0,
+        "presentations": 65536,
+        "unique_fresh_rows_seen": 0
+      },
+      "clotho": {
+        "eligible_pool": 0,
+        "fresh_presentations": 0,
+        "maximum_repeats": 0,
+        "presentations": 131072,
+        "unique_fresh_rows_seen": 0
+      },
+      "coco": {
+        "eligible_pool": 0,
+        "fresh_presentations": 0,
+        "maximum_repeats": 0,
+        "presentations": 196608,
+        "unique_fresh_rows_seen": 0
+      },
+      "droid": {
+        "eligible_pool": 0,
+        "fresh_presentations": 0,
+        "maximum_repeats": 0,
+        "presentations": 196608,
+        "unique_fresh_rows_seen": 0
+      },
+      "grid": {
+        "eligible_pool": 1650,
+        "fresh_presentations": 98287,
+        "maximum_repeats": 60,
+        "presentations": 196608,
+        "unique_fresh_rows_seen": 1650
+      },
+      "impact": {
+        "eligible_pool": 3761,
+        "fresh_presentations": 229376,
+        "maximum_repeats": 61,
+        "presentations": 458752,
+        "unique_fresh_rows_seen": 3761
+      },
+      "libri": {
+        "eligible_pool": 59326,
+        "fresh_presentations": 96806,
+        "maximum_repeats": 2,
+        "presentations": 196608,
+        "unique_fresh_rows_seen": 58994
+      },
+      "pusht": {
+        "eligible_pool": 16384,
+        "fresh_presentations": 229376,
+        "maximum_repeats": 14,
+        "presentations": 458752,
+        "unique_fresh_rows_seen": 16384
+      },
+      "text": {
+        "eligible_pool": 131072,
+        "fresh_presentations": 98304,
+        "maximum_repeats": 1,
+        "presentations": 196608,
+        "unique_fresh_rows_seen": 98304
+      }
+    },
+    "modalities": {
+      "conditioning_rows": {
+        "audio": 524595,
+        "numeric": 442080,
+        "text": 641294,
+        "video": 899854
+      },
+      "conditioning_ticks": {
+        "audio": 33561632,
+        "numeric": 11783952,
+        "text": 41030675,
+        "video": 41086545
+      },
+      "cross_or_language_target_rows": {
+        "audio": 523981,
+        "numeric": 98299,
+        "text": 639574,
+        "video": 557938
+      },
+      "present_rows": {
+        "audio": 1048576,
+        "numeric": 655360,
+        "text": 1084260,
+        "video": 1572864
+      }
+    },
+    "modality_note": "Several modalities can be present, conditioning, or targets on one row. Target counts precede per-row objective weighting. Text-only rows include next-byte prediction.",
+    "rows_per_arm": 2097152,
+    "specialized_supervision_rows": {
+      "action_conditioned_future": 458752,
+      "video_only_event_timing": 229303
+    },
+    "updates": [
+      8192,
+      16384
+    ]
+  },
+  "dev": {
+    "crema": {
+      "card_sha256": "81eb03d578178cc848ad2b942e1c602db5df4cc046830628dc11a7061bfc0f39",
+      "full_64_tick_rows": 63,
+      "groups": 7,
+      "rows": 210
+    },
+    "events": {
+      "card_sha256": "53fb168063cf4b4c262322542e6a44bcb5ac3266494ce615187f6142a95dbefa",
+      "groups": 5,
+      "rows": 3202
+    },
+    "libri": {
+      "card_sha256": "03d4263f49d1b22cbcc67080e89322b8dfb7f58f7dc64f66eea121ce8d5701e3",
+      "full_64_tick_rows": 7547,
+      "groups": 66,
+      "rows": 7712
+    },
+    "sim": {
+      "card_sha256": "c783051d113d011926a653a948f8738ae91bdb644693f1485ef911c94dd99218",
+      "groups": 256,
+      "rows": 256
+    },
+    "text": {
+      "card_sha256": "d614226995e8020b19e47afe6a54f9c484149d22f6e1d7f004b0636904156010",
+      "groups": 512,
+      "rows": 512
+    }
+  },
+  "sha256": {
+    "dev": {
+      "bytes": 71755747,
+      "card": "53c51e3a78f8933ff0bd94bc5b372c80fa016da13a868d4b03f343cb0d0d9747",
+      "file": "g7-fresh-dev.tar.zst",
+      "sha256": "8a9c97e0f47e2338bcdd92f5c17660e72108d709843152388270d426a0d83348"
+    },
+    "test": {
+      "bytes": 52655250,
+      "card": "d9e457af273129720fe75460ad9ea654762c92ba2796295210998468cb418d75",
+      "file": "g7-fresh-test.tar.zst",
+      "sha256": "23ecc5992d287f0832a499020285f79bea632c876fb1173ea77bb3f157e4ef1d"
+    },
+    "train": {
+      "bytes": 475083914,
+      "card": "568798bcf3851ea3b19090b27fa596e3ba9dc04463dcbea42bdb097587e17ed6",
+      "file": "g7-fresh-train.tar.zst",
+      "sha256": "c2cf36c3c666f7633bbe71ba35d784531b4e649afa5e47d478d75f4c965871d2"
+    }
+  },
+  "test": {
+    "crema": {
+      "card_sha256": "a8d29ddaa7330003cf5fef818c5485a22311a829a4911153244f7c589a292506",
+      "full_64_tick_rows": 66,
+      "groups": 8,
+      "rows": 240
+    },
+    "events": {
+      "card_sha256": "01924bc0359cc50cdaac46525baf2db19920132f91f7af01e7d8895d33cd52c6",
+      "groups": 2,
+      "rows": 1003
+    },
+    "libri": {
+      "card_sha256": "34e94457945d1a3f4841dbe3995f11ec28ca4310200383d9364f5b934f32837e",
+      "full_64_tick_rows": 7038,
+      "groups": 66,
+      "rows": 7146
+    },
+    "sim": {
+      "card_sha256": "4ae4de260827dbe6cb10d33f4816a34c813982e78cd6458ef24a23f8d5e1c372",
+      "groups": 512,
+      "rows": 512
+    },
+    "text": {
+      "card_sha256": "a95e138257cfa45c230e2dab68847488b59e0d18e6f9626a0a179ee0ab59f555",
+      "groups": 512,
+      "rows": 512
+    }
+  },
+  "train": {
+    "alignment_audit": {
+      "changed_by_family": [
+        1536,
+        1506,
+        0,
+        0,
+        0,
+        1536,
+        0,
+        3584,
+        3584
+      ],
+      "family_has_source_valid_and_sense_masks_identical": true,
+      "fresh": "206451933b1be37728a901bc10dd570aeb266c466c952c5267cfb7f7b74ebf67",
+      "replay": "45a7ee916b93bc0cc49b01d91f00ee2c35ed6fd3024b1291790d68787b3dd505",
+      "rows": 32768,
+      "visits_by_family": [
+        3072,
+        3072,
+        3072,
+        2048,
+        3072,
+        3072,
+        1024,
+        7168,
+        7168
+      ]
+    },
+    "crema": {
+      "card_sha256": "7fb8ab1a3460912c4e4e08ef28e8aaa2407da56d70eac41f4fb7847ed6b9226d",
+      "full_64_tick_rows": 1650,
+      "groups": 62,
+      "rows": 5060
+    },
+    "events": {
+      "card_sha256": "e449db696b49c4bb4000d6072d742e0f0c3d8db6347db6735b3957e1e0a2a7ac",
+      "groups": 7,
+      "rows": 3761
+    },
+    "libri": {
+      "card_sha256": "89e16de3f9e618550285271daed668fb404ca6d4951ef82af5714f090f5abe53",
+      "full_64_tick_rows": 59326,
+      "groups": 533,
+      "rows": 60281
+    },
+    "sim": {
+      "card_sha256": "ae7841bd1bb47435da8085703619de4377eb2769bedebf621de3d389c2cfa644",
+      "groups": 16384,
+      "rows": 16384
+    },
+    "text": {
+      "card_sha256": "a384d40f08bbd06250e532e341d04b9486929f896f3e3f75917c70759ade806a",
+      "groups": 131072,
+      "rows": 131072
+    }
+  }
+}

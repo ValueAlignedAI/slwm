@@ -1,0 +1,31 @@
+{
+  "all_owned_assignments_released": true,
+  "attribution": "Owned endpoint duration multiplied by observed generation rate; polling boundaries are conservative.",
+  "limit": 100,
+  "native_assignments": [
+    {
+      "hardware": "V5E1",
+      "name": "slwm-g7-a-1110",
+      "rate": 3.09,
+      "seconds": 15610.616864919662,
+      "units": 13.399112809056064
+    },
+    {
+      "hardware": "V5E1",
+      "name": "slwm-g7-b5-1110",
+      "rate": 3.09,
+      "seconds": 12910.896057128906,
+      "units": 11.081852449035654
+    }
+  ],
+  "private_drive_status": {
+    "pending_files": 1104,
+    "phase": "backoff",
+    "reason": "drive_project_query_limit",
+    "verified_files": 1
+  },
+  "project_compute_units": 24.48097,
+  "readout_archive_bytes": 239614437,
+  "readout_archive_verified_files": 800,
+  "total_runtime_hours": 7.922642478346825
+}

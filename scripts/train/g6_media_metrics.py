@@ -29,7 +29,8 @@ def compare(x,y):
 def analyze(folder,stage):
     note=json.loads((folder/"live.json").read_bytes())
     rec=json.loads((stage/"verified.json").read_bytes())
-    if rec["step"]!=8192 or note["weights_sha256"]!=rec["sha256"]["inference.npz"]:
+    expected_step=16384 if rec["run"].startswith("g7-") else 8192
+    if rec["step"]!=expected_step or note["weights_sha256"]!=rec["sha256"]["inference.npz"]:
         raise ValueError("Wrong terminal recording weights")
     def energy(p):
         audio,sr=sf.read(p,dtype="float32")
@@ -50,7 +51,7 @@ def analyze(folder,stage):
         if abs(seconds-1024*1024/24000)>.1 or {r["codec_type"] for r in report["streams"]}!={"video","audio"}:
             raise ValueError("Truncated media or missing track")
         clips[name]={"seconds":seconds,"sha256":sha(file),"bytes":file.stat().st_size}
-    result={"run":rec["run"],"inference_sha256":note["weights_sha256"],"recording":note["recording"],"role":"one development clip",
+    result={"run":rec["run"],"inference_sha256":note["weights_sha256"],"recording":note["recording"],"role":note.get("role","development"),
             "audio_log_rms_envelope":compare(reference,gen),"frame_absolute_motion_envelope":compare(motion(observed),motion(frames)),
             "prompt_effect_rms_mel":note["prompt_effect_rms_mel"],"clips":clips}
     out=folder/"media-verified.json"; tmp=out.with_suffix(".tmp")

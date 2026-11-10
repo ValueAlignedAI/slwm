@@ -1,0 +1,277 @@
+{
+  "comparisons": {
+    "gpt2-511": {
+      "fresh_minus_replay": {
+        "branches_ci95": [
+          -1.400733645307201,
+          -0.5369337976654248
+        ],
+        "endpoint_ci95": [
+          -0.8895152195452608,
+          -0.374952095882498
+        ],
+        "event_ci95": [
+          -0.0033366557421138296,
+          0.007434853910810502
+        ],
+        "first_minus_raw_motion_ap": -0.013256187345843114,
+        "first_minus_raw_ridge_px": -15.659588272428417,
+        "first_minus_second_branches_px": -0.9631971590366744,
+        "first_minus_second_endpoint_px": -0.6201501626292891,
+        "first_minus_second_event_ap": 0.0031086095997000796
+      },
+      "rungs": {
+        "fresh": {
+          "optimizer": "f8679f7b617e461dd14b9a162a032c4ffbf3db632f57c91d8d3c811d595ae98a",
+          "score": {
+            "branch_error_px": 7.2319573648179425,
+            "endpoint_px": 5.764065205521242,
+            "erased_ap": 0.032965047876811794,
+            "event_ap": 0.04488593408840856,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.032391606806714913,
+            "video_endpoint_px": 14.688150018208422
+          },
+          "weights": "dac86edd77d2ae20a3cc309a9d6ebcaf7db0993ce442206eca2ad61ef977c89e"
+        },
+        "parent": {
+          "optimizer": "4094a77c3fb991523952f66489a1eda1daf9e0e3bc5ea25f95d890d3da67927d",
+          "score": {
+            "branch_error_px": 9.524328151178937,
+            "endpoint_px": 7.214352568496287,
+            "erased_ap": 0.03442825437658005,
+            "event_ap": 0.04649746737690181,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.032223564095472564,
+            "video_endpoint_px": 21.428640031854574
+          },
+          "weights": "c36aaafe4323696ed0e45f49bb26c4f7d4d5732fe6c37c2ed65880cd361e0b02"
+        },
+        "replay": {
+          "optimizer": "e2f78e10abaa2ce05bfe99320819893dd5c4846a185b03c60f44fea11927bb4a",
+          "score": {
+            "branch_error_px": 8.195154523854617,
+            "endpoint_px": 6.384215368150531,
+            "erased_ap": 0.03373750585694443,
+            "event_ap": 0.04177732448870848,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03212732329543579,
+            "video_endpoint_px": 15.507116437082388
+          },
+          "weights": "906dd5a3178ecdfbf0c6d2be4c50a6c9cf40a73edab8a091112fb208c21c5d17"
+        }
+      }
+    },
+    "gpt2-512": {
+      "fresh_minus_replay": {
+        "branches_ci95": [
+          -1.5773288368654292,
+          -0.5379279999676104
+        ],
+        "endpoint_ci95": [
+          -0.902837248274709,
+          -0.30368079574814005
+        ],
+        "event_ci95": [
+          -0.00641798677988914,
+          0.006547359954853671
+        ],
+        "first_minus_raw_motion_ap": -0.01456676199265982,
+        "first_minus_raw_ridge_px": -15.010165179317468,
+        "first_minus_second_branches_px": -1.0485527825152383,
+        "first_minus_second_endpoint_px": -0.5979839841111951,
+        "first_minus_second_event_ap": -0.0006859618647101218
+      },
+      "rungs": {
+        "fresh": {
+          "optimizer": "d9946ebb31a9e3ed2900f6fcc2a26afc1e4e16c64d305975c99c1bebef5f74ee",
+          "score": {
+            "branch_error_px": 8.178384245249353,
+            "endpoint_px": 6.41348829863219,
+            "erased_ap": 0.03336583788945557,
+            "event_ap": 0.043575359441591854,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03200942403412681,
+            "video_endpoint_px": 15.482518813211659
+          },
+          "weights": "d597b4f1059965fc2b41e2aa19a4a8485bba2ad7bab2a8f306f733564265262d"
+        },
+        "parent": {
+          "optimizer": "c8145dcc72dd35bb4fb865384b42f0cacedd7d87f71d106f37e3521076548417",
+          "score": {
+            "branch_error_px": 10.815431407750552,
+            "endpoint_px": 8.255158537653651,
+            "erased_ap": 0.03343849782145972,
+            "event_ap": 0.0457717963318453,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03227445932447361,
+            "video_endpoint_px": 21.506382169818547
+          },
+          "weights": "e8359124e06582972edb853333d3bec853d1b85d7e1f4c4156f9fe9e361caa33"
+        },
+        "replay": {
+          "optimizer": "de7bf38603016dd3956491b17127f6ca98d6a3083489e39846817b297945328c",
+          "score": {
+            "branch_error_px": 9.226937027764592,
+            "endpoint_px": 7.0114722827433855,
+            "erased_ap": 0.03377994589083132,
+            "event_ap": 0.044261321306301976,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03225464123043979,
+            "video_endpoint_px": 16.136421155859917
+          },
+          "weights": "478473d6da26514bf7836494e21a4e54c2ad5ad7c2bb79fb5b52604b798fa3fe"
+        }
+      }
+    },
+    "hybrid-511": {
+      "fresh_minus_replay": {
+        "branches_ci95": [
+          -1.2579155731085059,
+          -0.529390865663238
+        ],
+        "endpoint_ci95": [
+          -0.7051241391189964,
+          -0.24581140351801306
+        ],
+        "event_ci95": [
+          -0.00369650526828863,
+          0.0012358472912600837
+        ],
+        "first_minus_raw_motion_ap": -0.019534761059017768,
+        "first_minus_raw_ridge_px": -16.36131544607099,
+        "first_minus_second_branches_px": -0.8719823248740552,
+        "first_minus_second_endpoint_px": -0.4668339890990212,
+        "first_minus_second_event_ap": -0.0013588428415208659
+      },
+      "rungs": {
+        "fresh": {
+          "optimizer": "39b0c724f4108bfcf812686277dc57e1f5858b0795b1421cc921853633b0bdb2",
+          "score": {
+            "branch_error_px": 5.897733021970427,
+            "endpoint_px": 5.062338031878671,
+            "erased_ap": 0.03427003553827358,
+            "event_ap": 0.03860736037523391,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03195322080365617,
+            "video_endpoint_px": 13.015920595660543
+          },
+          "weights": "5460237bff3a8bf0451244449af46159a642bf7f2259bc20df47158e822bf822"
+        },
+        "parent": {
+          "optimizer": "1faac2472d690e4769cc63305ece8184170781434689f4e21a04271644332d66",
+          "score": {
+            "branch_error_px": 7.82625761743427,
+            "endpoint_px": 6.354555231373555,
+            "erased_ap": 0.03548020346321625,
+            "event_ap": 0.041933968999406275,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03309684730538209,
+            "video_endpoint_px": 14.630889509327716
+          },
+          "weights": "9f9223c4ae96a2d38773f18d0ba91df7b6337dbf0060c1eb40e837878f2ab194"
+        },
+        "replay": {
+          "optimizer": "0100ae3cdef630f78b5517731e2d552ebf4333320235367d08fe53502ee3b71a",
+          "score": {
+            "branch_error_px": 6.769715346844482,
+            "endpoint_px": 5.529172020977692,
+            "erased_ap": 0.03435158536737125,
+            "event_ap": 0.03996620321675477,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03235629035837138,
+            "video_endpoint_px": 13.471832923925279
+          },
+          "weights": "9c140f5c9f266dffb7207cd09ad20e0f2e75366d3750b45f4f93ad1c47c323b5"
+        }
+      }
+    },
+    "hybrid-512": {
+      "fresh_minus_replay": {
+        "branches_ci95": [
+          -1.3808445789987167,
+          -0.48370804818283014
+        ],
+        "endpoint_ci95": [
+          -0.8705199938878689,
+          -0.3330532072698348
+        ],
+        "event_ci95": [
+          -0.002759569627984168,
+          0.0033853218875743996
+        ],
+        "first_minus_raw_motion_ap": -0.01757652707517171,
+        "first_minus_raw_ridge_px": -16.45332542886006,
+        "first_minus_second_branches_px": -0.8871251471692194,
+        "first_minus_second_endpoint_px": -0.5744013079629366,
+        "first_minus_second_event_ap": -0.0025473485131508947
+      },
+      "rungs": {
+        "fresh": {
+          "optimizer": "c0b7e29915039b7249b2c049d6100465e80d4e815eec58bce4b5c92a1ee51f3f",
+          "score": {
+            "branch_error_px": 5.906804931157664,
+            "endpoint_px": 4.970328049089596,
+            "erased_ap": 0.03315635173229061,
+            "event_ap": 0.040565594359079964,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03126661147250031,
+            "video_endpoint_px": 12.919422879811195
+          },
+          "weights": "1b25bd42a7752c72a41ad394caf6800b08a8cfe5c264f9dfd32f08f4787e12ce"
+        },
+        "parent": {
+          "optimizer": "2cf0a0dcb8e804fea36b386934641a08fea21dc91e740856444b6c3dbfd41a85",
+          "score": {
+            "branch_error_px": 7.8895871008524985,
+            "endpoint_px": 6.304748468004531,
+            "erased_ap": 0.033307651825111785,
+            "event_ap": 0.044898415750483346,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03256912313888979,
+            "video_endpoint_px": 14.4538401733711
+          },
+          "weights": "3e91b908dba3115592ca8a57092259d088596976fc4cb0cbe5584828696bb487"
+        },
+        "replay": {
+          "optimizer": "e61003a1d57867baeafc05495c07be857f6fc5d26e6230b02e78445045971801",
+          "score": {
+            "branch_error_px": 6.793930078326884,
+            "endpoint_px": 5.544729357052532,
+            "erased_ap": 0.03311375717068015,
+            "event_ap": 0.04311294287223086,
+            "prevalence": 0.03333511548331908,
+            "raw_motion_ap": 0.058142121434251674,
+            "raw_ridge_px": 21.423653477949657,
+            "shifted_ap": 0.03205882692623257,
+            "video_endpoint_px": 13.699905316028035
+          },
+          "weights": "fe8548ea8206d2a76e35a5c4874056a7e48ed4102751de17b7b9b6e64e334c95"
+        }
+      }
+    }
+  },
+  "scope": "Registered original development slice, 116.50M only. Terminal matched pair at both seeds. Fresh G7 test held until all 16 continuations locked."
+}

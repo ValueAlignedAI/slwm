@@ -11,7 +11,7 @@ DT=1024/24000
 PROMPTS=("A stick taps metal repeatedly.","Rain falls on a wooden surface.","Someone drags an object across stone.","Water splashes.")
 
 
-def predict(root,run,out):
+def predict(root,run,out,starss=False):
     import jax
     import jax.numpy as jnp
     from models.g4_shared import Spec
@@ -25,7 +25,9 @@ def predict(root,run,out):
     with np.load(run/"inference.npz") as f:
         p={k:jax.device_put(f[k]) for k in f if k!="stats" and not k.startswith("prior_")}
     record=None
-    for path in sorted((root/"impact/records-dev").glob("*.npz")):
+    records=root/"event-records/dev" if starss else root/"impact/records-dev"
+    prompts=("Someone claps their hands.","A person walks across a room.","A door closes.","Someone knocks on the door.") if starss else PROMPTS
+    for path in sorted(records.glob("*.npz")):
         with np.load(path) as f:
             if len(f["v"])>=16:
                 rec={k:np.array(f[k][:16]) for k in ("a","v","event")}
@@ -50,7 +52,7 @@ def predict(root,run,out):
             last_v=rec["v"][j-1,-1:] if j else v[:1]
             av=np.clip(a+.65*(a-np.concatenate((last_a,a[:-1]))),0,255)
             vv=np.clip(v+.65*(v-np.concatenate((last_v,v[:-1]))),0,255)
-            txt=PROMPTS[j//4] if view=="text" else ""
+            txt=prompts[j//4] if view=="text" else ""
             ids=np.array([c+3 for c in txt.encode()]+[2],np.int32)
             tx=ids[np.arange(T)*(len(ids)-1)//(T-1)]
             b={"ok":np.ones((1,T),np.uint8),"sense":np.ones((1,T),np.uint8),
@@ -65,14 +67,15 @@ def predict(root,run,out):
     base=outputs["text_blank"]
     stats={"run":card.get("run",run.name),"recording":record,"role":"development","source":"Owens et al., Greatest Hits (CC BY 4.0)",
            "source_url":"https://andrewowens.com/vis/","video_size":[16,16],"ticks":1024,"seconds":1024*DT,
-           "readout":"one shared 128-D state per tick","prompts":PROMPTS,"weights_sha256":digest,
+           "readout":"one shared 128-D state per tick","prompts":prompts,"weights_sha256":digest,
            "prompt_effect_rms_mel":float(np.sqrt(np.mean((outputs["text"][:,:100]-base[:,:100])**2))*3),
            "video_from_audio_frame_change":float(np.abs(np.diff(outputs["audio"][:,100:],axis=0)).mean()*127.5),
            "source_frame_change":float(np.abs(np.diff(rec["v"].reshape(-1,256).astype(float),axis=0)).mean())}
+    if starss:stats.update(source="STARSS23, Sony and Tampere University (2023)",source_url="https://doi.org/10.5281/zenodo.7880637",role="held Finnish room, development diagnostic")
     (out/"live.json").write_text(json.dumps(stats,indent=2)+"\n")
 
 
-def render(root,repo,out):
+def render(root,repo,out,starss=False):
     import io
     import zipfile
     import math
@@ -93,8 +96,13 @@ def render(root,repo,out):
         with torch.inference_mode():
             audio=voc.decode(torch.from_numpy(feat[None])).reshape(-1).numpy()
         return np.pad(audio,(0,max(0,length-len(audio))))[:length]
-    with zipfile.ZipFile(root/"sources/vis-data-256.zip") as z:
-        wave,sr=sf.read(io.BytesIO(z.read("vis-data-256/"+str(pred["record"])+"_denoised.wav")),dtype="float32")
+    if starss:
+        with zipfile.ZipFile(root/"starss/foa_dev.zip") as z:
+            wave,sr=sf.read(io.BytesIO(z.read("foa_dev/dev-test-tau/"+str(pred["record"])+".wav")),dtype="float32")
+        wave=wave[:,0]
+    else:
+        with zipfile.ZipFile(root/"sources/vis-data-256.zip") as z:
+            wave,sr=sf.read(io.BytesIO(z.read("vis-data-256/"+str(pred["record"])+"_denoised.wav")),dtype="float32")
     if wave.ndim==2:
         wave=wave.mean(1)
     if sr!=24000:
@@ -118,8 +126,8 @@ if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("phase",choices=["predict","render"]); p.add_argument("--data",required=True,type=Path)
     p.add_argument("--run",type=Path); p.add_argument("--repo",type=Path); p.add_argument("--out",type=Path,required=True)
-    a=p.parse_args()
+    p.add_argument("--starss",action="store_true");a=p.parse_args()
     if a.phase=="predict":
-        predict(a.data,a.run,a.out)
+        predict(a.data,a.run,a.out,a.starss)
     else:
-        render(a.data,a.repo,a.out)
+        render(a.data,a.repo,a.out,a.starss)

@@ -4,6 +4,14 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G7 shared state, speech and control
+
+On 14 additional speakers, a timing head picked the correct camera among four alternatives in 43–44% of trials with the hybrid and 40–43% with dense GPT-2. The same head applied to raw sensor features reached 65–69%. All alternatives used identical clocks. Moving encoded positions along with images had inflated an earlier alignment score. Supplying the true acoustic units still yielded 85% word error for acted speech and 99% for audiobooks. [Clock-controlled confirmation](experiments/multimodal/t7/continuation-alignment-control-20261110/physical-time.md) · [Speech synthesis controls](experiments/multimodal/t7/continuation-alignment-control-20261110/alignment-and-control.md)
+
+On 512 new Reacher starts, both architectures retained the initial goal cue after it disappeared. Raw observations with the common physical prior gave the lowest supervised action regret. None of four RL policies reliably improved final goal success. Exact two-step planning reached 45–48% in two diagnostic cohorts, and the learned transition lost that advantage. [Decisions and independent transfer](experiments/multimodal/t7/continuation-alignment-control-20261110/transfer-and-planning.md)
+
+Sixteen exact continuations completed at 16,384 updates on two named Colab v5e assignments, using 24.48 project compute units. On 512 fresh Push-T starts, the 116.50M hybrid reached 4.38 and 4.41 pixels with independent examples versus 4.77 and 4.87 on replay. The matched dense fresh-data models reached 5.48 and 5.89 pixels. The release includes the larger model, equal-TPU-time analyses, held-room results and 43.69-second cross-modal examples. [Matched scaling results](experiments/multimodal/t7/continuation-alignment-control-20261110/report.md) · [Inference previews](experiments/multimodal/t7/continuation-alignment-control-20261110/examples/README.md)
+
 ### G6 multimodal scaling
 
 Eight models completed 8,192 updates at 116.50M and 202.35M parameters, with two training seeds per architecture and size. On 512 new Push-T starts, the 116.50M hybrid predicted joint action endpoints to 5.89 and 5.84 pixels. The 202.35M hybrid reached 6.12 and 6.01 pixels, compared with 8.14 and 7.41 for its matched dense control. Video helped with action-conditioned prediction in this simulator. Held real-event timing and generated speech remained weak. [Results and learning curves](experiments/multimodal/t6/tpu-scale-20261110/report.md) · [Transfer and decisions](experiments/multimodal/t6/tpu-scale-20261110/transfer-and-decisions.md)
@@ -175,11 +183,11 @@ The generated T2 fixture is for pipeline validation only and must not be used as
 
 ## Current research questions
 
-- At fixed exposure and fixed accelerator time, does a larger core benefit more from independent examples or additional passes through existing data?
-- Which speech and event information survives the shared state when the input speaker, scene or timing changes?
-- Can retained observations support consecutive goal-directed decisions on a new environment?
+- With simulator training trajectories held fixed, do additional speech, text and audiovisual observations improve decisions on a new physical task?
+- Can a fixed-width shared state retain the short-timescale information needed for genuine audiovisual synchrony and intelligible speech?
+- Can learned dynamics improve two-step terminal goal success with raw state first, then with decoded shared state?
 
-The experimental designs specify the data splits, matched dense controls and promotion criteria. [Next iteration](experiments/multimodal/t6/tpu-scale-20261110/next-iteration.md)
+Removing the camera while keeping proprioception had no reliable effect on the fresh 116.50M hybrid’s held simulator error. Removing the proposed action raised error above 25 pixels. The next comparison crosses fresh simulator starts with fresh examples from the other modalities and retains a matched dense Transformer. [Sensor and plan controls](experiments/multimodal/t7/continuation-alignment-control-20261110/metrics/input-controls.json) [Experimental decision and gates](experiments/multimodal/t7/continuation-alignment-control-20261110/next-steps.md)
 
 ## Scientific Guardrails
 

@@ -33,22 +33,31 @@ def write(p,doc):
     tmp=p.with_suffix(".new"); tmp.write_text(json.dumps(doc,sort_keys=True,indent=2)+"\n"); tmp.replace(p)
 
 
+G7_TAG=re.compile(r"g7-(v5e|v6e)-(larger|anchor)-(hybrid|gpt2)-(511|512)-(replay|fresh)")
+
+
+def metadata_files(tag):
+    return SMALL+("wall.json",) if G7_TAG.fullmatch(tag) else SMALL
+
+
 def stage_name(tag,step):
+    if G7_TAG.fullmatch(tag) and step in {10240,12288,16384}: return Path(tag)/f"step-{step:06d}"
     if not TAG.fullmatch(tag) or step not in {128,512,2048,8192}:
         raise ValueError("Unregistered checkpoint name or update")
     return Path(tag)/f"step-{step:06d}"
 
 
-def roots():
+def roots(study="g6"):
+    if study not in ("g6","g7"): raise ValueError("Unknown archive study")
     for m,u in zip(DISKS,UUIDS):
         got=subprocess.check_output(["findmnt","-nro","UUID","-M",m],text=True).strip()
         if got!=u:
             raise ValueError("Missing registered physical checkpoint volume")
-    return tuple(Path(m)/"SLWM/g6" for m in DISKS)
+    return tuple(Path(m)/"SLWM"/study for m in DISKS)
 
 
 def offset(a):
-    primary,_=roots(); final=primary/stage_name(a.run,a.step)
+    name=stage_name(a.run,a.step); primary,_=roots(a.run[:2]); final=primary/name
     receipt=final/"verified.json"
     if receipt.is_file():
         rec=read(receipt)
@@ -65,7 +74,7 @@ def send(a):
     if done["run"]!=a.run or done["step"]!=a.step or done["sha256"]["resume.npz"]!=a.sha:
         raise ValueError("Remote milestone identity changed")
     meta={}
-    for k in SMALL:
+    for k in metadata_files(a.run):
         source=folder/k
         if source.stat().st_size>8*1024**2:
             raise ValueError("Unexpected auxiliary payload size")
@@ -83,7 +92,7 @@ def send(a):
 
 
 def receive(a):
-    primary,mirror=roots()
+    primary,mirror=roots(a.run[:2])
     src=sys.stdin.buffer
     line=src.readline(16*1024**2)
     if not line.endswith(b"\n"):
@@ -91,7 +100,7 @@ def receive(a):
     h=json.loads(line); name=stage_name(h["run"],h["step"])
     if (h["run"],h["step"],h["sha"])!=(a.run,a.step,a.sha):
         raise ValueError("Unexpected incoming checkpoint")
-    if set(h["metadata"])!=set(SMALL) or not 8*1024**2<=h["bytes"]<=4*1024**3:
+    if set(h["metadata"])!=set(metadata_files(a.run)) or not 8*1024**2<=h["bytes"]<=4*1024**3:
         raise ValueError("Invalid checkpoint envelope")
     final=primary/name; second=mirror/name
     for d in (final.parent,second.parent):
@@ -156,7 +165,7 @@ def receive(a):
             raise ValueError("Regenerated inference weights differ from the accelerator")
         if read(staging/"dev-metrics.json")["checkpoint"]!=hashes["inference.npz"]:
             raise ValueError("Development scores refer to a different model")
-        all_hashes=dict(hashes,**{k:sha(staging/k) for k in ("complete.json","dev-metrics.json","dev-predictions.npz")})
+        all_hashes=dict(hashes,**{k:sha(staging/k) for k in metadata_files(a.run) if k not in hashes})
         dst=second if second.exists() else replica
         for k,expected in all_hashes.items():
             out=dst/k
