@@ -10,6 +10,8 @@ Use a two-by-two comparison at 116.50M with the same 8,192-update continuation s
 
 A second positive action result driven entirely by new simulator starts would support buying more physical interaction data. A reduction in goal regret from the non-simulator intervention, repeated on an unseen task while the action data stay fixed, would support investment in the shared representation itself. Either result changes what to fund.
 
+The held Tokyo forecasting panel has 41 positive ticks across 30 recordings in two rooms. The fresh 116.50M hybrid produced AP 0.02533 on seed 511 and 0.00143 on seed 512, versus 0.00193 for raw motion. Leaving out a single recording reduced the first score to 0.00081. New room recordings with repeated event classes are essential before interpreting the striking first-seed score as generalization. This sensitivity check was added after seeing the terminal event panel. [All models and recording omissions](metrics/input-controls.json)
+
 ## Preserve timing and test waveform content before preference tuning
 
 The identical timing head was substantially more effective on projected raw sensors than on either frozen shared field. Train a shared state with an explicit short-timescale prediction target and retain the existing causal state for slower context. Keep the total latent width, trainable parameter count and observed frames matched. Test timing after moving raw footage onto identical clocks, include the raw-feature control, and repeat lexical retrieval at fixed duration and speaker. Verify that the cross-modal decoder depends on the shared state by exchanging or erasing it. [Independent timing confirmation](physical-time.md)
