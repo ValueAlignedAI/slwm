@@ -1,0 +1,99 @@
+{
+  "batch": 256,
+  "estimator": "Median examples/s over two warm four-update blocks with device gradients, optimizer and metrics synchronized; host input prefetch is included.",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "gpu_candidates": [
+    32,
+    64,
+    128
+  ],
+  "gpu_oom": [],
+  "jax_gpu": "0.12.0.1",
+  "jax_tpu": "0.11.2",
+  "measured": {
+    "anchor-gpt2": {
+      "gpu_best_tested_micro": 128,
+      "gpu_rates_511": {
+        "32": 1053.6763351333916,
+        "64": 1117.5444924880244,
+        "128": 1172.1546092376602
+      },
+      "tpu_best_tested_micro": 64,
+      "tpu_rates_511": {
+        "32": 2537.0124064722845,
+        "64": 2683.276349644543
+      },
+      "tpu_rates_512": {
+        "32": 2538.5069715813324,
+        "64": 2682.57205286096
+      },
+      "v5e_over_3090_at_micro64": 2.401046551328512,
+      "v5e_over_3090_best_tested": 2.2891829529123964
+    },
+    "anchor-hybrid": {
+      "gpu_best_tested_micro": 128,
+      "gpu_rates_511": {
+        "32": 1040.453025456584,
+        "64": 1106.2935505616206,
+        "128": 1156.4882693665832
+      },
+      "tpu_best_tested_micro": 64,
+      "tpu_rates_511": {
+        "32": 2609.189707295316,
+        "64": 2782.850013354643
+      },
+      "tpu_rates_512": {
+        "32": 2611.8265149882927,
+        "64": 2781.277603979429
+      },
+      "v5e_over_3090_at_micro64": 2.5154716051105086,
+      "v5e_over_3090_best_tested": 2.406293333938294
+    },
+    "larger-gpt2": {
+      "gpu_best_tested_micro": 128,
+      "gpu_rates_511": {
+        "32": 640.5476990976329,
+        "64": 608.11936704251,
+        "128": 698.418276295514
+      },
+      "tpu_best_tested_micro": 64,
+      "tpu_rates_511": {
+        "32": 1568.498604655686,
+        "64": 1614.707157645596
+      },
+      "tpu_rates_512": {
+        "32": 1568.496377668297,
+        "64": 1614.4621759305337
+      },
+      "v5e_over_3090_at_micro64": 2.655247053713258,
+      "v5e_over_3090_best_tested": 2.31194860221897
+    },
+    "larger-hybrid": {
+      "gpu_best_tested_micro": 128,
+      "gpu_rates_511": {
+        "32": 635.4250951092515,
+        "64": 658.9105768104041,
+        "128": 685.0407569435863
+      },
+      "tpu_best_tested_micro": 64,
+      "tpu_rates_511": {
+        "32": 1652.8979450295085,
+        "64": 1705.916957413076
+      },
+      "tpu_rates_512": {
+        "32": 1652.78905089691,
+        "64": 1704.475328183228
+      },
+      "v5e_over_3090_at_micro64": 2.5889961664766825,
+      "v5e_over_3090_best_tested": 2.490241551501672
+    }
+  },
+  "primary_seed": 511,
+  "scan_updates": 4,
+  "tpu": "TPU v5 lite",
+  "tpu_candidates": [
+    32,
+    64
+  ],
+  "warm_blocks_measured": 2
+}
