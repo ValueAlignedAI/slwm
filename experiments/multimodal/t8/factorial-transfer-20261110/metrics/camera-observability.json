@@ -1,0 +1,1972 @@
+{
+  "area16": "Reference 512-pixel scene area-averaged to 16 pixels. This processing was not used by the registered models.",
+  "direct_render": "Original 16-pixel simulator camera.",
+  "independent_seeds": [
+    1156000,
+    1156064
+  ],
+  "interventions": "Remove only the barrier shape or move only the puck outside the view; do not advance the simulator between images.",
+  "role": "Supplementary development renderer audit after inspecting the sampling geometry, before confirmation outcomes were opened.",
+  "scenes": {
+    "object": [
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3189,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 16,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156000
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2867,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 89
+        },
+        "seed": 1156001
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2875,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156002
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 109
+        },
+        "512": {
+          "changed_pixels": 2888,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156003
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3332,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156004
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2861,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 85
+        },
+        "seed": 1156005
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3146,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156006
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2829,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 85
+        },
+        "seed": 1156007
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3104,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156008
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3521,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 25,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156009
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3136,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 98
+        },
+        "seed": 1156010
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2858,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156011
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 115
+        },
+        "512": {
+          "changed_pixels": 2874,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156012
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3198,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156013
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2875,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156014
+      },
+      {
+        "16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3158,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 93
+        },
+        "seed": 1156015
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2857,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 9,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156016
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3311,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 92
+        },
+        "seed": 1156017
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3204,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 17,
+          "maximum_gray_delta": 92
+        },
+        "seed": 1156018
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2869,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 95
+        },
+        "seed": 1156019
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2872,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 91
+        },
+        "seed": 1156020
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3320,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156021
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3378,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 23,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156022
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 115
+        },
+        "512": {
+          "changed_pixels": 2862,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 88
+        },
+        "seed": 1156023
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2860,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156024
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3135,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 17,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156025
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 109
+        },
+        "512": {
+          "changed_pixels": 3145,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 16,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156026
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 115
+        },
+        "512": {
+          "changed_pixels": 2869,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156027
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3110,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 80
+        },
+        "seed": 1156028
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 109
+        },
+        "512": {
+          "changed_pixels": 3197,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 93
+        },
+        "seed": 1156029
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3086,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156030
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3199,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156031
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3255,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 86
+        },
+        "seed": 1156032
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3218,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156033
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3396,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 23,
+          "maximum_gray_delta": 89
+        },
+        "seed": 1156034
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3195,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156035
+      },
+      {
+        "16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3210,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156036
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 109
+        },
+        "512": {
+          "changed_pixels": 2854,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156037
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3198,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156038
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2851,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156039
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3129,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 95
+        },
+        "seed": 1156040
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2832,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156041
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3195,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 13,
+          "maximum_gray_delta": 79
+        },
+        "seed": 1156042
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3171,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156043
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2874,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 9,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156044
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3202,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 17,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156045
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3193,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 16,
+          "maximum_gray_delta": 98
+        },
+        "seed": 1156046
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3221,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 18,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156047
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2884,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 92
+        },
+        "seed": 1156048
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3243,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 16,
+          "maximum_gray_delta": 90
+        },
+        "seed": 1156049
+      },
+      {
+        "16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3308,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156050
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2839,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 8,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156051
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3203,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 16,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156052
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2882,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 78
+        },
+        "seed": 1156053
+      },
+      {
+        "16": {
+          "changed_pixels": 13,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3410,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156054
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2856,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 95
+        },
+        "seed": 1156055
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 2862,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 6,
+          "maximum_gray_delta": 93
+        },
+        "seed": 1156056
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3171,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 17,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156057
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 2857,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 7,
+          "maximum_gray_delta": 87
+        },
+        "seed": 1156058
+      },
+      {
+        "16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 122
+        },
+        "512": {
+          "changed_pixels": 3146,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 96
+        },
+        "seed": 1156059
+      },
+      {
+        "16": {
+          "changed_pixels": 4,
+          "maximum_gray_delta": 102
+        },
+        "512": {
+          "changed_pixels": 2847,
+          "maximum_gray_delta": 122
+        },
+        "area16": {
+          "changed_pixels": 5,
+          "maximum_gray_delta": 85
+        },
+        "seed": 1156060
+      },
+      {
+        "16": {
+          "changed_pixels": 2,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3448,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 24,
+          "maximum_gray_delta": 94
+        },
+        "seed": 1156061
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3219,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 15,
+          "maximum_gray_delta": 90
+        },
+        "seed": 1156062
+      },
+      {
+        "16": {
+          "changed_pixels": 3,
+          "maximum_gray_delta": 96
+        },
+        "512": {
+          "changed_pixels": 3179,
+          "maximum_gray_delta": 134
+        },
+        "area16": {
+          "changed_pixels": 14,
+          "maximum_gray_delta": 97
+        },
+        "seed": 1156063
+      }
+    ],
+    "wall": [
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156000
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156001
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156002
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156003
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156004
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156005
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156006
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156007
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156008
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156009
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156010
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156011
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156012
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156013
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156014
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156015
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156016
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156017
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156018
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156019
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156020
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156021
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156022
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156023
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156024
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156025
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156026
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156027
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1794,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156028
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156029
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156030
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156031
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156032
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156033
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156034
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156035
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156036
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156037
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156038
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156039
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156040
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156041
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156042
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156043
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156044
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156045
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156046
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156047
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156048
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156049
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156050
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156051
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156052
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156053
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156054
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156055
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156056
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156057
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156058
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156059
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156060
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156061
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156062
+      },
+      {
+        "16": {
+          "changed_pixels": 0,
+          "maximum_gray_delta": 0
+        },
+        "512": {
+          "changed_pixels": 1793,
+          "maximum_gray_delta": 150
+        },
+        "area16": {
+          "changed_pixels": 12,
+          "maximum_gray_delta": 28
+        },
+        "seed": 1156063
+      }
+    ]
+  },
+  "summary": {
+    "object": {
+      "16": {
+        "mean_changed_pixels": 3.578125,
+        "mean_max_gray_delta": 108.359375,
+        "visible_scenes": 64
+      },
+      "512": {
+        "mean_changed_pixels": 3083.328125,
+        "mean_max_gray_delta": 129.3125,
+        "visible_scenes": 64
+      },
+      "area16": {
+        "mean_changed_pixels": 12.84375,
+        "mean_max_gray_delta": 93.484375,
+        "visible_scenes": 64
+      }
+    },
+    "wall": {
+      "16": {
+        "mean_changed_pixels": 0.0,
+        "mean_max_gray_delta": 0.0,
+        "visible_scenes": 0
+      },
+      "512": {
+        "mean_changed_pixels": 1793.015625,
+        "mean_max_gray_delta": 150.0,
+        "visible_scenes": 64
+      },
+      "area16": {
+        "mean_changed_pixels": 12.0,
+        "mean_max_gray_delta": 28.0,
+        "visible_scenes": 64
+      }
+    }
+  }
+}
