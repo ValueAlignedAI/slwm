@@ -1,0 +1,133 @@
+{
+  "parents": {
+    "depth6": {
+      "gpt2-81": {
+        "bytes": 327674687,
+        "name": "EXP-T1-231",
+        "sha256": "c8c08e8cfd4586fb04cb53747c59ff98395e037b79650f72ba35f7f07d66b6ae"
+      },
+      "gpt2-82": {
+        "bytes": 327674687,
+        "name": "EXP-T1-233",
+        "sha256": "5982324c3e7d382681c8ce5cfe8fbc2897f0939f602bb1479561825054a7ec38"
+      },
+      "slwm-81": {
+        "bytes": 329080651,
+        "name": "EXP-T1-232",
+        "sha256": "0a888c76a1e4c43d8721d0309586bbc4b900b8c4b5f5109fe37b48f43458c75a"
+      },
+      "slwm-82": {
+        "bytes": 329080651,
+        "name": "EXP-T1-234",
+        "sha256": "2224187bfe8b94254873f2a3d9c508fb446498563f2f1d5fbaf11ad4ff252eb4"
+      }
+    },
+    "structured": {
+      "slwm-81": {
+        "bytes": 500617119,
+        "name": "EXP-T1-232",
+        "sha256": "c268feee41bf816d6eef9d2a7e749f12ea55e20265ed3935125dd95c1250aa81"
+      },
+      "slwm-82": {
+        "bytes": 500617119,
+        "name": "EXP-T1-234",
+        "sha256": "a20aea57ce0f251b1b2e4aaefd2e9ec263efe3547210aa8becc787a5500d9171"
+      }
+    }
+  },
+  "primary_lock_sha256": "8c3c183ab319ca4c045a78e58f2e50e05200a3c69bb7036f329434267ec88774",
+  "registered": [
+    "text",
+    "coco",
+    "cifar",
+    "speech",
+    "ami",
+    "clotho",
+    "pamap2",
+    "droid"
+  ],
+  "rejected": {
+    "depth6": {
+      "gpt2-dense-81": {
+        "delta_sha256": "f2319b20b40771dd447d7175cee39eafee4ef8b99609e01a3ff3e45661f1ed8d",
+        "resume_sha256": "22a98d453f4715d2ba2007c422ac83553f2f4abdc23fc727782ce3b3a797ac09"
+      },
+      "gpt2-dense-82": {
+        "delta_sha256": "661be53ae5fccdb2c5be4ce6d4b2d2418835afb1dba931457da827ce39c1eb10",
+        "resume_sha256": "b06ab5a26433acce3f8b48a46319d43775f5e3656b6c1f8529586f74828fecf4"
+      },
+      "signal-dense-81": {
+        "delta_sha256": "a524e3c0909f6da9586bc23d353c8f2e2a15534ec774d33010b017307804e4fd",
+        "resume_sha256": "e7200d7600b09517d7646d816c3181fcb5b91771de0e86e17124d1ccbf7cc8f6"
+      },
+      "signal-dense-82": {
+        "delta_sha256": "fdcbcbb497405fce871e3e70269cc6794cb89f387e67bfcd5ced2bfbda0f80a6",
+        "resume_sha256": "25e9203bda651b06aa175e14492c84e390c3901f63d3d496c2c11a02346c10e9"
+      },
+      "signal-sparse-81": {
+        "delta_sha256": "c48bfc292e63fc73b0440cf1289b817f0ee54a4726e93d5dd3a8bfdbef1cb4ff",
+        "resume_sha256": "0484c2b64a063185448d88c96e911d252794c7935894a7b58aa8c5bf490af481"
+      },
+      "signal-sparse-82": {
+        "delta_sha256": "3902611ebd0f793f31099e10a8685c0e8c50624ab1491279486cc6667af2f2f8",
+        "resume_sha256": "83063858c5c62777f5cb5e75e089bf289e7265a2ce7599570308c7322cc89713"
+      }
+    },
+    "structured": {
+      "signal-dense-81": {
+        "delta_sha256": "69297520a6dfe4be6bb41d9a755ac36e523cdea3eccc6f6723200af18c9af244",
+        "resume_sha256": "1b0de46d9ab08040194475f008442ebe69f078754783588b1b6c26043cbf3505"
+      },
+      "signal-dense-82": {
+        "delta_sha256": "f26c2a4803b1bc789b4759615d77b22e83b179e5412eeb202bd92904564abb0e",
+        "resume_sha256": "147f4d94996280b39a32cc66ab6a69fa4d040662d32dab67bc3558cba801767e"
+      }
+    }
+  },
+  "seeds": {
+    "81": {
+      "call_counts": {
+        "ami": 5,
+        "cifar": 10,
+        "clotho": 5,
+        "coco": 25,
+        "droid": 10,
+        "pamap2": 10,
+        "speech": 15,
+        "text": 20
+      },
+      "first_different_source_step": 0,
+      "primary_and_repaired_sha256": "c651bbee4a23fd930f9622ac8bb5363def808e2cb7bce724e27d3506294fbb02",
+      "rejected_sha256": "eeb2ba16fc321b2d5917d45b3a0b333ef7282ff789371541c72bb042fa75667a"
+    },
+    "82": {
+      "call_counts": {
+        "ami": 5,
+        "cifar": 10,
+        "clotho": 5,
+        "coco": 25,
+        "droid": 10,
+        "pamap2": 10,
+        "speech": 15,
+        "text": 20
+      },
+      "first_different_source_step": 0,
+      "primary_and_repaired_sha256": "4e5ee1df329109f2a5d06f8e472ff7fa56e5e051344de108f4224e163b5db7d0",
+      "rejected_sha256": "c594bc74784d63138b8f363599c2eb747d69f678ec71e8501ba73cf52b0857f4"
+    }
+  },
+  "stored": [
+    "ami",
+    "cifar",
+    "clotho",
+    "coco",
+    "droid",
+    "pamap2",
+    "speech",
+    "text"
+  ],
+  "variant_locks": {
+    "depth6": "70416276f6a14437f65b8445b81f7b033d0229184e4096b7a76b62a12fdfc0c0",
+    "structured": "af298eaf5d6818ce9c615db8404483f76cb7c1d30f4c3f43c5b0d70b1ba29a7b"
+  }
+}

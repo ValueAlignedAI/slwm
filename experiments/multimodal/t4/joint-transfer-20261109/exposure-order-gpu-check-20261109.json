@@ -1,0 +1,25 @@
+{
+  "gpu_checkpoints": {
+    "depth6": {
+      "delta_sha256": "077d2f32ffc7aeabfd014ae46c16d857eac7262a0e6a71b4c8ecc8e6305b5b1d",
+      "optimizer_archive_run": "g3-depth6-134a3f4281f6-gpt2-dense-81",
+      "parent_sha256": "c8c08e8cfd4586fb04cb53747c59ff98395e037b79650f72ba35f7f07d66b6ae",
+      "presentations": 6400,
+      "primary_and_companion_exposure_sha256": "c651bbee4a23fd930f9622ac8bb5363def808e2cb7bce724e27d3506294fbb02",
+      "run": "gpt2-dense-81",
+      "step": 100,
+      "training_lock_sha256": "134a3f4281f6d59131adf660690b7bfae5a56499d03743a1ad1e8293fbb95d03"
+    },
+    "structured": {
+      "delta_sha256": "7f3e0f08e77f9583ecdebd3cbef5a5ee068f4b0e19e48b096daacccdfd841f77",
+      "optimizer_archive_run": "g3-structured-84f379161157-signal-dense-81",
+      "parent_sha256": "c268feee41bf816d6eef9d2a7e749f12ea55e20265ed3935125dd95c1250aa81",
+      "presentations": 6400,
+      "primary_and_companion_exposure_sha256": "c651bbee4a23fd930f9622ac8bb5363def808e2cb7bce724e27d3506294fbb02",
+      "run": "signal-dense-81",
+      "step": 100,
+      "training_lock_sha256": "84f379161157bdf169f57db45d68cd565e93b2a105556ed8c1488b0fe7f9e87c"
+    }
+  },
+  "primary_8000_endpoints_at_check": 7
+}
