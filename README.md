@@ -183,11 +183,11 @@ The generated T2 fixture is for pipeline validation only and must not be used as
 
 ## Current research questions
 
-- At fixed exposure and fixed accelerator time, does a larger core benefit more from independent examples or additional passes through existing data?
-- Which speech and event information survives the shared state when the input speaker, scene or timing changes?
-- Can retained observations support consecutive goal-directed decisions on a new environment?
+- With simulator training trajectories held fixed, do additional speech, text and audiovisual observations improve decisions on a new physical task?
+- Can a fixed-width shared state retain the short-timescale information needed for genuine audiovisual synchrony and intelligible speech?
+- Can learned dynamics improve two-step terminal goal success with raw state first, then with decoded shared state?
 
-The experimental designs specify the data splits, matched dense controls and promotion criteria. [Next iteration](experiments/multimodal/t6/tpu-scale-20261110/next-iteration.md)
+The next comparison crosses fresh simulator starts with fresh examples from the other modalities and retains a matched dense Transformer. [Experimental decision and gates](experiments/multimodal/t7/continuation-alignment-control-20261110/next-steps.md)
 
 ## Scientific Guardrails
 
