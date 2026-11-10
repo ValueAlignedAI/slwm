@@ -9,21 +9,25 @@ import time
 
 
 def transfer(repo,session,tag,step,digest,control):
-    if not re.fullmatch(r"slwm-g6-[a-z0-9-]+",session) or not re.fullmatch(r"g6-(?:v5e|v6e)-(?:larger|anchor)-(?:hybrid|gpt2)-(?:511|512)",tag) or not re.fullmatch("[a-f0-9]{64}",digest):
+    study=tag[:2]
+    patterns={"g6":r"g6-(?:v5e|v6e)-(?:larger|anchor)-(?:hybrid|gpt2)-(?:511|512)",
+              "g7":r"g7-(?:v5e|v6e)-(?:larger|anchor)-(?:hybrid|gpt2)-(?:511|512)-(?:replay|fresh)"}
+    stages={"g6":(128,512,2048,8192),"g7":(10240,12288,16384)}
+    if study not in patterns or not re.fullmatch(rf"slwm-{study}-[a-z0-9-]+",session) or not re.fullmatch(patterns[study],tag) or not re.fullmatch("[a-f0-9]{64}",digest):
         raise ValueError("Invalid registered artifact")
-    if step not in (128,512,2048,8192):
-        raise ValueError("Unregistered milestone")
+    if step not in stages[study]: raise ValueError("Unregistered milestone")
     control.mkdir(exist_ok=True,parents=True)
     meta=control/f"{tag}-{step}.json"
     bridge=["ssh","-o","BatchMode=yes","-o","ConnectTimeout=12","-o","ServerAliveInterval=30","db@192.168.1.200"]
     opts=f" --run {tag} --step {step} --sha {digest}"
-    receive="cd /home/db/dev/slwm-g5 && python3 -m scripts.train.g6_artifacts "
+    checkout="slwm-g7" if study=="g7" else "slwm-g5"
+    receive=f"cd /home/db/dev/{checkout} && python3 -m scripts.train.g6_artifacts "
     with meta.with_suffix(".lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         info=json.loads(subprocess.check_output([*bridge,receive+"offset"+opts],text=True,timeout=30))
         if not info["verified"]:
             offset=int(info["offset"])
-            send=f"cd /content/g6-code && python -m scripts.train.g6_artifacts send{opts} --offset {offset}"
+            send=f"cd /content/{study}-code && python -m scripts.train.g6_artifacts send{opts} --offset {offset} --output /content/{study}-out"
             command=["bash","scripts/train/colab_session.sh","ssh",session,"bash","-c",send]
             with subprocess.Popen(command,cwd=repo,stdout=subprocess.PIPE) as sender:
                 try:
@@ -36,7 +40,7 @@ def transfer(repo,session,tag,step,digest,control):
                     sender.terminate(); sender.wait(timeout=15); raise
                 if rc or result.returncode:
                     raise RuntimeError(f"Transport interrupted; verified offset will be reused ({rc}, {result.returncode})")
-        receipt=json.loads(subprocess.check_output([*bridge,"cat",f"/mnt/slwm-checkpoints-a/SLWM/g6/{tag}/step-{step:06d}/verified.json"],text=True,timeout=30))
+        receipt=json.loads(subprocess.check_output([*bridge,"cat",f"/mnt/slwm-checkpoints-a/SLWM/{study}/{tag}/step-{step:06d}/verified.json"],text=True,timeout=30))
         if receipt["sha256"]["resume.npz"]!=digest or len(set(receipt["disk_uuids"]))!=2:
             raise ValueError("Incomplete replica receipt")
         temp=meta.with_suffix(".tmp"); temp.write_text(json.dumps(receipt,sort_keys=True)+"\n"); temp.replace(meta)
