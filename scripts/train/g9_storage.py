@@ -1,6 +1,7 @@
 """Verified two-HDD checkpoint custody and lossless bounded Colab transfer packets."""
 import argparse
 import hashlib
+import fcntl
 import json
 import os
 import re
@@ -16,7 +17,7 @@ CHUNK=16*2**20
 
 
 def write(path,value):
-    tmp=path.with_suffix(".new");tmp.write_text(json.dumps(value,sort_keys=True,indent=2)+"\n");tmp.replace(path)
+    tmp=path.with_name("."+path.name+"."+str(os.getpid())+".new");tmp.write_text(json.dumps(value,sort_keys=True,indent=2)+"\n");tmp.replace(path)
 
 
 def sha(path):
@@ -59,13 +60,15 @@ def receive(tag,step,file,expected,size,offset):
     rel=location(tag,step)
     if file not in FILES or not re.fullmatch("[a-f0-9]{64}",expected) or not 0<size<2*2**30:raise ValueError("Unknown file")
     stage=disks()[0]/rel;stage.mkdir(parents=True,exist_ok=True);p=stage/(file+".partial")
-    if offset!=(p.stat().st_size if p.exists() else 0):raise ValueError("Incoming offset changed")
-    with p.open("ab") as out:
-        shutil.copyfileobj(sys.stdin.buffer,out,1<<20);out.flush();os.fsync(out.fileno())
-    if p.stat().st_size!=size:raise ValueError("Incomplete incoming checkpoint")
-    if sha(p)!=expected:
-        p.rename(p.with_suffix(".invalid"));raise ValueError("Incoming checksum mismatch")
-    p.replace(stage/file)
+    with (stage/(file+".lock")).open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if offset!=(p.stat().st_size if p.exists() else 0):raise ValueError("Incoming offset changed")
+        with p.open("ab") as out:
+            shutil.copyfileobj(sys.stdin.buffer,out,1<<20);out.flush();os.fsync(out.fileno())
+        if p.stat().st_size!=size:raise ValueError("Incomplete incoming checkpoint")
+        if sha(p)!=expected:
+            p.rename(p.with_suffix(".invalid"));raise ValueError("Incoming checksum mismatch")
+        p.replace(stage/file)
 
 
 def mirror(tag,step):
@@ -74,15 +77,18 @@ def mirror(tag,step):
     if receipt["tag"]!=tag or receipt["step"]!=step:raise ValueError("Conflicting local generation")
     second.mkdir(parents=True,exist_ok=True)
     if (second/"verified.json").exists() and (stage/"verified.json").exists():return
-    for file,field in FILES.items():
-        if sha(stage/file)!=receipt[field]:raise ValueError("Primary checksum mismatch")
-        if not (second/file).exists() or sha(second/file)!=receipt[field]:
-            tmp=second/(file+".partial");shutil.copyfile(stage/file,tmp)
-            if sha(tmp)!=receipt[field]:raise ValueError("Secondary checksum mismatch")
-            tmp.replace(second/file)
-    for p in (stage,second):
-        write(p/"receipt.json",receipt);write(p/"verified.json",{"tag":tag,"step":step,"inference_sha256":receipt["inference_sha256"],"optimizer_sha256":receipt["optimizer_sha256"],"verified_copies":2})
-    if step==receipt["goal_steps"]:write(stage.parent/"done.json",receipt)
+    with (stage/".mirror.lock").open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if (second/"verified.json").exists() and (stage/"verified.json").exists():return
+        for file,field in FILES.items():
+            if sha(stage/file)!=receipt[field]:raise ValueError("Primary checksum mismatch")
+            if not (second/file).exists() or sha(second/file)!=receipt[field]:
+                tmp=second/(file+".partial");shutil.copyfile(stage/file,tmp)
+                if sha(tmp)!=receipt[field]:raise ValueError("Secondary checksum mismatch")
+                tmp.replace(second/file)
+        for p in (stage,second):
+            write(p/"receipt.json",receipt);write(p/"verified.json",{"tag":tag,"step":step,"inference_sha256":receipt["inference_sha256"],"optimizer_sha256":receipt["optimizer_sha256"],"verified_copies":2})
+        if step==receipt["goal_steps"]:write(stage.parent/"done.json",receipt)
 
 
 if __name__=="__main__":
