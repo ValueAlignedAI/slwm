@@ -1,0 +1,173 @@
+{
+  "cells": {
+    "gpt2-511": {
+      "contrasts": {
+        "interaction": {
+          "mean": -0.3282922096405479,
+          "paired_ci95": [
+            -0.7230225032760038,
+            0.05734388845095118
+          ],
+          "simultaneous_upper_one_sided": 0.10272589156742898
+        },
+        "other_main": {
+          "mean": 0.31884448794066456,
+          "paired_ci95": [
+            0.12792042101719864,
+            0.5178590512504585
+          ],
+          "simultaneous_upper_one_sided": 0.5415693103832702
+        },
+        "sim_main": {
+          "mean": -0.04602557741699237,
+          "paired_ci95": [
+            -0.34078420451883423,
+            0.25772291140677983
+          ],
+          "simultaneous_upper_one_sided": 0.3032391785281625
+        }
+      },
+      "endpoint_px": {
+        "fresh": 7.658335514744593,
+        "other": 7.868507196981859,
+        "replay": 7.385516604220921,
+        "sim": 7.5036371316242025
+      },
+      "original_dev_starts": 256,
+      "rung": 10240,
+      "weights": {
+        "fresh": "d25185d12fce5d9743e41b171f9766615e95c829ee117cb7ef9ae68f6e4c131c",
+        "other": "579156c69fb828b6fefe74c63e6bb77ba60db0f24fe7667fe6f32aa0ac7114c6",
+        "replay": "4258c0496a897292f7b949eced5a9a8f079877395f655563605fbf376c4258d0",
+        "sim": "f90678d483a96a5d16a8b93863855e57d10ad5a0cfb4c7009963d7f3d50d614a"
+      }
+    },
+    "gpt2-512": {
+      "contrasts": {
+        "interaction": {
+          "mean": -0.0226932420206358,
+          "paired_ci95": [
+            -0.392503879179701,
+            0.36373977837699134
+          ],
+          "simultaneous_upper_one_sided": 0.4250804100729887
+        },
+        "other_main": {
+          "mean": -0.15303822801374337,
+          "paired_ci95": [
+            -0.3568605604007375,
+            0.0493562673220996
+          ],
+          "simultaneous_upper_one_sided": 0.07951237149234455
+        },
+        "sim_main": {
+          "mean": 0.26271765882695647,
+          "paired_ci95": [
+            0.00981885317284355,
+            0.5108353589583413
+          ],
+          "simultaneous_upper_one_sided": 0.5537100587121675
+        }
+      },
+      "endpoint_px": {
+        "fresh": 8.49491030262513,
+        "other": 8.24353926480849,
+        "replay": 8.385230871811915,
+        "sim": 8.65929515164919
+      },
+      "original_dev_starts": 256,
+      "rung": 10240,
+      "weights": {
+        "fresh": "c7888d3bda14a0ff144c6d5ac6238dd98351c6901ddffe5309d43b68a3bddf76",
+        "other": "4657ad666f36f325348b31880b1497dbf22d470eb021f8d3f02eec585469e9a1",
+        "replay": "320b817507929fb0dcc83a002dcf6dccf42683019700db6c05b576e9c9e133bd",
+        "sim": "1105666a160fc3b11d8ba177c722c0724f8b3ab68aa656c3cdbb3ea579989af9"
+      }
+    },
+    "hybrid-511": {
+      "contrasts": {
+        "interaction": {
+          "mean": -0.10042733212312463,
+          "paired_ci95": [
+            -0.3523080205675688,
+            0.150230544089471
+          ],
+          "simultaneous_upper_one_sided": 0.1883259812769193
+        },
+        "other_main": {
+          "mean": 0.22569333140134357,
+          "paired_ci95": [
+            0.06395676775230306,
+            0.39675496666048066
+          ],
+          "simultaneous_upper_one_sided": 0.4267988156601163
+        },
+        "sim_main": {
+          "mean": -0.1889447648756688,
+          "paired_ci95": [
+            -0.42724294011178837,
+            0.05758929182891581
+          ],
+          "simultaneous_upper_one_sided": 0.07784676656010628
+        }
+      },
+      "endpoint_px": {
+        "fresh": 6.56612052615726,
+        "other": 6.80527895709449,
+        "replay": 6.529371959631584,
+        "sim": 6.390640860817478
+      },
+      "original_dev_starts": 256,
+      "rung": 10240,
+      "weights": {
+        "fresh": "a3d17734ff76ad090fc5dc67ac758eaac1bd8056111a53f37fda63637ced86d3",
+        "other": "5b4d0de97ef051ce7b4f2f979b9e12c9df155d0503e39ab41c650e4afb6a5d50",
+        "replay": "eb5ded20a63028e989aff167085ad93f63d6d67eb4649cb1b01c48537e76d0ac",
+        "sim": "b9a4a05fb15e3d8830286f23b4c41b92862ec027685d4f67067b5e5103b1accc"
+      }
+    },
+    "hybrid-512": {
+      "contrasts": {
+        "interaction": {
+          "mean": 0.29921044779740424,
+          "paired_ci95": [
+            -0.07272489074323224,
+            0.6746553407193316
+          ],
+          "simultaneous_upper_one_sided": 0.7325019712124674
+        },
+        "other_main": {
+          "mean": 0.21341362063042113,
+          "paired_ci95": [
+            0.025007775221325374,
+            0.39584951773575383
+          ],
+          "simultaneous_upper_one_sided": 0.4183494777526258
+        },
+        "sim_main": {
+          "mean": -0.02082554988465661,
+          "paired_ci95": [
+            -0.28783074087549126,
+            0.22183052117187968
+          ],
+          "simultaneous_upper_one_sided": 0.25650761056075216
+        }
+      },
+      "endpoint_px": {
+        "fresh": 6.690237974939591,
+        "other": 6.561458300925545,
+        "replay": 6.4976499041938265,
+        "sim": 6.327219130410468
+      },
+      "original_dev_starts": 256,
+      "rung": 10240,
+      "weights": {
+        "fresh": "43f23b0d4f504ca4acaff63467b3c0c9a56db1085e73849489057811672b969f",
+        "other": "72820be49cb03e8da178e18734d2eb9c76ea4412ad4f770574d5ceb4379d1e3a",
+        "replay": "eba700ccbf8595a1e865d855d54253cd7efdf0c81352d6e547ca06a4a83b806f",
+        "sim": "3e58a380ac4f736c0c0e03e17253cec2f3606354933f6928f42bc07076b5697c"
+      }
+    }
+  },
+  "scope": "Complete first continuation rung of both factors; original G6 development endpoint, separate from G8 goal-regret confirmation."
+}

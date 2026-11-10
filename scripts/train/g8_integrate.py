@@ -2,6 +2,7 @@
 import argparse
 from pathlib import Path
 import json
+import os
 from g7_integrate_release import integrate,git
 from g8_state import update
 
@@ -9,6 +10,7 @@ REPORT=Path("experiments/multimodal/t8/factorial-transfer-20261110")
 
 
 def main(a):
+    a.repo=a.repo.resolve();a.control=a.control.resolve();os.chdir(a.repo)
     if a.kind=="speech":
         doc=json.loads(git("show",a.head+":"+str(REPORT/"metrics/speech.json")))
         if set(doc["allocated"]["cases"])!={"libri","crema"} or any(len(v["variants"])!=4 for v in doc["allocated"]["cases"].values()):

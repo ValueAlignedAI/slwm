@@ -6,9 +6,9 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ### G8 acoustic coding and action-transfer study
 
-A 652 kB trained acoustic codebook now has a portable encoder and decoder. At the same 2,250-bit/s payload, allocating bits by training distortion reduced word error from 93.5% to 46.7% on 33 new audiobook speakers. At 9,000 bits/s it reached 22.5%, close to the 22.4% original-audio result. The text- and video-conditioned predictors still failed the word-content gate. [Fresh-speaker results and listening examples](experiments/multimodal/t8/factorial-transfer-20261110/speech.md) · [Weights and usage](experiments/multimodal/t8/factorial-transfer-20261110/inference/README.md)
+A 652 kB trained acoustic codebook now has a portable encoder and decoder. At the same 2,250-bit/s payload, allocating bits by training distortion reduced word error from 93.5% to 46.7% on 33 new audiobook speakers. At 9,000 bits/s it reached 22.5%, close to the 22.4% original-audio result. A separate whole-utterance replication on 40 further speakers met the registered ±3-point WER margin versus original audio at 9 kbit/s for both Whisper and wav2vec2. The text- and video-conditioned predictors still failed the word-content gate. [Fresh-speaker results and listening examples](experiments/multimodal/t8/factorial-transfer-20261110/speech.md) · [Weights and usage](experiments/multimodal/t8/factorial-transfer-20261110/inference/README.md)
 
-The G8 action experiment holds physical training trajectories fixed while changing the other modalities, and vice versa. Four TPU reproductions recovered the original optimizer and weights byte for byte at 10,240 updates. New confirmation covers standard pushing, puck–barrier physics, articulated-arm transfer and sustained decisions. [Registered comparison](experiments/multimodal/t8/factorial-transfer-20261110/protocol.md) · [Reproduction receipts](experiments/multimodal/t8/factorial-transfer-20261110/metrics/bridges.json)
+The completed G8 four-cell study missed its prespecified cross-modal decision criterion (1/4 required hybrid task–seed cases). At fixed simulator freshness, the average non-simulator effect was 0.013 / 0.023 pixels of realized goal regret on new Push-T starts and 0.103 / -0.126 on unseen puck-and-barrier dynamics. Lower regret is better. The study includes matched dense Transformers, 512-start articulated-arm readouts and 38.4-second closed-loop action traces. It used 8.90 additional project Colab units. [Factorial results](experiments/multimodal/t8/factorial-transfer-20261110/report.md) · [Executed decision replays](experiments/multimodal/t8/factorial-transfer-20261110/metrics/rollout-examples.json)
 
 ### G7 shared state, speech and control
 
@@ -189,11 +189,11 @@ The generated T2 fixture is for pipeline validation only and must not be used as
 
 ## Current research questions
 
-- With simulator training trajectories held fixed, do additional speech, text and audiovisual observations improve decisions on a new physical task?
+- When present state is ambiguous, can synchronized evidence reveal a physical condition that changes the optimal action?
 - Can a fixed-width shared state retain the short-timescale information needed for genuine audiovisual synchrony and intelligible speech?
 - Can learned dynamics improve two-step terminal goal success with raw state first, then with decoded shared state?
 
-Removing the camera while keeping proprioception had no reliable effect on the fresh 116.50M hybrid’s held simulator error. Removing the proposed action raised error above 25 pixels. The next comparison crosses fresh simulator starts with fresh examples from the other modalities and retains a matched dense Transformer. [Sensor and plan controls](experiments/multimodal/t7/continuation-alignment-control-20261110/metrics/input-controls.json) [Experimental decision and gates](experiments/multimodal/t7/continuation-alignment-control-20261110/next-steps.md)
+Removing the camera while keeping proprioception had no reliable effect on the fresh 116.50M hybrid’s held simulator error. Removing the proposed action raised error above 25 pixels. G8 independently varied fresh simulator starts and fresh non-simulator examples with a matched dense Transformer. [Sensor and plan controls](experiments/multimodal/t7/continuation-alignment-control-20261110/metrics/input-controls.json) [Experimental decision and gates](experiments/multimodal/t7/continuation-alignment-control-20261110/next-steps.md)
 
 ## Scientific Guardrails
 

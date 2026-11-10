@@ -80,17 +80,23 @@ def freeze():
                 if sha(folder/(f+".npy"))!=h:raise ValueError("Unseen Reacher file changed")
         elif sha(folder/"scenes.npz")!=card["sha256"]:raise ValueError("Pushing scene archive changed")
         data[task]=sha(folder/"card.json")
-    heads={}
+    heads={};head_receipts={}
     for name in [*records,"raw-511","raw-512","physical"]:
         f=left/"reacher-heads"/name
         if not (f/"complete.json").is_file():return None
         d=read(f/"complete.json")
         if name in records and d["parent"]!=records[name]["weights"]:raise ValueError("Readout points at different core")
         if sha(f/"weights.npz")!=d["weights"] or sha(f/"optimizer.npz")!=d["optimizer"]:raise ValueError("Readout artifact changed")
-        heads[name]=d["weights"]
+        other=right/"reacher-heads"/name
+        if not (other/"complete.json").is_file():return None
+        if sha(other/"weights.npz")!=d["weights"] or sha(other/"optimizer.npz")!=d["optimizer"] or read(other/"complete.json")!=d:
+            raise ValueError("Fitted readout copies disagree")
+        if d.get("normalization") and any(sha(folder/"normalization.npz")!=d["normalization"] for folder in (f,other)):
+            raise ValueError("Physical transfer normalization changed")
+        heads[name]=d["weights"];head_receipts[name]=sha(f/"complete.json")
     audit=read(G8_DATA/"batch-audit.json")
     if not audit["factorization_exact"]:raise ValueError("Data manipulation failed")
-    doc={"study":"G8","models":records,"readouts":heads,"panels":data,"training_audit":sha(G8_DATA/"batch-audit.json"),
+    doc={"study":"G8","models":records,"readouts":heads,"readout_receipts":head_receipts,"panels":data,"training_audit":sha(G8_DATA/"batch-audit.json"),
          "previous_panels":{f:sha(G7_DATA/"fresh"/f/"test/card.json") for f in ("crema","libri","text","events","sim")},
          "code":{f:sha(Path(f)) for f in measurement_files()}}
     for disk in (left,right):lock(disk/"confirmation-lock.json",doc)

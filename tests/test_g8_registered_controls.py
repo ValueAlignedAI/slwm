@@ -47,3 +47,59 @@ def test_partial_mixtures_restore_every_excluded_family():
     values=data.requests(8192,9)
     for k in ("a","v","x","input_x","n","u","outcome","target_n","event"):
         np.testing.assert_array_equal(values[k].ravel(),[0,1,2,3,4,5,6,7,18])
+
+
+def test_lossless_optimizer_packet_preserves_even_and_odd_array_boundaries():
+    from scripts.train.g8_file_blocks import frame,unframe
+    rng=np.random.default_rng(888)
+    for size in (1,2,3,4,17,4096,8201):
+        data=rng.integers(0,256,size,dtype=np.uint8).tobytes();encoded=frame(data)
+        assert unframe(encoded,size)==data
+        with pytest.raises(ValueError):unframe(encoded+b"x",size)
+        with pytest.raises(ValueError):unframe(encoded,size+1)
+
+
+def test_released_audio_file_roundtrip_preserves_samples_and_detects_corruption(tmp_path):
+    from pathlib import Path
+    pytest.importorskip("vocos")
+    import soundfile as sf
+    from training.g8_audio_codec import PUBLIC,encode_audio,decode_audio
+    renderer=Path("artifacts/decoders/vocos-mel-24khz")
+    if not (renderer/"pytorch_model.bin").is_file():pytest.skip("External frozen Vocos fixture unavailable")
+    path=tmp_path/"input.wav";stream=tmp_path/"clip.slwma";decoded=tmp_path/"decoded.wav"
+    samples=np.sin(2*np.pi*337*np.arange(2333)/16000).astype(np.float32)*.06
+    sf.write(path,samples,16000)
+    meta=encode_audio(path,stream,PUBLIC,48)
+    assert meta["samples"]==3500
+    result=decode_audio(stream,decoded,PUBLIC,renderer,"cpu")
+    audio,sr=sf.read(decoded)
+    assert sr==24000 and len(audio)==3500 and result==meta and np.isfinite(audio).all()
+    content=bytearray(stream.read_bytes());content[-1]^=1;stream.write_bytes(content)
+    with pytest.raises(ValueError,match="checksum"):decode_audio(stream,decoded,PUBLIC,renderer,"cpu")
+
+
+def test_registered_paired_effects_distinguish_two_factors_and_interaction():
+    from scripts.train.g8_analysis import CONTRASTS,effect,estimate
+    baseline=np.array([5.,8.,11.])
+    cells={"replay":baseline,"sim":baseline-2,"other":baseline+3,"fresh":baseline,"parent":baseline+1}
+    draws=np.random.default_rng(8).integers(0,3,size=(20,3))
+    for name,value in (("other_at_replayed_sim",3),("other_at_fresh_sim",2),("sim_at_replayed_other",-2),("sim_at_fresh_other",-3),
+                       ("other_main",2.5),("sim_main",-2.5),("interaction",-1)):
+        differences=effect(cells,CONTRASTS[name])
+        np.testing.assert_array_equal(differences,np.full(3,value))
+        result=estimate(differences,draws)
+        assert result["mean"]==value and result["paired_ci95"]==[value,value]
+
+
+def test_single_sensor_decision_accepts_only_present_data_and_changes_with_goal(monkeypatch):
+    pytest.importorskip("jax")
+    from training import g8_decide
+    def predict(spec,p,cal,state,video,plans,condition):
+        assert state.shape==(1,16,6) and video.shape==(1,16,256)
+        return plans[:,:,-1,:]
+    monkeypatch.setattr(g8_decide,"predictions",predict)
+    plan=np.zeros((2,16,2),np.float32);plan[0,:,0]=-1.;plan[1,:,0]=1.
+    camera=np.zeros((16,256),np.uint8);state=np.zeros((16,6),np.float32)
+    assert g8_decide.decide(None,None,None,None,camera,plan,np.array([1.,0.]),"video")["chosen_plan"]==1
+    assert g8_decide.decide(None,None,None,state,None,plan,np.array([-1.,0.]),"state")["chosen_plan"]==0
+    with pytest.raises(ValueError):g8_decide.decide(None,None,None,state,None,plan,np.zeros(2),"joint")

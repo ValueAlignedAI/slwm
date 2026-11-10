@@ -25,6 +25,17 @@ Four matched, 2,048-update readouts then forecast continuous acoustic coefficien
 
 When the original sound outside a missing span was copied into the result, raw interpolation gave 53.2% audiobook word error. The two hybrid repairs gave 51.4% and 52.0%. Both speaker-paired intervals for the change included zero, as did the dense controls. Copying the available context and predicting an entire waveform answer different questions. [Per-direction conditions and independent head hashes](metrics/speech.json)
 
+## Replication on complete utterances
+
+A third panel used 80 whole test-clean utterances from 40 additional readers, totaling 1,954 reference words and 719.9 seconds. All readers were disjoint from both preceding G8 audiobook panels and G7 training. The cleaner corpus and longer utterances change the recognition difficulty relative to the cropped dev-other experiment. Selection used only speaker, a fixed identifier hash and a 4–18-second duration range. Neither recognizer selected the clips or word boundaries. The codec and both recognizers were frozen. [Prospective replication protocol](full-utterance-protocol.md) · [Paired edit counts and speaker intervals](metrics/full-utterance.json)
+
+| Recognizer | Original audio | Fine-mel reference | Equal at 2.25 kbit/s | Optimized at 2.25 kbit/s | Optimized at 9 kbit/s |
+|---|---:|---:|---:|---:|---:|
+| Whisper-tiny.en | 5.7% | 6.3% | 73.0% | 11.1% | 6.6% |
+| wav2vec2-base-960h CTC | 9.0% | 9.4% | 79.8% | 18.7% | 10.5% |
+
+At the same 2,250-bit/s rate, both speaker-paired intervals excluded zero in favor of the optimized allocation. Relative to original audio, the 9 kbit/s stream increased WER by 0.87 points for Whisper (95% interval +0.11 to +1.70) and 1.54 points for CTC (+0.41 to +2.94). Both intervals met the registered ±3-point recognition margin. This measures compression of observed audio on this speech population. It leaves the failure of text- and video-conditioned generation intact.
+
 ## Inference examples
 
 The long example concatenates adjacent published utterance files from one held LibriSpeech chapter, retaining 48 seconds in chapter order. The compressed files contain 13,500 and 54,000 payload bytes at 2,250 and 9,000 bits/s, respectively. The decoded WAVs have exactly 1,152,000 samples at 24 kHz. The listening previews use Opus for convenient playback. The public model can decode the original experiment streams. [Example IDs, source description, sample clocks and file hashes](metrics/speech-examples.json)
@@ -35,5 +46,7 @@ The long example concatenates adjacent published utterance files from one held L
 | Observed audio, 9 kbit/s acoustic stream | [Listen for 48 seconds](examples/speech/chapter-192.ogg) · [Packed stream](examples/speech/chapter-192.slwma) |
 | Text-only input, whole-waveform prediction | [Listen](examples/speech/text-conditioned.ogg) |
 | Video-only input, whole-waveform prediction | [Listen](examples/speech/video-conditioned.ogg) |
+
+The chapter audio is adapted from LibriSpeech by Vassil Panayotov, Guoguo Chen, Daniel Povey and Sanjeev Khudanpur, licensed under CC BY 4.0. The release joins, crops, compresses and transcodes the listed source utterances. [LibriSpeech release](https://www.openslr.org/12/) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 The last two examples use the first predetermined utterance in their respective confirmation sets and the first hybrid seed. Their models receive the declared text or video source. The compressed examples above them receive source audio.

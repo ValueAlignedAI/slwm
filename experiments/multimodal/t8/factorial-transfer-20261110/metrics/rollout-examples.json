@@ -1,0 +1,40 @@
+{
+  "puck_barrier": {
+    "description": "Executed actions in a higher-resolution simulator replay. The red goal overlay is for the viewer.",
+    "duration_seconds": 38.4,
+    "file_sha256": "2d8f17db99ec7b6e1c2c33194d6deb332088b77660e9c95a8cd3c58703d7007f",
+    "fps": 10,
+    "frames": 384,
+    "goal_radius_px": 20,
+    "max_replay_endpoint_difference_px": 2.281849305063588e-05,
+    "seed": 1130000,
+    "source_trajectories": {
+      "geometry": "3fbc1000e43842e4c9e347e028380163d2c631a163bab36fb83969319a78f3a7",
+      "gpt2-511-fresh": "7dedcfb44150f041a58fd1285fdac19776e545a1cd6a1fca628ea38dd9e4c70b",
+      "hybrid-511-fresh": "dd28a4612a1c01801f56620d3ec1394cbea544744e69cdc96aa61849e1c776bc",
+      "hybrid-511-other": "30f4d45dc37ec255dd7c3cd608a00ad36722c07a02ae537edac6804ebba21ea7",
+      "hybrid-511-replay": "43812bdfbd3a6ef7b12567b0527e74c455c7ca10a130154d5aefa3c031a4af16",
+      "hybrid-511-sim": "4dbbea2dcb2c2d4098950a96396496243b02123758b826a58767c75df76f1950"
+    },
+    "task": "puck_barrier"
+  },
+  "pusht": {
+    "description": "Executed actions in a higher-resolution simulator replay. The red goal overlay is for the viewer.",
+    "duration_seconds": 38.4,
+    "file_sha256": "df7cedbce1c09547efa6c7cc923a535af10c4c86c031b0b7eb8e0bc5c96fece0",
+    "fps": 10,
+    "frames": 384,
+    "goal_radius_px": 20,
+    "max_replay_endpoint_difference_px": 2.286133741336016e-05,
+    "seed": 1120000,
+    "source_trajectories": {
+      "geometry": "6bf34a81bef073ccbcdef1dd9526ad40002970fc9447269bd30adcfdc90d50b6",
+      "gpt2-511-fresh": "11b80a19b78b15a377c2dcc474ed8c1d2b3d9aac43c6c2570e6f031dd3fa726a",
+      "hybrid-511-fresh": "3d98304ca8c906ca2bb52ba1018ed5601812b661b2177b2efec62f0eae7249be",
+      "hybrid-511-other": "851bbbc4a9f643a588f69c5383e9d77b3ea5a7b0c73d22ec9a98913fbf2dfbb3",
+      "hybrid-511-replay": "2bed09ee3fe2c5ad825ad2c1ff017e2f8c4fbc72b74232db870ec818993ccab1",
+      "hybrid-511-sim": "c671e1c1f27dbcdd835f6ff506fc08e6c486490b106ec9271cde86930b834f1d"
+    },
+    "task": "pusht"
+  }
+}

@@ -67,20 +67,31 @@ def run(sim_site):
     sys.path.append(str(sim_site))
     cfg=read(CONFIG);doc=sealed();dest,_=roots("g8");prior=Geometry(OLD)
     tasks=("pusht","puck_barrier");panels={task:panel(task,doc) for task in tasks}
+    # Complete the primary matched test before spending time on the longer operational rollouts.
+    for task in tasks:evaluate(task,"raw",None,None,None,panels[task],prior,dest,"original_train_ridge")
+    for name,rec in sorted(doc["models"].items()):
+        spec,p,cal,_=load_model(rec)
+        for task in tasks:evaluate(task,name,spec,p,cal,panels[task],prior,dest,rec["weights"])
+    from scripts.train.g8_analysis import primary_snapshot
+    primary_snapshot(dest,doc)
     pools={}
     try:
         for task in tasks:
-            pools[task]=ScenePool(task,*cfg["panels"]["live_"+task]);evaluate(task,"raw",None,None,None,panels[task],prior,dest,"original_train_ridge")
+            pools[task]=ScenePool(task,*cfg["panels"]["live_"+task])
             for baseline in ("geometry","uniform","first_proposal","passive"):
                 rollout(pools[task],baseline,None,None,None,prior,dest,"fixed-"+baseline)
-        for baseline in ("physical","raw-511","raw-512"):reacher(baseline,doc)
+        def confirm_reacher(name):
+            area=dest/"confirmation/reacher"/name;complete=area/"metrics.json"
+            if complete.is_file():
+                d=read(complete)
+                if d["weights"]!=doc["readouts"][name] or sha(area/"rows.npz")!=d["row_sha256"]:raise ValueError("Changed transfer report")
+            else:reacher(name,doc)
+        for baseline in ("physical","raw-511","raw-512"):confirm_reacher(baseline)
         for name,rec in sorted(doc["models"].items()):
             spec,p,cal,_=load_model(rec)
-            for task in tasks:
-                evaluate(task,name,spec,p,cal,panels[task],prior,dest,rec["weights"])
-                rollout(pools[task],name,spec,p,cal,prior,dest,rec["weights"])
-            reacher(name,doc);retention(name,rec,doc,spec,p,cal,dest)
-            print("Held model complete",name,flush=True)
+            for task in tasks:rollout(pools[task],name,spec,p,cal,prior,dest,rec["weights"])
+            confirm_reacher(name);retention(name,rec,doc,spec,p,cal,dest)
+            print("All held routes complete",name,flush=True)
     finally:
         for pool in pools.values():pool.close()
 

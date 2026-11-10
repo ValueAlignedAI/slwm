@@ -1,0 +1,2182 @@
+{
+  "gpt2-511-fresh": {
+    "held_event_ap": {
+      "correct": 0.0007687731759015733,
+      "erase": 0.0007388500287351916,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008375514701861156
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-511-fresh",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.604669431261891,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09182645805800954
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.373724965444857,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1176462174548457
+      },
+      "crema_text": {
+        "audio_mse": 0.20299819602320593,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09110119954372446
+      },
+      "crema_text_erased": {
+        "audio_mse": 2.6769782811403275,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.21846421423057716
+      },
+      "crema_video": {
+        "audio_mse": 0.31360829949068525,
+        "byte_nll": 2.64972583764856,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.8817374234398206,
+        "byte_nll": 5.787510373382332,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7809430832855506,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.44787179854324,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.34128853320726193,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 3.8833685715217143,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3289121800944919,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.124318587401556,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "dac86edd77d2ae20a3cc309a9d6ebcaf7db0993ce442206eca2ad61ef977c89e"
+  },
+  "gpt2-511-other": {
+    "held_event_ap": {
+      "correct": 0.0007123984164979967,
+      "erase": 0.0007702629234208495,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008178999351875229
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "gpt2-511-other",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.6347552441739963,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09245246117934584
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.438384869441367,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.12285476564429701
+      },
+      "crema_text": {
+        "audio_mse": 0.20320599578941861,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.091121897722284
+      },
+      "crema_text_erased": {
+        "audio_mse": 2.7983053008715313,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.22323253368958831
+      },
+      "crema_video": {
+        "audio_mse": 0.2902269310783595,
+        "byte_nll": 2.5397979527020933,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.724249380081892,
+        "byte_nll": 5.807858316459833,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7810260750846982,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.256046416763165,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.3418498459213879,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 4.072817926527932,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3302130969980406,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.3427267708475625,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "9270570708fec00bb6be550564029a89a5d26f26dc1bf1fbc1acfecc6ca004c6"
+  },
+  "gpt2-511-parent": {
+    "held_event_ap": {
+      "correct": 0.0007161920316553462,
+      "erase": 0.0006856514141247681,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0007848895923209429
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-511-parent",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.329514259680346,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11118846124348541
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.533666968603591,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11280256669657926
+      },
+      "crema_text": {
+        "audio_mse": 1.2671910226345062,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1083153452568998
+      },
+      "crema_text_erased": {
+        "audio_mse": 3.3008498350779214,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.2073931606952101
+      },
+      "crema_video": {
+        "audio_mse": 0.9298382208372156,
+        "byte_nll": 7.194342550428058,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.7197602073351542,
+        "byte_nll": 6.669300619417217,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.514497176157125,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.548478124505382,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.6527511355816387,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 4.7020765917841345,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.400011422851729,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.277841681525821,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "c36aaafe4323696ed0e45f49bb26c4f7d4d5732fe6c37c2ed65880cd361e0b02"
+  },
+  "gpt2-511-replay": {
+    "held_event_ap": {
+      "correct": 0.0007974981846347976,
+      "erase": 0.0006976702033824388,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0009046515783048358
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-511-replay",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.351476159309493,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11668426321508983
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.59076653175413,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10854092796022694
+      },
+      "crema_text": {
+        "audio_mse": 1.5541345780094464,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10658364980481565
+      },
+      "crema_text_erased": {
+        "audio_mse": 4.49820683101813,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.23042207388207317
+      },
+      "crema_video": {
+        "audio_mse": 1.012740116318067,
+        "byte_nll": 6.812220194608756,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.5794202140221993,
+        "byte_nll": 6.758418936633621,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.493311543861413,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.675870729705035,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 2.018132925964892,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 6.035517621319741,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3384331082777372,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.534175167008052,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "906dd5a3178ecdfbf0c6d2be4c50a6c9cf40a73edab8a091112fb208c21c5d17"
+  },
+  "gpt2-511-sim": {
+    "held_event_ap": {
+      "correct": 0.0008070713610083645,
+      "erase": 0.0006278446048238845,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008542509344112135
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "gpt2-511-sim",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.390789908124638,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11708159839423994
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.5600752003594565,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11434400503834088
+      },
+      "crema_text": {
+        "audio_mse": 1.5743167472382387,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10633281039384504
+      },
+      "crema_text_erased": {
+        "audio_mse": 3.6916989535093307,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.23476507716501752
+      },
+      "crema_video": {
+        "audio_mse": 1.0383402447526653,
+        "byte_nll": 6.78355155484938,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.6699936290582021,
+        "byte_nll": 6.728142943817091,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.510599664436834,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.429724694400429,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 2.0437208713265136,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 5.111267366446555,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3372007017097776,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.0362959693348595,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "b5eb1d36adccab2ce09db1415a98f9b2339a1b10e649e9a9a2c6875e76470b53"
+  },
+  "gpt2-512-fresh": {
+    "held_event_ap": {
+      "correct": 0.0009340312879463289,
+      "erase": 0.0008685809356676974,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008897174903217247
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-512-fresh",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.6573479463733514,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.0933104394779851
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.110373409454016,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.113081530512621
+      },
+      "crema_text": {
+        "audio_mse": 0.20269489601875346,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09126306246034802
+      },
+      "crema_text_erased": {
+        "audio_mse": 0.7494883604347706,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11565463257332644
+      },
+      "crema_video": {
+        "audio_mse": 0.2791525849762062,
+        "byte_nll": 2.5946343641561187,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.6020178676893314,
+        "byte_nll": 5.874916752339146,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.780808566255819,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.0876756634660785,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.3427547823084751,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 1.5871972413151525,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3413143685412785,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 4.099000547613416,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "d597b4f1059965fc2b41e2aa19a4a8485bba2ad7bab2a8f306f733564265262d"
+  },
+  "gpt2-512-other": {
+    "held_event_ap": {
+      "correct": 0.000804700099963974,
+      "erase": 0.0007768789687343767,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008325795071860741
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "gpt2-512-other",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.6659504460035557,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09272647032824656
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.660189518641099,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11515428274869918
+      },
+      "crema_text": {
+        "audio_mse": 0.20226582692315181,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.0911032327140371
+      },
+      "crema_text_erased": {
+        "audio_mse": 0.7559913047899802,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11843662466853858
+      },
+      "crema_video": {
+        "audio_mse": 0.2659776424989104,
+        "byte_nll": 2.5685673101976443,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.5273514142880837,
+        "byte_nll": 6.010965272411128,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7818719244150243,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.821725026852177,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.34316814433259424,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 1.5790567001095042,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3409601021853705,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 3.7902870007923672,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "7fcf7a5ab1e0f2f5061f2aa313e45629d9d4d1ebfdce119870a6fe4e5869efe7"
+  },
+  "gpt2-512-parent": {
+    "held_event_ap": {
+      "correct": 0.0008547660637154076,
+      "erase": 0.0007193732727190675,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0011047778470490198
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-512-parent",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.222137128072323,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11740196091122926
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.958782092275722,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10397496294851104
+      },
+      "crema_text": {
+        "audio_mse": 1.199667684485515,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10841133358577887
+      },
+      "crema_text_erased": {
+        "audio_mse": 3.6853190233310062,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1433463454246521
+      },
+      "crema_video": {
+        "audio_mse": 0.999166501685977,
+        "byte_nll": 6.987881942583936,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.4986492544412613,
+        "byte_nll": 7.604584309785775,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.46122697946287,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.07832969851413,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.6138903540559113,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 4.920594216091558,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.4056713720635763,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 4.488515861923733,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "e8359124e06582972edb853333d3bec853d1b85d7e1f4c4156f9fe9e361caa33"
+  },
+  "gpt2-512-replay": {
+    "held_event_ap": {
+      "correct": 0.0009649106887647541,
+      "erase": 0.000731118018489382,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0009455960398451301
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "gpt2-512-replay",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.239441254039452,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.12273927720574042
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.125089885352016,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11177770832243066
+      },
+      "crema_text": {
+        "audio_mse": 1.4138894664744537,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1061027869116515
+      },
+      "crema_text_erased": {
+        "audio_mse": 2.880230525632699,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1599808537090818
+      },
+      "crema_video": {
+        "audio_mse": 1.0609296990868946,
+        "byte_nll": 6.846679101439864,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.4976600084453821,
+        "byte_nll": 7.304677715036195,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.445025327209331,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.0532812864644505,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 2.0487099684542045,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 3.943419845541939,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3481454079349835,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 4.688146566587781,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "478473d6da26514bf7836494e21a4e54c2ad5ad7c2bb79fb5b52604b798fa3fe"
+  },
+  "gpt2-512-sim": {
+    "held_event_ap": {
+      "correct": 0.0007808558517624377,
+      "erase": 0.0009112634964130641,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008297570956046701
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "gpt2-512-sim",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.24473204340043,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1219293296414738
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.276429841691597,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10206154704404374
+      },
+      "crema_text": {
+        "audio_mse": 1.5004630116124948,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10590699807119866
+      },
+      "crema_text_erased": {
+        "audio_mse": 2.0016534899671874,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.17633058003460367
+      },
+      "crema_video": {
+        "audio_mse": 1.0620491742466887,
+        "byte_nll": 6.830488356482669,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.5369093964497248,
+        "byte_nll": 7.0499211247958575,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.461031153866983,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.251416661155242,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 2.098065313184634,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.9996680794283748,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3479371083870766,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 4.3391562477936825,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "f32f09fcc43150f2e8462f2d77a5fc2de069f3533aac84e4b8851848653ac965"
+  },
+  "hybrid-511-fresh": {
+    "held_event_ap": {
+      "correct": 0.02533415449704587,
+      "erase": 0.0009265612264206398,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008476234991072972
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-511-fresh",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.4868804710817853,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.08791545474280914
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.321260515357464,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.13411728665232658
+      },
+      "crema_text": {
+        "audio_mse": 0.2036792177086075,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09106809803439925
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.3155629590153695,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.16816526912152768
+      },
+      "crema_video": {
+        "audio_mse": 0.2706451314656685,
+        "byte_nll": 3.103246772270851,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.48805183079093695,
+        "byte_nll": 6.65485854583693,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7693409957393476,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.555146159670202,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.34139475543634035,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.1122852487605996,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2780588764756444,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 4.739885732768074,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "5460237bff3a8bf0451244449af46159a642bf7f2259bc20df47158e822bf822"
+  },
+  "hybrid-511-other": {
+    "held_event_ap": {
+      "correct": 0.0027397999483875115,
+      "erase": 0.0009307949270224548,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0007057576796415474
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "hybrid-511-other",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.4932176423035965,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.08980331296722094
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 6.978367903648977,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1371115512214601
+      },
+      "crema_text": {
+        "audio_mse": 0.2039698176085949,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09100868731426696
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.4580112054944039,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.16602818003545206
+      },
+      "crema_video": {
+        "audio_mse": 0.2649393573558579,
+        "byte_nll": 3.082340010240605,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.44655269868671893,
+        "byte_nll": 6.631848126843319,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7660458786829225,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.188026319850575,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.3410742940905038,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.294784875935875,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2773832681160124,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.212010851928166,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "208388f74c01ad864f0f200e75691b2283b57620ab49230a4ab7e7eaa1d41ccb"
+  },
+  "hybrid-511-parent": {
+    "held_event_ap": {
+      "correct": 0.012927256635867343,
+      "erase": 0.00072406367834987,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0007409480660371149
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-511-parent",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.101971702045045,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.13330030512685578
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.742619613812549,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10864721845525006
+      },
+      "crema_text": {
+        "audio_mse": 1.1398453764617442,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10715589351020753
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.7158916180332502,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.22151597992827496
+      },
+      "crema_video": {
+        "audio_mse": 1.0075339402382573,
+        "byte_nll": 6.738953064766696,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.6643964782357216,
+        "byte_nll": 7.821945079585316,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.39353817508474,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.620672030147676,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.6740630147978663,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.6458837788086385,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3236099025086752,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.605978238204169,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "9f9223c4ae96a2d38773f18d0ba91df7b6337dbf0060c1eb40e837878f2ab194"
+  },
+  "hybrid-511-replay": {
+    "held_event_ap": {
+      "correct": 0.025276123804121666,
+      "erase": 0.0008930034039399683,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0011150317284746923
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-511-replay",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.37385551417261,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.14548551980406046
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.214584430771227,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.11899114431192477
+      },
+      "crema_text": {
+        "audio_mse": 1.1418913329641025,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10796092447514335
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.7245651870965957,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.16842562810828288
+      },
+      "crema_video": {
+        "audio_mse": 1.0831732291107377,
+        "byte_nll": 6.576190110078366,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.46689453050494195,
+        "byte_nll": 8.69614236822821,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.476802150714562,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.14138614745647,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.6081717275665142,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.612379714148119,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2847858044126677,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.081221558744946,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "9c140f5c9f266dffb7207cd09ad20e0f2e75366d3750b45f4f93ad1c47c323b5"
+  },
+  "hybrid-511-sim": {
+    "held_event_ap": {
+      "correct": 0.025130031281358767,
+      "erase": 0.000879239322955104,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0007683959412478601
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "hybrid-511-sim",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.388668726548161,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.14529385794885458
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.712236823622926,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1198744707585623
+      },
+      "crema_text": {
+        "audio_mse": 1.132561633984248,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10827941812264423
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.7755632062753042,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1714258760213852
+      },
+      "crema_video": {
+        "audio_mse": 1.125848528680702,
+        "byte_nll": 6.48842630519012,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.5228497782101234,
+        "byte_nll": 8.494933238906507,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.521456561213466,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.768210609631472,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.564464912225958,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.706567551009357,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2850764416276463,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.24754167738415,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "f5357b4105bdaefdc22548e31a4585500d9fc5a54187ca50c5022477723e000f"
+  },
+  "hybrid-512-fresh": {
+    "held_event_ap": {
+      "correct": 0.0014338118566469653,
+      "erase": 0.0008260827040833393,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0011302989867239157
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-512-fresh",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.5666503104581346,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.08640297358700384
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.626695028596904,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.15069227780525882
+      },
+      "crema_text": {
+        "audio_mse": 0.20229456278805932,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09179728031158448
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.2377058535814285,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.13619858267096183
+      },
+      "crema_video": {
+        "audio_mse": 0.27707761505929135,
+        "byte_nll": 2.984446026774057,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.832491314659516,
+        "byte_nll": 6.0852113019185605,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.769742795241816,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.686112942056406,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.3412743507506093,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.0948409800766967,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.275934170872446,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.330463910859729,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "1b25bd42a7752c72a41ad394caf6800b08a8cfe5c264f9dfd32f08f4787e12ce"
+  },
+  "hybrid-512-other": {
+    "held_event_ap": {
+      "correct": 0.0010946497006949938,
+      "erase": 0.000969610982624576,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0010336398907776088
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "hybrid-512-other",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 1.5903146246577708,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.08760990110070756
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.196521933554129,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.14646217743866147
+      },
+      "crema_text": {
+        "audio_mse": 0.20233981035028895,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.09166636735511323
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.2840432345867157,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.13889091579864424
+      },
+      "crema_video": {
+        "audio_mse": 0.26622756458818914,
+        "byte_nll": 2.9882194657598435,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.9200537346303463,
+        "byte_nll": 6.146790890347276,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 2.7741354274088503,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.344949342987754,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 0.3411629139591241,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 2.1498658055788837,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2758385039984235,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.481815803618658,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "76d74c085f9cecc7148b1b1c763a8c95cfa8cbb8e3f059713378134942f479f9"
+  },
+  "hybrid-512-parent": {
+    "held_event_ap": {
+      "correct": 0.0007245457252824331,
+      "erase": 0.0008738268711170359,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.000743632294369395
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-512-parent",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.235917242601445,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.15494357186059157
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.788302767958486,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1477852702451249
+      },
+      "crema_text": {
+        "audio_mse": 0.7548697793235382,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10625489012648662
+      },
+      "crema_text_erased": {
+        "audio_mse": 2.463614205022653,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.12438367538464566
+      },
+      "crema_video": {
+        "audio_mse": 0.9756387952094276,
+        "byte_nll": 6.706243540367351,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.8263858000437418,
+        "byte_nll": 7.727782681920613,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.45995011021066,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 7.742647432766637,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.0476916910265572,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 3.5677979616448283,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.3231451228734046,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.085905325791193,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "3e91b908dba3115592ca8a57092259d088596976fc4cb0cbe5584828696bb487"
+  },
+  "hybrid-512-replay": {
+    "held_event_ap": {
+      "correct": 0.0007827749348574566,
+      "erase": 0.0009518354628980205,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0007706758914016718
+    },
+    "method": "verified archived G7 diagnostics",
+    "model": "hybrid-512-replay",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.420279698320297,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1512644979171455
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.620272162082207,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1571300886105746
+      },
+      "crema_text": {
+        "audio_mse": 0.8251348900298278,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10751095069572329
+      },
+      "crema_text_erased": {
+        "audio_mse": 0.958871049930652,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.14706558017060162
+      },
+      "crema_video": {
+        "audio_mse": 1.1020667377238473,
+        "byte_nll": 6.570585667700082,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.7564919129014015,
+        "byte_nll": 8.214977782071097,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.545463448863918,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.503260868539796,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.2057228469057009,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 1.7402234226465225,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.283544042872058,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.4297447554648866,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "fe8548ea8206d2a76e35a5c4874056a7e48ed4102751de17b7b9b6e64e334c95"
+  },
+  "hybrid-512-sim": {
+    "held_event_ap": {
+      "correct": 0.0009183533006636875,
+      "erase": 0.0008528266506882896,
+      "raw_motion": 0.001931581795757925,
+      "shift": 0.0008322680453684727
+    },
+    "method": "same frozen G7 examples rescored",
+    "model": "hybrid-512-sim",
+    "signals": {
+      "crema_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.437911172480634,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.1473517005952696
+      },
+      "crema_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.476093677833239,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.16304573335995276
+      },
+      "crema_text": {
+        "audio_mse": 0.8102311233679453,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.10737377068338295
+      },
+      "crema_text_erased": {
+        "audio_mse": 1.0288772967954476,
+        "byte_nll": null,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": 0.14688344594712058
+      },
+      "crema_video": {
+        "audio_mse": 1.0868545034279427,
+        "byte_nll": 6.490344969382426,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "crema_video_erased": {
+        "audio_mse": 0.8837184742093086,
+        "byte_nll": 8.157282237033755,
+        "bytes_scored": 6470,
+        "groups": 8,
+        "rows": 240,
+        "video_mse": null
+      },
+      "libri_audio": {
+        "audio_mse": null,
+        "byte_nll": 9.532910075136252,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_audio_erased": {
+        "audio_mse": null,
+        "byte_nll": 8.259617090959946,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text": {
+        "audio_mse": 1.1716781093273312,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "libri_text_erased": {
+        "audio_mse": 1.8199161514057778,
+        "byte_nll": null,
+        "bytes_scored": 20768,
+        "groups": 65,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text": {
+        "audio_mse": null,
+        "byte_nll": 1.2831188546759742,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      },
+      "text_text_erased": {
+        "audio_mse": null,
+        "byte_nll": 5.156836766099173,
+        "bytes_scored": 32256,
+        "groups": 512,
+        "rows": 512,
+        "video_mse": null
+      }
+    },
+    "weight": "92fd2e71f797587edc4bdf123eef1d326fee561abe7c70b189458ea742c51b9a"
+  }
+}
