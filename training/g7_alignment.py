@@ -153,7 +153,8 @@ def evaluate(model,sets,role,variant):
                     seq=d.sync(np.arange(j,min(j+64,len(d.ix))))
                     if not len(seq[0]):continue
                     a,v,shift,other,m=map(gpu,seq); logits=torch.stack([model.match(a,x,m) for x in (v,shift,other)],1)
-                    winners.extend((logits.argmax(1)==0).cpu().tolist())
+                    valid=m.any(1); tied=logits==logits.max(1,keepdim=True).values
+                    winners.extend((tied[:,0].float()/tied.sum(1))[valid].cpu().tolist())
                 rs["synchrony_top1"]={"correct_vs_shift_vs_same_group_wrong":float(np.mean(winners)) if winners else None,"eligible":len(winners),"chance":1/3}
             scores[family]=rs
     return scores
