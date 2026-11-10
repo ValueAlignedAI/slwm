@@ -58,4 +58,24 @@ def make(folder):
         "| Video → audio | [Listen](examples/hybrid/video-to-audio.ogg) | [Listen](examples/gpt2/video-to-audio.ogg) |",
         "| Text → audio and video | [Watch and listen](examples/hybrid/text-to-audio-video.webm) | [Watch and listen](examples/gpt2/text-to-audio-video.webm) |",
         "","Artifacts for every fit are indexed under the Fedora paths `/mnt/slwm-checkpoints-a/SLWM/g7` and `/mnt/slwm-checkpoints-b/SLWM/g7`. Each `g7-v5e-*/step-016384` contains `inference.npz`, `resume.npz`, the configuration and verification receipt. The source data and preprocessing caches are on the separate SSD under `/mnt/slwm-data/SLWM/g7`. [Inference receipts](metrics/continuous-generation.json) · [Input recording source](https://doi.org/10.5281/zenodo.7880637) · [Run protocol](protocol.md)"]
+    comparisons=stats["at_registered_endpoints"]
+    def outcomes(labels):
+        return [comparisons[label]["fresh_test"]["first_minus_second_endpoint_px"] for label in labels]
+    larger_replay=outcomes([f"continuation-v5e-larger-hybrid-{seed}-replay" for seed in (511,512)])
+    larger_dense=outcomes([f"continuation-v5e-larger-gpt2-{seed}-replay" for seed in (511,512)])
+    larger_fresh=outcomes([f"data-v5e-larger-hybrid-{seed}" for seed in (511,512)])
+    size_gap=outcomes([f"size-hybrid-{seed}-fresh" for seed in (511,512)])
+    data_labels=[f"data-v5e-{size}-{core}-{seed}" for size in ("anchor","larger") for core in ("hybrid","gpt2") for seed in (511,512)]
+    wins=sum(comparisons[k]["fresh_test"]["first_minus_second_endpoint_px"]<0 for k in data_labels)
+    supported=sum(comparisons[k]["fresh_test"]["endpoint_ci95"][1]<0 for k in data_labels)
+    byte_wins=sum(curves[name(sz,co,se,"fresh")][-1]["signals_test"]["text_text"]["byte_nll"]<curves[name(sz,co,se,"replay")][-1]["signals_test"]["text_text"]["byte_nll"]
+                  for sz in ("anchor","larger") for co in ("hybrid","gpt2") for se in (511,512))
+    action_learns="The 202.35M hybrid still had optimization headroom on action prediction at update 8,192." if all(x<0 for x in larger_replay) else "Continued optimization of the 202.35M hybrid produced a mixed result on held action prediction."
+    time_gap=[stats["equal_tpu_time"][f"size-hybrid-{se}-fresh"]["matched_time"]["update_seconds"]["first_minus_second_endpoint_px"] for se in (511,512)]
+    paragraphs=["## What the scale intervention changed","",
+        action_learns+f" Replaying the original mixture changed held endpoint error by {pair(larger_replay)} pixels across the two seeds. The large dense control changed by {pair(larger_dense)} pixels under the same continuation. Negative changes mean lower error.",
+        "",f"At a fixed exposure of 16,384 updates, fresh examples lowered endpoint error in {wins} of eight architecture–size–seed comparisons. {supported} paired 95% scene intervals excluded zero in that direction. For the large hybrid specifically, fresh minus replay was {pair(larger_fresh)} pixels. On independent FineWeb documents, fresh training lowered next-byte NLL in {byte_wins} of eight comparisons.",
+        "",f"At equal exposure, the large fresh hybrid minus the smaller fresh hybrid was {pair(size_gap)} pixels on 512 held starts. At common continuation TPU time the corresponding original-development differences were {pair(time_gap)} pixels. These comparisons use different evaluation sets and are reported separately. Two sizes and two seeds bound the strength of any scaling-law claim. [Matched estimates and uncertainty](metrics/matched-contrasts.json)",
+        ""]
+    at=lines.index("## Equal exposure on independent simulator starts");lines[at:at]=paragraphs
     (folder/"report.md").write_text("\n".join(lines)+"\n")
