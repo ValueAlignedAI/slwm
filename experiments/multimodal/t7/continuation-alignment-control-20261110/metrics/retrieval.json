@@ -1,0 +1,1230 @@
+{
+  "gpt2-711": {
+    "chance": 0.25,
+    "controls": "All four candidates have the same actor and valid duration. Three have different words. Ties receive fractional credit.",
+    "head_sha256": "b5438369f9c62d0bfe618e1bae15a73e0c9d8eff062999992739004b1ea7d229",
+    "scores": {
+      "crema": {
+        "distinct_recording_same_words-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.13793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.045454545454545456,
+              0.21428571428571427
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2413793103448276,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.13043478260869565,
+              0.3181818181818182
+            ]
+          }
+        },
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.1875,
+              0.4
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3448275862068966,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.2826086956521739,
+              0.4666666666666667
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.13043478260869565,
+              0.3793103448275862
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.06896551724137931,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.0,
+              0.15384615384615385
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.1111111111111111,
+              0.3888888888888889
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.18181818181818182,
+              0.5
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.19230769230769232,
+              0.6153846153846154
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.20689655172413793,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.09090909090909091,
+              0.45
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.23076923076923078,
+              0.39285714285714285
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.16666666666666666,
+              0.48
+            ]
+          }
+        },
+        "same_clip-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.20833333333333334,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.17282886334610473,
+              0.24325190575190572
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.21621621621621623,
+              0.29269343986543306
+            ]
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.20967741935483872,
+              0.2898550724637681
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3055555555555556,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.21153846153846154,
+              0.3735000608494584
+            ]
+          }
+        },
+        "same_clip-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.14285714285714285,
+              0.3220338983050847
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.21212121212121213,
+              0.37781609195402277
+            ]
+          }
+        },
+        "same_clip-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2037037037037037,
+              0.2727584059775839
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2638888888888889,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.21686746987951808,
+              0.3125
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.19607843137254902,
+              0.359375
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3333333333333333,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.27380952380952384,
+              0.41671511627906954
+            ]
+          }
+        },
+        "same_clip-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.15625,
+              0.3333333333333333
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.20833333333333334,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.16666666666666666,
+              0.2608695652173913
+            ]
+          }
+        }
+      },
+      "libri": {
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.23389494549058473,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.21428571428571427,
+              0.25499766514916744
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.267591674925669,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.25122827195590375,
+              0.2845933041443346
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.24281466798810702,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.22331941910746259,
+              0.26393036307069384
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.26957383548067393,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.24903407872157873,
+              0.2901059483595537
+            ]
+          }
+        }
+      }
+    }
+  },
+  "gpt2-712": {
+    "chance": 0.25,
+    "controls": "All four candidates have the same actor and valid duration. Three have different words. Ties receive fractional credit.",
+    "head_sha256": "4798c252dfe587f39668acda1b1b7f3e530bbdae1fc71b497016a4d33a72da0a",
+    "scores": {
+      "crema": {
+        "distinct_recording_same_words-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.1724137931034483,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.04,
+              0.3333333333333333
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.21052631578947367,
+              0.4074074074074074
+            ]
+          }
+        },
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.3448275862068966,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.2,
+              0.48
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.4827586206896552,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.3870967741935484,
+              0.7272727272727273
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.13793103448275862,
+              0.375
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.13793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.03333333333333333,
+              0.2727272727272727
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.06666666666666667,
+              0.409280303030302
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.18181818181818182,
+              0.37037037037037035
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3448275862068966,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.2222222222222222,
+              0.42857142857142855
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.41379310344827586,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.3333333333333333,
+              0.48
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.3793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.18181818181818182,
+              0.5517241379310345
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.1724137931034483,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.045454545454545456,
+              0.3157894736842105
+            ]
+          }
+        },
+        "same_clip-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2222222222222222,
+              0.29092803030303016
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2222222222222222,
+              0.3300970873786408
+            ]
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2638888888888889,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.22448979591836735,
+              0.3088235294117647
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3333333333333333,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2652999754118515,
+              0.4200072463768115
+            ]
+          }
+        },
+        "same_clip-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3055555555555556,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.25,
+              0.38333333333333336
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.15151515151515152,
+              0.32586970613655997
+            ]
+          }
+        },
+        "same_clip-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2222222222222222,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.13043478260869565,
+              0.27835051546391754
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.19607843137254902,
+              0.27146103896103874
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.20833333333333334,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.18269230769230768,
+              0.25925925925925924
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.23809523809523808,
+              0.32989690721649484
+            ]
+          }
+        },
+        "same_clip-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.3194444444444444,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.20453385899814472,
+              0.42169145331325303
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.10904220779220779,
+              0.3218390804597701
+            ]
+          }
+        }
+      },
+      "libri": {
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2358771060455897,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.21602063447804598,
+              0.2561842092489701
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2566897918731417,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.23609619932634193,
+              0.2769687317784257
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.2556987115956392,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.23571282201405153,
+              0.27384148815118975
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2666005946481665,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.24452631520408175,
+              0.28997142413650584
+            ]
+          }
+        }
+      }
+    }
+  },
+  "hybrid-711": {
+    "chance": 0.25,
+    "controls": "All four candidates have the same actor and valid duration. Three have different words. Ties receive fractional credit.",
+    "head_sha256": "2bd06a31b9cf3a997d3cf5394548d97dd98ab7986d4cdbe85856eeb24837ce6e",
+    "scores": {
+      "crema": {
+        "distinct_recording_same_words-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.12121212121212122,
+              0.5333333333333333
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2413793103448276,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.12,
+              0.3333333333333333
+            ]
+          }
+        },
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2413793103448276,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.06666666666666667,
+              0.32608695652173914
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.07692307692307693,
+              0.5714285714285714
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.3,
+              0.5
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.10344827586206896,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.041625,
+              0.16666666666666666
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.14814814814814814,
+              0.5263157894736842
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.2,
+              0.5384615384615384
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.4827586206896552,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.25,
+              0.76
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.23684210526315788,
+              0.4666666666666667
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.3793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.15,
+              0.5151515151515151
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.13793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.041625,
+              0.2916666666666667
+            ]
+          }
+        },
+        "same_clip-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.2777777777777778,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.23893805309734514,
+              0.3333333333333333
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.15384615384615385,
+              0.29269343986543306
+            ]
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.20833333333333334,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.1568627450980392,
+              0.2777777777777778
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3055555555555556,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.24489795918367346,
+              0.3606599628189961
+            ]
+          }
+        },
+        "same_clip-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.23655913978494625,
+              0.3709677419354839
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2127659574468085,
+              0.29508196721311475
+            ]
+          }
+        },
+        "same_clip-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.24528301886792453,
+              0.36065573770491804
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2638888888888889,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.16362708719851576,
+              0.3448275862068966
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.25,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.16822037226105394,
+              0.35418346774193543
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3055555555555556,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.24136892397174908,
+              0.42110323886639645
+            ]
+          }
+        },
+        "same_clip-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.2777777777777778,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.18181818181818182,
+              0.37625791267651343
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.20634920634920634,
+              0.390625
+            ]
+          }
+        }
+      },
+      "libri": {
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.24380574826560952,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.22326971900063472,
+              0.26413235835970345
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2893954410307235,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.2694551144795812,
+              0.30920405594735284
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.23785926660059464,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.2204862265407285,
+              0.2553610796557968
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.31615460852329036,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.2876328495156815,
+              0.3433187259960024
+            ]
+          }
+        }
+      }
+    }
+  },
+  "hybrid-712": {
+    "chance": 0.25,
+    "controls": "All four candidates have the same actor and valid duration. Three have different words. Ties receive fractional credit.",
+    "head_sha256": "366a6a78bf6b24deca6a98911977ca45e3bd335878a0f1268cbc93c64a6b9f5f",
+    "scores": {
+      "crema": {
+        "distinct_recording_same_words-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.14285714285714285,
+              0.5294117647058824
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.1724137931034483,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.024390243902439025,
+              0.5294117647058824
+            ]
+          }
+        },
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.41379310344827586,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.1665,
+              0.6666666666666666
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.23684210526315788,
+              0.4666666666666667
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.41379310344827586,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.21428571428571427,
+              0.6190476190476191
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.13793103448275862,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.038461538461538464,
+              0.23809523809523808
+            ]
+          }
+        },
+        "distinct_recording_same_words-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.3448275862068966,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.09090909090909091,
+              0.631578947368421
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.10344827586206896,
+              0.5384615384615384
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3448275862068966,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.17857142857142858,
+              0.5
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.27586206896551724,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.11538461538461539,
+              0.4642857142857143
+            ]
+          }
+        },
+        "distinct_recording_same_words-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.05,
+              0.5
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3103448275862069,
+            "eligible": 29,
+            "people": 5,
+            "speaker_ci95": [
+              0.15789473684210525,
+              0.6470588235294118
+            ]
+          }
+        },
+        "same_clip-0-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.2361111111111111,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.1702127659574468,
+              0.3076923076923077
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.18666666666666668,
+              0.3888888888888889
+            ]
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.3194444444444444,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.25862068965517243,
+              0.36363636363636365
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2777777777777778,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.16,
+              0.37363150867823763
+            ]
+          }
+        },
+        "same_clip-1-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.3333333333333333,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.2361111111111111,
+              0.4492753623188406
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.234375,
+              0.359375
+            ]
+          }
+        },
+        "same_clip-1-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.2916666666666667,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.17391304347826086,
+              0.3877627170271093
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2222222222222222,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.11940298507462686,
+              0.30477443609022553
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.2638888888888889,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.16923076923076924,
+              0.36507936507936506
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3194444444444444,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.18867924528301888,
+              0.3956241956241955
+            ]
+          }
+        },
+        "same_clip-3-to-1": {
+          "frozen_shared_field": {
+            "accuracy": 0.2777777777777778,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.21428571428571427,
+              0.3333333333333333
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3055555555555556,
+            "eligible": 72,
+            "people": 7,
+            "speaker_ci95": [
+              0.17142857142857143,
+              0.40964349200079003
+            ]
+          }
+        }
+      },
+      "libri": {
+        "distinct_recording_same_words-0-to-3": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "distinct_recording_same_words-3-to-0": {
+          "frozen_shared_field": {
+            "eligible": 0
+          },
+          "trained_unit_distributions": {
+            "eligible": 0
+          }
+        },
+        "same_clip-0-to-3": {
+          "frozen_shared_field": {
+            "accuracy": 0.25173439048562934,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.2344720216815203,
+              0.2699045814640659
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.2993062438057483,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.27246911548955893,
+              0.32556110763801654
+            ]
+          }
+        },
+        "same_clip-3-to-0": {
+          "frozen_shared_field": {
+            "accuracy": 0.244796828543112,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.22616479114592997,
+              0.2640538555492058
+            ]
+          },
+          "trained_unit_distributions": {
+            "accuracy": 0.3151635282457879,
+            "eligible": 1009,
+            "people": 66,
+            "speaker_ci95": [
+              0.2894444516842267,
+              0.3426896650443744
+            ]
+          }
+        }
+      }
+    }
+  }
+}

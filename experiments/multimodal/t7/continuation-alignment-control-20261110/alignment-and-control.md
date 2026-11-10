@@ -4,6 +4,8 @@
 
 Eight fixed 2,048-update heads finished. Both architectures received identical masked inputs and corpus proportions. On eight unseen CREMA-D actors, the hybrid chose the correct audiovisual pairing among the true pairing, an eight-tick delay and another utterance by the same actor in 61.7% and 66.7% of trials. Dense GPT-2 scored 55.8% and 54.2%. Chance is 33.3%. The ordering reversed on real sound events at the held Tokyo site. The hybrid scored 48.1% and 50.3%, and the dense model scored 53.0% and 51.0%. The acoustic codebook contains 64 entries. Even on acted speech, correct video recovered only 12.1–12.7% of unit labels. [Held fields and checkpoints](metrics/alignment.json)
 
+The signed-direction audit exposed a measurement artifact. The original test displaced video latents after position encoding. On acted speech all four heads preferred correct over older video in 100% of eligible pairs, but preferred correct over newer video in only 17–29%. Four-way accuracy fell to 10–20%, below the raw flux/motion score of 41%. The original three-way result establishes sensitivity to this construction. Physical desynchronization requires moving the raw frames before encoding them on a common clock. [Directional audit](metrics/timing-audit.json) · [Independent confirmation protocol](raw-time-followup.md)
+
 | Frozen recognizer input | Acted speech WER | Audiobook WER |
 |---|---:|---:|
 | Original waveform | 12.5% | 14.8% |

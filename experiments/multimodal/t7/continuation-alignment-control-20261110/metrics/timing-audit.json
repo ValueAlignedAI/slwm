@@ -1,0 +1,870 @@
+{
+  "gpt2-711": {
+    "design": "Supplementary directional stress test after the original timing scores. Common valid interior and tie credit.",
+    "head_sha256": "b5438369f9c62d0bfe618e1bae15a73e0c9d8eff062999992739004b1ea7d229",
+    "results": {
+      "crema": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.16666666666666666,
+              "group_ci95": [
+                0.12916666666666668,
+                0.2125
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5583333333333333,
+              "group_ci95": [
+                0.5333333333333333,
+                0.5833333333333334
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.09583333333333334,
+              "group_ci95": [
+                0.07083333333333333,
+                0.12083333333333333
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.6125,
+              "group_ci95": [
+                0.5625,
+                0.6708333333333333
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7333333333333333,
+              "group_ci95": [
+                0.6582291666666666,
+                0.8
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6791666666666667,
+              "group_ci95": [
+                0.6291666666666667,
+                0.725
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.4083333333333333,
+              "group_ci95": [
+                0.35833333333333334,
+                0.45416666666666666
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        }
+      },
+      "events": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.06979062811565304,
+              "group_ci95": [
+                0.05555555555555555,
+                0.09046454767726161
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5304087736789631,
+              "group_ci95": [
+                0.5084175084175084,
+                0.5623471882640587
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.03788634097706879,
+              "group_ci95": [
+                0.03178484107579462,
+                0.04208754208754209
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5154536390827518,
+              "group_ci95": [
+                0.5033670033670034,
+                0.5330073349633252
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.48255234297108673,
+              "group_ci95": [
+                0.47474747474747475,
+                0.4938875305623472
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5054835493519442,
+              "group_ci95": [
+                0.494949494949495,
+                0.5207823960880196
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.26321036889332006,
+              "group_ci95": [
+                0.25925925925925924,
+                0.26894865525672373
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        }
+      },
+      "oldimpact": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5902480752780154,
+              "group_ci95": [
+                0.5669515669515669,
+                0.6061776061776062
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9435414884516681,
+              "group_ci95": [
+                0.918918918918919,
+                0.960644007155635
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5799828913601369,
+              "group_ci95": [
+                0.5706618962432916,
+                0.5897435897435898
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.3806672369546621,
+              "group_ci95": [
+                0.3631484794275492,
+                0.40540540540540543
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.7027373823781009,
+              "group_ci95": [
+                0.6823361823361823,
+                0.7451737451737451
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7728828058169376,
+              "group_ci95": [
+                0.7451737451737451,
+                0.7835420393559929
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.7472198460222412,
+              "group_ci95": [
+                0.7108262108262108,
+                0.776386404293381
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.5382805816937554,
+              "group_ci95": [
+                0.5220797720797721,
+                0.5945945945945946
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        }
+      }
+    },
+    "signed_shift_seconds": 0.3413333333333333
+  },
+  "gpt2-712": {
+    "design": "Supplementary directional stress test after the original timing scores. Common valid interior and tie credit.",
+    "head_sha256": "4798c252dfe587f39668acda1b1b7f3e530bbdae1fc71b497016a4d33a72da0a",
+    "results": {
+      "crema": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.21666666666666667,
+              "group_ci95": [
+                0.1375,
+                0.3
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5416666666666666,
+              "group_ci95": [
+                0.48333333333333334,
+                0.5916666666666667
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.15833333333333333,
+              "group_ci95": [
+                0.10416666666666667,
+                0.21666666666666667
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.6125,
+              "group_ci95": [
+                0.5625,
+                0.6708333333333333
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7333333333333333,
+              "group_ci95": [
+                0.6582291666666666,
+                0.8
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6791666666666667,
+              "group_ci95": [
+                0.6291666666666667,
+                0.725
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.4083333333333333,
+              "group_ci95": [
+                0.35833333333333334,
+                0.45416666666666666
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        }
+      },
+      "events": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.014955134596211365,
+              "group_ci95": [
+                0.008417508417508417,
+                0.02444987775061125
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5104685942173479,
+              "group_ci95": [
+                0.48484848484848486,
+                0.5476772616136919
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.01296111665004985,
+              "group_ci95": [
+                0.006734006734006734,
+                0.022004889975550123
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5154536390827518,
+              "group_ci95": [
+                0.5033670033670034,
+                0.5330073349633252
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.48255234297108673,
+              "group_ci95": [
+                0.47474747474747475,
+                0.4938875305623472
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5054835493519442,
+              "group_ci95": [
+                0.494949494949495,
+                0.5207823960880196
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.26321036889332006,
+              "group_ci95": [
+                0.25925925925925924,
+                0.26894865525672373
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        }
+      },
+      "oldimpact": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5543199315654406,
+              "group_ci95": [
+                0.5327635327635327,
+                0.583011583011583
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9341317365269461,
+              "group_ci95": [
+                0.8996138996138996,
+                0.9487179487179487
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.621043627031651,
+              "group_ci95": [
+                0.5726495726495726,
+                0.6493738819320215
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.40461933276304535,
+              "group_ci95": [
+                0.35327635327635326,
+                0.43243243243243246
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.7027373823781009,
+              "group_ci95": [
+                0.6823361823361823,
+                0.7451737451737451
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7728828058169376,
+              "group_ci95": [
+                0.7451737451737451,
+                0.7835420393559929
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.7472198460222412,
+              "group_ci95": [
+                0.7108262108262108,
+                0.776386404293381
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.5382805816937554,
+              "group_ci95": [
+                0.5220797720797721,
+                0.5945945945945946
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        }
+      }
+    },
+    "signed_shift_seconds": 0.3413333333333333
+  },
+  "hybrid-711": {
+    "design": "Supplementary directional stress test after the original timing scores. Common valid interior and tie credit.",
+    "head_sha256": "2bd06a31b9cf3a997d3cf5394548d97dd98ab7986d4cdbe85856eeb24837ce6e",
+    "results": {
+      "crema": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.22083333333333333,
+              "group_ci95": [
+                0.1625,
+                0.2916666666666667
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6166666666666667,
+              "group_ci95": [
+                0.5833333333333334,
+                0.6583333333333333
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.1375,
+              "group_ci95": [
+                0.09583333333333334,
+                0.18333333333333332
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.6125,
+              "group_ci95": [
+                0.5625,
+                0.6708333333333333
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7333333333333333,
+              "group_ci95": [
+                0.6582291666666666,
+                0.8
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6791666666666667,
+              "group_ci95": [
+                0.6291666666666667,
+                0.725
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.4083333333333333,
+              "group_ci95": [
+                0.35833333333333334,
+                0.45416666666666666
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        }
+      },
+      "events": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.8005982053838484,
+              "group_ci95": [
+                0.589242053789731,
+                0.9461279461279462
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9920239282153539,
+              "group_ci95": [
+                0.9865319865319865,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.48055832502492524,
+              "group_ci95": [
+                0.45232273838630804,
+                0.5
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.38384845463609174,
+              "group_ci95": [
+                0.25183374083129584,
+                0.47474747474747475
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5154536390827518,
+              "group_ci95": [
+                0.5033670033670034,
+                0.5330073349633252
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.48255234297108673,
+              "group_ci95": [
+                0.47474747474747475,
+                0.4938875305623472
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5054835493519442,
+              "group_ci95": [
+                0.494949494949495,
+                0.5207823960880196
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.26321036889332006,
+              "group_ci95": [
+                0.25925925925925924,
+                0.26894865525672373
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        }
+      },
+      "oldimpact": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5868263473053892,
+              "group_ci95": [
+                0.5637065637065637,
+                0.6210826210826211
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9461077844311377,
+              "group_ci95": [
+                0.9320214669051878,
+                0.9629629629629629
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6030795551753636,
+              "group_ci95": [
+                0.6011396011396012,
+                0.6046511627906976
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.4037639007698888,
+              "group_ci95": [
+                0.39177101967799643,
+                0.42084942084942084
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.7027373823781009,
+              "group_ci95": [
+                0.6823361823361823,
+                0.7451737451737451
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7728828058169376,
+              "group_ci95": [
+                0.7451737451737451,
+                0.7835420393559929
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.7472198460222412,
+              "group_ci95": [
+                0.7108262108262108,
+                0.776386404293381
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.5382805816937554,
+              "group_ci95": [
+                0.5220797720797721,
+                0.5945945945945946
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        }
+      }
+    },
+    "signed_shift_seconds": 0.3413333333333333
+  },
+  "hybrid-712": {
+    "design": "Supplementary directional stress test after the original timing scores. Common valid interior and tie credit.",
+    "head_sha256": "366a6a78bf6b24deca6a98911977ca45e3bd335878a0f1268cbc93c64a6b9f5f",
+    "results": {
+      "crema": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.2875,
+              "group_ci95": [
+                0.21239583333333334,
+                0.3709374999999994
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 1.0,
+              "group_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6666666666666666,
+              "group_ci95": [
+                0.6041666666666666,
+                0.725
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.20416666666666666,
+              "group_ci95": [
+                0.13322916666666668,
+                0.2875
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.6125,
+              "group_ci95": [
+                0.5625,
+                0.6708333333333333
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7333333333333333,
+              "group_ci95": [
+                0.6582291666666666,
+                0.8
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.6791666666666667,
+              "group_ci95": [
+                0.6291666666666667,
+                0.725
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.4083333333333333,
+              "group_ci95": [
+                0.35833333333333334,
+                0.45416666666666666
+              ]
+            }
+          },
+          "eligible": 240,
+          "groups": 8
+        }
+      },
+      "events": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.4556331006979063,
+              "group_ci95": [
+                0.2982885085574572,
+                0.563973063973064
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9990029910269193,
+              "group_ci95": [
+                0.9975550122249389,
+                1.0
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5034895314057827,
+              "group_ci95": [
+                0.48166259168704156,
+                0.5185185185185185
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.23728813559322035,
+              "group_ci95": [
+                0.12469437652811736,
+                0.3148148148148148
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.5154536390827518,
+              "group_ci95": [
+                0.5033670033670034,
+                0.5330073349633252
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.48255234297108673,
+              "group_ci95": [
+                0.47474747474747475,
+                0.4938875305623472
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5054835493519442,
+              "group_ci95": [
+                0.494949494949495,
+                0.5207823960880196
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.26321036889332006,
+              "group_ci95": [
+                0.25925925925925924,
+                0.26894865525672373
+              ]
+            }
+          },
+          "eligible": 1003,
+          "groups": 2
+        }
+      },
+      "oldimpact": {
+        "common_head": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.6082121471343028,
+              "group_ci95": [
+                0.5867620751341681,
+                0.6552706552706553
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.9401197604790419,
+              "group_ci95": [
+                0.9320214669051878,
+                0.9487179487179487
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.5919589392643285,
+              "group_ci95": [
+                0.5698005698005698,
+                0.6100178890876565
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.42857142857142855,
+              "group_ci95": [
+                0.41312741312741313,
+                0.4472934472934473
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        },
+        "raw_flux_motion": {
+          "conditions": {
+            "correct_vs_newer": {
+              "accuracy": 0.7027373823781009,
+              "group_ci95": [
+                0.6823361823361823,
+                0.7451737451737451
+              ]
+            },
+            "correct_vs_older": {
+              "accuracy": 0.7728828058169376,
+              "group_ci95": [
+                0.7451737451737451,
+                0.7835420393559929
+              ]
+            },
+            "correct_vs_wrong": {
+              "accuracy": 0.7472198460222412,
+              "group_ci95": [
+                0.7108262108262108,
+                0.776386404293381
+              ]
+            },
+            "four_way": {
+              "accuracy": 0.5382805816937554,
+              "group_ci95": [
+                0.5220797720797721,
+                0.5945945945945946
+              ]
+            }
+          },
+          "eligible": 1169,
+          "groups": 3
+        }
+      }
+    },
+    "signed_shift_seconds": 0.3413333333333333
+  }
+}
