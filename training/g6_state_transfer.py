@@ -141,4 +141,5 @@ def evaluate(data_root,run,out,confirmation=None):
 if __name__=="__main__":
     q=argparse.ArgumentParser(description=__doc__); q.add_argument("--data",type=Path,required=True)
     q.add_argument("--run",type=Path,required=True); q.add_argument("--out",type=Path,required=True)
-    a=q.parse_args(); evaluate(a.data,a.run,a.out)
+    q.add_argument("--speaker-lock",type=Path)
+    a=q.parse_args(); evaluate(a.data,a.run,a.out,a.speaker_lock)
