@@ -142,4 +142,17 @@ if __name__=="__main__":
     q=argparse.ArgumentParser(description=__doc__); q.add_argument("--data",type=Path,required=True)
     q.add_argument("--run",type=Path,required=True); q.add_argument("--out",type=Path,required=True)
     q.add_argument("--speaker-lock",type=Path)
-    a=q.parse_args(); evaluate(a.data,a.run,a.out,a.speaker_lock)
+    a=q.parse_args()
+    if a.speaker_lock is None:
+        evaluate(a.data,a.run,a.out)
+    else:
+        import fcntl
+        a.out.parent.mkdir(parents=True,exist_ok=True)
+        with a.out.with_suffix(".eval-lock").open("a") as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            if a.out.is_file():
+                existing=json.loads(a.out.read_bytes())
+                if existing.get("lock_sha256")!=sha_file(a.speaker_lock):
+                    raise ValueError("Confirmation output belongs to another lock")
+            else:
+                evaluate(a.data,a.run,a.out,a.speaker_lock)
