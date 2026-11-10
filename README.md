@@ -1,8 +1,12 @@
 # SLWM
 
-SLWM tests whether a shared predictive state can carry useful knowledge between text, audio, video, numeric observations and actions. The current comparison gives a recurrent–attention hybrid and a dense GPT-2-style Transformer the same data, parameter count and 128-dimensional shared state. The original SLWM-124M target and larger fit checks are documented separately. [Architecture](docs/model_spec.md)
+SLWM tests whether a shared predictive state can carry useful knowledge between text, audio, video, numeric observations and actions. The matched experiments give a recurrent–attention hybrid and a dense GPT-2-style Transformer the same training examples and parameter count within each comparison. The newest study varies the emitted state between 128 and 512 coordinates. The original SLWM-124M target and larger fit checks are documented separately. [Architecture](docs/model_spec.md)
 
 ## Verified studies
+
+### G9 concurrent sensing and sustained decisions
+
+The small-model screen trained 22 models on synchronized audio, camera, spatial measurements and short goal or event text. In two seeds, the wide GELU hybrid reached 7.8% goal occupancy in 51-second interactive missions, versus 9.9% and 11.5% for dense GPT-2. The first 116.70M pair reversed the result. With 128 emitted coordinates, the hybrid reached 94.1% versus 31.9% for dense GPT-2. Clearing its memory each step dropped occupancy to 18.4%. The sensor-based controller reached 96.2%. This is one large-model seed under the native memory limits. The full-history, second-seed and equal-exposure controls are in progress. [Matched results and real-sensor limits](experiments/multimodal/t9/concurrent-memory-20261110/interim.md) · [Data exposure](experiments/multimodal/t9/concurrent-memory-20261110/metrics/data-card.json)
 
 ### G8 acoustic coding and action-transfer study
 
