@@ -53,7 +53,20 @@ def gated(q,k,v,valid,previous):
     return seq.swapaxes(0,1),last
 
 
-def encode(p,s,r,keep,*,memory=None,offset=0):
+def extended_attention(q,k,v,valid,previous,window):
+    b,t,d=q.shape
+    q,k,v=(a.reshape(b,t,d//64,64) for a in (q,k,v))
+    if previous is not None:
+        k=jnp.concatenate((previous[0],k),1);v=jnp.concatenate((previous[1],v),1)
+        valid=jnp.concatenate((previous[2],valid),1)
+    distance=jnp.arange(t)[:,None]+k.shape[1]-t-jnp.arange(k.shape[1])[None,:]
+    allowed=(distance>=0)&(distance<window)
+    score=jnp.einsum("bthd,bshd->bhts",q,k).astype(jnp.float32)/8
+    prob=jax.nn.softmax(jnp.where(allowed[None,None]&valid[:,None,None],score,-1e9),axis=-1).astype(q.dtype)
+    return jnp.einsum("bhts,bshd->bthd",prob,v).reshape(b,t,d),(k[:,-window:],v[:,-window:],valid[:,-window:])
+
+
+def encode(p,s,r,keep,*,memory=None,offset=0,window=64):
     dtype=getattr(jnp,s.dtype)
     dim=r["u"].shape
     flags=keep.astype(dtype)
@@ -74,7 +87,11 @@ def encode(p,s,r,keep,*,memory=None,offset=0):
         z=norm(x,p[k+"n1"],p[k+"n1b"],dtype)
         q,key,v=jnp.split(z@p[k+"qkv"].astype(dtype),3,-1)
         op=gated if s.core=="gated" else attention if s.core=="gpt2" or (i+1)%4==0 else retention
-        mix,carry=op(q,key,v,valid,None if memory is None else memory[i])
+        previous=None if memory is None else memory[i]
+        if op is attention and window!=64:
+            mix,carry=extended_attention(q,key,v,valid,previous,window)
+        else:
+            mix,carry=op(q,key,v,valid,previous)
         memories.append(carry)
         x=x+mix@p[k+"o"].astype(dtype)
         z=norm(x,p[k+"n2"],p[k+"n2b"],dtype)@p[k+"ff"].astype(dtype)

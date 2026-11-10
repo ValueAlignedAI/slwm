@@ -10,7 +10,7 @@ import sys
 import zlib
 from pathlib import Path
 
-VALID=re.compile(r"(pilot|confirm)-(hybrid|gpt2|gated)-z(128|512)-(gelu|snake)-s(911|912)-(fresh|replay)")
+VALID=re.compile(r"(pilot|confirm|exposure)-(hybrid|gpt2|gated)-z(128|512)-(gelu|snake)-s(911|912)-(fresh|replay)")
 FILES={"weights.npz":"inference_sha256","optimizer.npz":"optimizer_sha256"}
 CHUNK=16*2**20
 

@@ -22,7 +22,7 @@ def run():
             d=json.loads(p.read_text())
             if d["step"] not in (384,1024,4096):continue
             terminal=d["step"]==d["goal_steps"]
-            if d["tag"].startswith("confirm") and not (p.parent/"verified.json").exists():continue
+            if d["tag"].startswith(("confirm","exposure")) and not (p.parent/"verified.json").exists():continue
             for role in (("dev","test") if terminal else ("dev",)):
                 key=d["tag"]+"-"+str(d["step"])+"-"+role
                 record=dest/(key+".json");done=json.loads(record.read_text()) if record.exists() else {}
@@ -40,7 +40,7 @@ def run():
             continue
         finished=[p for p in dest.glob("*-test.json") if all(k in json.loads(p.read_bytes()) for k in ("live","history","sim","room","contact"))]
         dev=[p for p in dest.glob("*-dev.json") if all(k in json.loads(p.read_bytes()) for k in ("live","history","sim","room"))]
-        if len(finished)>=30 and len(dev)>=38:return
+        if len(finished)>=38 and len(dev)>=54:return
         time.sleep(8)
 
 

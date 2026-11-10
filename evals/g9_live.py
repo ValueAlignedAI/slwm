@@ -7,13 +7,13 @@ from models.g9_shared import encode
 from models.g9_tabletop import ACTIONS, advance, camera, expert, initial, observation, target
 
 
-def initial_memory(spec,batch):
+def initial_memory(spec,batch,window=64):
     dtype=getattr(jnp,spec.dtype)
     def layer(i):
         if spec.core=="gated":return jnp.zeros((batch,spec.d),jnp.float32)
         if spec.core=="gpt2" or (i+1)%4==0:
-            shape=(batch,64,spec.d//64,64)
-            return jnp.zeros(shape,dtype),jnp.zeros(shape,dtype),jnp.zeros((batch,64),bool)
+            shape=(batch,window,spec.d//64,64)
+            return jnp.zeros(shape,dtype),jnp.zeros(shape,dtype),jnp.zeros((batch,window),bool)
         return jnp.zeros((batch,8,spec.d//8),jnp.float32)
     return tuple(layer(i) for i in range(spec.layers))
 

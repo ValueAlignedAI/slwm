@@ -48,6 +48,8 @@ def recipe_group(group):
                 for act in ("gelu","snake") for core in ("hybrid","gpt2")]+[
                 cell("pilot",core,512,"gelu",seed,True) for seed in (911,912) for core in ("hybrid","gpt2")]+[
                 cell("pilot","gated",512,"gelu",seed) for seed in (911,912)]
+    if group=="exposure":
+        return [cell("exposure",core,field,"gelu",seed) for seed in (911,912) for field in (128,512) for core in ("hybrid","gpt2")]
     if group.startswith("confirm"):
         return [cell("confirm",core,field,"gelu",seed) for seed in (911,912) for field in (128,512)
                 for core in ("hybrid","gpt2") if group=="confirm" or group=="confirm-"+str(seed)]
@@ -81,7 +83,7 @@ def compiled(spec,replay,count,goal):
 
 def one(cell,bank,starts,names,dest,count=128):
     size,core,field,act,seed,replay=cell
-    d,layers,goal={"smoke":(128,2,5),"pilot":(512,4,384),"confirm":(896,12,4096)}[size]
+    d,layers,goal={"smoke":(128,2,5),"pilot":(512,4,384),"exposure":(512,4,4096),"confirm":(896,12,4096)}[size]
     job=dest/tag(cell);job.mkdir(parents=True,exist_ok=True)
     if (job/"done.json").is_file():return
     spec=Spec(core,d,layers,field,act)
@@ -114,7 +116,7 @@ def one(cell,bank,starts,names,dest,count=128):
             save_json(dest/"progress.json",dict(job=tag(cell),**entry,parameters=num))
             if step==1 or step%128==0 or step==goal:print(tag(cell),step,round(entry["loss"],4),round(now-start,2),flush=True)
             last_time=now
-        if step==goal or (size=="confirm" and step%1024==0):
+        if step==goal or (size in ("confirm","exposure") and step%1024==0):
             final=job/f"step-{step:05d}";tmp=job/f".writing-{step}"
             if tmp.exists():shutil.rmtree(tmp)
             tmp.mkdir()
@@ -129,7 +131,7 @@ def one(cell,bank,starts,names,dest,count=128):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--data",required=True,type=Path);ap.add_argument("--out",required=True,type=Path)
-    ap.add_argument("--group",choices=["smoke","pilot","confirm","confirm-911","confirm-912"],required=True)
+    ap.add_argument("--group",choices=["smoke","pilot","confirm","confirm-911","confirm-912","exposure"],required=True)
     ap.add_argument("--only",nargs="*");ap.add_argument("--cache",type=Path)
     ap.add_argument("--batch",type=int,default=128)
     args=ap.parse_args()
