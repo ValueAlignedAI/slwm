@@ -11,10 +11,10 @@ from scripts.train.g7_mirror import copy
 from training.g7_units import put
 from training.g8_models import read,CONFIG
 
-STABLE=("acoustic-codec/complete.json","acoustic-heads/*/complete.json","speech-audit/*/*/scores.json",
+STABLE=("data/complete.json","acoustic-codec/complete.json","acoustic-heads/*/complete.json","speech-audit/*/*/scores.json",
         "rate-codec/complete.json","rate-heads/*/complete.json","rate-audit/*/*/scores.json","rate-example/verified.json",
         "reacher-heads/*/complete.json","confirmation/*/*/metrics.json","live/*/*/metrics.json","retention/*/metrics.json")
-SUFFIX={".npz",".pt",".json",".wav",".bin",".ogg",".webm",".slwma",".png"}
+SUFFIX={".npz",".pt",".json",".wav",".bin",".ogg",".webm",".slwma",".png",".zst",".gz"}
 
 
 def artifacts(a,b):
