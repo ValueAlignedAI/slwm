@@ -1,0 +1,17 @@
+# Scaling a joint predictive state on Google TPU
+
+Registered on November 10 before any G6 optimizer update. G5's 25.7M hybrid led the dense Transformer on intervention forecasts and lost on real contact timing. Its continuous generations tracked little of the source recording. G6 asks which effects persist when increasing the shared core to 202,346,377 parameters, compared with 116,502,025 at the same exposure and learning rate. [G5 evidence](../../t5/interventional-world-20261110/report.md)
+
+## Training
+
+Give the hybrid and all-dense GPT-2-style control identical initial parameter tensors for a seed, audio, visual, numeric and text edges, 128-dimensional shared bottleneck, physical priors, optimizer, per-family order and effective batch of 256. The 16-layer, width-1024 larger core and 12-layer, width-896 control retain one attention layer in four in the hybrid. Dense uses attention in every layer. The two architectures have exactly the same parameter count within a scale. The reference learning rate at width 896 and the 8,192-step cosine horizon remain fixed for both sizes, including intermediate checkpoints.
+
+Pair the two cores on the same individual chip for each seed. Assign seed 511 to the first v5e lane and seed 512 to the second lane when available. Reverse the architecture order for the second seed. Measure the candidate microbatches on actual data at fixed effective batch. Compare warm examples per second, report compilation separately, and preserve the same data order when using gradient accumulation. Run a 128-update larger pair first, then both sizes at 512 and 2,048 updates. The full target is 8,192 updates, or 134,217,728 multimodal positions per arm and seed. A hardware or credit cut can leave a partial pair. Report the last common verified exposure.
+
+The nine-family pool is the exact G5 training pack. It contains 337,403 base rows, impact windows and simulator histories combined. Text-only examples account for 3 of 32 draws, with additional text in paired sources. Keeping input fixed isolates the parameter comparison. Even the full target recycles the small real-audio and simulation families. It cannot demonstrate a data-saturated scaling law. The additional 360-hour speech acquisition remains a separate experiment. [Data exposure](../../t5/interventional-world-20261110/metrics/data-exposure.json)
+
+## Decisions and artifacts
+
+On development, measure whole-scene 16-action block-center error and within-history counterfactual differences against persistence, constant velocity, and the fitted raw action prior. Measure held-date visual contact average precision against erased, shifted and raw visual motion. Use paired intervals by scene and recording date. A general architecture win requires at least 5% relative improvement on both endpoints at both seeds, with positive paired intervals and source discrimination. A size comparison requires matched examples and the same chip generation. One seed or one endpoint supports a narrower conclusion. Preserve the separate sealed G5 confirmation set.
+
+Account all Colab allocations against the existing 100-unit cap, including transfers and setup. Every accepted checkpoint needs inference weights and exact optimizer state, with source and destination hashes. Use the two independent Fedora checkpoint HDDs as the immediate durable destinations while the scoped Drive client is rate limited. The Mac transports bytes without storing model or data files.

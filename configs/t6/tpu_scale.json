@@ -1,0 +1,16 @@
+{
+  "study": "G6",
+  "scales": {"anchor": [896,12], "larger": [1024,16]},
+  "expected_parameters": {"anchor": 116502025, "larger": 202346377},
+  "batch": 256,
+  "ticks": 64,
+  "schedule_steps": 8192,
+  "learning_rate_reference_width": 896,
+  "stages": [["larger",128],["larger",512],["anchor",512],["larger",2048],["anchor",2048],["larger",8192],["anchor",8192]],
+  "seeds": [511,512],
+  "cores": ["hybrid","gpt2"],
+  "micro_candidates": {"v5e":[32,64],"v6e":[64,128]},
+  "training_cards": {"paired":"a68ab006f304d6b60d2f5d8744429c93b239648452ace847c1540e650d829800","impact":"2fcb05de4036f189ed1b7c325e4489ce0ee36caed7014ce6062086a6e51de109","pusht":"6853290dbc807cd05a15d8c1b5eb65e8d2b8ddb19584f431830410fc6f383859"},
+  "prior_sha256": "875ad56e93de8791596e414807e27c170294124bab13e6f3b6ee184c9da07e5e",
+  "credit_ceiling_all_sessions": 100
+}
