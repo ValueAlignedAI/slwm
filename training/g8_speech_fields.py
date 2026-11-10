@@ -25,13 +25,13 @@ def donors(src):
     return y
 
 
-def build(tag):
+def build(tag,data_root=DATA):
     core,seed=tag.split("-");parents,_=roots("g6")
     spec,p,_,_,h=base_weights(parents,core,int(seed))
     @jax.jit
     def infer(p,b,s):return encode(p,spec,b,s)[0].astype(jnp.float32)
     for family in ("libri","crema"):
-        folder=DATA/"confirm"/family;dest=DATA/"fields"/tag/family
+        folder=data_root/"confirm"/family;dest=data_root/"fields"/tag/family
         if (dest/"card.json").exists():continue
         card=read(folder/"card.json");src={k:np.load(folder/(k+".npy"),mmap_mode="r") for k in card["sha256"] if k not in ("pcm","h","fine")}
         wrong=donors(src);length=np.array(src["length"],int);n=len(wrong);views=[0,3]+([1] if family=="crema" else [])
@@ -68,4 +68,4 @@ def build(tag):
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("tag");build(p.parse_args().tag)
+    p=argparse.ArgumentParser();p.add_argument("tag");p.add_argument("--data-root",type=Path,default=DATA);a=p.parse_args();build(a.tag,a.data_root)

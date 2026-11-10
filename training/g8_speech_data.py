@@ -17,26 +17,28 @@ MD5="fb5a50374b501bb3bac4815ee91d3135"
 SALT="g8-fixed-speech-81211/"
 
 
-def sources():
-    folder=ROOT/"sources";folder.mkdir(parents=True,exist_ok=True);archive=folder/"test-other.tar.gz"
+def sources(root=ROOT,partition="test-other"):
+    expected=MD5 if partition=="test-other" else "c8d0bcc9cca99d4f8b62fcc847357931"
+    salt=SALT if partition=="test-other" else "g8-allocated-rate-81231/"
+    folder=root/"sources";folder.mkdir(parents=True,exist_ok=True);archive=folder/(partition+".tar.gz")
     if not archive.exists():
         tmp=archive.with_suffix(".partial")
-        subprocess.run(["curl","-fLsS","--retry","3","--max-time","1000","https://www.openslr.org/resources/12/test-other.tar.gz","-o",str(tmp)],check=True)
+        subprocess.run(["curl","-fLsS","--retry","3","--max-time","1000","https://www.openslr.org/resources/12/"+partition+".tar.gz","-o",str(tmp)],check=True)
         with tmp.open("rb") as f:actual=hashlib.file_digest(f,"md5").hexdigest()
-        if actual!=MD5:raise ValueError("Official LibriSpeech MD5 mismatch")
+        if actual!=expected:raise ValueError("Official LibriSpeech MD5 mismatch")
         tmp.replace(archive)
     with archive.open("rb") as f:
-        if hashlib.file_digest(f,"md5").hexdigest()!=MD5:raise ValueError("Held source archive changed")
+        if hashlib.file_digest(f,"md5").hexdigest()!=expected:raise ValueError("Held source archive changed")
     if not (folder/"extracted").exists():
         with tarfile.open(archive,"r:gz") as t:
             for m in t:
                 parts=Path(m.name).parts
-                if parts[:2]!=("LibriSpeech","test-other"):continue
+                if parts[:2]!=("LibriSpeech",partition):continue
                 if ".." in parts or not (m.isdir() or m.isfile()):raise ValueError("Unexpected held source archive member")
                 t.extract(m,folder,filter="data")
         (folder/"extracted").touch()
     libri=[]
-    for index in sorted((folder/"LibriSpeech/test-other").glob("*/*/*.trans.txt")):
+    for index in sorted((folder/"LibriSpeech"/partition).glob("*/*/*.trans.txt")):
         for line in index.read_text().splitlines():
             uid,text=line.split(" ",1);libri.append((uid,uid.split("-")[0],text,str(index.parent/(uid+".flac")),""))
     raw=G7/"physical-time/crema/files";crema=[]
@@ -47,27 +49,31 @@ def sources():
     for family,items in (("libri",libri),("crema",crema)):
         group=sorted({r[1] for r in items});prior=set(np.load(G7/"speech"/family/"train/group.npy").tolist())
         if any(number(family+"/"+p) in prior for p in group):raise ValueError("Speaker overlaps the G7 fitting population")
-        selected=[r for g in group for r in sorted([v for v in items if v[1]==g],key=lambda x:number(SALT+x[0]))[:4]]
+        if partition!="test-other":
+            previous=ROOT/"confirm"/family
+            earlier=set(np.load(previous/"id.npy").tolist());items=[r for r in items if r[0] not in earlier]
+            if family=="libri" and set(np.load(previous/"group.npy").tolist())&{number("libri/"+p) for p in group}:raise ValueError("Repeated confirmation people")
+        selected=[r for g in group for r in sorted([v for v in items if v[1]==g],key=lambda x:number(salt+x[0]))[:4]]
         if len(selected)!=4*len(group):raise ValueError("Four predetermined clips per speaker required")
         out[family]=selected
-    put(folder/"selection.json",{"salt":SALT,"archive_md5":MD5,"archive_sha256":digest(archive),"license":"LibriSpeech CC BY 4.0; CREMA-D ODbL / DbCL",
+    put(folder/"selection.json",{"salt":salt,"partition":partition,"archive_md5":expected,"archive_sha256":digest(archive),"license":"LibriSpeech CC BY 4.0; CREMA-D ODbL / DbCL",
         "clips":{k:[list(row[:3]) for row in vals] for k,vals in out.items()}})
     return out
 
 
-def prepare():
+def prepare(root=ROOT,partition="test-other"):
     import torch
     import torchaudio
     from transformers import Wav2Vec2ForCTC
     from vocos.feature_extractors import MelSpectrogramFeatures
-    sets=sources();teacher=json.loads((G7/"teacher.json").read_bytes())
+    sets=sources(root,partition);teacher=json.loads((G7/"teacher.json").read_bytes())
     if teacher["revision"]!="22aad52d435eb6dbaf354bdad9b0da84ce7d6156":raise ValueError("Acoustic clock teacher changed")
     net=Wav2Vec2ForCTC.from_pretrained(teacher["snapshot"],local_files_only=True).cuda().half().eval()
     vocab=json.loads((Path(teacher["snapshot"])/"vocab.json").read_bytes())
     feat=MelSpectrogramFeatures(sample_rate=24000,n_fft=1024,hop_length=256,n_mels=100).eval().cuda()
     proj=torch.tensor(np.random.default_rng(711).standard_normal((768,32)).astype(np.float32)/np.sqrt(768),dtype=torch.float32,device="cuda")
     for family,rows in sets.items():
-        folder=ROOT/"confirm"/family;folder.mkdir(parents=True,exist_ok=True)
+        folder=root/"confirm"/family;folder.mkdir(parents=True,exist_ok=True)
         if (folder/"card.json").exists():continue
         arrays={};excluded=[]
         for row in rows:
@@ -100,11 +106,12 @@ def prepare():
             for k,value in one.items():arrays.setdefault(k,[]).append(value)
         for k,val in arrays.items():np.save(folder/(k+".npy"),np.stack(val),allow_pickle=False)
         put(folder/"card.json",{"family":family,"source_rows":len(rows),"eligible":len(arrays["id"]),"people":len(set(arrays["group"])),"excluded":excluded,
-            "selection":digest(ROOT/"sources/selection.json"),"teacher_revision":teacher["revision"],"sha256":{k:digest(folder/(k+".npy")) for k in arrays}})
+            "selection":digest(root/"sources/selection.json"),"teacher_revision":teacher["revision"],"sha256":{k:digest(folder/(k+".npy")) for k in arrays}})
         print("Speech confirmation cases",family,len(arrays["id"]),len(set(arrays["group"])),flush=True)
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("phase",choices=("sources","prepare"));a=p.parse_args()
-    if a.phase=="sources":sources()
-    else:prepare()
+    p=argparse.ArgumentParser();p.add_argument("phase",choices=("sources","prepare"));p.add_argument("--partition",choices=("test-other","dev-other"),default="test-other");a=p.parse_args()
+    root=ROOT if a.partition=="test-other" else ROOT.parent/"speech-rate-confirm"
+    if a.phase=="sources":sources(root,a.partition)
+    else:prepare(root,a.partition)
