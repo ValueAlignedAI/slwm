@@ -54,7 +54,15 @@ def report(folder):
     for task,title in (("live_pusht","Push-T"),("live_puck_barrier","Puck + barrier")):
         values=[f"{100*raw[task][name]['success']:.1f}%" for name in ("first_proposal","uniform","passive","geometry")]
         lines.append(f"| {title} | "+" | ".join(values+[f"{raw[task]['geometry']['mean_final_px']:.2f} px"])+" |")
-    lines+=["","The previews replay the measured actions on the first predetermined start. Every decision endpoint is compared numerically with its saved trajectory. The red goal overlay was added for viewing. [Push-T replay](examples/pusht.webm) · [Puck-and-barrier replay](examples/puck_barrier.webm) · [Replay hashes and error](metrics/rollout-examples.json) · [Run decision inference on the supplied observation](inference/decisions.md)",
+    oracle=arc["executed_oracle_followup"]["results"]
+    lines+=["","A post hoc mechanism check used 64 additional starts per task. It reconstructed and executed every candidate before making a greedy choice. This tests the candidate bank and one-decision horizon with perfect dynamics. The cohorts are distinct from the learned-controller evaluation.","",
+        "| New cohort | First proposal | Passive | Exact greedy, three proposals | Exact greedy, plus hold | Paired final-success change from adding hold |","|---|---:|---:|---:|---:|---:|"]
+    for task,label in (("pusht","Push-T"),("puck_barrier","Puck + barrier")):
+        o=oracle[task];v=o["policies"];z=o["hold_effect"]["final_success"]
+        cells=[f"{100*v[n]['final_success']:.1f}%" for n in ("first_proposal","passive","oracle_three","oracle_plus_hold")]
+        ci=z["paired_ci95"];lines.append(f"| {label} | "+" | ".join(cells)+f" | {100*z['hold_minus_three']:+.1f} pp [{100*ci[0]:+.1f}, {100*ci[1]:+.1f}] |")
+    lines+=["","[Independent oracle protocol](live-oracle-protocol.md) · [Fresh-episode oracle measurements](metrics/artifact-inventory.json)"]
+    lines+=["","The previews replay the measured actions on the first predetermined start. Every decision endpoint is compared numerically with its saved trajectory. The replays show a higher-resolution scene and a red goal overlay for the viewer. The models received the registered 16×16 camera and observed state. [Push-T replay](examples/pusht.webm) · [Puck-and-barrier replay](examples/puck_barrier.webm) · [Replay hashes and error](metrics/rollout-examples.json) · [Run decision inference on the supplied observation](inference/decisions.md)",
       "","## Other modalities","","This secondary panel reuses the fixed G7 held examples. Byte NLL is lower when next-byte predictions improve. Video-to-audio feature MSE and real-event AP are diagnostic losses; waveform intelligibility was measured independently.",
       "","| Core and seed | Replay byte NLL | Sim only | Other only | Both fresh | Both fresh video→audio MSE | Both fresh Tokyo event AP |","|---|---:|---:|---:|---:|---:|---:|"]
     for core in ("hybrid","gpt2"):

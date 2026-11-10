@@ -19,7 +19,7 @@ def progress():
             "reacher_results":len(list((c/"reacher").glob("*/metrics.json"))),"live_controllers":len(list((a/"live").glob("*/*/metrics.json"))),
             "retention":len(list((a/"retention").glob("*/metrics.json"))),"initial_speech_panels":len(list((a/"speech-audit").glob("*/*/scores.json"))),
             "rate_speech_panels":len(list((a/"rate-audit").glob("*/*/scores.json"))),"archive_complete":audit.get("complete",False),
-            "durable_rungs":audit.get("verified_rungs",0),"analysis":(p/"factorial.json").is_file(),"replays":(p/"rollout-examples.json").is_file()}
+            "durable_rungs":audit.get("verified_rungs",0),"analysis":(p/"factorial.json").is_file() and (root/"live-oracle/complete.json").is_file(),"factorial_analysis":(p/"factorial.json").is_file(),"live_oracle_followup":(root/"live-oracle/complete.json").is_file(),"replays":(p/"rollout-examples.json").is_file()}
 
 
 def development_curves(doc):
@@ -65,7 +65,10 @@ def assemble():
         folder=a/"reacher-heads"/name;dest=b/"reacher-heads"/name;meta=read(folder/"complete.json")
         if sha(dest/"weights.npz")!=h or sha(dest/"optimizer.npz")!=meta["optimizer"]:raise ValueError("Unmirrored transfer artifact")
         heads[name]=meta
-    source={"study":"G8","complete":True,"status":m,"factorial_gate":payload["primary_gate"],"hardware":"v5e-1","models":doc["models"],
+    oracle=read(a/"live-oracle/complete.json")
+    if oracle!=read(b/"live-oracle/complete.json") or any(sha(d/"live-oracle/rows.npz")!=oracle["rows_sha256"] for d in (a,b)):
+        raise ValueError("Independent mechanism controls changed")
+    source={"executed_oracle_followup":oracle,"full_utterance_confirmation":read(a/"full-speech/complete.json"),"study":"G8","complete":True,"status":m,"factorial_gate":payload["primary_gate"],"hardware":"v5e-1","models":doc["models"],
             "paired_hidden_constraint_sha256":sha(pub/"hidden-constraint.json"),"camera_visibility_sha256":sha(pub/"camera-observability.json"),
             "live_control_input":"16 observed ticks and an exogenous goal-directed three-proposal bank per decision",
             "readout_heads":heads,"confirmation_lock":sha(a/"confirmation-lock.json"),"held_panels":doc["panels"],"training_audit":doc["training_audit"],
