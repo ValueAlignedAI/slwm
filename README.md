@@ -4,6 +4,14 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G7 shared state, speech and control
+
+On 14 additional speakers, a timing head picked the correct camera among four alternatives in 43–44% of trials with the hybrid and 40–43% with dense GPT-2. The same head applied to raw sensor features reached 65–69%. All alternatives used identical clocks. Moving encoded positions along with images had inflated an earlier alignment score. Supplying the true acoustic units still yielded 85% word error for acted speech and 99% for audiobooks. [Clock-controlled confirmation](experiments/multimodal/t7/continuation-alignment-control-20261110/physical-time.md) · [Speech synthesis controls](experiments/multimodal/t7/continuation-alignment-control-20261110/alignment-and-control.md)
+
+On 512 new Reacher starts, both architectures retained the initial goal cue after it disappeared. Raw observations with the common physical prior gave the lowest supervised action regret. None of four RL policies reliably improved final goal success. Exact two-step planning reached 45–48% in two diagnostic cohorts, and the learned transition lost that advantage. [Decisions and independent transfer](experiments/multimodal/t7/continuation-alignment-control-20261110/transfer-and-planning.md)
+
+The registered scaling comparison continues both sizes and both architectures from their exact G6 optimizer states. It separates additional exposure, independent examples and elapsed TPU time. [Study design](experiments/multimodal/t7/continuation-alignment-control-20261110/protocol.md)
+
 ### G6 multimodal scaling
 
 Eight models completed 8,192 updates at 116.50M and 202.35M parameters, with two training seeds per architecture and size. On 512 new Push-T starts, the 116.50M hybrid predicted joint action endpoints to 5.89 and 5.84 pixels. The 202.35M hybrid reached 6.12 and 6.01 pixels, compared with 8.14 and 7.41 for its matched dense control. Video helped with action-conditioned prediction in this simulator. Held real-event timing and generated speech remained weak. [Results and learning curves](experiments/multimodal/t6/tpu-scale-20261110/report.md) · [Transfer and decisions](experiments/multimodal/t6/tpu-scale-20261110/transfer-and-decisions.md)
