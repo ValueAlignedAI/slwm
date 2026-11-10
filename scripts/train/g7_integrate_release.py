@@ -37,12 +37,54 @@ def open_pr(branch,title,body):
     return number
 
 
+def merge_checked(number,head,base,title):
+    endpoint=f"repos/{GH}/pulls/{number}"
+    args=["gh","api","--method","PUT",endpoint+"/merge","-f","sha="+head,"-f","merge_method=merge",
+          "-f",f"commit_title={title} (#{number})"]
+    for attempt in range(3):
+        result=subprocess.run(args,text=True,capture_output=True)
+        if result.returncode==0 and json.loads(result.stdout).get("merged"):
+            return True
+        # An error can arrive after GitHub has applied the merge. Reconcile before retrying.
+        current=json.loads(gh("api",endpoint))
+        if current["head"]["sha"]!=head:
+            raise ValueError("GitHub pull request head changed after exact-tree review")
+        if current["merged"]:
+            return True
+        if current["base"]["sha"]!=base:
+            return False
+        diagnostic=(result.stdout+" "+result.stderr).lower()
+        retryable=any(k in diagnostic for k in ("http 500","http 502","http 503","http 504",
+            "timed out","timeout","connection reset","unexpected eof","something went wrong"))
+        if not retryable or attempt==2:
+            raise RuntimeError(f"GitHub rejected the reviewed merge of PR {number}: {result.stderr.strip() or result.stdout.strip()}")
+        time.sleep(2**attempt)
+
+
+def finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final):
+    git("fetch","-q","origin","main")
+    subprocess.run(["git","merge-base","--is-ancestor",head,"origin/main"],check=True)
+    if git("rev-parse",merged["mergeCommit"]["oid"]+"^{tree}")!=tree:
+        raise ValueError("Merged tree differs from the tested tree")
+    receipt={"number":num,"url":merged["url"],"head":head,"main_sha":merged["mergeCommit"]["oid"],"tests_passed":verdict["passed"],"tested_tree":tree,"historical_or_held_controls":True,"merged_at":merged["mergedAt"]}
+    record(repo,ctl,"Merged "+title+" after exact-tree review.",receipt,finished=final)
+    return receipt
+
+
 def integrate(repo,ctl,branch,head,title,body,final=False):
     for attempt in range(6):
         git("fetch","-q","origin","main",branch)
         remote_head=git("rev-parse","origin/"+branch)
         if remote_head!=head:raise ValueError("Published branch tip differs from the verified release candidate")
-        base=git("rev-parse","origin/main");tree=git("merge-tree","--write-tree",base,head).splitlines()[0]
+        base=git("rev-parse","origin/main")
+        if subprocess.run(["git","merge-base","--is-ancestor",head,base]).returncode==0:
+            history=json.loads(gh("pr","list","--repo",GH,"--state","merged","--base","main","--head",branch,
+                                  "--json","number,headRefOid,mergeCommit,url,mergedAt"))
+            merged=next((p for p in history if p["headRefOid"]==head),None)
+            if not merged:raise ValueError("No merged pull request matches the verified candidate")
+            tree=git("rev-parse",merged["mergeCommit"]["oid"]+"^{tree}")
+            return finish_merge(repo,ctl,head,title,tree,review(tree),merged["number"],merged,final)
+        tree=git("merge-tree","--write-tree",base,head).splitlines()[0]
         verdict=review(tree)
         details=body+"\n\nFedora tested the exact proposed merge tree `"+tree+"` with pinned dependencies and real prepared fixtures. "+verdict["summary"]+"."
         num=open_pr(branch,title,details)
@@ -54,17 +96,13 @@ def integrate(repo,ctl,branch,head,title,body,final=False):
             if pr["mergeable"]=="CONFLICTING" or pr["reviewDecision"]=="CHANGES_REQUESTED":raise RuntimeError("Pull request requires changes: "+pr["url"])
             if pr["mergeStateStatus"]=="CLEAN" and pr["mergeable"]=="MERGEABLE" and pr["reviewDecision"]!="REVIEW_REQUIRED":
                 if gh("api","repos/"+GH+"/git/ref/heads/main","--jq",".object.sha")!=base:break
-                gh("pr","merge",str(num),"--repo",GH,"--merge","--match-head-commit",head,"--subject",title+f" (#{num})")
+                merge_checked(num,head,base,title)
                 break
             time.sleep(8)
         else:raise TimeoutError("GitHub review/check requirements remain pending: "+pr["url"])
         merged=json.loads(gh("pr","view",str(num),"--repo",GH,"--json","state,mergeCommit,url,mergedAt"))
         if merged["state"]!="MERGED":continue
-        git("fetch","-q","origin","main")
-        subprocess.run(["git","merge-base","--is-ancestor",head,"origin/main"],check=True)
-        receipt={"number":num,"url":merged["url"],"head":head,"main_sha":merged["mergeCommit"]["oid"],"tests_passed":verdict["passed"],"tested_tree":tree,"historical_or_held_controls":True,"merged_at":merged["mergedAt"]}
-        record(repo,ctl,"Merged "+title+" after exact-tree review.",receipt,finished=final)
-        return receipt
+        return finish_merge(repo,ctl,head,title,tree,verdict,num,merged,final)
     raise RuntimeError("Main kept changing during exact-tree checks")
 
 
@@ -96,7 +134,12 @@ def main(a):
             time.sleep(45)
         else:raise TimeoutError("The verified G7 publication has not completed")
         if git("branch","--show-current")!=BRANCH:raise ValueError("Research checkout changed")
-        if git("rev-parse","HEAD")!=status["commit"]:raise ValueError("Active worktree differs from the published G7 result")
+        head=git("rev-parse","HEAD")
+        if head!=status["commit"] and not (
+            git("rev-list","--parents","-n1",head).split()==[head,status["commit"]]
+            and git("diff","--name-only",status["commit"],head)=="README.md"
+            and git("show","-s","--format=%s",head)=="Update the README with completed scale, cost and inference results"
+        ):raise ValueError("Active worktree differs from the published G7 result or its final README")
         if finalized_readme():
             git("diff","--check","--","README.md");git("commit","--only","-m","Update the README with completed scale, cost and inference results","--","README.md")
         git("push","origin","HEAD:refs/heads/"+BRANCH)
