@@ -1,0 +1,42 @@
+{
+  "conditions": {
+    "interpolation": {
+      "edits": 29,
+      "wer": 0.09634551495016612,
+      "words": 301
+    },
+    "oracle_phone_full": {
+      "edits": 34,
+      "wer": 0.11295681063122924,
+      "words": 301
+    },
+    "oracle_phone_repair": {
+      "edits": 20,
+      "wer": 0.0664451827242525,
+      "words": 301
+    },
+    "silenced": {
+      "edits": 23,
+      "wer": 0.07641196013289037,
+      "words": 301
+    },
+    "source": {
+      "edits": 18,
+      "wer": 0.059800664451827246,
+      "words": 301
+    },
+    "source_mel_roundtrip": {
+      "edits": 20,
+      "wer": 0.0664451827242525,
+      "words": 301
+    }
+  },
+  "g1_shared_models_used": 0,
+  "new_final_people": 0,
+  "oracle_phone_full_uses_reference_phone_intervals": true,
+  "recognizer_revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "renderer_parameters": 289860,
+  "scope": "Eight previously exposed old-selection people, exploratory codec ceiling only; never fresh generalization evidence",
+  "vocos_parameters": 13531650,
+  "whisper_parameters": 37760256
+}

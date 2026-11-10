@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/db/dev/slwm/training/general_angular_pilot.py", line 91, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/db/dev/slwm/training/general_angular_pilot.py", line 69, in main
+    curves.append({"updates":0,"selection":validation(model,selection,cfg)})
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/db/dev/slwm/training/general_angular_pilot.py", line 41, in validation
+    values.append({"hit1":float(hit.float().mean()),"geometry":geometry(a["embedding"]),"text_geometry":geometry(b["embedding"]),"masked_error":metrics["picture_masked" if family=="coco" else "masked"],"alignment_loss":metrics["alignment"]})
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/db/dev/slwm/training/general_alignment_diagnostic.py", line 19, in geometry
+    eigen=torch.linalg.eigvalsh(cov).clamp_min(0);total=eigen.sum()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+NotImplementedError: "linalg_eigh_cuda" not implemented for 'BFloat16'

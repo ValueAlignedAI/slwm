@@ -1,0 +1,36 @@
+{
+  "study": "G3",
+  "output": "experiments/multimodal/t4/joint-transfer-20261109",
+  "data": "artifacts/joint_transfer/g3",
+  "families": {"text": 20, "coco": 25, "cifar": 10, "speech": 15, "ami": 5, "clotho": 5, "pamap2": 10, "droid": 10},
+  "batch": 64,
+  "text_length": 96,
+  "signal_steps": 24,
+  "screen_updates": 100,
+  "milestones": [100, 1000, 8000],
+  "seeds": [81, 82],
+  "profiles": {
+    "gpt2-dense": {"core": "gpt2", "rank": 192, "experts": 1},
+    "signal-dense": {"core": "slwm", "rank": 192, "experts": 1},
+    "signal-sparse": {"core": "slwm", "rank": 192, "experts": 4},
+    "gpt2-wide": {"core": "gpt2", "rank": 768, "experts": 1},
+    "signal-wide": {"core": "slwm", "rank": 768, "experts": 1}
+  },
+  "parents": {
+    "gpt2-81": ["EXP-T1-231", "1794bbecb9bbb4ac36dfd1c95bd65e4fe287626d1c02fff9bd873ef06e61d4a0"],
+    "slwm-81": ["EXP-T1-232", "43da7f5b05c9f4de57b4c80ca07b6a3612b9cabd562143a22267a794405b20b9"],
+    "gpt2-82": ["EXP-T1-233", "3762073979836052e97a0ab70f55ed34c77ce85249188dcda53532a6678cc225"],
+    "slwm-82": ["EXP-T1-234", "385df60e383210ffbdb17f07c58b9d3aa744ffdd17d519ceee9eaa1bc7073bac"]
+  },
+  "lr": 0.0003,
+  "weight_decay": 0.01,
+  "few_shot": [1, 8, 32],
+  "ridge": 0.1,
+  "fsdd": {"train": ["george", "jackson", "lucas"], "dev": ["nicolas"], "test": ["theo", "yweweler"]},
+  "source_revisions": {
+    "fashion": "b2617bb6d3ffa2e429640350f613e3291e10b141",
+    "fsdd": "26eb9aaf76e81b692f806f9140c2d2777410d7a1",
+    "banking": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+    "cifar_binary_md5": "03b5dce01913d631647c71ecec9e9cb8"
+  }
+}

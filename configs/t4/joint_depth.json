@@ -1,0 +1,7 @@
+{
+  "layers_zero_based": [1, 3, 5, 7, 9, 11],
+  "profiles": ["gpt2-dense", "signal-dense", "signal-sparse"],
+  "seeds": [81, 82],
+  "milestones": [100, 1000, 8000],
+  "purpose": "Depth-pruned 500M-token parents for inference and adaptation scale at identical new-data exposure."
+}

@@ -1,0 +1,105 @@
+{
+  "engineering_validation": {
+    "implementation_preflight_v2": {
+      "actual_gpu_optimizer_checks": 48,
+      "peak_allocated_gib": 9.916449546813965,
+      "full_tensor_checkpoint_roundtrips": 4,
+      "parameters": [
+        55595147,
+        55810187,
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "a23712fad92bb048b305a5ad3eb08f4a666413894c636ceb0b6d5bf71ea8bdba"
+    },
+    "batch_fit_32": {
+      "actual_gpu_optimizer_checks": 48,
+      "peak_allocated_gib": 17.82709264755249,
+      "full_tensor_checkpoint_roundtrips": 4,
+      "parameters": [
+        55595147,
+        55810187,
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "c74a4f56ae487e10029bc3850e58f4575830c7276d2c592e9db3321b6fbfc2fb"
+    },
+    "long_context_preflight": {
+      "actual_gpu_optimizer_checks": 24,
+      "peak_allocated_gib": 17.395575046539307,
+      "full_tensor_checkpoint_roundtrips": 6,
+      "parameters": [
+        124117995,
+        124521195
+      ],
+      "primary_optimizer_updates": 0,
+      "final_observations_opened": false,
+      "manifest_sha256": "35962da61ecf5fd320033ece3475fb0fbe0bbd12cb15c3795f88a00fbddd3713"
+    }
+  },
+  "tests": {
+    "passed": 22,
+    "scope": "Real training-source gradients, data identities/clocks, causal state/action history, actor input boundary, live-memory invariance, covariance/rank, retrieval positives and checkpoint serialization"
+  },
+  "hardware": "Fedora RTX3090 24GiB",
+  "chosen_microbatches": {
+    "context32_temporal": 32,
+    "context64_temporal": 16,
+    "static": 128,
+    "accumulation": 2
+  },
+  "warning": "Implementation checks are not evidence of held-task transfer or useful world understanding",
+  "planned_primary_updates_per_model": 12000,
+  "primary_runs": 12,
+  "eta": "Initial four-model512-update screen:2\u20134h subject to existing queue. Full transfer/artifact evaluation:48\u201372h from2026-11-06 evening Europe/Lisbon.",
+  "data": {
+    "clock_verified_counts": {
+      "calibration": 45,
+      "selection": 59,
+      "test": 134,
+      "train": 896
+    },
+    "configuration_sha256": "398b8e1dc073a14efa925fa37665b8ad916158a4e9c01da69784814a3736bfd2",
+    "core_never_receives_har_or_mhealth_labels": true,
+    "decoder_recovery_audit_sha256": "c4a91e979f43417a42c16693048248b4a5365d068b6662a526219df51279b33e",
+    "eligible_training_32": 925,
+    "eligible_training_64": 907,
+    "evaluation_cases_sha256": "4ad2288c6c0e77c679eea677a5719cfdda16cdc55ddccbe411f3b44174668d76",
+    "har_sha256": "d044cc46e139c1759ef836f36deb37b8b611658b62bc68d68801957a64c7fde9",
+    "normalization_scope": "Existing nonrobot training-only moments; robot/action moments recomputed from G2 training groups only",
+    "normalizers_sha256": "55d94a78261738741560d30e6a61a8d7df6f41ee52efc24286bf57138b6fadd3",
+    "old_frozen_cache_hashes_sha256": "ea245b3b96b4406c6e7dba765d71d0e433498b62422ce63fdb9876e783cd6911",
+    "robot_acquisition_sha256": "a42f24ed62402fa31aafcb1247e56700aaecafa3a0f8dc0547f6f53c689c4489",
+    "robot_group_counts": {
+      "calibration": 2,
+      "selection": 3,
+      "test": 5,
+      "train": 10
+    },
+    "robot_roles_sha256": "2d3aa9f0eed3ab7c09076088e164616465b424ee872fb201802143f6abe794ce",
+    "robot_rows_sha256": "47d4c5c83c1b48801c099cc3d6b9724ff890dfde1c0003a16af5f655cc27d7ad",
+    "robot_source_plan_sha256": "01b4754090d035a2e7131aaa380dd33964d48fef7798d53e563aeb1d23aff327",
+    "role_counts": {
+      "calibration": 45,
+      "selection": 75,
+      "test": 137,
+      "train": 941
+    },
+    "training_moving_windows": 190141,
+    "training_robot_episodes": 941,
+    "training_robot_steps": 251940,
+    "unique_robot_physical_hours": {
+      "calibration": 0.3995382403488889,
+      "selection": 0.42943250215249995,
+      "test": 0.7019679641255558,
+      "train": 4.723861218270283
+    }
+  },
+  "dataset_contract_sha256": "8869ca99590c77994f799d136f35e61119ad6d9bb22d77b703656f1984a68f9f",
+  "registered_source_commit": "36b4731",
+  "pretraining_defect_caught": "Clock-cache merge inherited obsolete group labels; corrected and regression-tested before any primary optimizer updates; original/rejected manifests preserved"
+}

@@ -1,0 +1,137 @@
+{
+  "created_unix": 1794063607.968143,
+  "role": "selection only",
+  "runs": [
+    {
+      "checkpoint_bytes": 498216665,
+      "checkpoint_sha256": "7478009304c1cc409060140f643ffc6dae42af673a5d5dbf5a0cb4e64935637f",
+      "future_images_shape": [
+        1,
+        8,
+        3,
+        3,
+        16,
+        16
+      ],
+      "future_numeric_shape": [
+        1,
+        8,
+        64
+      ],
+      "no_final_test_observations": true,
+      "optimizer_updates": 512,
+      "parameters": 124521195,
+      "repeated_inference_equal": true,
+      "run": "G2-201",
+      "seed": 201,
+      "source_commit": "36b473159da5e85714c63196b7eeab3901ff3ca3",
+      "source_snapshot_cli_passed": true,
+      "state_shape": [
+        1,
+        512
+      ],
+      "trained_actor_available": false,
+      "variant": "slwm",
+      "weights_unchanged": true
+    },
+    {
+      "checkpoint_bytes": 496566129,
+      "checkpoint_sha256": "c829e1b2f9e2ac1288f7e90f7560710756aae72d30f675b147db31714cb57e40",
+      "future_images_shape": [
+        1,
+        8,
+        3,
+        3,
+        16,
+        16
+      ],
+      "future_numeric_shape": [
+        1,
+        8,
+        64
+      ],
+      "no_final_test_observations": true,
+      "optimizer_updates": 512,
+      "parameters": 124117995,
+      "repeated_inference_equal": true,
+      "run": "G2-202",
+      "seed": 201,
+      "source_commit": "36b473159da5e85714c63196b7eeab3901ff3ca3",
+      "source_snapshot_cli_passed": true,
+      "state_shape": [
+        1,
+        512
+      ],
+      "trained_actor_available": false,
+      "variant": "transformer",
+      "weights_unchanged": true
+    },
+    {
+      "checkpoint_bytes": 498216601,
+      "checkpoint_sha256": "ee909963c64aee24f173b50e2fb85cfcabe0e3bf9126f12a7b65b7526400a074",
+      "future_images_shape": [
+        1,
+        8,
+        3,
+        3,
+        16,
+        16
+      ],
+      "future_numeric_shape": [
+        1,
+        8,
+        64
+      ],
+      "no_final_test_observations": true,
+      "optimizer_updates": 512,
+      "parameters": 124521195,
+      "repeated_inference_equal": true,
+      "run": "G2-203",
+      "seed": 202,
+      "source_commit": "36b473159da5e85714c63196b7eeab3901ff3ca3",
+      "source_snapshot_cli_passed": true,
+      "state_shape": [
+        1,
+        512
+      ],
+      "trained_actor_available": false,
+      "variant": "slwm",
+      "weights_unchanged": true
+    },
+    {
+      "checkpoint_bytes": 496566065,
+      "checkpoint_sha256": "0e8b417372bce50f8b38a9cd2a9a8bafc7f904a733941ae40090d19c81da95e0",
+      "future_images_shape": [
+        1,
+        8,
+        3,
+        3,
+        16,
+        16
+      ],
+      "future_numeric_shape": [
+        1,
+        8,
+        64
+      ],
+      "no_final_test_observations": true,
+      "optimizer_updates": 512,
+      "parameters": 124117995,
+      "repeated_inference_equal": true,
+      "run": "G2-204",
+      "seed": 202,
+      "source_commit": "36b473159da5e85714c63196b7eeab3901ff3ca3",
+      "source_snapshot_cli_passed": true,
+      "state_shape": [
+        1,
+        512
+      ],
+      "trained_actor_available": false,
+      "variant": "transformer",
+      "weights_unchanged": true
+    }
+  ],
+  "scope": "Interim state and recorded-command-conditioned forecasts; no learned actor, no final transfer result",
+  "source_hashes_sha256": "7c9ae797be54558448a8e8d8bc43e99bb6404ffc0e0d0294ad2b4a281838d50e",
+  "unique_source_state": "Four selected512-update checkpoints, immutable hard links preserve bytes if best.pt is later replaced"
+}

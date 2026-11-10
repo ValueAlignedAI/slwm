@@ -1,0 +1,67 @@
+{
+  "families": {
+    "clotho": {
+      "batches": [
+        {
+          "position": 11000100,
+          "records": 64,
+          "uniform_record_hit1": 0.021484375,
+          "unique_ids": 53
+        },
+        {
+          "position": 11000101,
+          "records": 64,
+          "uniform_record_hit1": 0.017578125,
+          "unique_ids": 60
+        },
+        {
+          "position": 11000102,
+          "records": 64,
+          "uniform_record_hit1": 0.02197265625,
+          "unique_ids": 54
+        },
+        {
+          "position": 11000103,
+          "records": 64,
+          "uniform_record_hit1": 0.01953125,
+          "unique_ids": 57
+        }
+      ],
+      "mean_uniform_record_hit1": 0.0201416015625
+    },
+    "coco": {
+      "batches": [
+        {
+          "position": 11000000,
+          "records": 64,
+          "uniform_record_hit1": 0.015625,
+          "unique_ids": 64
+        },
+        {
+          "position": 11000001,
+          "records": 64,
+          "uniform_record_hit1": 0.01708984375,
+          "unique_ids": 61
+        },
+        {
+          "position": 11000002,
+          "records": 64,
+          "uniform_record_hit1": 0.01611328125,
+          "unique_ids": 63
+        },
+        {
+          "position": 11000003,
+          "records": 64,
+          "uniform_record_hit1": 0.01708984375,
+          "unique_ids": 61
+        }
+      ],
+      "mean_uniform_record_hit1": 0.0164794921875
+    }
+  },
+  "method": "Recreate each fixed64-record pilot batch using its registered RNG; uniform random candidate probability equals sum squared ID multiplicities divided by64 squared",
+  "no_observation_or_model_forward": true,
+  "seed": 9001,
+  "selection_only": true,
+  "source_sha256": "9ed0cb64b259b120f5f7f71f6a3d13987f954562159e6d3181d606ffe73ca111"
+}

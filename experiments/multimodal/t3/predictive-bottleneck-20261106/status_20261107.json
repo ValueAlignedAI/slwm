@@ -1,0 +1,48 @@
+{
+  "as_of_utc": "2026-11-07T15:09:00Z",
+  "shared_state": {
+    "trained_runs": [
+      "G2-201",
+      "G2-202",
+      "G2-203",
+      "G2-204"
+    ],
+    "optimizer_updates_each": 512,
+    "planned_runs": 12,
+    "planned_updates_each": 12000,
+    "transfer_results_available": false,
+    "trained_actor_available": false,
+    "inference_bundle": "experiments/multimodal/t3/predictive-bottleneck-20261106/interim_inference_20261107",
+    "weights_verified_on_mac": true,
+    "standalone_source_cli_passed": true
+  },
+  "text": {
+    "interim_tokens_each": 433750016,
+    "training_current_token_range": [
+      433750016,
+      442138624
+    ],
+    "target_tokens_each": 500006912,
+    "runs": 4,
+    "portable_inference_bundle": "experiments/text/t1/500m-20261106/interim_inference_20261107",
+    "actual_cpu_generations_passed": 4,
+    "weights_shared_with_multimodal": false
+  },
+  "earlier_general_core": {
+    "trained_runs": 4,
+    "positions_each": 2816,
+    "all_cores_frozen": false
+  },
+  "interruption": {
+    "cause": "CUDA out-of-memory failures on2026-11-06; older jobs exited while G2 eventually completed its retried screen",
+    "recovery": "Resume intact optimizer/RNG checkpoints, serialize heavy studies and wait for CUDA cleanup between processes; restart dependent evaluation after G2",
+    "models_data_recipes_modified": false,
+    "gpu_verified": "99% utilization with resumed text training"
+  },
+  "artifact_limits": [
+    "First fixed selection-case image forecasts are blurry for both processors",
+    "Fixed text continuations drift and repeat; no planning or reasoning claim",
+    "New final observations remain unopened; no trained action head yet"
+  ],
+  "eta": "Provisional full reports2026-11-09 to2026-11-10 Europe/Lisbon; revise from resumed throughput"
+}

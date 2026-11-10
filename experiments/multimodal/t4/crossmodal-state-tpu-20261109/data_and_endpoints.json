@@ -1,0 +1,2075 @@
+{
+  "data": {
+    "examples": 95177,
+    "families": {
+      "ami": 0,
+      "clotho": 1440,
+      "coco": 32768,
+      "droid": 7305,
+      "grid": 12704,
+      "libri": 16384,
+      "text": 24576
+    },
+    "groups": {
+      "ami": 0,
+      "clotho": 1072,
+      "coco": 32768,
+      "droid": 10,
+      "grid": 16,
+      "libri": 443,
+      "text": 24576
+    },
+    "role": "train",
+    "sha256": {
+      "a": "bc86f3ceafb9efdbeb82d29b36ee137e6c390dc3998bf503b6ba9051f3942e34",
+      "cap": "97cf45de9bf7225afa1e53378fd58012a6f941a6e5d6367007d14a96fdb6ea19",
+      "family": "0460a34a528b1a4a16246ada1c1ec2275d55a067cb948e02aec7a7d8c466d486",
+      "group": "6d732ee91d525d2d7312ffdb2159097b9adbb51393db6697fcdff9f10f4e10c2",
+      "has": "8023ef40f9ae5507ad6dd13282e601f6bed1f5c4145e7bcebbbb1d0af3bfd990",
+      "n": "2bf9dc13ab11d386975adf79b627e7e7836283db629985460a2d255780b91741",
+      "ok": "9a1b67f4bee650c3427525441ae104d11c6e0f6632cc395278e025f91e033f1a",
+      "uid": "2daa4d466c4759bed25b74ec2577f7f541806ff8599cd6c6db25a2e62109a844",
+      "v": "66a25c046612f586cfbda1e905278f495c97a992d6ce496f5d6798866f7e056a",
+      "x": "778913b46a8a38d38caa485b45cfabc052a600876f69429140c028265460279a"
+    },
+    "valid_positions": 6088567
+  },
+  "runs": {
+    "g4-v5e-anchor-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.00032071349029490925,
+        "name": "g4-v5e-anchor-gpt2-cross-81",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 512,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 17.953430154000216,
+        "warm_s": 91.42949309999949,
+        "warm_steps": 504
+      },
+      "training_examples": 131072,
+      "validation_examples_per_second": 2364.101531965336,
+      "weight_sha256": "e237382d0589dad98e14deff4a94d6a56ba05469a5febe2eaf67bbefbd2c13c8"
+    },
+    "g4-v5e-anchor-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.00032071349029490925,
+        "name": "g4-v5e-anchor-signal-cross-81",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 512,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 18.93362646300011,
+        "warm_s": 77.90161330299952,
+        "warm_steps": 504
+      },
+      "training_examples": 131072,
+      "validation_examples_per_second": 3124.236165592606,
+      "weight_sha256": "befecdb4c5deb1bc6212014ea51479df3b009e8b9b00e193b109b13a6fd0575d"
+    },
+    "g4-v5e-fair-all-anchor-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-anchor-gpt2-cross-81",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 18.477794987999914,
+        "warm_s": 44.9852347620008,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 2356.1230744591326,
+      "weight_sha256": "c79c166c297762931550cf8f81f76770c456a29af55554f86ad0b4e2aa38bf36"
+    },
+    "g4-v5e-fair-all-anchor-gpt2-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-anchor-gpt2-cross-82",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 3.011988618000032,
+        "warm_s": 44.977123602000574,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 2357.427868645073,
+      "weight_sha256": "3734009722fa28b9bd29b22cf9d7d9021f834ad4c71af0a392a039fe19c3d082"
+    },
+    "g4-v5e-fair-all-anchor-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-anchor-signal-cross-81",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 19.522583210000448,
+        "warm_s": 38.32419078800194,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 3118.340911976785,
+      "weight_sha256": "824b206496c113c79fd6afb72033237bc6b70fed4de03ed6bf9a53410b0768e5"
+    },
+    "g4-v5e-fair-all-anchor-signal-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-anchor-signal-cross-82",
+        "params": 117107081,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 12,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 896
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 3.0191367869992973,
+        "warm_s": 38.31953091699961,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 3126.2061516944323,
+      "weight_sha256": "d31e2523853f18a7f4a15fbc5493bd1cefb1b564d2dd15f24fde678e36d858a5"
+    },
+    "g4-v5e-fair-all-medium-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-gpt2-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 13.881172303999847,
+        "warm_s": 16.36259307900127,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6269.516054311644,
+      "weight_sha256": "e8c026ca7b8ca14f06e0f6a5fde179d4c82009e717d87c28ccd2d581049b2585"
+    },
+    "g4-v5e-fair-all-medium-gpt2-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-gpt2-cross-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 1.5708887640003013,
+        "warm_s": 16.360296220997043,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6268.545575536323,
+      "weight_sha256": "aa72022c274afd6e171bb20c0ab909c2ace2e8a361b8f81993453a132577f36c"
+    },
+    "g4-v5e-fair-all-medium-gpt2-motion-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-gpt2-motion-81",
+        "params": 26044425,
+        "policy": "motion",
+        "profile": "gpt2-motion",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 13.835441790999539,
+        "warm_s": 16.48480890599876,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6268.340473847979,
+      "weight_sha256": "0206b59c8dbd2cb086a4c172db8434c32d9b7e7ea10486294e87fb41cce96495"
+    },
+    "g4-v5e-fair-all-medium-gpt2-motion-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-gpt2-motion-82",
+        "params": 26044425,
+        "policy": "motion",
+        "profile": "gpt2-motion",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 1.6642214479998074,
+        "warm_s": 16.480587542998364,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6266.078242364762,
+      "weight_sha256": "f96c5cc34caf0b1e423a766f999fb00c3ea51915c39928a45e6909f8a324b0ab"
+    },
+    "g4-v5e-fair-all-medium-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-signal-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 11.21118014700005,
+        "warm_s": 10.755729854996389,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10816.408668377946,
+      "weight_sha256": "d8b789cfb8f56c756dd957c25ddce6f6d24196da0c174517d233b28c2b66e4bb"
+    },
+    "g4-v5e-fair-all-medium-signal-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-signal-cross-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 1.5748188140005368,
+        "warm_s": 10.756782397997085,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10841.70560116812,
+      "weight_sha256": "553e524bb7241a4c39568c533a96edd3f0a253b98a264ad0fc58aa05ceebbce1"
+    },
+    "g4-v5e-fair-all-medium-signal-motion-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-signal-motion-81",
+        "params": 26044425,
+        "policy": "motion",
+        "profile": "signal-motion",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 11.831087038000078,
+        "warm_s": 10.81512067300173,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10767.04019567438,
+      "weight_sha256": "55e1d05365459ef8a32ec4b334225061accfa9892789825093a2bdbc65393f6c"
+    },
+    "g4-v5e-fair-all-medium-signal-motion-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-medium-signal-motion-82",
+        "params": 26044425,
+        "policy": "motion",
+        "profile": "signal-motion",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 1.4272877240000525,
+        "warm_s": 10.814576731997477,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10777.44713812727,
+      "weight_sha256": "b8e72f6f92ce670b469924b8a0081d8e9ca6196f10ee7d471d76fc7f76d72a74"
+    },
+    "g4-v5e-fair-all-pilot-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-pilot-gpt2-cross-81",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 10.394010762999642,
+        "warm_s": 3.4922848670003077,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25868.45303043564,
+      "weight_sha256": "5a41ecb266cd481817f9d17bc1702c983a32bf30536add1f1d09999cdf7b1f48"
+    },
+    "g4-v5e-fair-all-pilot-gpt2-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-pilot-gpt2-cross-82",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.7956451269992613,
+        "warm_s": 3.492222803001823,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25852.383972237025,
+      "weight_sha256": "9001ba4396dacda3a3c4c6cac2cc73297a56900101e73cde9019e01ca3988725"
+    },
+    "g4-v5e-fair-all-pilot-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-pilot-signal-cross-81",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 7.6244707220002965,
+        "warm_s": 2.3793775539961644,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33824.5515488427,
+      "weight_sha256": "88a97b0d2c3d83504ff0c109d848df8595dff958bdfab61733bef6b45f0fd371"
+    },
+    "g4-v5e-fair-all-pilot-signal-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-all",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-all-pilot-signal-cross-82",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.7701909379993594,
+        "warm_s": 2.3769392900021558,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33760.477348374996,
+      "weight_sha256": "c4b7986bdc81b76a8b22d8bf85a8dbe7628c3c1487c31072e2dcf5e28aa01f9c"
+    },
+    "g4-v5e-fair-quarter-medium-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-quarter",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-quarter-medium-gpt2-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 0.25,
+          "unique_seen": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.5277177050002138,
+        "warm_s": 16.362606451996726,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6264.394717705603,
+      "weight_sha256": "be440f7d35ef169fbd1d3519eaa8b78c8eac0ae6be05b11a08227d90ed325cb3"
+    },
+    "g4-v5e-fair-quarter-medium-gpt2-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-quarter",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-quarter-medium-gpt2-cross-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "scaling": {
+          "eligible": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 0.25,
+          "unique_seen": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.5276300049999918,
+        "warm_s": 16.357830574997934,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6270.667134042718,
+      "weight_sha256": "235b5b0efb50abcd40019b2b80ef1a98b6efaea9abccbe6f56c0be51c066a959"
+    },
+    "g4-v5e-fair-quarter-medium-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-quarter",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-quarter-medium-signal-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 0.25,
+          "unique_seen": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.34686317700015934,
+        "warm_s": 10.753596946995458,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10819.164056646721,
+      "weight_sha256": "b9b02f8ad558fc2a866f53a94ecdaa74dc426e9bc80b18ddfc08c40ff4f87233"
+    },
+    "g4-v5e-fair-quarter-medium-signal-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-fair-quarter",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-fair-quarter-medium-signal-cross-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "scaling": {
+          "eligible": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 0.25,
+          "unique_seen": [
+            3176,
+            4096,
+            8192,
+            360,
+            1826,
+            6144,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "c29f5fcd4ffcf4b89dc3cb78dc76be2a5fd197de5d7bb1f8a38154da87a430a8",
+          "training/g4_train.py": "4cf261270a71b56d922450f50015895e836cb2c0711701fa17e081e814cf2d84"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.34697810699981346,
+        "warm_s": 10.756183546996908,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10750.563617267537,
+      "weight_sha256": "f0090980eb021857232cdab684bbc4f6fc1fb3a4a4c22ec0b1b1cef630e24b1f"
+    },
+    "g4-v5e-medium-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0004242640687119285,
+        "name": "g4-v5e-medium-gpt2-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 1024,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 14.07132700200009,
+        "warm_s": 67.02476508400014,
+        "warm_steps": 1016
+      },
+      "training_examples": 262144,
+      "validation_examples_per_second": 6273.126605017866,
+      "weight_sha256": "d1be6c31f6681a0ae5a4047717b292b9ce4e4f4079b371f6de29237816454d61"
+    },
+    "g4-v5e-medium-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0004242640687119285,
+        "name": "g4-v5e-medium-signal-cross-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 512
+        },
+        "steps": 1024,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 10.700506007000058,
+        "warm_s": 44.070403393000106,
+        "warm_steps": 1016
+      },
+      "training_examples": 262144,
+      "validation_examples_per_second": 10832.81820468304,
+      "weight_sha256": "d34502ca50ee3a9ce4c3fd63ca7b8552f9c9625d24cd201fa64f618ee60281a4"
+    },
+    "g4-v5e-pilot-gpt2-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-cross-81",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 10.324666366000201,
+        "warm_s": 3.4909404459990583,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25963.624205746142,
+      "weight_sha256": "7b939953882bdcd699d286f5483cfee39c90304a05954928cb882a089c1e9022"
+    },
+    "g4-v5e-pilot-gpt2-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-cross-82",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "gpt2-cross",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.11242891199981386,
+        "warm_s": 3.490238287999091,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25849.229159085287,
+      "weight_sha256": "d2733cb72f5beca7c4ed09b8b21793dee74bda7814259bb2f0f0b0854e4b078f"
+    },
+    "g4-v5e-pilot-gpt2-matched-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-matched-81",
+        "params": 2041609,
+        "policy": "cross",
+        "profile": "gpt2-matched",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 1,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 8.86985077700001,
+        "warm_s": 3.0643583190017125,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 28267.14678796676,
+      "weight_sha256": "7a8aa1cf718f7993a65deaee3654fa23086ebe3116b34f4f748c0e7c0f97885c"
+    },
+    "g4-v5e-pilot-gpt2-matched-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-matched-82",
+        "params": 2041609,
+        "policy": "cross",
+        "profile": "gpt2-matched",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 1,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.09868978199983758,
+        "warm_s": 3.067561336997187,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 28421.95918829076,
+      "weight_sha256": "e2329fab4d813d602b42c4007412a6eb7fa7dd7ece049a65b73242bb5dc5ee66"
+    },
+    "g4-v5e-pilot-gpt2-self-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-self-81",
+        "params": 3614473,
+        "policy": "self",
+        "profile": "gpt2-self",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 9.983091922999847,
+        "warm_s": 3.4398493300013797,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25924.137049295095,
+      "weight_sha256": "942d85e3ad6a2928a702d09f340a20dc194620cf3e019fd7c3847c03b4e5a7dc"
+    },
+    "g4-v5e-pilot-gpt2-self-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-gpt2-self-82",
+        "params": 3614473,
+        "policy": "self",
+        "profile": "gpt2-self",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.11070549099986238,
+        "warm_s": 3.4375925190006456,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 25837.2011659655,
+      "weight_sha256": "67eb55da42d7e90af4a9ded7e0eec30d404f2574224f0bee4340a78d670bac90"
+    },
+    "g4-v5e-pilot-signal-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-signal-cross-81",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 7.566088205000142,
+        "warm_s": 2.3774179490005736,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33601.93272080109,
+      "weight_sha256": "0c16267fca02e067f4a24f45a5d8b3874eacbd4719c3704938dac79ec9c799fd"
+    },
+    "g4-v5e-pilot-signal-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-signal-cross-82",
+        "params": 3614473,
+        "policy": "cross",
+        "profile": "signal-cross",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.07655021400023543,
+        "warm_s": 2.375767812000504,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33690.142246453164,
+      "weight_sha256": "cd02573f3232048ce5100c11156e561ee79c43ce1c79a5c21d0b711358c31843"
+    },
+    "g4-v5e-pilot-signal-self-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-signal-self-81",
+        "params": 3614473,
+        "policy": "self",
+        "profile": "signal-self",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 7.369876060000024,
+        "warm_s": 2.3765619910004716,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33656.76741065766,
+      "weight_sha256": "825fe80c56a2671e339d45330b707705c73a974c45e34eaeadfe8a34f33138f1"
+    },
+    "g4-v5e-pilot-signal-self-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-signal-self-82",
+        "params": 3614473,
+        "policy": "self",
+        "profile": "signal-self",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.07652206400007344,
+        "warm_s": 2.380722583999159,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 33296.227600531034,
+      "weight_sha256": "7babb231348b64e96989427f152b097ebb9cf400d3117df6411ae1e4aad01517"
+    },
+    "g4-v5e-pilot-sparse-cross-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-sparse-cross-81",
+        "params": 2041609,
+        "policy": "cross",
+        "profile": "sparse-cross",
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "grouped",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 6.82145347200003,
+        "warm_s": 2.192483693997019,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 35047.766085279545,
+      "weight_sha256": "faac8bcfd0ae49dac9021cd1ef63d5104378bcc12be0ead7388a4a2b53122e6f"
+    },
+    "g4-v5e-pilot-sparse-cross-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e",
+        "limit_per_family": 0,
+        "lr": 0.0006,
+        "name": "g4-v5e-pilot-sparse-cross-82",
+        "params": 2041609,
+        "policy": "cross",
+        "profile": "sparse-cross",
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "b32524b6e662f5016c587ad5989af62ab8dceb0b59ae1da78114a038e18bf9fe",
+          "training/g4_train.py": "ed8e66dc39218334db9cb8f1a383336d6047b2de21e7d5ab7f9a5e8218858831"
+        },
+        "spec": {
+          "core": "grouped",
+          "depth": 4,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "width": 256
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.07063982400040913,
+        "warm_s": 2.1905299730010483,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 35220.0338935262,
+      "weight_sha256": "d9c7889bf20d297829ec38797f6d372e83023510514410c080f5bf84b3392b07"
+    },
+    "g4-v5e-tied-medium-gpt2-tied-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-tied",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-tied-medium-gpt2-tied-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-tied",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "ea0ef1f62a9252b66860688ae6e25e495f19d1145fdc53051010092233aa88c8",
+          "training/g4_train.py": "e0801df7081485fa6166145a8279670e2efc914a0dec171914980f5bff269538"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "tied": true,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 13.066810433999308,
+        "warm_s": 15.612927758998012,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6193.989294869959,
+      "weight_sha256": "5355592d0741f711f1c421950d958f63d973f5bcefc2ac88eee2e5ecb9c107ff"
+    },
+    "g4-v5e-tied-medium-gpt2-tied-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-tied",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-tied-medium-gpt2-tied-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "gpt2-tied",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "ea0ef1f62a9252b66860688ae6e25e495f19d1145fdc53051010092233aa88c8",
+          "training/g4_train.py": "e0801df7081485fa6166145a8279670e2efc914a0dec171914980f5bff269538"
+        },
+        "spec": {
+          "core": "gpt2",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "tied": true,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.5034116469996661,
+        "warm_s": 15.615722435996759,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 6245.609165848501,
+      "weight_sha256": "1f6fdb20e1e480371ba4c7a62d129cd6c3aa11f490a09113c732d15e87d3be4b"
+    },
+    "g4-v5e-tied-medium-signal-tied-81": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-tied",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-tied-medium-signal-tied-81",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-tied",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 81,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "ea0ef1f62a9252b66860688ae6e25e495f19d1145fdc53051010092233aa88c8",
+          "training/g4_train.py": "e0801df7081485fa6166145a8279670e2efc914a0dec171914980f5bff269538"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "tied": true,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 11.529817997000464,
+        "warm_s": 10.83062509100182,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10732.123960236553,
+      "weight_sha256": "b4eb0cf378c29a142f217b26de45c313dfa2bceb89f66533145e5b2f50cf0bbc"
+    },
+    "g4-v5e-tied-medium-signal-tied-82": {
+      "config": {
+        "batch": 256,
+        "contrastive_group": 32,
+        "data_seed": 1909,
+        "label": "v5e-tied",
+        "limit_per_family": 0,
+        "lr": 0.0003,
+        "name": "g4-v5e-tied-medium-signal-tied-82",
+        "params": 26044425,
+        "policy": "cross",
+        "profile": "signal-tied",
+        "scaling": {
+          "eligible": [
+            12704,
+            16384,
+            32768,
+            1440,
+            7305,
+            24576,
+            0
+          ],
+          "fixed_lr": 0.0003,
+          "horizon": 256,
+          "unique_fraction": 1.0,
+          "unique_seen": [
+            12704,
+            12288,
+            12288,
+            1440,
+            7305,
+            8192,
+            0
+          ]
+        },
+        "seed": 82,
+        "sources": {
+          "configs/t4/crossmodal_tpu.json": "94ef7fc62f15269c25e59aacf715ae5c466d2e29472eae5c1394bd54c521d277",
+          "models/g4_shared.py": "ea0ef1f62a9252b66860688ae6e25e495f19d1145fdc53051010092233aa88c8",
+          "training/g4_train.py": "e0801df7081485fa6166145a8279670e2efc914a0dec171914980f5bff269538"
+        },
+        "spec": {
+          "core": "signal",
+          "depth": 8,
+          "dtype": "bfloat16",
+          "expansion": 4,
+          "tied": true,
+          "width": 512
+        },
+        "steps": 256,
+        "train_data": "b96f264b8cdd90082e3820bb323b75a3483520847e4ae65bdbe6b13c18e05868"
+      },
+      "timing": {
+        "compiled_s": 0.34925593600019056,
+        "warm_s": 10.835656062999078,
+        "warm_steps": 248
+      },
+      "training_examples": 65536,
+      "validation_examples_per_second": 10712.54866756764,
+      "weight_sha256": "3088e61f6eeb090387d347e590d428f747b65f5a9f8837b872bb0f606a674fdc"
+    }
+  }
+}

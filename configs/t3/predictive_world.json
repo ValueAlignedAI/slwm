@@ -1,0 +1,181 @@
+{
+  "root": "experiments/multimodal/t3/predictive-bottleneck-20261106",
+  "data_root": "artifacts/general_world/diverse_v1/prepared",
+  "robot_family": "droid_g2",
+  "seed": 101,
+  "context": 32,
+  "horizon": 8,
+  "slots": 4,
+  "heads": 8,
+  "batch_temporal": 32,
+  "batch_static": 128,
+  "updates": 12000,
+  "slice_updates": 128,
+  "milestones": [
+    3000,
+    6000,
+    12000
+  ],
+  "validation_every": 512,
+  "learning_rate": 0.0002,
+  "minimum_lr": 2e-05,
+  "warmup_updates": 512,
+  "weight_decay": 0.1,
+  "gradient_clip": 1.0,
+  "family_schedule_100": {
+    "coco": 30,
+    "speech": 35,
+    "ami": 10,
+    "clotho": 2,
+    "pamap2": 8,
+    "droid": 15
+  },
+  "loss_weights": {
+    "reconstruction": 1.0,
+    "picture": 1.0,
+    "phones": 0.2,
+    "ctc": 0.2,
+    "alignment": 0.1,
+    "correspondence": 0.2,
+    "future": 1.0,
+    "future_picture": 1.0,
+    "latent": 0.2,
+    "risk": 0.05,
+    "state_variance": 1.0,
+    "state_covariance": 0.01,
+    "alignment_variance": 0.1,
+    "alignment_covariance": 0.01,
+    "alignment_mean": 0.1
+  },
+  "phone_teacher_min_confidence": 0.8,
+  "ema_decay": 0.996,
+  "tokenizer": {
+    "name": "gpt2",
+    "implementation": "tiktoken",
+    "version": "0.14.0"
+  },
+  "future_audio_guard_packets": 2,
+  "speech_mode_mix": {
+    "repair": 0.7,
+    "audio": 0.2,
+    "text_prefix": 0.1
+  },
+  "runs": [
+    {
+      "id": "G2-201",
+      "variant": "slwm",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-202",
+      "variant": "transformer",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-203",
+      "variant": "slwm",
+      "width": 800,
+      "layers": 12,
+      "seed": 202,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-204",
+      "variant": "transformer",
+      "width": 800,
+      "layers": 12,
+      "seed": 202,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-205",
+      "variant": "slwm",
+      "width": 512,
+      "layers": 10,
+      "seed": 201,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-206",
+      "variant": "transformer",
+      "width": 512,
+      "layers": 10,
+      "seed": 201,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-207",
+      "variant": "slwm",
+      "width": 512,
+      "layers": 10,
+      "seed": 202,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-208",
+      "variant": "transformer",
+      "width": 512,
+      "layers": 10,
+      "seed": 202,
+      "condition": "shared-history"
+    },
+    {
+      "id": "G2-209",
+      "variant": "slwm",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "bypass",
+      "bypass": true,
+      "action_history": true
+    },
+    {
+      "id": "G2-210",
+      "variant": "transformer",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "bypass",
+      "bypass": true,
+      "action_history": true
+    },
+    {
+      "id": "G2-211",
+      "variant": "slwm",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "point",
+      "bypass": false,
+      "action_history": false
+    },
+    {
+      "id": "G2-212",
+      "variant": "transformer",
+      "width": 800,
+      "layers": 12,
+      "seed": 201,
+      "condition": "point",
+      "bypass": false,
+      "action_history": false
+    }
+  ],
+  "normalizers": "artifacts/predictive_world/g2/normalizers.npz",
+  "dataset_manifest": "artifacts/predictive_world/g2/dataset_contract.json",
+  "memory": 512,
+  "accumulation": 2,
+  "training_contexts": [
+    32,
+    64
+  ],
+  "checkpoint_milestones": [
+    6000,
+    12000
+  ]
+}

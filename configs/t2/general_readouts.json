@@ -1,0 +1,20 @@
+{
+  "seeds": [201, 202],
+  "projection": 128,
+  "hidden": 128,
+  "batch": 256,
+  "updates": 2000,
+  "validation_every": 100,
+  "patience": 3,
+  "learning_rate": 0.001,
+  "weight_decay": 0.01,
+  "target_scale_floor": 0.01,
+  "raw_image_side": 8,
+  "horizons": [1, 4, 8],
+  "core_comparisons": ["G1-101", "G1-102", "G1-103", "G1-104", "G1-105", "G1-106", "G1-107", "G1-108", "G1-109"],
+  "sensor_specialist": "G1-112",
+  "robot_specialist": "G1-113",
+  "edge_controls": ["G1-101", "G1-102"],
+  "shared_raw_text_edge": "G1-101",
+  "selection": "Mean over both readout seeds; strongest baseline chosen on selection only. Average readout-seed predictions per core for group effects; preserve every seed score."
+}

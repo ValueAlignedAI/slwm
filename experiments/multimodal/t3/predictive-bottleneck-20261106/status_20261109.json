@@ -1,0 +1,44 @@
+{
+  "as_of_utc": "2026-11-09T15:47:01.327004+00:00",
+  "core_training": {
+    "completed_runs": 12,
+    "planned_runs": 12,
+    "updates_each": 12000,
+    "all_target_budgets_reached": true,
+    "full_inference_endpoints_verified_on_mac": 12
+  },
+  "text": {
+    "completed_runs": 4,
+    "tokens_each": 500006912,
+    "heldout_endpoint_perplexity_gpt2": [
+      50.572435999351804,
+      49.92415547320148
+    ],
+    "heldout_endpoint_perplexity_slwm": [
+      44.19867659629698,
+      44.34283361765308
+    ],
+    "continuation_training_time_ratios": [
+      1.4558760876538948,
+      1.5002872033538555
+    ],
+    "claim_scope": "Two seeded token-matched independent language models; not compute-matched final tests or shared multimodal weights"
+  },
+  "evaluation": {
+    "resumed": true,
+    "last_verified_completed_heads": 238,
+    "planned_heads": 254,
+    "precision_correction": "Physical-invariant control caches retain FP32 to prevent FP16 overflow; original49 source files and trained cores unchanged; final observations remained locked during the repair",
+    "remaining": [
+      "Final readout lock",
+      "Frozen unseen-task scoring",
+      "Action-history consequences",
+      "Independent alignment",
+      "Fresh-core-speaker phone retention",
+      "41-second ongoing replay",
+      "Report"
+    ],
+    "world_transfer_conclusion_available": false
+  },
+  "eta": "About4\u20138 further hours for G2 evaluation/report, targeting late2026-11-09 or early2026-11-10 Europe/Lisbon; estimate, not a completed-result claim"
+}
