@@ -27,6 +27,7 @@ def report(folder):
             for core in ("hybrid","gpt2"):
                 vals=[pair(rows(t,core,arm,metric)) for arm in ("parent","replay","sim","other","fresh")]
                 lines.append(f"| {label} {what} | {'Hybrid' if core=='hybrid' else 'Dense GPT-2'} | "+" | ".join(vals)+" |")
+    lines+=["","A separate fixed-pose audit found that removing the thin wall changed zero native camera pixels at all 64 development poses. Area averaging the same render made the wall visible. In another 512 pairs with matching histories and a hidden wall state, an oracle forced to choose the same plan incurred 0.87 pixels of excess regret (95% interval 0.75–1.00). The paired bound concerns that supplementary mixture. The registered puck panel always contains the barrier. [Visibility and paired-world controls](observation-check.md)"]
     lines+=["","## Which data changed the decision?","","The simple effects compare fixed simulator training data. The average non-simulator effect is the mean of other-minus-replay and both-minus-sim. The interaction is both minus sim minus other plus replay. Brackets give 4,000-draw, whole-start paired 95% intervals. The four primary simultaneous upper bounds use the 98.75th percentile and include both hybrid seeds and tasks.",
         "","| Panel | Core and seed | Other effect, old sim | Other effect, new sim | Average other effect | Interaction |","|---|---|---:|---:|---:|---:|"]
     for t,label in (("pusht","Push-T"),("puck_barrier","Puck + barrier")):

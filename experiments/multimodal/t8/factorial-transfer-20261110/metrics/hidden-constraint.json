@@ -1,0 +1,45 @@
+{
+  "goals_per_start": 4,
+  "identical_native_camera_and_proprioception": true,
+  "pairs": 512,
+  "rows_sha256": "9688f1347cc31c4307416b01415005a2da6e1b4da9e68d0488e98839a7666c1d",
+  "seeds": [
+    1157000,
+    1157512
+  ],
+  "summaries": {
+    "contacts": {
+      "mean": 0.890625,
+      "paired_scene_ci95": [
+        0.86328125,
+        0.916015625
+      ]
+    },
+    "different_optimum": {
+      "mean": 0.14453125,
+      "paired_scene_ci95": [
+        0.1298828125,
+        0.15966796875
+      ]
+    },
+    "endpoint_change_px": {
+      "mean": 14.571325214247526,
+      "paired_scene_ci95": [
+        13.762077013744728,
+        15.410682072514307
+      ]
+    },
+    "excess": {
+      "mean": 0.8681995930700822,
+      "paired_scene_ci95": [
+        0.7468988783987458,
+        1.0008338819851021
+      ]
+    }
+  },
+  "units": "Excess realized goal distance in pixels; disjoint optimal choices reported as a fraction of goals.",
+  "world_prior": [
+    0.5,
+    0.5
+  ]
+}

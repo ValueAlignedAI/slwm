@@ -66,6 +66,7 @@ def assemble():
         if sha(dest/"weights.npz")!=h or sha(dest/"optimizer.npz")!=meta["optimizer"]:raise ValueError("Unmirrored transfer artifact")
         heads[name]=meta
     source={"study":"G8","complete":True,"status":m,"factorial_gate":payload["primary_gate"],"hardware":"v5e-1","models":doc["models"],
+            "paired_hidden_constraint_sha256":sha(pub/"hidden-constraint.json"),"camera_visibility_sha256":sha(pub/"camera-observability.json"),
             "live_control_input":"16 observed ticks and an exogenous goal-directed three-proposal bank per decision",
             "readout_heads":heads,"confirmation_lock":sha(a/"confirmation-lock.json"),"held_panels":doc["panels"],"training_audit":doc["training_audit"],
             "rungs":archive["rungs"],"inference_and_optimizer_bytes_per_disk":archive["optimizer_and_inference_bytes_per_disk"],
