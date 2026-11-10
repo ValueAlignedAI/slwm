@@ -27,7 +27,7 @@ def render(task,root,out):
     row=sources[0];seed=int(row["seed"]);goal=row["goals"]
     for r in sources:
         assert int(r["seed"])==seed;np.testing.assert_array_equal(r["goals"],goal)
-    font=ImageFont.truetype("DejaVuSans.ttf",12);filename=out/(task+".webm");tmp=out/(task+".partial.webm")
+    font=ImageFont.load_default(size=12);filename=out/(task+".webm");tmp=out/(task+".partial.webm")
     width,height=W*3,(TITLE+W+BOTTOM)*2+30;fps=envs[0].control_hz
     process=subprocess.Popen(["ffmpeg","-y","-v","error","-f","rawvideo","-pix_fmt","rgb24","-s",f"{width}x{height}","-r",str(fps),"-i","pipe:0",
          "-an","-c:v","libvpx-vp9","-deadline","realtime","-cpu-used","6","-crf","34","-b:v","400k","-pix_fmt","yuv420p",str(tmp)],stdin=subprocess.PIPE)
