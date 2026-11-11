@@ -136,9 +136,25 @@ def lock(final=True):
             dict(core="geometry", routed=route, open_gate=True),
         ]
     )
+    from scripts.train.g14_field_audit import means
+
+    averages = means(win)
+    ps.extend(
+        dict(
+            core=c,
+            arm="protected",
+            stage=win,
+            seed=1411,
+            routed=route,
+            contact_only=guard,
+            mean_field=True,
+        )
+        for c in ("gpt2", "transport")
+    )
     files = {
         str(p.relative_to(ROOT)): sha(p)
         for p in (
+            averages,
             ROOT / "work/speech-choice.json",
             ROOT / "work/routing-lock.json",
             ROOT / "data/aggregation-paired-lock.json",

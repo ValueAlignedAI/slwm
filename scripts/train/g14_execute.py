@@ -90,6 +90,7 @@ def tag(p):
         + ("/contact" if p.get("contact_only") else "")
         + ("/original_edge" if p.get("original_edge") else "")
         + ("/open_gate" if p.get("open_gate") else "")
+        + ("/mean_field" if p.get("mean_field") else "")
     )
 
 
@@ -128,6 +129,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
     eef = []
     actions = []
     ranks = []
+    model_calls = 0
     im = []
     wait = 0
     initial_img = None
@@ -147,6 +149,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
         eef.append(ee)
         actions.append(cmd)
         ranks.append(info["chosen"])
+        model_calls += int(info.get("model_evaluated", False))
         if full:
             im.append(table.render())
     traj = np.concatenate(poses)
@@ -161,6 +164,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
             for x in case["commands"]
         ],
         chosen=np.bincount(ranks, minlength=8).tolist(),
+        model_calls=model_calls,
         effort_m=float(np.linalg.norm(actions, axis=1).sum()),
         trajectory_sha=hashlib.sha256(traj.tobytes()).hexdigest(),
         initial=start.tolist(),

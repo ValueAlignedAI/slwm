@@ -74,3 +74,35 @@ def test_speech_and_telemetry_receipts_reconcile_measured_sources():
             c["calibration"]["4"]["sim_calibrated"][-1]["value"]
             < c["baseline"]["sim"][-1]["value"]
         )
+
+
+def test_field_replacement_preserves_raw_coordinates_and_bypasses_only_learned_context():
+    from models.g14_world import predict
+
+    rng = np.random.default_rng(8141)
+    norm = lambda shape: rng.standard_normal(shape).astype("f4")
+    p = initialize((19, 24, 8), 4, width=16)
+    row = dict(
+        slots=norm((2, 4, 5, 19)),
+        image=norm((2, 4, 24)),
+        location=norm((2, 4, 5, 2)),
+        focus=np.eye(5, dtype="f4")[[1, 2]],
+        phi=norm((2, 8, 8)),
+        prior=norm((2, 8, 11)),
+        raw_action=norm((2, 2)),
+    )
+    constant = norm((126,))
+    for core in ("gpt2", "transport"):
+        y, _, z = predict(p, row, core, "protected", np)
+        a, _, abl = predict(p, row, core, "protected", np, mean_field=constant)
+        np.testing.assert_array_equal(abl[:, :2], row["raw_action"])
+        np.testing.assert_array_equal(abl[:, 2:], np.broadcast_to(constant, (2, 126)))
+        assert np.max(abs(y - a)) > 1e-4
+        _, _, same = predict(
+            p,
+            {**row, "phi": row["phi"] * 3, "prior": row["prior"] * 0},
+            core,
+            "protected",
+            np,
+        )
+        np.testing.assert_array_equal(same, z)
