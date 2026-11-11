@@ -6,7 +6,7 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ### G10 context training and public task recordings
 
-Three-seed, equal-exposure training sharply narrowed G9's sustained-control gap. On 256 fresh 51.2-second missions, dense GPT-2 reached 90.8%, 94.2% and 94.9% goal occupancy after training on variable-length histories. Matched SLWM reached 93.7%, 94.0% and 93.4%. The 13.25M gated recurrent control reached about 94% in every seed and led both architectures after two actuator changes. All 27 context models were trained and their checkpoint generations verified. The separate public recording alignment, natural instruction and outcome experiments are in progress. [Matched context study](experiments/multimodal/t10/context-alignment-20261111/context.md) · [Registered G10 protocol](experiments/multimodal/t10/context-alignment-20261111/protocol.md)
+On matched variable histories, SLWM led dense GPT-2 on uninterrupted simulated control in one of three seeds. A simpler gated recurrent control reached about 94% occupancy in all seeds and handled two actuator changes best. With 416 public HoloAssist recordings, paired SLWM audio-to-video retrieval reached 20.7 / 19.1 / 20.1% on familiar tasks and 12.3 / 14.1 / 12.3% on unseen coffee/computer tasks, against 12.5% chance. Brief goal instructions exposed a separate memory failure that a causal last-command cache repaired in the simulator. [Verified G10 study](experiments/multimodal/t10/context-alignment-20261111/report.md) · [Runnable models](experiments/multimodal/t10/context-alignment-20261111/inference/README.md) · [60-second examples](experiments/multimodal/t10/context-alignment-20261111/examples/README.md)
 
 ### G9 concurrent sensing and sustained decisions
 

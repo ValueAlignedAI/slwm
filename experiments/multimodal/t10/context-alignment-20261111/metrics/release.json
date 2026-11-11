@@ -1,0 +1,59 @@
+{
+  "alignment_fits": 24,
+  "all_owned_released": true,
+  "complete": true,
+  "context_fits": 27,
+  "cumulative_owned_units": 46.15995692341765,
+  "drive_at_release": {
+    "pending": 199,
+    "phase": "backoff",
+    "reason": "shared_drive_project_query_limit",
+    "verified_files": 0
+  },
+  "held_action_heads": 24,
+  "inference_packages": 3,
+  "instruction_fits": 12,
+  "owned_units": 8.65867600687345,
+  "physical_input_objects": 15,
+  "prior_owned_units": 37.501280916544204,
+  "public_only": true,
+  "recordings": 416,
+  "source_and_control_base": "4273b75d952e027775ef5f340d55dec77235ae60",
+  "source_transfer_recovery": "Original assignment disappeared before training-bank delivery. Replacement assignments verified prepared training data and four frozen parent identities per seed.",
+  "total_fits": 63,
+  "verified_generations": 90,
+  "waves": [
+    {
+      "active": false,
+      "hardware": "V5E1",
+      "name": "slwm-g10-context-b",
+      "rate": 3.09,
+      "seconds": 1737.6850080490112,
+      "units": 1.4915129652420678
+    },
+    {
+      "active": false,
+      "hardware": "V5E1",
+      "name": "slwm-g10-context-a",
+      "rate": 3.09,
+      "seconds": 5464.436969041824,
+      "units": 4.6903083984275655
+    },
+    {
+      "active": false,
+      "hardware": "V5E1",
+      "name": "slwm-g10-ground-b",
+      "rate": 3.09,
+      "seconds": 1420.120866060257,
+      "units": 1.2189370767017207
+    },
+    {
+      "active": false,
+      "hardware": "V5E1",
+      "name": "slwm-g10-ground-a",
+      "rate": 3.09,
+      "seconds": 1465.5350289344788,
+      "units": 1.2579175665020943
+    }
+  ]
+}
