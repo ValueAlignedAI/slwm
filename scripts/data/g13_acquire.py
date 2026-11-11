@@ -47,14 +47,15 @@ def get(url,path,size=None,md5=None):
             print("Retry",path.name,type(exc).__name__,flush=True);time.sleep(2**attempt)
 
 
-def robot(root):
-    folder=root/"robot/raw";folder.mkdir(exist_ok=True,parents=True)
+def robot(root,extra=False):
+    folder=root/("robot-extra/raw" if extra else "robot/raw");folder.mkdir(exist_ok=True,parents=True)
     url="https://storage.googleapis.com/storage/v1/b/gresearch/o?"+urllib.parse.urlencode(dict(prefix=PREFIX+"language_table-train",maxResults=1000,fields="items(name,size,generation,md5Hash),nextPageToken"))
     catalog=json.load(urllib.request.urlopen(url,timeout=40))
     if catalog.get("nextPageToken"):raise ValueError("Incomplete shard listing")
-    files=sorted((o for o in catalog["items"] if o["name"].split("-")[-1].isdigit() and not o["name"].endswith("-00000")),
-                 key=lambda d:hashlib.sha256(("G13/robot/"+d["name"]).encode()).hexdigest())[:16]
-    if len(files)!=16:raise ValueError("Expected sixteen source shards")
+    items=(o for o in catalog["items"] if o["name"].split("-")[-1].isdigit() and not o["name"].endswith("-00000"))
+    ranked=sorted(items,key=lambda d:hashlib.sha256(("G13/robot/"+d["name"]).encode()).hexdigest())
+    files=ranked[16:20] if extra else ranked[:16]
+    if len(files)!=(4 if extra else 16):raise ValueError("Incomplete registered shard sample")
     write(folder/"selection.json",files)
     for n in ("features.json","dataset_info.json"):
         get("https://storage.googleapis.com/gresearch/"+PREFIX+n,folder/n)
@@ -73,5 +74,5 @@ def speech(root):
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("source",choices=("robot","speech"));p.add_argument("--root",type=Path,default=ROOT)
-    a=p.parse_args();(robot if a.source=="robot" else speech)(a.root)
+    p=argparse.ArgumentParser();p.add_argument("source",choices=("robot","speech","extra"));p.add_argument("--root",type=Path,default=ROOT)
+    a=p.parse_args();speech(a.root) if a.source=="speech" else robot(a.root,a.source=="extra")

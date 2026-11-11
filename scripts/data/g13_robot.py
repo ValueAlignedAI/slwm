@@ -179,11 +179,24 @@ def split_groups(parts):
     return grouping,roles,len(image_owner)
 
 
-def build(root):
+def build(root,external=False):
     raw=root/"raw";folder=root/"decoded";folder.mkdir(exist_ok=True,parents=True)
     paths=[raw/r["name"].split("/")[-1] for r in json.loads((raw/"selection.json").read_bytes())]
     with ProcessPoolExecutor(6) as pool:list(pool.map(decode_shard,[(p,folder) for p in paths]))
     parts=sorted(folder.glob("*.npz"));grouping,roles,nframe=split_groups(parts)
+    excluded_groups=set()
+    if external:
+        prior=sorted((R/"decoded").glob("*.npz"));old_keys=set();old_frames=set()
+        for old in prior:
+            old_keys.update(r["parent"] for r in json.loads(old.with_suffix(".json").read_bytes()))
+            with np.load(old) as z:old_frames.update(bytes(k) for k in z["frame"])
+        for p in parts:
+            records=json.loads(p.with_suffix(".json").read_bytes())
+            with np.load(p) as z:fps=z["frame"]
+            for r in records:
+                if r["parent"] in old_keys or any(bytes(k) in old_frames for k in fps[r["start"]:r["start"]+r["length"]]):
+                    excluded_groups.add(grouping[r["parent"]])
+        roles={g:"test" for g in roles}
     groups=sorted(roles);gidx={k:i for i,k in enumerate(groups)}
     episodes=[];features={role:defaultdict(list) for role in ("train","dev","test")};seen=set();excluded=Counter()
     by_parent=defaultdict(list)
@@ -193,6 +206,7 @@ def build(root):
         with np.load(file) as z:cache={k:z[k] for k in ("px","geom","x","u","frame")}
         for r in json.loads(file.with_suffix(".json").read_bytes()):
             parent=grouping[r["parent"]];split=roles[parent];start=r["start"];n=r["length"]
+            if parent in excluded_groups:excluded["overlapping_external_group"]+=1;continue
             x=cache["x"][start:start+n];u=cache["u"][start:start+n];g=cache["geom"][start:start+n]
             if n<7 or n>250:excluded["duration"]+=1;continue
             goal=r["goal"];src,dst,bind,dr=semantics(goal);novel=(src,dst) in NEW_PAIRS
@@ -225,15 +239,16 @@ def build(root):
     bank=root/"banks";bank.mkdir(exist_ok=True)
     counts={}
     for role,vals in features.items():
+        if not vals:continue
         d={k:np.asarray(v) for k,v in vals.items()}
         for k in ("kin","plan","future","flow","endpoint","bind","wb"):d[k]=d[k].astype(np.float32)
         for k in ("group","episode","tick","mover","direction","wrong_direction"):d[k]=d[k].astype(np.int32)
         file=bank/(role+".npz");tmp=file.with_suffix(".new.npz");np.savez_compressed(tmp,**d);tmp.replace(file)
         counts[role]=dict(rows=len(d["tick"]),episodes=int(d["first"].sum()),groups=len(np.unique(d["group"])),sha256=file_hash(file),
             paired_goals=int((d["paired"]&d["first"]).sum()),measurable=int((d["mover"]>=0).sum()),novel=int((d["novel"]&d["first"]).sum()))
-    write(bank/"episodes.json",episodes);write(bank/"data.json",dict(groups=groups,roles=roles,merged_parent_ids=len(grouping)-len(groups),unique_frames=nframe,excluded=excluded,counts=counts))
+    write(bank/"episodes.json",episodes);write(bank/"data.json",dict(groups=groups,roles=roles,merged_parent_ids=len(grouping)-len(groups),unique_frames=nframe,excluded_groups=sorted(excluded_groups),excluded=excluded,counts=counts))
     print("Frozen robot banks",counts,flush=True);(bank/"ready").touch()
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("--root",type=Path,default=R);build(p.parse_args().root)
+    p=argparse.ArgumentParser();p.add_argument("--root",type=Path,default=R);p.add_argument("--external",action="store_true");a=p.parse_args();build(a.root,a.external)
