@@ -1,0 +1,5517 @@
+{
+  "asr_revisions": {
+    "primary": "87c7102498dcde7456f24cfd30239ca606ed9063",
+    "stronger": "e8727524f962ee844a7319d92be39ac1bd25655a"
+  },
+  "fixture": {
+    "hand_points_removed": 394,
+    "known_half_patch_shift_fraction": 0.5,
+    "known_shift_m": 0.05,
+    "recovered_mean_magnitude_mm": 25.00439204275608,
+    "static_view_change_fraction": 0.0
+  },
+  "folds": {
+    "A": {
+      "dev": {
+        "candidate_depth": 152,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "gaze_invalid": 2,
+          "large_view_change": 15,
+          "no_attended_surface": 1,
+          "stable_support": 60
+        },
+        "eligible_cues": 216,
+        "eligible_recordings": 24,
+        "explicit_conflicts": 88,
+        "hand_adjacent_isolated": 29,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.10108010912698413,
+              0.173811056998557
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.06331168831168832,
+              "circuit breaker": 0.1468253968253968,
+              "motorcycle": 0.4375,
+              "nightstand": 0.16666666666666666,
+              "printer": 0.12373737373737373,
+              "stool": 0.06666666666666667,
+              "switch": 0.03333333333333333,
+              "tray table": 0.1,
+              "utility cart": 0.15625
+            },
+            "mean": 0.13776244588744588,
+            "recordings": 24
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.1892301812770563,
+              0.27473748647186147
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.21550324675324675,
+              "circuit breaker": 0.20238095238095238,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "printer": 0.2140151515151515,
+              "stool": 0.1619047619047619,
+              "switch": 0.08095238095238096,
+              "tray table": 0.2,
+              "utility cart": 0.25
+            },
+            "mean": 0.23247564935064932,
+            "recordings": 24
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.23936368145743145,
+              0.32636359126984127
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.2382305194805195,
+              "circuit breaker": 0.2936507936507936,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "printer": 0.2279040404040404,
+              "stool": 0.3428571428571428,
+              "switch": 0.08095238095238096,
+              "tray table": 0.3666666666666667,
+              "utility cart": 0.29166666666666663
+            },
+            "mean": 0.284192821067821,
+            "recordings": 24
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.041516166125541126,
+              0.09999718163780665
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.08333333333333333,
+              "camera": 0.045454545454545456,
+              "circuit breaker": -0.09126984126984126,
+              "motorcycle": 0.4375,
+              "nightstand": 0.16666666666666666,
+              "printer": 0.10101010101010101,
+              "stool": 0.0,
+              "switch": -0.023809523809523808,
+              "tray table": 0.0,
+              "utility cart": 0.15625
+            },
+            "mean": 0.07084686147186148,
+            "recordings": 24
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.062158685064935056,
+              0.14443959686147187
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.16666666666666666,
+              "camera": 0.05844155844155844,
+              "circuit breaker": -0.23809523809523808,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "printer": 0.1773989898989899,
+              "stool": -0.038095238095238106,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.25
+            },
+            "mean": 0.10358405483405483,
+            "recordings": 24
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.08505113636363636,
+              0.14782738095238096
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.16666666666666666,
+              "camera": 0.05844155844155844,
+              "circuit breaker": -0.23809523809523808,
+              "motorcycle": 0.4375,
+              "nightstand": 0.41666666666666663,
+              "printer": 0.19128787878787878,
+              "stool": 0.09523809523809523,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.29166666666666663
+            },
+            "mean": 0.1162229437229437,
+            "recordings": 24
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.044521374458874455,
+              0.08977272727272727
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.16666666666666666,
+              "camera": 0.017857142857142856,
+              "circuit breaker": 0.23809523809523808,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.022727272727272728,
+              "stool": 0.06666666666666667,
+              "switch": 0.05714285714285714,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.0669155844155844,
+            "recordings": 24
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.08071523268398269,
+              0.1785375631313131
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.25,
+              "camera": 0.15706168831168832,
+              "circuit breaker": 0.44047619047619047,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.19999999999999998,
+              "switch": 0.10476190476190476,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.12889159451659454,
+            "recordings": 24
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.1219301497113997,
+              0.2166531385281385
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.25,
+              "camera": 0.17978896103896103,
+              "circuit breaker": 0.5317460317460317,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.24761904761904763,
+              "switch": 0.10476190476190476,
+              "tray table": 0.26666666666666666,
+              "utility cart": 0.0
+            },
+            "mean": 0.16796987734487734,
+            "recordings": 24
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.03460398629148629,
+              0.08370607864357865
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.040584415584415584,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.059343434343434344,
+              "stool": 0.0,
+              "switch": 0.03333333333333333,
+              "tray table": 0.1,
+              "utility cart": 0.125
+            },
+            "mean": 0.05953643578643579,
+            "recordings": 24
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.098247113997114,
+              0.1928200757575758
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.16152597402597402,
+              "circuit breaker": 0.1468253968253968,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "printer": 0.18434343434343436,
+              "stool": 0.09523809523809523,
+              "switch": 0.09047619047619049,
+              "tray table": 0.1,
+              "utility cart": 0.21875
+            },
+            "mean": 0.14554924242424244,
+            "recordings": 24
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.10705859938672439,
+              0.2079592577561328
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.08333333333333333,
+              "camera": 0.16152597402597402,
+              "circuit breaker": 0.18253968253968253,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "printer": 0.18434343434343436,
+              "stool": 0.14285714285714285,
+              "switch": 0.09047619047619049,
+              "tray table": 0.1,
+              "utility cart": 0.26041666666666663
+            },
+            "mean": 0.15804924242424243,
+            "recordings": 24
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              -0.013936056998556996,
+              0.03862373737373738
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.08333333333333333,
+              "camera": 0.022727272727272728,
+              "circuit breaker": -0.1111111111111111,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.0,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.125
+            },
+            "mean": 0.012858946608946608,
+            "recordings": 24
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              0.01210946518759019,
+              0.10085396374458874
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.08333333333333333,
+              "camera": 0.08116883116883117,
+              "circuit breaker": -0.20238095238095238,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "printer": 0.09911616161616163,
+              "stool": 0.09523809523809523,
+              "switch": -0.014285714285714282,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.056927308802308806,
+            "recordings": 24
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              -0.018064123376623373,
+              0.09075602002164503
+            ],
+            "events": 216,
+            "families": {
+              "belt": -0.08333333333333333,
+              "camera": 0.06331168831168832,
+              "circuit breaker": -0.2579365079365079,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "printer": 0.09911616161616163,
+              "stool": 0.09523809523809523,
+              "switch": -0.014285714285714282,
+              "tray table": -0.16666666666666666,
+              "utility cart": 0.26041666666666663
+            },
+            "mean": 0.03708603896103897,
+            "recordings": 24
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.028928571428571425,
+              0.06442640692640692
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.16666666666666666,
+              "camera": 0.017857142857142856,
+              "circuit breaker": 0.20238095238095238,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.022727272727272728,
+              "stool": 0.0,
+              "switch": 0.05714285714285714,
+              "tray table": 0.0,
+              "utility cart": 0.0
+            },
+            "mean": 0.04667748917748917,
+            "recordings": 24
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.05369886363636364,
+              0.12454513888888889
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.16666666666666666,
+              "camera": 0.08035714285714285,
+              "circuit breaker": 0.3492063492063492,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.08522727272727273,
+              "stool": 0.0,
+              "switch": 0.10476190476190476,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.08862193362193362,
+            "recordings": 24
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.08538933982683981,
+              0.15809604978354982
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.16666666666666666,
+              "camera": 0.09821428571428571,
+              "circuit breaker": 0.44047619047619047,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.08522727272727273,
+              "stool": 0.047619047619047616,
+              "switch": 0.10476190476190476,
+              "tray table": 0.26666666666666666,
+              "utility cart": 0.0
+            },
+            "mean": 0.12096320346320347,
+            "recordings": 24
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.017063492063492065,
+              0.048295454545454544
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.017857142857142856,
+              "circuit breaker": 0.05555555555555555,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.15625
+            },
+            "mean": 0.032877886002886006,
+            "recordings": 24
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.03591269841269841,
+              0.07017090548340547
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.05357142857142857,
+              "circuit breaker": 0.05555555555555555,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.047619047619047616,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.052223124098124095,
+            "recordings": 24
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.04602272727272727,
+              0.08471545815295815
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.05357142857142857,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.036616161616161616,
+              "stool": 0.09523809523809523,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.25
+            },
+            "mean": 0.06368145743145744,
+            "recordings": 24
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              0.0004960317460317463,
+              0.03263888888888889
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.0,
+              "circuit breaker": -0.03571428571428571,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.013888888888888888,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.125
+            },
+            "mean": 0.016567460317460318,
+            "recordings": 24
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              0.021118551587301592,
+              0.05257936507936508
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.03571428571428571,
+              "circuit breaker": -0.03571428571428571,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.013888888888888888,
+              "stool": 0.047619047619047616,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.1875
+            },
+            "mean": 0.03591269841269841,
+            "recordings": 24
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              0.027687590187590188,
+              0.06567708333333334
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.012987012987012984,
+              "circuit breaker": 0.0,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "printer": 0.013888888888888888,
+              "stool": 0.09523809523809523,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.04509830447330447,
+            "recordings": 24
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.009415584415584415,
+              0.02369227994227994
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.017857142857142856,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.022727272727272728,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.016310425685425685,
+            "recordings": 24
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.009415584415584415,
+              0.02369227994227994
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.017857142857142856,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.022727272727272728,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.016310425685425685,
+            "recordings": 24
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.0113997113997114,
+              0.026253607503607508
+            ],
+            "events": 216,
+            "families": {
+              "belt": 0.0,
+              "camera": 0.040584415584415584,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "printer": 0.022727272727272728,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.01858315295815296,
+            "recordings": 24
+          }
+        },
+        "mean_gap_s": 1.7731367594289456,
+        "measured": 74,
+        "measured_groups": 20,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.040830444719034735,
+              0.11852654712817627
+            ],
+            "events": 58,
+            "families": {
+              "belt": 0.016298946531504672,
+              "camera": 0.062000843770411686,
+              "circuit breaker": 0.19517454954954955,
+              "printer": 0.12468671679197996,
+              "stool": 0.05720199665231947,
+              "switch": 0.09125071742542769,
+              "tray table": 0.017261904761904763,
+              "utility cart": 0.07583157583157582
+            },
+            "mean": 0.07996340641433419,
+            "recordings": 18
+          },
+          "cells": {
+            "ci95": [
+              34.90585007440476,
+              40.96385788690477
+            ],
+            "events": 74,
+            "families": {
+              "belt": 42.25,
+              "camera": 32.416666666666664,
+              "circuit breaker": 38.75,
+              "printer": 37.4375,
+              "stool": 51.91666666666667,
+              "switch": 37.601190476190474,
+              "tray table": 38.5,
+              "utility cart": 25.041666666666664
+            },
+            "mean": 37.98921130952381,
+            "recordings": 20
+          },
+          "changed": {
+            "ci95": [
+              0.08692990601247176,
+              0.1825540101884183
+            ],
+            "events": 74,
+            "families": {
+              "belt": 0.008064516129032258,
+              "camera": 0.09955992711664217,
+              "circuit breaker": 0.4046366442199776,
+              "printer": 0.030760508226279015,
+              "stool": 0.012667788537238229,
+              "switch": 0.13336690709136337,
+              "tray table": 0.26785714285714285,
+              "utility cart": 0.11652065527065528
+            },
+            "mean": 0.13417926118104134,
+            "recordings": 20
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.04063817745342714,
+              0.004729609288512655
+            ],
+            "events": 58,
+            "families": {
+              "belt": -0.00554625835946166,
+              "camera": -0.029254274281555446,
+              "circuit breaker": 0.035843968968968964,
+              "printer": -0.10616819827346143,
+              "stool": -0.041660644896690434,
+              "switch": 0.03140565696251614,
+              "tray table": 0.01845238095238095,
+              "utility cart": -0.03735104401771068
+            },
+            "mean": -0.016784801618126698,
+            "recordings": 18
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.009504232040622037,
+              0.045437920073593666
+            ],
+            "events": 74,
+            "families": {
+              "belt": -0.20785810291858678,
+              "camera": 0.023668534899953828,
+              "circuit breaker": 0.3011754671759411,
+              "printer": -0.03338729721161727,
+              "stool": -0.05133460722038648,
+              "switch": 0.06661685007588419,
+              "tray table": 0.10196434389982778,
+              "utility cart": -0.06126190124831429
+            },
+            "mean": 0.017447910931587762,
+            "recordings": 20
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              9.86091350165893,
+              11.67683923197763
+            ],
+            "events": 74,
+            "families": {
+              "belt": 11.437384062302547,
+              "camera": 5.222113114877807,
+              "circuit breaker": 16.199210132141953,
+              "printer": 7.570747740276117,
+              "stool": 15.085423526924338,
+              "switch": 2.8032465786208163,
+              "tray table": 17.641761505277174,
+              "utility cart": 10.227860291129712
+            },
+            "mean": 10.773468368943806,
+            "recordings": 20
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.07726118327265967,
+              0.0976036154916142
+            ],
+            "events": 74,
+            "families": {
+              "belt": 0.06769518868106267,
+              "camera": 0.042987059002867714,
+              "circuit breaker": 0.16583422775641413,
+              "printer": 0.07975147311845411,
+              "stool": 0.085523452206766,
+              "switch": 0.01447451580140128,
+              "tray table": 0.1288651086345925,
+              "utility cart": 0.11321710337441301
+            },
+            "mean": 0.08729351607199642,
+            "recordings": 20
+          },
+          "neutral": {
+            "ci95": [
+              0.0897115864451778,
+              0.14291409898308913
+            ],
+            "events": 74,
+            "families": {
+              "belt": 0.21592261904761903,
+              "camera": 0.07589139221668835,
+              "circuit breaker": 0.10346117704403643,
+              "printer": 0.06414780543789628,
+              "stool": 0.0640023957576247,
+              "switch": 0.06675005701547916,
+              "tray table": 0.16589279895731507,
+              "utility cart": 0.17778255651896957
+            },
+            "mean": 0.11673135024945358,
+            "recordings": 20
+          }
+        },
+        "recordings": 32,
+        "word_error": {
+          "small": {
+            "edit_count": 768,
+            "reference_words": 1829,
+            "wer": 0.419901585565883
+          },
+          "tiny": {
+            "edit_count": 1229,
+            "reference_words": 1829,
+            "wer": 0.6719518862766539
+          }
+        }
+      },
+      "familiar": {
+        "candidate_depth": 184,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "gaze_invalid": 2,
+          "large_view_change": 23,
+          "no_attended_surface": 1,
+          "stable_support": 96
+        },
+        "eligible_cues": 296,
+        "eligible_recordings": 33,
+        "explicit_conflicts": 121,
+        "hand_adjacent_isolated": 25,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.09898973112155124,
+              0.18740894909533015
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.234006734006734,
+              "laser scanner": 0.13171355498721227,
+              "motorcycle": 0.2467948717948718,
+              "nightstand": 0.0,
+              "stool": 0.11904761904761904,
+              "switch": 0.09754689754689755,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.17462121212121215
+            },
+            "mean": 0.14014518300892273,
+            "recordings": 33
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.1806221631957814,
+              0.27374131907397753
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.2727272727272727,
+              "circuit breaker": 0.3316498316498317,
+              "laser scanner": 0.20460358056265984,
+              "motorcycle": 0.3349358974358974,
+              "nightstand": 0.17857142857142858,
+              "stool": 0.1369047619047619,
+              "switch": 0.18066378066378067,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.22462121212121214
+            },
+            "mean": 0.22570493692261243,
+            "recordings": 33
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.1875943727232268,
+              0.2892888775838478
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.2727272727272727,
+              "circuit breaker": 0.3316498316498317,
+              "laser scanner": 0.22634271099744246,
+              "motorcycle": 0.3349358974358974,
+              "nightstand": 0.2261904761904762,
+              "stool": 0.17261904761904762,
+              "switch": 0.18066378066378067,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.22462121212121214
+            },
+            "mean": 0.23737965511906975,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.03439611702656957,
+              0.13397341781746086
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.234006734006734,
+              "laser scanner": 0.08056265984654731,
+              "motorcycle": 0.15865384615384615,
+              "nightstand": -0.13095238095238096,
+              "stool": -0.03571428571428571,
+              "switch": 0.06507936507936507,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.11666666666666667
+            },
+            "mean": 0.08287537362913891,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.007813628233669443,
+              0.13226618728092868
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.2558922558922559,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.2003205128205128,
+              "nightstand": -0.16666666666666666,
+              "stool": -0.20833333333333331,
+              "switch": 0.08946608946608946,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.09393939393939393
+            },
+            "mean": 0.07024093713849326,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              -0.03791781299160882,
+              0.08247009859595111
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.18181818181818182,
+              "circuit breaker": 0.20707070707070707,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.14903846153846154,
+              "nightstand": -0.16666666666666666,
+              "stool": -0.17261904761904762,
+              "switch": 0.04660894660894661,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.05643939393939394
+            },
+            "mean": 0.02385496714141215,
+            "recordings": 33
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.03298550255631458,
+              0.08205581420095485
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.08814102564102565,
+              "nightstand": 0.13095238095238096,
+              "stool": 0.15476190476190474,
+              "switch": 0.032467532467532464,
+              "tray table": 0.0,
+              "utility cart": 0.05795454545454545
+            },
+            "mean": 0.0572698093797838,
+            "recordings": 33
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.10083802390814325,
+              0.2141704630739157
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.18181818181818182,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.09462915601023017,
+              "motorcycle": 0.1346153846153846,
+              "nightstand": 0.3452380952380952,
+              "stool": 0.34523809523809523,
+              "switch": 0.0911976911976912,
+              "tray table": 0.0,
+              "utility cart": 0.13068181818181818
+            },
+            "mean": 0.15546399978411912,
+            "recordings": 33
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.15449175858347497,
+              0.2752236885655471
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.45454545454545453,
+              "circuit breaker": 0.12457912457912458,
+              "laser scanner": 0.11636828644501279,
+              "motorcycle": 0.1858974358974359,
+              "nightstand": 0.39285714285714285,
+              "stool": 0.34523809523809523,
+              "switch": 0.13405483405483404,
+              "tray table": 0.0,
+              "utility cart": 0.16818181818181818
+            },
+            "mean": 0.21352468797765758,
+            "recordings": 33
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.06541117485153433,
+              0.12701476854663132
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21885521885521886,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.047619047619047616,
+              "switch": 0.06897546897546898,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.1393939393939394
+            },
+            "mean": 0.09628251801454417,
+            "recordings": 33
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.10608665460842925,
+              0.17208085791756578
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.31649831649831645,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.08333333333333333,
+              "switch": 0.1196248196248196,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.1768939393939394
+            },
+            "mean": 0.13899363505785786,
+            "recordings": 33
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.11664260284580334,
+              0.18856273538303234
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.31649831649831645,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.09523809523809523,
+              "stool": 0.08333333333333333,
+              "switch": 0.1196248196248196,
+              "tray table": 0.2333333333333333,
+              "utility cart": 0.1893939393939394
+            },
+            "mean": 0.15308093664515943,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              0.014866877153926029,
+              0.09456829556254108
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21885521885521886,
+              "laser scanner": 0.0076726342710997444,
+              "motorcycle": 0.07692307692307693,
+              "nightstand": -0.08333333333333333,
+              "stool": -0.02380952380952381,
+              "switch": 0.050793650793650794,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.08143939393939394
+            },
+            "mean": 0.05502308714513886,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              -0.04283434944382657,
+              0.08489166667271242
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.24074074074074078,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.07211538461538462,
+              "nightstand": -0.25,
+              "stool": -0.10714285714285714,
+              "switch": 0.05699855699855701,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.06893939393939394
+            },
+            "mean": 0.024025813813395514,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              -0.07043411079358791,
+              0.05671410455315684
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.2727272727272727,
+              "circuit breaker": 0.21043771043771042,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.0,
+              "nightstand": -0.25,
+              "stool": -0.10714285714285714,
+              "switch": 0.02842712842712843,
+              "tray table": 0.2333333333333333,
+              "utility cart": 0.06893939393939394
+            },
+            "mean": -0.003323226035644338,
+            "recordings": 33
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.020937369293347552,
+              0.06403375606940184
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.041666666666666664,
+              "nightstand": 0.13095238095238096,
+              "stool": 0.07142857142857142,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.05795454545454545
+            },
+            "mean": 0.0412594308694053,
+            "recordings": 33
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.06566732167062515,
+              0.17251559754223864
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.18181818181818182,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.0673076923076923,
+              "nightstand": 0.2976190476190476,
+              "stool": 0.19047619047619047,
+              "switch": 0.06262626262626263,
+              "tray table": 0.0,
+              "utility cart": 0.10795454545454546
+            },
+            "mean": 0.11496782124446232,
+            "recordings": 33
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.10589708550306376,
+              0.21345609925106945
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.36363636363636365,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.3452380952380952,
+              "stool": 0.19047619047619047,
+              "switch": 0.0911976911976912,
+              "tray table": 0.0,
+              "utility cart": 0.12045454545454545
+            },
+            "mean": 0.15640416268080373,
+            "recordings": 33
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.049566679462512794,
+              0.11688816992738561
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.1818181818181818,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.09775641025641026,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.047619047619047616,
+              "switch": 0.06897546897546898,
+              "tray table": 0.1,
+              "utility cart": 0.1393939393939394
+            },
+            "mean": 0.08244506945487337,
+            "recordings": 33
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.06274552970631402,
+              0.1384176879765115
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21212121212121213,
+              "laser scanner": 0.08823529411764706,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.06547619047619048,
+              "switch": 0.1196248196248196,
+              "tray table": 0.1,
+              "utility cart": 0.15189393939393941
+            },
+            "mean": 0.10039558299362221,
+            "recordings": 33
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.06274552970631402,
+              0.1384176879765115
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21212121212121213,
+              "laser scanner": 0.08823529411764706,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.06547619047619048,
+              "switch": 0.1196248196248196,
+              "tray table": 0.1,
+              "utility cart": 0.15189393939393941
+            },
+            "mean": 0.10039558299362221,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              0.005489850859096385,
+              0.08496553895450956
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.1818181818181818,
+              "laser scanner": 0.0076726342710997444,
+              "motorcycle": 0.07211538461538462,
+              "nightstand": -0.03571428571428572,
+              "stool": -0.02380952380952381,
+              "switch": 0.050793650793650794,
+              "tray table": 0.1,
+              "utility cart": 0.05416666666666667
+            },
+            "mean": 0.04522696762679712,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              -0.06345033114481109,
+              0.06719318216121287
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.13636363636363635,
+              "laser scanner": 0.0370843989769821,
+              "motorcycle": 0.09294871794871795,
+              "nightstand": -0.2023809523809524,
+              "stool": -0.125,
+              "switch": 0.10144300144300145,
+              "tray table": 0.1,
+              "utility cart": -0.006060606060606065
+            },
+            "mean": 0.004832122820187604,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              -0.07427041769406434,
+              0.055953147321167365
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.0370843989769821,
+              "motorcycle": 0.0673076923076923,
+              "nightstand": -0.2023809523809524,
+              "stool": -0.125,
+              "switch": 0.07287157287157287,
+              "tray table": 0.1,
+              "utility cart": -0.018560606060606062
+            },
+            "mean": -0.005947375459310675,
+            "recordings": 33
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.01603696814694257,
+              0.061839791797432465
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.025641025641025644,
+              "nightstand": 0.08333333333333333,
+              "stool": 0.07142857142857142,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.08522727272727272
+            },
+            "mean": 0.03721810182807625,
+            "recordings": 33
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.04523141952889395,
+              0.15484783004364205
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.025641025641025644,
+              "nightstand": 0.25,
+              "stool": 0.19047619047619047,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.15795454545454546
+            },
+            "mean": 0.0955634601734346,
+            "recordings": 33
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.05379070808418635,
+              0.16742067324548143
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.05128205128205129,
+              "nightstand": 0.25,
+              "stool": 0.19047619047619047,
+              "switch": 0.046753246753246755,
+              "tray table": 0.0,
+              "utility cart": 0.17045454545454547
+            },
+            "mean": 0.10634295845293289,
+            "recordings": 33
+          }
+        },
+        "mean_gap_s": 1.8399566263955316,
+        "measured": 62,
+        "measured_groups": 26,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.09316160753376039,
+              0.12076721864401169
+            ],
+            "events": 53,
+            "families": {
+              "belt": 0.39030303030303026,
+              "circuit breaker": 0.10820611699922045,
+              "motorcycle": 0.042328042328042326,
+              "nightstand": 0.02857142857142857,
+              "stool": 0.12678147085171304,
+              "switch": 0.05845693479696349,
+              "tray table": 0.011531441845030695,
+              "utility cart": 0.08918433945721083
+            },
+            "mean": 0.10692035064407995,
+            "recordings": 23
+          },
+          "cells": {
+            "ci95": [
+              38.63185570987654,
+              42.94992283950617
+            ],
+            "events": 62,
+            "families": {
+              "belt": 54.0,
+              "circuit breaker": 40.47222222222222,
+              "laser scanner": 30.0,
+              "motorcycle": 43.0,
+              "nightstand": 34.5,
+              "stool": 48.22,
+              "switch": 38.233333333333334,
+              "tray table": 32.625,
+              "utility cart": 46.229166666666664
+            },
+            "mean": 40.80885802469136,
+            "recordings": 26
+          },
+          "changed": {
+            "ci95": [
+              0.08455244383112015,
+              0.1565435678514061
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.21448275862068966,
+              "circuit breaker": 0.15383619180623065,
+              "laser scanner": 0.1414027149321267,
+              "motorcycle": 0.02647783251231527,
+              "nightstand": 0.17307692307692307,
+              "stool": 0.08549260156039817,
+              "switch": 0.07778846589140706,
+              "tray table": 0.15611397171956176,
+              "utility cart": 0.05082578686574589
+            },
+            "mean": 0.11994413855393311,
+            "recordings": 26
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.04872765941354282,
+              -0.010295776917616331
+            ],
+            "events": 53,
+            "families": {
+              "belt": -0.17582027168234066,
+              "circuit breaker": -0.012548544597462005,
+              "motorcycle": -0.015850209815727056,
+              "nightstand": -0.02857142857142857,
+              "stool": -0.04128886929131487,
+              "switch": 0.010240622003534483,
+              "tray table": 0.06081805131191589,
+              "utility cart": -0.03835855259146495
+            },
+            "mean": -0.030172400404285968,
+            "recordings": 23
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.0066719039445197964,
+              0.04641948425367311
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.057281947261663274,
+              "circuit breaker": 0.04135506365939245,
+              "laser scanner": 0.0789027149321267,
+              "motorcycle": -0.01688642726985496,
+              "nightstand": -0.008173076923076922,
+              "stool": -0.023205957020883988,
+              "switch": -0.030072262648384133,
+              "tray table": 0.12069218629777635,
+              "utility cart": -0.045145757903036376
+            },
+            "mean": 0.019416492265080267,
+            "recordings": 26
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              11.692253254892428,
+              14.989337804697357
+            ],
+            "events": 62,
+            "families": {
+              "belt": 23.395505530366957,
+              "circuit breaker": 14.273516892450933,
+              "laser scanner": 15.252566004047807,
+              "motorcycle": 4.266471181490743,
+              "nightstand": 19.09069025008579,
+              "stool": 11.989568233624475,
+              "switch": 11.976666217671282,
+              "tray table": 9.126912289309717,
+              "utility cart": 10.085389696942798
+            },
+            "mean": 13.27303181066561,
+            "recordings": 26
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.0838016554857564,
+              0.10917786171455592
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.09075071557050031,
+              "circuit breaker": 0.13563362692805783,
+              "laser scanner": 0.1288340429518013,
+              "motorcycle": 0.01766898735901313,
+              "nightstand": 0.1221614106214374,
+              "stool": 0.12870800322166143,
+              "switch": 0.07142731471866216,
+              "tray table": 0.09125845097366794,
+              "utility cart": 0.07414846500722244
+            },
+            "mean": 0.09562122415022488,
+            "recordings": 26
+          },
+          "neutral": {
+            "ci95": [
+              0.07741604868655293,
+              0.12371431753553255
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.15720081135902636,
+              "circuit breaker": 0.1124811281468382,
+              "laser scanner": 0.0625,
+              "motorcycle": 0.043364259782170234,
+              "nightstand": 0.18125,
+              "stool": 0.10869855858128216,
+              "switch": 0.1078607285397912,
+              "tray table": 0.03542178542178542,
+              "utility cart": 0.09597154476878225
+            },
+            "mean": 0.10052764628885286,
+            "recordings": 26
+          }
+        },
+        "recordings": 47,
+        "word_error": {
+          "small": {
+            "edit_count": 1190,
+            "reference_words": 2548,
+            "wer": 0.46703296703296704
+          },
+          "tiny": {
+            "edit_count": 1915,
+            "reference_words": 2548,
+            "wer": 0.7515698587127159
+          }
+        }
+      },
+      "held": {
+        "candidate_depth": 310,
+        "clear_device": 67,
+        "depth_exclusions": {
+          "depth_age": 2,
+          "gaze_invalid": 4,
+          "large_view_change": 35,
+          "no_attended_surface": 4,
+          "stable_support": 159
+        },
+        "eligible_cues": 403,
+        "eligible_recordings": 48,
+        "explicit_conflicts": 158,
+        "hand_adjacent_isolated": 40,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.05931552533115032,
+              0.12090381117724869
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.0666009916009916,
+              "computer": 0.11115845959595959
+            },
+            "mean": 0.0888797255984756,
+            "recordings": 48
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.15056049563862062,
+              0.23577265038202538
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.13860976985976983,
+              "computer": 0.24579847236097238
+            },
+            "mean": 0.1922041211103711,
+            "recordings": 48
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.17362508657430534,
+              0.26865545551092423
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.15782273282273282,
+              "computer": 0.2838606416731417
+            },
+            "mean": 0.22084168724793724,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              -0.004833181141774892,
+              0.0740889926046176
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.004894179894179895,
+              "computer": 0.06484412578162578
+            },
+            "mean": 0.03486915283790284,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.007030103866041356,
+              0.11517486997955753
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.013477032227032221,
+              "computer": 0.10885717291967294
+            },
+            "mean": 0.06116710257335258,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.022813477032227036,
+              0.13052239282708034
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.027481661856661847,
+              "computer": 0.12311808561808561
+            },
+            "mean": 0.07529987373737373,
+            "recordings": 48
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.028715540824915824,
+              0.08431074712324713
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.0617068117068117,
+              "computer": 0.04631433381433381
+            },
+            "mean": 0.05401057276057275,
+            "recordings": 48
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.08963135822510823,
+              0.17695314957033711
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.12513273763273763,
+              "computer": 0.13694129944129943
+            },
+            "mean": 0.13103701853701855,
+            "recordings": 48
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.10352190850237726,
+              0.19183702943468575
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.13034107096607098,
+              "computer": 0.16074255605505605
+            },
+            "mean": 0.1455418135105635,
+            "recordings": 48
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.03509991093975469,
+              0.08863814859908613
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.03558501683501684,
+              "computer": 0.08607127825877825
+            },
+            "mean": 0.06082814754689754,
+            "recordings": 48
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.08405736696752321,
+              0.16556096319768196
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.07563131313131315,
+              "computer": 0.16968615874865875
+            },
+            "mean": 0.12265873593998594,
+            "recordings": 48
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.09118554261132386,
+              0.1861397984249547
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.09067760942760943,
+              "computer": 0.18288060319310318
+            },
+            "mean": 0.1367791063103563,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              0.004669218223905724,
+              0.06133911661255412
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.006334175084175085,
+              "computer": 0.058275462962962966
+            },
+            "mean": 0.03230481902356903,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              -0.03256601688242313,
+              0.07748636852152477
+            ],
+            "events": 403,
+            "families": {
+              "coffee": -0.021675084175084177,
+              "computer": 0.0687624875124875
+            },
+            "mean": 0.023543701668701657,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              -0.03369930127742628,
+              0.07532932200900956
+            ],
+            "events": 403,
+            "families": {
+              "coffee": -0.027462121212121212,
+              "computer": 0.07134185259185259
+            },
+            "mean": 0.021939865689865688,
+            "recordings": 48
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.011425940957190957,
+              0.047629193722943726
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.02925084175084175,
+              "computer": 0.0277958152958153
+            },
+            "mean": 0.028523328523328527,
+            "recordings": 48
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.059589223710317454,
+              0.14349816994348247
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.0973063973063973,
+              "computer": 0.10092367123617123
+            },
+            "mean": 0.09911503427128426,
+            "recordings": 48
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.07250540186087061,
+              0.1641922386063011
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.11813973063973064,
+              "computer": 0.11153875060125058
+            },
+            "mean": 0.11483924062049061,
+            "recordings": 48
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.01738067993927369,
+              0.05658516902657528
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.02215909090909091,
+              "computer": 0.04881929413179414
+            },
+            "mean": 0.035489192520442525,
+            "recordings": 48
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.03911795236013986,
+              0.09733940610893736
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.02215909090909091,
+              "computer": 0.11053286990786991
+            },
+            "mean": 0.06634598040848042,
+            "recordings": 48
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.04507966570466571,
+              0.11455158556721057
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.03720538720538721,
+              "computer": 0.11747731435231434
+            },
+            "mean": 0.07734135077885078,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              -0.018433657632876382,
+              0.03507419808201059
+            ],
+            "events": 403,
+            "families": {
+              "coffee": -0.013720538720538718,
+              "computer": 0.03106135762385762
+            },
+            "mean": 0.00867040945165945,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              -0.052669963861370114,
+              0.03990265955109706
+            ],
+            "events": 403,
+            "families": {
+              "coffee": -0.056313131313131315,
+              "computer": 0.04816514504014504
+            },
+            "mean": -0.004073993136493138,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              -0.06632576697029821,
+              0.036322988354238354
+            ],
+            "events": 403,
+            "families": {
+              "coffee": -0.06210016835016835,
+              "computer": 0.0359379625004625
+            },
+            "mean": -0.013081102924852924,
+            "recordings": 48
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.008795469576719575,
+              0.047359871031746055
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.03587962962962963,
+              "computer": 0.017757936507936507
+            },
+            "mean": 0.02681878306878307,
+            "recordings": 48
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.03530092592592593,
+              0.11252542162698412
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.07847222222222222,
+              "computer": 0.06236772486772487
+            },
+            "mean": 0.07041997354497355,
+            "recordings": 48
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.0510412533068783,
+              0.13605572089947088
+            ],
+            "events": 403,
+            "families": {
+              "coffee": 0.09930555555555554,
+              "computer": 0.08153935185185185
+            },
+            "mean": 0.09042245370370369,
+            "recordings": 48
+          }
+        },
+        "mean_gap_s": 1.9954143920595526,
+        "measured": 106,
+        "measured_groups": 39,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.15979858958393228,
+              0.23591573309927233
+            ],
+            "events": 85,
+            "families": {
+              "coffee": 0.19703583924437332,
+              "computer": 0.19792260953665738
+            },
+            "mean": 0.19747922439051535,
+            "recordings": 33
+          },
+          "cells": {
+            "ci95": [
+              33.484227430555556,
+              39.37078993055555
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 30.772222222222226,
+              "computer": 41.94375
+            },
+            "mean": 36.35798611111112,
+            "recordings": 39
+          },
+          "changed": {
+            "ci95": [
+              0.11460066637458156,
+              0.20767293366748443
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 0.16214780613831065,
+              "computer": 0.15421004588320278
+            },
+            "mean": 0.15817892601075673,
+            "recordings": 39
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.0652888645169419,
+              0.035349005974603866
+            ],
+            "events": 85,
+            "families": {
+              "coffee": -0.006935178606807407,
+              "computer": -0.02906461253851737
+            },
+            "mean": -0.017999895572662388,
+            "recordings": 33
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.049142677080552095,
+              0.08949370882130098
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 0.006856928288002118,
+              "computer": 0.03352792007811587
+            },
+            "mean": 0.020192424183058996,
+            "recordings": 39
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              9.134385774805777,
+              12.97071751413512
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 8.516179745940674,
+              "computer": 13.368595812774771
+            },
+            "mean": 10.942387779357723,
+            "recordings": 39
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.07102070388194678,
+              0.09851427818224953
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 0.07277931451255434,
+              "computer": 0.09587170965854187
+            },
+            "mean": 0.08432551208554812,
+            "recordings": 39
+          },
+          "neutral": {
+            "ci95": [
+              0.10468945592475465,
+              0.1780492908532197
+            ],
+            "events": 106,
+            "families": {
+              "coffee": 0.15529087785030854,
+              "computer": 0.1206821258050869
+            },
+            "mean": 0.13798650182769773,
+            "recordings": 39
+          }
+        },
+        "recordings": 48,
+        "word_error": {
+          "small": {
+            "edit_count": 1816,
+            "reference_words": 3662,
+            "wer": 0.4959038776624795
+          },
+          "tiny": {
+            "edit_count": 2467,
+            "reference_words": 3662,
+            "wer": 0.6736755871108684
+          }
+        }
+      },
+      "train": {
+        "candidate_depth": 1275,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "No contemporaneous hand sample": 3,
+          "gaze_invalid": 19,
+          "large_view_change": 128,
+          "no_attended_surface": 5,
+          "stable_support": 566
+        },
+        "eligible_cues": 1998,
+        "eligible_recordings": 205,
+        "explicit_conflicts": 825,
+        "hand_adjacent_isolated": 252,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.10481654752940743,
+              0.146346925509771
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.1539072039072039,
+              "camera": 0.08655117543275438,
+              "circuit breaker": 0.1701953601953602,
+              "laser scanner": 0.22170040674446484,
+              "motorcycle": 0.2706371073993945,
+              "nightstand": 0.04372294372294372,
+              "printer": 0.1018957893957894,
+              "stool": 0.07089598997493733,
+              "switch": 0.08417518134516132,
+              "tray table": 0.12083333333333332,
+              "utility cart": 0.04934802040065198
+            },
+            "mean": 0.12489659198654497,
+            "recordings": 205
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.1972745994429547,
+              0.249981660679898
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.22553927553927558,
+              "camera": 0.18167622868474265,
+              "circuit breaker": 0.3013919413919414,
+              "laser scanner": 0.3255624972462315,
+              "motorcycle": 0.3416560316618366,
+              "nightstand": 0.11677489177489175,
+              "printer": 0.17634384134384137,
+              "stool": 0.2382832080200501,
+              "switch": 0.19696407056425647,
+              "tray table": 0.21749999999999997,
+              "utility cart": 0.13712793054898317
+            },
+            "mean": 0.22352908334327729,
+            "recordings": 205
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.22975872308079615,
+              0.2846045490259141
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.2544281644281644,
+              "camera": 0.22962817926827214,
+              "circuit breaker": 0.3196947496947497,
+              "laser scanner": 0.3255624972462315,
+              "motorcycle": 0.3595379761062811,
+              "nightstand": 0.12867965367965364,
+              "printer": 0.20759842009842014,
+              "stool": 0.36701127819548873,
+              "switch": 0.2157917103158093,
+              "tray table": 0.255,
+              "utility cart": 0.1656158169316064
+            },
+            "mean": 0.25714076781497064,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.05822200883315499,
+              0.10189922334736348
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.13401709401709402,
+              "camera": 0.0367292721897985,
+              "circuit breaker": 0.11322344322344323,
+              "laser scanner": 0.15328788901068016,
+              "motorcycle": 0.23158878472104089,
+              "nightstand": 0.011904761904761904,
+              "printer": 0.04677637177637177,
+              "stool": -0.01293859649122807,
+              "switch": 0.03493415016048025,
+              "tray table": 0.12083333333333332,
+              "utility cart": 0.0027111046847888946
+            },
+            "mean": 0.07936978259368772,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.07532105290628892,
+              0.13166110635339284
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.13332926332926334,
+              "camera": 0.0787965547524371,
+              "circuit breaker": 0.1707936507936508,
+              "laser scanner": 0.16890728651862255,
+              "motorcycle": 0.24024730724856497,
+              "nightstand": -0.04031385281385281,
+              "printer": 0.06535547785547786,
+              "stool": 0.0600877192982456,
+              "switch": 0.05560793968617195,
+              "tray table": 0.1683333333333333,
+              "utility cart": 0.035836166757219394
+            },
+            "mean": 0.10336189515992128,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.07653357343543786,
+              0.13538418556673695
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.09825396825396823,
+              "camera": 0.09441790908896171,
+              "circuit breaker": 0.14498168498168498,
+              "laser scanner": 0.14439143507969418,
+              "motorcycle": 0.2293117150629728,
+              "nightstand": -0.059794372294372296,
+              "printer": 0.0847052947052947,
+              "stool": 0.13552631578947366,
+              "switch": 0.05963542440587635,
+              "tray table": 0.18916666666666665,
+              "utility cart": 0.04076457168562432
+            },
+            "mean": 0.10557823758416776,
+            "recordings": 205
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.035127939280988923,
+              0.05678909800375424
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.019890109890109888,
+              "camera": 0.049821903242955864,
+              "circuit breaker": 0.056971916971916975,
+              "laser scanner": 0.0684125177337847,
+              "motorcycle": 0.039048322678353634,
+              "nightstand": 0.03181818181818182,
+              "printer": 0.05511941761941761,
+              "stool": 0.08383458646616541,
+              "switch": 0.049241031184681074,
+              "tray table": 0.0,
+              "utility cart": 0.046636915715863085
+            },
+            "mean": 0.045526809392857276,
+            "recordings": 205
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.10243106562486598,
+              0.13845468836260083
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.09221001221001221,
+              "camera": 0.10287967393230552,
+              "circuit breaker": 0.1305982905982906,
+              "laser scanner": 0.15665521072760893,
+              "motorcycle": 0.10140872441327163,
+              "nightstand": 0.15708874458874458,
+              "printer": 0.1109883634883635,
+              "stool": 0.17819548872180452,
+              "switch": 0.14135613087808455,
+              "tray table": 0.04916666666666667,
+              "utility cart": 0.1012917637917638
+            },
+            "mean": 0.12016718818335605,
+            "recordings": 205
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.13097419153135445,
+              0.17230093001260033
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.15617419617419617,
+              "camera": 0.13521027017931042,
+              "circuit breaker": 0.17471306471306472,
+              "laser scanner": 0.18117106216653725,
+              "motorcycle": 0.13022626104330826,
+              "nightstand": 0.188474025974026,
+              "printer": 0.12289312539312539,
+              "stool": 0.23148496240601502,
+              "switch": 0.1561562859099329,
+              "tray table": 0.06583333333333333,
+              "utility cart": 0.1248512452459821
+            },
+            "mean": 0.15156253023080288,
+            "recordings": 205
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.05854947326322634,
+              0.08965320447095922
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.08153032153032153,
+              "camera": 0.051472274285741776,
+              "circuit breaker": 0.12728937728937728,
+              "laser scanner": 0.04501977396714238,
+              "motorcycle": 0.13527893782344247,
+              "nightstand": 0.03181818181818182,
+              "printer": 0.07721528471528473,
+              "stool": 0.07286967418546364,
+              "switch": 0.06322590691154764,
+              "tray table": 0.10416666666666666,
+              "utility cart": 0.019314603525129842
+            },
+            "mean": 0.07356372751984543,
+            "recordings": 205
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.11831084162543203,
+              0.16324224130847298
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.13586487586487586,
+              "camera": 0.137142619019554,
+              "circuit breaker": 0.21653235653235653,
+              "laser scanner": 0.0981092829270967,
+              "motorcycle": 0.17186553328315132,
+              "nightstand": 0.09981962481962481,
+              "printer": 0.1172970547970548,
+              "stool": 0.15473057644110275,
+              "switch": 0.13127480416703816,
+              "tray table": 0.19083333333333333,
+              "utility cart": 0.08909438514701672
+            },
+            "mean": 0.14023313148474592,
+            "recordings": 205
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.14175675259193607,
+              0.1911414968924441
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.1580870980870981,
+              "camera": 0.1691110501985115,
+              "circuit breaker": 0.22483516483516483,
+              "laser scanner": 0.0981092829270967,
+              "motorcycle": 0.18609250696736185,
+              "nightstand": 0.11172438672438673,
+              "printer": 0.1478922928922929,
+              "stool": 0.24771303258145363,
+              "switch": 0.1416914708337048,
+              "tray table": 0.2325,
+              "utility cart": 0.11056472766999083
+            },
+            "mean": 0.1662110012470056,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              0.02801182591230284,
+              0.05820926082514222
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.05423280423280423,
+              "camera": 0.014966806069747245,
+              "circuit breaker": 0.0798901098901099,
+              "laser scanner": 0.03860951755688598,
+              "motorcycle": 0.09952008882929936,
+              "nightstand": 0.0,
+              "printer": 0.04468845968845968,
+              "stool": 0.01864035087719298,
+              "switch": 0.026738899806334013,
+              "tray table": 0.1,
+              "utility cart": -0.010262033288349078
+            },
+            "mean": 0.0424568185147713,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              0.04501192326710484,
+              0.08708988664450269
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.09380545380545383,
+              "camera": 0.07085650116996867,
+              "circuit breaker": 0.12041514041514043,
+              "laser scanner": 0.06546125027906403,
+              "motorcycle": 0.08570820358262309,
+              "nightstand": 0.010191197691197692,
+              "printer": 0.041864246864246855,
+              "stool": 0.03640350877192983,
+              "switch": 0.0342625338048679,
+              "tray table": 0.13749999999999998,
+              "utility cart": 0.025583261767472294
+            },
+            "mean": 0.06564102710472404,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              0.0472161235550195,
+              0.0961805527980987
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.0753968253968254,
+              "camera": 0.07782061749167012,
+              "circuit breaker": 0.1017948717948718,
+              "laser scanner": 0.059050993868807626,
+              "motorcycle": 0.08066434393350028,
+              "nightstand": -0.016865079365079364,
+              "printer": 0.07087218337218336,
+              "stool": 0.08991228070175439,
+              "switch": 0.03557262722022447,
+              "tray table": 0.17916666666666664,
+              "utility cart": 0.029926871374239796
+            },
+            "mean": 0.07121029113233314,
+            "recordings": 205
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.022792517995663838,
+              0.04011965762177215
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.027297517297517296,
+              "camera": 0.03650546821599453,
+              "circuit breaker": 0.04739926739926739,
+              "laser scanner": 0.00641025641025641,
+              "motorcycle": 0.03575884899414311,
+              "nightstand": 0.03181818181818182,
+              "printer": 0.03252682502682503,
+              "stool": 0.05422932330827067,
+              "switch": 0.03648700710521363,
+              "tray table": 0.004166666666666667,
+              "utility cart": 0.02957663681347892
+            },
+            "mean": 0.031106909005074138,
+            "recordings": 205
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.06030042119835701,
+              0.08989682602722691
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.042059422059422064,
+              "camera": 0.06628611784958534,
+              "circuit breaker": 0.09611721611721612,
+              "laser scanner": 0.03264803264803265,
+              "motorcycle": 0.08615732970052822,
+              "nightstand": 0.08962842712842713,
+              "printer": 0.07543280793280793,
+              "stool": 0.11832706766917292,
+              "switch": 0.09701227036217025,
+              "tray table": 0.05333333333333333,
+              "utility cart": 0.06351112337954443
+            },
+            "mean": 0.07459210438002185,
+            "recordings": 205
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.07798410613225072,
+              0.1136225338175119
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.08269027269027268,
+              "camera": 0.0912904327068414,
+              "circuit breaker": 0.12304029304029303,
+              "laser scanner": 0.03905828905828906,
+              "motorcycle": 0.10542816303386156,
+              "nightstand": 0.12858946608946606,
+              "printer": 0.07702010952010951,
+              "stool": 0.15780075187969925,
+              "switch": 0.10611884361348034,
+              "tray table": 0.05333333333333333,
+              "utility cart": 0.08063785629575104
+            },
+            "mean": 0.09500071011467247,
+            "recordings": 205
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.038739195671942867,
+              0.058154972894766954
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.02936507936507936,
+              "camera": 0.041367656681124174,
+              "circuit breaker": 0.11808302808302808,
+              "laser scanner": 0.012236473536783135,
+              "motorcycle": 0.07682024100125881,
+              "nightstand": 0.027056277056277056,
+              "printer": 0.07308913308913309,
+              "stool": 0.042606516290726815,
+              "switch": 0.042827594554568235,
+              "tray table": 0.041666666666666664,
+              "utility cart": 0.024915143336195968
+            },
+            "mean": 0.048184891787349214,
+            "recordings": 205
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.08460990927038999,
+              0.12084517523981361
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.06919413919413918,
+              "camera": 0.08714952731593599,
+              "circuit breaker": 0.15487789987789988,
+              "laser scanner": 0.03820862845630647,
+              "motorcycle": 0.0989891935603526,
+              "nightstand": 0.11605339105339103,
+              "printer": 0.13793280793280793,
+              "stool": 0.1167919799498747,
+              "switch": 0.0890638180469416,
+              "tray table": 0.12833333333333335,
+              "utility cart": 0.08775559236085552
+            },
+            "mean": 0.10221366464380348,
+            "recordings": 205
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.09871051838295289,
+              0.13625235245208622
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.09141636141636142,
+              "camera": 0.11192098879792378,
+              "circuit breaker": 0.160006105006105,
+              "laser scanner": 0.03820862845630647,
+              "motorcycle": 0.10227866724456314,
+              "nightstand": 0.12795815295815297,
+              "printer": 0.1493613793613794,
+              "stool": 0.1580200501253133,
+              "switch": 0.09427215138027495,
+              "tray table": 0.14916666666666667,
+              "utility cart": 0.10112234256971099
+            },
+            "mean": 0.11670286308934164,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              0.010320538951017474,
+              0.03420351040708699
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.024603174603174603,
+              "camera": 0.015370909763324623,
+              "circuit breaker": 0.09554334554334555,
+              "laser scanner": 0.002977214277523875,
+              "motorcycle": 0.05467971812544181,
+              "nightstand": 0.015151515151515152,
+              "printer": 0.046527084027084026,
+              "stool": 0.012061403508771927,
+              "switch": 0.006741228474995637,
+              "tray table": 0.0,
+              "utility cart": -0.027411769517032673
+            },
+            "mean": 0.02238580217801314,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              0.025328404219975557,
+              0.05921360094374604
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.04385836385836385,
+              "camera": 0.028001583183471724,
+              "circuit breaker": 0.10498778998778999,
+              "laser scanner": 0.01684110708878511,
+              "motorcycle": 0.04322226339084892,
+              "nightstand": 0.034433621933621934,
+              "printer": 0.08433779183779185,
+              "stool": 0.04583333333333334,
+              "switch": 0.01259595846087551,
+              "tray table": 0.05000000000000001,
+              "utility cart": -0.004363983969247127
+            },
+            "mean": 0.04179525719142137,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              0.024795579356243658,
+              0.06141160047804004
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.054652014652014635,
+              "camera": 0.03516411220358589,
+              "circuit breaker": 0.09387667887667889,
+              "laser scanner": 0.010430850678528699,
+              "motorcycle": 0.04651173707505944,
+              "nightstand": 0.03118686868686869,
+              "printer": 0.09417906167906168,
+              "stool": 0.04364035087719298,
+              "switch": 0.011987192227109273,
+              "tray table": 0.058333333333333334,
+              "utility cart": -0.011594180673128042
+            },
+            "mean": 0.04257891087420959,
+            "recordings": 205
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.018131204429123787,
+              0.03441412541793889
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.0047619047619047615,
+              "camera": 0.02599674691779955,
+              "circuit breaker": 0.02253968253968254,
+              "laser scanner": 0.009259259259259259,
+              "motorcycle": 0.02214052287581699,
+              "nightstand": 0.011904761904761904,
+              "printer": 0.026562049062049065,
+              "stool": 0.030545112781954886,
+              "switch": 0.0360863660795726,
+              "tray table": 0.041666666666666664,
+              "utility cart": 0.052326912853228644
+            },
+            "mean": 0.02579908960933608,
+            "recordings": 205
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.04713939554572901,
+              0.07485890983528652
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.025335775335775336,
+              "camera": 0.05914794413246426,
+              "circuit breaker": 0.04989010989010989,
+              "laser scanner": 0.021367521367521368,
+              "motorcycle": 0.055766930169503695,
+              "nightstand": 0.0816197691197691,
+              "printer": 0.05359501609501609,
+              "stool": 0.07095864661654135,
+              "switch": 0.07646785958606611,
+              "tray table": 0.07833333333333334,
+              "utility cart": 0.09211957633010263
+            },
+            "mean": 0.06041840745238211,
+            "recordings": 205
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.05893949220305053,
+              0.09057115200563438
+            ],
+            "events": 1998,
+            "families": {
+              "belt": 0.03676434676434677,
+              "camera": 0.0767568765943379,
+              "circuit breaker": 0.06612942612942614,
+              "laser scanner": 0.027777777777777776,
+              "motorcycle": 0.055766930169503695,
+              "nightstand": 0.09677128427128427,
+              "printer": 0.05518231768231769,
+              "stool": 0.1143796992481203,
+              "switch": 0.08228495915316568,
+              "tray table": 0.09083333333333332,
+              "utility cart": 0.11271652324283905
+            },
+            "mean": 0.07412395221513206,
+            "recordings": 205
+          }
+        },
+        "mean_gap_s": 2.0397204008561425,
+        "measured": 554,
+        "measured_groups": 178,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.09025697177456098,
+              0.13126888100323425
+            ],
+            "events": 474,
+            "families": {
+              "belt": 0.087371897643677,
+              "camera": 0.0758638108085784,
+              "circuit breaker": 0.14938563228532714,
+              "laser scanner": 0.10718503960820303,
+              "motorcycle": 0.12712919146436313,
+              "nightstand": 0.14825613763921952,
+              "printer": 0.10264742074357826,
+              "stool": 0.08755768355520162,
+              "switch": 0.06922268313411656,
+              "tray table": 0.11209382588955759,
+              "utility cart": 0.14273125171834392
+            },
+            "mean": 0.10994950677183328,
+            "recordings": 160
+          },
+          "cells": {
+            "ci95": [
+              36.89766785140365,
+              40.56259522374721
+            ],
+            "events": 554,
+            "families": {
+              "belt": 43.313333333333325,
+              "camera": 33.89196428571429,
+              "circuit breaker": 34.74634920634921,
+              "laser scanner": 40.46212121212121,
+              "motorcycle": 29.566666666666666,
+              "nightstand": 32.22222222222222,
+              "printer": 47.556825396825396,
+              "stool": 43.21354166666667,
+              "switch": 38.74444444444445,
+              "tray table": 41.78888888888889,
+              "utility cart": 39.175555555555555
+            },
+            "mean": 38.60744662534435,
+            "recordings": 178
+          },
+          "changed": {
+            "ci95": [
+              0.08942499679568085,
+              0.13825602876741805
+            ],
+            "events": 554,
+            "families": {
+              "belt": 0.11957857619453452,
+              "camera": 0.060857223772974874,
+              "circuit breaker": 0.15123270725938454,
+              "laser scanner": 0.23134420572402287,
+              "motorcycle": 0.052123851061301504,
+              "nightstand": 0.10743268896436883,
+              "printer": 0.10940943729788617,
+              "stool": 0.09050079694677682,
+              "switch": 0.09043672824301034,
+              "tray table": 0.10237453943695335,
+              "utility cart": 0.12894943838190928
+            },
+            "mean": 0.11311274484392025,
+            "recordings": 178
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.0265395246034778,
+              0.0038218787090871713
+            ],
+            "events": 474,
+            "families": {
+              "belt": 0.021536302186174933,
+              "camera": -0.008703294681482428,
+              "circuit breaker": -0.0019132883645195148,
+              "laser scanner": -0.016281928505565722,
+              "motorcycle": -0.06404192099351354,
+              "nightstand": -0.02420372908546991,
+              "printer": 0.00278872047553299,
+              "stool": -0.021170171803017553,
+              "switch": 0.03415075647765197,
+              "tray table": -0.05011601144312228,
+              "utility cart": -0.0030041305992897015
+            },
+            "mean": -0.011905336030601886,
+            "recordings": 160
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.012394217384957275,
+              0.03862411303662249
+            ],
+            "events": 554,
+            "families": {
+              "belt": -0.020137599047607292,
+              "camera": -0.022604071356308524,
+              "circuit breaker": 0.05916785258023129,
+              "laser scanner": 0.15419389871517528,
+              "motorcycle": -0.04880789562114669,
+              "nightstand": 0.026493710011727685,
+              "printer": 0.029948206503592263,
+              "stool": 0.0015955035353088058,
+              "switch": -0.010547998943478314,
+              "tray table": -0.07385952817206834,
+              "utility cart": 0.042748930046009194
+            },
+            "mean": 0.012562818931948667,
+            "recordings": 178
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              10.260106842334348,
+              11.929179339232693
+            ],
+            "events": 554,
+            "families": {
+              "belt": 15.499409270391762,
+              "camera": 5.111291185980249,
+              "circuit breaker": 11.181298516212133,
+              "laser scanner": 14.117678016157752,
+              "motorcycle": 11.025238163060873,
+              "nightstand": 10.027796612663181,
+              "printer": 11.001102114887518,
+              "stool": 15.942806763501356,
+              "switch": 5.350318359294261,
+              "tray table": 9.657292549034713,
+              "utility cart": 13.109252915293705
+            },
+            "mean": 11.093044042407046,
+            "recordings": 178
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.08360144325089806,
+              0.09950430098339579
+            ],
+            "events": 554,
+            "families": {
+              "belt": 0.09498966632147203,
+              "camera": 0.03292327987062886,
+              "circuit breaker": 0.13673636184897597,
+              "laser scanner": 0.13266607283287374,
+              "motorcycle": 0.08904651987239569,
+              "nightstand": 0.06961626790856014,
+              "printer": 0.08335126907978971,
+              "stool": 0.12448648212703832,
+              "switch": 0.04585028528423744,
+              "tray table": 0.08972543636221732,
+              "utility cart": 0.10615663856309136
+            },
+            "mean": 0.09141348000648004,
+            "recordings": 178
+          },
+          "neutral": {
+            "ci95": [
+              0.08787869163210307,
+              0.11448833541323908
+            ],
+            "events": 554,
+            "families": {
+              "belt": 0.13971617524214178,
+              "camera": 0.0834612951292834,
+              "circuit breaker": 0.09206485467915325,
+              "laser scanner": 0.07715030700884759,
+              "motorcycle": 0.1009317466824482,
+              "nightstand": 0.08093897895264114,
+              "printer": 0.07946123079429392,
+              "stool": 0.08890529341146801,
+              "switch": 0.10098472718648867,
+              "tray table": 0.1762340676090217,
+              "utility cart": 0.08620050833590007
+            },
+            "mean": 0.1005499259119716,
+            "recordings": 178
+          }
+        },
+        "recordings": 256,
+        "word_error": {
+          "small": {
+            "edit_count": 7807,
+            "reference_words": 17847,
+            "wer": 0.437440466184793
+          },
+          "tiny": {
+            "edit_count": 11336,
+            "reference_words": 17847,
+            "wer": 0.6351767804112736
+          }
+        }
+      }
+    },
+    "B": {
+      "dev": {
+        "candidate_depth": 99,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "gaze_invalid": 2,
+          "large_view_change": 11,
+          "stable_support": 34
+        },
+        "eligible_cues": 141,
+        "eligible_recordings": 16,
+        "explicit_conflicts": 67,
+        "hand_adjacent_isolated": 17,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.10715525793650793,
+              0.19048859126984127
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.1468253968253968,
+              "motorcycle": 0.4375,
+              "nightstand": 0.16666666666666666,
+              "stool": 0.06666666666666667,
+              "switch": 0.03333333333333333,
+              "tray table": 0.1,
+              "utility cart": 0.15625
+            },
+            "mean": 0.1488219246031746,
+            "recordings": 16
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.18958333333333333,
+              0.28422619047619047
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.20238095238095238,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "stool": 0.1619047619047619,
+              "switch": 0.08095238095238096,
+              "tray table": 0.2,
+              "utility cart": 0.25
+            },
+            "mean": 0.2369047619047619,
+            "recordings": 16
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.24716517857142858,
+              0.3432080853174603
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.2936507936507936,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "stool": 0.3428571428571428,
+              "switch": 0.08095238095238096,
+              "tray table": 0.3666666666666667,
+              "utility cart": 0.29166666666666663
+            },
+            "mean": 0.29697420634920635,
+            "recordings": 16
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.0376984126984127,
+              0.1032986111111111
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.08333333333333333,
+              "circuit breaker": -0.09126984126984126,
+              "motorcycle": 0.4375,
+              "nightstand": 0.16666666666666666,
+              "stool": 0.0,
+              "switch": -0.023809523809523808,
+              "tray table": 0.0,
+              "utility cart": 0.15625
+            },
+            "mean": 0.07025049603174603,
+            "recordings": 16
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.051488095238095236,
+              0.14793154761904764
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.16666666666666666,
+              "circuit breaker": -0.23809523809523808,
+              "motorcycle": 0.5,
+              "nightstand": 0.41666666666666663,
+              "stool": -0.038095238095238106,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.25
+            },
+            "mean": 0.09999999999999999,
+            "recordings": 16
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.07924107142857142,
+              0.14888392857142857
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.16666666666666666,
+              "circuit breaker": -0.23809523809523808,
+              "motorcycle": 0.4375,
+              "nightstand": 0.41666666666666663,
+              "stool": 0.09523809523809523,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.29166666666666663
+            },
+            "mean": 0.11406249999999998,
+            "recordings": 16
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.05119047619047619,
+              0.10714285714285715
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.16666666666666666,
+              "circuit breaker": 0.23809523809523808,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.06666666666666667,
+              "switch": 0.05714285714285714,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.07857142857142857,
+            "recordings": 16
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.07589285714285715,
+              0.19851190476190475
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.25,
+              "circuit breaker": 0.44047619047619047,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.19999999999999998,
+              "switch": 0.10476190476190476,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.13690476190476192,
+            "recordings": 16
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.12595238095238095,
+              0.24283234126984124
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.25,
+              "circuit breaker": 0.5317460317460317,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.24761904761904763,
+              "switch": 0.10476190476190476,
+              "tray table": 0.26666666666666666,
+              "utility cart": 0.0
+            },
+            "mean": 0.18291170634920634,
+            "recordings": 16
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.03211805555555555,
+              0.09005456349206349
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.03333333333333333,
+              "tray table": 0.1,
+              "utility cart": 0.125
+            },
+            "mean": 0.061929563492063494,
+            "recordings": 16
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.08602430555555554,
+              0.19102430555555558
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.1468253968253968,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "stool": 0.09523809523809523,
+              "switch": 0.09047619047619049,
+              "tray table": 0.1,
+              "utility cart": 0.21875
+            },
+            "mean": 0.13870287698412698,
+            "recordings": 16
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.09727430555555555,
+              0.2109747023809524
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.08333333333333333,
+              "circuit breaker": 0.18253968253968253,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "stool": 0.14285714285714285,
+              "switch": 0.09047619047619049,
+              "tray table": 0.1,
+              "utility cart": 0.26041666666666663
+            },
+            "mean": 0.15432787698412698,
+            "recordings": 16
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              -0.023685515873015872,
+              0.03975694444444445
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.08333333333333333,
+              "circuit breaker": -0.1111111111111111,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": -0.023809523809523808,
+              "tray table": 0.1,
+              "utility cart": 0.125
+            },
+            "mean": 0.008655753968253972,
+            "recordings": 16
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              -0.004947916666666663,
+              0.10189732142857143
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.08333333333333333,
+              "circuit breaker": -0.20238095238095238,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "stool": 0.09523809523809523,
+              "switch": -0.014285714285714282,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.048623511904761905,
+            "recordings": 16
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              -0.04142330109126984,
+              0.09222749255952381
+            ],
+            "events": 141,
+            "families": {
+              "belt": -0.08333333333333333,
+              "circuit breaker": -0.2579365079365079,
+              "motorcycle": 0.125,
+              "nightstand": 0.25,
+              "stool": 0.09523809523809523,
+              "switch": -0.014285714285714282,
+              "tray table": -0.16666666666666666,
+              "utility cart": 0.26041666666666663
+            },
+            "mean": 0.026054067460317465,
+            "recordings": 16
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.03273809523809523,
+              0.07380952380952381
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.16666666666666666,
+              "circuit breaker": 0.20238095238095238,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.05714285714285714,
+              "tray table": 0.0,
+              "utility cart": 0.0
+            },
+            "mean": 0.05327380952380953,
+            "recordings": 16
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.05119047619047619,
+              0.12956349206349208
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.16666666666666666,
+              "circuit breaker": 0.3492063492063492,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.10476190476190476,
+              "tray table": 0.1,
+              "utility cart": 0.0
+            },
+            "mean": 0.09007936507936506,
+            "recordings": 16
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.0869047619047619,
+              0.16964285714285712
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.16666666666666666,
+              "circuit breaker": 0.44047619047619047,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.047619047619047616,
+              "switch": 0.10476190476190476,
+              "tray table": 0.26666666666666666,
+              "utility cart": 0.0
+            },
+            "mean": 0.1282738095238095,
+            "recordings": 16
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.015625,
+              0.05295138888888889
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.05555555555555555,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.15625
+            },
+            "mean": 0.03428819444444445,
+            "recordings": 16
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.03720238095238095,
+              0.0718625992063492
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.05555555555555555,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.047619047619047616,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.05400545634920635,
+            "recordings": 16
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.05047123015873016,
+              0.09213789682539683
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.09523809523809523,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.25
+            },
+            "mean": 0.06832837301587302,
+            "recordings": 16
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              -0.001116071428571428,
+              0.0390625
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": -0.03571428571428571,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.125
+            },
+            "mean": 0.018973214285714288,
+            "recordings": 16
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              0.020461309523809524,
+              0.056919642857142856
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": -0.03571428571428571,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.047619047619047616,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.1875
+            },
+            "mean": 0.03869047619047619,
+            "recordings": 16
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              0.03515625,
+              0.07682291666666666
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "motorcycle": 0.0625,
+              "nightstand": 0.0,
+              "stool": 0.09523809523809523,
+              "switch": 0.047619047619047616,
+              "tray table": 0.0,
+              "utility cart": 0.21875
+            },
+            "mean": 0.053013392857142856,
+            "recordings": 16
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.008928571428571428,
+              0.021701388888888888
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.015314980158730158,
+            "recordings": 16
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.008928571428571428,
+              0.021701388888888888
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.015314980158730158,
+            "recordings": 16
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.008928571428571428,
+              0.021701388888888888
+            ],
+            "events": 141,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.09126984126984126,
+              "motorcycle": 0.0,
+              "nightstand": 0.0,
+              "stool": 0.0,
+              "switch": 0.0,
+              "tray table": 0.0,
+              "utility cart": 0.03125
+            },
+            "mean": 0.015314980158730158,
+            "recordings": 16
+          }
+        },
+        "mean_gap_s": 1.9164931917493073,
+        "measured": 52,
+        "measured_groups": 12,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.03644964307294587,
+              0.11495873017257097
+            ],
+            "events": 43,
+            "families": {
+              "belt": 0.016298946531504672,
+              "circuit breaker": 0.19517454954954955,
+              "stool": 0.05720199665231947,
+              "switch": 0.09125071742542769,
+              "tray table": 0.017261904761904763,
+              "utility cart": 0.07583157583157582
+            },
+            "mean": 0.075503281792047,
+            "recordings": 12
+          },
+          "cells": {
+            "ci95": [
+              35.6279761904762,
+              42.416666666666664
+            ],
+            "events": 52,
+            "families": {
+              "belt": 42.25,
+              "circuit breaker": 38.75,
+              "stool": 51.91666666666667,
+              "switch": 37.601190476190474,
+              "tray table": 38.5,
+              "utility cart": 25.041666666666664
+            },
+            "mean": 39.00992063492064,
+            "recordings": 12
+          },
+          "changed": {
+            "ci95": [
+              0.09858435669389565,
+              0.2166581557772969
+            ],
+            "events": 52,
+            "families": {
+              "belt": 0.008064516129032258,
+              "circuit breaker": 0.4046366442199776,
+              "stool": 0.012667788537238229,
+              "switch": 0.13336690709136337,
+              "tray table": 0.26785714285714285,
+              "utility cart": 0.11652065527065528
+            },
+            "mean": 0.15718560901756826,
+            "recordings": 12
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.013918154018828233,
+              0.014423933938489245
+            ],
+            "events": 43,
+            "families": {
+              "belt": -0.00554625835946166,
+              "circuit breaker": 0.035843968968968964,
+              "stool": -0.041660644896690434,
+              "switch": 0.03140565696251614,
+              "tray table": 0.01845238095238095,
+              "utility cart": -0.03735104401771068
+            },
+            "mean": 0.0001906766016672133,
+            "recordings": 12
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.005062704417519011,
+              0.05744663990597921
+            ],
+            "events": 52,
+            "families": {
+              "belt": -0.20785810291858678,
+              "circuit breaker": 0.3011754671759411,
+              "stool": -0.05133460722038648,
+              "switch": 0.06661685007588419,
+              "tray table": 0.10196434389982778,
+              "utility cart": -0.06126190124831429
+            },
+            "mean": 0.02488367496072759,
+            "recordings": 12
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              11.29762992130365,
+              13.166075517198657
+            ],
+            "events": 52,
+            "families": {
+              "belt": 11.437384062302547,
+              "circuit breaker": 16.199210132141953,
+              "stool": 15.085423526924338,
+              "switch": 2.8032465786208163,
+              "tray table": 17.641761505277174,
+              "utility cart": 10.227860291129712
+            },
+            "mean": 12.232481016066089,
+            "recordings": 12
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.08746715098884028,
+              0.10432755250097364
+            ],
+            "events": 52,
+            "families": {
+              "belt": 0.06769518868106267,
+              "circuit breaker": 0.16583422775641413,
+              "stool": 0.085523452206766,
+              "switch": 0.01447451580140128,
+              "tray table": 0.1288651086345925,
+              "utility cart": 0.11321710337441301
+            },
+            "mean": 0.0959349327424416,
+            "recordings": 12
+          },
+          "neutral": {
+            "ci95": [
+              0.09698346500217164,
+              0.1670935681326334
+            ],
+            "events": 52,
+            "families": {
+              "belt": 0.21592261904761903,
+              "circuit breaker": 0.10346117704403643,
+              "stool": 0.0640023957576247,
+              "switch": 0.06675005701547916,
+              "tray table": 0.16589279895731507,
+              "utility cart": 0.17778255651896957
+            },
+            "mean": 0.13230193405684065,
+            "recordings": 12
+          }
+        },
+        "recordings": 24,
+        "word_error": {
+          "small": {
+            "edit_count": 521,
+            "reference_words": 1229,
+            "wer": 0.4239218877135883
+          },
+          "tiny": {
+            "edit_count": 805,
+            "reference_words": 1229,
+            "wer": 0.6550040683482506
+          }
+        }
+      },
+      "familiar": {
+        "candidate_depth": 184,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "gaze_invalid": 2,
+          "large_view_change": 23,
+          "no_attended_surface": 1,
+          "stable_support": 96
+        },
+        "eligible_cues": 296,
+        "eligible_recordings": 33,
+        "explicit_conflicts": 121,
+        "hand_adjacent_isolated": 25,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.09898973112155124,
+              0.18740894909533015
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.234006734006734,
+              "laser scanner": 0.13171355498721227,
+              "motorcycle": 0.2467948717948718,
+              "nightstand": 0.0,
+              "stool": 0.11904761904761904,
+              "switch": 0.09754689754689755,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.17462121212121215
+            },
+            "mean": 0.14014518300892273,
+            "recordings": 33
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.1806221631957814,
+              0.27374131907397753
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.2727272727272727,
+              "circuit breaker": 0.3316498316498317,
+              "laser scanner": 0.20460358056265984,
+              "motorcycle": 0.3349358974358974,
+              "nightstand": 0.17857142857142858,
+              "stool": 0.1369047619047619,
+              "switch": 0.18066378066378067,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.22462121212121214
+            },
+            "mean": 0.22570493692261243,
+            "recordings": 33
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.1875943727232268,
+              0.2892888775838478
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.2727272727272727,
+              "circuit breaker": 0.3316498316498317,
+              "laser scanner": 0.22634271099744246,
+              "motorcycle": 0.3349358974358974,
+              "nightstand": 0.2261904761904762,
+              "stool": 0.17261904761904762,
+              "switch": 0.18066378066378067,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.22462121212121214
+            },
+            "mean": 0.23737965511906975,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.03439611702656957,
+              0.13397341781746086
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.234006734006734,
+              "laser scanner": 0.08056265984654731,
+              "motorcycle": 0.15865384615384615,
+              "nightstand": -0.13095238095238096,
+              "stool": -0.03571428571428571,
+              "switch": 0.06507936507936507,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.11666666666666667
+            },
+            "mean": 0.08287537362913891,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.007813628233669443,
+              0.13226618728092868
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.2558922558922559,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.2003205128205128,
+              "nightstand": -0.16666666666666666,
+              "stool": -0.20833333333333331,
+              "switch": 0.08946608946608946,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.09393939393939393
+            },
+            "mean": 0.07024093713849326,
+            "recordings": 33
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              -0.03791781299160882,
+              0.08247009859595111
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.18181818181818182,
+              "circuit breaker": 0.20707070707070707,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.14903846153846154,
+              "nightstand": -0.16666666666666666,
+              "stool": -0.17261904761904762,
+              "switch": 0.04660894660894661,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.05643939393939394
+            },
+            "mean": 0.02385496714141215,
+            "recordings": 33
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.03298550255631458,
+              0.08205581420095485
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.08814102564102565,
+              "nightstand": 0.13095238095238096,
+              "stool": 0.15476190476190474,
+              "switch": 0.032467532467532464,
+              "tray table": 0.0,
+              "utility cart": 0.05795454545454545
+            },
+            "mean": 0.0572698093797838,
+            "recordings": 33
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.10083802390814325,
+              0.2141704630739157
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.18181818181818182,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.09462915601023017,
+              "motorcycle": 0.1346153846153846,
+              "nightstand": 0.3452380952380952,
+              "stool": 0.34523809523809523,
+              "switch": 0.0911976911976912,
+              "tray table": 0.0,
+              "utility cart": 0.13068181818181818
+            },
+            "mean": 0.15546399978411912,
+            "recordings": 33
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.15449175858347497,
+              0.2752236885655471
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.45454545454545453,
+              "circuit breaker": 0.12457912457912458,
+              "laser scanner": 0.11636828644501279,
+              "motorcycle": 0.1858974358974359,
+              "nightstand": 0.39285714285714285,
+              "stool": 0.34523809523809523,
+              "switch": 0.13405483405483404,
+              "tray table": 0.0,
+              "utility cart": 0.16818181818181818
+            },
+            "mean": 0.21352468797765758,
+            "recordings": 33
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.06541117485153433,
+              0.12701476854663132
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21885521885521886,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.047619047619047616,
+              "switch": 0.06897546897546898,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.1393939393939394
+            },
+            "mean": 0.09628251801454417,
+            "recordings": 33
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.10608665460842925,
+              0.17208085791756578
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.31649831649831645,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.08333333333333333,
+              "switch": 0.1196248196248196,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.1768939393939394
+            },
+            "mean": 0.13899363505785786,
+            "recordings": 33
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.11664260284580334,
+              0.18856273538303234
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.31649831649831645,
+              "laser scanner": 0.10997442455242967,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.09523809523809523,
+              "stool": 0.08333333333333333,
+              "switch": 0.1196248196248196,
+              "tray table": 0.2333333333333333,
+              "utility cart": 0.1893939393939394
+            },
+            "mean": 0.15308093664515943,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              0.014866877153926029,
+              0.09456829556254108
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21885521885521886,
+              "laser scanner": 0.0076726342710997444,
+              "motorcycle": 0.07692307692307693,
+              "nightstand": -0.08333333333333333,
+              "stool": -0.02380952380952381,
+              "switch": 0.050793650793650794,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.08143939393939394
+            },
+            "mean": 0.05502308714513886,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              -0.04283434944382657,
+              0.08489166667271242
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.24074074074074078,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.07211538461538462,
+              "nightstand": -0.25,
+              "stool": -0.10714285714285714,
+              "switch": 0.05699855699855701,
+              "tray table": 0.16666666666666666,
+              "utility cart": 0.06893939393939394
+            },
+            "mean": 0.024025813813395514,
+            "recordings": 33
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              -0.07043411079358791,
+              0.05671410455315684
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.2727272727272727,
+              "circuit breaker": 0.21043771043771042,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.0,
+              "nightstand": -0.25,
+              "stool": -0.10714285714285714,
+              "switch": 0.02842712842712843,
+              "tray table": 0.2333333333333333,
+              "utility cart": 0.06893939393939394
+            },
+            "mean": -0.003323226035644338,
+            "recordings": 33
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.020937369293347552,
+              0.06403375606940184
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.041666666666666664,
+              "nightstand": 0.13095238095238096,
+              "stool": 0.07142857142857142,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.05795454545454545
+            },
+            "mean": 0.0412594308694053,
+            "recordings": 33
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.06566732167062515,
+              0.17251559754223864
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.18181818181818182,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.0673076923076923,
+              "nightstand": 0.2976190476190476,
+              "stool": 0.19047619047619047,
+              "switch": 0.06262626262626263,
+              "tray table": 0.0,
+              "utility cart": 0.10795454545454546
+            },
+            "mean": 0.11496782124446232,
+            "recordings": 33
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.10589708550306376,
+              0.21345609925106945
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.36363636363636365,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.13942307692307693,
+              "nightstand": 0.3452380952380952,
+              "stool": 0.19047619047619047,
+              "switch": 0.0911976911976912,
+              "tray table": 0.0,
+              "utility cart": 0.12045454545454545
+            },
+            "mean": 0.15640416268080373,
+            "recordings": 33
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.049566679462512794,
+              0.11688816992738561
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.1818181818181818,
+              "laser scanner": 0.058823529411764705,
+              "motorcycle": 0.09775641025641026,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.047619047619047616,
+              "switch": 0.06897546897546898,
+              "tray table": 0.1,
+              "utility cart": 0.1393939393939394
+            },
+            "mean": 0.08244506945487337,
+            "recordings": 33
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.06274552970631402,
+              0.1384176879765115
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21212121212121213,
+              "laser scanner": 0.08823529411764706,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.06547619047619048,
+              "switch": 0.1196248196248196,
+              "tray table": 0.1,
+              "utility cart": 0.15189393939393941
+            },
+            "mean": 0.10039558299362221,
+            "recordings": 33
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.06274552970631402,
+              0.1384176879765115
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.21212121212121213,
+              "laser scanner": 0.08823529411764706,
+              "motorcycle": 0.1185897435897436,
+              "nightstand": 0.047619047619047616,
+              "stool": 0.06547619047619048,
+              "switch": 0.1196248196248196,
+              "tray table": 0.1,
+              "utility cart": 0.15189393939393941
+            },
+            "mean": 0.10039558299362221,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              0.005489850859096385,
+              0.08496553895450956
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.1818181818181818,
+              "laser scanner": 0.0076726342710997444,
+              "motorcycle": 0.07211538461538462,
+              "nightstand": -0.03571428571428572,
+              "stool": -0.02380952380952381,
+              "switch": 0.050793650793650794,
+              "tray table": 0.1,
+              "utility cart": 0.05416666666666667
+            },
+            "mean": 0.04522696762679712,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              -0.06345033114481109,
+              0.06719318216121287
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.13636363636363635,
+              "laser scanner": 0.0370843989769821,
+              "motorcycle": 0.09294871794871795,
+              "nightstand": -0.2023809523809524,
+              "stool": -0.125,
+              "switch": 0.10144300144300145,
+              "tray table": 0.1,
+              "utility cart": -0.006060606060606065
+            },
+            "mean": 0.004832122820187604,
+            "recordings": 33
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              -0.07427041769406434,
+              0.055953147321167365
+            ],
+            "events": 296,
+            "families": {
+              "belt": -0.09090909090909091,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.0370843989769821,
+              "motorcycle": 0.0673076923076923,
+              "nightstand": -0.2023809523809524,
+              "stool": -0.125,
+              "switch": 0.07287157287157287,
+              "tray table": 0.1,
+              "utility cart": -0.018560606060606062
+            },
+            "mean": -0.005947375459310675,
+            "recordings": 33
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.01603696814694257,
+              0.061839791797432465
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.0,
+              "circuit breaker": 0.0,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.025641025641025644,
+              "nightstand": 0.08333333333333333,
+              "stool": 0.07142857142857142,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.08522727272727272
+            },
+            "mean": 0.03721810182807625,
+            "recordings": 33
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.04523141952889395,
+              0.15484783004364205
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.07575757575757576,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.025641025641025644,
+              "nightstand": 0.25,
+              "stool": 0.19047619047619047,
+              "switch": 0.01818181818181818,
+              "tray table": 0.0,
+              "utility cart": 0.15795454545454546
+            },
+            "mean": 0.0955634601734346,
+            "recordings": 33
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.05379070808418635,
+              0.16742067324548143
+            ],
+            "events": 296,
+            "families": {
+              "belt": 0.09090909090909091,
+              "circuit breaker": 0.10606060606060606,
+              "laser scanner": 0.05115089514066496,
+              "motorcycle": 0.05128205128205129,
+              "nightstand": 0.25,
+              "stool": 0.19047619047619047,
+              "switch": 0.046753246753246755,
+              "tray table": 0.0,
+              "utility cart": 0.17045454545454547
+            },
+            "mean": 0.10634295845293289,
+            "recordings": 33
+          }
+        },
+        "mean_gap_s": 1.8399566263955316,
+        "measured": 62,
+        "measured_groups": 26,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.09316160753376039,
+              0.12076721864401169
+            ],
+            "events": 53,
+            "families": {
+              "belt": 0.39030303030303026,
+              "circuit breaker": 0.10820611699922045,
+              "motorcycle": 0.042328042328042326,
+              "nightstand": 0.02857142857142857,
+              "stool": 0.12678147085171304,
+              "switch": 0.05845693479696349,
+              "tray table": 0.011531441845030695,
+              "utility cart": 0.08918433945721083
+            },
+            "mean": 0.10692035064407995,
+            "recordings": 23
+          },
+          "cells": {
+            "ci95": [
+              38.63185570987654,
+              42.94992283950617
+            ],
+            "events": 62,
+            "families": {
+              "belt": 54.0,
+              "circuit breaker": 40.47222222222222,
+              "laser scanner": 30.0,
+              "motorcycle": 43.0,
+              "nightstand": 34.5,
+              "stool": 48.22,
+              "switch": 38.233333333333334,
+              "tray table": 32.625,
+              "utility cart": 46.229166666666664
+            },
+            "mean": 40.80885802469136,
+            "recordings": 26
+          },
+          "changed": {
+            "ci95": [
+              0.08455244383112015,
+              0.1565435678514061
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.21448275862068966,
+              "circuit breaker": 0.15383619180623065,
+              "laser scanner": 0.1414027149321267,
+              "motorcycle": 0.02647783251231527,
+              "nightstand": 0.17307692307692307,
+              "stool": 0.08549260156039817,
+              "switch": 0.07778846589140706,
+              "tray table": 0.15611397171956176,
+              "utility cart": 0.05082578686574589
+            },
+            "mean": 0.11994413855393311,
+            "recordings": 26
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.04872765941354282,
+              -0.010295776917616331
+            ],
+            "events": 53,
+            "families": {
+              "belt": -0.17582027168234066,
+              "circuit breaker": -0.012548544597462005,
+              "motorcycle": -0.015850209815727056,
+              "nightstand": -0.02857142857142857,
+              "stool": -0.04128886929131487,
+              "switch": 0.010240622003534483,
+              "tray table": 0.06081805131191589,
+              "utility cart": -0.03835855259146495
+            },
+            "mean": -0.030172400404285968,
+            "recordings": 23
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.0066719039445197964,
+              0.04641948425367311
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.057281947261663274,
+              "circuit breaker": 0.04135506365939245,
+              "laser scanner": 0.0789027149321267,
+              "motorcycle": -0.01688642726985496,
+              "nightstand": -0.008173076923076922,
+              "stool": -0.023205957020883988,
+              "switch": -0.030072262648384133,
+              "tray table": 0.12069218629777635,
+              "utility cart": -0.045145757903036376
+            },
+            "mean": 0.019416492265080267,
+            "recordings": 26
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              11.692253254892428,
+              14.989337804697357
+            ],
+            "events": 62,
+            "families": {
+              "belt": 23.395505530366957,
+              "circuit breaker": 14.273516892450933,
+              "laser scanner": 15.252566004047807,
+              "motorcycle": 4.266471181490743,
+              "nightstand": 19.09069025008579,
+              "stool": 11.989568233624475,
+              "switch": 11.976666217671282,
+              "tray table": 9.126912289309717,
+              "utility cart": 10.085389696942798
+            },
+            "mean": 13.27303181066561,
+            "recordings": 26
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.0838016554857564,
+              0.10917786171455592
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.09075071557050031,
+              "circuit breaker": 0.13563362692805783,
+              "laser scanner": 0.1288340429518013,
+              "motorcycle": 0.01766898735901313,
+              "nightstand": 0.1221614106214374,
+              "stool": 0.12870800322166143,
+              "switch": 0.07142731471866216,
+              "tray table": 0.09125845097366794,
+              "utility cart": 0.07414846500722244
+            },
+            "mean": 0.09562122415022488,
+            "recordings": 26
+          },
+          "neutral": {
+            "ci95": [
+              0.07741604868655293,
+              0.12371431753553255
+            ],
+            "events": 62,
+            "families": {
+              "belt": 0.15720081135902636,
+              "circuit breaker": 0.1124811281468382,
+              "laser scanner": 0.0625,
+              "motorcycle": 0.043364259782170234,
+              "nightstand": 0.18125,
+              "stool": 0.10869855858128216,
+              "switch": 0.1078607285397912,
+              "tray table": 0.03542178542178542,
+              "utility cart": 0.09597154476878225
+            },
+            "mean": 0.10052764628885286,
+            "recordings": 26
+          }
+        },
+        "recordings": 47,
+        "word_error": {
+          "small": {
+            "edit_count": 1190,
+            "reference_words": 2548,
+            "wer": 0.46703296703296704
+          },
+          "tiny": {
+            "edit_count": 1915,
+            "reference_words": 2548,
+            "wer": 0.7515698587127159
+          }
+        }
+      },
+      "held": {
+        "candidate_depth": 329,
+        "clear_device": 89,
+        "depth_exclusions": {
+          "depth_age": 1,
+          "large_view_change": 20,
+          "no_attended_surface": 1,
+          "stable_support": 154
+        },
+        "eligible_cues": 435,
+        "eligible_recordings": 48,
+        "explicit_conflicts": 129,
+        "hand_adjacent_isolated": 91,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.06184284943116465,
+              0.11321988404359327
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.060492476525085215,
+              "printer": 0.11285022847522846
+            },
+            "mean": 0.08667135250015684,
+            "recordings": 48
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.14718217207007966,
+              0.22002322330447333
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.19379156471547776,
+              "printer": 0.1726250601250601
+            },
+            "mean": 0.18320831242026892,
+            "recordings": 48
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.16601802346707237,
+              0.24305349447502983
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.2302002948742079,
+              "printer": 0.17857744107744108
+            },
+            "mean": 0.2043888679758245,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.0001965803545287218,
+              0.07626210915443252
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.023379956396260743,
+              "printer": 0.05764189514189513
+            },
+            "mean": 0.040510925769077936,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.03253581607351988,
+              0.12472718253968255
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.08470751772382205,
+              "printer": 0.0771885521885522
+            },
+            "mean": 0.08094803495618713,
+            "recordings": 48
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.024009255828209633,
+              0.12209728300081561
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.08463987703118138,
+              "printer": 0.06243837181337181
+            },
+            "mean": 0.07353912442227659,
+            "recordings": 48
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.02332113921957672,
+              0.07459617444501955
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.03711252012882448,
+              "printer": 0.05520833333333333
+            },
+            "mean": 0.04616042673107891,
+            "recordings": 48
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.06941297191636865,
+              0.13908547904641658
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.10908404699165569,
+              "printer": 0.09543650793650793
+            },
+            "mean": 0.10226027746408181,
+            "recordings": 48
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.09264345300180898,
+              0.1723090089886965
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.14556041784302653,
+              "printer": 0.11613906926406926
+            },
+            "mean": 0.1308497435535479,
+            "recordings": 48
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.035629459547598136,
+              0.08043151739313426
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.039376555409164106,
+              "printer": 0.07455507455507455
+            },
+            "mean": 0.056965814982119334,
+            "recordings": 48
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.09757268433559195,
+              0.16176049280329172
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.13689371719263022,
+              "printer": 0.12111742424242423
+            },
+            "mean": 0.12900557071752722,
+            "recordings": 48
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.11048696642276806,
+              0.178824485636646
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.16205906110797416,
+              "printer": 0.12706980519480518
+            },
+            "mean": 0.14456443315138967,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              -0.013667187532676662,
+              0.05415067715848965
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.010994194010498358,
+              "printer": 0.03323563011063011
+            },
+            "mean": 0.022114912060564235,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              0.014460953511564921,
+              0.10221454647405737
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.07830870820001255,
+              "printer": 0.04254599567099567
+            },
+            "mean": 0.06042735193550411,
+            "recordings": 48
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              0.01046172043284815,
+              0.10128677023208273
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.08443996120626555,
+              "printer": 0.03077200577200577
+            },
+            "mean": 0.05760598348913566,
+            "recordings": 48
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.014764384920634921,
+              0.06198942877271682
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.028382361398665745,
+              "printer": 0.04131944444444444
+            },
+            "mean": 0.03485090292155509,
+            "recordings": 48
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.03844218665040676,
+              0.10338450988926531
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.05858500899261768,
+              "printer": 0.07857142857142857
+            },
+            "mean": 0.06857821878202312,
+            "recordings": 48
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.053417789436811164,
+              0.12421307242978438
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.07761909990170861,
+              "printer": 0.09629779942279942
+            },
+            "mean": 0.08695844966225402,
+            "recordings": 48
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.020712632275132273,
+              0.04895514654176339
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.01923466026726896,
+              "printer": 0.050348725348725344
+            },
+            "mean": 0.034791692807997154,
+            "recordings": 48
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.06095576217009641,
+              0.11096971265449523
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.08874256279147584,
+              "printer": 0.08117033429533428
+            },
+            "mean": 0.08495644854340506,
+            "recordings": 48
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.07720738456641989,
+              0.13285597139877034
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.11113012892904196,
+              "printer": 0.0975393819143819
+            },
+            "mean": 0.10433475542171193,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              -0.026335086763075895,
+              0.03113432216183576
+            ],
+            "events": 435,
+            "families": {
+              "camera": -0.0013434683271639793,
+              "printer": 0.013311688311688311
+            },
+            "mean": 0.005984109992262166,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              -0.007810286156074197,
+              0.05979450136719158
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.046072983980592674,
+              "printer": 0.010436207311207308
+            },
+            "mean": 0.02825459564589999,
+            "recordings": 48
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              -0.007982262617113158,
+              0.06258290477889662
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.05043656021916892,
+              "printer": 0.00833483645983646
+            },
+            "mean": 0.029385698339502688,
+            "recordings": 48
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.010221479971819646,
+              0.05453191497009431
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.02057812859443294,
+              "printer": 0.037037037037037035
+            },
+            "mean": 0.028807582815734988,
+            "recordings": 48
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.03174239973492691,
+              0.0871219334585503
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.04266957881088316,
+              "printer": 0.07073412698412698
+            },
+            "mean": 0.05670185289750507,
+            "recordings": 48
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.04710978100753916,
+              0.10666240971437982
+            ],
+            "events": 435,
+            "families": {
+              "camera": 0.06069356870987306,
+              "printer": 0.08920454545454547
+            },
+            "mean": 0.07494905708220927,
+            "recordings": 48
+          }
+        },
+        "mean_gap_s": 1.6917999999999993,
+        "measured": 153,
+        "measured_groups": 41,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.06829727089411937,
+              0.10989381888205198
+            ],
+            "events": 132,
+            "families": {
+              "camera": 0.06812920993402902,
+              "printer": 0.10918785220287681
+            },
+            "mean": 0.08865853106845292,
+            "recordings": 39
+          },
+          "cells": {
+            "ci95": [
+              37.020077039188884,
+              43.18999035230121
+            ],
+            "events": 153,
+            "families": {
+              "camera": 35.51008771929824,
+              "printer": 44.282846320346316
+            },
+            "mean": 39.89646701982228,
+            "recordings": 41
+          },
+          "changed": {
+            "ci95": [
+              0.06818263239735012,
+              0.11226475629223666
+            ],
+            "events": 153,
+            "families": {
+              "camera": 0.0751698373748559,
+              "printer": 0.10396645806263112
+            },
+            "mean": 0.08956814771874351,
+            "recordings": 41
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.01934500658419248,
+              0.015975167508196306
+            ],
+            "events": 132,
+            "families": {
+              "camera": 0.006127413096208685,
+              "printer": -0.009733196281146743
+            },
+            "mean": -0.0018028915924690287,
+            "recordings": 39
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.01348819275429575,
+              0.030150680161936422
+            ],
+            "events": 153,
+            "families": {
+              "camera": -0.005930457678588435,
+              "printer": 0.021678856912832806
+            },
+            "mean": 0.007874199617122185,
+            "recordings": 41
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              7.000135825325477,
+              9.709186646213626
+            ],
+            "events": 153,
+            "families": {
+              "camera": 5.57097005611196,
+              "printer": 11.024727388070831
+            },
+            "mean": 8.297848722091395,
+            "recordings": 41
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.05211803507884167,
+              0.07797249750140854
+            ],
+            "events": 153,
+            "families": {
+              "camera": 0.034339626135131744,
+              "printer": 0.09528216831894247
+            },
+            "mean": 0.0648108972270371,
+            "recordings": 41
+          },
+          "neutral": {
+            "ci95": [
+              0.06381425765457105,
+              0.10107879322916245
+            ],
+            "events": 153,
+            "families": {
+              "camera": 0.08110029505344434,
+              "printer": 0.08228760114979834
+            },
+            "mean": 0.08169394810162134,
+            "recordings": 41
+          }
+        },
+        "recordings": 48,
+        "word_error": {
+          "small": {
+            "edit_count": 1226,
+            "reference_words": 3595,
+            "wer": 0.34102920723226704
+          },
+          "tiny": {
+            "edit_count": 1933,
+            "reference_words": 3595,
+            "wer": 0.5376912378303199
+          }
+        }
+      },
+      "train": {
+        "candidate_depth": 1239,
+        "clear_device": 0,
+        "depth_exclusions": {
+          "No contemporaneous hand sample": 2,
+          "depth_age": 1,
+          "gaze_invalid": 20,
+          "large_view_change": 139,
+          "no_attended_surface": 12,
+          "stable_support": 610
+        },
+        "eligible_cues": 1878,
+        "eligible_recordings": 205,
+        "explicit_conflicts": 781,
+        "hand_adjacent_isolated": 190,
+        "lexical_horizon": {
+          "human-cue-1": {
+            "ci95": [
+              0.10390011837864577,
+              0.1469884976670726
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.1539072039072039,
+              "circuit breaker": 0.1701953601953602,
+              "coffee": 0.11084960013531443,
+              "computer": 0.08345435196938955,
+              "laser scanner": 0.22170040674446484,
+              "motorcycle": 0.26201291455935416,
+              "nightstand": 0.04372294372294372,
+              "stool": 0.07089598997493733,
+              "switch": 0.08417518134516132,
+              "tray table": 0.11574074074074073,
+              "utility cart": 0.04934802040065198
+            },
+            "mean": 0.12418206488141109,
+            "recordings": 205
+          },
+          "human-cue-3": {
+            "ci95": [
+              0.20046508944449887,
+              0.2548729715307048
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.22553927553927558,
+              "circuit breaker": 0.3013919413919414,
+              "coffee": 0.16280624137766994,
+              "computer": 0.2283899719050095,
+              "laser scanner": 0.3255624972462315,
+              "motorcycle": 0.3377664337726258,
+              "nightstand": 0.11677489177489175,
+              "stool": 0.2382832080200501,
+              "switch": 0.19696407056425647,
+              "tray table": 0.22314814814814815,
+              "utility cart": 0.13712793054898317
+            },
+            "mean": 0.22670496457173483,
+            "recordings": 205
+          },
+          "human-cue-5": {
+            "ci95": [
+              0.23134164624770454,
+              0.28782657642079545
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.2544281644281644,
+              "circuit breaker": 0.3196947496947497,
+              "coffee": 0.186839615411044,
+              "computer": 0.2653478970208294,
+              "laser scanner": 0.3255624972462315,
+              "motorcycle": 0.3568405078466998,
+              "nightstand": 0.12867965367965364,
+              "stool": 0.36701127819548873,
+              "switch": 0.2157917103158093,
+              "tray table": 0.26481481481481484,
+              "utility cart": 0.1656158169316064
+            },
+            "mean": 0.2591478823259174,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-1": {
+            "ci95": [
+              0.061845477499477684,
+              0.10746968401789668
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.13401709401709402,
+              "circuit breaker": 0.11322344322344323,
+              "coffee": 0.0948165591022734,
+              "computer": 0.0501931687082063,
+              "laser scanner": 0.15328788901068016,
+              "motorcycle": 0.22480581481355477,
+              "nightstand": 0.011904761904761904,
+              "stool": -0.01293859649122807,
+              "switch": 0.03493415016048025,
+              "tray table": 0.11574074074074073,
+              "utility cart": 0.0027111046847888946
+            },
+            "mean": 0.08388146635225414,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-3": {
+            "ci95": [
+              0.08111193089473183,
+              0.13980614496385424
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.13332926332926334,
+              "circuit breaker": 0.1707936507936508,
+              "coffee": 0.10782022210593639,
+              "computer": 0.08726022654594084,
+              "laser scanner": 0.16890728651862255,
+              "motorcycle": 0.242930461065136,
+              "nightstand": -0.04031385281385281,
+              "stool": 0.0600877192982456,
+              "switch": 0.05560793968617195,
+              "tray table": 0.187037037037037,
+              "utility cart": 0.035836166757219394
+            },
+            "mean": 0.10993601093848827,
+            "recordings": 205
+          },
+          "human-paired-minus-wrong-5": {
+            "ci95": [
+              0.07970250998049745,
+              0.14091665877837986
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.09825396825396823,
+              "circuit breaker": 0.14498168498168498,
+              "coffee": 0.11347739562025277,
+              "computer": 0.06858648174437647,
+              "laser scanner": 0.14439143507969418,
+              "motorcycle": 0.23571027384494872,
+              "nightstand": -0.059794372294372296,
+              "stool": 0.13552631578947366,
+              "switch": 0.05963542440587635,
+              "tray table": 0.2287037037037037,
+              "utility cart": 0.04076457168562432
+            },
+            "mean": 0.11002153480138466,
+            "recordings": 205
+          },
+          "human-wrong-1": {
+            "ci95": [
+              0.030071416340325795,
+              0.051516252716874766
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.019890109890109888,
+              "circuit breaker": 0.056971916971916975,
+              "coffee": 0.016033041033041033,
+              "computer": 0.03326118326118326,
+              "laser scanner": 0.0684125177337847,
+              "motorcycle": 0.03720709974579943,
+              "nightstand": 0.03181818181818182,
+              "stool": 0.08383458646616541,
+              "switch": 0.049241031184681074,
+              "tray table": 0.0,
+              "utility cart": 0.046636915715863085
+            },
+            "mean": 0.040300598529156975,
+            "recordings": 205
+          },
+          "human-wrong-3": {
+            "ci95": [
+              0.09895815182647118,
+              0.1360498217744316
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.09221001221001221,
+              "circuit breaker": 0.1305982905982906,
+              "coffee": 0.05498601927173356,
+              "computer": 0.1411297453590687,
+              "laser scanner": 0.15665521072760893,
+              "motorcycle": 0.09483597270748975,
+              "nightstand": 0.15708874458874458,
+              "stool": 0.17819548872180452,
+              "switch": 0.14135613087808455,
+              "tray table": 0.036111111111111115,
+              "utility cart": 0.1012917637917638
+            },
+            "mean": 0.11676895363324659,
+            "recordings": 205
+          },
+          "human-wrong-5": {
+            "ci95": [
+              0.12828864352873104,
+              0.1709839837232195
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.15617419617419617,
+              "circuit breaker": 0.17471306471306472,
+              "coffee": 0.07336221979079123,
+              "computer": 0.1967614152764529,
+              "laser scanner": 0.18117106216653725,
+              "motorcycle": 0.12113023400175102,
+              "nightstand": 0.188474025974026,
+              "stool": 0.23148496240601502,
+              "switch": 0.1561562859099329,
+              "tray table": 0.036111111111111115,
+              "utility cart": 0.1248512452459821
+            },
+            "mean": 0.14912634752453277,
+            "recordings": 205
+          },
+          "small-cue-1": {
+            "ci95": [
+              0.0567331554929969,
+              0.08895541013606575
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.08153032153032153,
+              "circuit breaker": 0.12728937728937728,
+              "coffee": 0.04871068085353799,
+              "computer": 0.048492488436097464,
+              "laser scanner": 0.04501977396714238,
+              "motorcycle": 0.13540864478944975,
+              "nightstand": 0.03181818181818182,
+              "stool": 0.07286967418546364,
+              "switch": 0.06322590691154764,
+              "tray table": 0.11574074074074073,
+              "utility cart": 0.019314603525129842
+            },
+            "mean": 0.07176549036790818,
+            "recordings": 205
+          },
+          "small-cue-3": {
+            "ci95": [
+              0.11527756754126516,
+              0.16136232113612065
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.13586487586487586,
+              "circuit breaker": 0.21653235653235653,
+              "coffee": 0.07664907843479273,
+              "computer": 0.12201618695979596,
+              "laser scanner": 0.0981092829270967,
+              "motorcycle": 0.1744343466131392,
+              "nightstand": 0.09981962481962481,
+              "stool": 0.15473057644110275,
+              "switch": 0.13127480416703816,
+              "tray table": 0.21203703703703702,
+              "utility cart": 0.08909438514701672
+            },
+            "mean": 0.13732386863126148,
+            "recordings": 205
+          },
+          "small-cue-5": {
+            "ci95": [
+              0.1383927218728477,
+              0.1884453399950097
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.1580870980870981,
+              "circuit breaker": 0.22483516483516483,
+              "coffee": 0.09036499215070644,
+              "computer": 0.15825261135411509,
+              "laser scanner": 0.0981092829270967,
+              "motorcycle": 0.18960978520963045,
+              "nightstand": 0.11172438672438673,
+              "stool": 0.24771303258145363,
+              "switch": 0.1416914708337048,
+              "tray table": 0.25833333333333336,
+              "utility cart": 0.11056472766999083
+            },
+            "mean": 0.16266235324606187,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-1": {
+            "ci95": [
+              0.02902519446390933,
+              0.06091443536481825
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.05423280423280423,
+              "circuit breaker": 0.0798901098901099,
+              "coffee": 0.04140779855065569,
+              "computer": 0.02388931383292285,
+              "laser scanner": 0.03860951755688598,
+              "motorcycle": 0.10171031697347487,
+              "nightstand": 0.0,
+              "stool": 0.01864035087719298,
+              "switch": 0.026738899806334013,
+              "tray table": 0.1111111111111111,
+              "utility cart": -0.010262033288349078
+            },
+            "mean": 0.04417892632210387,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-3": {
+            "ci95": [
+              0.04307724580925289,
+              0.08822144450013189
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.09380545380545383,
+              "circuit breaker": 0.12041514041514043,
+              "coffee": 0.044508269508269506,
+              "computer": 0.022862322862322863,
+              "laser scanner": 0.06546125027906403,
+              "motorcycle": 0.0914220838214646,
+              "nightstand": 0.010191197691197692,
+              "stool": 0.03640350877192983,
+              "switch": 0.0342625338048679,
+              "tray table": 0.17129629629629628,
+              "utility cart": 0.025583261767472294
+            },
+            "mean": 0.06511011991122538,
+            "recordings": 205
+          },
+          "small-paired-minus-wrong-5": {
+            "ci95": [
+              0.04529319943776532,
+              0.09666642536429708
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.0753968253968254,
+              "circuit breaker": 0.1017948717948718,
+              "coffee": 0.04920172420172421,
+              "computer": 0.0452098583677531,
+              "laser scanner": 0.059050993868807626,
+              "motorcycle": 0.08604196686240032,
+              "nightstand": -0.016865079365079364,
+              "stool": 0.08991228070175439,
+              "switch": 0.03557262722022447,
+              "tray table": 0.2175925925925926,
+              "utility cart": 0.029926871374239796
+            },
+            "mean": 0.07025777572873766,
+            "recordings": 205
+          },
+          "small-wrong-1": {
+            "ci95": [
+              0.019498245633199,
+              0.03670422751501375
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.027297517297517296,
+              "circuit breaker": 0.04739926739926739,
+              "coffee": 0.0073028823028823036,
+              "computer": 0.0246031746031746,
+              "laser scanner": 0.00641025641025641,
+              "motorcycle": 0.03369832781597488,
+              "nightstand": 0.03181818181818182,
+              "stool": 0.05422932330827067,
+              "switch": 0.03648700710521363,
+              "tray table": 0.004629629629629629,
+              "utility cart": 0.02957663681347892
+            },
+            "mean": 0.027586564045804327,
+            "recordings": 205
+          },
+          "small-wrong-3": {
+            "ci95": [
+              0.05809820617758235,
+              0.0885234857646212
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.042059422059422064,
+              "circuit breaker": 0.09611721611721612,
+              "coffee": 0.03214080892652321,
+              "computer": 0.09915386409747315,
+              "laser scanner": 0.03264803264803265,
+              "motorcycle": 0.08301226279167455,
+              "nightstand": 0.08962842712842713,
+              "stool": 0.11832706766917292,
+              "switch": 0.09701227036217025,
+              "tray table": 0.040740740740740744,
+              "utility cart": 0.06351112337954443
+            },
+            "mean": 0.07221374872003611,
+            "recordings": 205
+          },
+          "small-wrong-5": {
+            "ci95": [
+              0.07521902084258043,
+              0.11116982361420367
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.08269027269027268,
+              "circuit breaker": 0.12304029304029303,
+              "coffee": 0.041163267948982236,
+              "computer": 0.11304275298636203,
+              "laser scanner": 0.03905828905828906,
+              "motorcycle": 0.1035678183472301,
+              "nightstand": 0.12858946608946606,
+              "stool": 0.15780075187969925,
+              "switch": 0.10611884361348034,
+              "tray table": 0.040740740740740744,
+              "utility cart": 0.08063785629575104
+            },
+            "mean": 0.09240457751732424,
+            "recordings": 205
+          },
+          "tiny-cue-1": {
+            "ci95": [
+              0.03280354970450504,
+              0.0517926736518528
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.02936507936507936,
+              "circuit breaker": 0.11808302808302808,
+              "coffee": 0.033631315774172915,
+              "computer": 0.025351302137016425,
+              "laser scanner": 0.012236473536783135,
+              "motorcycle": 0.07749714595689827,
+              "nightstand": 0.027056277056277056,
+              "stool": 0.042606516290726815,
+              "switch": 0.042827594554568235,
+              "tray table": 0.027777777777777776,
+              "utility cart": 0.024915143336195968
+            },
+            "mean": 0.04194069580622946,
+            "recordings": 205
+          },
+          "tiny-cue-3": {
+            "ci95": [
+              0.07627793955317476,
+              0.11201606834851162
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.06919413919413918,
+              "circuit breaker": 0.15487789987789988,
+              "coffee": 0.0700353218210361,
+              "computer": 0.06290680219251647,
+              "laser scanner": 0.03820862845630647,
+              "motorcycle": 0.10114402868659834,
+              "nightstand": 0.11605339105339103,
+              "stool": 0.1167919799498747,
+              "switch": 0.0890638180469416,
+              "tray table": 0.12407407407407407,
+              "utility cart": 0.08775559236085552
+            },
+            "mean": 0.09364597051942124,
+            "recordings": 205
+          },
+          "tiny-cue-5": {
+            "ci95": [
+              0.08963462944495394,
+              0.12769000158599753
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.09141636141636142,
+              "circuit breaker": 0.160006105006105,
+              "coffee": 0.08375123553694983,
+              "computer": 0.07877981806553234,
+              "laser scanner": 0.03820862845630647,
+              "motorcycle": 0.10465280061642292,
+              "nightstand": 0.12795815295815297,
+              "stool": 0.1580200501253133,
+              "switch": 0.09427215138027495,
+              "tray table": 0.14722222222222223,
+              "utility cart": 0.10112234256971099
+            },
+            "mean": 0.10776453348666838,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-1": {
+            "ci95": [
+              0.007759322720027762,
+              0.030354864779700955
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.024603174603174603,
+              "circuit breaker": 0.09554334554334555,
+              "coffee": 0.019979227122084265,
+              "computer": 0.0007481275338418211,
+              "laser scanner": 0.002977214277523875,
+              "motorcycle": 0.05832503266713793,
+              "nightstand": 0.015151515151515152,
+              "stool": 0.012061403508771927,
+              "switch": 0.006741228474995637,
+              "tray table": 0.0,
+              "utility cart": -0.027411769517032673
+            },
+            "mean": 0.01897440903321437,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-3": {
+            "ci95": [
+              0.019209271661192365,
+              0.053728548911344064
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.04385836385836385,
+              "circuit breaker": 0.10498778998778999,
+              "coffee": 0.031611444111444106,
+              "computer": -0.011231799389694123,
+              "laser scanner": 0.01684110708878511,
+              "motorcycle": 0.05054819206134996,
+              "nightstand": 0.034433621933621934,
+              "stool": 0.04583333333333334,
+              "switch": 0.01259595846087551,
+              "tray table": 0.07407407407407408,
+              "utility cart": -0.004363983969247127
+            },
+            "mean": 0.03628982741369969,
+            "recordings": 205
+          },
+          "tiny-paired-minus-wrong-5": {
+            "ci95": [
+              0.017979160109911314,
+              0.05644973457628494
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.054652014652014635,
+              "circuit breaker": 0.09387667887667889,
+              "coffee": 0.04166435416435416,
+              "computer": -0.00863717179506653,
+              "laser scanner": 0.010430850678528699,
+              "motorcycle": 0.054056963991174524,
+              "nightstand": 0.03118686868686869,
+              "stool": 0.04364035087719298,
+              "switch": 0.011987192227109273,
+              "tray table": 0.08333333333333333,
+              "utility cart": -0.011594180673128042
+            },
+            "mean": 0.03678156863809642,
+            "recordings": 205
+          },
+          "tiny-wrong-1": {
+            "ci95": [
+              0.015470383268004725,
+              0.031219957560972154
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.0047619047619047615,
+              "circuit breaker": 0.02253968253968254,
+              "coffee": 0.013652088652088652,
+              "computer": 0.0246031746031746,
+              "laser scanner": 0.009259259259259259,
+              "motorcycle": 0.01917211328976035,
+              "nightstand": 0.011904761904761904,
+              "stool": 0.030545112781954886,
+              "switch": 0.0360863660795726,
+              "tray table": 0.027777777777777776,
+              "utility cart": 0.052326912853228644
+            },
+            "mean": 0.02296628677301509,
+            "recordings": 205
+          },
+          "tiny-wrong-3": {
+            "ci95": [
+              0.043929516548269175,
+              0.07230835972157348
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.025335775335775336,
+              "circuit breaker": 0.04989010989010989,
+              "coffee": 0.03842387770959199,
+              "computer": 0.0741386015822106,
+              "laser scanner": 0.021367521367521368,
+              "motorcycle": 0.050595836625248386,
+              "nightstand": 0.0816197691197691,
+              "stool": 0.07095864661654135,
+              "switch": 0.07646785958606611,
+              "tray table": 0.05,
+              "utility cart": 0.09211957633010263
+            },
+            "mean": 0.05735614310572152,
+            "recordings": 205
+          },
+          "tiny-wrong-5": {
+            "ci95": [
+              0.05551261213190006,
+              0.08834149285502928
+            ],
+            "events": 1878,
+            "families": {
+              "belt": 0.03676434676434677,
+              "circuit breaker": 0.06612942612942614,
+              "coffee": 0.042086881372595655,
+              "computer": 0.08741698986059887,
+              "laser scanner": 0.027777777777777776,
+              "motorcycle": 0.050595836625248386,
+              "nightstand": 0.09677128427128427,
+              "stool": 0.1143796992481203,
+              "switch": 0.08228495915316568,
+              "tray table": 0.06388888888888888,
+              "utility cart": 0.11271652324283905
+            },
+            "mean": 0.07098296484857199,
+            "recordings": 205
+          }
+        },
+        "mean_gap_s": 2.0428004252786995,
+        "measured": 455,
+        "measured_groups": 170,
+        "quality": {
+          "background_changed": {
+            "ci95": [
+              0.10235997703566012,
+              0.14404108796017548
+            ],
+            "events": 373,
+            "families": {
+              "belt": 0.087371897643677,
+              "circuit breaker": 0.14938563228532714,
+              "coffee": 0.11700719917945636,
+              "computer": 0.19034268637053448,
+              "laser scanner": 0.10718503960820303,
+              "motorcycle": 0.13721053166343103,
+              "nightstand": 0.14825613763921952,
+              "stool": 0.08755768355520162,
+              "switch": 0.06922268313411656,
+              "tray table": 0.11209382588955759,
+              "utility cart": 0.14273125171834392
+            },
+            "mean": 0.12257859715336984,
+            "recordings": 150
+          },
+          "cells": {
+            "ci95": [
+              36.60133319600223,
+              40.3144821838515
+            ],
+            "events": 455,
+            "families": {
+              "belt": 43.313333333333325,
+              "circuit breaker": 34.74634920634921,
+              "coffee": 35.15555555555556,
+              "computer": 43.0468253968254,
+              "laser scanner": 40.46212121212121,
+              "motorcycle": 29.607142857142858,
+              "nightstand": 32.22222222222222,
+              "stool": 43.21354166666667,
+              "switch": 38.74444444444445,
+              "tray table": 41.78888888888889,
+              "utility cart": 39.175555555555555
+            },
+            "mean": 38.31599821264594,
+            "recordings": 170
+          },
+          "changed": {
+            "ci95": [
+              0.10155669471911438,
+              0.15157061222252102
+            ],
+            "events": 455,
+            "families": {
+              "belt": 0.11957857619453452,
+              "circuit breaker": 0.15123270725938454,
+              "coffee": 0.10601824765122324,
+              "computer": 0.20423780253072954,
+              "laser scanner": 0.23134420572402287,
+              "motorcycle": 0.053383929092773785,
+              "nightstand": 0.10743268896436883,
+              "stool": 0.09050079694677682,
+              "switch": 0.09043672824301034,
+              "tray table": 0.10237453943695335,
+              "utility cart": 0.12894943838190928
+            },
+            "mean": 0.12595360549324425,
+            "recordings": 170
+          },
+          "foreground_minus_background_changed": {
+            "ci95": [
+              -0.030858605851967844,
+              0.002046574395618644
+            ],
+            "events": 373,
+            "families": {
+              "belt": 0.021536302186174933,
+              "circuit breaker": -0.0019132883645195148,
+              "coffee": -0.03527192073373282,
+              "computer": 0.0033052877067252296,
+              "laser scanner": -0.016281928505565722,
+              "motorcycle": -0.07126281000756543,
+              "nightstand": -0.02420372908546991,
+              "stool": -0.021170171803017553,
+              "switch": 0.03415075647765197,
+              "tray table": -0.05011601144312228,
+              "utility cart": -0.0030041305992897015
+            },
+            "mean": -0.014930149470157346,
+            "recordings": 150
+          },
+          "foreground_minus_neutral": {
+            "ci95": [
+              -0.0053301360202969925,
+              0.047772982456543635
+            ],
+            "events": 455,
+            "families": {
+              "belt": -0.020137599047607292,
+              "circuit breaker": 0.05916785258023129,
+              "coffee": 0.004770005126337714,
+              "computer": 0.09043691213148755,
+              "laser scanner": 0.15419389871517528,
+              "motorcycle": -0.05135586752277445,
+              "nightstand": 0.026493710011727685,
+              "stool": 0.0015955035353088058,
+              "switch": -0.010547998943478314,
+              "tray table": -0.07385952817206834,
+              "utility cart": 0.042748930046009194
+            },
+            "mean": 0.020318710769122648,
+            "recordings": 170
+          },
+          "head_rotation_deg": {
+            "ci95": [
+              10.908193137896998,
+              12.649305036955239
+            ],
+            "events": 455,
+            "families": {
+              "belt": 15.499409270391762,
+              "circuit breaker": 11.181298516212133,
+              "coffee": 8.910044078462935,
+              "computer": 13.829235961419464,
+              "laser scanner": 14.117678016157752,
+              "motorcycle": 11.734675660519303,
+              "nightstand": 10.027796612663181,
+              "stool": 15.942806763501356,
+              "switch": 5.350318359294261,
+              "tray table": 9.657292549034713,
+              "utility cart": 13.109252915293705
+            },
+            "mean": 11.75998260935914,
+            "recordings": 170
+          },
+          "head_shift_m": {
+            "ci95": [
+              0.08938584653992059,
+              0.10566577650082197
+            ],
+            "events": 455,
+            "families": {
+              "belt": 0.09498966632147203,
+              "circuit breaker": 0.13673636184897597,
+              "coffee": 0.07399648066774112,
+              "computer": 0.10302663971436507,
+              "laser scanner": 0.13266607283287374,
+              "motorcycle": 0.093941522275922,
+              "nightstand": 0.06961626790856014,
+              "stool": 0.12448648212703832,
+              "switch": 0.04585028528423744,
+              "tray table": 0.08972543636221732,
+              "utility cart": 0.10615663856309136
+            },
+            "mean": 0.09738107762786313,
+            "recordings": 170
+          },
+          "neutral": {
+            "ci95": [
+              0.09266990972088071,
+              0.1192023625940671
+            ],
+            "events": 455,
+            "families": {
+              "belt": 0.13971617524214178,
+              "circuit breaker": 0.09206485467915325,
+              "coffee": 0.10124824252488554,
+              "computer": 0.113800890399242,
+              "laser scanner": 0.07715030700884759,
+              "motorcycle": 0.10473979661554823,
+              "nightstand": 0.08093897895264114,
+              "stool": 0.08890529341146801,
+              "switch": 0.10098472718648867,
+              "tray table": 0.1762340676090217,
+              "utility cart": 0.08620050833590007
+            },
+            "mean": 0.10563489472412163,
+            "recordings": 170
+          }
+        },
+        "recordings": 256,
+        "word_error": {
+          "small": {
+            "edit_count": 8025,
+            "reference_words": 17065,
+            "wer": 0.4702607676530911
+          },
+          "tiny": {
+            "edit_count": 11553,
+            "reference_words": 17065,
+            "wer": 0.676999707002637
+          }
+        }
+      }
+    }
+  },
+  "manual_audit": {
+    "A": 17,
+    "B": 18,
+    "D": 156,
+    "H": 17,
+    "O": 13,
+    "U": 38
+  },
+  "primary_new_recordings": 96
+}
