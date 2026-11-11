@@ -143,6 +143,33 @@ def verify_all():
     print("Independent checkpoint readback", len(x), flush=True)
 
 
+def publish(revision):
+    """Keep the exact Git experiment tree with the weights and queue it for the same verified Drive uploader."""
+    import re
+    import tarfile
+
+    if not re.fullmatch(r"[0-9a-f]{40}", revision or ""):
+        raise ValueError("Expected a full Git revision")
+    file = ROOT / "staging" / ("g13-results-" + revision + ".tar.gz")
+    with tarfile.open(file, "r:gz") as archive:
+        names = set(archive.getnames())
+        report = "experiments/multimodal/t13/grounded-transfer-20261111/report.md"
+        if (
+            report not in names
+            or report.replace("report.md", "metrics/release.json") not in names
+        ):
+            raise ValueError("Incomplete public results archive")
+    h = sha(file)
+    for root in bases():
+        dest = root / "published"
+        copy_file(file, dest / file.name, h)
+        write(
+            dest / "verified.json",
+            {file.name: dict(sha256=h, bytes=file.stat().st_size, commit=revision)},
+        )
+    print("Published tree mirrored", revision, h, flush=True)
+
+
 def drive():
     from colab_artifacts import put_verified
 
@@ -160,7 +187,7 @@ def drive():
             for f in sorted((base / group).glob("*/step-*/verified.json")):
                 for name, h in json.loads(f.read_bytes())["sha256"].items():
                     objects[str((f.parent / name).relative_to(base))] = h
-        for group in ("inputs", "transfer", "inference"):
+        for group in ("inputs", "transfer", "inference", "published"):
             f = base / group / "verified.json"
             if f.exists():
                 for n, m in json.loads(f.read_bytes()).items():
@@ -215,6 +242,10 @@ def drive():
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("stage", choices=("snapshot", "verify", "drive"))
+    p.add_argument("stage", choices=("snapshot", "verify", "drive", "publish"))
+    p.add_argument("--revision")
     a = p.parse_args()
-    {"snapshot": snapshot, "verify": verify_all, "drive": drive}[a.stage]()
+    if a.stage == "publish":
+        publish(a.revision)
+    else:
+        {"snapshot": snapshot, "verify": verify_all, "drive": drive}[a.stage]()
