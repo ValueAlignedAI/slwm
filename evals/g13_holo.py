@@ -6,8 +6,8 @@ from evals.g13_stats import Groups
 from scripts.train.g9_storage import write
 from scripts.train.g13_holo import CORES,SEEDS,nll
 
-def main():
-    root=Path("/mnt/slwm-data/SLWM/g13");work=root/"work/holo";out=root/"release/metrics";out.mkdir(exist_ok=True,parents=True)
+def main(clean=False):
+    root=Path("/mnt/slwm-data/SLWM/g13");work=root/"work"/("holo-clean" if clean else "holo");out=root/"release/metrics";out.mkdir(exist_ok=True,parents=True)
     doc={"data":json.loads((work/"complete.json").read_bytes()),"runs":{},"controls":{}}
     compact={}
     with np.load(work/"predictions.npz") as z:
@@ -33,11 +33,13 @@ def main():
                         for old in ("parent","small"):
                             if old!=arm:entry[arm]["vs_"+old]=gains(m["correct"],metric(z[tag+"_"+old+"_correct"]))
                     doc["runs"][tag]=entry
-    np.savez_compressed(out/"holo-predictions.npz",**compact);write(out/"holo.json",doc)
+    np.savez_compressed(out/("holo-clean-predictions.npz" if clean else "holo-predictions.npz"),**compact);write(out/("holo-clean.json" if clean else "holo.json"),doc)
     for f in "AB":
         cells=[v for k,v in doc["runs"].items() if k.startswith(f)]
         print(f,doc["controls"][f]["ordered"]["value"],{a:round(np.mean([x[a]["absolute"]["ordered"]["value"] for x in cells]),3) for a in ("parent","shrink","small","expanded")},
               "better NLL than parent",sum(x["expanded"]["vs_parent"]["nll"]["lo"]>0 for x in cells),"of",len(cells),flush=True)
 
 
-if __name__=="__main__":main()
+if __name__=="__main__":
+    import argparse
+    p=argparse.ArgumentParser();p.add_argument("--quarantine",action="store_true");main(p.parse_args().quarantine)

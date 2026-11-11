@@ -84,9 +84,12 @@ def combine(parent,prior,lex,w,b):
     p=base*(np.maximum(lex,1e-8)/prior[None])**b
     return p/p.sum(-1,keepdims=True)
 
-def main(action):
-    dest=ROOT/"work/holo";dest.mkdir(exist_ok=True,parents=True)
+def main(action,quarantine=False):
+    dest=ROOT/"work"/("holo-clean" if quarantine else "holo");dest.mkdir(exist_ok=True,parents=True)
     extra=json.loads((ROOT/"data/holo/extra-language.json").read_bytes())
+    if quarantine:
+        blocked=set(n for names in json.loads((ROOT/"data/components/groups.json").read_bytes()).values() for n in names)
+        extra={n:r for n,r in extra.items() if n not in blocked}
     roles=json.loads((OLD/"data/groups.json").read_bytes())
     families={"A":{"coffee","computer"},"B":{"printer","camera"}}
     recipes={};summary={};outputs={}
@@ -139,4 +142,4 @@ def main(action):
         np.savez_compressed(dest/"predictions.npz",**outputs);write(dest/"complete.json",summary)
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("phase",choices=("develop","test"));a=p.parse_args();main(a.phase)
+    p=argparse.ArgumentParser();p.add_argument("phase",choices=("develop","test"));p.add_argument("--quarantine",action="store_true");a=p.parse_args();main(a.phase,a.quarantine)
