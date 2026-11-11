@@ -32,7 +32,7 @@ def get_schema():
 
 
 def unpack_source(raw):
-    data=base64.b64decode(raw,validate=True)
+    data=base64.b64decode(raw+b"="*((-len(raw))%4),altchars=b"-_",validate=True)
     mark=re.search(rb"\x2a\x20([a-f0-9]{32})$",data)
     if not mark:raise ValueError("Missing parent ID in the released episode key")
     return mark[1].decode()
@@ -52,9 +52,11 @@ def episode(buf):
 
 
 def source_records(path):
-    import google_crc32c
+    import ctypes
+    checksum=ctypes.CDLL("libcrc32c.so.1").crc32c_value
+    checksum.argtypes=[ctypes.c_char_p,ctypes.c_size_t];checksum.restype=ctypes.c_uint32
     def masked(buf):
-        crc=google_crc32c.value(buf);return (((crc>>15)|(crc<<17))+0xa282ead8)&0xffffffff
+        crc=checksum(buf,len(buf));return (((crc>>15)|(crc<<17))+0xa282ead8)&0xffffffff
     with path.open("rb") as fh:
         while True:
             offset=fh.tell();header=fh.read(12)
