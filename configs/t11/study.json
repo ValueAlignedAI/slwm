@@ -1,0 +1,49 @@
+{
+  "study": "G11",
+  "base": "90f00f7b93114897038308d20ee52b2fd9d21e86",
+  "seeds": [
+    1001,
+    1002,
+    1003
+  ],
+  "cores": [
+    "hybrid",
+    "gpt2",
+    "gated"
+  ],
+  "folds": {
+    "A": [
+      "coffee",
+      "computer"
+    ],
+    "B": [
+      "printer",
+      "camera"
+    ]
+  },
+  "train_per_fold": 256,
+  "fresh_per_device": 24,
+  "field": 128,
+  "native_clock_hz": 10,
+  "prefix_ticks": 32,
+  "speech_frames": 16,
+  "guard_s": 0.2,
+  "max_wait_s": 8,
+  "physical_cap_per_recording": 8,
+  "physical_window_radius_m": 0.1,
+  "depth_change_m": 0.025,
+  "asr_model": "openai/whisper-tiny.en",
+  "asr_revision": "87c7102498dcde7456f24cfd30239ca606ed9063",
+  "treatments": [
+    "paired",
+    "deranged",
+    "absent"
+  ],
+  "updates": 1024,
+  "batch": 128,
+  "adapter_rank": 16,
+  "bootstrap": 4000,
+  "prior_owned_units": 46.15995692341765,
+  "wave_cap": 23,
+  "source": "https://holoassist.github.io/"
+}
