@@ -16,6 +16,7 @@ from pathlib import Path
 import numpy as np
 import requests
 
+from data.g10_language import text_features
 from g10_holo_index import ARCHIVES, BASE, fetch
 from g9_recordings import spectrum
 
@@ -57,18 +58,6 @@ def choose(pool, count, used):
         if before == len(chosen):
             raise ValueError(f"Too few disjoint eligible recordings for {count}")
     return chosen
-
-
-def text_features(sentence):
-    tokens = re.findall(r"[\w']+", sentence.casefold())
-    grams = ["w:" + s for s in tokens] + ["b:" + a + " " + b for a,b in zip(tokens,tokens[1:])]
-    chars = " "+" ".join(tokens)+" "
-    grams += ["c:"+chars[i:i+3] for i in range(len(chars)-2)]
-    out = np.zeros(128, np.float32)
-    for gram in grams:
-        h = int.from_bytes(hashlib.blake2s(gram.encode(),digest_size=4).digest(),"little")
-        out[h%128] += 1 if h & 128 else -1
-    return np.rint(127*out/max(1.,np.linalg.norm(out))).astype(np.int8)
 
 
 def role_lists(root, labels, sources):

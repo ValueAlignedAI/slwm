@@ -19,13 +19,14 @@ def add_edges(base,spec,seed):
     return p
 
 
-def encode_record(p,spec,rows,keep):
+def encode_record(p,spec,rows,keep,*,memory=None,offset=0,with_memory=False):
     dtype=getattr(jnp,spec.dtype)
     language=rows["x"].astype(dtype)/127
     motion=rows["m"].astype(dtype)
     extra=(language@p["utterance_edge"].astype(dtype))*keep[:,3,None,None]
     extra=extra+(motion@p["motion_edge"].astype(dtype))*keep[:,1,None,None]
-    return encode(p,spec,rows,keep,window=512,edge_residual=extra)[0]
+    result=encode(p,spec,rows,keep,window=512,edge_residual=extra,memory=memory,offset=offset)
+    return result if with_memory else result[0]
 
 
 def from_indices(bank,ix,previous):

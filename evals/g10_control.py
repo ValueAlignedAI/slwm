@@ -24,7 +24,7 @@ def live_kernel(spec,mode,changes,batch,instruction):
     def run(p,seed):
         ids=jnp.arange(batch);st,goals,signs,notes,_=schedule(ids,seed,changes);image=camera(st["stations"],st["tint"])
         template=initial_memory(spec,batch,limit) if mode not in ("raw","idle") else ()
-        visible=brief_visibility(goals) if instruction=="brief" else jnp.full(goals.shape,instruction=="continuous")
+        visible=brief_visibility(goals) if instruction in ("brief","latched") else jnp.full(goals.shape,instruction=="continuous")
         keep=jnp.ones((batch,4),bool)
         def tick(c,item):
             state,mem,estimated,seen,remembered=c;t,goal,sign,notice,show=item
@@ -33,7 +33,7 @@ def live_kernel(spec,mode,changes,batch,instruction):
             remembered=jnp.where(show[:,None],obs["w"],remembered)
             ref,estimated,seen=raw({**obs,"w":remembered},estimated,seen&~notice)
             ref=jnp.where(remembered[:,2]>0,ref,0)
-            obs={**obs,"w":jnp.where(show[:,None],obs["w"],jnp.zeros_like(obs["w"]))}
+            obs={**obs,"w":remembered if instruction=="latched" else jnp.where(show[:,None],obs["w"],jnp.zeros_like(obs["w"]))}
             if mode=="raw": action=ref
             elif mode=="idle": action=jnp.zeros(batch,jnp.int32)
             else:
