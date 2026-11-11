@@ -32,8 +32,12 @@ def read_bank(banks,fold,role,physical=True):
     return d,sem
 
 
-def parent(runs,core,seed):
-    path=runs/f"context-{core}-variable-s{seed}"/"step-05120"
+def parent(runs,core,seed,family="main"):
+    if family=="main":
+        path=runs/f"context-{core}-variable-s{seed}"/"step-05120"
+    else:
+        size={"small":"exposure","large":"confirm"}[family]
+        path=runs/f"{size}-{core}-z128-gelu-s{seed}-fresh"/"step-04096"
     meta=json.loads((path/"receipt.json").read_text())
     with (path/"weights.npz").open("rb") as f:
         if hashlib.file_digest(f,"sha256").hexdigest()!=meta["inference_sha256"]:raise ValueError("Parent identity mismatch")
@@ -52,7 +56,7 @@ def kernel(s,mode,nv,nn,physical):
     return jax.jit(step,donate_argnums=(0,1,2))
 
 
-def run(banks,parents,out,fold,seeds,cores,treatments,phase):
+def run(banks,parents,out,fold,seeds,cores,treatments,phase,family="main"):
     physical=phase=="joint";values,sem=read_bank(banks,fold,"train",physical);vocab=json.loads((banks/(fold+"-vocabulary.json")).read_text())
     nv=len(vocab["verb"]);nn=len(vocab["noun"])
     if nv>64 or nn>256:raise ValueError("Ontology exceeds registered head capacity")
@@ -64,9 +68,9 @@ def run(banks,parents,out,fold,seeds,cores,treatments,phase):
     ci,bg,gi,sem,scale=map(jax.device_put,(ci,bg,gi,sem,scale));until=1024 if physical else 256
     for seed in seeds:
         for core in cores:
-            meta,base,s=parent(parents,core,seed)
+            meta,base,s=parent(parents,core,seed,family)
             for treatment in treatments:
-                tag=f"g11-{fold}-{core}-{treatment}-s{seed}";job=out/tag
+                tag=(f"g11-{fold}-{core}-{treatment}-s{seed}" if family=="main" else f"g11s-{fold}-{family}-{core}-{treatment}-s{seed}");job=out/tag
                 if (job/f"step-{until:05d}/receipt.json").exists():continue
                 recipe=dict(tag=tag,fold=fold,core=core,seed=seed,treatment=treatment,goal_steps=1024,spec=asdict(s),
                     parent_sha256=meta["inference_sha256"],active_parent_parameters=meta["trainable_parameters"],source_bank_sha256=json.loads((banks/(fold+"-train.json")).read_text())["sha256"],
@@ -91,6 +95,6 @@ def run(banks,parents,out,fold,seeds,cores,treatments,phase):
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("banks",type=Path);p.add_argument("parents",type=Path);p.add_argument("out",type=Path);p.add_argument("phase",choices=("action","joint"))
     p.add_argument("--folds",nargs="+",default=["A","B"]);p.add_argument("--seeds",nargs="+",type=int,default=[1001,1002,1003]);p.add_argument("--cores",nargs="+",default=["hybrid","gpt2","gated"])
-    p.add_argument("--treatments",nargs="+",default=list(TREATMENTS));p.add_argument("--cache");a=p.parse_args()
+    p.add_argument("--family",choices=("main","small","large"),default="main");p.add_argument("--treatments",nargs="+",default=list(TREATMENTS));p.add_argument("--cache");a=p.parse_args()
     if a.cache:jax.config.update("jax_compilation_cache_dir",a.cache)
-    for f in a.folds:run(a.banks,a.parents,a.out,f,a.seeds,a.cores,a.treatments,a.phase)
+    for f in a.folds:run(a.banks,a.parents,a.out,f,a.seeds,a.cores,a.treatments,a.phase,a.family)

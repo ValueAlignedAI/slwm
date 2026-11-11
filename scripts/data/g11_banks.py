@@ -82,8 +82,7 @@ def build_effect(root):
     for p in (dest/"base-ready",physical/"complete",strong/"complete"):
         if not p.exists():raise ValueError("Effect or secondary speech is not ready: "+str(p))
     docs={};features={};ss={}
-    for meta in sorted(dest.glob("[AB]-*.json")):
-        if "vocabulary" in meta.name:continue
+    for meta in [dest/f"{fold}-{role}.json" for fold in ("A","B") for role in ("train","dev","held","familiar")]:
         d=json.loads(meta.read_text());rows=d["rows"];n=len(rows);geo=np.zeros((n,201),np.float32);y=np.zeros((n,3),np.float32)
         valid=np.zeros(n,bool);strict=np.zeros(n,bool);motion=np.zeros(n,np.float32);neutral=np.zeros(n,np.float32);background=np.full(n,np.nan,np.float32)
         small=np.zeros((n,128),np.int8);wrong=np.zeros_like(small)
