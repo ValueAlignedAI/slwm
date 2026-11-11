@@ -1,8 +1,12 @@
 # SLWM
 
-SLWM tests whether a shared predictive state can carry useful knowledge between text, audio, video, numeric observations and actions. The matched experiments give a recurrent–attention hybrid and a dense GPT-2-style Transformer the same training examples and parameter count within each comparison. The newest study varies the emitted state between 128 and 512 coordinates. The original SLWM-124M target and larger fit checks are documented separately. [Architecture](docs/model_spec.md)
+SLWM tests whether a shared predictive state can carry useful knowledge between text, audio, video, numeric observations and actions. The matched experiments give a recurrent–attention hybrid and a dense GPT-2-style Transformer the same training examples and parameter count within each comparison. Earlier studies varied the emitted state between 128 and 512 coordinates. G12 holds the emitted field at 128 while changing the processor and its width. The original SLWM-124M target and larger fit checks are documented separately. [Architecture](docs/model_spec.md)
 
 ## Verified studies
+
+### G12 spoken action sequences and directly visible device changes
+
+On 373 fresh decisions from 48 unseen-family recordings, zero of 24 primary comparisons reliably benefited from correct speech over both an earlier same-scene directive and silence. Blind review yielded 77 directly visible device outcomes. Early joint training improved ordered accuracy in 28 of 48 paired comparisons. Widening the oscillatory processor improved printer/camera accuracy by 5.4 and 2.8 points in two seeds. Coffee/computer did not reproduce this gain. The release includes 112 matched fits, 24 runnable models and four chronological replays totaling 603 seconds. [G12 findings](experiments/multimodal/t12/instruction-sequences-20261111/report.md) · [Run inference](experiments/multimodal/t12/instruction-sequences-20261111/inference/README.md) · [Listen to the speech interventions](experiments/multimodal/t12/instruction-sequences-20261111/examples/README.md)
 
 ### G11 spoken instructions and physical effects on unseen devices
 
