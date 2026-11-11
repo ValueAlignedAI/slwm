@@ -1,0 +1,53 @@
+{
+  "early": {
+    "routed": false,
+    "scores": {
+      "directpath": {
+        "included": [
+          "initial/geometry/base/0/directpath/oracle/camera/carry",
+          "initial/gpt2/protected/1411/directpath/oracle/camera/carry",
+          "initial/transport/protected/1411/directpath/oracle/camera/carry"
+        ],
+        "mm": 67.08276272684364,
+        "success": 0.4419191919191919
+      },
+      "routed": {
+        "included": [
+          "initial/geometry/base/0/routed/oracle/camera/carry",
+          "initial/gpt2/protected/1411/routed/oracle/camera/carry",
+          "initial/transport/protected/1411/routed/oracle/camera/carry"
+        ],
+        "mm": 80.83218016874544,
+        "success": 0.4025252525252525
+      }
+    },
+    "starts": 32
+  },
+  "isolated": {
+    "directpath": {
+      "families": 3,
+      "groups": 32,
+      "hi": 0.4929356233294433,
+      "lo": 0.34620582033724834,
+      "n": 32,
+      "value": 0.41994949494949496
+    },
+    "routed": {
+      "families": 3,
+      "groups": 32,
+      "hi": 0.46969698525499554,
+      "lo": 0.34722223472781477,
+      "n": 32,
+      "value": 0.4073232323232323
+    }
+  },
+  "isolated_direct_over_routed": {
+    "families": 3,
+    "groups": 32,
+    "hi": 0.0702020227909088,
+    "lo": -0.04520202210793892,
+    "n": 32,
+    "value": 0.012626262626262626
+  },
+  "policy_changed": false
+}

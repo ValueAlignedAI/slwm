@@ -1,6 +1,5 @@
 """Render the registered, paired physical controls and their uncertainty as a scientific figure."""
 
-import argparse
 import json
 from pathlib import Path
 import matplotlib

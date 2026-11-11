@@ -154,7 +154,7 @@ def main(repo):
         "",
         "## Ongoing operations and real records",
         "",
-        f"Six original human instructions arrived during each of 16 continuous missions lasting {min(mission['durations']):.1f}–{max(mission['durations']):.1f} seconds. The controller continued executing its previous goal while the next recording played. The same table, contacts and actuator history persisted throughout each mission. Only the explicit memory controls reset or ignore the goal. Goal retention here is implemented by the controller. The learned core receives four recent frames. [Mission protocol](missions.md) · [Measured mission outcomes](metrics/missions.json) · [Watch and replay](examples/README.md)",
+        f"Six original human instructions arrived during each of 16 continuous missions lasting {min(mission['durations']):.1f}–{max(mission['durations']):.1f} seconds. The controller continued executing its previous goal while the next recording played. Recorded speech posteriors were cached and released only after the complete waveform had elapsed on the simulation clock. An independent CPU/CUDA waveform replay checks the speech edge. The same table, contacts and actuator history persisted throughout each mission. Only the explicit memory controls reset or ignore the goal. Goal retention here is implemented by the controller. The learned core receives four recent frames. [Mission protocol](missions.md) · [Measured mission outcomes](metrics/missions.json) · [Watch and replay](examples/README.md)",
         "",
         "| Mission policy | Selective placement | Arrival | Final target error |",
         "|---|---:|---:|---:|",
@@ -198,7 +198,7 @@ def main(repo):
     examples = [
         "# Sustained spoken tabletop control",
         "",
-        "Both examples run the locked spatial model at seed 1411. They were selected by fixed mission index before their outcomes were observed. Each starts from an independently seeded scene. Six genuine human utterances arrive during continuous contact simulation. The view is sampled once per 300 ms macro, the physics clock runs at 10 Hz, and the file carries the original audio on its simulation clock. The overlaid named stations are part of the public map.",
+        "Both examples run the locked spatial model at seed 1411. They were selected by fixed mission index before their outcomes were observed. Each starts from an independently seeded scene. Six genuine human utterances arrive during continuous contact simulation. The view is sampled once per 300 ms macro, the physics clock runs at 10 Hz, and the file carries the original audio on its simulation clock. The controller receives each cached decoder result only after that recording finishes. The overlaid named stations are part of the public map.",
         "",
     ]
     for name, v in r["movies"].items():
