@@ -4,6 +4,10 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G14 spoken goals and continuous tabletop control
+
+A pretrained speech edge raised exact three-field recognition from 54.6% to 96.3% on two newly acquired speakers. Four real training recordings reduced 0.8-second actuator prediction error from 34.09 to 5.55 mm and from 30.18 to 5.14 mm on two real cohorts. Real-only fitting on those four recordings reached the same rounded errors. The next comparison executes spoken goals from identical simulator states with three matched dense and spatial models. [Speech and physical transfer](experiments/multimodal/t14/spoken-closed-loop-20261111/speech-and-transfer.md) · [Original speech inference](experiments/multimodal/t14/spoken-closed-loop-20261111/inference/README.md) · [Registered physical comparison](experiments/multimodal/t14/spoken-closed-loop-20261111/design.md)
+
 ### G13 grounded physical transfer
 
 On a preregistered cohort of 3,368 real robot trajectories, the 700k-parameter spatial SLWM beat matched dense GPT-2 on four-command prediction by 4.07 mm (99% interval 3.31–4.85), with all five seeds favoring SLWM. On a fourth independent acquisition, a direct 128-coordinate readout combining a raw proposal with the learned field improved raw error from 96.97 to 94.37 mm; dense GPT-2 reached 94.35 mm with the same process. Preserving lexical knowledge also improved natural spoken component retrieval on held devices. G13 includes 182 fits, verified CPU/CUDA speech inference and three uninterrupted real-robot streams. [Full findings](experiments/multimodal/t13/grounded-transfer-20261111/report.md) · [Prospective comparison](experiments/multimodal/t13/grounded-transfer-20261111/prospective-findings.md) · [Run the models](experiments/multimodal/t13/grounded-transfer-20261111/inference/README.md)

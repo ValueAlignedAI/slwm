@@ -1,0 +1,7 @@
+# Physical proposal gate
+
+The first 32 development worlds exposed a gap between short-horizon prediction and control. With the transcript supplied, the vision-based geometry policy achieved 54.8% selective success. The protected seed-1411 spatial and dense models reached 43.6% and 34.2%, respectively. The short-horizon learned raw controller reached 6.4%. These are development results.
+
+After selecting one common training distribution, test a second way to use a learned proposal. A geometric controller approaches the object. The learned model can change its push once the effector is within 85 mm behind to 12 mm ahead of the block, lateral error is within 27 mm, and the nearest distractor is over 50 mm away. The field chooses among six directed proposals. The ordinary 14 mm terminal no-op gate stays active. Compare the same intervention on both architectures and all three seeds. Select full-scene or contact-only control on pooled development selective success, then final distance. Include a hand-written fast-in-contact policy and a raw learner with the same gate in the held panel.
+
+Preserve a full end-to-end geometric-control arm with the original speech encoder. Report the probability gate's contribution using a separately executed open-confidence geometric diagnostic. The choice to add that diagnostic followed the frozen encoder's acoustic acceptance counts and precedes all held physical rollouts.
