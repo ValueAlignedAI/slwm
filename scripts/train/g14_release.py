@@ -100,6 +100,7 @@ def assemble():
             ROOT / "work/throughput-post.json",
             ROOT / "work/training-transfer.json",
             ROOT / "work/source-sensitivity.json",
+            ROOT / "release/metrics/held-prediction.json",
         ]
     )
     out = ROOT / "release"

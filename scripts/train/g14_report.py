@@ -203,6 +203,83 @@ def main(repo):
     source_note = f"The 1,280 scheduled commands use {cover['held']['distinct_scheduled_recordings']+cover['fresh']['distinct_scheduled_recordings']} distinct original recordings. All exact evaluated sentences and speakers are absent from the local fit. A secondary analysis that reweights both individual recordings and their physical starts gives spatial-minus-dense selective differences of {points(ss['held']['selective']['spatial_minus_dense'])} and {points(ss['fresh']['selective']['spatial_minus_dense'])} points. The contact-randomized family was represented in the continuation data. The held shifts draw new instances within that family. [Source coverage and secondary interval](source-coverage.md) · [Crossed-factor results](metrics/source-sensitivity.json)"
     pos = report.index("## How the model was trained and selected")
     report[pos:pos] = [source_note, ""]
+    forecast = load("metrics/held-prediction.json")
+    fm = [
+        "## Can the field forecast contact on new worlds?",
+        "",
+        f"An independent forward-prediction panel executed {forecast['macro_alternatives']:,} alternative pushes across {forecast['states']:,} contexts on {forecast['worlds']} new worlds. In {forecast['moving_requested_object_alternatives']:,} alternatives the requested block moved at least 5 mm in 300 ms. The predictors received the intended object and station explicitly. The table reports error on measured motion and the return lost by choosing a candidate instead of the best of eight under the fixed 1.5-second continuation.",
+        "",
+        "| Predictor | All four blocks, mm | Requested block, mm | Requested block when moving, mm | Delayed regret, mm-equivalent |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for k, l in (
+        ("persistence-nominal", "Persistence and nominal control"),
+        ("raw", "Raw linear response"),
+        ("gpt2", "Dense, mean of seeds"),
+        ("transport", "Spatial, mean of seeds"),
+    ):
+        fm.append(
+            table(
+                [
+                    l,
+                    *[
+                        f"{forecast['scores'][k][v]['value']:.2f}"
+                        for v in (
+                            "all_blocks_mm",
+                            "requested_block_mm",
+                            "moving_requested_block_mm",
+                            "long_regret_mm",
+                        )
+                    ],
+                ]
+            )
+        )
+    c = forecast["comparisons"]["spatial_over_dense"]["moving_requested_block_mm"]
+    fm += [
+        "",
+        f"The paired dense-minus-spatial error on moving targets was {c['value']:+.2f} mm (95% interval {c['lo']:+.2f} to {c['hi']:+.2f}). These are component forecasts from the frozen heads. The primary placement comparisons measure the committed system. [Independent fork protocol](held-prediction.md) · [All effects and paired intervals](metrics/held-prediction.json) · [Measured and predicted displacements](metrics/held-physics-predictions.npz)",
+        "",
+    ]
+    at = report.index("## How the model was trained and selected")
+    report[at:at] = fm
+    calls = []
+    for role in ("held", "fresh"):
+        vals = [
+            v
+            for k, v in groups[role]["neural_call_fraction"].items()
+            if k.startswith(stage + "/transport/protected/")
+            and "/speech/camera/carry" in k
+            and "/mean_field" not in k
+        ]
+        if len(vals) != 3:
+            raise ValueError("Expected the three ordinary spatial policies")
+        calls.append(100 * sum(vals) / len(vals))
+    extra = [
+        f"The spatial model's learned candidate head ran on {calls[0]:.1f}% of the eight-speaker clocks and {calls[1]:.1f}% of the fresh-speaker clocks, averaged across seeds. The other clocks followed the explicit approach, goal or absence rule.",
+        "",
+        "| Held cohort and physical condition | Spatial SLWM | Dense | Geometric feedback |",
+        "|---|---:|---:|---:|",
+    ]
+    for role, n in (("held", "8 speakers"), ("fresh", "2 speakers")):
+        for flag, name in (
+            ("False", "nominal"),
+            ("True", "mass, friction and shape reassigned"),
+        ):
+            v = groups[role]["selective_by_shift"][flag]
+            extra.append(
+                table(
+                    [
+                        n + ", " + name,
+                        *[
+                            f"{100*v[k]:.1f}%"
+                            for k in ("transport", "gpt2", "geometry")
+                        ],
+                    ]
+                )
+            )
+    extra.append("")
+    pos = report.index("## Which inputs and computations changed physical success?")
+    report[pos:pos] = extra
     for name, label in (
         ("geometry-carry", "Geometry, retained goal"),
         ("dense-carry", "Dense, retained goal"),
@@ -226,7 +303,7 @@ def main(repo):
         "",
         f"On already satisfied goals the spatial controller emitted zero movement on {100*mission['already_at_goal_noop_fraction']['spatial']:.1f}% of the tested decision clocks. The explicit absence control did so on {100*mission['already_at_goal_noop_fraction']['absent']:.1f}%. Across 768 acoustic input/map challenges the fixed speech gate made zero unsupported commits, including actual recordings naming an unsupported white block. It also rejected 41 valid, correctly decoded commands on the two new speakers. [Acoustic abstention and distinct waveform counts](abstention.md)",
         "",
-        "Two reuse cohorts of real robot recordings separately measured a four-step, 0.8-second actuator forecast. Four genuine training parents reduced simulation-initialized error from 34.09 to 5.55 mm and from 30.18 to 5.14 mm. Real-only fitting with the same four parents reached the same rounded errors. The counterfactual placement scores above come from the official simulator. The prerecorded real cohorts measure effector response under observed controls. [Real calibration curves](speech-and-transfer.md) · [Original Language-Table simulator](https://github.com/google-research/language-table)",
+        "Two previously released cohorts of real robot recordings separately measured a four-step, 0.8-second actuator forecast. Four genuine training parents reduced simulation-initialized error from 34.09 to 5.55 mm and from 30.18 to 5.14 mm. Real-only fitting with the same four parents reached the same rounded errors. The counterfactual placement scores above come from the official simulator. The prerecorded real cohorts measure effector response under observed controls. [Real calibration curves](speech-and-transfer.md) · [Original Language-Table simulator](https://github.com/google-research/language-table)",
         "",
         "## Compute, scope and next experiment",
         "",
@@ -254,6 +331,8 @@ def main(repo):
             f"- [{name} · {v['seconds']:.1f} seconds]({name}.mp4) · [Native positions, applied controls and retained goals]({name}.npz)"
         )
     examples += [
+        "",
+        f"Across 96 instructed phases the retained-goal spatial and dense policies each completed {round(96*mission['performance']['spatial-carry']['success']['value'])} selective placements. Geometric feedback completed {round(96*mission['performance']['geometry-carry']['success']['value'])}. The paired spatial gain over geometry was {points(mission['spatial_over']['geometry-carry'])} percentage points.",
         "",
         "[Every mission and cue outcome](mission-outcomes.json) · [48 full native held trajectories](native-traces.npz) · [Independent replay audit](../metrics/trajectory-replay.json)",
         "",
