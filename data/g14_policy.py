@@ -115,7 +115,7 @@ def loaded(stage, core, arm, seed):
     return ref, delayed, read(file), entry
 
 
-def choose(table, obs, c, target, policy, variant, linger=0):
+def choose(table, obs, c, target, policy, variant, linger=0, loader=loaded):
     kind = policy["core"]
     routed = bool(policy.get("routed", False))
     distance = float(np.linalg.norm(obs["q"][c] - target)) if c >= 0 else 0.0
@@ -142,7 +142,7 @@ def choose(table, obs, c, target, policy, variant, linger=0):
             return acts[1], dict(route="plan", chosen=1)
         if kind == "contact_speed":
             return acts[3], dict(route="plan", chosen=3)
-    ref, delayed, model, entry = loaded(
+    ref, delayed, model, entry = loader(
         policy.get("stage", "initial"),
         kind,
         policy.get("arm", "protected"),

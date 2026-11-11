@@ -8,7 +8,7 @@ import sys
 import cv2
 import numpy as np
 from data.g14_table import Table,ROOT,TOL,OTHER,CHUNK,LIMIT,COLORS,typed,options,geometric,utility,evaluate_path
-from g14_runtime import json_file
+from scripts.data.g14_runtime import json_file
 
 def obs_pack(table):
     h=table.history
