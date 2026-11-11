@@ -1,0 +1,154 @@
+[
+  {
+    "family": "coffee",
+    "mode": "true",
+    "transcribed": "and the other black thing that's undone.",
+    "acoustic_mae": 0.005201376974582672,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 151.5,
+      "route": "internal_only"
+    },
+    "prepared_output": {
+      "second": 151.5,
+      "route": "internal_only"
+    }
+  },
+  {
+    "family": "coffee",
+    "mode": "foil",
+    "transcribed": "Maybe we'll delete the delay.",
+    "acoustic_mae": 0.007255822420120239,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 151.5,
+      "route": "device_change",
+      "device_change": false,
+      "change_probability": 0.020198319107294083
+    },
+    "prepared_output": {
+      "second": 151.5,
+      "route": "device_change",
+      "device_change": false,
+      "change_probability": 0.02120525948703289
+    }
+  },
+  {
+    "family": "computer",
+    "mode": "true",
+    "transcribed": "Come on.",
+    "acoustic_mae": 0.008328691124916077,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 25.0,
+      "route": "internal_only"
+    },
+    "prepared_output": {
+      "second": 25.0,
+      "route": "internal_only"
+    }
+  },
+  {
+    "family": "computer",
+    "mode": "foil",
+    "transcribed": "You gotta squeeze the...",
+    "acoustic_mae": 0.009703397750854492,
+    "text_feature_agreement": 0.8860544217687075,
+    "same_routing": true,
+    "public_output": {
+      "second": 25.0,
+      "route": "internal_only"
+    },
+    "prepared_output": {
+      "second": 25.0,
+      "route": "internal_only"
+    }
+  },
+  {
+    "family": "camera",
+    "mode": "true",
+    "transcribed": "What is the turn on the GoPro?",
+    "acoustic_mae": 0.02402649074792862,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 135.5,
+      "route": "internal_only"
+    },
+    "prepared_output": {
+      "second": 135.5,
+      "route": "internal_only"
+    }
+  },
+  {
+    "family": "camera",
+    "mode": "foil",
+    "transcribed": "Next up is to change the micro-saysi part.",
+    "acoustic_mae": 0.014133550226688385,
+    "text_feature_agreement": 0.9268707482993197,
+    "same_routing": true,
+    "public_output": {
+      "second": 135.5,
+      "route": "actions",
+      "actions": [
+        "grab",
+        "grab",
+        "grab"
+      ]
+    },
+    "prepared_output": {
+      "second": 135.5,
+      "route": "actions",
+      "actions": [
+        "grab",
+        "grab",
+        "grab"
+      ]
+    }
+  },
+  {
+    "family": "printer",
+    "mode": "true",
+    "transcribed": "What the hell?",
+    "acoustic_mae": 0.007666110992431641,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 81.4,
+      "route": "actions",
+      "actions": [
+        "grab",
+        "grab",
+        "grab"
+      ]
+    },
+    "prepared_output": {
+      "second": 81.4,
+      "route": "actions",
+      "actions": [
+        "grab",
+        "grab",
+        "grab"
+      ]
+    }
+  },
+  {
+    "family": "printer",
+    "mode": "foil",
+    "transcribed": "Oh dear.",
+    "acoustic_mae": 0.016605600714683533,
+    "text_feature_agreement": 1.0,
+    "same_routing": true,
+    "public_output": {
+      "second": 81.4,
+      "route": "internal_only"
+    },
+    "prepared_output": {
+      "second": 81.4,
+      "route": "internal_only"
+    }
+  }
+]

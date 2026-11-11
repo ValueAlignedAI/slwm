@@ -1,0 +1,59 @@
+{
+  "project_limit": 600,
+  "prior_owned_units": 46.15995692341765,
+  "owned_units": 0,
+  "cumulative_owned_units": 46.15995692341765,
+  "remaining_credits": 553.8400430765823,
+  "all_owned_released": true,
+  "retries": [
+    {
+      "attempt": 1,
+      "started": 1794403587.885369,
+      "ended": 1794403762.689489,
+      "hardware": "v6e1",
+      "result": "service unavailable"
+    },
+    {
+      "attempt": 2,
+      "started": 1794404122.802488,
+      "ended": 1794404365.0612988,
+      "hardware": "v6e1",
+      "result": "timeout"
+    },
+    {
+      "attempt": 3,
+      "started": 1794404725.18107,
+      "ended": 1794404801.629672,
+      "hardware": "v6e1",
+      "result": "service unavailable"
+    },
+    {
+      "attempt": 4,
+      "started": 1794405161.7532532,
+      "ended": 1794405237.464652,
+      "hardware": "v6e1",
+      "result": "service unavailable"
+    },
+    {
+      "ended": 1794406065.305505,
+      "hardware": "v6e1",
+      "result": "timeout",
+      "started": 1794405797.730767
+    },
+    {
+      "ended": 1794406411.23015,
+      "hardware": "v6e1",
+      "result": "service unavailable",
+      "started": 1794406205.31099
+    }
+  ],
+  "official_client": "google-colab-cli 0.8.0",
+  "lane": {
+    "assigned": false,
+    "reason": "unassigned",
+    "released": true,
+    "steps": []
+  },
+  "hardware": "Fedora RTX 3090",
+  "accounting": "Only named G12 assignments, metered by active endpoint duration and reported rate."
+}
