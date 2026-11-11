@@ -1,0 +1,272 @@
+{
+  "feature_sha": "9eca2e79c7ba87d6e8010aaebf25195f09b780297dbe6875743a698bd0f13268",
+  "runs": {
+    "masked-1301": {
+      "curve": [
+        {
+          "accuracy": 0.8647169863647296,
+          "nll": 0.3681868612766266,
+          "raw_accuracy": 0.8841886269070736,
+          "seconds": 1.9292135629948461,
+          "step": 128
+        },
+        {
+          "accuracy": 0.9427697690782505,
+          "nll": 0.1502629816532135,
+          "raw_accuracy": 0.9597780859916782,
+          "seconds": 0.2586084270005813,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9494205651950905,
+          "nll": 0.16317471861839294,
+          "raw_accuracy": 0.9660194174757282,
+          "seconds": 0.33753042900934815,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.9427697690782505,
+        "nll": 0.1502629816532135,
+        "raw_accuracy": 0.9597780859916782,
+        "seconds": 0.2586084270005813,
+        "step": 512
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 512,
+      "tag": "masked-1301",
+      "test": {
+        "accuracy": 0.9341281534130059,
+        "nll": 0.16728100180625916,
+        "raw_accuracy": 0.9560707748627212
+      },
+      "weights_sha": "47162638cc55c38d6436f0bfbe0dcca01ac620e9f4a870969216c89bfbcefef4"
+    },
+    "masked-1302": {
+      "curve": [
+        {
+          "accuracy": 0.9080675977895911,
+          "nll": 0.2989867925643921,
+          "raw_accuracy": 0.9181692094313454,
+          "seconds": 0.08812369700171985,
+          "step": 128
+        },
+        {
+          "accuracy": 0.9486828628290115,
+          "nll": 0.1484615057706833,
+          "raw_accuracy": 0.963245492371706,
+          "seconds": 0.2527645189984469,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9555065031346938,
+          "nll": 0.13360461592674255,
+          "raw_accuracy": 0.9674063800277393,
+          "seconds": 0.3357339119975222,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.9555065031346938,
+        "nll": 0.13360461592674255,
+        "raw_accuracy": 0.9674063800277393,
+        "seconds": 0.3357339119975222,
+        "step": 1024
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 1024,
+      "tag": "masked-1302",
+      "test": {
+        "accuracy": 0.9552996855212049,
+        "nll": 0.1261942982673645,
+        "raw_accuracy": 0.9713239780353874
+      },
+      "weights_sha": "d454372bd28b397ddb46549334de582452972687f6c4e4afcae7e2f53db7bba2"
+    },
+    "masked-1303": {
+      "curve": [
+        {
+          "accuracy": 0.8827082625847558,
+          "nll": 0.3400347828865051,
+          "raw_accuracy": 0.90499306518724,
+          "seconds": 0.08881378099613357,
+          "step": 128
+        },
+        {
+          "accuracy": 0.9487538626571832,
+          "nll": 0.15688765048980713,
+          "raw_accuracy": 0.9576976421636616,
+          "seconds": 0.25484392000362277,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9509221120470273,
+          "nll": 0.12943372130393982,
+          "raw_accuracy": 0.9639389736477115,
+          "seconds": 0.3409199199959403,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.9509221120470273,
+        "nll": 0.12943372130393982,
+        "raw_accuracy": 0.9639389736477115,
+        "seconds": 0.3409199199959403,
+        "step": 1024
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 1024,
+      "tag": "masked-1303",
+      "test": {
+        "accuracy": 0.949560417087255,
+        "nll": 0.14503969252109528,
+        "raw_accuracy": 0.9652226967663209
+      },
+      "weights_sha": "49a78670aefad9c22de2fd815192fd8c16e5e69b992ee52c06833f5f87d9e9df"
+    },
+    "plain-1301": {
+      "curve": [
+        {
+          "accuracy": 0.9087467154219968,
+          "nll": 0.26598334312438965,
+          "raw_accuracy": 0.9403606102635229,
+          "seconds": 9.917860005007242,
+          "step": 128
+        },
+        {
+          "accuracy": 0.93819013272567,
+          "nll": 0.1781897097826004,
+          "raw_accuracy": 0.9618585298196949,
+          "seconds": 0.2650211779982783,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9537959146404648,
+          "nll": 0.17442573606967926,
+          "raw_accuracy": 0.9667128987517337,
+          "seconds": 0.3391255680035101,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.9537959146404648,
+        "nll": 0.17442573606967926,
+        "raw_accuracy": 0.9667128987517337,
+        "seconds": 0.3391255680035101,
+        "step": 1024
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 1024,
+      "tag": "plain-1301",
+      "test": {
+        "accuracy": 0.9480550482194137,
+        "nll": 0.16882023215293884,
+        "raw_accuracy": 0.9652226967663209
+      },
+      "weights_sha": "abf5a264cbb014e232292a7a67c0e6dab798586a1070db4917b4cd8ee46d2a38"
+    },
+    "plain-1302": {
+      "curve": [
+        {
+          "accuracy": 0.9196839824302985,
+          "nll": 0.2556469440460205,
+          "raw_accuracy": 0.9389736477115118,
+          "seconds": 0.08715084500727244,
+          "step": 128
+        },
+        {
+          "accuracy": 0.95130877705985,
+          "nll": 0.14373616874217987,
+          "raw_accuracy": 0.9694868238557559,
+          "seconds": 0.2566458279907238,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9530732024294256,
+          "nll": 0.15726110339164734,
+          "raw_accuracy": 0.9687933425797504,
+          "seconds": 0.3404738190001808,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.95130877705985,
+        "nll": 0.14373616874217987,
+        "raw_accuracy": 0.9694868238557559,
+        "seconds": 0.2566458279907238,
+        "step": 512
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 512,
+      "tag": "plain-1302",
+      "test": {
+        "accuracy": 0.9490058653956769,
+        "nll": 0.14042651653289795,
+        "raw_accuracy": 0.9621720561317877
+      },
+      "weights_sha": "b0fdd1d28050474ea2a97a5e89c49e79e4c1c44f6bf9f832213a55d3b244d6c3"
+    },
+    "plain-1303": {
+      "curve": [
+        {
+          "accuracy": 0.928971548562727,
+          "nll": 0.24646198749542236,
+          "raw_accuracy": 0.9466019417475728,
+          "seconds": 0.08836280800460372,
+          "step": 128
+        },
+        {
+          "accuracy": 0.945669547495575,
+          "nll": 0.1508149355649948,
+          "raw_accuracy": 0.957004160887656,
+          "seconds": 0.2593487819976872,
+          "step": 512
+        },
+        {
+          "accuracy": 0.9465550905597943,
+          "nll": 0.14822648465633392,
+          "raw_accuracy": 0.9667128987517337,
+          "seconds": 0.3443371409957763,
+          "step": 1024
+        }
+      ],
+      "dev": {
+        "accuracy": 0.9465550905597943,
+        "nll": 0.14822648465633392,
+        "raw_accuracy": 0.9667128987517337,
+        "seconds": 0.3443371409957763,
+        "step": 1024
+      },
+      "device_kind": "NVIDIA GeForce RTX 3090",
+      "parameters": 73884,
+      "selected": 1024,
+      "tag": "plain-1303",
+      "test": {
+        "accuracy": 0.9455751071274573,
+        "nll": 0.20932190120220184,
+        "raw_accuracy": 0.9603416717510678
+      },
+      "weights_sha": "2ca95df62f5a00de3d26d5830d03f15f436a5da730f17a6ddd36515b03ffa22f"
+    }
+  },
+  "selected": "masked-1303",
+  "speaker_split": {
+    "dev": {
+      "clips": 1442,
+      "speakers": 233
+    },
+    "test": {
+      "clips": 1639,
+      "speakers": 229
+    },
+    "train": {
+      "clips": 12138,
+      "speakers": 1906
+    }
+  }
+}

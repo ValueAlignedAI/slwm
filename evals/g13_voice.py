@@ -111,9 +111,10 @@ def readout(train,dev,y,v,gr,gd):
 def filetag(tag,target,arm):return tag+"_"+target+"_"+arm+".npz"
 
 
-def main(phase):
-    folder=ROOT/"work/voice";folder.mkdir(exist_ok=True);(folder/"probes").mkdir(exist_ok=True)
-    sp=np.load(ROOT/"data/speech/directions.npz");post=np.load(ROOT/"work/speech/posterior.npz")["p"]
+def main(phase,portable=False):
+    speech=ROOT/"work"/("speech-portable" if portable else "speech")
+    folder=ROOT/"work"/("voice-portable" if portable else "voice");folder.mkdir(exist_ok=True);(folder/"probes").mkdir(exist_ok=True)
+    sp=np.load(ROOT/"data/speech/directions.npz");post=np.load(speech/"posterior.npz")["p"]
     axis=calibration();docs=[d for d in records("repaired") if d["recipe"]=="anchored"];specs={};results={};predictions={}
     if phase=="develop":
         col={r:collection(r,False,sp,post,axis) for r in ("train","dev")}
@@ -125,7 +126,7 @@ def main(phase):
                     fit,meta=readout(ft["train"]["correct"][arm],ft["dev"]["correct"][arm],col["train"][3][y],col["dev"][3][y],col["train"][4]["groups"],col["dev"][4]["groups"])
                     name=filetag("audio-only" if arm=="audio" else tag,y,arm);path=folder/"probes"/name;save_npz(path,fit)
                     specs[name]=dict(**meta,sha256=sha(path))
-        write(folder/"lock.json",dict(axis=axis.tolist(),probes=specs,selected_speech=json.loads((ROOT/"work/speech/results.json").read_bytes())["selected"]))
+        write(folder/"lock.json",dict(axis=axis.tolist(),probes=specs,selected_speech=json.loads((speech/"results.json").read_bytes())["selected"]))
     else:
         lock=json.loads((folder/"lock.json").read_bytes())
         if not np.allclose(lock["axis"],axis):raise ValueError("Training-only camera orientation changed")
@@ -151,9 +152,9 @@ def main(phase):
                            actual_wrong=bs.score(hit["correct"]-hit["wrong"]),actual_silent=bs.score(hit["correct"]-hit["none"]),
                            actual_wrong_by_speaker=voice.score(hit["correct"]-hit["wrong"]),
                            strict_actual_wrong=bs.score(np.where(meta["strict"],hit["correct"]-hit["wrong"],np.nan)) if target=="object" else None)
-        out=ROOT/"release/metrics";write(out/"voice-transfer.json",results);np.savez_compressed(out/"voice-cases.npz",**predictions)
+        out=ROOT/"release/metrics";write(out/("voice-portable-transfer.json" if portable else "voice-transfer.json"),results);np.savez_compressed(out/("voice-portable-cases.npz" if portable else "voice-cases.npz"),**predictions)
     print("Completed controlled-voice phase",phase,flush=True)
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("phase",choices=("develop","confirm"));a=p.parse_args()
-    jax.config.update("jax_compilation_cache_dir",str(ROOT/"cache"));main(a.phase)
+    p=argparse.ArgumentParser();p.add_argument("phase",choices=("develop","confirm"));p.add_argument("--portable",action="store_true");a=p.parse_args()
+    jax.config.update("jax_compilation_cache_dir",str(ROOT/"cache"));main(a.phase,a.portable)

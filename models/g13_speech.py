@@ -15,10 +15,21 @@ def init(seed):
     return p
 
 
-def predict(p,x):
+def patch_convolution(x,weight):
+    # Explicit TF-style SAME padding and cross-correlation keep single-clip CPU/CUDA semantics identical.
+    h,w=x.shape[1:3];kh,kw=weight.shape[:2];oh,ow=(h+1)//2,(w+1)//2
+    ph=max(0,(oh-1)*2+kh-h);pw=max(0,(ow-1)*2+kw-w)
+    pad=jnp.pad(x,((0,0),(ph//2,ph-ph//2),(pw//2,pw-pw//2),(0,0)))
+    patches=jnp.stack([pad[:,i:i+2*oh:2,j:j+2*ow:2,:] for i in range(kh) for j in range(kw)],axis=3)
+    flat=patches.reshape(x.shape[0],oh,ow,-1);kernel=weight.reshape(flat.shape[-1],-1)
+    return jnp.einsum("bhwc,cd->bhwd",flat,kernel,precision=jax.lax.Precision.HIGHEST)
+
+
+def predict(p,x,portable=False):
     x=x[:,:,:,None].astype(jnp.float32)
     for i in range(3):
-        x=jax.lax.conv_general_dilated(x,p["c"+str(i)],(2,2),"SAME",dimension_numbers=("NHWC","HWIO","NHWC"))+p["b"+str(i)]
+        weight=p["c"+str(i)]
+        x=(patch_convolution(x,weight) if portable else jax.lax.conv_general_dilated(x,weight,(2,2),"SAME",dimension_numbers=("NHWC","HWIO","NHWC")))+p["b"+str(i)]
         mu=x.mean((1,2),keepdims=True);var=((x-mu)**2).mean((1,2),keepdims=True)
         x=jax.nn.gelu((x-mu)*jax.lax.rsqrt(var+1e-4))
     z=jnp.tanh(x.mean(1).reshape(len(x),320)@p["field"])
