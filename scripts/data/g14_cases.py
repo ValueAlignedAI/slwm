@@ -12,7 +12,7 @@ def decode(pc, pl, pd, addresses):
     weights = np.asarray([pl[a] * pd[b] for a, b in addresses])
     scaled = weights / max(1e-10, weights.sum())
     slot = int(weights.argmax())
-    color = int(pc.argmax())
+    color = int(np.argmax(pc))
     confidence = float(pc[color] * (0.7 * scaled[slot] + 0.3 * np.sqrt(weights[slot])))
     return color, slot, confidence
 

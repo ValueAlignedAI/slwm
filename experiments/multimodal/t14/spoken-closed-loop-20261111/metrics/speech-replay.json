@@ -1,0 +1,52 @@
+{
+  "clip": {
+    "clip": "bbai6p",
+    "person": 33,
+    "seed": 260000,
+    "source": "s33.mpg_vcd.zip",
+    "transcript": "bin blue at i six please"
+  },
+  "encoder": {
+    "clock_ms": 32,
+    "edge": "openai/whisper-small.en",
+    "encoder_parameters": 88154112,
+    "projection_seed": 141077,
+    "revision": "e8727524f962ee844a7319d92be39ac1bd25655a"
+  },
+  "original_waveform": "790477d441d66c6224b6e41132cf73ed16aa4a32b9b6ad296eda5010c4482a5c",
+  "results": {
+    "cpu": {
+      "accepted": true,
+      "color": 1,
+      "confidence": 0.9984267354011536,
+      "station": 0,
+      "unconstrained": [
+        "blue",
+        "i",
+        "six"
+      ]
+    },
+    "cuda": {
+      "accepted": true,
+      "color": 1,
+      "confidence": 0.9984254240989685,
+      "station": 0,
+      "unconstrained": [
+        "blue",
+        "i",
+        "six"
+      ]
+    },
+    "features": {
+      "accepted": true,
+      "color": 1,
+      "confidence": 0.9983054995536804,
+      "station": 0,
+      "unconstrained": [
+        "blue",
+        "i",
+        "six"
+      ]
+    }
+  }
+}

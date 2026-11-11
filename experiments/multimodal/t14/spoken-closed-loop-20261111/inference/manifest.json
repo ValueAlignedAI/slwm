@@ -1,0 +1,37 @@
+{
+  "encoder": {
+    "clock_ms": 32,
+    "edge": "openai/whisper-small.en",
+    "encoder_parameters": 88154112,
+    "projection_seed": 141077,
+    "revision": "e8727524f962ee844a7319d92be39ac1bd25655a"
+  },
+  "example": {
+    "clip": "bbai6p",
+    "person": 33,
+    "seed": 260000,
+    "source": "s33.mpg_vcd.zip",
+    "transcript": "bin blue at i six please"
+  },
+  "files": {
+    "cue-features.npz": {
+      "bytes": 15224,
+      "sha256": "a38d889e7f6f7bc6139eb8081b55b6a0299a0707d2aeb3d86a2e4b76f6418221"
+    },
+    "normalizer.npz": {
+      "bytes": 183690,
+      "sha256": "837b63ece2e23767e6bfa33687614de819af72dba9312a06e10d71e0ca5f6259"
+    },
+    "speech.npz": {
+      "bytes": 681347,
+      "sha256": "2722742e6e95b7b717a8cb3322209a4ecd88d596f091de887d04531cef4b9bad"
+    },
+    "spoken-goal.wav": {
+      "bytes": 95340,
+      "sha256": "790477d441d66c6224b6e41132cf73ed16aa4a32b9b6ad296eda5010c4482a5c"
+    }
+  },
+  "speech_arm": "aligned",
+  "speech_checkpoint": "2722742e6e95b7b717a8cb3322209a4ecd88d596f091de887d04531cef4b9bad",
+  "threshold": 0.9934052983376358
+}
