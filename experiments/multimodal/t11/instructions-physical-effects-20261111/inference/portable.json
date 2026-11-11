@@ -1,0 +1,200 @@
+{
+  "adapters": {
+    "A-gated": {
+      "bytes": 940869,
+      "file": "g11-A-gated-paired-s1001-adapter.npz",
+      "parent_sha256": "cb131e0f461da962d31fa6dfa3a7ed6f8c91f2e3bf88e7f7ff6a1a4e63d7bfba",
+      "sha256": "d0a8d1d38a9b802ef60642cad43d3b65a4a9aa50c848c03276571cbd74908110",
+      "source_sha256": "08d0b1a1100445cc980c02962a5d4a8bb7d11d404ed96e22987d8abb7d471195"
+    },
+    "A-gpt2": {
+      "bytes": 941490,
+      "file": "g11-A-gpt2-paired-s1001-adapter.npz",
+      "parent_sha256": "a52e509b83a691a3bf24e8571bd54a8e6bbf4cc285e279d36cd68eb464d72fa5",
+      "sha256": "6a49a8e9cebb65754e7cc63a17cf5e0c7f0b9dc6090f2cf6e3a9e9df0c47b07a",
+      "source_sha256": "544b7f788f033b6e3856d8f51208b6a43cc7e6779ca7e5c1873cad3627ad0157"
+    },
+    "A-hybrid": {
+      "bytes": 940793,
+      "file": "g11-A-hybrid-paired-s1001-adapter.npz",
+      "parent_sha256": "9383fbaee1ff7f4ce96198bc9a5bc6ca0df12cb6e81929bc6113f5728945da5b",
+      "sha256": "3501d925683a6d38a6e8c0457452ca8b1a270b40593d03b751a06a208833c9e0",
+      "source_sha256": "3c6c065d923f39a283e681a5e6be53f71203cb0cd50050681ea578f0213f4cb1"
+    },
+    "B-gated": {
+      "bytes": 941039,
+      "file": "g11-B-gated-paired-s1001-adapter.npz",
+      "parent_sha256": "cb131e0f461da962d31fa6dfa3a7ed6f8c91f2e3bf88e7f7ff6a1a4e63d7bfba",
+      "sha256": "0beb3d572835ab428d5436a272b98407df704d924cad2682aa4da22854d0c85b",
+      "source_sha256": "e45232927f15676fc959d0211652f46276c8fd92beec20ca5d18c5533db1fef7"
+    },
+    "B-gpt2": {
+      "bytes": 941280,
+      "file": "g11-B-gpt2-paired-s1001-adapter.npz",
+      "parent_sha256": "a52e509b83a691a3bf24e8571bd54a8e6bbf4cc285e279d36cd68eb464d72fa5",
+      "sha256": "7375274494f1823afb425c2813b47d010ffc498860589135845931d6e340001d",
+      "source_sha256": "0bec2b1032b91c4270bd54c3c7ee7533876b33a9d7e0b6a51c211f50befa2af7"
+    },
+    "B-hybrid": {
+      "bytes": 940997,
+      "file": "g11-B-hybrid-paired-s1001-adapter.npz",
+      "parent_sha256": "9383fbaee1ff7f4ce96198bc9a5bc6ca0df12cb6e81929bc6113f5728945da5b",
+      "sha256": "750fbed7bd37b299b54512dba2d965a21ceda851956b7c40384aacfca61a1642",
+      "source_sha256": "e234a869eeb2661d07ccc59135fb4e9399b4ceba265520c744bc0413cf8b1b0b"
+    }
+  },
+  "backbones": {
+    "gated": {
+      "bytes": 5468139,
+      "file": "gated-context-s1001.npz",
+      "sha256": "f3d5f3e15c5ac1dfaa61c62556de5feb36a7040e8a81dbec1dfa3b3027339073",
+      "source_sha256": "cb131e0f461da962d31fa6dfa3a7ed6f8c91f2e3bf88e7f7ff6a1a4e63d7bfba"
+    },
+    "gpt2": {
+      "bytes": 5471743,
+      "file": "gpt2-context-s1001.npz",
+      "sha256": "c2a036f9e6de83a3f8188667fdc78bdbbb41388beb97e7a8638b9b15fd58839a",
+      "source_sha256": "a52e509b83a691a3bf24e8571bd54a8e6bbf4cc285e279d36cd68eb464d72fa5"
+    },
+    "hybrid": {
+      "bytes": 5472445,
+      "file": "hybrid-context-s1001.npz",
+      "sha256": "bd1b7eded4e7df4fca72cece24315bd817d1bee4542039c1906c652f41d6e69b",
+      "source_sha256": "9383fbaee1ff7f4ce96198bc9a5bc6ca0df12cb6e81929bc6113f5728945da5b"
+    }
+  },
+  "checks": {
+    "A-gated": {
+      "correct": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.004619093611836433,
+        "original_micro_effect_mae": 0.14043442904949188,
+        "original_micro_verb_accuracy": 0.10918114143920596,
+        "portable_micro_effect_mae": 0.14020194113254547,
+        "portable_micro_verb_accuracy": 0.11166253101736973,
+        "same_next_verb": 0.7841191066997518
+      },
+      "wrong": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.004710009321570396,
+        "original_micro_effect_mae": 0.13893544673919678,
+        "original_micro_verb_accuracy": 0.10918114143920596,
+        "portable_micro_effect_mae": 0.13890160620212555,
+        "portable_micro_verb_accuracy": 0.11910669975186104,
+        "same_next_verb": 0.8138957816377171
+      }
+    },
+    "A-gpt2": {
+      "correct": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.007968730293214321,
+        "original_micro_effect_mae": 0.16000524163246155,
+        "original_micro_verb_accuracy": 0.1141439205955335,
+        "portable_micro_effect_mae": 0.16093981266021729,
+        "portable_micro_verb_accuracy": 0.0967741935483871,
+        "same_next_verb": 0.8089330024813896
+      },
+      "wrong": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.0091558787971735,
+        "original_micro_effect_mae": 0.16877597570419312,
+        "original_micro_verb_accuracy": 0.08684863523573201,
+        "portable_micro_effect_mae": 0.16872812807559967,
+        "portable_micro_verb_accuracy": 0.08188585607940446,
+        "same_next_verb": 0.7890818858560794
+      }
+    },
+    "A-hybrid": {
+      "correct": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.007594293914735317,
+        "original_micro_effect_mae": 0.13760483264923096,
+        "original_micro_verb_accuracy": 0.14640198511166252,
+        "portable_micro_effect_mae": 0.1384606808423996,
+        "portable_micro_verb_accuracy": 0.14640198511166252,
+        "same_next_verb": 0.8163771712158809
+      },
+      "wrong": {
+        "device_effects": 106,
+        "events": 403,
+        "mean_absolute_effect_forecast_difference": 0.006854441948235035,
+        "original_micro_effect_mae": 0.14429323375225067,
+        "original_micro_verb_accuracy": 0.13399503722084366,
+        "portable_micro_effect_mae": 0.14470253884792328,
+        "portable_micro_verb_accuracy": 0.13647642679900746,
+        "same_next_verb": 0.858560794044665
+      }
+    },
+    "B-gated": {
+      "correct": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.010106412693858147,
+        "original_micro_effect_mae": 0.10785926878452301,
+        "original_micro_verb_accuracy": 0.10574712643678161,
+        "portable_micro_effect_mae": 0.10930132120847702,
+        "portable_micro_verb_accuracy": 0.10574712643678161,
+        "same_next_verb": 0.8390804597701149
+      },
+      "wrong": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.008876066654920578,
+        "original_micro_effect_mae": 0.108155757188797,
+        "original_micro_verb_accuracy": 0.10574712643678161,
+        "portable_micro_effect_mae": 0.1091553270816803,
+        "portable_micro_verb_accuracy": 0.10574712643678161,
+        "same_next_verb": 0.8620689655172413
+      }
+    },
+    "B-gpt2": {
+      "correct": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.004086086060851812,
+        "original_micro_effect_mae": 0.10348000377416611,
+        "original_micro_verb_accuracy": 0.12183908045977011,
+        "portable_micro_effect_mae": 0.10485003143548965,
+        "portable_micro_verb_accuracy": 0.11494252873563218,
+        "same_next_verb": 0.7770114942528735
+      },
+      "wrong": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.004544948227703571,
+        "original_micro_effect_mae": 0.10358292609453201,
+        "original_micro_verb_accuracy": 0.12873563218390804,
+        "portable_micro_effect_mae": 0.1047288253903389,
+        "portable_micro_verb_accuracy": 0.12183908045977011,
+        "same_next_verb": 0.7793103448275862
+      }
+    },
+    "B-hybrid": {
+      "correct": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.006733867805451155,
+        "original_micro_effect_mae": 0.10130626708269119,
+        "original_micro_verb_accuracy": 0.13333333333333333,
+        "portable_micro_effect_mae": 0.09997239708900452,
+        "portable_micro_verb_accuracy": 0.15862068965517243,
+        "same_next_verb": 0.8298850574712644
+      },
+      "wrong": {
+        "device_effects": 153,
+        "events": 435,
+        "mean_absolute_effect_forecast_difference": 0.007483667228370905,
+        "original_micro_effect_mae": 0.09857554733753204,
+        "original_micro_verb_accuracy": 0.13793103448275862,
+        "portable_micro_effect_mae": 0.09663613140583038,
+        "portable_micro_verb_accuracy": 0.1471264367816092,
+        "same_next_verb": 0.8229885057471265
+      }
+    }
+  }
+}

@@ -1,0 +1,213 @@
+{
+  "adapter_packages": 6,
+  "all_owned_released": true,
+  "authorized_project_allowance": 600,
+  "complete": true,
+  "cumulative_owned_units": 46.15995692341765,
+  "drive_at_release": {
+    "pending": 551,
+    "phase": "backoff",
+    "reason": "shared_drive_project_query_limit",
+    "verified_files": 0
+  },
+  "fresh_recordings": 96,
+  "hardware": {
+    "attempts": [
+      {
+        "client": "0.7.5",
+        "hardware": "v6e1",
+        "result": "official allocation read timeout",
+        "when": "request initiated before upgraded balance confirmation"
+      },
+      {
+        "client": "0.7.5",
+        "hardware": "v6e1",
+        "result": "provider assignment POST returned Service Unavailable",
+        "when": "after upgrade"
+      },
+      {
+        "client": "0.7.5",
+        "hardware": "v5e1",
+        "result": "provider assignment POST returned Service Unavailable",
+        "when": "after upgrade"
+      },
+      {
+        "client": "0.8.0",
+        "hardware": "v6e1",
+        "result": "provider assignment POST returned Service Unavailable",
+        "when": "after upgrade, isolated verified distribution"
+      },
+      {
+        "client": "0.8.0",
+        "hardware": "v6e1",
+        "result": "Service Unavailable",
+        "utc_unix": 1794397701.4795158
+      },
+      {
+        "client": "0.8.0",
+        "hardware": "v6e1",
+        "result": "allocation timeout",
+        "utc_unix": 1794398573.66901
+      },
+      {
+        "client": "0.8.0",
+        "hardware": "v6e1",
+        "result": "Service Unavailable",
+        "utc_unix": 1794399399.506324
+      }
+    ],
+    "interpretation": "Google returned assignment timeouts or Service Unavailable on v6e after the upgrade. No v6e speed ratio was observed.",
+    "rtx3090": {
+      "backend": "gpu",
+      "cases": {
+        "large-gpt2-b128": {
+          "base_parameters": 116702848,
+          "batch": 128,
+          "block_seconds": [
+            0.6123377369949594,
+            0.6170154450082919,
+            0.6174463969946373,
+            0.614134155010106
+          ],
+          "history": 32,
+          "positions_per_second": 106522.16936091965,
+          "trainable_parameters": 836292,
+          "updates": 64,
+          "updates_per_second": 26.006389004130774,
+          "warmup_s": 29.164529039000627
+        },
+        "large-gpt2-b256": {
+          "base_parameters": 116702848,
+          "batch": 256,
+          "block_seconds": [
+            1.1932442399993306,
+            1.194931974998326,
+            1.1948828140011756,
+            1.1950711959943874
+          ],
+          "history": 32,
+          "positions_per_second": 109726.60335994589,
+          "trainable_parameters": 836292,
+          "updates": 64,
+          "updates_per_second": 13.394360761712145,
+          "warmup_s": 26.523260437999852
+        },
+        "large-hybrid-b128": {
+          "base_parameters": 116702848,
+          "batch": 128,
+          "block_seconds": [
+            0.626959707995411,
+            0.6284202340029879,
+            0.6301145670004189,
+            0.627265848001116
+          ],
+          "history": 32,
+          "positions_per_second": 104325.10974225264,
+          "trainable_parameters": 836292,
+          "updates": 64,
+          "updates_per_second": 25.469997495667148,
+          "warmup_s": 16.435875130991917
+        },
+        "large-hybrid-b256": {
+          "base_parameters": 116702848,
+          "batch": 256,
+          "block_seconds": [
+            1.2173664470028598,
+            1.220098366989987,
+            1.2199400559911737,
+            1.2202673069987213
+          ],
+          "history": 32,
+          "positions_per_second": 107487.33842222195,
+          "trainable_parameters": 836292,
+          "updates": 64,
+          "updates_per_second": 13.12101299099389,
+          "warmup_s": 17.675824049991206
+        },
+        "small-gpt2-b128": {
+          "base_parameters": 13245696,
+          "batch": 128,
+          "block_seconds": [
+            0.09345605999988038,
+            0.09366594199673273,
+            0.09250147199782077,
+            0.09192514099413529
+          ],
+          "history": 32,
+          "positions_per_second": 705544.2798732137,
+          "trainable_parameters": 507204,
+          "updates": 64,
+          "updates_per_second": 172.25202145342132,
+          "warmup_s": 25.468810462989495
+        },
+        "small-gpt2-b256": {
+          "base_parameters": 13245696,
+          "batch": 256,
+          "block_seconds": [
+            0.17488231899915263,
+            0.17396864399779588,
+            0.1742047189909499,
+            0.1744172970065847
+          ],
+          "history": 32,
+          "positions_per_second": 751696.5040794032,
+          "trainable_parameters": 507204,
+          "updates": 64,
+          "updates_per_second": 91.75982715813028,
+          "warmup_s": 24.70463239500532
+        },
+        "small-hybrid-b128": {
+          "base_parameters": 13245696,
+          "batch": 128,
+          "block_seconds": [
+            0.09575511800358072,
+            0.09536507799930405,
+            0.09369754399813246,
+            0.09368150499358308
+          ],
+          "history": 32,
+          "positions_per_second": 692587.9072856269,
+          "trainable_parameters": 507204,
+          "updates": 64,
+          "updates_per_second": 169.088844552155,
+          "warmup_s": 11.690961435000645
+        },
+        "small-hybrid-b256": {
+          "base_parameters": 13245696,
+          "batch": 256,
+          "block_seconds": [
+            0.17988395800057333,
+            0.1804823150014272,
+            0.18011973999091424,
+            0.18017822799447458
+          ],
+          "history": 32,
+          "positions_per_second": 727506.6115139385,
+          "trainable_parameters": 507204,
+          "updates": 64,
+          "updates_per_second": 88.80695941332257,
+          "warmup_s": 13.32066780499008
+        }
+      },
+      "data_sha256": "677889c5ceac373c7911fdf3f7c462437a1dcc922d1d06c451f412764e8da9e5",
+      "device": "NVIDIA GeForce RTX 3090",
+      "jax": "0.12.0.1"
+    },
+    "v6_verified": false
+  },
+  "new_recurrent_parents": 4,
+  "owned_units": 0,
+  "package_backbones": 3,
+  "passed_waveform_inference": true,
+  "physical_events": 259,
+  "prepared_input_files": 39,
+  "primary_fits": 54,
+  "primary_held_decisions": 838,
+  "prior_owned_units": 46.15995692341765,
+  "project_endpoints": [],
+  "release_scope": "named G11 endpoints only",
+  "remaining_project_allowance": 553.8400430765823,
+  "scale_adapter_fits": 24,
+  "total_fits": 82,
+  "verified_generations": 250
+}
