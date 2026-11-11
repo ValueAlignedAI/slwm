@@ -85,10 +85,15 @@ class Table:
         self.last=last.copy();self.history=list(hist);self.last_u=u.copy()
     def stations(self,seed):
         q=self.positions();rng=np.random.default_rng(seed+9131)
-        for _ in range(200):
-            points=np.array([[.29,-.14],[.29,.14],[.47,-.14],[.47,.14]])+rng.uniform(-.035,.035,(4,2))
-            if np.linalg.norm(points[:,None]-q[None,:],axis=-1).min()>=.058:break
-        return points[rng.permutation(4)].astype("f4")
+        points=[]
+        for center in np.array([[.29,-.14],[.29,.14],[.47,-.14],[.47,.14]]):
+            for trial in range(4000):
+                candidate=np.clip(center+rng.uniform(-.065,.065,2),[.235,-.22],[.515,.22])
+                if np.linalg.norm(q-candidate,axis=1).min()<.058:continue
+                if points and np.linalg.norm(np.asarray(points)-candidate,axis=1).min()<.12:continue
+                points.append(candidate);break
+            else:raise RuntimeError("Unable to place a separated free station in this world")
+        return np.asarray(points)[rng.permutation(4)].astype("f4")
     def observation(self):
         image=self.render();d=typed(image);points=self.last.copy()
         if self.cal is None:raise ValueError("Camera needs training calibration")

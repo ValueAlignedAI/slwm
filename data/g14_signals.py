@@ -50,13 +50,16 @@ def pack(data):
                          options*r[:,None],options*contact[:,:,None],np.linalg.norm(options,axis=-1)[:,:,None],
                          np.broadcast_to(np.eye(k,dtype="f4")[None],(b,k,k))),-1)
     # Low-rank cross terms distinguish contact and approach without granting a hidden state or outcome.
-    feat=np.concatenate((feat,options[:,:,:,None].__mul__(repeated[:,:,None,:]).reshape(b,k,-1)),axis=-1).astype("f4")
+    feat=np.concatenate((feat,(options[:,:,:,None]*repeated[:,:,None,:]).reshape(b,k,-1)),axis=-1).astype("f4")
     out=dict(slots=slots,image=image.astype("f4"),location=(all_pos-CENTER)/.25,phi=feat,command=options.astype("f4"),
              focus=np.eye(5,dtype="f4")[c],basis=basis.astype("f4"))
     if "effect" in data:
         effect=coord(data["effect"])/.05
         out["y"]=np.concatenate((effect.reshape(b,k,10),data["gain"][:,:,None]/.04),-1).astype("f4")
         out["world"]=np.asarray(data["world"],"i4")
+    if "long" in data:
+        out["long"]=((data["long"]-data["long"][:,1:2])/.04).astype("f4")
+        out["has_long"]=np.asarray(data["has_long"],bool)
     return out
 
 CENTER=np.array([.375,0.],"f4")

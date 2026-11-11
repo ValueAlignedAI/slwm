@@ -47,7 +47,7 @@ def core_mix(q,k,v,pos,core,xp):
     else:raise ValueError(core)
     return (prob@v).transpose(0,2,1,3).reshape(b,t,o,d)
 
-def predict(p,r,core,arm,xp=np):
+def predict(p,r,core,arm,xp=np,include_long=False):
     h=r["slots"]@p["in_slot"]+(r["image"]@p["in_img"])[:,:,None,:]+p["time"][None,:,None,:]+p["slot"][None,None,:,:]
     for i in range(2):
         q,k,v=xp.split(norm(h,xp)@p[f"{i}_qkv"],3,axis=-1)
@@ -62,12 +62,18 @@ def predict(p,r,core,arm,xp=np):
     y=proposal@p["next"]+p["bias"]
     if arm=="protected":y=r["prior"]+.45*y
     risk=sigmoid((proposal@p["risk"])[:,:,0],xp)
+    if include_long:
+        value=r["long_prior"]+.65*(proposal@p["continuation"])[:,:,0]
+        return y,risk,z,value
     return y,risk,z
 
 def objective(p,r,core,arm):
     import jax
     import jax.numpy as j
-    y,risk,_=predict(p,r,core,arm,j);delta=y-r["y"];ae=j.abs(delta)
+    long="continuation" in p
+    if long:y,risk,_,value=predict(p,r,core,arm,j,True)
+    else:y,risk,_=predict(p,r,core,arm,j)
+    delta=y-r["y"];ae=j.abs(delta)
     smooth=j.where(ae<.35,.5*delta*delta,.35*(ae-.175))
     actual=r["y"][:,:,-1];score=y[:,:,-1];soft=jax.nn.softmax(actual/.16,axis=1)
     ranking=-j.sum(soft*jax.nn.log_softmax(score/.16,axis=1),1).mean()
@@ -76,4 +82,9 @@ def objective(p,r,core,arm):
     unreliable=jax.lax.stop_gradient((ae[:,:,-1]>.15).astype("f4"))
     brier=j.mean((risk-unreliable)**2)
     loss=2.3*smooth[:,:,-1].mean()+effects.mean()+.8*obj+.15*ranking+.06*brier
+    if long:
+        valid=r["has_long"];v=value-value[:,1:2];target=r["long"]
+        d=j.abs(v-target);term=j.where(d<.4,.5*d*d,.4*(d-.2)).mean(1)
+        pair=-(jax.nn.softmax(target/.24,axis=1)*jax.nn.log_softmax(v/.24,axis=1)).sum(1)
+        loss+=2.2*((term+.12*pair)*valid).sum()/j.maximum(valid.sum(),1)
     return loss,j.stack([smooth[:,:,-1].mean(),effects.mean(),obj,ranking,brier])
