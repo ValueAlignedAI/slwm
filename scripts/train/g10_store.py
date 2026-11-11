@@ -18,7 +18,7 @@ from g9_storage import FILES,disks,sha,write
 
 CHUNK=16<<20
 CONTEXT=re.compile(r"context-(hybrid|gpt2|gated)-(short|variable|long)-s100[123]")
-ALIGN=re.compile(r"align-(hybrid|gpt2)-(paired|shifted|reconstruct)-s100[123]")
+ALIGN=re.compile(r"align-(hybrid|gpt2)-(paired|shifted|reconstruct|rooms)-s100[123]")
 
 
 def relative(tag,step):

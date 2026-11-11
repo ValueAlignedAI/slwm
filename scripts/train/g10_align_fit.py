@@ -15,9 +15,9 @@ from scripts.train.g9_fit import numpy_weights,save_json
 from scripts.train.g10_fit import LENGTHS,adam,restore,snapshot
 
 
-def real_bank(starss,holo):
+def real_bank(starss,holo,rooms_only=False):
     chunks={};offset=0;names={}
-    with np.load(starss) as a,np.load(holo) as b:
+    with np.load(starss) as a,np.load(starss if rooms_only else holo) as b:
         for label,db in (("star",a),("holo",b)):
             lengths=db["lengths"].astype(np.int32)
             if lengths.min()<8*33:raise ValueError("Cannot draw eight nonoverlapping windows")
@@ -25,7 +25,8 @@ def real_bank(starss,holo):
             names[label]=list(map(str,db["names"]));offset+=int(lengths.sum())
         for k in ("a","v","n","w"):
             chunks[k]=np.concatenate([a[k],b[k]])
-        chunks["x"]=np.concatenate([np.zeros((len(a["a"]),128),np.int8),b["x"]])
+        chunks["x"]=np.concatenate([np.zeros((len(a["a"]),128),np.int8),np.zeros((len(b["a"]),128),np.int8) if rooms_only else b["x"]])
+        chunks["second_is_holo"]=np.asarray(not rooms_only)
     return jax.tree.map(jax.device_put,chunks),names
 
 
@@ -45,7 +46,7 @@ def fit(root,out,bank,names,core,seed,mode,smoke=False):
     s=Spec(**parent["spec"]);total=4 if smoke else 1536
     tag=f"{'align-smoke' if smoke else 'align'}-{core}-{mode}-s{seed}";job=out/tag
     if (job/"done.json").exists():return
-    recipe=dict(tag=tag,spec=asdict(s),seed=seed,goal_steps=total,phase="alignment",treatment=mode,event_source="HoloAssist completed speech and IMU",training_recordings=names,
+    recipe=dict(tag=tag,spec=asdict(s),seed=seed,goal_steps=total,phase="alignment",treatment=mode,event_source="STARSS23 only" if mode=="rooms" else "HoloAssist completed speech and IMU",training_recordings=names,
                 parent_sha256=parent["inference_sha256"],backend=jax.default_backend())
     initialize=lambda:add_edges(jax.tree.map(jnp.asarray,numpy_weights(stage/"weights.npz")),s,seed)
     step,p,m,v=restore(job,initialize,recipe);anchor=step;recipe={**recipe,"trainable_parameters":sum(x.size for x in p.values())}
@@ -70,7 +71,8 @@ if __name__=="__main__":
     ap.add_argument("--smoke",action="store_true");ap.add_argument("--cache")
     args=ap.parse_args()
     if args.cache:jax.config.update("jax_compilation_cache_dir",args.cache)
-    bank,names=real_bank(args.starss,args.holo)
+    if "rooms" in args.modes and args.modes!=["rooms"]:raise ValueError("The room-only data control must run separately")
+    bank,names=real_bank(args.starss,args.holo,args.modes==["rooms"])
     for seed in args.seeds:
         for mode in args.modes:
             for core in args.cores:fit(args.parents,args.out,bank,names,core,seed,mode,args.smoke)

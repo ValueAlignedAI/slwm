@@ -50,7 +50,7 @@ def groups(bank,i,seed):
     ix=(start[:,:,None]+jnp.arange(LENGTH)).reshape(-1,LENGTH)
     r=from_indices(bank,ix,jnp.maximum(ix-1,jnp.repeat(origins,CANDIDATES)[:,None]))
     r["keep"]=PATTERNS[jax.random.randint(mask,(GROUPS*CANDIDATES,),0,len(PATTERNS))]
-    r["holo"]=jnp.repeat(jnp.arange(GROUPS)>=4,CANDIDATES)
+    r["holo"]=jnp.repeat((jnp.arange(GROUPS)>=4)&bank["second_is_holo"],CANDIDATES)
     return r,jax.random.randint(shift,(GROUPS,1),1,CANDIDATES)
 
 
