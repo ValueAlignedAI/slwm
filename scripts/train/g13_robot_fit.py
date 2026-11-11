@@ -18,8 +18,8 @@ SEEDS=(1301,1302,1303)
 KEYS=("px","geo","kin","plan","alt_plan","goal","wrong","bind","wb","ref_active","ref_wrong","ref_zero","ref_passive","ref_reset","ref_pass_reset")
 TARGET=("mover","future","flow","visible","first")
 
-def read(role):
-    file=ROOT/"data/robot/banks"/(role+".npz")
+def read(role,corrected=False,external=False):
+    file=ROOT/"data"/("robot-extra" if external else "robot")/("corrected" if corrected else "banks")/(role+".npz")
     with np.load(file) as z:return {k:z[k] for k in z.files}
 
 def sample(r,seed):
@@ -53,12 +53,17 @@ def kernel(s,core,recipe,mode):
     return apply
 
 
+def feature_keys(recipe):
+    extra=("adapt_active","adapt_wrong","adapt_zero","adapt_reset","p_goal","p_wrong","p_none") if recipe in ("linear","adaptive","anchored") else ()
+    return KEYS+extra
+
+
 def prediction(p,s,core,recipe,r,mode="correct"):
     result={}
     n=len(r["px"])
     for i in range(0,n,256):
         idx=np.minimum(np.arange(i,i+256),n-1)
-        obj=kernel(s,core,recipe,mode)(p,{k:jnp.asarray(r[k][idx]) for k in KEYS})
+        obj=kernel(s,core,recipe,mode)(p,{k:jnp.asarray(r[k][idx]) for k in feature_keys(recipe)})
         for k,v in obj.items():result.setdefault(k,[]).append(np.asarray(v)[:min(256,n-i)])
     return {k:np.concatenate(v) for k,v in result.items()}
 
@@ -89,14 +94,20 @@ def choices(work):
 
 
 def train_phase(phase):
-    work=ROOT/"work/robot";(work/"dev").mkdir(exist_ok=True,parents=True)
-    folders=roots("robot");s=Spec();tr=read("train");coef=identify(tr);save_npz(work/"system-id.npz",coef)
-    dev=prepare(read("dev"),coef);tr=prepare(tr,coef);ref=dev_reference(tr,dev)
+    repaired=phase=="corrected";work=ROOT/"work"/("repaired" if repaired else "robot");(work/"dev").mkdir(exist_ok=True,parents=True)
+    folders=roots("robot-corrected" if repaired else "robot");s=Spec();tr=read("train",repaired);coef=identify(tr);save_npz(work/"system-id.npz",coef)
+    dev=prepare(read("dev",repaired),coef);tr=prepare(tr,coef);ref=dev_reference(tr,dev)
+    if repaired:
+        from training.g13_adaptive import fit_basis,role_prior,decorate
+        best,selection,coefficients=fit_basis(tr,dev);mass=role_prior(tr)
+        save_npz(work/"adaptive.npz",{**coefficients,"mass":mass});write(work/"adaptive-lock.json",dict(best=best,candidates=selection))
+        tr=decorate(tr,best,coefficients,mass);dev=decorate(dev,best,coefficients,mass)
+        print("Development adaptive physical reference",best,flush=True)
     write(work/"dev-reference.json",ref)
-    seed_list=(1301,) if phase=="pilot" else SEEDS[1:]
-    recipes=RECIPES if phase=="pilot" else json.loads((work/"recipe-lock.json").read_bytes())["recipes"]
-    bank={k:jnp.asarray(tr[k]) for k in KEYS+TARGET}
-    input_dir=ROOT/"data/robot/banks";train_sha=sha(input_dir/"train.npz");dev_sha=sha(input_dir/"dev.npz")
+    seed_list=SEEDS if repaired else (1301,) if phase=="pilot" else SEEDS[1:]
+    recipes=("linear","adaptive","anchored") if repaired else RECIPES if phase=="pilot" else json.loads((work/"recipe-lock.json").read_bytes())["recipes"]
+    bank={k:jnp.asarray(tr[k]) for k in feature_keys(recipes[0])+TARGET}
+    input_dir=ROOT/"data/robot"/("corrected" if repaired else "banks");train_sha=sha(input_dir/"train.npz");dev_sha=sha(input_dir/"dev.npz")
     for seed in seed_list:
         idx=sample(tr,seed)
         for recipe in recipes:
@@ -132,7 +143,7 @@ def train_phase(phase):
 
 
 def main():
-    a=argparse.ArgumentParser();a.add_argument("phase",choices=("pilot","confirm"));p=a.parse_args()
+    a=argparse.ArgumentParser();a.add_argument("phase",choices=("pilot","confirm","corrected"));p=a.parse_args()
     jax.config.update("jax_compilation_cache_dir",str(ROOT/"cache"));train_phase(p.phase)
 
 if __name__=="__main__":main()

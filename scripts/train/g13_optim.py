@@ -12,7 +12,7 @@ ROOT=Path("/mnt/slwm-data/SLWM/g13")
 
 
 def roots(study):
-    if study not in ("speech","robot","holo"):raise ValueError("Unknown study")
+    if study not in ("speech","robot","robot-corrected","holo"):raise ValueError("Unknown study")
     return tuple(p.parent.parent/"g13"/study for p in disks())
 
 

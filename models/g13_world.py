@@ -95,7 +95,7 @@ def propose(p,s,core,recipe,row,mode="correct"):
     oc=linear(obj,"obj");rc=linear(bind,"role")[:,None]
     if recipe=="flat":oc=jnp.broadcast_to(oc.mean(2,keepdims=True),oc.shape)
     if recipe in ("flat","slots"):rc=jnp.broadcast_to(rc.mean(2,keepdims=True),rc.shape)
-    if recipe not in RECIPES:raise ValueError(recipe)
+    if recipe not in RECIPES+("linear","adaptive","anchored"):raise ValueError(recipe)
     edge=oc+rc;h=h+jnp.concatenate((edge.mean(2,keepdims=True),edge),2)
     for i in range(s.layers):
         z=norm(h)*p[f"{i}_n1s"].astype(dt)+p[f"{i}_n1b"].astype(dt)
@@ -106,6 +106,9 @@ def propose(p,s,core,recipe,row,mode="correct"):
         h=h+linear(jax.nn.gelu(linear(z,f"{i}_ff")),f"{i}_down")
     field=norm(linear(norm(h[:,-1]),"emit"));slots=field[:,1:];global_state=norm(.5*(field[:,0]+slots.mean(1)))
     moved=jnp.concatenate((linear(global_state,"stationary"),linear(slots,"moved")[:,:,0]),axis=1).astype(jnp.float32)+p["bias"]
+    if recipe=="anchored":
+        name={"wrong":"p_wrong","none":"p_none"}.get(mode,"p_goal")
+        moved=moved+jnp.log(jnp.maximum(row[name],1e-6))
     passive=linear(global_state,"passive").astype(jnp.float32).reshape(b,4,2)
     act=linear(global_state,"command").astype(jnp.float32).reshape(b,4,2)
     plan=row["plan"] if mode!="wrong_plan" else row["alt_plan"]
@@ -114,11 +117,12 @@ def propose(p,s,core,recipe,row,mode="correct"):
     proposed=(plan[:,None]*causal[None,:,:,None]).reshape(b,4,8)/.05
     latent=jnp.tanh(global_state[:,None]+linear(proposed,"plan")+p["step"].astype(dt)[None])
     dyn=linear(latent,"forecast").astype(jnp.float32)+p["dyn_bias"]
-    if recipe=="residual":
+    if recipe in ("residual","linear","adaptive","anchored"):
         # Physical references use only the allowed prefix and each horizon's control prefix.
         pass_ref=row["ref_pass_reset"] if mode=="reset" else row["ref_passive"]
         ref={"wrong_plan":"ref_wrong","zero_plan":"ref_zero","reset":"ref_reset"}.get(mode,"ref_active")
         passive=passive*.4+(0. if mode=="text_only" else pass_ref/.08)
+        if recipe in ("adaptive","anchored"):ref=ref.replace("ref_","adapt_")
         dyn=dyn*.35+(0. if mode=="text_only" else row[ref]/.08)
     return dict(mover=moved,flow=linear(slots,"flow").astype(jnp.float32)*30,passive=passive*.08,
                 active=dyn*.08,action=act*.05,certainty=linear(global_state,"gate").astype(jnp.float32),field=field.astype(jnp.float32))
