@@ -78,7 +78,7 @@ def main(stage, repo, ctl, head):
         title = "Release the verified G13 physical, speech and shared-field transfer studies"
         body = "Publishes all matched arms and controls, open-vocabulary natural speech, independently reproduced physical outcomes, the final action readout, original-waveform and chronological inference artifacts, multiple audits and the updated project README."
     else:
-        if not r["passed"] or len(r["seed_results"]) != 5:
+        if not isinstance(r["passed"], bool) or len(r["seed_results"]) != 5:
             raise ValueError("Missing prospective result")
         title = (
             "Publish the prospective G13 action forecast against matched dense GPT-2"

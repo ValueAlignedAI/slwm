@@ -1,0 +1,240 @@
+[
+  {
+    "fold": "A",
+    "prepared": {
+      "confidence": 0.31434446573257446,
+      "proposals": [
+        {
+          "noun": "leg",
+          "probability": 0.09289126843214035
+        },
+        {
+          "noun": "wheel",
+          "probability": 0.09110648930072784
+        },
+        {
+          "noun": "atv",
+          "probability": 0.06399370729923248
+        },
+        {
+          "noun": "seat",
+          "probability": 0.06241871789097786
+        },
+        {
+          "noun": "hex_nut",
+          "probability": 0.05409781634807587
+        }
+      ],
+      "route": "internal_only"
+    },
+    "raw": {
+      "confidence": 0.31412097811698914,
+      "proposals": [
+        {
+          "noun": "wheel",
+          "probability": 0.09247361868619919
+        },
+        {
+          "noun": "leg",
+          "probability": 0.09128851443529129
+        },
+        {
+          "noun": "atv",
+          "probability": 0.06401411443948746
+        },
+        {
+          "noun": "seat",
+          "probability": 0.0625503733754158
+        },
+        {
+          "noun": "hex_nut",
+          "probability": 0.05417287349700928
+        }
+      ],
+      "recognized": "You'll make the car and take the company house.",
+      "route": "internal_only"
+    },
+    "same_route": true,
+    "same_top": false,
+    "wav": "true"
+  },
+  {
+    "fold": "A",
+    "prepared": {
+      "confidence": 0.4074573218822479,
+      "proposals": [
+        {
+          "noun": "water",
+          "probability": 0.2882406711578369
+        },
+        {
+          "noun": "washer",
+          "probability": 0.07480110228061676
+        },
+        {
+          "noun": "water_container",
+          "probability": 0.051266733556985855
+        },
+        {
+          "noun": "leg",
+          "probability": 0.051084619015455246
+        },
+        {
+          "noun": "water_kettle",
+          "probability": 0.049357686191797256
+        }
+      ],
+      "route": "internal_only"
+    },
+    "raw": {
+      "confidence": 0.40708720684051514,
+      "proposals": [
+        {
+          "noun": "water",
+          "probability": 0.2876242697238922
+        },
+        {
+          "noun": "washer",
+          "probability": 0.07508599758148193
+        },
+        {
+          "noun": "water_container",
+          "probability": 0.05099628120660782
+        },
+        {
+          "noun": "leg",
+          "probability": 0.05024093762040138
+        },
+        {
+          "noun": "water_kettle",
+          "probability": 0.04928850382566452
+        }
+      ],
+      "recognized": "The first acts of water to the machine.",
+      "route": "internal_only"
+    },
+    "same_route": true,
+    "same_top": true,
+    "wav": "foil"
+  },
+  {
+    "fold": "B",
+    "prepared": {
+      "component": "down_button",
+      "confidence": 0.4568924307823181,
+      "proposals": [
+        {
+          "noun": "down_button",
+          "probability": 0.42060595750808716
+        },
+        {
+          "noun": "lever",
+          "probability": 0.03382575139403343
+        },
+        {
+          "noun": "screw",
+          "probability": 0.021259164437651634
+        },
+        {
+          "noun": "nintendo_switch",
+          "probability": 0.01690291240811348
+        },
+        {
+          "noun": "battery",
+          "probability": 0.01582983508706093
+        }
+      ],
+      "route": "component"
+    },
+    "raw": {
+      "component": "down_button",
+      "confidence": 0.45724648237228394,
+      "proposals": [
+        {
+          "noun": "down_button",
+          "probability": 0.4213353395462036
+        },
+        {
+          "noun": "lever",
+          "probability": 0.033945851027965546
+        },
+        {
+          "noun": "screw",
+          "probability": 0.021665697917342186
+        },
+        {
+          "noun": "nintendo_switch",
+          "probability": 0.01680198684334755
+        },
+        {
+          "noun": "battery",
+          "probability": 0.015692435204982758
+        }
+      ],
+      "recognized": "Down.",
+      "route": "component"
+    },
+    "same_route": true,
+    "same_top": true,
+    "wav": "true"
+  },
+  {
+    "fold": "B",
+    "prepared": {
+      "confidence": 0.311967134475708,
+      "proposals": [
+        {
+          "noun": "bracket",
+          "probability": 0.13112352788448334
+        },
+        {
+          "noun": "screw",
+          "probability": 0.08342738449573517
+        },
+        {
+          "noun": "lever",
+          "probability": 0.049980584532022476
+        },
+        {
+          "noun": "nintendo_switch",
+          "probability": 0.03844483941793442
+        },
+        {
+          "noun": "dispenser",
+          "probability": 0.033412590622901917
+        }
+      ],
+      "route": "internal_only"
+    },
+    "raw": {
+      "confidence": 0.31288906931877136,
+      "proposals": [
+        {
+          "noun": "bracket",
+          "probability": 0.13290683925151825
+        },
+        {
+          "noun": "screw",
+          "probability": 0.08364493399858475
+        },
+        {
+          "noun": "lever",
+          "probability": 0.049248091876506805
+        },
+        {
+          "noun": "nintendo_switch",
+          "probability": 0.03891795128583908
+        },
+        {
+          "noun": "dispenser",
+          "probability": 0.03292372450232506
+        }
+      ],
+      "recognized": "It's the...",
+      "route": "internal_only"
+    },
+    "same_route": true,
+    "same_top": true,
+    "wav": "foil"
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "post_hoc": true,
+  "results": {
+    "prior_alone": {
+      "choice": {
+        "alpha": 0.75,
+        "development_mm": 103.57016360197935,
+        "lam": 0.005,
+        "robust": true
+      },
+      "learned_gain": {
+        "families": 1,
+        "groups": 210,
+        "hi": 3.012308809457027,
+        "lo": 2.101903699013065,
+        "n": 15035,
+        "value": 2.5630223931460963
+      },
+      "mm": {
+        "families": 1,
+        "groups": 210,
+        "hi": 100.90381031191659,
+        "lo": 93.00070958511486,
+        "n": 15035,
+        "value": 96.9350148142152
+      }
+    },
+    "untrained_random_features": {
+      "choice": {
+        "alpha": 0.75,
+        "development_mm": 103.51914937056901,
+        "lam": 0.2,
+        "robust": true
+      },
+      "learned_gain": {
+        "families": 1,
+        "groups": 210,
+        "hi": 3.017732665127576,
+        "lo": 2.0957165332297913,
+        "n": 15035,
+        "value": 2.568374839945371
+      },
+      "mm": {
+        "families": 1,
+        "groups": 210,
+        "hi": 100.91808734649028,
+        "lo": 93.0265120831345,
+        "n": 15035,
+        "value": 96.94036726101447
+      }
+    }
+  }
+}

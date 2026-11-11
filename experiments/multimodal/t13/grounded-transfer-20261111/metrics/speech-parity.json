@@ -1,0 +1,40 @@
+{
+  "native": {
+    "clips": 1639,
+    "cpu": {
+      "accuracy": 0.5090347936423741,
+      "nll": 1.7210407257080078,
+      "raw_accuracy": 0.5064063453325198
+    },
+    "cpu_single_delta": 6.705522537231445e-07,
+    "gpu": {
+      "accuracy": 0.9557238923751042,
+      "nll": 0.11190443485975266,
+      "raw_accuracy": 0.9682733374008542
+    },
+    "gpu_single_delta": 0.9960967302322388,
+    "max_probability_difference": 0.9993165135383606,
+    "same_top": 827,
+    "single_samples": 72,
+    "speaker_groups": 229
+  },
+  "portable": {
+    "clips": 1639,
+    "cpu": {
+      "accuracy": 0.949560417087255,
+      "nll": 0.14505331218242645,
+      "raw_accuracy": 0.9652226967663209
+    },
+    "cpu_single_delta": 1.7881393432617188e-07,
+    "gpu": {
+      "accuracy": 0.949560417087255,
+      "nll": 0.14503931999206543,
+      "raw_accuracy": 0.9652226967663209
+    },
+    "gpu_single_delta": 0.00019532442092895508,
+    "max_probability_difference": 0.0005259513854980469,
+    "same_top": 1639,
+    "single_samples": 72,
+    "speaker_groups": 229
+  }
+}

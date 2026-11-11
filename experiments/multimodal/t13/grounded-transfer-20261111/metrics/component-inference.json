@@ -1,0 +1,1448 @@
+[
+  {
+    "arm": "semantic",
+    "confidence": 0.314430832862854,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "leg",
+        "probability": 0.09306943416595459
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.09178793430328369
+      },
+      {
+        "noun": "atv",
+        "probability": 0.06390931457281113
+      },
+      {
+        "noun": "seat",
+        "probability": 0.06270153820514679
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.05376442149281502
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.40723925828933716,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "water",
+        "probability": 0.28783300518989563
+      },
+      {
+        "noun": "washer",
+        "probability": 0.07473362982273102
+      },
+      {
+        "noun": "water_container",
+        "probability": 0.051146816462278366
+      },
+      {
+        "noun": "leg",
+        "probability": 0.05091880261898041
+      },
+      {
+        "noun": "water_kettle",
+        "probability": 0.049431994557380676
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.45705097913742065,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "leg",
+        "probability": 0.39926576614379883
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.05628696084022522
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.053490303456783295
+      },
+      {
+        "noun": "lever",
+        "probability": 0.03474007174372673
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.029222991317510605
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.31052541732788086,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "lever",
+        "probability": 0.12380896508693695
+      },
+      {
+        "noun": "belt",
+        "probability": 0.0901390016078949
+      },
+      {
+        "noun": "half_frame",
+        "probability": 0.05189957842230797
+      },
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.05076441913843155
+      },
+      {
+        "noun": "lens",
+        "probability": 0.039080869406461716
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3097396194934845,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "lens",
+        "probability": 0.11619924753904343
+      },
+      {
+        "noun": "lens_caps",
+        "probability": 0.06149035692214966
+      },
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.05795120820403099
+      },
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.04770505428314209
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.043324533849954605
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3045617938041687,
+    "core": "gpt2",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "half_frame",
+        "probability": 0.11256762593984604
+      },
+      {
+        "noun": "lever",
+        "probability": 0.09592074900865555
+      },
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.06201627478003502
+      },
+      {
+        "noun": "frame",
+        "probability": 0.036951061338186264
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.030554352328181267
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.28820550441741943,
+    "core": "gated",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "screw",
+        "probability": 0.08128035068511963
+      },
+      {
+        "noun": "screwdriver",
+        "probability": 0.07911717891693115
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.06767673790454865
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.05049928277730942
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.03993488848209381
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.34654098749160767,
+    "core": "gated",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "water",
+        "probability": 0.18742376565933228
+      },
+      {
+        "noun": "washer",
+        "probability": 0.11820177733898163
+      },
+      {
+        "noun": "water_kettle",
+        "probability": 0.07643680274486542
+      },
+      {
+        "noun": "water_container",
+        "probability": 0.07046639919281006
+      },
+      {
+        "noun": "espresso_machine",
+        "probability": 0.056271810084581375
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.3848298192024231,
+    "core": "gated",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.28036370873451233
+      },
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.19798393547534943
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.14355653524398804
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.06823079288005829
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.036057814955711365
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.30782830715179443,
+    "core": "gated",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "wheel",
+        "probability": 0.12422880530357361
+      },
+      {
+        "noun": "battery",
+        "probability": 0.1023637130856514
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.06519430130720139
+      },
+      {
+        "noun": "screw",
+        "probability": 0.043688856065273285
+      },
+      {
+        "noun": "lever",
+        "probability": 0.04030399024486542
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.33643680810928345,
+    "core": "gated",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "bolt",
+        "probability": 0.16716618835926056
+      },
+      {
+        "noun": "allen_wrench",
+        "probability": 0.09274132549762726
+      },
+      {
+        "noun": "screw",
+        "probability": 0.07663159817457199
+      },
+      {
+        "noun": "battery",
+        "probability": 0.052275121212005615
+      },
+      {
+        "noun": "lens",
+        "probability": 0.04409952089190483
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.4518955945968628,
+    "core": "gated",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.39413270354270935
+      },
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.1670127809047699
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.07742045819759369
+      },
+      {
+        "noun": "allen_wrench",
+        "probability": 0.06897192448377609
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.054763566702604294
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.3117225170135498,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "battery_door",
+        "probability": 0.13873818516731262
+      },
+      {
+        "noun": "front_panel_door",
+        "probability": 0.11856172978878021
+      },
+      {
+        "noun": "screwdriver",
+        "probability": 0.04802154377102852
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.04641162231564522
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.03151809424161911
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.35566163063049316,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "water",
+        "probability": 0.21762633323669434
+      },
+      {
+        "noun": "water_container",
+        "probability": 0.12000205367803574
+      },
+      {
+        "noun": "espresso_machine",
+        "probability": 0.058851055800914764
+      },
+      {
+        "noun": "water_kettle",
+        "probability": 0.057524461299180984
+      },
+      {
+        "noun": "capsule_coffee_machine",
+        "probability": 0.04399704188108444
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.33466917276382446,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "gopro",
+        "probability": 0.1865898221731186
+      },
+      {
+        "noun": "battery",
+        "probability": 0.10717456042766571
+      },
+      {
+        "noun": "screw",
+        "probability": 0.10693058371543884
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.0960182175040245
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.0557120144367218
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3315448760986328,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.17424370348453522
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.09395089000463486
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.07166017591953278
+      },
+      {
+        "noun": "hex_socket_head",
+        "probability": 0.06346787512302399
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.03917190805077553
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.30436474084854126,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "gopro",
+        "probability": 0.11314026266336441
+      },
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.0811857059597969
+      },
+      {
+        "noun": "allen_wrench",
+        "probability": 0.0628984272480011
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.047149453312158585
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.04553809016942978
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.39127492904663086,
+    "core": "oscillator",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "gopro",
+        "probability": 0.29101327061653137
+      },
+      {
+        "noun": "battery",
+        "probability": 0.09255193918943405
+      },
+      {
+        "noun": "screw",
+        "probability": 0.08348146826028824
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.06781720370054245
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.04374023154377937
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.30914008617401123,
+    "core": "associative",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "screw",
+        "probability": 0.08304812759160995
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.06491901725530624
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.041967395693063736
+      },
+      {
+        "noun": "screwdriver",
+        "probability": 0.037436921149492264
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.03741343319416046
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.3905370235443115,
+    "core": "associative",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "water",
+        "probability": 0.25591006875038147
+      },
+      {
+        "noun": "water_container",
+        "probability": 0.10068028420209885
+      },
+      {
+        "noun": "water_kettle",
+        "probability": 0.08119649440050125
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.042994432151317596
+      },
+      {
+        "noun": "washer",
+        "probability": 0.042596809566020966
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.4378058910369873,
+    "core": "associative",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "hexagon_cap_nut",
+        "probability": 0.36716896295547485
+      },
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.17791065573692322
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.15542732179164886
+      },
+      {
+        "noun": "hex_nut",
+        "probability": 0.06866045296192169
+      },
+      {
+        "noun": "hex_socket_head",
+        "probability": 0.03859502077102661
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.30770909786224365,
+    "core": "associative",
+    "fold": "A",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "lever",
+        "probability": 0.12032372504472733
+      },
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.0973241925239563
+      },
+      {
+        "noun": "front_panel_door",
+        "probability": 0.06422928720712662
+      },
+      {
+        "noun": "lens_caps",
+        "probability": 0.051866091787815094
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.04670694097876549
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.30392780900001526,
+    "core": "associative",
+    "fold": "A",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.11083443462848663
+      },
+      {
+        "noun": "lens",
+        "probability": 0.10653503239154816
+      },
+      {
+        "noun": "lens_caps",
+        "probability": 0.09917791932821274
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.05193786695599556
+      },
+      {
+        "noun": "front_panel_door",
+        "probability": 0.028704196214675903
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.2937428653240204,
+    "core": "associative",
+    "fold": "A",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "hexagonal_wrench",
+        "probability": 0.0889805480837822
+      },
+      {
+        "noun": "lens",
+        "probability": 0.08100806921720505
+      },
+      {
+        "noun": "lens_caps",
+        "probability": 0.06332208216190338
+      },
+      {
+        "noun": "dslr",
+        "probability": 0.04563242569565773
+      },
+      {
+        "noun": "battery_door",
+        "probability": 0.036368124186992645
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "down_button",
+    "confidence": 0.45725345611572266,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "down_button",
+        "probability": 0.4213430881500244
+      },
+      {
+        "noun": "lever",
+        "probability": 0.03349749743938446
+      },
+      {
+        "noun": "screw",
+        "probability": 0.021209806203842163
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.016865523532032967
+      },
+      {
+        "noun": "battery",
+        "probability": 0.015860458835959435
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.3121051788330078,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "bracket",
+        "probability": 0.13139009475708008
+      },
+      {
+        "noun": "screw",
+        "probability": 0.083063043653965
+      },
+      {
+        "noun": "lever",
+        "probability": 0.05017271265387535
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.038540709763765335
+      },
+      {
+        "noun": "dispenser",
+        "probability": 0.03329785168170929
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "screw",
+    "confidence": 0.4446708559989929,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "screw",
+        "probability": 0.40015286207199097
+      },
+      {
+        "noun": "screwdriver",
+        "probability": 0.14723145961761475
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.06512323766946793
+      },
+      {
+        "noun": "lever",
+        "probability": 0.0316651426255703
+      },
+      {
+        "noun": "dispenser",
+        "probability": 0.02648049034178257
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3341653347015381,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.16342483460903168
+      },
+      {
+        "noun": "sd_card",
+        "probability": 0.06527215987443924
+      },
+      {
+        "noun": "battery",
+        "probability": 0.05260123312473297
+      },
+      {
+        "noun": "lever",
+        "probability": 0.03572743386030197
+      },
+      {
+        "noun": "screw",
+        "probability": 0.030247803777456284
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3912407159805298,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.2815602123737335
+      },
+      {
+        "noun": "lever",
+        "probability": 0.10833581537008286
+      },
+      {
+        "noun": "sd_card",
+        "probability": 0.07012061029672623
+      },
+      {
+        "noun": "game_card",
+        "probability": 0.0217204038053751
+      },
+      {
+        "noun": "screw",
+        "probability": 0.021228378638625145
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3485792577266693,
+    "core": "gpt2",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "screw",
+        "probability": 0.19788998365402222
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.09436145424842834
+      },
+      {
+        "noun": "screwdriver",
+        "probability": 0.070257268846035
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.06315883249044418
+      },
+      {
+        "noun": "sd_card",
+        "probability": 0.059472937136888504
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "down_button",
+    "confidence": 0.5382422804832458,
+    "core": "gated",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "down_button",
+        "probability": 0.5702567100524902
+      },
+      {
+        "noun": "remote",
+        "probability": 0.0805157721042633
+      },
+      {
+        "noun": "button",
+        "probability": 0.01742693781852722
+      },
+      {
+        "noun": "box",
+        "probability": 0.01358853094279766
+      },
+      {
+        "noun": "battery",
+        "probability": 0.011742917820811272
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.29084986448287964,
+    "core": "gated",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "screw",
+        "probability": 0.08412341773509979
+      },
+      {
+        "noun": "button",
+        "probability": 0.07304898649454117
+      },
+      {
+        "noun": "toolbox",
+        "probability": 0.06968935579061508
+      },
+      {
+        "noun": "bracket",
+        "probability": 0.06454700976610184
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.05369177460670471
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.43257325887680054,
+    "core": "gated",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "bolt",
+        "probability": 0.38772812485694885
+      },
+      {
+        "noun": "remote",
+        "probability": 0.04771214723587036
+      },
+      {
+        "noun": "cover",
+        "probability": 0.04358844459056854
+      },
+      {
+        "noun": "battery",
+        "probability": 0.0362238734960556
+      },
+      {
+        "noun": "button",
+        "probability": 0.03444116190075874
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.29067811369895935,
+    "core": "gated",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "computer_tower",
+        "probability": 0.08491624146699905
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.07178986072540283
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.05239835008978844
+      },
+      {
+        "noun": "hdmi_cable",
+        "probability": 0.05172760412096977
+      },
+      {
+        "noun": "cable_power_supply",
+        "probability": 0.04350486770272255
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.44073987007141113,
+    "core": "gated",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "computer_tower",
+        "probability": 0.39709365367889404
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.04907596856355667
+      },
+      {
+        "noun": "m6_machine",
+        "probability": 0.03749717026948929
+      },
+      {
+        "noun": "cup",
+        "probability": 0.027502961456775665
+      },
+      {
+        "noun": "graphic_card",
+        "probability": 0.02457943558692932
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.36963969469070435,
+    "core": "gated",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "computer_tower",
+        "probability": 0.25302401185035706
+      },
+      {
+        "noun": "graphic_card",
+        "probability": 0.10547207295894623
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.08118224143981934
+      },
+      {
+        "noun": "hdmi_cable",
+        "probability": 0.04881102219223976
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.04741926118731499
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "down_button",
+    "confidence": 0.620719313621521,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "down_button",
+        "probability": 0.7390618920326233
+      },
+      {
+        "noun": "button",
+        "probability": 0.04117586836218834
+      },
+      {
+        "noun": "remote",
+        "probability": 0.01606878452003002
+      },
+      {
+        "noun": "lever",
+        "probability": 0.013567214831709862
+      },
+      {
+        "noun": "lid",
+        "probability": 0.010743179358541965
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.30126339197158813,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.10390932112932205
+      },
+      {
+        "noun": "bracket",
+        "probability": 0.05676811933517456
+      },
+      {
+        "noun": "button",
+        "probability": 0.053392909467220306
+      },
+      {
+        "noun": "lever",
+        "probability": 0.04596441984176636
+      },
+      {
+        "noun": "screw",
+        "probability": 0.03331002593040466
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "button",
+    "confidence": 0.4861084222793579,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "button",
+        "probability": 0.497053325176239
+      },
+      {
+        "noun": "home_button",
+        "probability": 0.05120883882045746
+      },
+      {
+        "noun": "wheel",
+        "probability": 0.03724406659603119
+      },
+      {
+        "noun": "lever",
+        "probability": 0.03384542465209961
+      },
+      {
+        "noun": "key",
+        "probability": 0.028993776068091393
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.35633641481399536,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.2204713672399521
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.16221243143081665
+      },
+      {
+        "noun": "lever",
+        "probability": 0.1254517287015915
+      },
+      {
+        "noun": "button",
+        "probability": 0.020798806101083755
+      },
+      {
+        "noun": "joy_con_strap",
+        "probability": 0.01939692348241806
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3448401391506195,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "lever",
+        "probability": 0.20081880688667297
+      },
+      {
+        "noun": "cup",
+        "probability": 0.09845111519098282
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.05666150525212288
+      },
+      {
+        "noun": "cup_lid",
+        "probability": 0.0287456177175045
+      },
+      {
+        "noun": "dispenser",
+        "probability": 0.028621677309274673
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.38872790336608887,
+    "core": "oscillator",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.28609180450439453
+      },
+      {
+        "noun": "button",
+        "probability": 0.0760069414973259
+      },
+      {
+        "noun": "lever",
+        "probability": 0.059304069727659225
+      },
+      {
+        "noun": "screw",
+        "probability": 0.04465562850236893
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.02783450298011303
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "component": "down_button",
+    "confidence": 0.5795657634735107,
+    "core": "associative",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "down_button",
+        "probability": 0.6538189649581909
+      },
+      {
+        "noun": "remote",
+        "probability": 0.03672131150960922
+      },
+      {
+        "noun": "lever",
+        "probability": 0.02782493270933628
+      },
+      {
+        "noun": "button",
+        "probability": 0.023251796141266823
+      },
+      {
+        "noun": "lid",
+        "probability": 0.013109256513416767
+      }
+    ],
+    "route": "component"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.31690192222595215,
+    "core": "associative",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "button",
+        "probability": 0.1261824667453766
+      },
+      {
+        "noun": "screw",
+        "probability": 0.09721043705940247
+      },
+      {
+        "noun": "lever",
+        "probability": 0.08315448462963104
+      },
+      {
+        "noun": "reset_button",
+        "probability": 0.0727497860789299
+      },
+      {
+        "noun": "bracket",
+        "probability": 0.053495731204748154
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "semantic",
+    "confidence": 0.3043949604034424,
+    "core": "associative",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "bolt",
+        "probability": 0.11214764416217804
+      },
+      {
+        "noun": "button",
+        "probability": 0.1096869558095932
+      },
+      {
+        "noun": "remote",
+        "probability": 0.09537782520055771
+      },
+      {
+        "noun": "screw",
+        "probability": 0.05353777855634689
+      },
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.05236983299255371
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.28876739740371704,
+    "core": "associative",
+    "fold": "B",
+    "mode": "correct",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.07821245491504669
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.07451904565095901
+      },
+      {
+        "noun": "lever",
+        "probability": 0.0489465668797493
+      },
+      {
+        "noun": "battery",
+        "probability": 0.045200444757938385
+      },
+      {
+        "noun": "remote",
+        "probability": 0.03698866441845894
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.3422134518623352,
+    "core": "associative",
+    "fold": "B",
+    "mode": "wrong",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.1906188428401947
+      },
+      {
+        "noun": "lever",
+        "probability": 0.12274380773305893
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.05671866983175278
+      },
+      {
+        "noun": "screw",
+        "probability": 0.03659343346953392
+      },
+      {
+        "noun": "computer_tower",
+        "probability": 0.030111245810985565
+      }
+    ],
+    "route": "internal_only"
+  },
+  {
+    "arm": "learned",
+    "confidence": 0.37356120347976685,
+    "core": "associative",
+    "fold": "B",
+    "mode": "none",
+    "proposals": [
+      {
+        "noun": "nintendo_switch",
+        "probability": 0.24951845407485962
+      },
+      {
+        "noun": "remote",
+        "probability": 0.08650907874107361
+      },
+      {
+        "noun": "screw",
+        "probability": 0.07856638729572296
+      },
+      {
+        "noun": "joy_con_controller",
+        "probability": 0.044447921216487885
+      },
+      {
+        "noun": "bolt",
+        "probability": 0.03494350239634514
+      }
+    ],
+    "route": "internal_only"
+  }
+]
