@@ -30,3 +30,14 @@ PYTHONPATH=. python scripts/infer/g10_world.py "$weights" \
 ```
 
 Inputs share a 10 Hz clock. Audio contains 64 quantized spectral values, video has 16×16 RGB samples, physical input has 12 channels, and `x` holds 128 signed natural-language features. Optional `w` contains the original eight task/event word slots. Passing `--utterances file.json` accepts a list of objects with numeric `end` times in seconds and `text`; features become available after an utterance completes. Use `--sources audio`, `vision`, `physics` or `words`, individually or jointly. The real recording has no issued simulator control, so `u` defaults to hold. Candidate-conditioned predictions use the optional `plan` array. [Data source and output examples](../examples/README.md)
+
+
+## Frozen outcome readouts
+
+The two paired models ship with a small logistic readout fitted to the original frozen field. For each proposed start time, the program uses the 32 observations ending at least 200 ms before the action. The probabilities refer to the HoloAssist human error labels. On 3,262 held novel-task actions, the packed hybrid obtained 5.43% average precision and the packed dense model 5.38%. The raw-sensor comparison obtained 5.09%. [Head and parent identities](risk-heads/receipts.json) · [Packing check](risk-heads/packaging-check.json)
+
+```bash
+PYTHONPATH=. python scripts/infer/g10_risk.py "$weights" \
+  "$study/inference/risk-heads/align-hybrid-paired-s1003-risk-heads.npz" \
+  "$study/examples/held-public-input.npz" --action-starts 12.8 25.6 --output risk.json
+```

@@ -1,0 +1,36 @@
+{
+  "align-gpt2-paired-s1003": {
+    "events": 3262,
+    "held_recordings": 64,
+    "mean_absolute_probability_change": 0.002719705810487699,
+    "metrics": {
+      "original": {
+        "ap": 0.05177918111250122,
+        "auroc": 0.5390054864860112,
+        "brier": 0.042812375774725034
+      },
+      "portable": {
+        "ap": 0.053824270946624314,
+        "auroc": 0.5525458526034431,
+        "brier": 0.04272819233580028
+      }
+    }
+  },
+  "align-hybrid-paired-s1003": {
+    "events": 3262,
+    "held_recordings": 64,
+    "mean_absolute_probability_change": 0.0023293930983183295,
+    "metrics": {
+      "original": {
+        "ap": 0.05520305435335209,
+        "auroc": 0.5265553836143985,
+        "brier": 0.042841717539876124
+      },
+      "portable": {
+        "ap": 0.054294785207579264,
+        "auroc": 0.52767202419681,
+        "brier": 0.04282378972803817
+      }
+    }
+  }
+}
