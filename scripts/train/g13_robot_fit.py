@@ -94,7 +94,7 @@ def choices(work):
 
 
 def train_phase(phase):
-    repaired=phase=="corrected";work=ROOT/"work"/("repaired" if repaired else "robot");(work/"dev").mkdir(exist_ok=True,parents=True)
+    repaired=phase in ("corrected","newseeds");work=ROOT/"work"/("repaired" if repaired else "robot");(work/"dev").mkdir(exist_ok=True,parents=True)
     folders=roots("robot-corrected" if repaired else "robot");s=Spec();tr=read("train",repaired);coef=identify(tr);save_npz(work/"system-id.npz",coef)
     dev=prepare(read("dev",repaired),coef);tr=prepare(tr,coef);ref=dev_reference(tr,dev)
     if repaired:
@@ -104,14 +104,14 @@ def train_phase(phase):
         tr=decorate(tr,best,coefficients,mass);dev=decorate(dev,best,coefficients,mass)
         print("Development adaptive physical reference",best,flush=True)
     write(work/"dev-reference.json",ref)
-    seed_list=SEEDS if repaired else (1301,) if phase=="pilot" else SEEDS[1:]
-    recipes=("linear","adaptive","anchored") if repaired else RECIPES if phase=="pilot" else json.loads((work/"recipe-lock.json").read_bytes())["recipes"]
+    seed_list=(1311,1312) if phase=="newseeds" else SEEDS if repaired else (1301,) if phase=="pilot" else SEEDS[1:]
+    recipes=("linear",) if phase=="newseeds" else ("linear","adaptive","anchored") if repaired else RECIPES if phase=="pilot" else json.loads((work/"recipe-lock.json").read_bytes())["recipes"]
     bank={k:jnp.asarray(tr[k]) for k in feature_keys(recipes[0])+TARGET}
     input_dir=ROOT/"data/robot"/("corrected" if repaired else "banks");train_sha=sha(input_dir/"train.npz");dev_sha=sha(input_dir/"dev.npz")
     for seed in seed_list:
         idx=sample(tr,seed)
         for recipe in recipes:
-            for core in CORES:
+            for core in (("gpt2","dense_spatial","associative","transport") if phase=="newseeds" else CORES):
                 tag=f"{core}-{recipe}-{seed}";file=work/"dev"/(tag+".json")
                 if file.is_file():continue
                 p=initial(s,seed);m=jax.tree.map(jnp.zeros_like,p);v=jax.tree.map(jnp.zeros_like,p);start=0;curve=[]
@@ -143,7 +143,7 @@ def train_phase(phase):
 
 
 def main():
-    a=argparse.ArgumentParser();a.add_argument("phase",choices=("pilot","confirm","corrected"));p=a.parse_args()
+    a=argparse.ArgumentParser();a.add_argument("phase",choices=("pilot","confirm","corrected","newseeds"));p=a.parse_args()
     jax.config.update("jax_compilation_cache_dir",str(ROOT/"cache"));train_phase(p.phase)
 
 if __name__=="__main__":main()

@@ -186,7 +186,9 @@ def build(root,external=False):
     parts=sorted(folder.glob("*.npz"));grouping,roles,nframe=split_groups(parts)
     excluded_groups=set()
     if external:
-        prior=sorted((R/"decoded").glob("*.npz"));old_keys=set();old_frames=set()
+        prior=sorted((R/"decoded").glob("*.npz"))
+        if root.name=="robot-prospective":prior+=sorted((R.parent/"robot-extra/decoded").glob("*.npz"))
+        old_keys=set();old_frames=set()
         for old in prior:
             old_keys.update(r["parent"] for r in json.loads(old.with_suffix(".json").read_bytes()))
             with np.load(old) as z:old_frames.update(bytes(k) for k in z["frame"])

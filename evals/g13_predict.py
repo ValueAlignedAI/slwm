@@ -22,6 +22,7 @@ def study(kind):
 def records(kind):
     work=study(kind)
     docs=[json.loads(f.read_bytes()) for f in sorted((work/"dev").glob("*.json"))]
+    docs=[d for d in docs if d["seed"] in SEEDS]
     if kind=="original":
         recipes=json.loads((work/"recipe-lock.json").read_bytes())["recipes"]
         docs=[d for d in docs if d["recipe"] in recipes]
