@@ -4,10 +4,8 @@ import argparse
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
-from pathlib import Path
-import time
 import numpy as np
-from data.g14_table import ROOT, TOL, OTHER, LIMIT, CHUNK, evaluate_path
+from data.g14_table import ROOT, TOL, OTHER, LIMIT, evaluate_path
 from data.g14_policy import choose, loaded
 from data.g14_fork import isolated
 from scripts.data.g14_collect import init_worker
@@ -34,7 +32,7 @@ def policies(stage):
         for b in base:
             b["oracle_cue"] = True
         return base
-    if stage in ("refine", "paired", "isolated"):
+    if stage in ("refine", "paired", "isolated", "verified"):
         setting = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
         base = [
             dict(
@@ -48,13 +46,17 @@ def policies(stage):
             for c in ("gpt2", "transport")
             for s in SEEDS
             for t in (
-                ("initial", "expert-paired", "visited-paired")
-                if stage in ("paired", "isolated")
-                else ("expert-plus", "visited-plus")
+                ("initial", "expert-isolated", "visited-isolated")
+                if stage == "verified"
+                else (
+                    ("initial", "expert-paired", "visited-paired")
+                    if stage in ("paired", "isolated")
+                    else ("expert-plus", "visited-plus")
+                )
             )
         ]
         return base
-    if stage in ("gate", "isolated-gate"):
+    if stage in ("gate", "isolated-gate", "verified-gate"):
         lock = json.loads((ROOT / "work/development-selection.json").read_bytes())
         return [
             dict(
@@ -119,10 +121,8 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
     cue = case["commands"][ci]
     c = cue["true_color"] if policy.get("oracle_cue") else cue["heard_color"]
     st = cue["true_station"] if policy.get("oracle_cue") else cue["heard_station"]
-    if (
-        not policy.get("oracle_cue")
-        and not policy.get("open_gate")
-        and not cue["accept"]
+    if not policy.get("oracle_cue") and (
+        c >= 3 or not policy.get("open_gate") and not cue["accept"]
     ):
         c = -1
     target = stations[st]
@@ -186,7 +186,16 @@ def one(args):
         return seed
     table = (
         collector.clean_worker()
-        if stage in ("paired", "gate", "isolated", "isolated-gate", "final")
+        if stage
+        in (
+            "paired",
+            "gate",
+            "isolated",
+            "isolated-gate",
+            "verified",
+            "verified-gate",
+            "final",
+        )
         else collector.ENV
     )
     signature = table.reset(seed, case["shift"])
@@ -200,7 +209,13 @@ def one(args):
     np.random.default_rng(seed + 941).shuffle(order)
     results = {}
     im_hash = None
-    separate = stage in ("isolated", "isolated-gate", "final")
+    separate = stage in (
+        "isolated",
+        "isolated-gate",
+        "verified",
+        "verified-gate",
+        "final",
+    )
     if separate:
         for p in ps:
             if p["core"] in ("gpt2", "transport", "gated", "dense_spatial", "raw"):
@@ -262,7 +277,16 @@ def main(role, stage, count, workers):
         / (
             "cases-base"
             if stage
-            in ("pilot", "refine", "paired", "gate", "isolated", "isolated-gate")
+            in (
+                "pilot",
+                "refine",
+                "paired",
+                "gate",
+                "isolated",
+                "isolated-gate",
+                "verified",
+                "verified-gate",
+            )
             else "cases"
         )
         / (role + ".json")
@@ -315,6 +339,8 @@ if __name__ == "__main__":
             "gate",
             "isolated",
             "isolated-gate",
+            "verified",
+            "verified-gate",
             "final",
         ),
     )

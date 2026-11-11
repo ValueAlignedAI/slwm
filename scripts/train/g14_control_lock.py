@@ -1,25 +1,23 @@
 """Choose one common physical training recipe on development, then declare the complete held panel."""
 
 import json
-import hashlib
 import numpy as np
 from scripts.train.g9_storage import write, sha
 from scripts.train.g14_execute import tag
 from evals.g14_trials import ROOT, summary, read
-from pathlib import Path
 
 
 def lock(final=True):
     audit = json.loads((ROOT / "work/isolation-replay.json").read_bytes())
     if not all(x["exact_poses"] and x["exact_camera"] for x in audit["items"]):
         raise ValueError("Independent full-horizon reproducibility failed")
-    starts = read(ROOT / "work/executed/isolated/dev")
+    starts = read(ROOT / "work/executed/verified/dev")
     if len(starts) != 32 or not all(r["isolated_branch_process"] for r in starts):
         raise ValueError("Incomplete canonical-start development comparison")
     route = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
     _, scores = summary(starts)
     means = {}
-    for stage in ("initial", "expert-paired", "visited-paired"):
+    for stage in ("initial", "expert-isolated", "visited-isolated"):
         keys = [
             tag(
                 dict(
@@ -50,10 +48,10 @@ def lock(final=True):
             dict(stage=win, routed=route, selection=means),
         )
         return
-    validity = json.loads((ROOT / "work/training-fidelity-decision.json").read_bytes())
+    validity = json.loads((ROOT / "work/final-fidelity-decision.json").read_bytes())
     if not validity["usable"]:
         raise ValueError("Training label audit requires isolated supervision")
-    new = read(ROOT / "work/executed/isolated-gate/dev")
+    new = read(ROOT / "work/executed/verified-gate/dev")
     if [(r["seed"], r["start"]) for r in starts] != [
         (r["seed"], r["start"]) for r in new
     ]:
@@ -164,9 +162,10 @@ def lock(final=True):
             ROOT / "work/isolation-replay.json",
             ROOT / "work/training-label-audit.json",
             ROOT / "work/training-fidelity-decision.json",
+            ROOT / "work/final-fidelity-decision.json",
             ROOT / "work/speech-choice.json",
             ROOT / "work/routing-lock.json",
-            ROOT / "data/aggregation-paired-lock.json",
+            ROOT / "data/aggregation-isolated-lock.json",
             *(ROOT / "data/cases" / (r + ".json") for r in ("held", "fresh")),
             *(ROOT / "work" / s / "lock.json" for s in means),
         )

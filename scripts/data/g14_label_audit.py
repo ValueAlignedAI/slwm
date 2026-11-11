@@ -8,7 +8,8 @@ from data.g14_fork import isolated
 from scripts.train.g9_storage import write
 
 
-def one(seed):
+def one(args):
+    seed, separate = args
     t = clean_worker()
     t.reset(248600 + seed, seed % 2 == 1)
     stations = t.stations(seed + 248600)
@@ -49,7 +50,11 @@ def one(seed):
                 t.restore(pin)
                 return rows
 
-            legacy = isolated(ordinary)
+            legacy = (
+                [isolated(fork, a) for a in acts[::-1]][::-1]
+                if separate
+                else isolated(ordinary)
+            )
             a = np.array([x[0] for x in exact])
             b = np.array([x[0] for x in legacy])
             x = np.array([v[1:] for v in exact])
@@ -66,11 +71,15 @@ def one(seed):
     return states
 
 
-def main():
+def main(separate=False):
     from concurrent.futures import ProcessPoolExecutor
 
     with ProcessPoolExecutor(4) as pool:
-        rows = [r for group in pool.map(one, range(24)) for r in group]
+        rows = [
+            r
+            for group in pool.map(one, [(i, separate) for i in range(24)])
+            for r in group
+        ]
 
     def scale(k):
         a = np.concatenate([np.atleast_1d(v[k]) for v in rows])
@@ -89,9 +98,19 @@ def main():
         long_return_difference_mm=scale("value"),
         changed_best_action_regret_mm=scale("regret"),
     )
-    write(ROOT / "work/training-label-audit.json", out)
+    write(
+        ROOT
+        / (
+            "work/isolated-label-audit.json"
+            if separate
+            else "work/training-label-audit.json"
+        ),
+        out,
+    )
     print("Training target order audit", out, flush=True)
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    main("--isolated" in sys.argv)

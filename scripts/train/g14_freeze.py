@@ -45,6 +45,7 @@ def main(repo):
     sources = {
         "final-control-lock.json": lock_bytes,
         "paired-training-lock.json": read("data/aggregation-paired-lock.json"),
+        "isolated-training-lock.json": read("data/aggregation-isolated-lock.json"),
         "metrics/development-physical.json": read("work/development-physical.json"),
     }
     training = {}
@@ -54,6 +55,8 @@ def main(repo):
         "visited-plus",
         "expert-paired",
         "visited-paired",
+        "expert-isolated",
+        "visited-isolated",
     ):
         raw = read("work/" + stage + "/lock.json")
         training[stage] = dict(

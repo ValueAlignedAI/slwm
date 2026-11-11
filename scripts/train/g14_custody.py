@@ -15,7 +15,7 @@ ROOT = Path("/mnt/slwm-data/SLWM/g14")
 STEPS = {
     "cue": (9, (128, 640, 1536)),
     "cue-semantic": (6, (128, 640, 1536)),
-    "fields": (48, (96, 384, 1024)),
+    "fields": (60, (96, 384, 1024)),
 }
 
 
@@ -89,6 +89,8 @@ def snapshot():
         "visited-plus",
         "expert-paired",
         "visited-paired",
+        "expert-isolated",
+        "visited-isolated",
     ):
         for p in (work / n).iterdir():
             if p.is_file() and p.suffix in (".npz", ".json"):
