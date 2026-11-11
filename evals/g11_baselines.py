@@ -66,6 +66,8 @@ def main(banks,out,fold,full):
         d,_=read_bank(banks,fold,role,full);N=len(d["cued"]);pv=d["prev_verb"];pn=d["prev_noun"]
         if full:
             active=train["effect"][train["valid"]];mean=active.mean(0);med=np.median(active,axis=0)
+            changed_median=np.median(active[:,:2].sum(1));ratio=mean[0]/max(1e-9,mean[:2].sum())
+            med[:2]=[changed_median*ratio,changed_median*(1-ratio)]
             byverb=np.stack([train["effect"][(train["verb"]==i)&train["valid"]].mean(0) if np.any((train["verb"]==i)&train["valid"]) else mean for i in range(nv)])
             for key,v in (("persistence",np.zeros((N,3))),("training_mean",np.tile(mean,(N,1))),("training_median",np.tile(med,(N,1))),("oracle_verb",byverb[np.maximum(0,d["verb"])])):
                 store(role,key,np.full(N,freq),np.full(N,frn),np.full(N,-1),v)
@@ -78,6 +80,7 @@ def main(banks,out,fold,full):
                 if model=="raw_history" and mode!="correct":continue
                 pred=use(heads[0],select(xx,model));vp=pred[:,:nv].argmax(-1);npred=pred[:,nv:nv+nn].argmax(-1)
                 op=(pred[:,nv+nn:]@norm.T).argmax(-1);ef=np.clip(use(heads[1],select(xx,model)),0,1) if full else None
+                if ef is not None:ef[:,:2]/=np.maximum(1.,ef[:,:2].sum(1,keepdims=True))
                 store(role,model+"_"+mode,vp,npred,op,ef)
     file=out/f"baselines-{fold}-{'joint' if full else 'action'}.npz";np.savez_compressed(file,**arrays);print(file,len(ids),flush=True)
 

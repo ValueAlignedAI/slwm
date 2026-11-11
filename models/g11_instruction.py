@@ -59,7 +59,7 @@ def predict(base,delta,spec,r,mode):
     fx=head("effect")+delta["eb"]
     fractions=jax.nn.softmax(fx[:,:3],axis=-1)
     sem=head("semantic");sem=sem*jax.lax.rsqrt(jnp.maximum(jnp.sum(sem*sem,-1,keepdims=True),1e-6))
-    return dict(verb=head("verb")+delta["vb"],noun=head("noun")+delta["nb"],semantic=sem,
+    return dict(state=z.astype(jnp.float32),verb=head("verb")+delta["vb"],noun=head("noun")+delta["nb"],semantic=sem,
                 effect=jnp.concatenate([fractions[:,1:],jax.nn.sigmoid(fx[:,3:4])],-1))
 
 

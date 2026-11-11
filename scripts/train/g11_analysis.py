@@ -144,6 +144,10 @@ def analyze(banks,evaldir,out,scale=False,partial=False):
                             if better in ref and other in ref:
                                 result[better+"_minus_"+other]={k:shift(ref[better],ref[other],dat,k) for k in SCORES}
                         delta[role]=result
+                    dat=truths[fold,"held"]
+                    delta["intervention_response"]={
+                        "changed_verb_prediction":estimate(public[full+"|correct|verb"]!=public[full+"|wrong|verb"],dat["group"],dat["families"]),
+                        "absolute_change_in_predicted_changed_fraction":estimate(np.where(dat["valid"],np.abs(public[full+"|correct|effect"][:,:2].sum(1)-public[full+"|wrong|effect"][:,:2].sum(1)),np.nan),dat["group"],dat["families"])}
                     comparisons[full]=delta
                     gates[full]={}
                     for k in ("verb","effect_mae"):

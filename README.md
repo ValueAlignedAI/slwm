@@ -4,6 +4,10 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G11 spoken instructions and physical effects on unseen devices
+
+Across 838 decisions in 96 fresh recordings, the correct recorded instruction failed the registered improvement test over both an earlier same-scene directive and silence in every primary architecture/seed/fold cell. SLWM, dense GPT-2-style and gated recurrent models shared 13.25M-parameter parents and 507,204 trainable adaptation parameters. A blinded review located the center on a recognizable device or component in 156 of 259 independently measured surface changes. [Matched G11 result and limits](experiments/multimodal/t11/instructions-physical-effects-20261111/primary.md) · [Physical measurement audit](experiments/multimodal/t11/instructions-physical-effects-20261111/device-audit.md)
+
 ### G10 context training and public task recordings
 
 On matched variable histories, SLWM led dense GPT-2 on uninterrupted simulated control in one of three seeds. A simpler gated recurrent control reached about 94% occupancy in all seeds and handled two actuator changes best. With 416 public HoloAssist recordings, paired SLWM audio-to-video retrieval reached 20.7 / 19.1 / 20.1% on familiar tasks and 12.3 / 14.1 / 12.3% on unseen coffee/computer tasks, against 12.5% chance. Brief goal instructions exposed a separate memory failure that a causal last-command cache repaired in the simulator. [Verified G10 study](experiments/multimodal/t10/context-alignment-20261111/report.md) · [Runnable models](experiments/multimodal/t10/context-alignment-20261111/inference/README.md) · [60-second examples](experiments/multimodal/t10/context-alignment-20261111/examples/README.md)
