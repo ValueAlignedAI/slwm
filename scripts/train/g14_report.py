@@ -198,6 +198,11 @@ def main(repo):
             "## Ongoing operations and real records"
         )
     ] = part
+    ss = load("metrics/source-sensitivity.json")["roles"]
+    cover = load("metrics/partition-audit.json")["regimes"]
+    source_note = f"The 1,280 scheduled commands use {cover['held']['distinct_scheduled_recordings']+cover['fresh']['distinct_scheduled_recordings']} distinct original recordings. All exact evaluated sentences and speakers are absent from the local fit. A secondary analysis that reweights both individual recordings and their physical starts gives spatial-minus-dense selective differences of {points(ss['held']['selective']['spatial_minus_dense'])} and {points(ss['fresh']['selective']['spatial_minus_dense'])} points. The contact-randomized family was represented in the continuation data. The held shifts draw new instances within that family. [Source coverage and secondary interval](source-coverage.md) · [Crossed-factor results](metrics/source-sensitivity.json)"
+    pos = report.index("## How the model was trained and selected")
+    report[pos:pos] = [source_note, ""]
     for name, label in (
         ("geometry-carry", "Geometry, retained goal"),
         ("dense-carry", "Dense, retained goal"),

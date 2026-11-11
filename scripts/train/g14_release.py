@@ -96,7 +96,11 @@ def assemble():
     from scripts.train.g14_stages import await_files
 
     await_files(
-        [ROOT / "work/throughput-post.json", ROOT / "work/training-transfer.json"]
+        [
+            ROOT / "work/throughput-post.json",
+            ROOT / "work/training-transfer.json",
+            ROOT / "work/source-sensitivity.json",
+        ]
     )
     out = ROOT / "release"
     m = out / "metrics"
@@ -123,6 +127,8 @@ def assemble():
         ("acoustic-abstention.json", "acoustic-abstention.json"),
         ("routing-audit.json", "routing-audit.json"),
         ("training-transfer.json", "training-transfer.json"),
+        ("partition-audit.json", "partition-audit.json"),
+        ("source-sensitivity.json", "source-sensitivity.json"),
     ):
         copy(work / source, m / name)
     copy(work / "audit-traces/native-traces.npz", ex / "native-traces.npz")

@@ -1,0 +1,50 @@
+{
+  "distinct_training_worlds": 448,
+  "held_worlds": 320,
+  "preprocessing": "Exact evaluated sentences absent from local train, development and calibration. Frozen external encoder pretraining membership unknown.",
+  "regimes": {
+    "fresh": {
+      "available_utterances": 397,
+      "case_sha256": "7a908306688afa67ab1402af02d111539fdb5255eef04eb176591656c8b61546",
+      "distinct_scheduled_quartets": 40,
+      "distinct_scheduled_recordings": 80,
+      "known_train_world_overlap": 0,
+      "local_fit_sentence_overlap": 0,
+      "maximum_reuses_of_one_recording": 9,
+      "nominal": 32,
+      "physical_starts": 64,
+      "scheduled_utterances": 256,
+      "shifted": 32,
+      "source_people": [
+        33,
+        34
+      ],
+      "unique_sentences": 397
+    },
+    "held": {
+      "available_utterances": 1584,
+      "case_sha256": "367b3973b66846d9159f54a6638395bcefb6a2f4135cea4d12ac06f44b35aff6",
+      "distinct_scheduled_quartets": 169,
+      "distinct_scheduled_recordings": 311,
+      "known_train_world_overlap": 0,
+      "local_fit_sentence_overlap": 0,
+      "maximum_reuses_of_one_recording": 11,
+      "nominal": 128,
+      "physical_starts": 256,
+      "scheduled_utterances": 1024,
+      "shifted": 128,
+      "source_people": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "unique_sentences": 1584
+    }
+  },
+  "shift_coverage": "About one third of continuation worlds used the same randomized contact family; held shifts are new realizations."
+}
