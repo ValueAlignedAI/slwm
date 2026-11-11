@@ -4,10 +4,9 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import re
 
 import numpy as np
-from data.g10_language import text_features
+from data.g12_language import encode_words
 from g12_events import ROOT, G11, write
 from g11_events import KEYWORDS
 from g12_media import source
@@ -19,23 +18,10 @@ def sha(path):
 
 
 def word_slots(sentence):
-    tokens = re.findall(r"[a-z0-9']+", sentence.casefold())
-    slots = np.zeros((4, 128 + len(KEYWORDS)), np.float16)
-    if not tokens:
-        return slots
-    # Word order remains visible. The last semantic channels are fixed public action-word cues at the edge.
-    chunks = np.array_split(np.arange(len(tokens)), min(4, len(tokens)))
-    for i, ix in enumerate(chunks):
-        s = " ".join(tokens[j] for j in ix)
-        slots[i, :128] = text_features(s).astype(np.float32) / 127
-        slots[i, 128:] = [
-            float(any(re.search(r"\b" + re.escape(x) + r"\b", s) for x in aliases))
-            for aliases in KEYWORDS.values()
-        ]
-    return slots
+    return encode_words(sentence, list(KEYWORDS.items()))
 
 
-def packed_record(root, name, record, catalog, vocab):
+def packed_record(root, name, record, catalog, vocab, speech_bank=None):
     with np.load(source(root, name, "shards", ".npz"), allow_pickle=False) as sh:
         audio, imu, rgb = sh["a"], sh["n"], sh["v"]
     with np.load(root / "vision-nv" / (name + ".npz"), allow_pickle=False) as v:
@@ -52,6 +38,8 @@ def packed_record(root, name, record, catalog, vocab):
         path = G11 / "speech-small" / (name + ".npz")
         if not path.is_file():
             path = root / "speech-small" / (name + ".npz")
+        if speech_bank is not None:
+            path = speech_bank / (name + ".npz")
         trans = json.loads(path.with_suffix(".json").read_bytes())["utterances"]
         reference = {v["id"]: v["text"] for v in catalog["speech"]}
         with np.load(path) as file:

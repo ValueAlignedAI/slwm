@@ -68,14 +68,43 @@ def read(root, fold, role, states):
     return meta, data
 
 
+def drop_modalities(row, seed, step):
+    masks = jax.random.uniform(
+        jax.random.fold_in(jax.random.PRNGKey(seed), step), (6, len(row["scene"]), 1, 1)
+    )
+    speech = masks[0] >= 0.15
+    result = dict(row)
+    for k in ("ac", "wc"):
+        result[k] = row[k] * speech * (masks[1] >= 0.10)
+    for k in ("words", "wrong", "human", "wrong_human"):
+        result[k] = row[k] * speech * (masks[2] >= 0.15)
+    scene = row["scene"]
+    vision = masks[3] >= 0.20
+    audio = masks[4] >= 0.15
+    imu = masks[5] >= 0.20
+    result["scene"] = jnp.concatenate(
+        (
+            scene[:, :, :512] * vision,
+            scene[:, :, 512:576] * audio,
+            scene[:, :, 576:583] * imu,
+            scene[:, :, 583:632] * vision,
+            scene[:, :, 632:],
+        ),
+        axis=-1,
+    )
+    return result
+
+
 @lru_cache(maxsize=32)
 def block(s, core, treat, joint):
     @jax.jit
-    def run(p, m, v, data, indices, start):
+    def run(p, m, v, data, indices, start, seed=0):
         def update(carry, args):
             par, first, second = carry
             ix, step = args
             row = {k: x[ix] for k, x in data.items()}
+            if treat == "dropout":
+                row = drop_modalities(row, seed, step)
             (loss, parts), grad = jax.value_and_grad(objective, has_aux=True)(
                 par, s, core, row, treat, joint
             )

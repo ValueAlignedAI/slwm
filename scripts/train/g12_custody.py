@@ -111,7 +111,7 @@ def drive():
     delay = 180
     while True:
         registered = {}
-        for group in ("runs", "scale"):
+        for group in ("runs", "scale", "early"):
             for file in (base / group).glob("*/step-*/verified.json"):
                 receipt = json.loads(file.read_bytes())
                 for name, h in receipt["sha256"].items():
