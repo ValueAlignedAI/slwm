@@ -18,11 +18,12 @@ from g9_storage import FILES,disks,sha,write
 
 CHUNK=16<<20
 CONTEXT=re.compile(r"context-(hybrid|gpt2|gated)-(short|variable|long)-s100[123]")
+CUE=re.compile(r"cue-(hybrid|gpt2)-(continuous|brief)-s100[123]")
 ALIGN=re.compile(r"align-(hybrid|gpt2)-(paired|shifted|reconstruct|rooms)-s100[123]")
 
 
 def relative(tag,step):
-    if not ((CONTEXT.fullmatch(tag) and step in (2560,5120)) or (ALIGN.fullmatch(tag) and step==1536)):
+    if not ((CONTEXT.fullmatch(tag) and step in (2560,5120)) or (ALIGN.fullmatch(tag) and step==1536) or (CUE.fullmatch(tag) and step==768)):
         raise ValueError("Unregistered G10 stage")
     return Path(tag)/f"step-{step:05d}"
 

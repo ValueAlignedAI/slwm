@@ -32,6 +32,13 @@ def schedule(ids,seed,changes):
     return state,goals,signs,notices,first
 
 
+def brief_visibility(goals):
+    ticks=jnp.arange(goals.shape[1])
+    different=jnp.concatenate([jnp.ones((len(goals),1),bool),goals[:,1:]!=goals[:,:-1]],axis=1)
+    last=jax.lax.associative_scan(jnp.maximum,jnp.where(different,ticks[None,:],0),axis=1)
+    return ticks[None,:]-last<4
+
+
 def sensed(state,image,notice):
     r=observation(state,image,0)
     r["n"]=r["n"].at[:,5].set(notice.astype(jnp.float32))

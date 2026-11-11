@@ -12,24 +12,28 @@ import numpy as np
 from evals.g9_live import initial_memory,raw
 from models.g9_shared import Spec,encode
 from models.g9_tabletop import ACTIONS,advance,camera,expert,initial,target
-from models.g10_context import TICKS,schedule,sensed
+from models.g10_context import TICKS,schedule,sensed,brief_visibility
 from scripts.train.g9_fit import numpy_weights,save_json
 
 DELAYS=(8,32,64,128,256,480)
 
 
 @lru_cache(maxsize=90)
-def live_kernel(spec,mode,changes,batch):
+def live_kernel(spec,mode,changes,batch,instruction):
     limit=512 if mode in ("full","wrong") else 64
     def run(p,seed):
         ids=jnp.arange(batch);st,goals,signs,notes,_=schedule(ids,seed,changes);image=camera(st["stations"],st["tint"])
         template=initial_memory(spec,batch,limit) if mode not in ("raw","idle") else ()
+        visible=brief_visibility(goals) if instruction=="brief" else jnp.full(goals.shape,instruction=="continuous")
         keep=jnp.ones((batch,4),bool)
         def tick(c,item):
-            state,mem,estimated,seen=c;t,goal,sign,notice=item
+            state,mem,estimated,seen,remembered=c;t,goal,sign,notice,show=item
             state={**state,"goal":goal,"sign":sign,"known":(state["known"]&~notice)|(state["previous"]>=5)}
             obs=sensed(state,image,notice)
-            ref,estimated,seen=raw(obs,estimated,seen&~notice)
+            remembered=jnp.where(show[:,None],obs["w"],remembered)
+            ref,estimated,seen=raw({**obs,"w":remembered},estimated,seen&~notice)
+            ref=jnp.where(remembered[:,2]>0,ref,0)
+            obs={**obs,"w":jnp.where(show[:,None],obs["w"],jnp.zeros_like(obs["w"]))}
             if mode=="raw": action=ref
             elif mode=="idle": action=jnp.zeros(batch,jnp.int32)
             else:
@@ -40,15 +44,15 @@ def live_kernel(spec,mode,changes,batch):
             nxt=advance(state,action,t,True)
             reached=(nxt["pos"]==target(state)).all(1)
             measures=jnp.stack((reached,action==0,action>=5,(action==0)&~reached,ref==expert(state),action,goal,notice),-1)
-            return (nxt,mem,estimated,seen),measures
-        carry=(st,template,jnp.zeros((batch,2),jnp.int32),jnp.zeros(batch,bool))
-        return jax.lax.scan(tick,carry,(jnp.arange(TICKS),goals.T,signs.swapaxes(0,1),notes.T))[1]
+            return (nxt,mem,estimated,seen,remembered),measures
+        carry=(st,template,jnp.zeros((batch,2),jnp.int32),jnp.zeros(batch,bool),jnp.zeros((batch,8),jnp.uint8))
+        return jax.lax.scan(tick,carry,(jnp.arange(TICKS),goals.T,signs.swapaxes(0,1),notes.T,visible.T))[1]
     return jax.jit(run)
 
 
-def mission(p,spec,mode,changes,seed,b=256):
-    data=np.asarray(live_kernel(spec,mode,changes,b)(p,jnp.int32(seed)))
-    if not data[:,:,4].all():raise ValueError("Sensor-only reference disagrees with causal expert")
+def mission(p,spec,mode,changes,seed,b=256,instruction="continuous"):
+    data=np.asarray(live_kernel(spec,mode,changes,b,instruction)(p,jnp.int32(seed)))
+    if instruction!="blank" and not data[:,:,4].all():raise ValueError("Sensor-only reference disagrees with causal expert")
     success=[];recovery=[];probe=[]
     for i in range(b):
         boundaries=np.r_[0,np.flatnonzero(np.diff(data[:,i,6]))+1,TICKS]
