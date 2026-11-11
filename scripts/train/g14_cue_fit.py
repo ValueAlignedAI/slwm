@@ -45,14 +45,14 @@ def scores(p,row):
     return dict(color=avg(hit[:,0]),letter=avg(hit[:,1]),digit=avg(hit[:,2]),joint=avg(hit.all(1)),nll=avg(ce),
                 by_speaker={str(v):float(hit[speaker==v].all(1).mean()) for v in np.unique(speaker)})
 
-def main(stage,root=ROOT,native=False,only=None):
-    src=root/"data/utterances";work=root/"work/cue";work.mkdir(exist_ok=True,parents=True);folders=(root/"checkpoints",) if native else roots("cue")
+def main(stage,root=ROOT,native=False,only=None,semantic=False):
+    src=root/"data"/("semantic-utterances" if semantic else "utterances");work=root/"work"/("cue-semantic" if semantic else "cue");work.mkdir(exist_ok=True,parents=True);folders=(root/"checkpoints",) if native else roots("cue-semantic" if semantic else "cue")
     train=read(src/"train.npz");dev=read(src/"dev.npz");g=train["speaker"]
     _,iv,ct=np.unique(g,return_inverse=True,return_counts=True);weights=1./ct[iv];weights/=weights.sum()
     bank={k:jnp.asarray(train[k]) for k in ("a","l","length","alignment","y")};configs={}
     for seed in ((only,) if only else SEEDS):
         ix=np.random.default_rng(seed).choice(len(g),(1536,128),p=weights).astype("i4")
-        for arm in ARMS:
+        for arm in (("aligned","audiovisual") if semantic else ARMS):
             tag=f"{arm}-{seed}";p=initial(seed);m=jax.tree.map(jnp.zeros_like,p);v=jax.tree.map(jnp.zeros_like,p);curve=[];start=0
             cfg=dict(seed=seed,arm=arm,train_sha=sha(src/"train.npz"),batch=128,steps=list(CUTS),parameters=sum(x.size for x in p.values()))
             for stop in CUTS:
@@ -88,7 +88,7 @@ def main(stage,root=ROOT,native=False,only=None):
     write(work/"scores.json",dict(selected=chosen,variants=results));print("Selected cue",chosen,results[chosen]["fresh"]["normal"],flush=True)
 
 if __name__=="__main__":
-    a=argparse.ArgumentParser();a.add_argument("stage",choices=("train","score"));a.add_argument("--native",action="store_true");a.add_argument("--seed",type=int)
+    a=argparse.ArgumentParser();a.add_argument("stage",choices=("train","score"));a.add_argument("--semantic",action="store_true");a.add_argument("--native",action="store_true");a.add_argument("--seed",type=int)
     p=a.parse_args();root=Path("/content/g14") if p.native else ROOT
     if p.native and not any("v6" in d.device_kind.lower() for d in jax.devices()):raise ValueError("Expected v6e")
-    jax.config.update("jax_compilation_cache_dir",str(root/"cache"));main(p.stage,root,p.native,p.seed)
+    jax.config.update("jax_compilation_cache_dir",str(root/"cache"));main(p.stage,root,p.native,p.seed,p.semantic)
