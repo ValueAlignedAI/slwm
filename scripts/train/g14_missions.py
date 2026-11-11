@@ -120,7 +120,7 @@ def one(index):
     dest = root / f"mission-{index:02d}.json"
     if dest.is_file():
         return json.loads(dest.read_bytes())
-    table = collector.ENV
+    table = collector.clean_worker()
     seed = 271000 + index
     sig = table.reset(seed, index % 2 == 1)
     stations = table.stations(seed)

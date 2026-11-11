@@ -136,9 +136,9 @@ def lock(final=True):
             dict(core="geometry", routed=route, open_gate=True),
         ]
     )
-    from scripts.train.g14_field_audit import means
+    from scripts.train.g14_field_audit import means as training_field_means
 
-    averages = means(win)
+    averages = training_field_means(win)
     ps.extend(
         dict(
             core=c,
