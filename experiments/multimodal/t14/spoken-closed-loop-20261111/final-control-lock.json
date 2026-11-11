@@ -1,0 +1,217 @@
+{
+  "contact_gates": {
+    "False": {
+      "final_mm": 66.66464851390849,
+      "success": 0.44469696969696965
+    },
+    "True": {
+      "final_mm": 23.18712901855399,
+      "success": 0.5263888888888889
+    }
+  },
+  "contact_only": true,
+  "policies": [
+    {
+      "core": "noop"
+    },
+    {
+      "core": "straight"
+    },
+    {
+      "core": "geometry",
+      "routed": false
+    },
+    {
+      "contact_only": true,
+      "core": "raw",
+      "routed": false,
+      "stage": "visited-isolated"
+    },
+    {
+      "core": "contact_speed"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "gpt2",
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "gpt2",
+      "routed": false,
+      "seed": 1412,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "gpt2",
+      "routed": false,
+      "seed": 1413,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "routed": false,
+      "seed": 1412,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "routed": false,
+      "seed": 1413,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "core": "gated",
+      "routed": false,
+      "seed": 1411,
+      "stage": "initial"
+    },
+    {
+      "arm": "protected",
+      "core": "dense_spatial",
+      "routed": false,
+      "seed": 1411,
+      "stage": "initial"
+    },
+    {
+      "core": "geometry",
+      "oracle_cue": true,
+      "routed": false
+    },
+    {
+      "core": "geometry",
+      "oracle_cue": true,
+      "oracle_pose": true,
+      "routed": false
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "gpt2",
+      "oracle_cue": true,
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "oracle_cue": true,
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "reset_memory": true,
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "core": "geometry",
+      "original_edge": true,
+      "routed": false
+    },
+    {
+      "core": "geometry",
+      "open_gate": true,
+      "routed": false
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "gpt2",
+      "mean_field": true,
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    },
+    {
+      "arm": "protected",
+      "contact_only": true,
+      "core": "transport",
+      "mean_field": true,
+      "routed": false,
+      "seed": 1411,
+      "stage": "visited-isolated"
+    }
+  ],
+  "routed": false,
+  "selection": {
+    "expert-isolated": {
+      "final_mm": 69.29418918523218,
+      "policies": [
+        "expert-isolated/gpt2/protected/1411/directpath/oracle/camera/carry",
+        "expert-isolated/transport/protected/1411/directpath/oracle/camera/carry",
+        "expert-isolated/gpt2/protected/1412/directpath/oracle/camera/carry",
+        "expert-isolated/transport/protected/1412/directpath/oracle/camera/carry",
+        "expert-isolated/gpt2/protected/1413/directpath/oracle/camera/carry",
+        "expert-isolated/transport/protected/1413/directpath/oracle/camera/carry"
+      ],
+      "success": 0.4357323232323232
+    },
+    "initial": {
+      "final_mm": 104.38288310992122,
+      "policies": [
+        "initial/gpt2/protected/1411/directpath/oracle/camera/carry",
+        "initial/transport/protected/1411/directpath/oracle/camera/carry",
+        "initial/gpt2/protected/1412/directpath/oracle/camera/carry",
+        "initial/transport/protected/1412/directpath/oracle/camera/carry",
+        "initial/gpt2/protected/1413/directpath/oracle/camera/carry",
+        "initial/transport/protected/1413/directpath/oracle/camera/carry"
+      ],
+      "success": 0.29823232323232324
+    },
+    "visited-isolated": {
+      "final_mm": 66.66464851390849,
+      "policies": [
+        "visited-isolated/gpt2/protected/1411/directpath/oracle/camera/carry",
+        "visited-isolated/transport/protected/1411/directpath/oracle/camera/carry",
+        "visited-isolated/gpt2/protected/1412/directpath/oracle/camera/carry",
+        "visited-isolated/transport/protected/1412/directpath/oracle/camera/carry",
+        "visited-isolated/gpt2/protected/1413/directpath/oracle/camera/carry",
+        "visited-isolated/transport/protected/1413/directpath/oracle/camera/carry"
+      ],
+      "success": 0.44469696969696965
+    }
+  },
+  "sha256": {
+    "data/aggregation-isolated-lock.json": "2ac5f3fc1cbad2a7a26ee2dfdcf3c6e84208db7ac04a6eec8bf0f7a14ea83228",
+    "data/cases/fresh.json": "7a908306688afa67ab1402af02d111539fdb5255eef04eb176591656c8b61546",
+    "data/cases/held.json": "367b3973b66846d9159f54a6638395bcefb6a2f4135cea4d12ac06f44b35aff6",
+    "work/expert-isolated/lock.json": "eea0950a16e6cbff5f9c4b8c1f45d96cb10c625747cc74c6e74ccd8bcd20c3cd",
+    "work/final-fidelity-decision.json": "5d6100fd86b1a217b85e4c793966b2e17d0d071649246771140a2cd2e6f9e0e2",
+    "work/initial/lock.json": "28ba40649ef8fbb43cc9adaf71c4f9e304ec1bd2e2372db430ae89e2115055df",
+    "work/isolation-replay.json": "30579c372673f5032de55052ef95bc3414ffcc2beed6a83c9e88e3e330da5116",
+    "work/routing-lock.json": "a2c53024a73485f348e35619b613f268b84c0f6a44d1f0d5c43caa4a35588955",
+    "work/speech-choice.json": "f4db9eefa76bc35435072b2484ffdc71a0e9e3f91e42603d74af0220634d7738",
+    "work/training-fidelity-decision.json": "7ca2ff973440f7af30b79bd3f7ced46d51fa00072e9f229cef0ba80a138637cb",
+    "work/training-label-audit.json": "fa62bf5075fda765efe958aa7e197dbd90cc8667868cb06db8a9074700823db4",
+    "work/visited-isolated/field-means.npz": "54144aee1b5eb128550467f53a20f71435f3878c15ebd0a2c2acd9aeee545fc4",
+    "work/visited-isolated/lock.json": "3d7dcce27f9fee06bf71d8a92fd5d9ea4e3e0fefd2aad4b5f455ab9bd103db03"
+  },
+  "stage": "visited-isolated"
+}
