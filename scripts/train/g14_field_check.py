@@ -31,12 +31,13 @@ def main():
             ("other-block", "other-block-features.npz"),
         )
     }
+    goals["matching-text"]=active_goal(scene,pkg,man,"text",man["example"]["transcript"])
     silence = active_goal(scene, pkg, man, "absent")
-    results = {}
+    results = {};contrasts={}
     for core in ("gpt2", "transport"):
         for seed in (1411, 1412, 1413):
             key = f"{core}-{seed}"
-            result = {}
+            result = {};vectors={}
             policy = dict(
                 core=core,
                 seed=seed,
@@ -72,6 +73,7 @@ def main():
                         "protected",
                         jnp,
                     )
+                    vectors[name]=np.asarray(val["field"])
                     a = np.max(np.abs(np.asarray(field[0]) - val["field"]))
                     yn = predict(model, r, core, "protected", np)[0]
                     b = np.max(np.abs(np.asarray(y) - yn))
@@ -80,17 +82,20 @@ def main():
                     if a > 0.0001 or b > 0.0001:
                         raise ValueError("Backend mismatch in released fields")
                 result[name] = out
+            if not np.array_equal(vectors["actual"],vectors["matching-text"]):raise ValueError("Matched decoded speech and text diverged downstream")
+            contrasts[key]={n:dict(learned_field_l2=float(np.linalg.norm(v[2:]-vectors["actual"][2:])),
+                     commanded_offset_difference_mm=float(1000*np.linalg.norm(np.asarray(result[n]["command_m"])-result["actual"]["command_m"]))) for n,v in vectors.items() if n!="actual"}
             results[key] = result
     write(
         ROOT / "work/field-replay.json",
         dict(
-            models=results,
+            models=results,same_prefix_contrasts=contrasts,
             voices=man["same_speaker_alternatives"],
             initial=man["example"],
             prefix_macros=3,
         ),
     )
-    print("Verified six deployed fields and four cue paths each", flush=True)
+    print("Verified six deployed fields and five cue paths each", flush=True)
 
 
 if __name__ == "__main__":
