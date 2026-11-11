@@ -1,14 +1,14 @@
-# Watch the continuous spoken missions
+# Sustained spoken tabletop control
 
-Each video contains six original human instructions and 61.2 seconds of uninterrupted simulated tabletop control. The camera updates throughout the mission, including while the speaker’s next recording plays. The controller receives the cached speech decoding only after the complete recording. Both videos use the spatial seed-1411 policy. Their mission indices were fixed in advance.
+Both examples run the locked spatial model at seed 1411. They were selected by fixed mission index before their outcomes were observed. Each starts from an independently seeded scene. Six genuine human utterances arrive during continuous contact simulation. The view is sampled once per 300 ms macro, the physics clock runs at 10 Hz, and the file carries the original audio on its simulation clock. The controller receives each cached decoder result only after that recording finishes. The overlaid named stations are part of the public map.
 
-| Recording | Video with original speech | Native motion and selected actions |
-|---|---|---|
-| First original-cohort mission | [Watch 61.2 seconds](mission-00.mp4) | [Trajectory arrays](mission-00.npz) |
-| First fresh-speaker mission | [Watch 61.2 seconds](mission-08.mp4) | [Trajectory arrays](mission-08.npz) |
+![The running tabletop policy at 25 seconds in the first mission](mission-00-preview.png)
 
-![Simulator view at 25 seconds during the first mission](mission-00-preview.png)
+- [mission-00 · 61.2 seconds](mission-00.mp4) · [Native positions, applied controls and retained goals](mission-00.npz)
+- [mission-08 · 61.2 seconds](mission-08.mp4) · [Native positions, applied controls and retained goals](mission-08.npz)
 
-Across 16 missions and 96 instructed placements, spatial SLWM and dense GPT-2 each made 54 selective placements. Geometric feedback made 47. The paired spatial gain over geometry was 7.3 percentage points with a 95% interval of 1.0 to 13.5. The spatial-minus-dense interval was −7.3 to +7.3 points. Clearing the active goal after one action produced zero selective placements. Keeping only the first accepted goal produced 25. The retained goal is explicit controller memory. [Every phase and outcome](mission-outcomes.json) · [Complete mission statistics](../metrics/missions.json) · [Protocol](../missions.md)
+Across 96 instructed phases the retained-goal spatial and dense policies each completed 54 selective placements. Geometric feedback completed 47. The paired spatial gain over geometry was +7.3 [+1.0, +13.5] percentage points.
 
-Martin Cooke, Jon Barker, Stuart Cunningham and Xu Shao released *The Grid Audio-Visual Speech Corpus* under CC BY 4.0. Its audio was aligned to the recording clock and placed at each cue onset. The videos show the camera in Google's open Language-Table simulator. [Original recordings](https://doi.org/10.5281/zenodo.3625687) · [Speech license](https://creativecommons.org/licenses/by/4.0/) · [Simulator](https://github.com/google-research/language-table)
+[Every mission and cue outcome](mission-outcomes.json) · [48 full native held trajectories](native-traces.npz) · [Independent replay audit](../metrics/trajectory-replay.json)
+
+The human recordings are from Martin Cooke, Jon Barker, Stuart Cunningham and Xu Shao's *The Grid Audio-Visual Speech Corpus*, CC BY 4.0. Audio was aligned to the recording clock and placed at cue onset. The control scene is generated in Google's open Language-Table PyBullet environment. [Original speech corpus](https://doi.org/10.5281/zenodo.3625687) · [Speech license](https://creativecommons.org/licenses/by/4.0/) · [Simulation source](https://github.com/google-research/language-table)

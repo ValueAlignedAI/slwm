@@ -1,0 +1,86 @@
+{
+  "additional_held_fork_candidates": 8192,
+  "additional_original_recipe_branches": 768,
+  "complete": true,
+  "counts": {
+    "cue": {
+      "fits": 9,
+      "generations": 27
+    },
+    "cue-semantic": {
+      "fits": 6,
+      "generations": 18
+    },
+    "fields": {
+      "fits": 60,
+      "generations": 180
+    }
+  },
+  "drive_at_release": {
+    "pending": 671,
+    "phase": "backoff",
+    "reason": "shared_drive_project_query_limit",
+    "verified_files": 4
+  },
+  "field_coordinates": 128,
+  "fits": 75,
+  "front_end": "Frozen Whisper-small.en plus one supervised 182,535-parameter speech head shared by both world processors",
+  "generations": 225,
+  "goals_presented": 1280,
+  "movies": {
+    "mission-00": {
+      "scheduled_seconds": 61.199999999999996,
+      "seconds": 61.2,
+      "sha256": "d05c3e87ce4ec335b4c8ddfd0229a91849f095fd3113cc3cefce5b5c022c6838",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "height": 442,
+          "width": 640
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio"
+        }
+      ]
+    },
+    "mission-08": {
+      "scheduled_seconds": 61.199999999999996,
+      "seconds": 61.2,
+      "sha256": "19adc8b6f1f21d6efe8a7cfa13e0788aed5386a4d79ae8c4069629c1bd42dccb",
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "height": 442,
+          "width": 640
+        },
+        {
+          "codec_name": "aac",
+          "codec_type": "audio"
+        }
+      ]
+    }
+  },
+  "next": "Train a per-object motion probability with an explicit stationary outcome and a conditional displacement head. Use predicted collateral motion to rank pushes, then test against the current geometry, dense and fixed-field controls on new object shapes and materials. Calibrate the actuator on separate real recordings before a physical placement trial.",
+  "owned_credits": 0,
+  "physical_fits": 60,
+  "physical_model_parameters": {
+    "gpt2-1411": 160171,
+    "gpt2-1412": 160171,
+    "gpt2-1413": 160171,
+    "transport-1411": 160171,
+    "transport-1412": 160171,
+    "transport-1413": 160171
+  },
+  "primary_acknowledgment_to_finish_minutes": 71.94835212628047,
+  "published_physical_seeds": 6,
+  "remaining_credits": 553.8400430765823,
+  "shared_pretrained_speech_parameters": 88154112,
+  "speech_fits": 15,
+  "total_held_branches": 27200,
+  "total_held_native_ticks": 1958400,
+  "total_held_worlds": 320,
+  "total_owned_credits": 46.15995692341765
+}
