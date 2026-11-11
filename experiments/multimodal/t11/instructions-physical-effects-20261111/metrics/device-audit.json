@@ -1,0 +1,2094 @@
+{
+  "codes": {
+    "A": "accessory or tool",
+    "B": "background",
+    "D": "recognizable device or component",
+    "H": "hand or arm",
+    "O": "outside",
+    "U": "uncertain boundary"
+  },
+  "counts": {
+    "A": 17,
+    "B": 18,
+    "D": 156,
+    "H": 17,
+    "O": 13,
+    "U": 38
+  },
+  "rater": "single analyst, source image, position and magnification only, no words, next action annotation, post frame or model predictions",
+  "rows": [
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 43,
+      "index": 1,
+      "recording": "R159-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 9,
+      "index": 2,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "H",
+      "id": 70,
+      "index": 3,
+      "recording": "R128-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 5,
+      "index": 4,
+      "recording": "z018-june-20-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 53,
+      "index": 5,
+      "recording": "z136-aug-13-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 20,
+      "index": 6,
+      "recording": "R057-14July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 65,
+      "index": 7,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 13,
+      "index": 8,
+      "recording": "z206-sep-26-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 31,
+      "index": 9,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 34,
+      "index": 10,
+      "recording": "z204-sep-25-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 68,
+      "index": 11,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 61,
+      "index": 12,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 75,
+      "index": 13,
+      "recording": "z157-aug-27-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "H",
+      "id": 89,
+      "index": 14,
+      "recording": "R161-3Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 67,
+      "index": 15,
+      "recording": "z090-july-08-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 85,
+      "index": 16,
+      "recording": "R073-20July-GoPro"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "D",
+      "id": 17,
+      "index": 17,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 50,
+      "index": 18,
+      "recording": "R129-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 16,
+      "index": 19,
+      "recording": "R057-14July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 42,
+      "index": 20,
+      "recording": "R139-31Aug-RAM"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 57,
+      "index": 21,
+      "recording": "R128-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 66,
+      "index": 22,
+      "recording": "R143-02Sep-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "O",
+      "id": 145,
+      "index": 23,
+      "recording": "z139-aug-15-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 33,
+      "index": 24,
+      "recording": "z074-july-01-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 27,
+      "index": 25,
+      "recording": "z050-june-27-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 37,
+      "index": 26,
+      "recording": "R129-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 94,
+      "index": 27,
+      "recording": "R005-7July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "O",
+      "id": 46,
+      "index": 28,
+      "recording": "R193-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "B",
+      "id": 47,
+      "index": 29,
+      "recording": "R187-18Oct-GraphicsCard"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 78,
+      "index": 30,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 28,
+      "index": 31,
+      "recording": "R144-02Sep-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 32,
+      "index": 32,
+      "recording": "R130-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 49,
+      "index": 33,
+      "recording": "z046-june-24-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "B",
+      "id": 32,
+      "index": 34,
+      "recording": "R100-1Aug-Coffee"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "D",
+      "id": 48,
+      "index": 35,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "B",
+      "id": 68,
+      "index": 36,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "O",
+      "id": 54,
+      "index": 37,
+      "recording": "R073-20July-Nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 61,
+      "index": 38,
+      "recording": "z195-sep-17-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "H",
+      "id": 23,
+      "index": 39,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 20,
+      "index": 40,
+      "recording": "z125-aug-10-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 19,
+      "index": 41,
+      "recording": "z036-june-23-22-espresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 24,
+      "index": 42,
+      "recording": "z074-july-01-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 51,
+      "index": 43,
+      "recording": "R143-02Sep-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "H",
+      "id": 58,
+      "index": 44,
+      "recording": "R140-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 43,
+      "index": 45,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 26,
+      "index": 46,
+      "recording": "R098-1Aug-SmallPrinter"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "U",
+      "id": 12,
+      "index": 47,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 37,
+      "index": 48,
+      "recording": "z013-june-16-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 29,
+      "index": 49,
+      "recording": "R136--31Aug-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 60,
+      "index": 50,
+      "recording": "R073-20July-Nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 82,
+      "index": 51,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 44,
+      "index": 52,
+      "recording": "R138-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 32,
+      "index": 53,
+      "recording": "z013-june-16-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "H",
+      "id": 36,
+      "index": 54,
+      "recording": "z136-aug-13-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 35,
+      "index": 55,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "H",
+      "id": 51,
+      "index": 56,
+      "recording": "R071-19July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 48,
+      "index": 57,
+      "recording": "z018-june-20-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 34,
+      "index": 58,
+      "recording": "R144-02Sep-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 31,
+      "index": 59,
+      "recording": "R057-14July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "A",
+      "id": 33,
+      "index": 60,
+      "recording": "z026-june-22-22-espresso"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "B",
+      "id": 64,
+      "index": 61,
+      "recording": "R160-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 75,
+      "index": 62,
+      "recording": "R144-02Sep-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 59,
+      "index": 63,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 38,
+      "index": 64,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 32,
+      "index": 65,
+      "recording": "R071-19July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 79,
+      "index": 66,
+      "recording": "R128-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 51,
+      "index": 67,
+      "recording": "R098-1Aug-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 38,
+      "index": 68,
+      "recording": "z143-aug-17-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 54,
+      "index": 69,
+      "recording": "R041-13July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 26,
+      "index": 70,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 70,
+      "index": 71,
+      "recording": "z064-june-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 39,
+      "index": 72,
+      "recording": "R098-1Aug-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 29,
+      "index": 73,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 29,
+      "index": 74,
+      "recording": "R197-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "B",
+      "id": 128,
+      "index": 75,
+      "recording": "R101-2Aug-Coffee"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 45,
+      "index": 76,
+      "recording": "R185-13Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 40,
+      "index": 77,
+      "recording": "z131-aug-11-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 11,
+      "index": 78,
+      "recording": "z161-aug-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 63,
+      "index": 79,
+      "recording": "R161-3Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 105,
+      "index": 80,
+      "recording": "z160-aug-29-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "A",
+      "id": 59,
+      "index": 81,
+      "recording": "z009-june-15-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 38,
+      "index": 82,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 40,
+      "index": 83,
+      "recording": "R138-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 50,
+      "index": 84,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "A",
+      "id": 46,
+      "index": 85,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "B",
+      "id": 46,
+      "index": 86,
+      "recording": "z141-aug-16-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 11,
+      "index": 87,
+      "recording": "R136--31Aug-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 12,
+      "index": 88,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 41,
+      "index": 89,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 34,
+      "index": 90,
+      "recording": "z206-sep-26-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 44,
+      "index": 91,
+      "recording": "z074-july-01-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 38,
+      "index": 92,
+      "recording": "z209-sep-28-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 27,
+      "index": 93,
+      "recording": "z064-june-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 15,
+      "index": 94,
+      "recording": "z204-sep-25-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 28,
+      "index": 95,
+      "recording": "z197-sep-18-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 70,
+      "index": 96,
+      "recording": "R041-13July-SmallPrinter"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "H",
+      "id": 16,
+      "index": 97,
+      "recording": "R193-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 58,
+      "index": 98,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 24,
+      "index": 99,
+      "recording": "z018-june-20-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 96,
+      "index": 100,
+      "recording": "R073-20July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "A",
+      "id": 150,
+      "index": 101,
+      "recording": "R071-19July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 10,
+      "index": 102,
+      "recording": "z085-july-06-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "A",
+      "id": 39,
+      "index": 103,
+      "recording": "z204-sep-25-22-nespresso"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 15,
+      "index": 104,
+      "recording": "z136-aug-13-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 10,
+      "index": 105,
+      "recording": "z018-june-20-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 15,
+      "index": 106,
+      "recording": "z164-aug-31-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "A",
+      "id": 60,
+      "index": 107,
+      "recording": "z155-aug-26-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 49,
+      "index": 108,
+      "recording": "R131-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 31,
+      "index": 109,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 23,
+      "index": 110,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 50,
+      "index": 111,
+      "recording": "z177-sep-05-22-espresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 29,
+      "index": 112,
+      "recording": "R098-1Aug-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "B",
+      "id": 126,
+      "index": 113,
+      "recording": "R185-13Oct-Graphicscard"
+    },
+    {
+      "anchor": "gaze",
+      "family": "coffee",
+      "grade": "A",
+      "id": 33,
+      "index": 114,
+      "recording": "z141-aug-16-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 82,
+      "index": 115,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "U",
+      "id": 47,
+      "index": 116,
+      "recording": "R073-20July-Nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 53,
+      "index": 117,
+      "recording": "z206-sep-26-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 41,
+      "index": 118,
+      "recording": "R197-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 12,
+      "index": 119,
+      "recording": "z197-sep-18-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "H",
+      "id": 44,
+      "index": 120,
+      "recording": "z204-sep-25-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 15,
+      "index": 121,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 61,
+      "index": 122,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 34,
+      "index": 123,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 42,
+      "index": 124,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 40,
+      "index": 125,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 32,
+      "index": 126,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "B",
+      "id": 52,
+      "index": 127,
+      "recording": "z094-july-11-22-espresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "O",
+      "id": 91,
+      "index": 128,
+      "recording": "R128-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 155,
+      "index": 129,
+      "recording": "R185-13Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 54,
+      "index": 130,
+      "recording": "z157-aug-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 61,
+      "index": 131,
+      "recording": "z046-june-24-22-dslr"
+    },
+    {
+      "anchor": "gaze",
+      "family": "coffee",
+      "grade": "D",
+      "id": 32,
+      "index": 132,
+      "recording": "z201-sep-22-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 10,
+      "index": 133,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 9,
+      "index": 134,
+      "recording": "z175-sep-05-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 24,
+      "index": 135,
+      "recording": "R160-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 21,
+      "index": 136,
+      "recording": "R143-02Sep-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 84,
+      "index": 137,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 27,
+      "index": 138,
+      "recording": "R073-20July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 16,
+      "index": 139,
+      "recording": "R098-1Aug-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 10,
+      "index": 140,
+      "recording": "z125-aug-10-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 23,
+      "index": 141,
+      "recording": "R142-31Aug-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 98,
+      "index": 142,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 19,
+      "index": 143,
+      "recording": "z155-aug-26-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "A",
+      "id": 11,
+      "index": 144,
+      "recording": "R100-1Aug-Coffee"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 108,
+      "index": 145,
+      "recording": "R128-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 15,
+      "index": 146,
+      "recording": "z125-aug-10-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 50,
+      "index": 147,
+      "recording": "z131-aug-11-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 83,
+      "index": 148,
+      "recording": "R161-3Oct-RAM"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 31,
+      "index": 149,
+      "recording": "z161-aug-29-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 36,
+      "index": 150,
+      "recording": "R131-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 13,
+      "index": 151,
+      "recording": "z021-june-20-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 36,
+      "index": 152,
+      "recording": "z164-aug-31-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 11,
+      "index": 153,
+      "recording": "z164-aug-31-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 64,
+      "index": 154,
+      "recording": "R041-13July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 46,
+      "index": 155,
+      "recording": "R198-1Nov-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 45,
+      "index": 156,
+      "recording": "z094-july-11-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "U",
+      "id": 61,
+      "index": 157,
+      "recording": "z141-aug-16-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 39,
+      "index": 158,
+      "recording": "z161-aug-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 88,
+      "index": 159,
+      "recording": "z131-aug-11-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 116,
+      "index": 160,
+      "recording": "R073-20July-GoPro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 29,
+      "index": 161,
+      "recording": "z074-july-01-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 28,
+      "index": 162,
+      "recording": "R041-13July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 41,
+      "index": 163,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "O",
+      "id": 28,
+      "index": 164,
+      "recording": "z189-sep-10-22-nespresso"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "D",
+      "id": 32,
+      "index": 165,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 5,
+      "index": 166,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 48,
+      "index": 167,
+      "recording": "z175-sep-05-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 51,
+      "index": 168,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 10,
+      "index": 169,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 28,
+      "index": 170,
+      "recording": "R187-18Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 12,
+      "index": 171,
+      "recording": "z161-aug-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 63,
+      "index": 172,
+      "recording": "R197-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "H",
+      "id": 43,
+      "index": 173,
+      "recording": "R138-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 100,
+      "index": 174,
+      "recording": "R131-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 33,
+      "index": 175,
+      "recording": "R159-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 7,
+      "index": 176,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 72,
+      "index": 177,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 100,
+      "index": 178,
+      "recording": "R185-13Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 46,
+      "index": 179,
+      "recording": "R144-02Sep-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 87,
+      "index": 180,
+      "recording": "z157-aug-27-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 17,
+      "index": 181,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 34,
+      "index": 182,
+      "recording": "R129-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 46,
+      "index": 183,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "U",
+      "id": 11,
+      "index": 184,
+      "recording": "z141-aug-16-22-nespresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 14,
+      "index": 185,
+      "recording": "z064-june-29-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 13,
+      "index": 186,
+      "recording": "z160-aug-29-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 45,
+      "index": 187,
+      "recording": "z209-sep-28-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 38,
+      "index": 188,
+      "recording": "z206-sep-26-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 59,
+      "index": 189,
+      "recording": "z160-aug-29-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 92,
+      "index": 190,
+      "recording": "z046-june-24-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 8,
+      "index": 191,
+      "recording": "z064-june-29-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "D",
+      "id": 63,
+      "index": 192,
+      "recording": "z131-aug-11-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 93,
+      "index": 193,
+      "recording": "R071-19July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 47,
+      "index": 194,
+      "recording": "R182-12Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 27,
+      "index": 195,
+      "recording": "R185-13Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "H",
+      "id": 24,
+      "index": 196,
+      "recording": "z163-aug-30-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 14,
+      "index": 197,
+      "recording": "z143-aug-17-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 16,
+      "index": 198,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 91,
+      "index": 199,
+      "recording": "R198-1Nov-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 114,
+      "index": 200,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 48,
+      "index": 201,
+      "recording": "R197-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "O",
+      "id": 67,
+      "index": 202,
+      "recording": "z176-sep-05-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 60,
+      "index": 203,
+      "recording": "z179-sep-06-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 46,
+      "index": 204,
+      "recording": "z125-aug-10-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "D",
+      "id": 21,
+      "index": 205,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 48,
+      "index": 206,
+      "recording": "R181-12Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 63,
+      "index": 207,
+      "recording": "z013-june-16-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 15,
+      "index": 208,
+      "recording": "z143-aug-17-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 33,
+      "index": 209,
+      "recording": "R197-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 66,
+      "index": 210,
+      "recording": "z131-aug-11-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "B",
+      "id": 60,
+      "index": 211,
+      "recording": "R139-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 93,
+      "index": 212,
+      "recording": "z031-june-22-22-dslr"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 40,
+      "index": 213,
+      "recording": "R193-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 37,
+      "index": 214,
+      "recording": "R138-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 23,
+      "index": 215,
+      "recording": "z013-june-16-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 47,
+      "index": 216,
+      "recording": "R140-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "D",
+      "id": 51,
+      "index": 217,
+      "recording": "z153-aug-25-22-gopro"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 215,
+      "index": 218,
+      "recording": "R185-13Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 27,
+      "index": 219,
+      "recording": "R073-20July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 19,
+      "index": 220,
+      "recording": "R142-31Aug-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 68,
+      "index": 221,
+      "recording": "R139-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 31,
+      "index": 222,
+      "recording": "R071-19July-SmallPrinter"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 29,
+      "index": 223,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "H",
+      "id": 14,
+      "index": 224,
+      "recording": "R144-02Sep-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 44,
+      "index": 225,
+      "recording": "z160-aug-29-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 44,
+      "index": 226,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 24,
+      "index": 227,
+      "recording": "R181-12Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "U",
+      "id": 41,
+      "index": 228,
+      "recording": "z058-june-28-22-espresso"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 9,
+      "index": 229,
+      "recording": "z050-june-27-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 101,
+      "index": 230,
+      "recording": "R071-19July-SmallPrinter"
+    },
+    {
+      "anchor": "gaze",
+      "family": "camera",
+      "grade": "U",
+      "id": 16,
+      "index": 231,
+      "recording": "z105-july-14-22-gopro"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 63,
+      "index": 232,
+      "recording": "R159-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 42,
+      "index": 233,
+      "recording": "R130-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "A",
+      "id": 42,
+      "index": 234,
+      "recording": "z164-aug-31-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 32,
+      "index": 235,
+      "recording": "z021-june-20-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "D",
+      "id": 70,
+      "index": 236,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "printer",
+      "grade": "H",
+      "id": 87,
+      "index": 237,
+      "recording": "z013-june-16-22-printer_small"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "B",
+      "id": 60,
+      "index": 238,
+      "recording": "z046-june-24-22-dslr"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 51,
+      "index": 239,
+      "recording": "R161-3Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 25,
+      "index": 240,
+      "recording": "R159-3Oct-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 50,
+      "index": 241,
+      "recording": "R161-3Oct-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 34,
+      "index": 242,
+      "recording": "R139-31Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 54,
+      "index": 243,
+      "recording": "R187-18Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "coffee",
+      "grade": "D",
+      "id": 50,
+      "index": 244,
+      "recording": "z173-sep-04-22-espresso"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 44,
+      "index": 245,
+      "recording": "R212-16Nov-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 56,
+      "index": 246,
+      "recording": "R143-02Sep-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 33,
+      "index": 247,
+      "recording": "R193-25Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "camera",
+      "grade": "U",
+      "id": 15,
+      "index": 248,
+      "recording": "z074-july-01-22-dslr"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 68,
+      "index": 249,
+      "recording": "R130-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 52,
+      "index": 250,
+      "recording": "R212-16Nov-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "U",
+      "id": 118,
+      "index": 251,
+      "recording": "z160-aug-29-22-printer_small"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "O",
+      "id": 22,
+      "index": 252,
+      "recording": "R198-1Nov-Graphicscard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "D",
+      "id": 82,
+      "index": 253,
+      "recording": "R130-25Aug-RAM"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 78,
+      "index": 254,
+      "recording": "R128-25Aug-GraphicsCard"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "D",
+      "id": 27,
+      "index": 255,
+      "recording": "R130-25Aug-RAM"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 57,
+      "index": 256,
+      "recording": "z175-sep-05-22-printer_big"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "computer",
+      "grade": "U",
+      "id": 42,
+      "index": 257,
+      "recording": "R187-18Oct-GraphicsCard"
+    },
+    {
+      "anchor": "hand_adjacent",
+      "family": "printer",
+      "grade": "D",
+      "id": 35,
+      "index": 258,
+      "recording": "z143-aug-17-22-printer_big"
+    },
+    {
+      "anchor": "gaze",
+      "family": "computer",
+      "grade": "U",
+      "id": 55,
+      "index": 259,
+      "recording": "R198-1Nov-Graphicscard"
+    }
+  ],
+  "unit": "one pre-action center per all geometrically evaluable fresh event"
+}
