@@ -53,14 +53,14 @@ def main(lane):
         for n in ("expert-paired", "visited-paired"):
             stage(n, work / n / "lock.json", GPU + ["scripts/train/g14_continue.py", n])
         stage(
-            "paired-dev",
-            work / "executed/paired/dev/complete.json",
+            "isolated-dev",
+            work / "executed/isolated/dev/complete.json",
             [
                 SIM,
                 "-u",
                 "scripts/train/g14_execute.py",
                 "dev",
-                "paired",
+                "isolated",
                 "--workers",
                 "12",
             ],
@@ -71,14 +71,14 @@ def main(lane):
             [SIM, "-u", "scripts/train/g14_control_lock.py", "--preliminary"],
         )
         stage(
-            "contact-dev",
-            work / "executed/gate/dev/complete.json",
+            "isolated-contact-dev",
+            work / "executed/isolated-gate/dev/complete.json",
             [
                 SIM,
                 "-u",
                 "scripts/train/g14_execute.py",
                 "dev",
-                "gate",
+                "isolated-gate",
                 "--workers",
                 "12",
             ],

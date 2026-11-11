@@ -33,6 +33,8 @@ def results():
         expected = set(keys)
         total = 0
         for row in rows:
+            if not row["isolated_branch_process"]:
+                raise ValueError("Held branch was not isolated")
             if set(row["results"]) != expected:
                 raise ValueError("Missing held policy")
             if (

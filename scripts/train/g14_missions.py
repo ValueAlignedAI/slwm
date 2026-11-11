@@ -94,13 +94,11 @@ def movie(folder, name, frames, audio):
         "-i",
         str(raw),
         "-c:v",
-        "libx264",
+        "libopenh264",
         "-threads",
         "2",
-        "-preset",
-        "veryfast",
-        "-crf",
-        "23",
+        "-b:v",
+        "1050k",
         "-pix_fmt",
         "yuv420p",
         "-c:a",
@@ -150,7 +148,9 @@ def one(index):
     waves = {int(c["clip"]): pcm(media[c["clip"]]) for c in seq}
     case_rows = {}
     for name, pol in modes:
-        table.restore(table.root_state)
+        table = collector.clean_worker()
+        if table.reset(seed, index % 2 == 1) != sig:
+            raise ValueError("Continuous policy did not start from the canonical state")
         if table.physical_signature() != sig:
             raise ValueError("Mission root mismatch")
         c, st = -1, 0
@@ -245,7 +245,9 @@ def one(index):
     # Already-satisfied and missing-goal probes retain native measurements through 24 macros.
     probes = {}
     for mode in ("spatial", "dense", "geometry", "absent"):
-        table.restore(table.root_state)
+        table = collector.clean_worker()
+        if table.reset(seed, index % 2 == 1) != sig:
+            raise ValueError("Continuous policy did not start from the canonical state")
         initial = table.positions()
         color = seq[0]["true_color"]
         goal = initial[color]

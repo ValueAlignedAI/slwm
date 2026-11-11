@@ -5,6 +5,7 @@ import json
 import numpy as np
 from scripts.data.g14_collect import clean_worker
 from scripts.train.g14_execute import run_one, tag, score
+from data.g14_fork import isolated
 from scripts.train.g9_storage import write, sha
 
 ROOT = Path("/mnt/slwm-data/SLWM/g14")
@@ -60,7 +61,9 @@ def main():
                 raise ValueError("Canonical replay root changed")
             for p in ps:
                 for j in range(4):
-                    row, raw = run_one(table, case, j, stations, p, variant, True)
+                    row, raw = isolated(
+                        run_one, table, case, j, stations, p, variant, True
+                    )
                     actual = original["results"][tag(p)][str(j)]
                     x = case["commands"][j]
                     measured = score(
