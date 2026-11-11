@@ -44,7 +44,10 @@ def main():
         ax.errorbar(
             v["value"] * scale,
             pos,
-            xerr=np.array([[v["value"] - v["lo"]], [v["hi"] - v["value"]]]) * scale,
+            xerr=np.maximum(
+                0.0, np.array([[v["value"] - v["lo"]], [v["hi"] - v["value"]]])
+            )
+            * scale,
             fmt="o",
             markersize=4.5,
             color=color,
