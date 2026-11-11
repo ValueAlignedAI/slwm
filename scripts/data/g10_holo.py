@@ -10,7 +10,7 @@ import threading
 import time
 import zipfile
 from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from pathlib import Path
 
 import numpy as np
@@ -23,6 +23,7 @@ LIMITS = dict(train=256, dev=32, familiar=64, novel=64)
 SOURCE_HASH = "cc7898b49958a62fe021ae2ffa53a709c3fd6f45fd3f893960b8aac6d13dfe9c"
 SPLIT_HASH = "e10674e7ac32957386d5e88afa60acf3335251b92ba2f8cfb97a736dc85e1621"
 LOCAL = threading.local()
+NETWORK = threading.BoundedSemaphore(16)
 
 
 def rank(s):
@@ -98,6 +99,27 @@ def payload(index, archive, path):
     return fetch(LOCAL.http, BASE+archive+".tar",off,off+n,ARCHIVES[archive][0])
 
 
+def fetch_media(root,name,entry):
+    off,size=entry
+    target=root/"media"/(name+"-av.mp4")
+    if target.exists() and target.stat().st_size==size:return target
+    tmp=target.with_suffix(".part")
+    descriptor=os.open(tmp,os.O_CREAT|os.O_WRONLY,0o600)
+    try:
+        os.ftruncate(descriptor,size)
+        def chunk(pos):
+            length=min(4<<20,size-pos)
+            with NETWORK:
+                if not hasattr(LOCAL,"http"):LOCAL.http=requests.Session()
+                block=fetch(LOCAL.http,BASE+"video_pitch_shifted.tar",off+pos,off+pos+length,ARCHIVES["video_pitch_shifted"][0])
+            if os.pwrite(descriptor,block,pos)!=length:raise OSError("Incomplete media write")
+        with ThreadPoolExecutor(4) as pool:list(pool.map(chunk,range(0,size,4<<20)))
+        os.fsync(descriptor)
+    finally:os.close(descriptor)
+    tmp.replace(target)
+    return target
+
+
 def decode(file, media):
     common=["ffmpeg","-nostdin","-v","error","-threads","1","-i",str(file),"-t","600"]
     if media=="video":
@@ -118,11 +140,7 @@ def one(root, row, index, files):
     if shard.exists() and note.exists():
         return json.loads(note.read_text())
     src=files[name.casefold()]
-    video=root/"media"/(name+".mp4")
-    if not video.exists():
-        tmp=video.with_suffix(".tmp")
-        tmp.write_bytes(payload(index,"video_compress",src["video"]))
-        tmp.replace(video)
+    video=fetch_media(root,name,index["video_pitch_shifted"][src["av"]])
     streams=json.loads(subprocess.check_output(["ffprobe","-v","error","-show_entries","stream=codec_type,start_time","-of","json",str(video)],timeout=30))["streams"]
     origin={v["codec_type"]:float(v.get("start_time",0)) for v in streams if v["codec_type"] in ("video","audio")}
     if set(origin)!={"audio","video"} or abs(origin["video"]-origin["audio"])>.10:
@@ -173,7 +191,7 @@ def one(root, row, index, files):
 
 def index_sources(root):
     index={}
-    for k in ARCHIVES:
+    for k in ("video_compress","imu"):
         p=root/(k+"-index.json")
         while not p.exists():time.sleep(5)
         index[k]=json.loads(p.read_bytes())["members"]
@@ -195,13 +213,39 @@ def main(root):
     idx,files=index_sources(root)
     groups=role_lists(root,json.loads((root/"labels.json").read_bytes()),files)
     (root/"selection.json").write_text(json.dumps({k:[r["video_name"] for r in rs] for k,rs in groups.items()},indent=2))
-    receipt={}
-    for role in ("train","dev","familiar","novel"):
-        with ThreadPoolExecutor(8) as pool:
-            rows=list(pool.map(lambda r:one(root,r,idx,files),groups[role]))
-        receipt[role]=rows
-        tmp=root/"banks.new";tmp.write_text(json.dumps(receipt,indent=2));tmp.replace(root/"banks.json")
-        print(role,len(rows),sum(r["ticks"] for r in rows),sum(r["mistakes"] for r in rows),flush=True)
+    # The small video archive has no audio track. Use the original AV member for both sensors.
+    # Start work while the independently checksum-validated original tar index is being built.
+    pending={r["video_name"]:(role,r) for role,rs in groups.items() for r in rs}
+    complete=defaultdict(dict);published=set();running={}
+    with ThreadPoolExecutor(8) as pool:
+        while pending or running:
+            final_index=root/"video_pitch_shifted-index.json"
+            manifest=final_index if final_index.exists() else root/"video_pitch_shifted-index.partial.json"
+            if manifest.exists():
+                index=json.loads(manifest.read_text())["members"];idx["video_pitch_shifted"]=index
+                for key in index:
+                    if key.casefold().endswith("/video_pitchshift.mp4"):
+                        canonical=key.split("/")[0].casefold()
+                        if canonical in files:files[canonical]["av"]=key
+                ready=[n for n in pending if "av" in files[n.casefold()]]
+                for name in ready[:max(0,8-len(running))]:
+                    role,row=pending.pop(name);running[pool.submit(one,root,row,idx,files)]=(name,role)
+                if final_index.exists() and pending and not ready and not running:
+                    raise ValueError("Original AV members absent: "+str(sorted(pending)[:5]))
+            if not running:
+                time.sleep(3);continue
+            done,_=wait(running,timeout=4,return_when=FIRST_COMPLETED)
+            for future in done:
+                name,role=running.pop(future);complete[role][name]=future.result()
+            for role,rows in groups.items():
+                if role not in published and len(complete[role])==len(rows):
+                    published.add(role)
+                    receipt={k:[complete[k][r["video_name"]] for r in groups[k]] for k in published}
+                    tmp=root/"banks.new";tmp.write_text(json.dumps(receipt,indent=2));tmp.replace(root/"banks.json")
+                    print(role,len(rows),sum(r["ticks"] for r in receipt[role]),sum(r["mistakes"] for r in receipt[role]),flush=True)
+            if done:
+                tmp=root/"progress.new";tmp.write_text(json.dumps({k:len(v) for k,v in complete.items()}));tmp.replace(root/"progress.json")
+
 
 
 if __name__=="__main__":

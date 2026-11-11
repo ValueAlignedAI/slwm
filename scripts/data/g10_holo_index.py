@@ -10,6 +10,7 @@ import requests
 BASE = "https://hl2data.z5.web.core.windows.net/holoassist-data-release/"
 ARCHIVES = {
     "video_compress": ('"0x8DC8C9DE268AE31"', 155285145600),
+    "video_pitch_shifted": ('"0x8DC8C9DD88CD02E"', 197783674880),
     "imu": ('"0x8DC8C9DD94B2BA2"', 4971059200),
 }
 
