@@ -4,6 +4,10 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G13 grounded physical transfer
+
+On a preregistered third cohort of 3,368 real robot trajectories, the small spatial SLWM reduced four-command forecast error by 4.07 mm over matched dense GPT-2 (99% paired interval 3.31–4.85), with all five seeds favoring SLWM. Direct raw-signal regression remained stronger at 111.91 mm. The exact-target readout and complete multimodal series are tracked separately. [Prospective results](experiments/multimodal/t13/grounded-transfer-20261111/prospective-findings.md) · [Registered next comparison](experiments/multimodal/t13/grounded-transfer-20261111/direct-action-readout.md)
+
 ### G12 spoken action sequences and directly visible device changes
 
 On 373 fresh decisions from 48 unseen-family recordings, zero of 24 primary comparisons reliably benefited from correct speech over both an earlier same-scene directive and silence. Blind review yielded 77 directly visible device outcomes. Early joint training improved ordered accuracy in 28 of 48 paired comparisons. Widening the oscillatory processor improved printer/camera accuracy by 5.4 and 2.8 points in two seeds. Coffee/computer did not reproduce this gain. The release includes 112 matched fits, 24 runnable models and four chronological replays totaling 603 seconds. [G12 findings](experiments/multimodal/t12/instruction-sequences-20261111/report.md) · [Run inference](experiments/multimodal/t12/instruction-sequences-20261111/inference/README.md) · [Listen to the speech interventions](experiments/multimodal/t12/instruction-sequences-20261111/examples/README.md)

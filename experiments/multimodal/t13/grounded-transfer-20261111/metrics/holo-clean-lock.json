@@ -1,0 +1,524 @@
+{
+  "data": {
+    "A": {
+      "extra_cases": 4523,
+      "extra_recordings": 670,
+      "train_cases": 1595
+    },
+    "B": {
+      "extra_cases": 2624,
+      "extra_recordings": 465,
+      "train_cases": 1497
+    }
+  },
+  "recipes": {
+    "A": {
+      "A-associative-1201": {
+        "parent": "A-associative-dropout-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6654180692410225,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.7782422881563598,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7337825866703636,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "fc46eddc73244840eafccb8585a7e59944bc75cd4a54b28eb7014cde17ea6f4b"
+      },
+      "A-associative-1202": {
+        "parent": "A-associative-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.696853671136118,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8429290067597868,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.782116730596011,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "55d10f9ac0d791dd74c92d8ae4bbe1b196589d4700bb78209aad4855f8af807e"
+      },
+      "A-associative-1203": {
+        "parent": "A-associative-full-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.679987925243674,
+            "language_power": 0.6,
+            "parent_weight": 0.75
+          },
+          "shrink": {
+            "development_nll": 2.7847478555950826,
+            "language_power": 0.0,
+            "parent_weight": 0.75
+          },
+          "small": {
+            "development_nll": 2.7378458904585905,
+            "language_power": 0.35,
+            "parent_weight": 0.75
+          }
+        },
+        "weights_sha": "ad3a8d51e7cba4db78f50e0c6b3f673ccfcfd7ac1d23c0be8cb4e6f71fe4d6be"
+      },
+      "A-gated-1201": {
+        "parent": "A-gated-full-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.732265008492334,
+            "language_power": 0.6,
+            "parent_weight": 0.5
+          },
+          "shrink": {
+            "development_nll": 2.8649617976272754,
+            "language_power": 0.0,
+            "parent_weight": 0.75
+          },
+          "small": {
+            "development_nll": 2.818798130639452,
+            "language_power": 0.35,
+            "parent_weight": 0.75
+          }
+        },
+        "weights_sha": "c2a9a0e52eb335f1f8911123db268bd01d46b3c80aa9b4de98ba470f948a429f"
+      },
+      "A-gated-1202": {
+        "parent": "A-gated-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.721289363406805,
+            "language_power": 0.6,
+            "parent_weight": 0.5
+          },
+          "shrink": {
+            "development_nll": 2.837290086495315,
+            "language_power": 0.0,
+            "parent_weight": 0.75
+          },
+          "small": {
+            "development_nll": 2.7956194529830234,
+            "language_power": 0.35,
+            "parent_weight": 0.75
+          }
+        },
+        "weights_sha": "54264098717f3d179aa54e49e25eca224123c49634bfdcf4ad9e102d9a38ffe6"
+      },
+      "A-gated-1203": {
+        "parent": "A-gated-full-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.7066774879078928,
+            "language_power": 0.6,
+            "parent_weight": 0.5
+          },
+          "shrink": {
+            "development_nll": 2.8339830047673473,
+            "language_power": 0.0,
+            "parent_weight": 0.75
+          },
+          "small": {
+            "development_nll": 2.791593777785119,
+            "language_power": 0.35,
+            "parent_weight": 0.75
+          }
+        },
+        "weights_sha": "27aadb3bc319a3f4f9cfb921b1663f0454f91f433bd087c162c27641323adf32"
+      },
+      "A-gpt2-1201": {
+        "parent": "A-gpt2-full-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.698010532328626,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.853578242548801,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7836860429250643,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "134239f838c922dc8c25c196c5ed8e574273ece8c0baf87cf069fbf328ecc02f"
+      },
+      "A-gpt2-1202": {
+        "parent": "A-gpt2-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6696382762600614,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8307231542048323,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7593210661605796,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "7ebfac5c3c4ebef136b106ae1f4a31a51407a469d25eb90ee0a34f1b89d576c1"
+      },
+      "A-gpt2-1203": {
+        "parent": "A-gpt2-dropout-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6712026830696445,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.829861435884618,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7591249238985807,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "aa27df65f09f8814a75fa3179687e93843942b5957a95425b8da94daf8ce8bbf"
+      },
+      "A-oscillator-1201": {
+        "parent": "A-oscillator-dropout-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6950313906802834,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.859802560485027,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.78304074775968,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "a5eef6f716053a37d617955c695c8ed3c0f0486c89083422dbb3589656dfe303"
+      },
+      "A-oscillator-1202": {
+        "parent": "A-oscillator-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6966336880893818,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.860491531328707,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.786253186225508,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "f5951d7fa36576fa26ba501d5559731e14bf5b626194eb881605d213dcf93784"
+      },
+      "A-oscillator-1203": {
+        "parent": "A-oscillator-full-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.678314607321468,
+            "language_power": 0.6,
+            "parent_weight": 0.5
+          },
+          "shrink": {
+            "development_nll": 2.796597240949852,
+            "language_power": 0.0,
+            "parent_weight": 0.75
+          },
+          "small": {
+            "development_nll": 2.749574730487852,
+            "language_power": 0.35,
+            "parent_weight": 0.75
+          }
+        },
+        "weights_sha": "cf2f49d41f40ce6a5c0d166c9caca36bfe6825f05b1371e87d506f9af756293f"
+      }
+    },
+    "B": {
+      "B-associative-1201": {
+        "parent": "B-associative-full-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.66708175471776,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8153917896859397,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.757515928279771,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "4dbd80cd29294f08fd0a984474469f488502ce0ef7ba6fd4962e5a6e999462ee"
+      },
+      "B-associative-1202": {
+        "parent": "B-associative-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6676295075945293,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.805963515127883,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7546774985942797,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "626b405d3ad69b5219ac0a38344e8b971aa3b2c11d83852ad7b5102a63bb8006"
+      },
+      "B-associative-1203": {
+        "parent": "B-associative-dropout-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.59218936441581,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.728213980353617,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.669138613152566,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "0bb86f2a5ec9d3eef94e2bfcbcf2480bad5da2487e8e2caf40e18a9f41f7adff"
+      },
+      "B-gated-1201": {
+        "parent": "B-gated-full-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.650511447196107,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.7978001084976967,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7421952512268817,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "ddd87c87e31aeec48618c9f415bfb6d3913cce2a557334c90ad55ff91e98a266"
+      },
+      "B-gated-1202": {
+        "parent": "B-gated-full-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.687698306149817,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8392457175983186,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7839633684958183,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "b6edfd2760d750e5f27fa838593d2786d8b122f0dc154783d6a0f73c5db322aa"
+      },
+      "B-gated-1203": {
+        "parent": "B-gated-full-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6758583841084236,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8288373152728132,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7773494603178386,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "4fc4653fbff8ed1a5d95e341354b6ecb40b210bea44b57f8875c6906a715cb58"
+      },
+      "B-gpt2-1201": {
+        "parent": "B-gpt2-dropout-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6531201478091164,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.7969267598642933,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.741621465301415,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "c0788b0a7d4b113718a04dc705d738551bb93feded4725b86af153194a7bad4f"
+      },
+      "B-gpt2-1202": {
+        "parent": "B-gpt2-dropout-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6691095317162437,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8228012773590767,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.76052449246429,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "fbace8fe193b2bd165e46408fdd2f5cc714534b6662bcc010647f2bf53468f18"
+      },
+      "B-gpt2-1203": {
+        "parent": "B-gpt2-dropout-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6804979332280885,
+            "language_power": 0.6,
+            "parent_weight": 0.75
+          },
+          "shrink": {
+            "development_nll": 2.785843997966002,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.7574349128467732,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "f622f05836f2ee25c6db2d4eca0827e28d22f61670d52dab08dcd44abdf98232"
+      },
+      "B-oscillator-1201": {
+        "parent": "B-oscillator-dropout-1201",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.653076046113366,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.8158064456179797,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.748766219726085,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "34a8144c0c067ede985508374c5231ed9ac07da65b76006ea9db7d5780fd6072"
+      },
+      "B-oscillator-1202": {
+        "parent": "B-oscillator-dropout-1202",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6332368612918273,
+            "language_power": 0.6,
+            "parent_weight": 0.75
+          },
+          "shrink": {
+            "development_nll": 2.741465904125678,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.709045492722873,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "e8bab924f0b0ff3a8f96efa615fe855fba5c17849803a88c7a1c0c5aa128cc78"
+      },
+      "B-oscillator-1203": {
+        "parent": "B-oscillator-dropout-1203",
+        "selected": {
+          "expanded": {
+            "development_nll": 2.6184472343776655,
+            "language_power": 0.6,
+            "parent_weight": 1.0
+          },
+          "shrink": {
+            "development_nll": 2.780903756782441,
+            "language_power": 0.0,
+            "parent_weight": 1.0
+          },
+          "small": {
+            "development_nll": 2.719332351628298,
+            "language_power": 0.35,
+            "parent_weight": 1.0
+          }
+        },
+        "weights_sha": "2aa634000d30e887b38360e0ce9fe146e6b9bbd00f99fa57950d32f751c0a65c"
+      }
+    }
+  }
+}

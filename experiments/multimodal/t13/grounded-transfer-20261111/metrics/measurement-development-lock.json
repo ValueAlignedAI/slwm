@@ -1,0 +1,1360 @@
+{
+  "development": {
+    "corroborated": {
+      "abstain": 29,
+      "blue_correct": 1,
+      "blue_predicted": 2,
+      "correct": 24,
+      "incorrect": 2,
+      "utility": 22
+    },
+    "original": {
+      "abstain": 13,
+      "blue_correct": 1,
+      "blue_predicted": 8,
+      "correct": 30,
+      "incorrect": 12,
+      "utility": 18
+    },
+    "saturated": {
+      "abstain": 24,
+      "blue_correct": 1,
+      "blue_predicted": 2,
+      "correct": 27,
+      "incorrect": 4,
+      "utility": 23
+    },
+    "sets": {
+      "abstain": 8,
+      "blue_correct": 4,
+      "blue_predicted": 6,
+      "correct": 42,
+      "incorrect": 5,
+      "utility": 37
+    }
+  },
+  "examples": [
+    {
+      "episode": 10479,
+      "label": 2,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 10479,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 10479,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 10479,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 665,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 665,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 665,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 665,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 6034,
+      "label": -1,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 6034,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 6034,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 6034,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 7067,
+      "label": -1,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 7067,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 7067,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 7067,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 2090,
+      "label": -1,
+      "recipe": "original",
+      "review": "B"
+    },
+    {
+      "episode": 2090,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "B"
+    },
+    {
+      "episode": 2090,
+      "label": 2,
+      "recipe": "sets",
+      "review": "B"
+    },
+    {
+      "episode": 2090,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "B"
+    },
+    {
+      "episode": 11388,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 11388,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 11388,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 11388,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 8855,
+      "label": 2,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 8855,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 8855,
+      "label": 1,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 8855,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 238,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 238,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 238,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 238,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 3631,
+      "label": -1,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 3631,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 3631,
+      "label": 0,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 3631,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 9680,
+      "label": 2,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 9680,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 9680,
+      "label": -1,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 9680,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 253,
+      "label": 3,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 253,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 253,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 253,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 9199,
+      "label": -1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 9199,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 9199,
+      "label": -1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 9199,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 10229,
+      "label": -1,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 10229,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 10229,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 10229,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 8023,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 8023,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 8023,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 8023,
+      "label": 3,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 12895,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 12895,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 12895,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 12895,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 11733,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 11733,
+      "label": 2,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 11733,
+      "label": 2,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 11733,
+      "label": 2,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 6067,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 6067,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 6067,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 6067,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 8819,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 8819,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 8819,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 8819,
+      "label": 3,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 10580,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 10580,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 10580,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 10580,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 9366,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 9366,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 9366,
+      "label": 2,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 9366,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 10115,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 10115,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 10115,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 10115,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 10881,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 10881,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 10881,
+      "label": -1,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 10881,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 8837,
+      "label": -1,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 8837,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 8837,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 8837,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 7163,
+      "label": 4,
+      "recipe": "original",
+      "review": "B"
+    },
+    {
+      "episode": 7163,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "B"
+    },
+    {
+      "episode": 7163,
+      "label": 2,
+      "recipe": "sets",
+      "review": "B"
+    },
+    {
+      "episode": 7163,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "B"
+    },
+    {
+      "episode": 3809,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 3809,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 3809,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 3809,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 5200,
+      "label": 2,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 5200,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 5200,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 5200,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 10872,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 10872,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 10872,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 10872,
+      "label": 3,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 10752,
+      "label": -1,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 10752,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 10752,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 10752,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 12386,
+      "label": -1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 12386,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 12386,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 12386,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 8723,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 8723,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 8723,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 8723,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 12240,
+      "label": 1,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 12240,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 12240,
+      "label": 1,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 12240,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 10582,
+      "label": -1,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 10582,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 10582,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 10582,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 3819,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 3819,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 3819,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 3819,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 9003,
+      "label": 1,
+      "recipe": "original",
+      "review": "B"
+    },
+    {
+      "episode": 9003,
+      "label": 2,
+      "recipe": "saturated",
+      "review": "B"
+    },
+    {
+      "episode": 9003,
+      "label": 2,
+      "recipe": "sets",
+      "review": "B"
+    },
+    {
+      "episode": 9003,
+      "label": 2,
+      "recipe": "corroborated",
+      "review": "B"
+    },
+    {
+      "episode": 10993,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 10993,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 10993,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 10993,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 1130,
+      "label": 1,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 1130,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 1130,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 1130,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 565,
+      "label": 2,
+      "recipe": "original",
+      "review": "B"
+    },
+    {
+      "episode": 565,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "B"
+    },
+    {
+      "episode": 565,
+      "label": 2,
+      "recipe": "sets",
+      "review": "B"
+    },
+    {
+      "episode": 565,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "B"
+    },
+    {
+      "episode": 1968,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 1968,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 1968,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 1968,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 7771,
+      "label": 2,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 7771,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 7771,
+      "label": -1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 7771,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 3107,
+      "label": 2,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 3107,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 3107,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 3107,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 8743,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 8743,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 8743,
+      "label": -1,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 8743,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 8242,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 8242,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 8242,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 8242,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 6079,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 6079,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 6079,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 6079,
+      "label": 3,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 10107,
+      "label": 2,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 10107,
+      "label": 0,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 10107,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 10107,
+      "label": 0,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 11389,
+      "label": -1,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 11389,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 11389,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 11389,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 8636,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 8636,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 8636,
+      "label": -1,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 8636,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 9395,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 9395,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 9395,
+      "label": -1,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 9395,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 3096,
+      "label": -1,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 3096,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 3096,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 3096,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 2099,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 2099,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 2099,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 2099,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 8774,
+      "label": 1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 8774,
+      "label": 1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 8774,
+      "label": 1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 8774,
+      "label": 1,
+      "recipe": "corroborated",
+      "review": "R"
+    },
+    {
+      "episode": 6890,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 6890,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 6890,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 6890,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 9852,
+      "label": 4,
+      "recipe": "original",
+      "review": "Y"
+    },
+    {
+      "episode": 9852,
+      "label": 4,
+      "recipe": "saturated",
+      "review": "Y"
+    },
+    {
+      "episode": 9852,
+      "label": 4,
+      "recipe": "sets",
+      "review": "Y"
+    },
+    {
+      "episode": 9852,
+      "label": 4,
+      "recipe": "corroborated",
+      "review": "Y"
+    },
+    {
+      "episode": 6032,
+      "label": 3,
+      "recipe": "original",
+      "review": "G"
+    },
+    {
+      "episode": 6032,
+      "label": 3,
+      "recipe": "saturated",
+      "review": "G"
+    },
+    {
+      "episode": 6032,
+      "label": 3,
+      "recipe": "sets",
+      "review": "G"
+    },
+    {
+      "episode": 6032,
+      "label": 3,
+      "recipe": "corroborated",
+      "review": "G"
+    },
+    {
+      "episode": 10983,
+      "label": 0,
+      "recipe": "original",
+      "review": "0"
+    },
+    {
+      "episode": 10983,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "0"
+    },
+    {
+      "episode": 10983,
+      "label": 0,
+      "recipe": "sets",
+      "review": "0"
+    },
+    {
+      "episode": 10983,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "0"
+    },
+    {
+      "episode": 770,
+      "label": -1,
+      "recipe": "original",
+      "review": "R"
+    },
+    {
+      "episode": 770,
+      "label": -1,
+      "recipe": "saturated",
+      "review": "R"
+    },
+    {
+      "episode": 770,
+      "label": -1,
+      "recipe": "sets",
+      "review": "R"
+    },
+    {
+      "episode": 770,
+      "label": -1,
+      "recipe": "corroborated",
+      "review": "R"
+    }
+  ],
+  "rule": "correct minus incorrect; then coverage",
+  "selected": "sets"
+}

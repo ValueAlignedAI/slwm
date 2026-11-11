@@ -1,0 +1,3885 @@
+{
+  "external": {
+    "blue": {
+      "corrected": {
+        "both_readable": 21,
+        "cases": 35,
+        "confusion": {
+          "0/0": 3,
+          "0/G": 1,
+          "B/B": 15,
+          "B/R": 1,
+          "G/G": 1
+        },
+        "correct": 19,
+        "detector_accepted": 32,
+        "review_readable": 22
+      },
+      "original": {
+        "both_readable": 8,
+        "cases": 35,
+        "confusion": {
+          "B/0": 3,
+          "B/B": 1,
+          "B/G": 2,
+          "B/Y": 1,
+          "Y/B": 1
+        },
+        "correct": 1,
+        "detector_accepted": 13,
+        "review_readable": 22
+      },
+      "utility_gain": {
+        "families": 1,
+        "groups": 22,
+        "hi": 1.3181818574666977,
+        "lo": 0.7272727489471436,
+        "n": 22,
+        "value": 1.0454545454545454
+      }
+    },
+    "uniform": {
+      "corrected": {
+        "both_readable": 63,
+        "cases": 100,
+        "confusion": {
+          "0/0": 9,
+          "0/G": 2,
+          "B/B": 11,
+          "B/G": 1,
+          "B/R": 1,
+          "B/Y": 1,
+          "G/B": 1,
+          "G/G": 12,
+          "R/R": 12,
+          "Y/R": 1,
+          "Y/Y": 12
+        },
+        "correct": 56,
+        "detector_accepted": 75,
+        "review_readable": 83
+      },
+      "original": {
+        "both_readable": 31,
+        "cases": 100,
+        "confusion": {
+          "0/0": 4,
+          "0/G": 1,
+          "B/0": 1,
+          "B/B": 2,
+          "B/G": 1,
+          "B/R": 1,
+          "B/Y": 2,
+          "G/G": 8,
+          "R/R": 4,
+          "Y/Y": 7
+        },
+        "correct": 25,
+        "detector_accepted": 37,
+        "review_readable": 83
+      },
+      "utility_gain": {
+        "families": 1,
+        "groups": 68,
+        "hi": 0.536764710675925,
+        "lo": 0.15931372560638313,
+        "n": 83,
+        "value": 0.35049019607843135
+      }
+    }
+  },
+  "external_repeats": {
+    "agree": 10,
+    "total": 10
+  },
+  "first": [
+    {
+      "detector": -1,
+      "episode": 8463,
+      "final": "U",
+      "number": 1,
+      "presentations": [
+        1
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 10479,
+      "final": "G",
+      "number": 2,
+      "presentations": [
+        2
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 9893,
+      "final": "G",
+      "number": 3,
+      "presentations": [
+        3,
+        84
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 6300,
+      "final": "R",
+      "number": 4,
+      "presentations": [
+        4
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 5592,
+      "final": "Y",
+      "number": 5,
+      "presentations": [
+        5
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 6429,
+      "final": "G",
+      "number": 6,
+      "presentations": [
+        6,
+        94
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 665,
+      "final": "R",
+      "number": 7,
+      "presentations": [
+        7
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 535,
+      "final": "U",
+      "number": 8,
+      "presentations": [
+        8
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 12546,
+      "final": "G",
+      "number": 9,
+      "presentations": [
+        9
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 6034,
+      "final": "0",
+      "number": 10,
+      "presentations": [
+        10
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 5192,
+      "final": "U",
+      "number": 11,
+      "presentations": [
+        11
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 4610,
+      "final": "U",
+      "number": 12,
+      "presentations": [
+        12
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 4545,
+      "final": "Y",
+      "number": 13,
+      "presentations": [
+        13
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 7067,
+      "final": "Y",
+      "number": 14,
+      "presentations": [
+        14
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 2090,
+      "final": "B",
+      "number": 15,
+      "presentations": [
+        15,
+        114
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 12538,
+      "final": "R",
+      "number": 16,
+      "presentations": [
+        16
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 11388,
+      "final": "Y",
+      "number": 17,
+      "presentations": [
+        17
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 8855,
+      "final": "Y",
+      "number": 18,
+      "presentations": [
+        18
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 8973,
+      "final": "Y",
+      "number": 19,
+      "presentations": [
+        19,
+        44
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 10864,
+      "final": "B",
+      "number": 20,
+      "presentations": [
+        20
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 5346,
+      "final": "U",
+      "number": 21,
+      "presentations": [
+        21
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 12516,
+      "final": "U",
+      "number": 22,
+      "presentations": [
+        22
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 6433,
+      "final": "0",
+      "number": 23,
+      "presentations": [
+        23
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 11295,
+      "final": "U",
+      "number": 24,
+      "presentations": [
+        24
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 238,
+      "final": "0",
+      "number": 25,
+      "presentations": [
+        25
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 4023,
+      "final": "B",
+      "number": 26,
+      "presentations": [
+        26
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 3631,
+      "final": "G",
+      "number": 27,
+      "presentations": [
+        27
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 12491,
+      "final": "U",
+      "number": 28,
+      "presentations": [
+        28
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 9943,
+      "final": "Y",
+      "number": 29,
+      "presentations": [
+        29
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 8188,
+      "final": "G",
+      "number": 30,
+      "presentations": [
+        30,
+        95
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 3899,
+      "final": "G",
+      "number": 31,
+      "presentations": [
+        31
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 1207,
+      "final": "G",
+      "number": 32,
+      "presentations": [
+        32
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 9680,
+      "final": "0",
+      "number": 33,
+      "presentations": [
+        33
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 10702,
+      "final": "R",
+      "number": 34,
+      "presentations": [
+        34,
+        71
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 253,
+      "final": "0",
+      "number": 35,
+      "presentations": [
+        35
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 9199,
+      "final": "R",
+      "number": 36,
+      "presentations": [
+        36,
+        134
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 10840,
+      "final": "R",
+      "number": 37,
+      "presentations": [
+        37
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 3774,
+      "final": "0",
+      "number": 38,
+      "presentations": [
+        38
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 10229,
+      "final": "Y",
+      "number": 39,
+      "presentations": [
+        39
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 12613,
+      "final": "U",
+      "number": 40,
+      "presentations": [
+        40
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 4884,
+      "final": "U",
+      "number": 41,
+      "presentations": [
+        41
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 4941,
+      "final": "U",
+      "number": 42,
+      "presentations": [
+        42
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 8327,
+      "final": "0",
+      "number": 43,
+      "presentations": [
+        43
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 4024,
+      "final": "Y",
+      "number": 45,
+      "presentations": [
+        45,
+        53
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 6331,
+      "final": "Y",
+      "number": 46,
+      "presentations": [
+        46
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 2823,
+      "final": "R",
+      "number": 47,
+      "presentations": [
+        47
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 8023,
+      "final": "G",
+      "number": 48,
+      "presentations": [
+        48,
+        67
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 9887,
+      "final": "Y",
+      "number": 49,
+      "presentations": [
+        49
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 1091,
+      "final": "B",
+      "number": 50,
+      "presentations": [
+        50
+      ],
+      "reversed": true,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 12895,
+      "final": "0",
+      "number": 51,
+      "presentations": [
+        51
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 6641,
+      "final": "R",
+      "number": 52,
+      "presentations": [
+        52
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 11733,
+      "final": "G",
+      "number": 54,
+      "presentations": [
+        54
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 2659,
+      "final": "U",
+      "number": 55,
+      "presentations": [
+        55
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 6067,
+      "final": "0",
+      "number": 56,
+      "presentations": [
+        56
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 8819,
+      "final": "G",
+      "number": 57,
+      "presentations": [
+        57
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 10580,
+      "final": "Y",
+      "number": 58,
+      "presentations": [
+        58
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 9366,
+      "final": "R",
+      "number": 59,
+      "presentations": [
+        59
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 1178,
+      "final": "G",
+      "number": 60,
+      "presentations": [
+        60
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 10298,
+      "final": "B",
+      "number": 61,
+      "presentations": [
+        61
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 10115,
+      "final": "0",
+      "number": 62,
+      "presentations": [
+        62
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 10881,
+      "final": "Y",
+      "number": 63,
+      "presentations": [
+        63
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 11626,
+      "final": "G",
+      "number": 64,
+      "presentations": [
+        64
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 495,
+      "final": "0",
+      "number": 65,
+      "presentations": [
+        65
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 8837,
+      "final": "0",
+      "number": 66,
+      "presentations": [
+        66
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 6308,
+      "final": "B",
+      "number": 68,
+      "presentations": [
+        68
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 7163,
+      "final": "B",
+      "number": 69,
+      "presentations": [
+        69
+      ],
+      "reversed": true,
+      "review": "B",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 3809,
+      "final": "Y",
+      "number": 70,
+      "presentations": [
+        70
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 5200,
+      "final": "Y",
+      "number": 72,
+      "presentations": [
+        72
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 10872,
+      "final": "G",
+      "number": 73,
+      "presentations": [
+        73
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 10752,
+      "final": "0",
+      "number": 74,
+      "presentations": [
+        74
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 12386,
+      "final": "R",
+      "number": 75,
+      "presentations": [
+        75
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 8723,
+      "final": "R",
+      "number": 76,
+      "presentations": [
+        76
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 12240,
+      "final": "Y",
+      "number": 77,
+      "presentations": [
+        77
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 504,
+      "final": "B",
+      "number": 78,
+      "presentations": [
+        78
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 4490,
+      "final": "Y",
+      "number": 79,
+      "presentations": [
+        79,
+        83
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 10582,
+      "final": "Y",
+      "number": 80,
+      "presentations": [
+        80
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 5341,
+      "final": "Y",
+      "number": 81,
+      "presentations": [
+        81
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 3819,
+      "final": "Y",
+      "number": 82,
+      "presentations": [
+        82
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 9003,
+      "final": "B",
+      "number": 85,
+      "presentations": [
+        85
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 10993,
+      "final": "R",
+      "number": 86,
+      "presentations": [
+        86,
+        122
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 813,
+      "final": "R",
+      "number": 87,
+      "presentations": [
+        87
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 9265,
+      "final": "U",
+      "number": 88,
+      "presentations": [
+        88
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 2215,
+      "final": "0",
+      "number": 89,
+      "presentations": [
+        89
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 11622,
+      "final": "R",
+      "number": 90,
+      "presentations": [
+        90
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 9877,
+      "final": "R",
+      "number": 91,
+      "presentations": [
+        91
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 1130,
+      "final": "G",
+      "number": 92,
+      "presentations": [
+        92
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 9889,
+      "final": "Y",
+      "number": 93,
+      "presentations": [
+        93
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 565,
+      "final": "B",
+      "number": 96,
+      "presentations": [
+        96
+      ],
+      "reversed": true,
+      "review": "B",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 2064,
+      "final": "0",
+      "number": 97,
+      "presentations": [
+        97
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 1968,
+      "final": "0",
+      "number": 98,
+      "presentations": [
+        98
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 7771,
+      "final": "R",
+      "number": 99,
+      "presentations": [
+        99,
+        131
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 3424,
+      "final": "U",
+      "number": 100,
+      "presentations": [
+        100
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 3107,
+      "final": "Y",
+      "number": 101,
+      "presentations": [
+        101
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 600,
+      "final": "U",
+      "number": 102,
+      "presentations": [
+        102
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 8743,
+      "final": "G",
+      "number": 103,
+      "presentations": [
+        103
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 9352,
+      "final": "B",
+      "number": 104,
+      "presentations": [
+        104
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 2038,
+      "final": "G",
+      "number": 105,
+      "presentations": [
+        105
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 8242,
+      "final": "R",
+      "number": 106,
+      "presentations": [
+        106
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 6339,
+      "final": "0",
+      "number": 107,
+      "presentations": [
+        107
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 7999,
+      "final": "Y",
+      "number": 108,
+      "presentations": [
+        108
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 6079,
+      "final": "G",
+      "number": 109,
+      "presentations": [
+        109
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 10107,
+      "final": "0",
+      "number": 110,
+      "presentations": [
+        110
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 2078,
+      "final": "R",
+      "number": 111,
+      "presentations": [
+        111
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 5578,
+      "final": "Y",
+      "number": 112,
+      "presentations": [
+        112
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 11389,
+      "final": "G",
+      "number": 113,
+      "presentations": [
+        113
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 8636,
+      "final": "0",
+      "number": 115,
+      "presentations": [
+        115
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 9395,
+      "final": "Y",
+      "number": 116,
+      "presentations": [
+        116
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 9288,
+      "final": "R",
+      "number": 117,
+      "presentations": [
+        117
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 8171,
+      "final": "G",
+      "number": 118,
+      "presentations": [
+        118
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 3096,
+      "final": "Y",
+      "number": 119,
+      "presentations": [
+        119
+      ],
+      "reversed": false,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 3952,
+      "final": "B",
+      "number": 120,
+      "presentations": [
+        120
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 12325,
+      "final": "Y",
+      "number": 121,
+      "presentations": [
+        121
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 12474,
+      "final": "G",
+      "number": 123,
+      "presentations": [
+        123
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 4783,
+      "final": "B",
+      "number": 124,
+      "presentations": [
+        124
+      ],
+      "reversed": false,
+      "review": "B",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 2099,
+      "final": "0",
+      "number": 125,
+      "presentations": [
+        125
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 8774,
+      "final": "R",
+      "number": 126,
+      "presentations": [
+        126
+      ],
+      "reversed": true,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 6890,
+      "final": "0",
+      "number": 127,
+      "presentations": [
+        127
+      ],
+      "reversed": true,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 9852,
+      "final": "Y",
+      "number": 128,
+      "presentations": [
+        128
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 5644,
+      "final": "U",
+      "number": 129,
+      "presentations": [
+        129
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 3,
+      "episode": 6032,
+      "final": "G",
+      "number": 130,
+      "presentations": [
+        130
+      ],
+      "reversed": false,
+      "review": "G",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 1,
+      "episode": 1987,
+      "final": "R",
+      "number": 132,
+      "presentations": [
+        132
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 1313,
+      "final": "G",
+      "number": 133,
+      "presentations": [
+        133
+      ],
+      "reversed": true,
+      "review": "G",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 10983,
+      "final": "0",
+      "number": 135,
+      "presentations": [
+        135
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 5168,
+      "final": "U",
+      "number": 136,
+      "presentations": [
+        136
+      ],
+      "reversed": true,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 4,
+      "episode": 2782,
+      "final": "Y",
+      "number": 137,
+      "presentations": [
+        137
+      ],
+      "reversed": true,
+      "review": "Y",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 6439,
+      "final": "U",
+      "number": 138,
+      "presentations": [
+        138
+      ],
+      "reversed": false,
+      "review": "U",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 0,
+      "episode": 10331,
+      "final": "0",
+      "number": 139,
+      "presentations": [
+        139
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 9905,
+      "final": "0",
+      "number": 140,
+      "presentations": [
+        140
+      ],
+      "reversed": false,
+      "review": "0",
+      "role": "test",
+      "tick": 2
+    },
+    {
+      "detector": -1,
+      "episode": 770,
+      "final": "R",
+      "number": 141,
+      "presentations": [
+        141
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "dev",
+      "tick": 2
+    },
+    {
+      "detector": 2,
+      "episode": 5030,
+      "final": "R",
+      "number": 142,
+      "presentations": [
+        142
+      ],
+      "reversed": false,
+      "review": "R",
+      "role": "test",
+      "tick": 2
+    }
+  ],
+  "fresh": [
+    {
+      "episode": 2752,
+      "final": "U",
+      "group": "50110064fb4657639365265b47d6bac8",
+      "new": 0,
+      "number": 1,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        1
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3200,
+      "final": "R",
+      "group": "74bd4c9cd725bf7e26d5140ab09e616d",
+      "new": 1,
+      "number": 2,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        2
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 486,
+      "final": "R",
+      "group": "e8574e12d35ce5ce94f599588c669748",
+      "new": 1,
+      "number": 3,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        3
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2767,
+      "final": "G",
+      "group": "ab1a93869b2e79be0a769b1630ee9ea7",
+      "new": 3,
+      "number": 4,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        4
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2247,
+      "final": "U",
+      "group": "a24bf1d3b364ad25d869f7a1f1b133d2",
+      "new": -1,
+      "number": 5,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        5,
+        17
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3246,
+      "final": "U",
+      "group": "fda90ca2017bcf3608e4dbf5685f07e3",
+      "new": 2,
+      "number": 6,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        6
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1056,
+      "final": "0",
+      "group": "35044c5b6457a5fe83f26bcb1d51e9d0",
+      "new": 0,
+      "number": 7,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        7
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 3011,
+      "final": "B",
+      "group": "21b5f0c1cec8eccf8953125a3eb8dd39",
+      "new": 2,
+      "number": 8,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        8,
+        39
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1894,
+      "final": "R",
+      "group": "3be8e29e1123b834c7a8493053a63d6b",
+      "new": -1,
+      "number": 9,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        9
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2340,
+      "final": "Y",
+      "group": "0b50adde76d7e82b8d1824dc97454195",
+      "new": 4,
+      "number": 10,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        10
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 1204,
+      "final": "Y",
+      "group": "4bcffb23a4619975d68df6ae1d723c1d",
+      "new": 4,
+      "number": 11,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        11
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2069,
+      "final": "U",
+      "group": "8e083b7a338503283055f52581e94d88",
+      "new": 2,
+      "number": 12,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        12
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2434,
+      "final": "G",
+      "group": "7a85b38ba8badf8c92ca1691ae78f398",
+      "new": 3,
+      "number": 13,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        13
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 52,
+      "final": "U",
+      "group": "3efe95c34c90ed804f00c3984bdb168c",
+      "new": -1,
+      "number": 14,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        14
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2364,
+      "final": "B",
+      "group": "e160d66f3438f5607c73f84e3108c109",
+      "new": 2,
+      "number": 15,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        15
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3241,
+      "final": "Y",
+      "group": "fda90ca2017bcf3608e4dbf5685f07e3",
+      "new": 4,
+      "number": 16,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        16
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 520,
+      "final": "U",
+      "group": "68da4f8701134822fe44befe418eb175",
+      "new": 0,
+      "number": 18,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        18
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1471,
+      "final": "B",
+      "group": "83248936659a0368b8b12e69627e6cb9",
+      "new": -1,
+      "number": 19,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        19,
+        70
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 381,
+      "final": "Y",
+      "group": "fca5213109b003fd5b1744d47c3ae3b0",
+      "new": 4,
+      "number": 20,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        20,
+        58
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2307,
+      "final": "U",
+      "group": "b68a99554bc35ac103276b3a60b34cf8",
+      "new": -1,
+      "number": 21,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        21
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 523,
+      "final": "B",
+      "group": "68da4f8701134822fe44befe418eb175",
+      "new": -1,
+      "number": 22,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        22
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2770,
+      "final": "B",
+      "group": "ab1a93869b2e79be0a769b1630ee9ea7",
+      "new": 2,
+      "number": 23,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        23
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2040,
+      "final": "B",
+      "group": "54b2bd1d54a0fc9045355d15afa2f599",
+      "new": 2,
+      "number": 24,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        24
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3366,
+      "final": "U",
+      "group": "065089f388d4f2e5474ce4379c55d8f7",
+      "new": 3,
+      "number": 25,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        25
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 443,
+      "final": "U",
+      "group": "9fa57c0400a28b37d2ba8468cf7ee681",
+      "new": 2,
+      "number": 26,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        26,
+        102
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3490,
+      "final": "R",
+      "group": "470882e056e315059cd65b2d10c8130f",
+      "new": -1,
+      "number": 27,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        27
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1747,
+      "final": "0",
+      "group": "bfa6f57fb258265e1a3ef15bbd13ac71",
+      "new": 0,
+      "number": 28,
+      "old": 0,
+      "panel": "uniform",
+      "presentations": [
+        28
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 847,
+      "final": "0",
+      "group": "6bc94437d049e7fb2aa503e5d8fe2a95",
+      "new": 0,
+      "number": 29,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        29
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 2259,
+      "final": "G",
+      "group": "9d4e0b33f5d85d01d155b5a2b29de5f9",
+      "new": -1,
+      "number": 30,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        30
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2716,
+      "final": "Y",
+      "group": "caecf2c232f05cb00c92c48093e860ff",
+      "new": 4,
+      "number": 31,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        31
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 1893,
+      "final": "R",
+      "group": "3be8e29e1123b834c7a8493053a63d6b",
+      "new": 4,
+      "number": 32,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        32
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2173,
+      "final": "G",
+      "group": "0cbd52c7dfa287bbe50411c71b5d3710",
+      "new": -1,
+      "number": 33,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        33
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 1693,
+      "final": "Y",
+      "group": "3b92cb7649b2001e0fa012cf6b6d2cb4",
+      "new": -1,
+      "number": 34,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        34,
+        93
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 438,
+      "final": "0",
+      "group": "9fa57c0400a28b37d2ba8468cf7ee681",
+      "new": 0,
+      "number": 35,
+      "old": 0,
+      "panel": "uniform",
+      "presentations": [
+        35
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 1317,
+      "final": "U",
+      "group": "d16efeef5a6c60af12566073548b9c44",
+      "new": 0,
+      "number": 36,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        36
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1556,
+      "final": "G",
+      "group": "ddcf29e404ed15b2d8bbfdb0bc37a5b5",
+      "new": 3,
+      "number": 37,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        37
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 413,
+      "final": "B",
+      "group": "a7e2b8edac9ff044261dea128eb3bbf2",
+      "new": 2,
+      "number": 38,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        38
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 867,
+      "final": "0",
+      "group": "41762add714137f7525e3950d86ec851",
+      "new": -1,
+      "number": 40,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        40
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 849,
+      "final": "U",
+      "group": "6bc94437d049e7fb2aa503e5d8fe2a95",
+      "new": 2,
+      "number": 41,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        41
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1647,
+      "final": "B",
+      "group": "436a76ac2afaeda9e54686a439ffb4bd",
+      "new": 3,
+      "number": 42,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        42
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 387,
+      "final": "G",
+      "group": "fca5213109b003fd5b1744d47c3ae3b0",
+      "new": 3,
+      "number": 43,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        43
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 3393,
+      "final": "Y",
+      "group": "aafadf568d9341726ebbb6477ae8261e",
+      "new": 4,
+      "number": 44,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        44
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 752,
+      "final": "R",
+      "group": "f27f46b4472ac1e9d9f6c2443e26ac93",
+      "new": -1,
+      "number": 45,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        45
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 427,
+      "final": "U",
+      "group": "956fddb9bafe23ddd925a7e307455218",
+      "new": 0,
+      "number": 46,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        46
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 806,
+      "final": "0",
+      "group": "ac65ec5696918d091b26d9075ab112c6",
+      "new": -1,
+      "number": 47,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        47
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 951,
+      "final": "Y",
+      "group": "d4a8ae98f7979e4a428cc79dcc4c1a67",
+      "new": -1,
+      "number": 48,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        48
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 449,
+      "final": "U",
+      "group": "9fa57c0400a28b37d2ba8468cf7ee681",
+      "new": 2,
+      "number": 49,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        49
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3210,
+      "final": "Y",
+      "group": "74bd4c9cd725bf7e26d5140ab09e616d",
+      "new": 4,
+      "number": 50,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        50
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2744,
+      "final": "Y",
+      "group": "37dd2a3e7e419d9de7cf620eaac0a9f2",
+      "new": 4,
+      "number": 51,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        51,
+        78
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 1243,
+      "final": "R",
+      "group": "5d3cf84c57d50ab4415e375070907e2b",
+      "new": -1,
+      "number": 52,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        52
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 703,
+      "final": "B",
+      "group": "cf61b61965a8b0a73177343ed3e968a9",
+      "new": 2,
+      "number": 53,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        53
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 98,
+      "final": "B",
+      "group": "0539fbc118531fd13f75c0cdb3a258e9",
+      "new": 2,
+      "number": 54,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        54
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3404,
+      "final": "U",
+      "group": "a927bee44f99dc8223884d6587fc0c2a",
+      "new": 2,
+      "number": 55,
+      "old": 4,
+      "panel": "blue",
+      "presentations": [
+        55
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1844,
+      "final": "G",
+      "group": "a2637680c177b3d93a569e9c1717dcc1",
+      "new": 3,
+      "number": 56,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        56
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 140,
+      "final": "B",
+      "group": "29c3729ea69890d55f7cead777bf0f17",
+      "new": 2,
+      "number": 57,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        57
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1678,
+      "final": "Y",
+      "group": "4da158887489551ed2ce4fa075b305c9",
+      "new": 2,
+      "number": 59,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        59
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2555,
+      "final": "U",
+      "group": "017ea7ff8acdf5412c65fe2abc3f4a7a",
+      "new": 3,
+      "number": 60,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        60
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2335,
+      "final": "G",
+      "group": "0b50adde76d7e82b8d1824dc97454195",
+      "new": 3,
+      "number": 61,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        61
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 1234,
+      "final": "U",
+      "group": "a4027d7f11d88c8113c4065bd494b4d2",
+      "new": -1,
+      "number": 62,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        62
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 496,
+      "final": "G",
+      "group": "e8574e12d35ce5ce94f599588c669748",
+      "new": 3,
+      "number": 63,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        63
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2365,
+      "final": "B",
+      "group": "e160d66f3438f5607c73f84e3108c109",
+      "new": 2,
+      "number": 64,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        64
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1054,
+      "final": "B",
+      "group": "3fb9dbfdff144d8d1745368ca266391e",
+      "new": 2,
+      "number": 65,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        65
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 864,
+      "final": "R",
+      "group": "41762add714137f7525e3950d86ec851",
+      "new": 2,
+      "number": 66,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        66
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1076,
+      "final": "U",
+      "group": "8f39c1768c51388d2ba9ace14ed973b1",
+      "new": 2,
+      "number": 67,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        67,
+        134
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 686,
+      "final": "U",
+      "group": "cafacc0b2a01cd3015d02852de57b4ba",
+      "new": 1,
+      "number": 68,
+      "old": 1,
+      "panel": "uniform",
+      "presentations": [
+        68
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 526,
+      "final": "B",
+      "group": "68da4f8701134822fe44befe418eb175",
+      "new": 2,
+      "number": 69,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        69,
+        118
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 771,
+      "final": "R",
+      "group": "f4f14834d8dd537b5f1812803eac411c",
+      "new": 1,
+      "number": 71,
+      "old": 1,
+      "panel": "uniform",
+      "presentations": [
+        71
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2673,
+      "final": "R",
+      "group": "40b8da3675ffc1948740af44cbb5ece5",
+      "new": 1,
+      "number": 72,
+      "old": 1,
+      "panel": "uniform",
+      "presentations": [
+        72
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 3173,
+      "final": "R",
+      "group": "68dbfa9086ea2edfceb5152bddd8559f",
+      "new": 1,
+      "number": 73,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        73
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2510,
+      "final": "B",
+      "group": "c3eff38de1efa29dd0deead9b78adda8",
+      "new": 2,
+      "number": 74,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        74
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 595,
+      "final": "G",
+      "group": "185a7ab86b66d1062b595c0ec98d73c2",
+      "new": 3,
+      "number": 75,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        75
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 1473,
+      "final": "B",
+      "group": "83248936659a0368b8b12e69627e6cb9",
+      "new": 2,
+      "number": 76,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        76,
+        114
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2384,
+      "final": "R",
+      "group": "80705d42236417d8d0fbc859d527f281",
+      "new": 1,
+      "number": 77,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        77
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1393,
+      "final": "R",
+      "group": "cb875305da34fb295c76159ee019f93c",
+      "new": 1,
+      "number": 79,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        79
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2290,
+      "final": "0",
+      "group": "a6b64e7e51964a8429070ba1f4ef0eab",
+      "new": 0,
+      "number": 80,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        80
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 1719,
+      "final": "B",
+      "group": "11c66b9295934f4b631922cb6bc24c6e",
+      "new": 2,
+      "number": 81,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        81
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3470,
+      "final": "B",
+      "group": "d65fd591b0d78e9c649e055d43c358d5",
+      "new": -1,
+      "number": 82,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        82
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 635,
+      "final": "Y",
+      "group": "b3846b67efe67458c75892416a8bf5ee",
+      "new": 4,
+      "number": 83,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        83
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2575,
+      "final": "G",
+      "group": "86916ba151eb642f859e9c47f659ba56",
+      "new": 0,
+      "number": 84,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        84
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 1749,
+      "final": "R",
+      "group": "bfa6f57fb258265e1a3ef15bbd13ac71",
+      "new": -1,
+      "number": 85,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        85
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2750,
+      "final": "U",
+      "group": "50110064fb4657639365265b47d6bac8",
+      "new": 2,
+      "number": 86,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        86
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1325,
+      "final": "B",
+      "group": "2fd67773a250209d27d56b6dabdaa38d",
+      "new": 2,
+      "number": 87,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        87
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 40,
+      "final": "U",
+      "group": "4aae71caf0a619251e53cacec3152cf0",
+      "new": -1,
+      "number": 88,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        88
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 900,
+      "final": "Y",
+      "group": "6053e1b8d217e315a3f636987415c738",
+      "new": -1,
+      "number": 89,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        89
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 3148,
+      "final": "G",
+      "group": "d177bf6da8e3c6d83ca8eb14f19dd8a1",
+      "new": 0,
+      "number": 90,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        90
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 3486,
+      "final": "0",
+      "group": "470882e056e315059cd65b2d10c8130f",
+      "new": 0,
+      "number": 91,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        91
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 1834,
+      "final": "G",
+      "group": "9f9a837b6d8c671e27b87b3b67363d6c",
+      "new": -1,
+      "number": 92,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        92
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2341,
+      "final": "R",
+      "group": "0b50adde76d7e82b8d1824dc97454195",
+      "new": 1,
+      "number": 94,
+      "old": 1,
+      "panel": "uniform",
+      "presentations": [
+        94
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1008,
+      "final": "G",
+      "group": "8f6f1a7b08b5ebd92ba4b440d16dcb4f",
+      "new": 3,
+      "number": 95,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        95
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 874,
+      "final": "G",
+      "group": "a26a48154792612a2803803d26068e38",
+      "new": 3,
+      "number": 96,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        96
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2319,
+      "final": "B",
+      "group": "f56661bd433e2e57ce8700b50899014e",
+      "new": 2,
+      "number": 97,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        97
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2994,
+      "final": "R",
+      "group": "29fbb701ff952a9320b7f11cd0b7d738",
+      "new": 1,
+      "number": 98,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        98
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1088,
+      "final": "B",
+      "group": "7668804ea24c240674cf19e0b4263ee0",
+      "new": 2,
+      "number": 99,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        99
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1509,
+      "final": "R",
+      "group": "a72b7d303acdeb2e6404ed1d82921fe9",
+      "new": 1,
+      "number": 100,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        100
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 2400,
+      "final": "B",
+      "group": "d64b187b8b94c3cee0184f79395e2f05",
+      "new": 2,
+      "number": 101,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        101
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2405,
+      "final": "G",
+      "group": "d79b7fb917af978fa877d1630f565195",
+      "new": 2,
+      "number": 103,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        103
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 566,
+      "final": "B",
+      "group": "425dea8b6e15c7f1995696cafb1f46fd",
+      "new": 2,
+      "number": 104,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        104
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 618,
+      "final": "U",
+      "group": "12ca53666354efd64527aaa7c8475b5e",
+      "new": 4,
+      "number": 105,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        105
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 507,
+      "final": "G",
+      "group": "352dc6b6a067644c6ddae27abf0a6b45",
+      "new": 0,
+      "number": 106,
+      "old": 0,
+      "panel": "uniform",
+      "presentations": [
+        106
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 1207,
+      "final": "U",
+      "group": "4bcffb23a4619975d68df6ae1d723c1d",
+      "new": 2,
+      "number": 107,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        107
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2116,
+      "final": "Y",
+      "group": "9350ed83cd3ace53bf0c7f43dbfa76ce",
+      "new": 4,
+      "number": 108,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        108
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2747,
+      "final": "B",
+      "group": "50110064fb4657639365265b47d6bac8",
+      "new": 2,
+      "number": 109,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        109
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1143,
+      "final": "R",
+      "group": "82b0ed376ee6ba6ee13483b257d71908",
+      "new": 1,
+      "number": 110,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        110
+      ],
+      "reversed": true,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 846,
+      "final": "0",
+      "group": "6bc94437d049e7fb2aa503e5d8fe2a95",
+      "new": 0,
+      "number": 111,
+      "old": 0,
+      "panel": "uniform",
+      "presentations": [
+        111
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 1729,
+      "final": "B",
+      "group": "49afd1024451f25a250073b10dad3746",
+      "new": 2,
+      "number": 112,
+      "old": 4,
+      "panel": "blue",
+      "presentations": [
+        112
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3402,
+      "final": "U",
+      "group": "a927bee44f99dc8223884d6587fc0c2a",
+      "new": 2,
+      "number": 113,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        113
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 522,
+      "final": "U",
+      "group": "68da4f8701134822fe44befe418eb175",
+      "new": 3,
+      "number": 115,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        115
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 30,
+      "final": "B",
+      "group": "5018e906ed6cdffecc4c5a813af59ada",
+      "new": 2,
+      "number": 116,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        116
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3326,
+      "final": "R",
+      "group": "ee8280e9048a9d317a21a3243ffc7a3a",
+      "new": 1,
+      "number": 117,
+      "old": 1,
+      "panel": "uniform",
+      "presentations": [
+        117
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1453,
+      "final": "Y",
+      "group": "140f09ddab9b7af50601fe3b8efcf355",
+      "new": -1,
+      "number": 119,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        119
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 432,
+      "final": "0",
+      "group": "956fddb9bafe23ddd925a7e307455218",
+      "new": 0,
+      "number": 120,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        120
+      ],
+      "reversed": true,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 2456,
+      "final": "G",
+      "group": "aeff0dac5090a9ce09267f16deff24de",
+      "new": -1,
+      "number": 121,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        121
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 851,
+      "final": "U",
+      "group": "6bc94437d049e7fb2aa503e5d8fe2a95",
+      "new": 2,
+      "number": 122,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        122
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2757,
+      "final": "Y",
+      "group": "50110064fb4657639365265b47d6bac8",
+      "new": -1,
+      "number": 123,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        123
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 465,
+      "final": "U",
+      "group": "069bdf677d0d08f0fccc91fa94b22076",
+      "new": 0,
+      "number": 124,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        124
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 2316,
+      "final": "G",
+      "group": "f56661bd433e2e57ce8700b50899014e",
+      "new": 3,
+      "number": 125,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        125
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 799,
+      "final": "Y",
+      "group": "ac65ec5696918d091b26d9075ab112c6",
+      "new": -1,
+      "number": 126,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        126
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 1972,
+      "final": "U",
+      "group": "44e9971bf7c12fff79c8d2820859e601",
+      "new": 0,
+      "number": 127,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        127
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3493,
+      "final": "Y",
+      "group": "470882e056e315059cd65b2d10c8130f",
+      "new": 4,
+      "number": 128,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        128
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 1645,
+      "final": "B",
+      "group": "1aa9814bab91d88dabdcfc332051a0a6",
+      "new": 2,
+      "number": 129,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        129
+      ],
+      "reversed": false,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 3339,
+      "final": "0",
+      "group": "ee8280e9048a9d317a21a3243ffc7a3a",
+      "new": 0,
+      "number": 130,
+      "old": 0,
+      "panel": "uniform",
+      "presentations": [
+        130
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 1227,
+      "final": "Y",
+      "group": "87faadf9c2fb0ea5e233b262636f45f8",
+      "new": -1,
+      "number": 131,
+      "old": 4,
+      "panel": "uniform",
+      "presentations": [
+        131
+      ],
+      "reversed": true,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 2378,
+      "final": "G",
+      "group": "80705d42236417d8d0fbc859d527f281",
+      "new": 3,
+      "number": 132,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        132
+      ],
+      "reversed": false,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 3023,
+      "final": "B",
+      "group": "2919d55418fefade098554013038f245",
+      "new": 2,
+      "number": 133,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        133
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 2048,
+      "final": "B",
+      "group": "54b2bd1d54a0fc9045355d15afa2f599",
+      "new": 2,
+      "number": 135,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        135
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    },
+    {
+      "episode": 1787,
+      "final": "U",
+      "group": "75212c7114770120b9c3b196fff325cf",
+      "new": 2,
+      "number": 136,
+      "old": -1,
+      "panel": "blue",
+      "presentations": [
+        136
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 3503,
+      "final": "0",
+      "group": "d33502f37c6667678f9b5a924308cf5d",
+      "new": 0,
+      "number": 137,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        137
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 2215,
+      "final": "G",
+      "group": "7487a0a39ee9fb2d86982651ef97836c",
+      "new": 3,
+      "number": 138,
+      "old": 3,
+      "panel": "uniform",
+      "presentations": [
+        138
+      ],
+      "reversed": true,
+      "review": "G",
+      "tick": 2
+    },
+    {
+      "episode": 2088,
+      "final": "Y",
+      "group": "5f967fcbe920539bbb036aa619ac020b",
+      "new": 4,
+      "number": 139,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        139
+      ],
+      "reversed": false,
+      "review": "Y",
+      "tick": 2
+    },
+    {
+      "episode": 549,
+      "final": "0",
+      "group": "717c62d1a56e41ccffda42edc264147b",
+      "new": 0,
+      "number": 140,
+      "old": 2,
+      "panel": "blue",
+      "presentations": [
+        140
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 235,
+      "final": "U",
+      "group": "cb00f1d0d0322ac80771cfaeb00b4e79",
+      "new": -1,
+      "number": 141,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        141
+      ],
+      "reversed": false,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1925,
+      "final": "R",
+      "group": "e3ad0b021deab00f035471f49b2a8258",
+      "new": 2,
+      "number": 142,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        142
+      ],
+      "reversed": false,
+      "review": "R",
+      "tick": 2
+    },
+    {
+      "episode": 1951,
+      "final": "0",
+      "group": "e335a305cf0326caba1ca3a8c4f2e4b1",
+      "new": 0,
+      "number": 143,
+      "old": 2,
+      "panel": "uniform",
+      "presentations": [
+        143
+      ],
+      "reversed": false,
+      "review": "0",
+      "tick": 2
+    },
+    {
+      "episode": 6,
+      "final": "U",
+      "group": "574c1bcefa414623968b4a7bd01bcffb",
+      "new": -1,
+      "number": 144,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        144
+      ],
+      "reversed": true,
+      "review": "U",
+      "tick": 2
+    },
+    {
+      "episode": 1149,
+      "final": "B",
+      "group": "82b0ed376ee6ba6ee13483b257d71908",
+      "new": 2,
+      "number": 145,
+      "old": -1,
+      "panel": "uniform",
+      "presentations": [
+        145
+      ],
+      "reversed": true,
+      "review": "B",
+      "tick": 2
+    }
+  ],
+  "original": {
+    "dev": {
+      "both_readable": 42,
+      "cases": 65,
+      "confusion": {
+        "0/0": 9,
+        "B/0": 2,
+        "B/B": 1,
+        "B/G": 1,
+        "B/R": 1,
+        "B/Y": 3,
+        "G/0": 1,
+        "G/G": 7,
+        "R/B": 1,
+        "R/G": 1,
+        "R/R": 6,
+        "R/Y": 1,
+        "Y/B": 1,
+        "Y/Y": 7
+      },
+      "correct": 30,
+      "detector_accepted": 50,
+      "review_readable": 55
+    },
+    "test": {
+      "both_readable": 44,
+      "cases": 65,
+      "confusion": {
+        "0/0": 7,
+        "0/B": 3,
+        "B/0": 1,
+        "B/B": 1,
+        "B/G": 3,
+        "B/R": 1,
+        "B/Y": 2,
+        "G/G": 9,
+        "R/R": 9,
+        "Y/Y": 8
+      },
+      "correct": 34,
+      "detector_accepted": 50,
+      "review_readable": 57
+    }
+  },
+  "original_repeats": {
+    "agree": 12,
+    "total": 12
+  },
+  "reviewer": "one Codex visual reviewer, blinded to labels, modality cues and predictions"
+}
