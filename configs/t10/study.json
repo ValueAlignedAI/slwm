@@ -1,0 +1,91 @@
+{
+  "study": "G10",
+  "base": "4273b75d952e027775ef5f340d55dec77235ae60",
+  "seeds": [
+    1001,
+    1002,
+    1003
+  ],
+  "cores": [
+    "hybrid",
+    "gpt2",
+    "gated"
+  ],
+  "regimes": [
+    "short",
+    "variable",
+    "long"
+  ],
+  "trunk": 512,
+  "layers": 4,
+  "emitted": 128,
+  "context": {
+    "lengths": [
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "trajectories": 16,
+    "ticks": 512,
+    "sim_fraction": 0.75,
+    "updates": 5120,
+    "midpoint": 2560
+  },
+  "alignment": {
+    "cores": [
+      "hybrid",
+      "gpt2"
+    ],
+    "treatments": [
+      "reconstruct",
+      "shifted",
+      "paired"
+    ],
+    "updates": 1536,
+    "groups": 8,
+    "windows": 8,
+    "window_ticks": 32,
+    "temperature": 0.12,
+    "weight": 0.6,
+    "natural_features": 128,
+    "motion_features": 256
+  },
+  "holo": {
+    "training": 256,
+    "development": 32,
+    "familiar": 64,
+    "novel": 64,
+    "held_families": [
+      "coffee",
+      "computer"
+    ],
+    "fps": 10,
+    "clip_limit_seconds": 600,
+    "split_version": "v1_2",
+    "labels": "v1_1"
+  },
+  "evaluation": {
+    "control_seed": 810537,
+    "delayed_seed": 730117,
+    "recalibration_seed": 960133,
+    "missions": 256,
+    "ticks": 512,
+    "delay_ticks": [
+      8,
+      32,
+      64,
+      128,
+      256,
+      480
+    ],
+    "bootstrap": 4000
+  },
+  "compute": {
+    "prior_project_units": 37.501280916544204,
+    "remaining_units": 62.498719083455796,
+    "wave_ceiling": 28,
+    "reserve": 1
+  }
+}
