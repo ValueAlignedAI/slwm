@@ -47,15 +47,15 @@ def get(url,path,size=None,md5=None):
             print("Retry",path.name,type(exc).__name__,flush=True);time.sleep(2**attempt)
 
 
-def robot(root,extra=False,prospective=False):
-    folder=root/("robot-prospective/raw" if prospective else "robot-extra/raw" if extra else "robot/raw");folder.mkdir(exist_ok=True,parents=True)
+def robot(root,extra=False,prospective=False,readout=False):
+    folder=root/("robot-readout/raw" if readout else "robot-prospective/raw" if prospective else "robot-extra/raw" if extra else "robot/raw");folder.mkdir(exist_ok=True,parents=True)
     url="https://storage.googleapis.com/storage/v1/b/gresearch/o?"+urllib.parse.urlencode(dict(prefix=PREFIX+"language_table-train",maxResults=1000,fields="items(name,size,generation,md5Hash),nextPageToken"))
     catalog=json.load(urllib.request.urlopen(url,timeout=40))
     if catalog.get("nextPageToken"):raise ValueError("Incomplete shard listing")
     items=(o for o in catalog["items"] if o["name"].split("-")[-1].isdigit() and not o["name"].endswith("-00000"))
     ranked=sorted(items,key=lambda d:hashlib.sha256(("G13/robot/"+d["name"]).encode()).hexdigest())
-    files=ranked[20:24] if prospective else ranked[16:20] if extra else ranked[:16]
-    if len(files)!=(4 if extra or prospective else 16):raise ValueError("Incomplete registered shard sample")
+    files=ranked[24:28] if readout else ranked[20:24] if prospective else ranked[16:20] if extra else ranked[:16]
+    if len(files)!=(4 if extra or prospective or readout else 16):raise ValueError("Incomplete registered shard sample")
     write(folder/"selection.json",files)
     for n in ("features.json","dataset_info.json"):
         get("https://storage.googleapis.com/gresearch/"+PREFIX+n,folder/n)
@@ -74,5 +74,5 @@ def speech(root):
 
 
 if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("source",choices=("robot","speech","extra","prospective"));p.add_argument("--root",type=Path,default=ROOT)
-    a=p.parse_args();speech(a.root) if a.source=="speech" else robot(a.root,a.source=="extra",a.source=="prospective")
+    p=argparse.ArgumentParser();p.add_argument("source",choices=("robot","speech","extra","prospective","readout"));p.add_argument("--root",type=Path,default=ROOT)
+    a=p.parse_args();speech(a.root) if a.source=="speech" else robot(a.root,a.source=="extra",a.source=="prospective",a.source=="readout")
