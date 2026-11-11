@@ -13,16 +13,28 @@ from scripts.train.g14_cue_fit import ROOT, roots, read
 from scripts.train.g13_optim import save, load, complete, save_npz
 from scripts.train.g9_storage import sha, write
 
-SOURCES = {"expert-plus": "fresh-teacher", "visited-plus": "visited"}
+SOURCES = {
+    "expert-plus": "fresh-teacher",
+    "visited-plus": "visited",
+    "expert-paired": "fresh-teacher-paired",
+    "visited-paired": "visited-paired",
+}
 
 
-def bank_lock():
+def bank_lock(paired):
     data = ROOT / "data"
-    banks = {
-        k: read(data / (k + ".npz")) for k in ("fresh-teacher", "visited", "value-dev")
-    }
+    names = [
+        x + ("-paired" if paired else "")
+        for x in ("fresh-teacher", "visited", "value-dev")
+    ]
+    banks = {k: read(data / (k + ".npz")) for k in names}
     keys = lambda b: np.stack([b[x] for x in ("world", "trial", "clock")], axis=1)
-    a, b, v = (banks[k] for k in ("fresh-teacher", "visited", "value-dev"))
+    a, b, v = (banks[k] for k in names)
+    if paired:
+        roots = a["clock"] == 0
+        for k in ("start_digest", "p", "q", "motor", "px", "choices"):
+            if not np.array_equal(a[k][roots], b[k][roots]):
+                raise ValueError("Pairing audit failed at " + k)
     if not np.array_equal(keys(a), keys(b)) or not np.array_equal(
         a["target"], b["target"]
     ):
@@ -43,7 +55,10 @@ def bank_lock():
         native_ticks_per_return=15,
         hashes={k: sha(data / (k + ".npz")) for k in banks},
     )
-    write(data / "aggregation-lock.json", result)
+    write(
+        data / ("aggregation-paired-lock.json" if paired else "aggregation-lock.json"),
+        result,
+    )
     return result
 
 
@@ -68,14 +83,15 @@ def calibrate(short, delayed, prior, value, world):
 
 def setup(stage):
     data = ROOT / "data"
-    info = bank_lock()
+    paired = stage.endswith("-paired")
+    info = bank_lock(paired)
     base = read(data / "training.npz")
     extra = read(data / (SOURCES[stage] + ".npz"))
     base["long"] = np.zeros_like(base["gain"])
     base["has_long"] = np.zeros(len(base["world"]), bool)
     extra["has_long"] = np.ones(len(extra["world"]), bool)
     tr = pack({k: np.concatenate((val, extra[k])) for k, val in base.items()})
-    dv = read(data / "value-dev.npz")
+    dv = read(data / ("value-dev-paired.npz" if paired else "value-dev.npz"))
     dv["has_long"] = np.ones(len(dv["world"]), bool)
     dv = pack(dv)
     prior, _ = raw_setup(tr, dv)
@@ -154,7 +170,9 @@ def train(stage):
                 observed_continuations=int(tr["has_long"].sum()),
                 data_sha=sha(ROOT / "data/training.npz"),
                 augmentation_sha=info["hashes"][SOURCES[stage]],
-                dev_sha=info["hashes"]["value-dev"],
+                dev_sha=info["hashes"][
+                    "value-dev-paired" if stage.endswith("-paired") else "value-dev"
+                ],
                 reference_sha=sha(work / "reference.npz"),
                 long_reference_sha=sha(work / "long-reference.npz"),
                 width=80,

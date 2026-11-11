@@ -45,19 +45,22 @@ def main(lane):
     os.chdir(ROOT / "code")
     if lane == "development":
         await_files(
-            [data / (x + ".npz") for x in ("fresh-teacher", "visited", "value-dev")]
+            [
+                data / (x + ".npz")
+                for x in ("fresh-teacher-paired", "visited-paired", "value-dev-paired")
+            ]
         )
-        for n in ("expert-plus", "visited-plus"):
+        for n in ("expert-paired", "visited-paired"):
             stage(n, work / n / "lock.json", GPU + ["scripts/train/g14_continue.py", n])
         stage(
-            "refine-dev",
-            work / "executed/refine/dev/complete.json",
+            "paired-dev",
+            work / "executed/paired/dev/complete.json",
             [
                 SIM,
                 "-u",
                 "scripts/train/g14_execute.py",
                 "dev",
-                "refine",
+                "paired",
                 "--workers",
                 "12",
             ],

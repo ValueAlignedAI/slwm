@@ -33,7 +33,7 @@ def policies(stage):
         for b in base:
             b["oracle_cue"] = True
         return base
-    if stage == "refine":
+    if stage in ("refine", "paired"):
         setting = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
         base = [
             dict(
@@ -46,7 +46,11 @@ def policies(stage):
             )
             for c in ("gpt2", "transport")
             for s in SEEDS
-            for t in ("expert-plus", "visited-plus")
+            for t in (
+                ("initial", "expert-paired", "visited-paired")
+                if stage == "paired"
+                else ("expert-plus", "visited-plus")
+            )
         ]
         return base
     if stage == "gate":
@@ -175,7 +179,11 @@ def one(args):
     file = root / f"{seed}.json"
     if file.exists():
         return seed
-    table = collector.ENV
+    table = (
+        collector.clean_worker()
+        if stage in ("paired", "gate", "final")
+        else collector.ENV
+    )
     signature = table.reset(seed, case["shift"])
     stations = table.stations(seed)
     variant = json.loads((ROOT / "work/geometry-choice.json").read_bytes())["variant"]
@@ -230,7 +238,7 @@ def main(role, stage, count, workers):
     query = (
         ROOT
         / "data"
-        / ("cases-base" if stage in ("pilot", "refine", "gate") else "cases")
+        / ("cases-base" if stage in ("pilot", "refine", "paired", "gate") else "cases")
         / (role + ".json")
     )
     cases = json.loads(query.read_bytes())
@@ -272,7 +280,7 @@ def main(role, stage, count, workers):
 if __name__ == "__main__":
     a = argparse.ArgumentParser()
     a.add_argument("role", choices=("dev", "held", "fresh"))
-    a.add_argument("stage", choices=("pilot", "refine", "gate", "final"))
+    a.add_argument("stage", choices=("pilot", "refine", "paired", "gate", "final"))
     a.add_argument("--count", type=int)
     a.add_argument("--workers", type=int, default=8)
     p = a.parse_args()

@@ -10,27 +10,13 @@ from pathlib import Path
 
 
 def lock(final=True):
-    init = ROOT / "work/executed/pilot/dev"
-    ref = ROOT / "work/executed/refine/dev"
-    starts = read(init)
-    second = read(ref)
-    if (
-        len(starts) != 32
-        or len(second) != 32
-        or [(r["seed"], r["start"]) for r in starts]
-        != [(r["seed"], r["start"]) for r in second]
-    ):
-        raise ValueError("Incomplete matched development comparison")
+    starts = read(ROOT / "work/executed/paired/dev")
+    if len(starts) != 32:
+        raise ValueError("Incomplete canonical-start development comparison")
     route = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
-    if route:
-        raise ValueError(
-            "Initial routed panel lacked the additional two seeds; execute these before selection"
-        )
-    for a, b in zip(starts, second):
-        a["results"].update(b["results"])
     _, scores = summary(starts)
     means = {}
-    for stage in ("initial", "expert-plus", "visited-plus"):
+    for stage in ("initial", "expert-paired", "visited-paired"):
         keys = [
             tag(
                 dict(
@@ -155,7 +141,7 @@ def lock(final=True):
         for p in (
             ROOT / "work/speech-choice.json",
             ROOT / "work/routing-lock.json",
-            ROOT / "data/aggregation-lock.json",
+            ROOT / "data/aggregation-paired-lock.json",
             *(ROOT / "data/cases" / (r + ".json") for r in ("held", "fresh")),
             *(ROOT / "work" / s / "lock.json" for s in means),
         )
