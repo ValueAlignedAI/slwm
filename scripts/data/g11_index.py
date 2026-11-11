@@ -1,4 +1,5 @@
 """Read immutable public HoloAssist member offsets for physical-effect measurement."""
+
 import argparse
 from pathlib import Path
 import g10_holo_index as tar_index
@@ -10,6 +11,10 @@ PHYSICAL = {
     "cam_info": ('"0x8DC8C9DFE3DEF24"', 10815559680),
 }
 
-if __name__=="__main__":
-    p=argparse.ArgumentParser();p.add_argument("root",type=Path);p.add_argument("archive",choices=PHYSICAL)
-    a=p.parse_args();tar_index.ARCHIVES.update(PHYSICAL);tar_index.index(a.root,a.archive)
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("root", type=Path)
+    p.add_argument("archive", choices=PHYSICAL)
+    a = p.parse_args()
+    tar_index.ARCHIVES.update(PHYSICAL)
+    tar_index.index(a.root, a.archive)
