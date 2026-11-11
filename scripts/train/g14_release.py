@@ -43,6 +43,8 @@ def assemble():
         ("final-fidelity-decision.json", "retained-label-decision.json"),
         ("released-lock.json", "published-panel.json"),
         ("compute.json", "compute.json"),
+        ("drive-probe.json", "drive-probe.json"),
+        ("acoustic-abstention.json", "acoustic-abstention.json"),
     ):
         copy(work / source, m / name)
     copy(work / "audit-traces/native-traces.npz", ex / "native-traces.npz")
