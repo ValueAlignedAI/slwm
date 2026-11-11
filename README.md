@@ -4,6 +4,10 @@ SLWM tests whether a shared predictive state can carry useful knowledge between 
 
 ## Verified studies
 
+### G10 context training and public task recordings
+
+Three-seed, equal-exposure training sharply narrowed G9's sustained-control gap. On 256 fresh 51.2-second missions, dense GPT-2 reached 90.8%, 94.2% and 94.9% goal occupancy after training on variable-length histories. Matched SLWM reached 93.7%, 94.0% and 93.4%. The 13.25M gated recurrent control reached about 94% in every seed and led both architectures after two actuator changes. All 27 context models were trained and their checkpoint generations verified. The separate public recording alignment, natural instruction and outcome experiments are in progress. [Matched context study](experiments/multimodal/t10/context-alignment-20261111/context.md) · [Registered G10 protocol](experiments/multimodal/t10/context-alignment-20261111/protocol.md)
+
 ### G9 concurrent sensing and sustained decisions
 
 With 4,096 updates, a 13M SLWM and a 128-coordinate shared output spent 94.5 / 94.8% of the time at the requested goal across two seeds in 51.2-second held missions. The matched dense GPT-2 reached 43.8 / 41.2%. Larger trunks and 512-coordinate outputs gave no consistent gain. Resetting both large wide-field models at their 32-step training length greatly narrowed the dense gap. On real room recordings and unseen robot contacts, the architecture ranking depended on the target and neither large wide model consistently beat the simple force reference. [Full matched study](experiments/multimodal/t9/concurrent-memory-20261110/report.md) · [Two complete 5.5 MB models](experiments/multimodal/t9/concurrent-memory-20261110/inference/README.md) · [51-second decisions and 40-second generation](experiments/multimodal/t9/concurrent-memory-20261110/examples/README.md)

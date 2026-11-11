@@ -98,7 +98,7 @@ def extended_attention(q, k, v, valid, previous, window):
     )
 
 
-def encode(p, s, r, keep, *, memory=None, offset=0, window=64):
+def encode(p, s, r, keep, *, memory=None, offset=0, window=64, edge_residual=None):
     dtype = getattr(jnp, s.dtype)
     dim = r["u"].shape
     flags = keep.astype(dtype)
@@ -113,6 +113,8 @@ def encode(p, s, r, keep, *, memory=None, offset=0, window=64):
         + project(r["v"], "image", 127.5, 1)
         + project(r["n"], "measure", 1.0, 2)
     )
+    if edge_residual is not None:
+        x = x + edge_residual.astype(dtype)
     words = r["w"].astype(jnp.int32)
     text = (p["word"][words].astype(dtype) * (words > 0)[..., None]).sum(-2)
     text = text * jax.lax.rsqrt(
