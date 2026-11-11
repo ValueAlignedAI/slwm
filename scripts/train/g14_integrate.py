@@ -2,6 +2,7 @@
 
 import argparse
 from datetime import datetime, timezone
+from functools import partial
 import fcntl
 import json
 import os
@@ -13,7 +14,7 @@ BASE = Path("experiments/multimodal/t14/spoken-closed-loop-20261111")
 BRANCH = "training/g14-spoken-closed-loop-20261111"
 
 
-def record(repo, ctl, event, receipt, finished=False):
+def record(repo, ctl, event, receipt, finished=False, milestone="speech"):
     root = Path.home() / ".local/state/slwm"
     now = datetime.now(timezone.utc).isoformat()
     with (root / "research-state.lock").open("a") as f:
@@ -58,7 +59,7 @@ def record(repo, ctl, event, receipt, finished=False):
             fh.write(json.dumps(entry) + "\n")
         write(path, doc)
         os.chmod(path, 0o600)
-    write(ctl / (("final" if finished else "speech") + "-merge.json"), receipt)
+    write(ctl / (milestone + "-merge.json"), receipt)
     if finished:
         (ctl / "finalized").touch()
 
@@ -66,7 +67,15 @@ def record(repo, ctl, event, receipt, finished=False):
 def main(stage, repo, ctl, head):
     os.chdir(repo)
     final = stage == "final"
-    target = BASE / "metrics" / ("release.json" if final else "speech-replay.json")
+    target = (
+        BASE
+        / "metrics"
+        / {
+            "speech": "speech-replay.json",
+            "fields": "field-replay.json",
+            "final": "release.json",
+        }[stage]
+    )
     d = json.loads(git("show", head + ":" + str(target)))
     if final:
         if not d["complete"]:
@@ -75,6 +84,11 @@ def main(stage, repo, ctl, head):
             "Release G14 executed spoken-goal comparisons and live tabletop missions"
         )
         body = "Publishes all frozen physical outcomes, same-scene counterfactuals, matched dense and spatial fields, strong control baselines, original-waveform inference, continuous mission videos, independent HDD receipts, and the updated research conclusions."
+    elif stage == "fields":
+        if len(d["models"]) != 6 or any(len(x) != 5 for x in d["models"].values()):
+            raise ValueError("Unverified world inference package")
+        title = "Publish six matched G14 physical fields and the frozen spoken control panel"
+        body = "Releases the independently checked inference weights, three original spoken alternatives, the public station map, the verified training and solver audits, and the frozen controls. The 320 held state comparisons and sustained missions are executing."
     else:
         if set(d["results"]) != {"features", "cpu", "cuda"}:
             raise ValueError("Unverified speech artifact")
@@ -83,7 +97,14 @@ def main(stage, repo, ctl, head):
     print(
         json.dumps(
             integrate(
-                repo, ctl, BRANCH, head, title, body, final=final, recorder=record
+                repo,
+                ctl,
+                BRANCH,
+                head,
+                title,
+                body,
+                final=final,
+                recorder=partial(record, milestone=stage),
             )
         ),
         flush=True,
@@ -92,7 +113,7 @@ def main(stage, repo, ctl, head):
 
 if __name__ == "__main__":
     a = argparse.ArgumentParser()
-    a.add_argument("stage", choices=("speech", "final"))
+    a.add_argument("stage", choices=("speech", "fields", "final"))
     a.add_argument("repo", type=Path)
     a.add_argument("ctl", type=Path)
     a.add_argument("head")

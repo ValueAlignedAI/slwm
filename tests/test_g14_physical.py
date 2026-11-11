@@ -106,3 +106,22 @@ def test_field_replacement_preserves_raw_coordinates_and_bypasses_only_learned_c
             np,
         )
         np.testing.assert_array_equal(same, z)
+
+
+def test_portable_contact_field_replays_exact_saved_decision():
+    from scripts.infer.g14_live import BASE, read, check, infer
+
+    man = json.loads((BASE / "manifest.json").read_bytes())
+    scene = read(check(BASE, man, "scene.npz"))
+    replay = json.loads((BASE.parent / "metrics/field-replay.json").read_bytes())
+    for core in ("gpt2", "transport"):
+        for seed in (1411, 1412, 1413):
+            saved = replay["models"][f"{core}-{seed}"]["actual"]
+            y = infer(scene, BASE, man, saved["goal"], core, seed, True)
+            assert y["candidate"] == saved["candidate"] and len(y["field"]) == 128
+            np.testing.assert_allclose(y["command_m"], saved["command_m"], atol=1e-7)
+            np.testing.assert_allclose(
+                y["forecast_effector_and_four_blocks_mm"],
+                saved["forecast_effector_and_four_blocks_mm"],
+                atol=2e-4,
+            )

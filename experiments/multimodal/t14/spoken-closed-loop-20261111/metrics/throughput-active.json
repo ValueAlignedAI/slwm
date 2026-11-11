@@ -1,0 +1,58 @@
+{
+  "cores": {
+    "gpt2": {
+      "cuda": {
+        "1": {
+          "milliseconds": 2.0010680018458515,
+          "p90_ms": 3.0042144004255533,
+          "scenes_per_second": 499.73314204093356
+        },
+        "32": {
+          "milliseconds": 1.999682019231841,
+          "p90_ms": 3.0026922875549644,
+          "scenes_per_second": 16002.544250656661
+        },
+        "128": {
+          "milliseconds": 0.296958489343524,
+          "p90_ms": 0.3141545923426748,
+          "scenes_per_second": 431036.67547260644
+        },
+        "512": {
+          "milliseconds": 0.9994629945140332,
+          "p90_ms": 1.0018422064604238,
+          "scenes_per_second": 512275.09453609004
+        }
+      },
+      "numpy_cpu_one_median_ms": 1.3475409941747785
+    },
+    "transport": {
+      "cuda": {
+        "1": {
+          "milliseconds": 1.4974910009186715,
+          "p90_ms": 3.0028041976038367,
+          "scenes_per_second": 667.7836457023957
+        },
+        "32": {
+          "milliseconds": 2.9984260036144406,
+          "p90_ms": 3.0047018924960867,
+          "scenes_per_second": 10672.266036055493
+        },
+        "128": {
+          "milliseconds": 2.1750400046585128,
+          "p90_ms": 2.8253061085706577,
+          "scenes_per_second": 58849.49229708368
+        },
+        "512": {
+          "milliseconds": 1.9993370078736916,
+          "p90_ms": 2.385218607378193,
+          "scenes_per_second": 256084.89113324395
+        }
+      },
+      "numpy_cpu_one_median_ms": 1.6099225031211972
+    }
+  },
+  "device": "NVIDIA GeForce RTX 3090",
+  "note": "Warm synchronized float32 processor, state, eight candidate heads and risk scores. Excludes camera, audio encoder, simulation and feature packing; 40 GPU calls and 80 single-threaded NumPy calls.",
+  "seed": 1411,
+  "stage": "visited-isolated"
+}

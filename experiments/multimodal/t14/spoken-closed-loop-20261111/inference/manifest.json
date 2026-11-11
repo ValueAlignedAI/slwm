@@ -1,4 +1,5 @@
 {
+  "contact_only": true,
   "encoder": {
     "clock_ms": 32,
     "edge": "openai/whisper-small.en",
@@ -18,9 +19,49 @@
       "bytes": 15224,
       "sha256": "a38d889e7f6f7bc6139eb8081b55b6a0299a0707d2aeb3d86a2e4b76f6418221"
     },
+    "gpt2-1411.npz": {
+      "bytes": 599186,
+      "sha256": "30afa3e15d988481cfc78d9c848e1557f140a323536d0dd558f887bab9439338"
+    },
+    "gpt2-1412.npz": {
+      "bytes": 599153,
+      "sha256": "f2ff7bc4e1a21cf9ea9d11065c64c224394481b626bb2a09c1005fbdeeade672"
+    },
+    "gpt2-1413.npz": {
+      "bytes": 599276,
+      "sha256": "e6f529232538121001550344609e3b0280d185ab2089bd2b802eb75fc81bd77f"
+    },
+    "long-reference.npz": {
+      "bytes": 1711,
+      "sha256": "85663ea2db4f03efb40215ad67a2bec6429de6b520d51e8f57fdabd150b927fd"
+    },
     "normalizer.npz": {
       "bytes": 183690,
       "sha256": "837b63ece2e23767e6bfa33687614de819af72dba9312a06e10d71e0ca5f6259"
+    },
+    "other-address-features.npz": {
+      "bytes": 14953,
+      "sha256": "c76309ff02f9a20f57105c80137abb7b1c07dc27d1398c33b9d22d3b5e2cec8a"
+    },
+    "other-address.wav": {
+      "bytes": 95340,
+      "sha256": "d59b719584defe8eb0445c79e77e163386c1a15a3599fc533eb2e778c39aaa35"
+    },
+    "other-block-features.npz": {
+      "bytes": 15324,
+      "sha256": "9537fc75beee5d504113d8a60c87153dd29b9d49bfde80b93eaf3b8eecd0db2c"
+    },
+    "other-block.wav": {
+      "bytes": 95340,
+      "sha256": "d83367cb726069711c1c18e555c166d2c08b409d0d91165e599c0b18c506e94e"
+    },
+    "reference.npz": {
+      "bytes": 4367,
+      "sha256": "75b9cfd2242d31a287dc4b0a3e5a4e66f1ca6dee0e8b25e87a3ce95838b32b33"
+    },
+    "scene.npz": {
+      "bytes": 2014,
+      "sha256": "1a45c896e5d30b2485b81c3de3e6322c627cb3ff47a9731d2d5272aa086bfb10"
     },
     "speech.npz": {
       "bytes": 681347,
@@ -29,9 +70,113 @@
     "spoken-goal.wav": {
       "bytes": 95340,
       "sha256": "790477d441d66c6224b6e41132cf73ed16aa4a32b9b6ad296eda5010c4482a5c"
+    },
+    "transport-1411.npz": {
+      "bytes": 599175,
+      "sha256": "77f2e6853b58f13a56954018bc2dc3ba21ab903f732a2dce5ec9b77e04a1b597"
+    },
+    "transport-1412.npz": {
+      "bytes": 599109,
+      "sha256": "cd913eefcc2598cf4e8b96347867cfe65eae0bb82ee1acbd4490464eb6142803"
+    },
+    "transport-1413.npz": {
+      "bytes": 599232,
+      "sha256": "f9990a18efff506beced3adf3e5e0590db7a8df7afcba8d077a6d8bcd43e30ff"
+    }
+  },
+  "models": {
+    "gpt2-1411": {
+      "alpha": 0.5,
+      "beta": 0.5,
+      "file": "gpt2-1411.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.0,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1411,
+      "step": 1024
+    },
+    "gpt2-1412": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "file": "gpt2-1412.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.1,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1412,
+      "step": 384
+    },
+    "gpt2-1413": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "file": "gpt2-1413.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.1,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1413,
+      "step": 384
+    },
+    "transport-1411": {
+      "alpha": 0.5,
+      "beta": 0.5,
+      "file": "transport-1411.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.0,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1411,
+      "step": 1024
+    },
+    "transport-1412": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "file": "transport-1412.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.1,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1412,
+      "step": 1024
+    },
+    "transport-1413": {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "file": "transport-1413.npz",
+      "long_reference": "long-reference.npz",
+      "margin": 0.1,
+      "parameters": 160171,
+      "reference": "reference.npz",
+      "seed": 1413,
+      "step": 1024
+    }
+  },
+  "physical_prefix_macros": 3,
+  "raw": {
+    "alpha": 1.0,
+    "beta": 1.0,
+    "gated_regret_mm": 12.79163996119587,
+    "long_reference": "long-reference.npz",
+    "margin": 0.0,
+    "reference": "reference.npz"
+  },
+  "routed": false,
+  "same_speaker_alternatives": {
+    "other-address": {
+      "clip": "sbwy7s",
+      "person": 33,
+      "transcript": "set blue with y seven soon"
+    },
+    "other-block": {
+      "clip": "lgai6n",
+      "person": 33,
+      "transcript": "lay green at i six now"
     }
   },
   "speech_arm": "aligned",
   "speech_checkpoint": "2722742e6e95b7b717a8cb3322209a4ecd88d596f091de887d04531cef4b9bad",
-  "threshold": 0.9934052983376358
+  "stage": "visited-isolated",
+  "threshold": 0.9934052983376358,
+  "variant": 0
 }
