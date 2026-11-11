@@ -1,7 +1,6 @@
 """Equal-exposure continuation training on teacher and learner trajectories with real forked returns."""
 
 import argparse
-import json
 import time
 import numpy as np
 import jax
@@ -18,19 +17,18 @@ SOURCES = {
     "visited-plus": "visited",
     "expert-paired": "fresh-teacher-paired",
     "visited-paired": "visited-paired",
+    "expert-isolated": "fresh-teacher-isolated",
+    "visited-isolated": "visited-isolated",
 }
 
 
-def bank_lock(paired):
+def bank_lock(suffix):
     data = ROOT / "data"
-    names = [
-        x + ("-paired" if paired else "")
-        for x in ("fresh-teacher", "visited", "value-dev")
-    ]
+    names = [x + suffix for x in ("fresh-teacher", "visited", "value-dev")]
     banks = {k: read(data / (k + ".npz")) for k in names}
     keys = lambda b: np.stack([b[x] for x in ("world", "trial", "clock")], axis=1)
     a, b, v = (banks[k] for k in names)
-    if paired:
+    if suffix:
         roots = a["clock"] == 0
         for k in ("start_digest", "p", "q", "motor", "px", "choices"):
             if not np.array_equal(a[k][roots], b[k][roots]):
@@ -56,7 +54,7 @@ def bank_lock(paired):
         hashes={k: sha(data / (k + ".npz")) for k in banks},
     )
     write(
-        data / ("aggregation-paired-lock.json" if paired else "aggregation-lock.json"),
+        data / ("aggregation" + suffix + "-lock.json"),
         result,
     )
     return result
@@ -83,15 +81,15 @@ def calibrate(short, delayed, prior, value, world):
 
 def setup(stage):
     data = ROOT / "data"
-    paired = stage.endswith("-paired")
-    info = bank_lock(paired)
+    suffix = SOURCES[stage].removeprefix("fresh-teacher").removeprefix("visited")
+    info = bank_lock(suffix)
     base = read(data / "training.npz")
     extra = read(data / (SOURCES[stage] + ".npz"))
     base["long"] = np.zeros_like(base["gain"])
     base["has_long"] = np.zeros(len(base["world"]), bool)
     extra["has_long"] = np.ones(len(extra["world"]), bool)
     tr = pack({k: np.concatenate((val, extra[k])) for k, val in base.items()})
-    dv = read(data / ("value-dev-paired.npz" if paired else "value-dev.npz"))
+    dv = read(data / ("value-dev" + suffix + ".npz"))
     dv["has_long"] = np.ones(len(dv["world"]), bool)
     dv = pack(dv)
     prior, _ = raw_setup(tr, dv)
@@ -171,7 +169,10 @@ def train(stage):
                 data_sha=sha(ROOT / "data/training.npz"),
                 augmentation_sha=info["hashes"][SOURCES[stage]],
                 dev_sha=info["hashes"][
-                    "value-dev-paired" if stage.endswith("-paired") else "value-dev"
+                    "value-dev"
+                    + SOURCES[stage]
+                    .removeprefix("fresh-teacher")
+                    .removeprefix("visited")
                 ],
                 reference_sha=sha(work / "reference.npz"),
                 long_reference_sha=sha(work / "long-reference.npz"),

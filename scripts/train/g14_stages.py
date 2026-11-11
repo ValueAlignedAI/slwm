@@ -4,7 +4,6 @@ import argparse
 import json
 from pathlib import Path
 import subprocess
-import sys
 import time
 import os
 from concurrent.futures import ThreadPoolExecutor
@@ -47,20 +46,24 @@ def main(lane):
         await_files(
             [
                 data / (x + ".npz")
-                for x in ("fresh-teacher-paired", "visited-paired", "value-dev-paired")
+                for x in (
+                    "fresh-teacher-isolated",
+                    "visited-isolated",
+                    "value-dev-isolated",
+                )
             ]
         )
-        for n in ("expert-paired", "visited-paired"):
+        for n in ("expert-isolated", "visited-isolated"):
             stage(n, work / n / "lock.json", GPU + ["scripts/train/g14_continue.py", n])
         stage(
-            "paired-dev",
-            work / "executed/paired/dev/complete.json",
+            "verified-dev",
+            work / "executed/verified/dev/complete.json",
             [
                 SIM,
                 "-u",
                 "scripts/train/g14_execute.py",
                 "dev",
-                "paired",
+                "verified",
                 "--workers",
                 "12",
             ],
@@ -71,14 +74,14 @@ def main(lane):
             [SIM, "-u", "scripts/train/g14_control_lock.py", "--preliminary"],
         )
         stage(
-            "contact-dev",
-            work / "executed/gate/dev/complete.json",
+            "verified-contact-dev",
+            work / "executed/verified-gate/dev/complete.json",
             [
                 SIM,
                 "-u",
                 "scripts/train/g14_execute.py",
                 "dev",
-                "gate",
+                "verified-gate",
                 "--workers",
                 "12",
             ],

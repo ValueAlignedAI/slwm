@@ -1,0 +1,1172 @@
+{
+  "initial": {
+    "clip": "bbai6p",
+    "person": 33,
+    "seed": 260000,
+    "source": "s33.mpg_vcd.zip",
+    "transcript": "bin blue at i six please"
+  },
+  "models": {
+    "gpt2-1411": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1411
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.07997652504821695,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.21065999984926,
+            28.458445756285123
+          ],
+          [
+            0.6166401262361609,
+            2.317342781897013
+          ],
+          [
+            1.0874142659790265,
+            1.3152777949676893
+          ],
+          [
+            1.1446955143054778,
+            1.6458624439597138
+          ],
+          [
+            0.9066620226657807,
+            0.9124357912301431
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 8.300047997511495e-08,
+        "jax_numpy_max_field_difference": 7.711345637595457e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.07997652504821695,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.21065999984926,
+            28.458445756285123
+          ],
+          [
+            0.6166401262361609,
+            2.317342781897013
+          ],
+          [
+            1.0874142659790265,
+            1.3152777949676893
+          ],
+          [
+            1.1446955143054778,
+            1.6458624439597138
+          ],
+          [
+            0.9066620226657807,
+            0.9124357912301431
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 8.300047997511495e-08,
+        "jax_numpy_max_field_difference": 7.711345637595457e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.13158770628755015,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.92442899206492,
+            -6.975052831675625
+          ],
+          [
+            0.4914097697441225,
+            -1.0949303401879897
+          ],
+          [
+            -2.8587462618846935,
+            -0.06871794432010013
+          ],
+          [
+            3.5149944348016637,
+            -1.5560981834583087
+          ],
+          [
+            1.3187456037410978,
+            -0.023872001481011727
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.032620659535688e-07,
+        "jax_numpy_max_field_difference": 7.776117254554293e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1411
+      }
+    },
+    "gpt2-1412": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1412
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.05881412304016047,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.19179806165423,
+            28.396065971805644
+          ],
+          [
+            -0.04685975566550574,
+            1.3788391082833742
+          ],
+          [
+            -0.3372488569788072,
+            4.021850115157662
+          ],
+          [
+            -0.3314829054036694,
+            3.554391277624732
+          ],
+          [
+            1.2091385876712157,
+            1.1733664746594086
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.0415154361176349e-07,
+        "jax_numpy_max_field_difference": 6.612182146259471e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.05881412304016047,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.19179806165423,
+            28.396065971805644
+          ],
+          [
+            -0.04685975566550574,
+            1.3788391082833742
+          ],
+          [
+            -0.3372488569788072,
+            4.021850115157662
+          ],
+          [
+            -0.3314829054036694,
+            3.554391277624732
+          ],
+          [
+            1.2091385876712157,
+            1.1733664746594086
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.0415154361176349e-07,
+        "jax_numpy_max_field_difference": 6.612182146259471e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.10186394603644239,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.8352474432165,
+            -7.079569265220413
+          ],
+          [
+            -0.12477442746073739,
+            -0.926781447091877
+          ],
+          [
+            1.3090304773290349,
+            -0.5516878131563262
+          ],
+          [
+            -1.3286243385252856,
+            -0.6150710474043074
+          ],
+          [
+            1.6762063070207862,
+            -0.24955722454286727
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 6.784335083390852e-08,
+        "jax_numpy_max_field_difference": 6.483354937358854e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1412
+      }
+    },
+    "gpt2-1413": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1413
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.07051013784443638,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.21654037573461,
+            28.287468558075247
+          ],
+          [
+            0.7700896257802393,
+            1.4917072196985606
+          ],
+          [
+            1.130497792653236,
+            1.5903587385607911
+          ],
+          [
+            1.3114497470644664,
+            5.156980493510222
+          ],
+          [
+            0.8333531810060276,
+            0.9132471259997227
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 6.452518680477581e-08,
+        "jax_numpy_max_field_difference": 7.97534742691397e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.07051013784443638,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.21654037573461,
+            28.287468558075247
+          ],
+          [
+            0.7700896257802393,
+            1.4917072196985606
+          ],
+          [
+            1.130497792653236,
+            1.5903587385607911
+          ],
+          [
+            1.3114497470644664,
+            5.156980493510222
+          ],
+          [
+            0.8333531810060276,
+            0.9132471259997227
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 6.452518680477581e-08,
+        "jax_numpy_max_field_difference": 7.97534742691397e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "gpt2",
+        "estimated_large_utility_error": 0.08816040034615621,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.76273170572997,
+            -6.861681017724573
+          ],
+          [
+            2.2106566006776003,
+            -0.7070410774996635
+          ],
+          [
+            1.1734237172893465,
+            -0.27169953160209787
+          ],
+          [
+            -1.0115675307792982,
+            0.023943809402703495
+          ],
+          [
+            1.1949757198373452,
+            0.30986592922220535
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 6.229421508838207e-08,
+        "jax_numpy_max_field_difference": 6.454937955258089e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "gpt2",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1413
+      }
+    },
+    "transport-1411": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1411
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.10147405486649286,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.23967246767692,
+            28.4774348621131
+          ],
+          [
+            -0.04380168186048624,
+            -3.7046206534928503
+          ],
+          [
+            -0.37429188938803465,
+            3.401655702953938
+          ],
+          [
+            -0.5843464554964459,
+            2.7029051612435033
+          ],
+          [
+            0.794811153522511,
+            0.9749132804284392
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.0880006669211628e-07,
+        "jax_numpy_max_field_difference": 8.127251671652402e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.10147405486649286,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.23967246767692,
+            28.4774348621131
+          ],
+          [
+            -0.04380168186048624,
+            -3.7046206534928503
+          ],
+          [
+            -0.37429188938803465,
+            3.401655702953938
+          ],
+          [
+            -0.5843464554964459,
+            2.7029051612435033
+          ],
+          [
+            0.794811153522511,
+            0.9749132804284392
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.0880006669211628e-07,
+        "jax_numpy_max_field_difference": 8.127251671652402e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.08519580518143346,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.98975972130281,
+            -7.005560060609647
+          ],
+          [
+            0.09464281362237044,
+            -0.5257593249132665
+          ],
+          [
+            -1.910474332971717,
+            0.2976763512609626
+          ],
+          [
+            3.6420288522385573,
+            -1.2469197036728406
+          ],
+          [
+            1.0542380652197199,
+            -0.05769881820771972
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.3160349582319597e-07,
+        "jax_numpy_max_field_difference": 7.189023389919669e-07,
+        "route": "plan",
+        "seed": 1411
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1411
+      }
+    },
+    "transport-1412": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1412
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.11133954160287919,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.203385569411424,
+            28.37819005937463
+          ],
+          [
+            0.11748661271956673,
+            -0.5099430766452231
+          ],
+          [
+            0.413858123350434,
+            0.24719850534957608
+          ],
+          [
+            1.2228325705101544,
+            -0.07335375914514514
+          ],
+          [
+            1.303834174532258,
+            0.7341858724018615
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.3246478014483642e-07,
+        "jax_numpy_max_field_difference": 5.157217821682991e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.11133954160287919,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.203385569411424,
+            28.37819005937463
+          ],
+          [
+            0.11748661271956673,
+            -0.5099430766452231
+          ],
+          [
+            0.413858123350434,
+            0.24719850534957608
+          ],
+          [
+            1.2228325705101544,
+            -0.07335375914514514
+          ],
+          [
+            1.303834174532258,
+            0.7341858724018615
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 1.3246478014483642e-07,
+        "jax_numpy_max_field_difference": 5.157217821682991e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.12040246163282048,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.974764013881135,
+            -6.984007546861126
+          ],
+          [
+            0.6352960398045719,
+            -1.4146877907241011
+          ],
+          [
+            1.5064245319750162,
+            0.531581304784553
+          ],
+          [
+            -3.80923999678128,
+            1.3503390385349852
+          ],
+          [
+            0.7762393169660572,
+            0.18023501698390498
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 8.412395594362132e-08,
+        "jax_numpy_max_field_difference": 4.800958242068276e-07,
+        "route": "plan",
+        "seed": 1412
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1412
+      }
+    },
+    "transport-1413": {
+      "absent": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": -1,
+          "confidence": 0.0,
+          "station": 0,
+          "unconstrained": []
+        },
+        "route": "internal_only",
+        "seed": 1413
+      },
+      "actual": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.11229251405475656,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.213304642052684,
+            28.339015294437853
+          ],
+          [
+            0.7961163432958258,
+            0.9359026955503135
+          ],
+          [
+            1.1310778326095368,
+            2.437310650654985
+          ],
+          [
+            0.25901398282793087,
+            -0.31825641708133323
+          ],
+          [
+            1.398639883367926,
+            0.8806922740163126
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9983054995536804,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 7.450393219032847e-08,
+        "jax_numpy_max_field_difference": 6.116923829679877e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "matching-text": {
+        "candidate": 1,
+        "command_m": [
+          0.04340938851237297,
+          0.02862909622490406
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.11229251405475656,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            43.213304642052684,
+            28.339015294437853
+          ],
+          [
+            0.7961163432958258,
+            0.9359026955503135
+          ],
+          [
+            1.1310778326095368,
+            2.437310650654985
+          ],
+          [
+            0.25901398282793087,
+            -0.31825641708133323
+          ],
+          [
+            1.398639883367926,
+            0.8806922740163126
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 1.0,
+          "station": 0,
+          "unconstrained": [
+            "blue",
+            "i",
+            "six"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 7.450393219032847e-08,
+        "jax_numpy_max_field_difference": 6.116923829679877e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "other-address": {
+        "candidate": 1,
+        "command_m": [
+          0.05139073356986046,
+          -0.00793683435767889
+        ],
+        "core": "transport",
+        "estimated_large_utility_error": 0.096403685127485,
+        "field_coordinates": 128,
+        "forecast_effector_and_four_blocks_mm": [
+          [
+            50.90301053958037,
+            -7.019856413253304
+          ],
+          [
+            2.68412415445721,
+            -2.1120468433678057
+          ],
+          [
+            1.021301776907006,
+            -0.4775519881041119
+          ],
+          [
+            -2.363322758659405,
+            -0.2098837693150025
+          ],
+          [
+            2.096995556525095,
+            -0.48175359193760703
+          ]
+        ],
+        "goal": {
+          "accepted": true,
+          "color": 1,
+          "confidence": 0.9987995028495789,
+          "station": 3,
+          "unconstrained": [
+            "blue",
+            "y",
+            "seven"
+          ]
+        },
+        "jax_numpy_max_effect_difference": 8.210139421788165e-08,
+        "jax_numpy_max_field_difference": 5.847125682523213e-07,
+        "route": "plan",
+        "seed": 1413
+      },
+      "other-block": {
+        "candidate": 0,
+        "command_m": [
+          0.0,
+          0.0
+        ],
+        "core": "transport",
+        "goal": {
+          "accepted": false,
+          "color": 2,
+          "confidence": 0.9711716175079346,
+          "station": 0,
+          "unconstrained": [
+            "green",
+            "i",
+            "six"
+          ]
+        },
+        "route": "internal_only",
+        "seed": 1413
+      }
+    }
+  },
+  "prefix_macros": 3,
+  "same_prefix_contrasts": {
+    "gpt2-1411": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 14.219322669927244
+      }
+    },
+    "gpt2-1412": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 9.81033007805708
+      }
+    },
+    "gpt2-1413": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 13.578092903436932
+      }
+    },
+    "transport-1411": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 13.987602274533954
+      }
+    },
+    "transport-1412": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 13.405694386623757
+      }
+    },
+    "transport-1413": {
+      "matching-text": {
+        "commanded_offset_difference_mm": 0.0,
+        "learned_field_l2": 0.0
+      },
+      "other-address": {
+        "commanded_offset_difference_mm": 37.42685063289397,
+        "learned_field_l2": 13.548343166959672
+      }
+    }
+  },
+  "voices": {
+    "other-address": {
+      "clip": "sbwy7s",
+      "person": 33,
+      "transcript": "set blue with y seven soon"
+    },
+    "other-block": {
+      "clip": "lgai6n",
+      "person": 33,
+      "transcript": "lay green at i six now"
+    }
+  }
+}

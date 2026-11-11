@@ -1,22 +1,23 @@
 """Choose one common physical training recipe on development, then declare the complete held panel."""
 
 import json
-import hashlib
 import numpy as np
 from scripts.train.g9_storage import write, sha
 from scripts.train.g14_execute import tag
 from evals.g14_trials import ROOT, summary, read
-from pathlib import Path
 
 
 def lock(final=True):
-    starts = read(ROOT / "work/executed/paired/dev")
-    if len(starts) != 32:
+    audit = json.loads((ROOT / "work/isolation-replay.json").read_bytes())
+    if not all(x["exact_poses"] and x["exact_camera"] for x in audit["items"]):
+        raise ValueError("Independent full-horizon reproducibility failed")
+    starts = read(ROOT / "work/executed/verified/dev")
+    if len(starts) != 32 or not all(r["isolated_branch_process"] for r in starts):
         raise ValueError("Incomplete canonical-start development comparison")
     route = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
     _, scores = summary(starts)
     means = {}
-    for stage in ("initial", "expert-paired", "visited-paired"):
+    for stage in ("initial", "expert-isolated", "visited-isolated"):
         keys = [
             tag(
                 dict(
@@ -47,7 +48,10 @@ def lock(final=True):
             dict(stage=win, routed=route, selection=means),
         )
         return
-    new = read(ROOT / "work/executed/gate/dev")
+    validity = json.loads((ROOT / "work/final-fidelity-decision.json").read_bytes())
+    if not validity["usable"]:
+        raise ValueError("Training label audit requires isolated supervision")
+    new = read(ROOT / "work/executed/verified-gate/dev")
     if [(r["seed"], r["start"]) for r in starts] != [
         (r["seed"], r["start"]) for r in new
     ]:
@@ -136,12 +140,32 @@ def lock(final=True):
             dict(core="geometry", routed=route, open_gate=True),
         ]
     )
+    from scripts.train.g14_field_audit import means as training_field_means
+
+    averages = training_field_means(win)
+    ps.extend(
+        dict(
+            core=c,
+            arm="protected",
+            stage=win,
+            seed=1411,
+            routed=route,
+            contact_only=guard,
+            mean_field=True,
+        )
+        for c in ("gpt2", "transport")
+    )
     files = {
         str(p.relative_to(ROOT)): sha(p)
         for p in (
+            averages,
+            ROOT / "work/isolation-replay.json",
+            ROOT / "work/training-label-audit.json",
+            ROOT / "work/training-fidelity-decision.json",
+            ROOT / "work/final-fidelity-decision.json",
             ROOT / "work/speech-choice.json",
             ROOT / "work/routing-lock.json",
-            ROOT / "data/aggregation-paired-lock.json",
+            ROOT / "data/aggregation-isolated-lock.json",
             *(ROOT / "data/cases" / (r + ".json") for r in ("held", "fresh")),
             *(ROOT / "work" / s / "lock.json" for s in means),
         )

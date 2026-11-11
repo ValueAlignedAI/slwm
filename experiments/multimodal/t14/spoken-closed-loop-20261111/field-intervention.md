@@ -1,0 +1,5 @@
+# Does the learned field affect an executed action?
+
+The protected processor carries two raw proposal coordinates and 126 learned coordinates. Its prediction head also has direct access to causal candidate features and a linear physical prior. Those pathways can support a useful controller even if the learned coordinates contribute little. Register a paired causal intervention before opening held physical outcomes.
+
+For dense and spatial seed 1411, replace the 126 learned coordinates at every decision with their fixed training mean. Estimate the mean using one deterministic observation from each of the 320 original training worlds. Preserve the raw proposal, goal, candidate features, camera, prior, learned weights, gate, and current physical state. All four human commands still execute separately. Compare full versus replaced-field physical selective success and terminal distance on the same held worlds. Count the proportion of decisions where the learned head was reached. This intervention measures the incremental value of a context-dependent field at deployment. A positive speech effect can also arise from the explicit goal decoder and geometry.

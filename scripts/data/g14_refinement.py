@@ -3,13 +3,12 @@
 import argparse
 from concurrent.futures import ProcessPoolExecutor
 import json
-from pathlib import Path
 import numpy as np
-from data.g14_table import ROOT, CHUNK, LIMIT, TOL, utility, loss_cost
+from data.g14_table import ROOT, LIMIT, utility, loss_cost
 from data.g14_policy import candidates, choose
 from scripts.data.g14_collect import init_worker, prepare, obs_pack
 import scripts.data.g14_collect as collector
-from scripts.data.g14_runtime import json_file
+from data.g14_fork import isolated
 
 HORIZON = 4
 
@@ -31,19 +30,24 @@ def continuation(t, c, target, variant, routed):
 
 
 def one(args):
-    mode, seed, paired = args
-    name = mode + ("-paired" if paired else "")
+    mode, seed, paired, separate = args
+    name = mode + ("-isolated" if separate else "-paired" if paired else "")
     dir = ROOT / "data" / name
     f = dir / f"{seed}.npz"
     if f.is_file():
         return len(np.load(f)["world"])
-    t = collector.clean_worker() if paired else collector.ENV
+    t = collector.clean_worker() if paired or separate else collector.ENV
     conf = json.loads((ROOT / "work/routing-lock.json").read_bytes())
     routed = conf["routed"]
     variant = json.loads((ROOT / "work/geometry-choice.json").read_bytes())["variant"]
     sig, stations = prepare(seed, seed % 3 == 0, t)
     rows = []
     for trial in range(2):
+        if separate and trial:
+            t = collector.clean_worker()
+            new_sig, new_places = prepare(seed, seed % 3 == 0, t)
+            if new_sig != sig or not np.array_equal(new_places, stations):
+                raise ValueError("Goal trial root changed")
         t.restore(t.root_state)
         if t.physical_signature() != sig:
             raise ValueError("Unmatched aggregation starts")
@@ -70,30 +74,38 @@ def one(args):
             p0 = t.effector()
             if tick in measure:
                 saved = t.save()
-                effects = []
-                gains = []
-                tails = []
-                distances = []
-                try:
-                    for cmd in opts:
-                        t.restore(saved)
-                        qs, ps = t.execute(cmd)
-                        q1, p1 = qs[-1], ps[-1]
-                        effects.append(np.concatenate(((p1 - p0)[None], q1 - q0)))
-                        gains.append(utility(q0, p0, q1, p1, c, goal, cmd))
-                        distances.append(np.linalg.norm(q1[c] - goal))
-                        qh, ph = continuation(t, c, goal, variant, routed)
-                        # The longer return places more weight on actual target progress and penalizes unintended contact.
-                        off = np.delete(np.linalg.norm(qh - q0, axis=1), c).max()
-                        tails.append(
-                            np.linalg.norm(q0[c] - goal)
-                            - np.linalg.norm(qh[c] - goal)
-                            + 0.15
-                            * (loss_cost(q0, p0, c, goal) - loss_cost(qh, ph, c, goal))
-                            - 0.85 * off
-                        )
-                finally:
+
+                def outcome(cmd):
                     t.restore(saved)
+                    qs, ps = t.execute(cmd)
+                    q1, p1 = qs[-1], ps[-1]
+                    effect = np.concatenate(((p1 - p0)[None], q1 - q0))
+                    immediate = utility(q0, p0, q1, p1, c, goal, cmd)
+                    qh, ph = continuation(t, c, goal, variant, routed)
+                    off = np.delete(np.linalg.norm(qh - q0, axis=1), c).max()
+                    tail = (
+                        np.linalg.norm(q0[c] - goal)
+                        - np.linalg.norm(qh[c] - goal)
+                        + 0.15
+                        * (loss_cost(q0, p0, c, goal) - loss_cost(qh, ph, c, goal))
+                        - 0.85 * off
+                    )
+                    return effect, immediate, tail, np.linalg.norm(q1[c] - goal)
+
+                try:
+                    if separate:
+                        original = t.physical_signature()
+                        results = [isolated(outcome, cmd) for cmd in opts]
+                        if original != t.physical_signature():
+                            raise ValueError(
+                                "A physical intervention changed its parent"
+                            )
+                    else:
+                        results = [outcome(cmd) for cmd in opts]
+                    effects, gains, tails, distances = zip(*results)
+                finally:
+                    if not separate:
+                        t.restore(saved)
                     t.p.removeState(saved[0])
                 rows.append(
                     dict(
@@ -110,7 +122,7 @@ def one(args):
                         long=np.asarray(tails),
                     )
                 )
-                if paired:
+                if paired or separate:
                     rows[-1]["start_digest"] = sig
             cmd, _ = choose(t, obs, c, goal, policy, variant)
             t.execute(cmd)
@@ -121,8 +133,8 @@ def one(args):
     return len(rows)
 
 
-def main(mode, count, workers, paired):
-    name = mode + ("-paired" if paired else "")
+def main(mode, count, workers, paired, separate=False):
+    name = mode + ("-isolated" if separate else "-paired" if paired else "")
     folder = ROOT / "data" / name
     folder.mkdir(exist_ok=True)
     with ProcessPoolExecutor(workers, initializer=init_worker) as pool:
@@ -130,7 +142,12 @@ def main(mode, count, workers, paired):
             pool.map(
                 one,
                 [
-                    (mode, (156000 if mode == "value-dev" else 155000) + k, paired)
+                    (
+                        mode,
+                        (156000 if mode == "value-dev" else 155000) + k,
+                        paired,
+                        separate,
+                    )
                     for k in range(count)
                 ],
             ),
@@ -163,5 +180,6 @@ if __name__ == "__main__":
     p.add_argument("--count", type=int, default=128)
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--paired", action="store_true")
+    p.add_argument("--isolated", action="store_true")
     a = p.parse_args()
-    main(a.mode, a.count, a.workers, a.paired)
+    main(a.mode, a.count, a.workers, a.paired, a.isolated)

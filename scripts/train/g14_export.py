@@ -137,6 +137,33 @@ def export_fields():
     table.reset(case["seed"], case["shift"])
     stations = table.stations(case["seed"])
     variant = load(ROOT / "work/geometry-choice.json")["variant"]
+    samples = {}
+    media = load(ROOT / "data/utterances/media.json")
+    with np.load(
+        ROOT / "data/semantic-utterances/fresh.npz", allow_pickle=False
+    ) as bank:
+        for offset, name in ((1, "other-address"), (2, "other-block")):
+            clip = case["commands"][offset]["clip"]
+            r = media[clip]
+            idx = int(np.flatnonzero(bank["global_index"] == clip)[0])
+            np.savez_compressed(
+                PKG / (name + "-features.npz"),
+                **{k: bank[k][idx] for k in ("a", "l", "length")},
+                addresses=case["addresses"],
+            )
+            with wave.open(str(PKG / (name + ".wav")), "wb") as wav:
+                wav.setnchannels(1)
+                wav.setsampwidth(2)
+                wav.setframerate(16000)
+                wav.writeframes(
+                    np.clip(np.rint(pcm(r) * 32768), -32768, 32767)
+                    .astype("<i2")
+                    .tobytes()
+                )
+            samples[name] = dict(
+                person=r["person"], clip=r["key"], transcript=r["text"]
+            )
+    doc["same_speaker_alternatives"] = samples
     # Advance a fixed causal prefix with deployed spoken geometry. Use solely camera estimates, observations and past controls at inference.
     for i in range(4):
         obs = table.observation()

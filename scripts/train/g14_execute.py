@@ -4,11 +4,10 @@ import argparse
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
-from pathlib import Path
-import time
 import numpy as np
-from data.g14_table import ROOT, TOL, OTHER, LIMIT, CHUNK, evaluate_path
-from data.g14_policy import choose
+from data.g14_table import ROOT, TOL, OTHER, LIMIT, evaluate_path
+from data.g14_policy import choose, loaded
+from data.g14_fork import isolated
 from scripts.data.g14_collect import init_worker
 import scripts.data.g14_collect as collector
 from scripts.data.g14_runtime import json_file
@@ -33,7 +32,7 @@ def policies(stage):
         for b in base:
             b["oracle_cue"] = True
         return base
-    if stage in ("refine", "paired"):
+    if stage in ("refine", "paired", "isolated", "verified"):
         setting = json.loads((ROOT / "work/routing-lock.json").read_bytes())["routed"]
         base = [
             dict(
@@ -47,13 +46,17 @@ def policies(stage):
             for c in ("gpt2", "transport")
             for s in SEEDS
             for t in (
-                ("initial", "expert-paired", "visited-paired")
-                if stage == "paired"
-                else ("expert-plus", "visited-plus")
+                ("initial", "expert-isolated", "visited-isolated")
+                if stage == "verified"
+                else (
+                    ("initial", "expert-paired", "visited-paired")
+                    if stage in ("paired", "isolated")
+                    else ("expert-plus", "visited-plus")
+                )
             )
         ]
         return base
-    if stage == "gate":
+    if stage in ("gate", "isolated-gate", "verified-gate"):
         lock = json.loads((ROOT / "work/development-selection.json").read_bytes())
         return [
             dict(
@@ -90,6 +93,7 @@ def tag(p):
         + ("/contact" if p.get("contact_only") else "")
         + ("/original_edge" if p.get("original_edge") else "")
         + ("/open_gate" if p.get("open_gate") else "")
+        + ("/mean_field" if p.get("mean_field") else "")
     )
 
 
@@ -117,10 +121,8 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
     cue = case["commands"][ci]
     c = cue["true_color"] if policy.get("oracle_cue") else cue["heard_color"]
     st = cue["true_station"] if policy.get("oracle_cue") else cue["heard_station"]
-    if (
-        not policy.get("oracle_cue")
-        and not policy.get("open_gate")
-        and not cue["accept"]
+    if not policy.get("oracle_cue") and (
+        c >= 3 or not policy.get("open_gate") and not cue["accept"]
     ):
         c = -1
     target = stations[st]
@@ -128,6 +130,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
     eef = []
     actions = []
     ranks = []
+    model_calls = 0
     im = []
     wait = 0
     initial_img = None
@@ -147,6 +150,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
         eef.append(ee)
         actions.append(cmd)
         ranks.append(info["chosen"])
+        model_calls += int(info.get("model_evaluated", False))
         if full:
             im.append(table.render())
     traj = np.concatenate(poses)
@@ -161,6 +165,7 @@ def run_one(table, case, ci, stations, policy, variant, full=False):
             for x in case["commands"]
         ],
         chosen=np.bincount(ranks, minlength=8).tolist(),
+        model_calls=model_calls,
         effort_m=float(np.linalg.norm(actions, axis=1).sum()),
         trajectory_sha=hashlib.sha256(traj.tobytes()).hexdigest(),
         initial=start.tolist(),
@@ -181,7 +186,16 @@ def one(args):
         return seed
     table = (
         collector.clean_worker()
-        if stage in ("paired", "gate", "final")
+        if stage
+        in (
+            "paired",
+            "gate",
+            "isolated",
+            "isolated-gate",
+            "verified",
+            "verified-gate",
+            "final",
+        )
         else collector.ENV
     )
     signature = table.reset(seed, case["shift"])
@@ -195,6 +209,22 @@ def one(args):
     np.random.default_rng(seed + 941).shuffle(order)
     results = {}
     im_hash = None
+    separate = stage in (
+        "isolated",
+        "isolated-gate",
+        "verified",
+        "verified-gate",
+        "final",
+    )
+    if separate:
+        for p in ps:
+            if p["core"] in ("gpt2", "transport", "gated", "dense_spatial", "raw"):
+                loaded(
+                    p.get("stage", "initial"),
+                    p["core"],
+                    p.get("arm", "protected"),
+                    p.get("seed", 1411),
+                )
     for i, j in order:
         p = ps[i]
         trace_this = bool(trace and i == len(ps) - 1 and j == 0)
@@ -203,7 +233,12 @@ def one(args):
             if p.get("original_edge")
             else case
         )
-        row, raw = run_one(table, source, j, stations, p, variant, trace_this)
+        if separate:
+            row, raw = isolated(
+                run_one, table, source, j, stations, p, variant, trace_this
+            )
+        else:
+            row, raw = run_one(table, source, j, stations, p, variant, trace_this)
         if row["start"] != signature or (
             im_hash is not None and row["image"] != im_hash
         ):
@@ -222,6 +257,7 @@ def one(args):
             seed=seed,
             role=role,
             stage=stage,
+            isolated_branch_process=separate,
             speaker=case["speaker"],
             shift=case["shift"],
             commands=case["commands"],
@@ -238,7 +274,21 @@ def main(role, stage, count, workers):
     query = (
         ROOT
         / "data"
-        / ("cases-base" if stage in ("pilot", "refine", "paired", "gate") else "cases")
+        / (
+            "cases-base"
+            if stage
+            in (
+                "pilot",
+                "refine",
+                "paired",
+                "gate",
+                "isolated",
+                "isolated-gate",
+                "verified",
+                "verified-gate",
+            )
+            else "cases"
+        )
         / (role + ".json")
     )
     cases = json.loads(query.read_bytes())
@@ -280,7 +330,20 @@ def main(role, stage, count, workers):
 if __name__ == "__main__":
     a = argparse.ArgumentParser()
     a.add_argument("role", choices=("dev", "held", "fresh"))
-    a.add_argument("stage", choices=("pilot", "refine", "paired", "gate", "final"))
+    a.add_argument(
+        "stage",
+        choices=(
+            "pilot",
+            "refine",
+            "paired",
+            "gate",
+            "isolated",
+            "isolated-gate",
+            "verified",
+            "verified-gate",
+            "final",
+        ),
+    )
     a.add_argument("--count", type=int)
     a.add_argument("--workers", type=int, default=8)
     p = a.parse_args()

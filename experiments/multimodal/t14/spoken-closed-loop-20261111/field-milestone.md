@@ -1,0 +1,7 @@
+# Grounded inference before held scoring
+
+All 75 neural fits finished on the RTX 3090. Independent reads verified the weights, optimizer and configuration for 225 generations on both checkpoint disks. The scale of the matched physical comparison is 160,171 trainable parameters in each final processor. Both receive the same 128-coordinate state interface, audio-derived goal, supplied address map, scene history, raw candidate prior and eight possible actions.
+
+On the 32 development worlds used for selection, the original one-step models averaged 29.8% selective placements. Training on 15-tick returns raised that to 43.6% for new geometry-visited states and 44.5% for matched learner-visited states. Restricting learned corrections to the contact phase raised the selected pair’s six-model mean to 52.6%. These estimates are development measurements. All final weights, gates, competing policies and the exact solver audit were locked to Git before held execution. [Frozen policies](final-control-lock.json) · [Training curves](metrics/physical-training.json) · [Native solver audit](solver-isolation.md)
+
+The public inference package now includes all six selected dense and spatial models, their prior, three original spoken alternatives and a measured camera/telemetry prefix. It exposes the field and action-conditioned object predictions. The physical effect of replacing its learned coordinates with a constant is a separate held comparison. [Run the examples](inference/README.md) · [Verified inference outputs](metrics/field-replay.json)

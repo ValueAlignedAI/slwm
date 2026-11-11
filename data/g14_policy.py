@@ -115,6 +115,12 @@ def loaded(stage, core, arm, seed):
     return ref, delayed, read(file), entry
 
 
+@lru_cache(maxsize=8)
+def train_field(stage, kind, seed):
+    with np.load(ROOT / "work" / stage / "field-means.npz", allow_pickle=False) as d:
+        return d[f"{kind}-{seed}"]
+
+
 def choose(table, obs, c, target, policy, variant, linger=0, loader=loaded):
     kind = policy["core"]
     routed = bool(policy.get("routed", False))
@@ -158,11 +164,20 @@ def choose(table, obs, c, target, policy, variant, linger=0, loader=loaded):
         long = row["long_prior"][0]
     if model is not None:
         alpha = entry["alpha"]
+        constant = (
+            train_field(policy["stage"], kind, policy["seed"])
+            if policy.get("mean_field")
+            else None
+        )
         if delayed is not None:
-            vals, _, _, value = predict(model, row, kind, policy["arm"], np, True)
+            vals, _, _, value = predict(
+                model, row, kind, policy["arm"], np, True, constant
+            )
             long = long + alpha * (value[0] - long)
         else:
-            vals, _, _ = predict(model, row, kind, policy["arm"], np)
+            vals, _, _ = predict(
+                model, row, kind, policy["arm"], np, mean_field=constant
+            )
         short = short + alpha * (vals[0, :, -1] - short)
     beta = entry.get("beta", 0.0)
     score = (1 - beta) * short + beta * long
@@ -178,6 +193,7 @@ def choose(table, obs, c, target, policy, variant, linger=0, loader=loaded):
         pick = 1
     return acts[pick], dict(
         chosen=pick,
+        model_evaluated=model is not None,
         route="no_op" if pick == 0 else "plan",
         advantage_mm=float((score[pick] - score[1]) * 40),
     )
