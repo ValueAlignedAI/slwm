@@ -69,7 +69,7 @@ def main(repo):
     report = [
         "# G14 · Spoken goals, measured counterfactuals and sustained control",
         "",
-        f"Four recordings from the same speaker instructed four different goals from each of **320 independently seeded tabletop starts**. Every registered policy acted from a private copy of the same simulator process. Each episode executed 72 native physics/control ticks. The primary panel covers 54.4 simulated hours. Across the two cohorts, the paired spatial-minus-dense selective placement difference was **{points(contrast('held','transport_over_gpt2'))}** and **{points(contrast('fresh','transport_over_gpt2'))} percentage points**. The matched processor comparison {passed} its registered superiority criterion. [Frozen panel](final-control-lock.json) · [All paired results](metrics/physical-results.json)",
+        f"Four recordings from the same speaker instructed four different goals from each of **320 independently seeded tabletop starts**. Every registered policy acted from a private copy of the same simulator process. Each episode executed 72 native physics/control ticks. The primary panel covers 54.4 simulated hours and took {r['primary_acknowledgment_to_finish_minutes']:.1f} wall-clock minutes after publication of the frozen policy panel. Across the two cohorts, the paired spatial-minus-dense selective placement difference was **{points(contrast('held','transport_over_gpt2'))}** and **{points(contrast('fresh','transport_over_gpt2'))} percentage points**. The matched processor comparison {passed} its registered superiority criterion. [Frozen panel](final-control-lock.json) · [All paired results](metrics/physical-results.json)",
         "",
         "## What actually reached the goal?",
         "",
@@ -146,9 +146,9 @@ def main(repo):
         "",
         "## How the model was trained and selected",
         "",
-        f"Original training used 4,698 states from 320 worlds, with eight physically measured candidate effects per state. Each continuation arm added 2,048 states from the same 128 additional worlds, goals and clocks. Eight candidate controls per state were executed for 15 native ticks, including the common continuation. All 12 definitive continuation fits used 1,024 updates of 128 samples. The 6,746 available states correspond to 19.4 sampled observations per unique state per fit when averaged over the pool. Training was balanced by world. The value-development bank contained 512 states on 32 other worlds. Physical policy selection used another 32 starts. The earlier exploratory continuations remain archived. [Exact return data](isolated-training-lock.json) · [Training design](continuation.md)",
+        f"Original training used 4,698 states from 320 worlds, with eight physically measured candidate effects per state. Each continuation arm added 2,048 states from the same 128 additional worlds, goals and clocks. Eight candidate controls per state were executed for 15 native ticks, including the common continuation. All 12 definitive continuation fits used 1,024 updates of 128 samples. The 6,746 available states correspond to 19.4 sampled observations per unique state per fit when averaged over the pool. Training was balanced by world. The delayed readout adds 80 parameters to the original processor. The value-development bank contained 512 states on 32 other worlds. Physical policy selection used another 32 starts. The earlier exploratory continuations remain archived. [Exact return data](isolated-training-lock.json) · [Training design](continuation.md)",
         "",
-        "The snapshot-and-restore diagnostic recovered identical reported poses and joints but could produce up to 72.24 mm difference during a repeated trajectory. Giving each physical branch its own copy of the unadvanced solver reproduced all poses and camera images in eight full-duration checks. All 960 isolated candidate comparisons also reproduced exactly when the enumeration order was reversed. Later independent replay reproduced every native position digest and every selective-placement score across 48 held episodes. The original one-step labels had 0.048 mm mean difference under the audit. The longer labels were recollected after failing the registered tolerance. [Solver and training audit](solver-isolation.md) · [Held trace audit](metrics/trajectory-replay.json)",
+        "The snapshot-and-restore diagnostic recovered identical reported poses and joints but could produce up to 72.24 mm difference during a repeated trajectory. Giving each physical branch its own copy of the unadvanced solver reproduced all poses and camera images in eight full-duration checks. All 960 isolated candidate comparisons also reproduced exactly when the enumeration order was reversed. Later independent replay reproduced every native position digest and every selective-placement score across 48 held episodes. The common original one-step labels had a 0.048 mm mean difference under the audit and an individual maximum of 12.09 mm. The longer labels were recollected after failing the registered tolerance. [Solver and training audit](solver-isolation.md) · [Held trace audit](metrics/trajectory-replay.json)",
         "",
         f"The original routing choice was checked again under isolation. The paired difference for direct minus obstacle-aware routing was {points(routes['isolated_direct_over_routed'])} percentage points across the registered three development policies. The common route was locked before this replication.",
         "",
@@ -238,6 +238,13 @@ def main(repo):
     fm += [
         "",
         f"The paired dense-minus-spatial error on moving targets was {c['value']:+.2f} mm (95% interval {c['lo']:+.2f} to {c['hi']:+.2f}). These are component forecasts from the frozen heads. The primary placement comparisons measure the committed system. [Independent fork protocol](held-prediction.md) · [All effects and paired intervals](metrics/held-prediction.json) · [Measured and predicted displacements](metrics/held-physics-predictions.npz)",
+        "",
+    ]
+    quiet = load("metrics/quiet-objects.json")
+    fm += [
+        "![All-object error, motion-sensitive error and changing-field intervention](physical-forecasts.png)",
+        "",
+        f"Persistence achieved the lowest all-block error. Of {quiet['distractor_observations']:,} distractor observations, {quiet['quiet_distractor_observations']:,} moved at most 1 mm. In the post-hoc diagnostic spatial forecasts predicted ≥5 mm of movement for {100*quiet['scores']['transport']['predicted_at_least_5mm']['value']:.1f}% of those quiet blocks, compared with {100*quiet['scores']['gpt2']['predicted_at_least_5mm']['value']:.1f}% for dense. [Physical forecast findings](physical-forecasts.md) · [Quiet-object diagnosis](metrics/quiet-objects.json)",
         "",
     ]
     at = report.index("## How the model was trained and selected")

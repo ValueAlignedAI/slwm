@@ -152,7 +152,7 @@ def assemble():
     if stats["shared_processor_superiority"]:
         nxt = "Test the contact controller prospectively on new object geometry and a second physical task, with the fixed-field and geometric controls retained."
     else:
-        nxt = "Test whether a learned contact-mode and recovery policy beats the best geometric gate on held object geometries. Follow with real closed-loop placements before making a physical-world claim."
+        nxt = "Train a per-object motion probability with an explicit stationary outcome and a conditional displacement head. Use predicted collateral motion to rank pushes, then test against the current geometry, dense and fixed-field controls on new object shapes and materials. Calibrate the actuator on separate real recordings before a physical placement trial."
     base = tuple(p.parent.parent / "g14" for p in disks())
     state = (
         read(base[0] / "drive-state.json")
@@ -173,6 +173,18 @@ def assemble():
         },
         shared_pretrained_speech_parameters=audio["encoder"]["encoder_parameters"],
         total_held_worlds=older["starts"] + fresh["starts"],
+        primary_acknowledgment_to_finish_minutes=(
+            read(work / "held-finished.json")["unix"]
+            - (work / "released-lock.json").stat().st_mtime
+        )
+        / 60,
+        additional_original_recipe_branches=sum(
+            x["additional_executions"]
+            for x in read(work / "training-transfer.json")["held"].values()
+        ),
+        additional_held_fork_candidates=read(m / "held-prediction.json")[
+            "macro_alternatives"
+        ],
         total_held_branches=older["branches"] + fresh["branches"],
         total_held_native_ticks=older["native_ticks"] + fresh["native_ticks"],
         goals_presented=older["commands"] + fresh["commands"],
