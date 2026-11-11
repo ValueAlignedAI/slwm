@@ -117,6 +117,18 @@ def outputs():
     return tuple(p.parent.parent / "g12" / "runs" for p in disks())
 
 
+def run_paths(scale, cloud):
+    if cloud:
+        if (
+            not scale
+            or ROOT != Path("/content/g12")
+            or not any("v6" in d.device_kind.lower() for d in jax.devices())
+        ):
+            raise ValueError("Unexpected native hardware or cloud destination")
+        return tuple(ROOT / f"temporary-{i}" for i in range(2))
+    return tuple(path.parent / "scale" for path in outputs()) if scale else outputs()
+
+
 def checkpoint(paths, tag, step, config, p, m, v, curve):
     sub = Path(tag) / f"step-{step:05d}"
     a, b = (path / sub for path in paths)
@@ -190,9 +202,10 @@ def per_row_nll(prob, y):
     return -np.log(np.maximum(np.where(y >= 0, at, 1e-7), 1e-7)).mean(1)
 
 
-def train(phase):
+def train(phase, scale=False, seeds=None, cloud=False):
     root = ROOT / "data"
-    paths = outputs()
+    paths = run_paths(scale, cloud)
+    selected = seeds or (SEEDS[:2] if scale else SEEDS)
     labels = {}
     state_file = root / "state-labels.json"
     if phase == "joint":
@@ -205,13 +218,16 @@ def train(phase):
         meta, rows = read(root, fold, "train", labels)
         dm, dev = read(root, fold, "dev", labels)
         s = Spec(
-            rows["scene"].shape[-1], rows["words"].shape[-1], len(meta["vocabulary"])
+            rows["scene"].shape[-1],
+            rows["words"].shape[-1],
+            len(meta["vocabulary"]),
+            width=256 if scale else 128,
         )
         train_device = {
             k: jnp.asarray(rows[k]) for k in FEATURES + ("y", "state", "groundable")
         }
-        for seed in SEEDS:
-            for treat in ("paired", "deranged", "grounded"):
+        for seed in selected:
+            for treat in (("paired",) if scale else ("paired", "deranged", "grounded")):
                 if (
                     treat == "deranged"
                     and seed != 1201
@@ -303,6 +319,7 @@ def train(phase):
                             dev_sha=dm["sha256"],
                             state_sha=state_sha,
                             hardware=str(jax.devices()[0]),
+                            device_kind=jax.devices()[0].device_kind,
                             vocabulary=meta["vocabulary"],
                         )
                         checkpoint(paths, tag, stop, config, p, m, v, curve)
@@ -316,18 +333,18 @@ def train(phase):
                             flush=True,
                         )
                         start = stop
-    (ROOT / ("complete-" + phase)).touch()
+    if seeds is None:
+        (ROOT / ("complete-" + ("scale-" if scale else "") + phase)).touch()
 
 
-def evaluate():
+def evaluate(scale=False):
     root = ROOT / "data"
-    out = ROOT / "eval"
-    a, b = outputs()
+    out = ROOT / ("scale-eval" if scale else "eval")
+    a, b = run_paths(scale, False)
     labels = {
         (r["recording"], r["id"]): r["label"]
         for r in json.loads((root / "state-labels.json").read_bytes())["items"]
     }
-    train_eval = {}
     for fold in ("A", "B"):
         datasets = {
             role: read(root, fold, role, labels)
@@ -357,7 +374,7 @@ def evaluate():
             p = read_params(base / "weights.npz")
             modes = (
                 MODES
-                if treat == "paired" and seed == "1201"
+                if not scale and treat == "paired" and seed == "1201"
                 else ("correct", "wrong", "none")
             )
             thresholds = None
@@ -395,15 +412,22 @@ def evaluate():
                 ),
             )
             print("Released predictions", tag, picked["step"], flush=True)
-    (ROOT / "evaluated").touch()
+    (ROOT / ("scale-evaluated" if scale else "evaluated")).touch()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", choices=("warm", "joint", "eval"))
+    parser.add_argument("--scale", action="store_true")
+    parser.add_argument("--seed", type=int, choices=SEEDS[:2])
+    parser.add_argument("--v6", action="store_true")
     args = parser.parse_args()
+    if args.v6:
+        if not args.scale or args.seed != 1202 or args.stage == "eval":
+            parser.error("Only the registered width-256 assignment runs on v6")
+        ROOT = Path("/content/g12")
     jax.config.update("jax_compilation_cache_dir", str(ROOT / "cache"))
     if args.stage == "eval":
-        evaluate()
+        evaluate(args.scale)
     else:
-        train(args.stage)
+        train(args.stage, args.scale, (args.seed,) if args.seed else None, args.v6)
