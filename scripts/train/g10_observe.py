@@ -18,7 +18,7 @@ from g9_cloud_archive import notebook
 from g9_storage import write
 
 ROOT="/mnt/slwm-data/SLWM/g10"
-NAMES={"slwm-g10-context-a":1002,"slwm-g10-context-b":1001}
+NAMES={"slwm-g10-context-a":1002,"slwm-g10-context-b":1001,"slwm-g10-ground-a":1001,"slwm-g10-ground-b":1002}
 
 
 def send_bank(name,ctl):
@@ -75,7 +75,7 @@ def watch(name,ctl):
         budget=json.loads((ctl/"budget.json").read_text())
         if budget["phase"]=="complete" or ((ctl/(name+"-release")).exists() and name not in budget["active"]):return
         try:
-            collect(name,ctl);send_bank(name,ctl)
+            send_bank(name,ctl);collect(name,ctl)
         except (OSError,ValueError,RuntimeError,StopIteration,subprocess.SubprocessError) as exc:
             write(ctl/(name+"-observe-retry.json"),dict(time=time.time(),error=str(exc)[:200]))
         time.sleep(30)
@@ -102,5 +102,6 @@ def journal(ctl):
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("control",type=Path);a=p.parse_args()
     with ThreadPoolExecutor(3) as pool:
-        jobs=[pool.submit(watch,n,a.control) for n in NAMES]+[pool.submit(journal,a.control)]
+        jobs=[pool.submit(watch,n,a.control) for n in json.loads((a.control/"bounds.json").read_text())["sessions"]]
+        if a.control.name!="recovery":jobs.append(pool.submit(journal,a.control))
         for job in jobs:job.result()

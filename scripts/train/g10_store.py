@@ -106,6 +106,7 @@ def inventory(name):
 r=pathlib.Path('/content/g10-out'); rows=[]
 for file in sorted(r.glob('*/step-*/receipt.json')):
  d=json.loads(file.read_text())
+ if not (file.parent/'optimizer.npz').is_file():continue
  if (d['tag'].startswith('context-') and d['step'] in (2560,5120)) or (d['tag'].startswith('align-') and d['step']==1536):
   rows.append([d['tag'],d['step'],d['inference_sha256']])
 print('G10_INFO '+json.dumps(dict(stages=rows,progress={p.name:json.loads(p.read_text()) for p in r.glob('*-progress.json')})))"""

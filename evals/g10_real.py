@@ -198,7 +198,7 @@ def risk(p,s,banks,events,cache,out,tag):
     return dict(training_examples=len(y),training_mistakes=int(y.sum()),held=labels,head_sha256=hashlib.sha256(file.read_bytes()).hexdigest())
 
 
-def main(root,data,starss,out):
+def main(root,data,starss,out,ready_only=False):
     out.mkdir(exist_ok=True,parents=True)
     banks={k:Bank(data/("holo-"+k+".npz"),True) for k in ("train","familiar","novel")}
     star_train=Bank(starss/"starss-train.npz",False);bank_prior=priors(star_train);del star_train
@@ -217,11 +217,13 @@ def main(root,data,starss,out):
             doc["risk"]=risk(p,s,banks,ev,raw_cache,out,tag)
             save_json(file,doc);wanted.remove(tag);worked=True
             print(tag,"novel AV",round(np.mean(doc["panels"]["novel"]["retrieval"]["audio_to_vision"]["direct"]),4),flush=True)
-        if wanted and not worked:time.sleep(10)
+        if wanted and not worked:
+            if ready_only:return
+            time.sleep(10)
 
 
 if __name__=="__main__":
     ap=argparse.ArgumentParser();ap.add_argument("runs",type=Path);ap.add_argument("holo",type=Path);ap.add_argument("starss",type=Path);ap.add_argument("out",type=Path)
-    ap.add_argument("--cache");a=ap.parse_args()
+    ap.add_argument("--cache");ap.add_argument("--ready-only",action="store_true");a=ap.parse_args()
     if a.cache:jax.config.update("jax_compilation_cache_dir",a.cache)
-    main(a.runs,a.holo,a.starss,a.out)
+    main(a.runs,a.holo,a.starss,a.out,a.ready_only)
