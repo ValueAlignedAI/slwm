@@ -1,0 +1,72 @@
+{
+  "cores": {
+    "gpt2": {
+      "cuda": {
+        "1": {
+          "milliseconds": 0.13803048932459205,
+          "p90_ms": 0.14296429581008852,
+          "pipelined_scenes_per_second": 10275.901608315335,
+          "scenes_per_second": 7244.7761715051465
+        },
+        "32": {
+          "milliseconds": 0.174383501871489,
+          "p90_ms": 0.17783981165848672,
+          "pipelined_scenes_per_second": 322724.8099212981,
+          "scenes_per_second": 183503.59785515853
+        },
+        "128": {
+          "milliseconds": 0.29950900352559984,
+          "p90_ms": 0.3106201038463041,
+          "pipelined_scenes_per_second": 840274.4181710955,
+          "scenes_per_second": 427366.1175232734
+        },
+        "512": {
+          "milliseconds": 0.5927050078753382,
+          "p90_ms": 0.6103291874751449,
+          "pipelined_scenes_per_second": 1240850.7739605648,
+          "scenes_per_second": 863836.1296041004
+        }
+      },
+      "numpy_cpu_one_median_ms": 1.0471740097273141
+    },
+    "transport": {
+      "cuda": {
+        "1": {
+          "milliseconds": 0.1415650185663253,
+          "p90_ms": 0.14346821117214859,
+          "pipelined_scenes_per_second": 9379.96668271069,
+          "scenes_per_second": 7063.891984950259
+        },
+        "32": {
+          "milliseconds": 0.17639649740885943,
+          "p90_ms": 0.1783245854312554,
+          "pipelined_scenes_per_second": 313578.6915268198,
+          "scenes_per_second": 181409.49775113174
+        },
+        "128": {
+          "milliseconds": 0.25202249526046216,
+          "p90_ms": 0.27333881007507443,
+          "pipelined_scenes_per_second": 834993.0655615814,
+          "scenes_per_second": 507891.17006286903
+        },
+        "512": {
+          "milliseconds": 0.5959244881523773,
+          "p90_ms": 0.6066618050681427,
+          "pipelined_scenes_per_second": 1220177.5552615242,
+          "scenes_per_second": 859169.2574799546
+        }
+      },
+      "numpy_cpu_one_median_ms": 1.0411450057290494
+    }
+  },
+  "device": "NVIDIA GeForce RTX 3090",
+  "host_load_1m_5m_15m": [
+    8.5439453125,
+    11.6748046875,
+    14.64208984375
+  ],
+  "note": "Warm synchronized float32 processor, state, eight candidate heads and risk scores. Excludes camera, audio encoder, simulation and feature packing; 40 GPU calls and 80 single-threaded NumPy calls.",
+  "post_physical_evaluation": true,
+  "seed": 1411,
+  "stage": "visited-isolated"
+}

@@ -18,7 +18,7 @@ The source example is speaker 33, clip `bbai6p`. Martin Cooke, Jon Barker, Stuar
 
 ## Execute a physical decision
 
-The package contains three matched dense and three spatial checkpoints, the calibrated raw physical predictor, a four-observation camera/telemetry prefix and two alternative recordings from the same person. The inputs fit on a small machine. Prepared inference needs no download of the external speech encoder.
+Run the 128-coordinate model on the published four-observation prefix. The original spoken example, two other recordings from the same speaker, their feature arrays, and all six physical model checkpoints are included. Supply a different correctly shaped scene archive to use your own chronological camera and state features. The speech edge was trained on short six-word GRID commands.
 
 ```sh
 PYTHONPATH=. python scripts/infer/g14_live.py --core transport --inspect
@@ -28,4 +28,4 @@ PYTHONPATH=. python scripts/infer/g14_live.py --absent
 PYTHONPATH=. python scripts/infer/g14_live.py --features experiments/multimodal/t14/spoken-closed-loop-20261111/inference/other-address-features.npz
 ```
 
-On this fixed camera prefix, the source recording requests blue at I6 and yields a 43.4 mm by 28.6 mm simulated command offset. The same speaker requesting blue at Y7 changes that command by 37.4 mm. The supplied written I6 command reproduces the original field and action. The frozen confidence gate declines the other-block example. All six physical weights produce the same verified decisions from the public package and the training archive. The optional inspection exposes the physical predictions and the 128-coordinate field even when the geometric approach controls that tick. [Model and signal checks](../metrics/field-replay.json)
+The ordinary output gives the accepted goal, chosen candidate, no-op or movement route and signed two-dimensional macro offset in meters. With `--inspect`, the learned physical model also exposes its 128 coordinates, its predicted effector and object displacement, and the fitted probability of a large one-step utility prediction error. One macro spans three 10 Hz native ticks. [Replay all published goal paths](../metrics/field-replay.json) · [Continuous simulator and audio examples](../examples/README.md)

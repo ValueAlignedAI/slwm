@@ -1,0 +1,4497 @@
+{
+  "cohorts": {
+    "fresh": {
+      "array_sha256": "33970afc083060df3e7c29e51f693510c832e400f210e45f3071e3523c4280c9",
+      "branches": 5440,
+      "by_policy_family": {
+        "contact_speed": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.78125,
+            "lo": 0.6953125,
+            "n": 64,
+            "value": 0.73828125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 61.128936587090266,
+            "lo": 45.09871250582478,
+            "n": 64,
+            "value": 52.527026001143895
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 35.319783560664064,
+            "lo": 21.134807412478608,
+            "n": 64,
+            "value": 27.674147466650453
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 174.32503539566824,
+            "lo": 146.52667627342453,
+            "n": 64,
+            "value": 160.42206215206534
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.58984375,
+            "lo": 0.4765625,
+            "n": 64,
+            "value": 0.53515625
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.6015625,
+            "lo": 0.484375,
+            "n": 64,
+            "value": 0.54296875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.43359375,
+            "lo": 0.32421875,
+            "n": 64,
+            "value": 0.37890625
+          }
+        },
+        "dense_spatial": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.375,
+            "lo": 0.2734375,
+            "n": 64,
+            "value": 0.32421875
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 134.6228521677233,
+            "lo": 109.46262105858295,
+            "n": 64,
+            "value": 121.98664250558977
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 16.056073302812994,
+            "lo": 9.306792281703457,
+            "n": 64,
+            "value": 12.479451184844017
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 100.68419486742641,
+            "lo": 81.08647544322594,
+            "n": 64,
+            "value": 90.9624454943696
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.3515625,
+            "lo": 0.24609375,
+            "n": 64,
+            "value": 0.30078125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.3515625,
+            "lo": 0.25,
+            "n": 64,
+            "value": 0.30078125
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.3359375,
+            "lo": 0.2265625,
+            "n": 64,
+            "value": 0.28125
+          }
+        },
+        "gated": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.296875,
+            "lo": 0.1953125,
+            "n": 64,
+            "value": 0.24609375
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 146.38578513327047,
+            "lo": 120.07303265731935,
+            "n": 64,
+            "value": 132.89396045001922
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 24.49854394654589,
+            "lo": 14.72072143976267,
+            "n": 64,
+            "value": 19.373070894465563
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 89.44431754789548,
+            "lo": 70.93537163164001,
+            "n": 64,
+            "value": 80.0551276479382
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.2421875,
+            "lo": 0.1484375,
+            "n": 64,
+            "value": 0.1953125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.2734375,
+            "lo": 0.171875,
+            "n": 64,
+            "value": 0.22265625
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.2265625,
+            "lo": 0.13671875,
+            "n": 64,
+            "value": 0.1796875
+          }
+        },
+        "geometry": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.76171875,
+            "lo": 0.671875,
+            "n": 64,
+            "value": 0.71875
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 58.924150528150676,
+            "lo": 42.225642059099755,
+            "n": 64,
+            "value": 50.17981602622967
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 34.09358825480018,
+            "lo": 19.88661567510745,
+            "n": 64,
+            "value": 26.628635105876374
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 176.7660806508502,
+            "lo": 148.88179601221054,
+            "n": 64,
+            "value": 162.76927199214697
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.59765625,
+            "lo": 0.4765625,
+            "n": 64,
+            "value": 0.5390625
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7109375,
+            "lo": 0.625,
+            "n": 64,
+            "value": 0.66796875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5625,
+            "lo": 0.4453125,
+            "n": 64,
+            "value": 0.50390625
+          }
+        },
+        "geometry_open_gate": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.8984375,
+            "lo": 0.8203125,
+            "n": 64,
+            "value": 0.859375
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 24.348647815952518,
+            "lo": 17.112506665534966,
+            "n": 64,
+            "value": 20.55412316121874
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 38.094213531198776,
+            "lo": 23.777513249720744,
+            "n": 64,
+            "value": 30.624149731183685
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 204.81462162606476,
+            "lo": 179.74776029077475,
+            "n": 64,
+            "value": 192.39496465888806
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7109375,
+            "lo": 0.58203125,
+            "n": 64,
+            "value": 0.6484375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.8515625,
+            "lo": 0.765625,
+            "n": 64,
+            "value": 0.80859375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.67578125,
+            "lo": 0.546875,
+            "n": 64,
+            "value": 0.61328125
+          }
+        },
+        "geometry_oracle_cue": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.8984375,
+            "lo": 0.8203125,
+            "n": 64,
+            "value": 0.859375
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 24.348647815952518,
+            "lo": 17.112506665534966,
+            "n": 64,
+            "value": 20.55412316121874
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 38.094213531198776,
+            "lo": 23.777513249720744,
+            "n": 64,
+            "value": 30.624149731183685
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 204.81462162606476,
+            "lo": 179.74776029077475,
+            "n": 64,
+            "value": 192.39496465888806
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7109375,
+            "lo": 0.58203125,
+            "n": 64,
+            "value": 0.6484375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.8515625,
+            "lo": 0.765625,
+            "n": 64,
+            "value": 0.80859375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.67578125,
+            "lo": 0.546875,
+            "n": 64,
+            "value": 0.61328125
+          }
+        },
+        "geometry_oracle_pose_cue": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.984375,
+            "lo": 0.94140625,
+            "n": 64,
+            "value": 0.96484375
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 15.037257502666534,
+            "lo": 10.103439314099205,
+            "n": 64,
+            "value": 12.277053790739956
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 35.751893502817374,
+            "lo": 23.456436620898614,
+            "n": 64,
+            "value": 29.418938515139494
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 211.21202881804493,
+            "lo": 190.31897850800306,
+            "n": 64,
+            "value": 200.67203376675025
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.796875,
+            "lo": 0.69140625,
+            "n": 64,
+            "value": 0.74609375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.95703125,
+            "lo": 0.89453125,
+            "n": 64,
+            "value": 0.92578125
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.73828125,
+            "lo": 0.6328125,
+            "n": 64,
+            "value": 0.6875
+          }
+        },
+        "geometry_original_cue": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5390625,
+            "lo": 0.42578125,
+            "n": 64,
+            "value": 0.48046875
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 114.53070541468833,
+            "lo": 90.63172960892416,
+            "n": 64,
+            "value": 102.45991433066592
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 21.37531208053798,
+            "lo": 11.72806033386952,
+            "n": 64,
+            "value": 16.31198493315618
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 126.33505536941811,
+            "lo": 94.58337594369368,
+            "n": 64,
+            "value": 110.48917360312771
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.41806640625000036,
+            "lo": 0.30078125,
+            "n": 64,
+            "value": 0.359375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.50390625,
+            "lo": 0.39453125,
+            "n": 64,
+            "value": 0.44921875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.3984375,
+            "lo": 0.28125,
+            "n": 64,
+            "value": 0.33984375
+          }
+        },
+        "gpt2": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7473958333333333,
+            "lo": 0.6653645833333333,
+            "n": 64,
+            "value": 0.70703125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 59.573054215765836,
+            "lo": 42.85521812323433,
+            "n": 64,
+            "value": 50.81119096522949
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 33.087262991061024,
+            "lo": 19.1155193618533,
+            "n": 64,
+            "value": 25.631464873944438
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 175.43431027164237,
+            "lo": 148.77060196437623,
+            "n": 64,
+            "value": 162.13789717585314
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5768229166666667,
+            "lo": 0.4674479166666667,
+            "n": 64,
+            "value": 0.5234375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7278645833333334,
+            "lo": 0.6471354166666666,
+            "n": 64,
+            "value": 0.6888020833333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5651041666666667,
+            "lo": 0.45699869791666664,
+            "n": 64,
+            "value": 0.51171875
+          }
+        },
+        "none": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 224.18599681295746,
+            "lo": 201.72737112734467,
+            "n": 64,
+            "value": 212.95401063980535
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.07090484488564976,
+            "lo": 0.010461443913918622,
+            "n": 64,
+            "value": 0.03412475501216039
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -0.00029665243346244097,
+            "lo": -0.011824999819509685,
+            "n": 64,
+            "value": -0.0049224181566387415
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          }
+        },
+        "raw": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.72265625,
+            "lo": 0.62890625,
+            "n": 64,
+            "value": 0.67578125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 64.60245954052937,
+            "lo": 47.216908332543994,
+            "n": 64,
+            "value": 55.658268434285674
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 32.89118298238037,
+            "lo": 20.15256768093862,
+            "n": 64,
+            "value": 26.096593059382418
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 170.99819194481825,
+            "lo": 143.6850046771724,
+            "n": 64,
+            "value": 157.29081965400837
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.546875,
+            "lo": 0.4453125,
+            "n": 64,
+            "value": 0.49609375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.6758789062500004,
+            "lo": 0.58203125,
+            "n": 64,
+            "value": 0.62890625
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5,
+            "lo": 0.3984375,
+            "n": 64,
+            "value": 0.44921875
+          }
+        },
+        "straight": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.01171875,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.00390625
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 222.92255417996785,
+            "lo": 199.55585839561536,
+            "n": 64,
+            "value": 211.1127689058776
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 18.304267945083318,
+            "lo": 8.029198331324356,
+            "n": 64,
+            "value": 12.774106325702071
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 5.104973895868171,
+            "lo": -1.436851278776885,
+            "n": 64,
+            "value": 1.8363192939432338
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.01171875,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.00390625
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          }
+        },
+        "transport": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7643229166666666,
+            "lo": 0.68359375,
+            "n": 64,
+            "value": 0.7252604166666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 57.17188522299352,
+            "lo": 40.57855430552498,
+            "n": 64,
+            "value": 48.44153148837904
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 33.32017190392583,
+            "lo": 19.732943438354496,
+            "n": 64,
+            "value": 26.12438892581965
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 177.91077874280742,
+            "lo": 150.89296872295867,
+            "n": 64,
+            "value": 164.5075562604082
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5885416666666666,
+            "lo": 0.47526041666666663,
+            "n": 64,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.75,
+            "lo": 0.66796875,
+            "n": 64,
+            "value": 0.7109375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5755208333333333,
+            "lo": 0.46223958333333337,
+            "n": 64,
+            "value": 0.51953125
+          }
+        }
+      },
+      "commands": 256,
+      "macros": 130560,
+      "native_ticks": 391680,
+      "neural_call_fraction": {
+        "initial/contact_speed/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/dense_spatial/protected/1411/directpath/speech/camera/carry": 0.712890625,
+        "initial/gated/protected/1411/directpath/speech/camera/carry": 0.7509765625,
+        "initial/geometry/base/0/directpath/oracle/camera/carry": 0.0,
+        "initial/geometry/base/0/directpath/oracle/truth/carry": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry/open_gate": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry/original_edge": 0.0,
+        "initial/noop/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/straight/base/0/directpath/speech/camera/carry": 0.0,
+        "visited-isolated/gpt2/protected/1411/directpath/oracle/camera/carry/contact": 0.25211588541666663,
+        "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact": 0.21533203125,
+        "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact/mean_field": 0.240234375,
+        "visited-isolated/gpt2/protected/1412/directpath/speech/camera/carry/contact": 0.2721354166666667,
+        "visited-isolated/gpt2/protected/1413/directpath/speech/camera/carry/contact": 0.28629557291666663,
+        "visited-isolated/raw/base/0/directpath/speech/camera/carry/contact": 0.0,
+        "visited-isolated/transport/protected/1411/directpath/oracle/camera/carry/contact": 0.25244140625,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact": 0.2119140625,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact/mean_field": 0.24560546875,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/reset/contact": 0.0003255208333333333,
+        "visited-isolated/transport/protected/1412/directpath/speech/camera/carry/contact": 0.27392578125,
+        "visited-isolated/transport/protected/1413/directpath/speech/camera/carry/contact": 0.26985677083333337
+      },
+      "paired": {
+        "confidence_gate_over_open": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": -0.10546875,
+            "lo": -0.17578125,
+            "n": 64,
+            "value": -0.140625
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -21.697710265573278,
+            "lo": -38.471934338281244,
+            "n": 64,
+            "value": -29.625692865010933
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 6.312510180832092,
+            "lo": 1.9511200325430405,
+            "n": 64,
+            "value": 3.9955146253073113
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -21.697710104490397,
+            "lo": -38.471933954861015,
+            "n": 64,
+            "value": -29.625692666741088
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": -0.07421875,
+            "lo": -0.1484375,
+            "n": 64,
+            "value": -0.109375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": -0.10546875,
+            "lo": -0.17578125,
+            "n": 64,
+            "value": -0.140625
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": -0.07421875,
+            "lo": -0.1484375,
+            "n": 64,
+            "value": -0.109375
+          }
+        },
+        "gpt2_full_over_mean_field": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.05859375,
+            "lo": -0.01171875,
+            "n": 64,
+            "value": 0.0234375
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.316928845811674,
+            "lo": -0.558038472040323,
+            "n": 64,
+            "value": 1.9671480619649628
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.663546447533958,
+            "lo": -0.4802600552457486,
+            "n": 64,
+            "value": 2.1707367465769734
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.316928564367117,
+            "lo": -0.5580385921348351,
+            "n": 64,
+            "value": 1.967148098628968
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.07421875,
+            "lo": 0.01171875,
+            "n": 64,
+            "value": 0.04296875
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.1953125,
+            "lo": 0.08984375,
+            "n": 64,
+            "value": 0.140625
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.17578125,
+            "lo": 0.08984375,
+            "n": 64,
+            "value": 0.1328125
+          }
+        },
+        "gpt2_over_both_wrong": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7473958333333333,
+            "lo": 0.6653645833333333,
+            "n": 64,
+            "value": 0.70703125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 179.1716085680567,
+            "lo": 151.1418312616418,
+            "n": 64,
+            "value": 165.32433498461313
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 159.36125264956868,
+            "lo": 133.30257666717884,
+            "n": 64,
+            "value": 146.21854994070173
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 179.1716082898347,
+            "lo": 151.141831307541,
+            "n": 64,
+            "value": 165.32433490404702
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5768229166666667,
+            "lo": 0.4674479166666667,
+            "n": 64,
+            "value": 0.5234375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7278645833333334,
+            "lo": 0.6471354166666666,
+            "n": 64,
+            "value": 0.6888020833333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5651041666666667,
+            "lo": 0.45699869791666664,
+            "n": 64,
+            "value": 0.51171875
+          }
+        },
+        "gpt2_over_contact_speed": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0013020833333333322,
+            "lo": -0.06380208333333333,
+            "n": 64,
+            "value": -0.03125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.601511129201678,
+            "lo": -1.0347962578388574,
+            "n": 64,
+            "value": 1.715835035914401
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.567946838938433,
+            "lo": -0.7751910827856098,
+            "n": 64,
+            "value": 2.042682592706013
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.601510710684428,
+            "lo": -1.0347966591022355,
+            "n": 64,
+            "value": 1.7158350237878044
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.01692708333333333,
+            "lo": -0.03906250000000001,
+            "n": 64,
+            "value": -0.011718750000000005
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.21223958333333331,
+            "lo": 0.08330078125,
+            "n": 64,
+            "value": 0.14583333333333331
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.1875,
+            "lo": 0.07942708333333331,
+            "n": 64,
+            "value": 0.1328125
+          }
+        },
+        "gpt2_over_geometry": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.019531250000000007,
+            "lo": -0.044270833333333336,
+            "n": 64,
+            "value": -0.01171875
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 1.6398582060200335,
+            "lo": -2.9728195885449313,
+            "n": 64,
+            "value": -0.6313749389998208
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.133760729479718,
+            "lo": -1.0278988097672206,
+            "n": 64,
+            "value": 0.9971702319319371
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 1.6398580908571618,
+            "lo": -2.9728198262697942,
+            "n": 64,
+            "value": -0.631374816293828
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.011718749999999997,
+            "lo": -0.04296875,
+            "n": 64,
+            "value": -0.015625000000000007
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.05729166666666667,
+            "lo": -0.015625000000000007,
+            "n": 64,
+            "value": 0.02083333333333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.04166666666666666,
+            "lo": -0.024739583333333343,
+            "n": 64,
+            "value": 0.0078124999999999965
+          }
+        },
+        "gpt2_over_no_cue": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7473958333333333,
+            "lo": 0.6653645833333333,
+            "n": 64,
+            "value": 0.70703125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 175.43842876313917,
+            "lo": 148.78044051414273,
+            "n": 64,
+            "value": 162.14281967457586
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -19.089045253592477,
+            "lo": -33.06652039576724,
+            "n": 64,
+            "value": -25.59734011893228
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 175.4384281209544,
+            "lo": 148.78044068742992,
+            "n": 64,
+            "value": 162.14281959400978
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5768229166666667,
+            "lo": 0.4674479166666667,
+            "n": 64,
+            "value": 0.5234375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7278645833333334,
+            "lo": 0.6471354166666666,
+            "n": 64,
+            "value": 0.6888020833333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5651041666666667,
+            "lo": 0.45699869791666664,
+            "n": 64,
+            "value": 0.51171875
+          }
+        },
+        "gpt2_over_raw": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.06380208333333334,
+            "lo": -0.002604166666666668,
+            "n": 64,
+            "value": 0.03125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 6.9943186441397165,
+            "lo": 2.786230065340572,
+            "n": 64,
+            "value": 4.847077469056179
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 2.4872962468740134,
+            "lo": -1.7435333480352904,
+            "n": 64,
+            "value": 0.46512818543797935
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 6.994318612123608,
+            "lo": 2.786230269218018,
+            "n": 64,
+            "value": 4.847077521844768
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.05732421875000012,
+            "lo": -0.002604166666666671,
+            "n": 64,
+            "value": 0.02734375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.09765624999999999,
+            "lo": 0.02473958333333333,
+            "n": 64,
+            "value": 0.05989583333333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.10026041666666666,
+            "lo": 0.02734375,
+            "n": 64,
+            "value": 0.0625
+          }
+        },
+        "gpt2_over_wrong_address": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7331054687500002,
+            "lo": 0.64453125,
+            "n": 64,
+            "value": 0.6901041666666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 214.22921467350875,
+            "lo": 174.0073028097773,
+            "n": 64,
+            "value": 193.913115007111
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 214.22921458931037,
+            "lo": 174.00730276579753,
+            "n": 64,
+            "value": 193.913114979902
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5625,
+            "lo": 0.453125,
+            "n": 64,
+            "value": 0.5078125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7252929687500002,
+            "lo": 0.6432291666666667,
+            "n": 64,
+            "value": 0.6861979166666666
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5651041666666666,
+            "lo": 0.453125,
+            "n": 64,
+            "value": 0.5091145833333333
+          }
+        },
+        "gpt2_over_wrong_color": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.74609375,
+            "lo": 0.6627604166666667,
+            "n": 64,
+            "value": 0.7057291666666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 176.1507930770885,
+            "lo": 148.82573011958016,
+            "n": 64,
+            "value": 162.7686291982021
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 159.36125264956868,
+            "lo": 133.30257666717884,
+            "n": 64,
+            "value": 146.21854994070173
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 176.1507923585062,
+            "lo": 148.8257302158066,
+            "n": 64,
+            "value": 162.76862914188922
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5768229166666667,
+            "lo": 0.4674479166666667,
+            "n": 64,
+            "value": 0.5234375
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7278645833333334,
+            "lo": 0.6471354166666666,
+            "n": 64,
+            "value": 0.6888020833333333
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5651041666666667,
+            "lo": 0.45699869791666664,
+            "n": 64,
+            "value": 0.51171875
+          }
+        },
+        "new_over_original_speech": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.29296875,
+            "lo": 0.18359375,
+            "n": 64,
+            "value": 0.23828125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 66.13229093132988,
+            "lo": 39.07856972264199,
+            "n": 64,
+            "value": 52.28009830443625
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -5.383451723897627,
+            "lo": -16.0367914219529,
+            "n": 64,
+            "value": -10.316650172720195
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 66.13229097492878,
+            "lo": 39.07856983933016,
+            "n": 64,
+            "value": 52.28009838901926
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.234375,
+            "lo": 0.12109375,
+            "n": 64,
+            "value": 0.1796875
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.26953125,
+            "lo": 0.16796875,
+            "n": 64,
+            "value": 0.21875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.21484375,
+            "lo": 0.11328125,
+            "n": 64,
+            "value": 0.1640625
+          }
+        },
+        "retained_over_reset": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7890625,
+            "lo": 0.70703125,
+            "n": 64,
+            "value": 0.75
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 179.00512873785033,
+            "lo": 151.57624813080588,
+            "n": 64,
+            "value": 165.39635109779738
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -19.741633680319882,
+            "lo": -33.74710964755529,
+            "n": 64,
+            "value": -26.208765033548353
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 179.00512788583,
+            "lo": 151.57624722560286,
+            "n": 64,
+            "value": 165.39635030494537
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.59765625,
+            "lo": 0.48046875,
+            "n": 64,
+            "value": 0.5390625
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7734375,
+            "lo": 0.6875,
+            "n": 64,
+            "value": 0.73046875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.57421875,
+            "lo": 0.4609375,
+            "n": 64,
+            "value": 0.51953125
+          }
+        },
+        "transport_full_over_mean_field": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.1171875,
+            "lo": 0.0390625,
+            "n": 64,
+            "value": 0.078125
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 11.58427802383244,
+            "lo": 5.642619411582928,
+            "n": 64,
+            "value": 8.421005287118533
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.9825817734675235,
+            "lo": -0.009361141907444807,
+            "n": 64,
+            "value": 2.5456216495247097
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 11.584277247675345,
+            "lo": 5.642619198988541,
+            "n": 64,
+            "value": 8.42100486624986
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.11328125,
+            "lo": 0.03125,
+            "n": 64,
+            "value": 0.0703125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.25390625,
+            "lo": 0.125,
+            "n": 64,
+            "value": 0.1875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.2109375,
+            "lo": 0.1015625,
+            "n": 64,
+            "value": 0.15625
+          }
+        },
+        "transport_over_both_wrong": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7643229166666666,
+            "lo": 0.68359375,
+            "n": 64,
+            "value": 0.7252604166666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 182.04296606989678,
+            "lo": 153.40094187806127,
+            "n": 64,
+            "value": 167.9929189970153
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 160.74084207380605,
+            "lo": 134.50616310647828,
+            "n": 64,
+            "value": 147.604903600807
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 182.04296531560732,
+            "lo": 153.40094147820005,
+            "n": 64,
+            "value": 167.99291852415382
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5885416666666666,
+            "lo": 0.47526041666666663,
+            "n": 64,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.75,
+            "lo": 0.66796875,
+            "n": 64,
+            "value": 0.7109375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5755208333333333,
+            "lo": 0.46223958333333337,
+            "n": 64,
+            "value": 0.51953125
+          }
+        },
+        "transport_over_contact_speed": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.022135416666666668,
+            "lo": -0.046875,
+            "n": 64,
+            "value": -0.01302083333333333
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 6.442399035254691,
+            "lo": 1.7307494646900072,
+            "n": 64,
+            "value": 4.085494512764853
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.8102648132880965,
+            "lo": -0.8552655126590079,
+            "n": 64,
+            "value": 1.5497585408307994
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 6.4423989794401395,
+            "lo": 1.7307496057280058,
+            "n": 64,
+            "value": 4.085494108342877
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.03124999999999999,
+            "lo": -0.03645833333333333,
+            "n": 64,
+            "value": -0.002604166666666668
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.23307291666666669,
+            "lo": 0.10543619791666667,
+            "n": 64,
+            "value": 0.16796875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.1953125,
+            "lo": 0.0859375,
+            "n": 64,
+            "value": 0.140625
+          }
+        },
+        "transport_over_geometry": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.03125000000000001,
+            "lo": -0.01822916666666667,
+            "n": 64,
+            "value": 0.006510416666666669
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.707669470799147,
+            "lo": -0.004484107049998955,
+            "n": 64,
+            "value": 1.7382845378506318
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 2.23944356310013,
+            "lo": -0.9527848940185906,
+            "n": 64,
+            "value": 0.5042461800567236
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.7076691013984004,
+            "lo": -0.004484376040635889,
+            "n": 64,
+            "value": 1.738284268261245
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.014322916666666666,
+            "lo": -0.028645833333333336,
+            "n": 64,
+            "value": -0.006510416666666668
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.07421875,
+            "lo": 0.01302083333333333,
+            "n": 64,
+            "value": 0.04296875
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.04427083333333333,
+            "lo": -0.011718750000000007,
+            "n": 64,
+            "value": 0.015625
+          }
+        },
+        "transport_over_gpt2": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.036458333333333336,
+            "lo": -0.0013020833333333287,
+            "n": 64,
+            "value": 0.01822916666666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.6265460246265,
+            "lo": 1.1837321969892396,
+            "n": 64,
+            "value": 2.369659476850453
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.831076403818726,
+            "lo": -1.621966758998895,
+            "n": 64,
+            "value": -0.4929240518752135
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.6265448779886356,
+            "lo": 1.1837320695728204,
+            "n": 64,
+            "value": 2.3696590845550727
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.02604166666666667,
+            "lo": -0.009114583333333327,
+            "n": 64,
+            "value": 0.009114583333333334
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.04427083333333333,
+            "lo": 0.0013020833333333322,
+            "n": 64,
+            "value": 0.022135416666666668
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.026041666666666668,
+            "lo": -0.010416666666666666,
+            "n": 64,
+            "value": 0.007812500000000003
+          }
+        },
+        "transport_over_no_cue": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7643229166666666,
+            "lo": 0.68359375,
+            "n": 64,
+            "value": 0.7252604166666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 177.91768146280444,
+            "lo": 150.90288528296205,
+            "n": 64,
+            "value": 164.5124791514263
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": -19.698013139909715,
+            "lo": -33.28936096170541,
+            "n": 64,
+            "value": -26.09026417080749
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 177.9176808784541,
+            "lo": 150.9028847195926,
+            "n": 64,
+            "value": 164.51247867856483
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5885416666666666,
+            "lo": 0.47526041666666663,
+            "n": 64,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.75,
+            "lo": 0.66796875,
+            "n": 64,
+            "value": 0.7109375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5755208333333333,
+            "lo": 0.46223958333333337,
+            "n": 64,
+            "value": 0.51953125
+          }
+        },
+        "transport_over_raw": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0859375,
+            "lo": 0.01171875,
+            "n": 64,
+            "value": 0.04947916666666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 9.760774275984359,
+            "lo": 4.766388538377934,
+            "n": 64,
+            "value": 7.216736945906632
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 2.135472190590794,
+            "lo": -2.183840137201405,
+            "n": 64,
+            "value": -0.027795866437234196
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 9.760774145494604,
+            "lo": 4.766388052788294,
+            "n": 64,
+            "value": 7.21673660639984
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.07291666666666666,
+            "lo": 0.0013020833333333322,
+            "n": 64,
+            "value": 0.036458333333333336
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.12369791666666667,
+            "lo": 0.04036458333333333,
+            "n": 64,
+            "value": 0.08203125000000001
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.11197916666666667,
+            "lo": 0.028645833333333336,
+            "n": 64,
+            "value": 0.0703125
+          }
+        },
+        "transport_over_wrong_address": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7526041666666667,
+            "lo": 0.6627604166666666,
+            "n": 64,
+            "value": 0.7083333333333334
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 216.89237955430372,
+            "lo": 176.80585257565443,
+            "n": 64,
+            "value": 196.6726811490389
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.0
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 216.89237896765312,
+            "lo": 176.8058521025523,
+            "n": 64,
+            "value": 196.67268068587873
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5729166666666667,
+            "lo": 0.45833333333333337,
+            "n": 64,
+            "value": 0.515625
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7486979166666667,
+            "lo": 0.6653645833333333,
+            "n": 64,
+            "value": 0.7083333333333334
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5729166666666666,
+            "lo": 0.4596354166666667,
+            "n": 64,
+            "value": 0.5169270833333334
+          }
+        },
+        "transport_over_wrong_color": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.7643229166666666,
+            "lo": 0.68359375,
+            "n": 64,
+            "value": 0.7252604166666667
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 178.63618373738746,
+            "lo": 151.11802363758974,
+            "n": 64,
+            "value": 165.1043819025138
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 160.74084207380605,
+            "lo": 134.50616310647828,
+            "n": 64,
+            "value": 147.604903600807
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 178.6361831026928,
+            "lo": 151.11802319697748,
+            "n": 64,
+            "value": 165.1043814442043
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5885416666666666,
+            "lo": 0.47526041666666663,
+            "n": 64,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.75,
+            "lo": 0.66796875,
+            "n": 64,
+            "value": 0.7109375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5755208333333333,
+            "lo": 0.46223958333333337,
+            "n": 64,
+            "value": 0.51953125
+          }
+        }
+      },
+      "recorded_voices": [
+        33,
+        34
+      ],
+      "selective_by_shift": {
+        "False": {
+          "contact_speed": 0.46875,
+          "dense_spatial": 0.265625,
+          "gated": 0.171875,
+          "geometry": 0.4453125,
+          "geometry_open_gate": 0.5625,
+          "geometry_oracle_cue": 0.5625,
+          "geometry_oracle_pose_cue": 0.6796875,
+          "geometry_original_cue": 0.2734375,
+          "gpt2": 0.44791666666666663,
+          "none": 0.0,
+          "raw": 0.421875,
+          "straight": 0.0078125,
+          "transport": 0.4453125
+        },
+        "True": {
+          "contact_speed": 0.6015625,
+          "dense_spatial": 0.3359375,
+          "gated": 0.21875,
+          "geometry": 0.6328125,
+          "geometry_open_gate": 0.734375,
+          "geometry_oracle_cue": 0.734375,
+          "geometry_oracle_pose_cue": 0.8125,
+          "geometry_original_cue": 0.4453125,
+          "gpt2": 0.5989583333333333,
+          "none": 0.0,
+          "raw": 0.5703125,
+          "straight": 0.0,
+          "transport": 0.6197916666666667
+        }
+      },
+      "selective_by_speaker": {
+        "33": {
+          "contact_speed": 0.4296875,
+          "dense_spatial": 0.2734375,
+          "gated": 0.1328125,
+          "geometry": 0.421875,
+          "geometry_open_gate": 0.6328125,
+          "geometry_oracle_cue": 0.6328125,
+          "geometry_oracle_pose_cue": 0.75,
+          "geometry_original_cue": 0.25,
+          "gpt2": 0.4296875,
+          "none": 0.0,
+          "raw": 0.4140625,
+          "straight": 0.0078125,
+          "transport": 0.4166666666666667
+        },
+        "34": {
+          "contact_speed": 0.640625,
+          "dense_spatial": 0.328125,
+          "gated": 0.2578125,
+          "geometry": 0.65625,
+          "geometry_open_gate": 0.6640625,
+          "geometry_oracle_cue": 0.6640625,
+          "geometry_oracle_pose_cue": 0.7421875,
+          "geometry_original_cue": 0.46875,
+          "gpt2": 0.6171875,
+          "none": 0.0,
+          "raw": 0.578125,
+          "straight": 0.0,
+          "transport": 0.6484375
+        }
+      },
+      "spatial_over_dense_by_seed": {
+        "1411": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.06640625,
+            "lo": 0.00390625,
+            "n": 64,
+            "value": 0.03515625
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 5.041662272788017,
+            "lo": 1.2276163981368882,
+            "n": 64,
+            "value": 3.01320421976925
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.5336951449830377,
+            "lo": -3.429239459639087,
+            "n": 64,
+            "value": -1.3444319168144925
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 5.041661680297693,
+            "lo": 1.2276167577510932,
+            "n": 64,
+            "value": 3.01320364815183
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0390625,
+            "lo": -0.0234375,
+            "n": 64,
+            "value": 0.0078125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0546875,
+            "lo": 0.0,
+            "n": 64,
+            "value": 0.02734375
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.03125,
+            "lo": -0.02734375,
+            "n": 64,
+            "value": 0.00390625
+          }
+        },
+        "1412": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.046875,
+            "lo": -0.01953125,
+            "n": 64,
+            "value": 0.015625
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.4724476009614595,
+            "lo": -0.5019934752681365,
+            "n": 64,
+            "value": 1.4812049848842435
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 1.6371108352819876,
+            "lo": -1.6769495979787719,
+            "n": 64,
+            "value": -0.03322049443166275
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 3.472447256353917,
+            "lo": -0.5019930213165935,
+            "n": 64,
+            "value": 1.4812049339525402
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.046875,
+            "lo": -0.0234375,
+            "n": 64,
+            "value": 0.01171875
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0703125,
+            "lo": -0.0078125,
+            "n": 64,
+            "value": 0.03125
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.05859375,
+            "lo": -0.01953125,
+            "n": 64,
+            "value": 0.01953125
+          }
+        },
+        "1413": {
+          "arrival": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.0390625,
+            "lo": -0.03125,
+            "n": 64,
+            "value": 0.00390625
+          },
+          "final_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.986373039969297,
+            "lo": 0.4418173721660424,
+            "n": 64,
+            "value": 2.614569225897867
+          },
+          "other_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 2.4378646402784994,
+            "lo": -2.3688929118767827,
+            "n": 64,
+            "value": -0.10111974437948534
+          },
+          "progress_mm": {
+            "families": 4,
+            "groups": 64,
+            "hi": 4.986372189159741,
+            "lo": 0.4418169450218557,
+            "n": 64,
+            "value": 2.6145686715608463
+          },
+          "success": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.03515625,
+            "lo": -0.01953125,
+            "n": 64,
+            "value": 0.0078125
+          },
+          "terminal": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.046875,
+            "lo": -0.03125,
+            "n": 64,
+            "value": 0.0078125
+          },
+          "terminal_selective": {
+            "families": 4,
+            "groups": 64,
+            "hi": 0.03125,
+            "lo": -0.03125,
+            "n": 64,
+            "value": 0.0
+          }
+        }
+      },
+      "starts": 64
+    },
+    "held": {
+      "array_sha256": "8df02d5e7ccaa60b843a624aa79547b23e40768440454cf393d5dd7a8c677329",
+      "branches": 21760,
+      "by_policy_family": {
+        "contact_speed": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.75390625,
+            "lo": 0.703125,
+            "n": 256,
+            "value": 0.7294921875
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 51.87203430452243,
+            "lo": 43.535051930712854,
+            "n": 256,
+            "value": 47.53058842804592
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 30.78925671625403,
+            "lo": 25.116922356129844,
+            "n": 256,
+            "value": 27.892676735047516
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 169.03487170766311,
+            "lo": 157.1574378045625,
+            "n": 256,
+            "value": 163.05056753117242
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.544921875,
+            "lo": 0.484375,
+            "n": 256,
+            "value": 0.515625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5888671875,
+            "lo": 0.53125,
+            "n": 256,
+            "value": 0.560546875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.4140869140625001,
+            "lo": 0.3564453125,
+            "n": 256,
+            "value": 0.3857421875
+          }
+        },
+        "dense_spatial": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.3740234375,
+            "lo": 0.3134765625,
+            "n": 256,
+            "value": 0.34375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 113.64355036287748,
+            "lo": 100.09682519554985,
+            "n": 256,
+            "value": 106.66272300204582
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 19.842426234753635,
+            "lo": 15.268155172214788,
+            "n": 256,
+            "value": 17.51553021056862
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 109.81367612876056,
+            "lo": 98.11654890099817,
+            "n": 256,
+            "value": 103.91843316756422
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.3017578125,
+            "lo": 0.248046875,
+            "n": 256,
+            "value": 0.2744140625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.3447265625,
+            "lo": 0.2880859375,
+            "n": 256,
+            "value": 0.31640625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2783203125,
+            "lo": 0.2265625,
+            "n": 256,
+            "value": 0.251953125
+          }
+        },
+        "gated": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2988525390625001,
+            "lo": 0.248046875,
+            "n": 256,
+            "value": 0.2734375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 129.92885878757932,
+            "lo": 117.06717343748778,
+            "n": 256,
+            "value": 123.22105016562546
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 23.175605629162707,
+            "lo": 18.035932084606824,
+            "n": 256,
+            "value": 20.59310099908786
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 92.21712935604955,
+            "lo": 82.81697548891316,
+            "n": 256,
+            "value": 87.36010592110688
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2265625,
+            "lo": 0.1806640625,
+            "n": 256,
+            "value": 0.2041015625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2666015625,
+            "lo": 0.2158203125,
+            "n": 256,
+            "value": 0.2412109375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1982421875,
+            "lo": 0.154296875,
+            "n": 256,
+            "value": 0.1767578125
+          }
+        },
+        "geometry": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7685546875,
+            "lo": 0.716796875,
+            "n": 256,
+            "value": 0.7431640625
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 49.28601623195874,
+            "lo": 40.77063673572212,
+            "n": 256,
+            "value": 44.92534176290519
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 29.608965400400294,
+            "lo": 23.68399418671418,
+            "n": 256,
+            "value": 26.659185308145695
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.6142801008573,
+            "lo": 159.6690299776128,
+            "n": 256,
+            "value": 165.6558140020934
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5673828125,
+            "lo": 0.5019287109375,
+            "n": 256,
+            "value": 0.5341796875
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7285400390625001,
+            "lo": 0.6748046875,
+            "n": 256,
+            "value": 0.7021484375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5185546875,
+            "lo": 0.455078125,
+            "n": 256,
+            "value": 0.486328125
+          }
+        },
+        "geometry_open_gate": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.884765625,
+            "lo": 0.8408203125,
+            "n": 256,
+            "value": 0.86328125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 20.332805370638596,
+            "lo": 17.13871451605371,
+            "n": 256,
+            "value": 18.73208690960837
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 32.82242971954197,
+            "lo": 26.710504382346222,
+            "n": 256,
+            "value": 29.751772796755446
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 197.13264573047127,
+            "lo": 186.60663850623678,
+            "n": 256,
+            "value": 191.8490689022292
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.6611328125,
+            "lo": 0.5947265625,
+            "n": 256,
+            "value": 0.6279296875
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.8388671875,
+            "lo": 0.7900390625,
+            "n": 256,
+            "value": 0.8154296875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.607421875,
+            "lo": 0.544921875,
+            "n": 256,
+            "value": 0.5751953125
+          }
+        },
+        "geometry_oracle_cue": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.8857421875,
+            "lo": 0.8427734375,
+            "n": 256,
+            "value": 0.8642578125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 20.15665995065774,
+            "lo": 17.022377210589923,
+            "n": 256,
+            "value": 18.56106409252334
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 32.87463377574126,
+            "lo": 26.751019221025278,
+            "n": 256,
+            "value": 29.81521090667438
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 197.2534042892221,
+            "lo": 186.82793212137767,
+            "n": 256,
+            "value": 192.02009171203827
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.6611328125,
+            "lo": 0.5947265625,
+            "n": 256,
+            "value": 0.6279296875
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.83984375,
+            "lo": 0.791015625,
+            "n": 256,
+            "value": 0.81640625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.607421875,
+            "lo": 0.544921875,
+            "n": 256,
+            "value": 0.5751953125
+          }
+        },
+        "geometry_oracle_pose_cue": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.96875,
+            "lo": 0.9462890625,
+            "n": 256,
+            "value": 0.9580078125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 12.839197678074754,
+            "lo": 10.883379411589544,
+            "n": 256,
+            "value": 11.820880025453562
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 33.59103236103417,
+            "lo": 27.26640669192072,
+            "n": 256,
+            "value": 30.4009812245695
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 203.6923627016222,
+            "lo": 194.00707031081765,
+            "n": 256,
+            "value": 198.76027592181345
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7314453125,
+            "lo": 0.671875,
+            "n": 256,
+            "value": 0.7021484375
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9326171875,
+            "lo": 0.90234375,
+            "n": 256,
+            "value": 0.91796875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.6982421875,
+            "lo": 0.63671875,
+            "n": 256,
+            "value": 0.66796875
+          }
+        },
+        "geometry_original_cue": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.654296875,
+            "lo": 0.5986328125,
+            "n": 256,
+            "value": 0.626953125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 77.00353100850208,
+            "lo": 65.94016587899887,
+            "n": 256,
+            "value": 71.24161900850368
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 33.21563712119396,
+            "lo": 26.021825842101794,
+            "n": 256,
+            "value": 29.637211910062085
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 145.71655442978226,
+            "lo": 132.88868492963957,
+            "n": 256,
+            "value": 139.33953677405952
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.4912109375,
+            "lo": 0.427734375,
+            "n": 256,
+            "value": 0.4599609375
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.6181640625,
+            "lo": 0.560546875,
+            "n": 256,
+            "value": 0.58984375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.44921875,
+            "lo": 0.388671875,
+            "n": 256,
+            "value": 0.4189453125
+          }
+        },
+        "gpt2": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7604248046875001,
+            "lo": 0.7106119791666667,
+            "n": 256,
+            "value": 0.736328125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 49.319557146577495,
+            "lo": 40.65828101448937,
+            "n": 256,
+            "value": 44.928459642809074
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 28.58239050985689,
+            "lo": 22.653719825124604,
+            "n": 256,
+            "value": 25.58978477591321
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.43736566980198,
+            "lo": 159.72002377960357,
+            "n": 256,
+            "value": 165.65269634035454
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5628336588541668,
+            "lo": 0.5022786458333334,
+            "n": 256,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7470703125,
+            "lo": 0.697265625,
+            "n": 256,
+            "value": 0.72265625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5494791666666666,
+            "lo": 0.48958333333333337,
+            "n": 256,
+            "value": 0.5198567708333333
+          }
+        },
+        "none": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 256,
+            "value": 0.0
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 215.80260897508197,
+            "lo": 205.63310813204225,
+            "n": 256,
+            "value": 210.5800028439262
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.05038509345815026,
+            "lo": 0.024662889751921914,
+            "n": 256,
+            "value": 0.03659444334006001
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.004022425036964705,
+            "lo": -0.001492799401603406,
+            "n": 256,
+            "value": 0.0011532320058904588
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 256,
+            "value": 0.0
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 256,
+            "value": 0.0
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": 0.0,
+            "n": 256,
+            "value": 0.0
+          }
+        },
+        "raw": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.71484375,
+            "lo": 0.65625,
+            "n": 256,
+            "value": 0.685546875
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 56.23712867497659,
+            "lo": 47.0089086438378,
+            "n": 256,
+            "value": 51.52467889899981
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 29.23667806906077,
+            "lo": 23.296404076438712,
+            "n": 256,
+            "value": 26.20812748936062
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 164.74059593456332,
+            "lo": 153.23590620682808,
+            "n": 256,
+            "value": 159.05647709223558
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5283203125,
+            "lo": 0.46484375,
+            "n": 256,
+            "value": 0.4970703125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.6699462890625001,
+            "lo": 0.6103515625,
+            "n": 256,
+            "value": 0.640625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.4892578125,
+            "lo": 0.42578125,
+            "n": 256,
+            "value": 0.45703125
+          }
+        },
+        "straight": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.013671875,
+            "lo": 0.0029296875,
+            "n": 256,
+            "value": 0.0078125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 213.29879772549702,
+            "lo": 202.7729695303833,
+            "n": 256,
+            "value": 207.85572721979406
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 12.915661851408315,
+            "lo": 8.974871225632327,
+            "n": 256,
+            "value": 10.920520221198728
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.7761023801067495,
+            "lo": 1.719396007774776,
+            "n": 256,
+            "value": 2.725428854319034
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0107421875,
+            "lo": 0.001953125,
+            "n": 256,
+            "value": 0.005859375
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0078125,
+            "lo": 0.0009765625,
+            "n": 256,
+            "value": 0.00390625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0078125,
+            "lo": 0.0009765625,
+            "n": 256,
+            "value": 0.00390625
+          }
+        },
+        "transport": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7623697916666667,
+            "lo": 0.7148437500000001,
+            "n": 256,
+            "value": 0.7389322916666667
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 48.51914823686911,
+            "lo": 39.97809375397706,
+            "n": 256,
+            "value": 44.182599579938156
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 28.088739396546494,
+            "lo": 22.348292234764404,
+            "n": 256,
+            "value": 25.210517738427175
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 172.28041346925235,
+            "lo": 160.50482597817486,
+            "n": 256,
+            "value": 166.39855643855603
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5657552083333334,
+            "lo": 0.5058593750000001,
+            "n": 256,
+            "value": 0.5361328125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7490234374999999,
+            "lo": 0.69921875,
+            "n": 256,
+            "value": 0.7242838541666666
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5520833333333333,
+            "lo": 0.4925130208333333,
+            "n": 256,
+            "value": 0.5221354166666666
+          }
+        }
+      },
+      "commands": 1024,
+      "macros": 522240,
+      "native_ticks": 1566720,
+      "neural_call_fraction": {
+        "initial/contact_speed/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/dense_spatial/protected/1411/directpath/speech/camera/carry": 0.739013671875,
+        "initial/gated/protected/1411/directpath/speech/camera/carry": 0.7593587239583333,
+        "initial/geometry/base/0/directpath/oracle/camera/carry": 0.0,
+        "initial/geometry/base/0/directpath/oracle/truth/carry": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry/open_gate": 0.0,
+        "initial/geometry/base/0/directpath/speech/camera/carry/original_edge": 0.0,
+        "initial/noop/base/0/directpath/speech/camera/carry": 0.0,
+        "initial/straight/base/0/directpath/speech/camera/carry": 0.0,
+        "visited-isolated/gpt2/protected/1411/directpath/oracle/camera/carry/contact": 0.256103515625,
+        "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact": 0.22074381510416666,
+        "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact/mean_field": 0.25154622395833337,
+        "visited-isolated/gpt2/protected/1412/directpath/speech/camera/carry/contact": 0.2795817057291667,
+        "visited-isolated/gpt2/protected/1413/directpath/speech/camera/carry/contact": 0.28580729166666663,
+        "visited-isolated/raw/base/0/directpath/speech/camera/carry/contact": 0.0,
+        "visited-isolated/transport/protected/1411/directpath/oracle/camera/carry/contact": 0.2559407552083333,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact": 0.22041829427083334,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact/mean_field": 0.25838216145833337,
+        "visited-isolated/transport/protected/1411/directpath/speech/camera/reset/contact": 0.000244140625,
+        "visited-isolated/transport/protected/1412/directpath/speech/camera/carry/contact": 0.2781982421875,
+        "visited-isolated/transport/protected/1413/directpath/speech/camera/carry/contact": 0.271484375
+      },
+      "paired": {
+        "confidence_gate_over_open": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": -0.103515625,
+            "lo": -0.1376953125,
+            "n": 256,
+            "value": -0.1201171875
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": -22.346532426197992,
+            "lo": -30.39472222021402,
+            "n": 256,
+            "value": -26.19325485329682
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.9954991390022396,
+            "lo": 2.261628192330287,
+            "n": 256,
+            "value": 3.092587488609751
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": -22.346532529809334,
+            "lo": -30.394722282562725,
+            "n": 256,
+            "value": -26.1932549001358
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": -0.0791015625,
+            "lo": -0.109375,
+            "n": 256,
+            "value": -0.09375
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": -0.0966796875,
+            "lo": -0.1318359375,
+            "n": 256,
+            "value": -0.11328125
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": -0.07421875,
+            "lo": -0.1044921875,
+            "n": 256,
+            "value": -0.0888671875
+          }
+        },
+        "gpt2_full_over_mean_field": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0634765625,
+            "lo": 0.0244140625,
+            "n": 256,
+            "value": 0.0439453125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 6.485953026093228,
+            "lo": 4.196228644185851,
+            "n": 256,
+            "value": 5.342807609110878
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.057051628217393,
+            "lo": 0.7550721696176241,
+            "n": 256,
+            "value": 1.887931629302276
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 6.485952880575497,
+            "lo": 4.1962285752561,
+            "n": 256,
+            "value": 5.342807591659948
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.05859375,
+            "lo": 0.0234375,
+            "n": 256,
+            "value": 0.041015625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2041015625,
+            "lo": 0.150390625,
+            "n": 256,
+            "value": 0.1767578125
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1630859375,
+            "lo": 0.111328125,
+            "n": 256,
+            "value": 0.1376953125
+          }
+        },
+        "gpt2_over_both_wrong": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7597656249999999,
+            "lo": 0.7096354166666667,
+            "n": 256,
+            "value": 0.7353515625
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 174.91193522470132,
+            "lo": 163.07062648856424,
+            "n": 256,
+            "value": 169.00432477450522
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 155.72092918882544,
+            "lo": 143.94214250403806,
+            "n": 256,
+            "value": 149.84212572659766
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 174.9119350027892,
+            "lo": 163.07062627111011,
+            "n": 256,
+            "value": 169.00432467082283
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5628336588541668,
+            "lo": 0.5022786458333334,
+            "n": 256,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7470703125,
+            "lo": 0.697265625,
+            "n": 256,
+            "value": 0.72265625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5494791666666666,
+            "lo": 0.48958333333333337,
+            "n": 256,
+            "value": 0.5198567708333333
+          }
+        },
+        "gpt2_over_contact_speed": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0263671875,
+            "lo": -0.013020833333333334,
+            "n": 256,
+            "value": 0.006835937499999999
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.9749819753204454,
+            "lo": 1.1230376642563067,
+            "n": 256,
+            "value": 2.6021287852368387
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.7041108729813352,
+            "lo": 0.8777960196731674,
+            "n": 256,
+            "value": 2.302891959134306
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.9749820533567504,
+            "lo": 1.123037835926274,
+            "n": 256,
+            "value": 2.6021288091821293
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0361328125,
+            "lo": -0.0022786458333333356,
+            "n": 256,
+            "value": 0.016927083333333336
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.19075520833333334,
+            "lo": 0.13378092447916667,
+            "n": 256,
+            "value": 0.162109375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.16048177083333334,
+            "lo": 0.1077392578125,
+            "n": 256,
+            "value": 0.13411458333333331
+          }
+        },
+        "gpt2_over_geometry": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.005859375,
+            "lo": -0.020182291666666664,
+            "n": 256,
+            "value": -0.006835937500000001
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9870363832719184,
+            "lo": -1.0129496578487123,
+            "n": 256,
+            "value": -0.003117879903887122
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.9892014173946542,
+            "lo": 0.15577267192543873,
+            "n": 256,
+            "value": 1.0694005322324847
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9870361414565814,
+            "lo": -1.0129493731255925,
+            "n": 256,
+            "value": -0.003117661738845201
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.011067708333333332,
+            "lo": -0.0146484375,
+            "n": 256,
+            "value": -0.0016276041666666683
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.03873697916666666,
+            "lo": 0.003255208333333333,
+            "n": 256,
+            "value": 0.020507812499999997
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.05078125,
+            "lo": 0.016276041666666664,
+            "n": 256,
+            "value": 0.03352864583333333
+          }
+        },
+        "gpt2_over_no_cue": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7604248046875001,
+            "lo": 0.7106119791666667,
+            "n": 256,
+            "value": 0.736328125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.43534397326823,
+            "lo": 159.71806597494157,
+            "n": 256,
+            "value": 165.65154320111714
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": -22.623771210042836,
+            "lo": -28.542036076200183,
+            "n": 256,
+            "value": -25.553190332573152
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.4353437322946,
+            "lo": 159.71806582295662,
+            "n": 256,
+            "value": 165.65154310834865
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5628336588541668,
+            "lo": 0.5022786458333334,
+            "n": 256,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7470703125,
+            "lo": 0.697265625,
+            "n": 256,
+            "value": 0.72265625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5494791666666666,
+            "lo": 0.48958333333333337,
+            "n": 256,
+            "value": 0.5198567708333333
+          }
+        },
+        "gpt2_over_raw": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.06803385416666667,
+            "lo": 0.03287760416666667,
+            "n": 256,
+            "value": 0.05078124999999999
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 8.254138701141757,
+            "lo": 5.034764882674972,
+            "n": 256,
+            "value": 6.5962192561907305
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.902334833437784,
+            "lo": -0.7065303515557592,
+            "n": 256,
+            "value": 0.6183427134474072
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 8.254138808812666,
+            "lo": 5.034764637548508,
+            "n": 256,
+            "value": 6.596219248118967
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.05144042968750003,
+            "lo": 0.01920572916666667,
+            "n": 256,
+            "value": 0.035481770833333336
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1025390625,
+            "lo": 0.0615234375,
+            "n": 256,
+            "value": 0.08203125
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.08138020833333334,
+            "lo": 0.04459635416666666,
+            "n": 256,
+            "value": 0.06282552083333333
+          }
+        },
+        "gpt2_over_wrong_address": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7493489583333334,
+            "lo": 0.6979166666666667,
+            "n": 256,
+            "value": 0.7242838541666667
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 222.0715559088929,
+            "lo": 203.28898156452018,
+            "n": 256,
+            "value": 212.63146649592574
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": -1.6653345369377348e-16,
+            "n": 256,
+            "value": -5.551115123125783e-17
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 222.07155580502635,
+            "lo": 203.28898140787717,
+            "n": 256,
+            "value": 212.6314663582889
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5537109375,
+            "lo": 0.4921875,
+            "n": 256,
+            "value": 0.5227864583333334
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.74609375,
+            "lo": 0.6962890625,
+            "n": 256,
+            "value": 0.7216796875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.548828125,
+            "lo": 0.48893229166666663,
+            "n": 256,
+            "value": 0.5188802083333333
+          }
+        },
+        "gpt2_over_wrong_color": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7535888671875001,
+            "lo": 0.7027994791666667,
+            "n": 256,
+            "value": 0.728515625
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 170.30998677726205,
+            "lo": 158.59258424067758,
+            "n": 256,
+            "value": 164.49023140967256
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 155.72092918882544,
+            "lo": 143.94214250403806,
+            "n": 256,
+            "value": 149.84212572659766
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 170.3099865662959,
+            "lo": 158.59258412660893,
+            "n": 256,
+            "value": 164.49023131463036
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5628336588541668,
+            "lo": 0.5022786458333334,
+            "n": 256,
+            "value": 0.5325520833333334
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.744140625,
+            "lo": 0.6943277994791666,
+            "n": 256,
+            "value": 0.7197265625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5494791666666666,
+            "lo": 0.48958333333333337,
+            "n": 256,
+            "value": 0.5198567708333333
+          }
+        },
+        "new_over_original_speech": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1376953125,
+            "lo": 0.095703125,
+            "n": 256,
+            "value": 0.1162109375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 31.8744803213022,
+            "lo": 20.93325140886577,
+            "n": 256,
+            "value": 26.316277245598485
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 5.800918757726976,
+            "lo": 0.205537836002461,
+            "n": 256,
+            "value": 2.9780266019163886
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 31.874480392616533,
+            "lo": 20.93325144114715,
+            "n": 256,
+            "value": 26.31627722803387
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.09279785156250009,
+            "lo": 0.0546875,
+            "n": 256,
+            "value": 0.07421875
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1328125,
+            "lo": 0.091796875,
+            "n": 256,
+            "value": 0.1123046875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0859375,
+            "lo": 0.048828125,
+            "n": 256,
+            "value": 0.0673828125
+          }
+        },
+        "retained_over_reset": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.771484375,
+            "lo": 0.716796875,
+            "n": 256,
+            "value": 0.7451171875
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 173.54908407216385,
+            "lo": 161.4934494524988,
+            "n": 256,
+            "value": 167.56076041804135
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": -21.905725503440056,
+            "lo": -27.603774941048062,
+            "n": 256,
+            "value": -24.70209253581473
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 173.54908405732203,
+            "lo": 161.49344931782252,
+            "n": 256,
+            "value": 167.56076034653233
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5791015625,
+            "lo": 0.515625,
+            "n": 256,
+            "value": 0.5478515625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.759765625,
+            "lo": 0.703125,
+            "n": 256,
+            "value": 0.732421875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5634765625,
+            "lo": 0.4999755859375,
+            "n": 256,
+            "value": 0.5322265625
+          }
+        },
+        "transport_full_over_mean_field": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.07814941406250009,
+            "lo": 0.03515625,
+            "n": 256,
+            "value": 0.056640625
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 8.958082416644686,
+            "lo": 6.113936758470118,
+            "n": 256,
+            "value": 7.494614718950743
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.9373223377002446,
+            "lo": 1.4930435185523259,
+            "n": 256,
+            "value": 2.735915098558667
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 8.958082376375387,
+            "lo": 6.1139367242503795,
+            "n": 256,
+            "value": 7.494614488678053
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0859375,
+            "lo": 0.04296875,
+            "n": 256,
+            "value": 0.064453125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.2168212890625001,
+            "lo": 0.162109375,
+            "n": 256,
+            "value": 0.189453125
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.1845703125,
+            "lo": 0.1318359375,
+            "n": 256,
+            "value": 0.158203125
+          }
+        },
+        "transport_over_both_wrong": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.76171875,
+            "lo": 0.7141927083333333,
+            "n": 256,
+            "value": 0.7379557291666667
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 175.44780646539078,
+            "lo": 163.47612171656428,
+            "n": 256,
+            "value": 169.51594541310774
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 157.6801518831611,
+            "lo": 145.8185610330104,
+            "n": 256,
+            "value": 151.71196723744268
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 175.44780661673937,
+            "lo": 163.47612158521466,
+            "n": 256,
+            "value": 169.5159453544572
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5657552083333334,
+            "lo": 0.5058593750000001,
+            "n": 256,
+            "value": 0.5361328125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7490234374999999,
+            "lo": 0.69921875,
+            "n": 256,
+            "value": 0.7242838541666666
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5520833333333333,
+            "lo": 0.4925130208333333,
+            "n": 256,
+            "value": 0.5221354166666666
+          }
+        },
+        "transport_over_contact_speed": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0283203125,
+            "lo": -0.009448242187500002,
+            "n": 256,
+            "value": 0.009440104166666664
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 4.5772223366282585,
+            "lo": 2.07095396814155,
+            "n": 256,
+            "value": 3.3479888481077564
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 3.9332953572330367,
+            "lo": 1.399311482353633,
+            "n": 256,
+            "value": 2.682158996620344
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 4.5772222872680395,
+            "lo": 2.0709541438312353,
+            "n": 256,
+            "value": 3.3479889073835998
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0400390625,
+            "lo": 0.0013020833333333356,
+            "n": 256,
+            "value": 0.020507812500000003
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.19205729166666663,
+            "lo": 0.13606770833333334,
+            "n": 256,
+            "value": 0.16373697916666669
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.16178385416666663,
+            "lo": 0.11035156249999999,
+            "n": 256,
+            "value": 0.13639322916666666
+          }
+        },
+        "transport_over_geometry": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.008797200520833366,
+            "lo": -0.017578125,
+            "n": 256,
+            "value": -0.004231770833333334
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.654111147934146,
+            "lo": -0.1823272904562262,
+            "n": 256,
+            "value": 0.7427421829670304
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 2.3122908361273242,
+            "lo": 0.5850461649884204,
+            "n": 256,
+            "value": 1.448667569718523
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.6541116410129089,
+            "lo": -0.18232695025896273,
+            "n": 256,
+            "value": 0.7427424364626256
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.014982096354166703,
+            "lo": -0.011067708333333336,
+            "n": 256,
+            "value": 0.001953125000000001
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.041015625,
+            "lo": 0.0039062499999999965,
+            "n": 256,
+            "value": 0.022135416666666664
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.052734375,
+            "lo": 0.019205729166666664,
+            "n": 256,
+            "value": 0.035807291666666664
+          }
+        },
+        "transport_over_gpt2": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.012369791666666668,
+            "lo": -0.007161458333333334,
+            "n": 256,
+            "value": 0.002604166666666666
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.3562580065369665,
+            "lo": 0.14080521271514118,
+            "n": 256,
+            "value": 0.7458600628709178
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9970029868938668,
+            "lo": -0.2398587063064671,
+            "n": 256,
+            "value": 0.37926703748603835
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.356258000911717,
+            "lo": 0.14080530442394398,
+            "n": 256,
+            "value": 0.7458600982014709
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.012044270833333336,
+            "lo": -0.005208333333333332,
+            "n": 256,
+            "value": 0.003580729166666668
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.011718749999999998,
+            "lo": -0.00814615885416667,
+            "n": 256,
+            "value": 0.0016276041666666654
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.01171875,
+            "lo": -0.0071614583333333304,
+            "n": 256,
+            "value": 0.002278645833333333
+          }
+        },
+        "transport_over_no_cue": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7623697916666667,
+            "lo": 0.7148437500000001,
+            "n": 256,
+            "value": 0.7389322916666667
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 172.28024339511143,
+            "lo": 160.50557255646257,
+            "n": 256,
+            "value": 166.39740326398802
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": -22.314060229590773,
+            "lo": -28.053253775364187,
+            "n": 256,
+            "value": -25.173923295087114
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 172.28024329033357,
+            "lo": 160.50557237592025,
+            "n": 256,
+            "value": 166.39740320655014
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5657552083333334,
+            "lo": 0.5058593750000001,
+            "n": 256,
+            "value": 0.5361328125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7490234374999999,
+            "lo": 0.69921875,
+            "n": 256,
+            "value": 0.7242838541666666
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5520833333333333,
+            "lo": 0.4925130208333333,
+            "n": 256,
+            "value": 0.5221354166666666
+          }
+        },
+        "transport_over_raw": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.072265625,
+            "lo": 0.03417154947916666,
+            "n": 256,
+            "value": 0.053385416666666664
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 9.216493355911068,
+            "lo": 5.57825884371539,
+            "n": 256,
+            "value": 7.342079319061649
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 2.208842121742597,
+            "lo": -0.2122705676094971,
+            "n": 256,
+            "value": 0.9976097509334455
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 9.216493349140366,
+            "lo": 5.5782589902870905,
+            "n": 256,
+            "value": 7.342079346320437
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.05632324218750004,
+            "lo": 0.02180989583333334,
+            "n": 256,
+            "value": 0.0390625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.10579427083333334,
+            "lo": 0.061840820312499996,
+            "n": 256,
+            "value": 0.08365885416666666
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.08463541666666667,
+            "lo": 0.0458984375,
+            "n": 256,
+            "value": 0.06510416666666666
+          }
+        },
+        "transport_over_wrong_address": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.75,
+            "lo": 0.6998697916666666,
+            "n": 256,
+            "value": 0.724609375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 223.3596781214888,
+            "lo": 204.4173182641958,
+            "n": 256,
+            "value": 213.9137138818299
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0,
+            "lo": -1.6653345369377348e-16,
+            "n": 256,
+            "value": -5.551115123125783e-17
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 223.35967811568483,
+            "lo": 204.41731813713585,
+            "n": 256,
+            "value": 213.91371374678178
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5550130208333333,
+            "lo": 0.4947835286458333,
+            "n": 256,
+            "value": 0.5247395833333333
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7483805338541667,
+            "lo": 0.6988932291666667,
+            "n": 256,
+            "value": 0.7239583333333333
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5517659505208333,
+            "lo": 0.4925130208333333,
+            "n": 256,
+            "value": 0.5218098958333333
+          }
+        },
+        "transport_over_wrong_color": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7581380208333334,
+            "lo": 0.708984375,
+            "n": 256,
+            "value": 0.7340494791666666
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.03387571048873,
+            "lo": 159.22662098872297,
+            "n": 256,
+            "value": 165.1300236993123
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 157.6801518831611,
+            "lo": 145.8185610330104,
+            "n": 256,
+            "value": 151.71196723744268
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 171.03387561289006,
+            "lo": 159.2266209011541,
+            "n": 256,
+            "value": 165.13002364323862
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5657552083333334,
+            "lo": 0.5058593750000001,
+            "n": 256,
+            "value": 0.5361328125
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.7473958333333334,
+            "lo": 0.697265625,
+            "n": 256,
+            "value": 0.72265625
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.5520833333333333,
+            "lo": 0.4925130208333333,
+            "n": 256,
+            "value": 0.5221354166666666
+          }
+        }
+      },
+      "recorded_voices": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "selective_by_shift": {
+        "False": {
+          "contact_speed": 0.51953125,
+          "dense_spatial": 0.26171875,
+          "gated": 0.19140625,
+          "geometry": 0.529296875,
+          "geometry_open_gate": 0.6171875,
+          "geometry_oracle_cue": 0.6171875,
+          "geometry_oracle_pose_cue": 0.673828125,
+          "geometry_original_cue": 0.4453125,
+          "gpt2": 0.5279947916666667,
+          "none": 0.0,
+          "raw": 0.490234375,
+          "straight": 0.0078125,
+          "transport": 0.537109375
+        },
+        "True": {
+          "contact_speed": 0.51171875,
+          "dense_spatial": 0.287109375,
+          "gated": 0.216796875,
+          "geometry": 0.5390625,
+          "geometry_open_gate": 0.638671875,
+          "geometry_oracle_cue": 0.638671875,
+          "geometry_oracle_pose_cue": 0.73046875,
+          "geometry_original_cue": 0.474609375,
+          "gpt2": 0.537109375,
+          "none": 0.0,
+          "raw": 0.50390625,
+          "straight": 0.00390625,
+          "transport": 0.53515625
+        }
+      },
+      "selective_by_speaker": {
+        "25": {
+          "contact_speed": 0.5625,
+          "dense_spatial": 0.3046875,
+          "gated": 0.296875,
+          "geometry": 0.5859375,
+          "geometry_open_gate": 0.6171875,
+          "geometry_oracle_cue": 0.6171875,
+          "geometry_oracle_pose_cue": 0.703125,
+          "geometry_original_cue": 0.5546875,
+          "gpt2": 0.6145833333333333,
+          "none": 0.0,
+          "raw": 0.5625,
+          "straight": 0.015625,
+          "transport": 0.6041666666666667
+        },
+        "26": {
+          "contact_speed": 0.453125,
+          "dense_spatial": 0.3046875,
+          "gated": 0.2265625,
+          "geometry": 0.421875,
+          "geometry_open_gate": 0.5625,
+          "geometry_oracle_cue": 0.5625,
+          "geometry_oracle_pose_cue": 0.640625,
+          "geometry_original_cue": 0.1640625,
+          "gpt2": 0.44270833333333326,
+          "none": 0.0,
+          "raw": 0.4140625,
+          "straight": 0.0,
+          "transport": 0.44270833333333337
+        },
+        "27": {
+          "contact_speed": 0.5546875,
+          "dense_spatial": 0.2890625,
+          "gated": 0.171875,
+          "geometry": 0.59375,
+          "geometry_open_gate": 0.640625,
+          "geometry_oracle_cue": 0.640625,
+          "geometry_oracle_pose_cue": 0.703125,
+          "geometry_original_cue": 0.5703125,
+          "gpt2": 0.5833333333333333,
+          "none": 0.0,
+          "raw": 0.53125,
+          "straight": 0.015625,
+          "transport": 0.5807291666666666
+        },
+        "28": {
+          "contact_speed": 0.3203125,
+          "dense_spatial": 0.140625,
+          "gated": 0.1171875,
+          "geometry": 0.3203125,
+          "geometry_open_gate": 0.6484375,
+          "geometry_oracle_cue": 0.6484375,
+          "geometry_oracle_pose_cue": 0.703125,
+          "geometry_original_cue": 0.15625,
+          "gpt2": 0.3046875,
+          "none": 0.0,
+          "raw": 0.2890625,
+          "straight": 0.0,
+          "transport": 0.31510416666666663
+        },
+        "29": {
+          "contact_speed": 0.6015625,
+          "dense_spatial": 0.234375,
+          "gated": 0.15625,
+          "geometry": 0.625,
+          "geometry_open_gate": 0.640625,
+          "geometry_oracle_cue": 0.640625,
+          "geometry_oracle_pose_cue": 0.6875,
+          "geometry_original_cue": 0.6015625,
+          "gpt2": 0.625,
+          "none": 0.0,
+          "raw": 0.5859375,
+          "straight": 0.0,
+          "transport": 0.640625
+        },
+        "30": {
+          "contact_speed": 0.46875,
+          "dense_spatial": 0.28125,
+          "gated": 0.2265625,
+          "geometry": 0.5546875,
+          "geometry_open_gate": 0.625,
+          "geometry_oracle_cue": 0.625,
+          "geometry_oracle_pose_cue": 0.6796875,
+          "geometry_original_cue": 0.5078125,
+          "gpt2": 0.5130208333333333,
+          "none": 0.0,
+          "raw": 0.5234375,
+          "straight": 0.015625,
+          "transport": 0.5338541666666666
+        },
+        "31": {
+          "contact_speed": 0.5546875,
+          "dense_spatial": 0.2421875,
+          "gated": 0.171875,
+          "geometry": 0.5859375,
+          "geometry_open_gate": 0.6796875,
+          "geometry_oracle_cue": 0.6796875,
+          "geometry_oracle_pose_cue": 0.734375,
+          "geometry_original_cue": 0.5703125,
+          "gpt2": 0.5625,
+          "none": 0.0,
+          "raw": 0.515625,
+          "straight": 0.0,
+          "transport": 0.5651041666666667
+        },
+        "32": {
+          "contact_speed": 0.609375,
+          "dense_spatial": 0.3984375,
+          "gated": 0.265625,
+          "geometry": 0.5859375,
+          "geometry_open_gate": 0.609375,
+          "geometry_oracle_cue": 0.609375,
+          "geometry_oracle_pose_cue": 0.765625,
+          "geometry_original_cue": 0.5546875,
+          "gpt2": 0.6145833333333334,
+          "none": 0.0,
+          "raw": 0.5546875,
+          "straight": 0.0,
+          "transport": 0.6067708333333333
+        }
+      },
+      "spatial_over_dense_by_seed": {
+        "1411": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.006860351562500089,
+            "lo": -0.021484375,
+            "n": 256,
+            "value": -0.0068359375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9351429127875124,
+            "lo": -0.7260676750661332,
+            "n": 256,
+            "value": 0.09727262124670233
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.6623326278895445,
+            "lo": -0.19593584323939553,
+            "n": 256,
+            "value": 0.7254805670028064
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.9351425754175582,
+            "lo": -0.7260679948558391,
+            "n": 256,
+            "value": 0.09727240467327647
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.017578125,
+            "lo": -0.0087890625,
+            "n": 256,
+            "value": 0.00390625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.009765625,
+            "lo": -0.0234375,
+            "n": 256,
+            "value": -0.0068359375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.021484375,
+            "lo": -0.009765625,
+            "n": 256,
+            "value": 0.005859375
+          }
+        },
+        "1412": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0107421875,
+            "lo": -0.0263671875,
+            "n": 256,
+            "value": -0.0078125
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.7103860596851206,
+            "lo": -0.4843988065214688,
+            "n": 256,
+            "value": 0.589425547069311
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.5255937841341247,
+            "lo": -0.14282052839840706,
+            "n": 256,
+            "value": 0.6605103365804488
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 1.7103866511206434,
+            "lo": -0.4843983757382375,
+            "n": 256,
+            "value": 0.5894258829357568
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0126953125,
+            "lo": -0.0185546875,
+            "n": 256,
+            "value": -0.0029296875
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0078125,
+            "lo": -0.03125,
+            "n": 256,
+            "value": -0.01171875
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.007836914062500089,
+            "lo": -0.025390625,
+            "n": 256,
+            "value": -0.0087890625
+          }
+        },
+        "1413": {
+          "arrival": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0380859375,
+            "lo": 0.0068359375,
+            "n": 256,
+            "value": 0.0224609375
+          },
+          "final_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 2.6726746599422317,
+            "lo": 0.4157718770827046,
+            "n": 256,
+            "value": 1.55088202029674
+          },
+          "other_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.82517585681307,
+            "lo": -1.2869672311569764,
+            "n": 256,
+            "value": -0.24818979112514045
+          },
+          "progress_mm": {
+            "families": 16,
+            "groups": 256,
+            "hi": 2.6726747942120714,
+            "lo": 0.41577190058887936,
+            "n": 256,
+            "value": 1.55088200699538
+          },
+          "success": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0234375,
+            "lo": -0.00390625,
+            "n": 256,
+            "value": 0.009765625
+          },
+          "terminal": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0400390625,
+            "lo": 0.0068359375,
+            "n": 256,
+            "value": 0.0234375
+          },
+          "terminal_selective": {
+            "families": 16,
+            "groups": 256,
+            "hi": 0.0244140625,
+            "lo": -0.0048828125,
+            "n": 256,
+            "value": 0.009765625
+          }
+        }
+      },
+      "starts": 256
+    }
+  },
+  "contact_only": true,
+  "preregistered_positive_seeds": {
+    "fresh": 0,
+    "held": 0
+  },
+  "routed": false,
+  "shared_processor_superiority": false,
+  "stage": "visited-isolated",
+  "unit": "Paired independent simulator state with all four human utterances. The 4,000 bootstrap draws resample starts within speaker and contact stratum."
+}

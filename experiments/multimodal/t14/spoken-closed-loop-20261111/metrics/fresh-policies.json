@@ -1,0 +1,4710 @@
+{
+  "initial/contact_speed/base/0/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.78125,
+        "lo": 0.6953125,
+        "n": 64,
+        "value": 0.73828125
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 61.128936587090266,
+        "lo": 45.09871250582478,
+        "n": 64,
+        "value": 52.527026001143895
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 35.319783560664064,
+        "lo": 21.134807412478608,
+        "n": 64,
+        "value": 27.674147466650453
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 174.32503539566824,
+        "lo": 146.52667627342453,
+        "n": 64,
+        "value": 160.42206215206534
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.58984375,
+        "lo": 0.4765625,
+        "n": 64,
+        "value": 0.53515625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.6015625,
+        "lo": 0.484375,
+        "n": 64,
+        "value": 0.54296875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.43359375,
+        "lo": 0.32421875,
+        "n": 64,
+        "value": 0.37890625
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.75,
+          "lo": 0.640625,
+          "n": 32,
+          "value": 0.6953125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 73.98032908679397,
+          "lo": 52.54275628801679,
+          "n": 32,
+          "value": 62.90706890558795
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.546875,
+          "lo": 0.3828125,
+          "n": 32,
+          "value": 0.46875
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.84375,
+          "lo": 0.7109375,
+          "n": 32,
+          "value": 0.78125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 55.28810265001312,
+          "lo": 31.374419159885747,
+          "n": 32,
+          "value": 42.14698309669984
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.671875,
+          "lo": 0.5234375,
+          "n": 32,
+          "value": 0.6015625
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4296875,
+      "34": 0.640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.78125,
+          "lo": 0.6953125,
+          "n": 64,
+          "value": 0.73828125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 176.92046986123842,
+          "lo": 149.43054802151323,
+          "n": 64,
+          "value": 163.440086714445
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58984375,
+          "lo": 0.4765625,
+          "n": 64,
+          "value": 0.53515625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.765625,
+          "lo": 0.67578125,
+          "n": 64,
+          "value": 0.72265625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 214.32820628978675,
+          "lo": 174.0926554848727,
+          "n": 64,
+          "value": 194.0165634580353
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.57421875,
+          "lo": 0.4609375,
+          "n": 64,
+          "value": 0.51953125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.77734375,
+          "lo": 0.69140625,
+          "n": 64,
+          "value": 0.734375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 174.69524280517703,
+          "lo": 147.76325727927428,
+          "n": 64,
+          "value": 161.5428345496639
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58984375,
+          "lo": 0.4765625,
+          "n": 64,
+          "value": 0.53515625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.8632846050342777,
+      "lo": 0.7541290095352451,
+      "n": 64,
+      "value": 0.8094174834550358
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.3946980794270834,
+      "lo": 0.30419514973958334,
+      "n": 64,
+      "value": 0.34944661458333337
+    }
+  },
+  "initial/dense_spatial/protected/1411/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.375,
+        "lo": 0.2734375,
+        "n": 64,
+        "value": 0.32421875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 134.6228521677233,
+        "lo": 109.46262105858295,
+        "n": 64,
+        "value": 121.98664250558977
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 16.056073302812994,
+        "lo": 9.306792281703457,
+        "n": 64,
+        "value": 12.479451184844017
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 100.68419486742641,
+        "lo": 81.08647544322594,
+        "n": 64,
+        "value": 90.9624454943696
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.3515625,
+        "lo": 0.24609375,
+        "n": 64,
+        "value": 0.30078125
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.3515625,
+        "lo": 0.25,
+        "n": 64,
+        "value": 0.30078125
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.3359375,
+        "lo": 0.2265625,
+        "n": 64,
+        "value": 0.28125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.359375,
+          "lo": 0.21875,
+          "n": 32,
+          "value": 0.2890625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 152.5306957768862,
+          "lo": 112.78780051802642,
+          "n": 32,
+          "value": 132.56958535748709
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.3359375,
+          "lo": 0.1953125,
+          "n": 32,
+          "value": 0.265625
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.4296875,
+          "lo": 0.28125,
+          "n": 32,
+          "value": 0.359375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 128.1307811522879,
+          "lo": 96.24354864923816,
+          "n": 32,
+          "value": 111.40369965369246
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.4140625,
+          "lo": 0.25,
+          "n": 32,
+          "value": 0.3359375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.2734375,
+      "34": 0.328125
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.375,
+          "lo": 0.2734375,
+          "n": 64,
+          "value": 0.32421875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 101.31137491892446,
+          "lo": 82.07571759900816,
+          "n": 64,
+          "value": 91.73762944169539
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.3515625,
+          "lo": 0.24609375,
+          "n": 64,
+          "value": 0.30078125
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.3671875,
+          "lo": 0.265625,
+          "n": 64,
+          "value": 0.31640625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 118.62371986312041,
+          "lo": 88.44866982111057,
+          "n": 64,
+          "value": 103.52504287197917
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.34765625,
+          "lo": 0.23828125,
+          "n": 64,
+          "value": 0.29296875
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.375,
+          "lo": 0.2734375,
+          "n": 64,
+          "value": 0.32421875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 100.61361365103494,
+          "lo": 81.7015506653604,
+          "n": 64,
+          "value": 91.19543682368203
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.3515625,
+          "lo": 0.24609375,
+          "n": 64,
+          "value": 0.30078125
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.49251838624604716,
+      "lo": 0.4105369166558376,
+      "n": 64,
+      "value": 0.45148716645053355
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6946614583333333,
+      "lo": 0.6292277018229167,
+      "n": 64,
+      "value": 0.66259765625
+    }
+  },
+  "initial/gated/protected/1411/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.296875,
+        "lo": 0.1953125,
+        "n": 64,
+        "value": 0.24609375
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 146.38578513327047,
+        "lo": 120.07303265731935,
+        "n": 64,
+        "value": 132.89396045001922
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 24.49854394654589,
+        "lo": 14.72072143976267,
+        "n": 64,
+        "value": 19.373070894465563
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 89.44431754789548,
+        "lo": 70.93537163164001,
+        "n": 64,
+        "value": 80.0551276479382
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.2421875,
+        "lo": 0.1484375,
+        "n": 64,
+        "value": 0.1953125
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.2734375,
+        "lo": 0.171875,
+        "n": 64,
+        "value": 0.22265625
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.2265625,
+        "lo": 0.13671875,
+        "n": 64,
+        "value": 0.1796875
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.328125,
+          "lo": 0.1796875,
+          "n": 32,
+          "value": 0.25
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 162.3846904378297,
+          "lo": 120.60174786820426,
+          "n": 32,
+          "value": 140.58934613422025
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.234375,
+          "lo": 0.11699218750000007,
+          "n": 32,
+          "value": 0.171875
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.3125,
+          "lo": 0.171875,
+          "n": 32,
+          "value": 0.2421875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 142.30185939250077,
+          "lo": 109.33006307623145,
+          "n": 32,
+          "value": 125.1985747658182
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.2890625,
+          "lo": 0.1484375,
+          "n": 32,
+          "value": 0.21875
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.1328125,
+      "34": 0.2578125
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.296875,
+          "lo": 0.1953125,
+          "n": 64,
+          "value": 0.24609375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 90.71003619890234,
+          "lo": 72.37812490998294,
+          "n": 64,
+          "value": 81.42700850294204
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.2421875,
+          "lo": 0.1484375,
+          "n": 64,
+          "value": 0.1953125
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.29296875,
+          "lo": 0.19140625,
+          "n": 64,
+          "value": 0.2421875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 111.43388457344373,
+          "lo": 78.36509735202526,
+          "n": 64,
+          "value": 94.69910877669463
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.23828125,
+          "lo": 0.14453125,
+          "n": 64,
+          "value": 0.19140625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.296875,
+          "lo": 0.1953125,
+          "n": 64,
+          "value": 0.24609375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 90.16387954916354,
+          "lo": 72.04997083717899,
+          "n": 64,
+          "value": 81.04722148709698
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.2421875,
+          "lo": 0.1484375,
+          "n": 64,
+          "value": 0.1953125
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.44216067782908797,
+      "lo": 0.3758383312946535,
+      "n": 64,
+      "value": 0.40922476482228376
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.7438151041666667,
+      "lo": 0.6957967122395833,
+      "n": 64,
+      "value": 0.7197265625
+    }
+  },
+  "initial/geometry/base/0/directpath/oracle/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8984375,
+        "lo": 0.8203125,
+        "n": 64,
+        "value": 0.859375
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 24.348647815952518,
+        "lo": 17.112506665534966,
+        "n": 64,
+        "value": 20.55412316121874
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 38.094213531198776,
+        "lo": 23.777513249720744,
+        "n": 64,
+        "value": 30.624149731183685
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 204.81462162606476,
+        "lo": 179.74776029077475,
+        "n": 64,
+        "value": 192.39496465888806
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7109375,
+        "lo": 0.58203125,
+        "n": 64,
+        "value": 0.6484375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8515625,
+        "lo": 0.765625,
+        "n": 64,
+        "value": 0.80859375
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.67578125,
+        "lo": 0.546875,
+        "n": 64,
+        "value": 0.61328125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8671875,
+          "lo": 0.7578125,
+          "n": 32,
+          "value": 0.8125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 28.41928022780849,
+          "lo": 17.992527019782756,
+          "n": 32,
+          "value": 23.11277435546799
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.65625,
+          "lo": 0.46875,
+          "n": 32,
+          "value": 0.5625
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.953125,
+          "lo": 0.8515625,
+          "n": 32,
+          "value": 0.90625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 23.500869113581757,
+          "lo": 13.478203821887291,
+          "n": 32,
+          "value": 17.99547196696949
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8203125,
+          "lo": 0.6484375,
+          "n": 32,
+          "value": 0.734375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.6328125,
+      "34": 0.6640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8984375,
+          "lo": 0.8203125,
+          "n": 64,
+          "value": 0.859375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 208.74534372629796,
+          "lo": 182.88824149560696,
+          "n": 64,
+          "value": 195.93578893682206
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7109375,
+          "lo": 0.58203125,
+          "n": 64,
+          "value": 0.6484375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8828125,
+          "lo": 0.78515625,
+          "n": 64,
+          "value": 0.8359375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 255.11812710235517,
+          "lo": 214.24254165434604,
+          "n": 64,
+          "value": 235.36954697328838
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.6953125,
+          "lo": 0.5625,
+          "n": 64,
+          "value": 0.62890625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8984375,
+          "lo": 0.8203125,
+          "n": 64,
+          "value": 0.859375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 205.8106127472115,
+          "lo": 180.64122820135253,
+          "n": 64,
+          "value": 193.30147859864155
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7109375,
+          "lo": 0.58203125,
+          "n": 64,
+          "value": 0.6484375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.8072078657627572,
+      "lo": 0.74268810988724,
+      "n": 64,
+      "value": 0.7755693406215869
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.31656901041666663,
+      "lo": 0.25732014973958334,
+      "n": 64,
+      "value": 0.2864583333333333
+    }
+  },
+  "initial/geometry/base/0/directpath/oracle/truth/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.984375,
+        "lo": 0.94140625,
+        "n": 64,
+        "value": 0.96484375
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 15.037257502666534,
+        "lo": 10.103439314099205,
+        "n": 64,
+        "value": 12.277053790739956
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 35.751893502817374,
+        "lo": 23.456436620898614,
+        "n": 64,
+        "value": 29.418938515139494
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 211.21202881804493,
+        "lo": 190.31897850800306,
+        "n": 64,
+        "value": 200.67203376675025
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.796875,
+        "lo": 0.69140625,
+        "n": 64,
+        "value": 0.74609375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.95703125,
+        "lo": 0.89453125,
+        "n": 64,
+        "value": 0.92578125
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.73828125,
+        "lo": 0.6328125,
+        "n": 64,
+        "value": 0.6875
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.9765625,
+          "lo": 0.890625,
+          "n": 32,
+          "value": 0.9375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 20.38149922111643,
+          "lo": 10.692298347748874,
+          "n": 32,
+          "value": 14.915169936557504
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7578125,
+          "lo": 0.6015625,
+          "n": 32,
+          "value": 0.6796875
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 1.0,
+          "lo": 0.9765625,
+          "n": 32,
+          "value": 0.9921875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 10.499339016951126,
+          "lo": 8.866447339801198,
+          "n": 32,
+          "value": 9.638937644922407
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8828125,
+          "lo": 0.7421875,
+          "n": 32,
+          "value": 0.8125
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.75,
+      "34": 0.7421875
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.984375,
+          "lo": 0.94140625,
+          "n": 64,
+          "value": 0.96484375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 215.53104075977672,
+          "lo": 193.56032816364177,
+          "n": 64,
+          "value": 204.42611719249726
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.796875,
+          "lo": 0.69140625,
+          "n": 64,
+          "value": 0.74609375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.98046875,
+          "lo": 0.9296875,
+          "n": 64,
+          "value": 0.95703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 266.92316801652396,
+          "lo": 228.15413154744988,
+          "n": 64,
+          "value": 247.883241356476
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.79296875,
+          "lo": 0.6875,
+          "n": 64,
+          "value": 0.7421875
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.984375,
+          "lo": 0.94140625,
+          "n": 64,
+          "value": 0.96484375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 211.5839957206333,
+          "lo": 190.44943194612074,
+          "n": 64,
+          "value": 201.01373674174283
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.796875,
+          "lo": 0.69140625,
+          "n": 64,
+          "value": 0.74609375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.7589772031045868,
+      "lo": 0.6913298311919789,
+      "n": 64,
+      "value": 0.7250162419513799
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.38379313151041666,
+      "lo": 0.32438151041666663,
+      "n": 64,
+      "value": 0.3543294270833333
+    }
+  },
+  "initial/geometry/base/0/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.76171875,
+        "lo": 0.671875,
+        "n": 64,
+        "value": 0.71875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 58.924150528150676,
+        "lo": 42.225642059099755,
+        "n": 64,
+        "value": 50.17981602622967
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 34.09358825480018,
+        "lo": 19.88661567510745,
+        "n": 64,
+        "value": 26.628635105876374
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 176.7660806508502,
+        "lo": 148.88179601221054,
+        "n": 64,
+        "value": 162.76927199214697
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.59765625,
+        "lo": 0.4765625,
+        "n": 64,
+        "value": 0.5390625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7109375,
+        "lo": 0.625,
+        "n": 64,
+        "value": 0.66796875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5625,
+        "lo": 0.4453125,
+        "n": 64,
+        "value": 0.50390625
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7111328125000007,
+          "lo": 0.6013671875000001,
+          "n": 32,
+          "value": 0.65625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 73.99015241337565,
+          "lo": 51.913446636490335,
+          "n": 32,
+          "value": 62.794469265099906
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5390625,
+          "lo": 0.3515625,
+          "n": 32,
+          "value": 0.4453125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.84375,
+          "lo": 0.7109375,
+          "n": 32,
+          "value": 0.78125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 51.12652696175246,
+          "lo": 26.01814015642958,
+          "n": 32,
+          "value": 37.56516278735944
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7109375,
+          "lo": 0.546875,
+          "n": 32,
+          "value": 0.6328125
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.421875,
+      "34": 0.65625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.76171875,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 181.04891037127118,
+          "lo": 151.55202645808004,
+          "n": 64,
+          "value": 166.28330521007229
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.59765625,
+          "lo": 0.4765625,
+          "n": 64,
+          "value": 0.5390625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7421875,
+          "lo": 0.64453125,
+          "n": 64,
+          "value": 0.6953125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 215.56013547804014,
+          "lo": 174.89265764049833,
+          "n": 64,
+          "value": 194.88276960282747
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58203125,
+          "lo": 0.45703125,
+          "n": 64,
+          "value": 0.51953125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.76171875,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 177.62301241313025,
+          "lo": 149.15529773138587,
+          "n": 64,
+          "value": 163.5481675907613
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.59765625,
+          "lo": 0.4765625,
+          "n": 64,
+          "value": 0.5390625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.7043051630200352,
+      "lo": 0.6133273671381175,
+      "n": 64,
+      "value": 0.6601072004414164
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.43701171875,
+      "lo": 0.35074869791666663,
+      "n": 64,
+      "value": 0.39322916666666663
+    }
+  },
+  "initial/geometry/base/0/directpath/speech/camera/carry/open_gate": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8984375,
+        "lo": 0.8203125,
+        "n": 64,
+        "value": 0.859375
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 24.348647815952518,
+        "lo": 17.112506665534966,
+        "n": 64,
+        "value": 20.55412316121874
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 38.094213531198776,
+        "lo": 23.777513249720744,
+        "n": 64,
+        "value": 30.624149731183685
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 204.81462162606476,
+        "lo": 179.74776029077475,
+        "n": 64,
+        "value": 192.39496465888806
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7109375,
+        "lo": 0.58203125,
+        "n": 64,
+        "value": 0.6484375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8515625,
+        "lo": 0.765625,
+        "n": 64,
+        "value": 0.80859375
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.67578125,
+        "lo": 0.546875,
+        "n": 64,
+        "value": 0.61328125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8671875,
+          "lo": 0.7578125,
+          "n": 32,
+          "value": 0.8125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 28.41928022780849,
+          "lo": 17.992527019782756,
+          "n": 32,
+          "value": 23.11277435546799
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.65625,
+          "lo": 0.46875,
+          "n": 32,
+          "value": 0.5625
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.953125,
+          "lo": 0.8515625,
+          "n": 32,
+          "value": 0.90625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 23.500869113581757,
+          "lo": 13.478203821887291,
+          "n": 32,
+          "value": 17.99547196696949
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8203125,
+          "lo": 0.6484375,
+          "n": 32,
+          "value": 0.734375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.6328125,
+      "34": 0.6640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8984375,
+          "lo": 0.8203125,
+          "n": 64,
+          "value": 0.859375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 208.74534372629796,
+          "lo": 182.88824149560696,
+          "n": 64,
+          "value": 195.93578893682206
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7109375,
+          "lo": 0.58203125,
+          "n": 64,
+          "value": 0.6484375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8828125,
+          "lo": 0.78515625,
+          "n": 64,
+          "value": 0.8359375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 255.11812710235517,
+          "lo": 214.24254165434604,
+          "n": 64,
+          "value": 235.36954697328838
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.6953125,
+          "lo": 0.5625,
+          "n": 64,
+          "value": 0.62890625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8984375,
+          "lo": 0.8203125,
+          "n": 64,
+          "value": 0.859375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 205.8106127472115,
+          "lo": 180.64122820135253,
+          "n": 64,
+          "value": 193.30147859864155
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7109375,
+          "lo": 0.58203125,
+          "n": 64,
+          "value": 0.6484375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.8072078657627572,
+      "lo": 0.74268810988724,
+      "n": 64,
+      "value": 0.7755693406215869
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.31656901041666663,
+      "lo": 0.25732014973958334,
+      "n": 64,
+      "value": 0.2864583333333333
+    }
+  },
+  "initial/geometry/base/0/directpath/speech/camera/carry/original_edge": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5390625,
+        "lo": 0.42578125,
+        "n": 64,
+        "value": 0.48046875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 114.53070541468833,
+        "lo": 90.63172960892416,
+        "n": 64,
+        "value": 102.45991433066592
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 21.37531208053798,
+        "lo": 11.72806033386952,
+        "n": 64,
+        "value": 16.31198493315618
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 126.33505536941811,
+        "lo": 94.58337594369368,
+        "n": 64,
+        "value": 110.48917360312771
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.41806640625000036,
+        "lo": 0.30078125,
+        "n": 64,
+        "value": 0.359375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.50390625,
+        "lo": 0.39453125,
+        "n": 64,
+        "value": 0.44921875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.3984375,
+        "lo": 0.28125,
+        "n": 64,
+        "value": 0.33984375
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.484375,
+          "lo": 0.3359375,
+          "n": 32,
+          "value": 0.40625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 136.23986897459872,
+          "lo": 102.03769779009235,
+          "n": 32,
+          "value": 118.2515895279721
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.359375,
+          "lo": 0.1875,
+          "n": 32,
+          "value": 0.2734375
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.640625,
+          "lo": 0.46875,
+          "n": 32,
+          "value": 0.5546875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 104.17272426568616,
+          "lo": 69.78486186694681,
+          "n": 32,
+          "value": 86.66823913335975
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.53125,
+          "lo": 0.359375,
+          "n": 32,
+          "value": 0.4453125
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.25,
+      "34": 0.46875
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5390625,
+          "lo": 0.42578125,
+          "n": 64,
+          "value": 0.48046875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 129.26813911865338,
+          "lo": 96.77859847525951,
+          "n": 64,
+          "value": 113.0036964136707
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.41806640625000036,
+          "lo": 0.30078125,
+          "n": 64,
+          "value": 0.359375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.52734375,
+          "lo": 0.4140625,
+          "n": 64,
+          "value": 0.46875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 154.24483387402006,
+          "lo": 110.99003395416958,
+          "n": 64,
+          "value": 132.20421931737292
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.41015625,
+          "lo": 0.29296875,
+          "n": 64,
+          "value": 0.3515625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.53515625,
+          "lo": 0.41796875,
+          "n": 64,
+          "value": 0.4765625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 126.96464772724312,
+          "lo": 94.37845406240513,
+          "n": 64,
+          "value": 110.607637413068
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.41796875,
+          "lo": 0.296875,
+          "n": 64,
+          "value": 0.35546875
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.4745035282758181,
+      "lo": 0.36917292425787307,
+      "n": 64,
+      "value": 0.42247923492686823
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6619466145833333,
+      "lo": 0.5675374348958333,
+      "n": 64,
+      "value": 0.6144205729166666
+    }
+  },
+  "initial/noop/base/0/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 224.18599681295746,
+        "lo": 201.72737112734467,
+        "n": 64,
+        "value": 212.95401063980535
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.07090484488564976,
+        "lo": 0.010461443913918622,
+        "n": 64,
+        "value": 0.03412475501216039
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": -0.00029665243346244097,
+        "lo": -0.011824999819509685,
+        "n": 64,
+        "value": -0.0049224181566387415
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 237.19553471310064,
+          "lo": 202.71002882509492,
+          "n": 32,
+          "value": 219.49374658288434
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 220.75337952992413,
+          "lo": 192.31861379666952,
+          "n": 32,
+          "value": 206.41427469672635
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.0,
+      "34": 0.0
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.0,
+      "lo": 0.0,
+      "n": 64,
+      "value": 0.0
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 1.0,
+      "lo": 1.0,
+      "n": 64,
+      "value": 1.0
+    }
+  },
+  "initial/straight/base/0/directpath/speech/camera/carry": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.01171875,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.00390625
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 222.92255417996785,
+        "lo": 199.55585839561536,
+        "n": 64,
+        "value": 211.1127689058776
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 18.304267945083318,
+        "lo": 8.029198331324356,
+        "n": 64,
+        "value": 12.774106325702071
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 5.104973895868171,
+        "lo": -1.436851278776885,
+        "n": 64,
+        "value": 1.8363192939432338
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.01171875,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.00390625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0234375,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0078125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 235.64705328863056,
+          "lo": 200.46306621843542,
+          "n": 32,
+          "value": 217.6062672660919
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0234375,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0078125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 219.87635427358327,
+          "lo": 189.8660524682782,
+          "n": 32,
+          "value": 204.6192705456633
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.0078125,
+      "34": 0.0
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 5.733508172124857,
+          "lo": -0.42931233565468574,
+          "n": 64,
+          "value": 2.74536063807318
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 11.052740598461243,
+          "lo": 1.364310658937029,
+          "n": 64,
+          "value": 5.720179462514352
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 6.310584546008614,
+          "lo": -0.8079829160124063,
+          "n": 64,
+          "value": 2.693777460081037
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.01171875,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.00390625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.19119430900864245,
+      "lo": 0.15607805321337764,
+      "n": 64,
+      "value": 0.173201196210357
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.1953125,
+      "lo": 0.125,
+      "n": 64,
+      "value": 0.16015625
+    }
+  },
+  "visited-isolated/gpt2/protected/1411/directpath/oracle/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8907226562500004,
+        "lo": 0.81640625,
+        "n": 64,
+        "value": 0.85546875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 23.4085096576905,
+        "lo": 16.76216809547668,
+        "n": 64,
+        "value": 19.94892664993131
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 36.94278246341807,
+        "lo": 23.04109245976029,
+        "n": 64,
+        "value": 29.50977824071427
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 204.35219628598134,
+        "lo": 181.44286624483357,
+        "n": 64,
+        "value": 193.00016117631458
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.703125,
+        "lo": 0.578125,
+        "n": 64,
+        "value": 0.640625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.8828125,
+        "lo": 0.80078125,
+        "n": 64,
+        "value": 0.84375
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.68359375,
+        "lo": 0.55859375,
+        "n": 64,
+        "value": 0.62109375
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.890625,
+          "lo": 0.7734375,
+          "n": 32,
+          "value": 0.8359375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 28.007965217261702,
+          "lo": 17.09308991388525,
+          "n": 32,
+          "value": 22.370818387116742
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6640625,
+          "lo": 0.4765625,
+          "n": 32,
+          "value": 0.5703125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.921875,
+          "lo": 0.828125,
+          "n": 32,
+          "value": 0.875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 21.266220484676523,
+          "lo": 14.206968891494398,
+          "n": 32,
+          "value": 17.527034912745876
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.796875,
+          "lo": 0.6328125,
+          "n": 32,
+          "value": 0.7109375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.6328125,
+      "34": 0.6484375
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8907226562500004,
+          "lo": 0.81640625,
+          "n": 64,
+          "value": 0.85546875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 207.45703579969472,
+          "lo": 183.9548577553103,
+          "n": 64,
+          "value": 195.8343588801199
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.703125,
+          "lo": 0.578125,
+          "n": 64,
+          "value": 0.640625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.88671875,
+          "lo": 0.80859375,
+          "n": 64,
+          "value": 0.84765625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 253.0367895110487,
+          "lo": 214.35619803565942,
+          "n": 64,
+          "value": 234.32769887108407
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.6915039062500004,
+          "lo": 0.5703125,
+          "n": 64,
+          "value": 0.6328125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.8907226562500004,
+          "lo": 0.81640625,
+          "n": 64,
+          "value": 0.85546875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 206.07548890342858,
+          "lo": 182.86290939670948,
+          "n": 64,
+          "value": 194.5678181243693
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.703125,
+          "lo": 0.578125,
+          "n": 64,
+          "value": 0.640625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.7974193161382572,
+      "lo": 0.7213411465476384,
+      "n": 64,
+      "value": 0.7601194033049978
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.38363037109375003,
+      "lo": 0.31282552083333337,
+      "n": 64,
+      "value": 0.3483072916666667
+    }
+  },
+  "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7578125,
+        "lo": 0.671875,
+        "n": 64,
+        "value": 0.71484375
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 58.96110763376896,
+        "lo": 42.56414313390451,
+        "n": 64,
+        "value": 50.38725360350327
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 32.71102237541799,
+        "lo": 18.985588661859346,
+        "n": 64,
+        "value": 25.352322185856842
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 175.69198199998937,
+        "lo": 149.34075251330796,
+        "n": 64,
+        "value": 162.56183439691085
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5859375,
+        "lo": 0.47265625,
+        "n": 64,
+        "value": 0.53125
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7421875,
+        "lo": 0.66015625,
+        "n": 64,
+        "value": 0.703125
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.57421875,
+        "lo": 0.45703125,
+        "n": 64,
+        "value": 0.515625
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7421875,
+          "lo": 0.6328125,
+          "n": 32,
+          "value": 0.6875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 74.92523356286256,
+          "lo": 50.948986751745906,
+          "n": 32,
+          "value": 62.94348649817039
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5546875,
+          "lo": 0.3828125,
+          "n": 32,
+          "value": 0.46875
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8046875,
+          "lo": 0.671875,
+          "n": 32,
+          "value": 0.7421875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 50.76633411404146,
+          "lo": 26.918120256050315,
+          "n": 32,
+          "value": 37.83102070883615
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.671875,
+          "lo": 0.515625,
+          "n": 32,
+          "value": 0.59375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.421875,
+      "34": 0.640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7578125,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71484375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 179.13120730951846,
+          "lo": 151.5847312038204,
+          "n": 64,
+          "value": 165.38211217562093
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5859375,
+          "lo": 0.47265625,
+          "n": 64,
+          "value": 0.53125
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.6640625,
+          "n": 64,
+          "value": 0.70703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 213.22932096324507,
+          "lo": 174.6400903803135,
+          "n": 64,
+          "value": 193.6115322198475
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.578125,
+          "lo": 0.46484375,
+          "n": 64,
+          "value": 0.5234375
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7578125,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71484375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 177.5016803493088,
+          "lo": 150.42917551399455,
+          "n": 64,
+          "value": 163.99901292174945
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5859375,
+          "lo": 0.47265625,
+          "n": 64,
+          "value": 0.53125
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.686968622286804,
+      "lo": 0.5926710296262172,
+      "n": 64,
+      "value": 0.6404046568204649
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.49414062499999994,
+      "lo": 0.4088541666666667,
+      "n": 64,
+      "value": 0.45068359375
+    }
+  },
+  "visited-isolated/gpt2/protected/1411/directpath/speech/camera/carry/contact/mean_field": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.734375,
+        "lo": 0.6484375,
+        "n": 64,
+        "value": 0.69140625
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 61.15548616106281,
+        "lo": 44.55049245560758,
+        "n": 64,
+        "value": 52.35440166546823
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 34.69321795291435,
+        "lo": 21.14038339843931,
+        "n": 64,
+        "value": 27.523058932433813
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 173.71203685252112,
+        "lo": 147.47451335970254,
+        "n": 64,
+        "value": 160.59468629828189
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.54296875,
+        "lo": 0.43359375,
+        "n": 64,
+        "value": 0.48828125
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.61328125,
+        "lo": 0.50390625,
+        "n": 64,
+        "value": 0.5625
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.4375,
+        "lo": 0.32421875,
+        "n": 64,
+        "value": 0.3828125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6875,
+          "lo": 0.5625,
+          "n": 32,
+          "value": 0.625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 75.91745190047732,
+          "lo": 52.22783735548546,
+          "n": 32,
+          "value": 64.02780093230831
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.4609375,
+          "lo": 0.3203125,
+          "n": 32,
+          "value": 0.390625
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8203125,
+          "lo": 0.6953125,
+          "n": 32,
+          "value": 0.7578125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 53.67215104648153,
+          "lo": 30.04279300267001,
+          "n": 32,
+          "value": 40.68100239862815
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.671875,
+          "lo": 0.5,
+          "n": 32,
+          "value": 0.5859375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.359375,
+      "34": 0.6171875
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.734375,
+          "lo": 0.6484375,
+          "n": 64,
+          "value": 0.69140625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 177.14898135947976,
+          "lo": 150.42308556401167,
+          "n": 64,
+          "value": 163.9549979550452
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.54296875,
+          "lo": 0.43359375,
+          "n": 64,
+          "value": 0.48828125
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.72265625,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.67578125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 211.37387764325695,
+          "lo": 172.07640116760246,
+          "n": 64,
+          "value": 191.5883092693207
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.52734375,
+          "lo": 0.41796875,
+          "n": 64,
+          "value": 0.47265625
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.734375,
+          "lo": 0.6484375,
+          "n": 64,
+          "value": 0.69140625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 175.27623409392845,
+          "lo": 148.9829552129791,
+          "n": 64,
+          "value": 162.32053207528452
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.54296875,
+          "lo": 0.43359375,
+          "n": 64,
+          "value": 0.48828125
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.8173357471561759,
+      "lo": 0.717535754936398,
+      "n": 64,
+      "value": 0.7684271521866322
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.39860432942708335,
+      "lo": 0.3125,
+      "n": 64,
+      "value": 0.35530598958333337
+    }
+  },
+  "visited-isolated/gpt2/protected/1412/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.75,
+        "lo": 0.65625,
+        "n": 64,
+        "value": 0.703125
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 59.655042958161175,
+        "lo": 42.55049383424421,
+        "n": 64,
+        "value": 50.7178521734204
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 33.80589992035323,
+        "lo": 19.42307738274249,
+        "n": 64,
+        "value": 26.192262332684844
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 176.09517908967973,
+        "lo": 148.4047336751246,
+        "n": 64,
+        "value": 162.23123582312837
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.57421875,
+        "lo": 0.45703125,
+        "n": 64,
+        "value": 0.515625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.71875,
+        "lo": 0.62109375,
+        "n": 64,
+        "value": 0.671875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5546875,
+        "lo": 0.4375,
+        "n": 64,
+        "value": 0.49609375
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.71875,
+          "lo": 0.59375,
+          "n": 32,
+          "value": 0.65625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 76.59971028256223,
+          "lo": 52.04649142542621,
+          "n": 32,
+          "value": 64.28132793553232
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5234375,
+          "lo": 0.3515625,
+          "n": 32,
+          "value": 0.4375
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8125,
+          "lo": 0.6796875,
+          "n": 32,
+          "value": 0.75
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 50.64510258325754,
+          "lo": 26.050821139870095,
+          "n": 32,
+          "value": 37.154376411308476
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.671875,
+          "lo": 0.515625,
+          "n": 32,
+          "value": 0.59375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4296875,
+      "34": 0.6015625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.65625,
+          "n": 64,
+          "value": 0.703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 179.85329331122557,
+          "lo": 151.03329336537854,
+          "n": 64,
+          "value": 165.53387068370284
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.57421875,
+          "lo": 0.45703125,
+          "n": 64,
+          "value": 0.515625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7265625,
+          "lo": 0.62109375,
+          "n": 64,
+          "value": 0.67578125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 216.11062451581802,
+          "lo": 174.79077192384693,
+          "n": 64,
+          "value": 194.85554472294098
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.55078125,
+          "lo": 0.43359375,
+          "n": 64,
+          "value": 0.4921875
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.74609375,
+          "lo": 0.65234375,
+          "n": 64,
+          "value": 0.69921875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 176.76679138493228,
+          "lo": 148.4750684027972,
+          "n": 64,
+          "value": 162.6933361326337
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.57421875,
+          "lo": 0.45703125,
+          "n": 64,
+          "value": 0.515625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6674967086306424,
+      "lo": 0.5740342568751657,
+      "n": 64,
+      "value": 0.6215792879229411
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.46061604817708335,
+      "lo": 0.3712565104166667,
+      "n": 64,
+      "value": 0.4156901041666667
+    }
+  },
+  "visited-isolated/gpt2/protected/1413/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.75,
+        "lo": 0.65234375,
+        "n": 64,
+        "value": 0.703125
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 60.23563044807361,
+        "lo": 43.033495150950785,
+        "n": 64,
+        "value": 51.32846711876482
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 32.91924530808829,
+        "lo": 18.837392814300074,
+        "n": 64,
+        "value": 25.349810103291624
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 174.85754175504553,
+        "lo": 148.11743396421662,
+        "n": 64,
+        "value": 161.6206213075202
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.58203125,
+        "lo": 0.46474609375000003,
+        "n": 64,
+        "value": 0.5234375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.73828125,
+        "lo": 0.640625,
+        "n": 64,
+        "value": 0.69140625
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.58203125,
+        "lo": 0.46474609375000003,
+        "n": 64,
+        "value": 0.5234375
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7109375,
+          "lo": 0.5859375,
+          "n": 32,
+          "value": 0.6484375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 77.4772582933565,
+          "lo": 52.7425080902276,
+          "n": 32,
+          "value": 65.32658891501342
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5234375,
+          "lo": 0.34375,
+          "n": 32,
+          "value": 0.4375
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.828125,
+          "lo": 0.6796875,
+          "n": 32,
+          "value": 0.7578125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 50.751800805710445,
+          "lo": 25.966647601921977,
+          "n": 32,
+          "value": 37.33034532251622
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6875,
+          "lo": 0.53125,
+          "n": 32,
+          "value": 0.609375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4375,
+      "34": 0.609375
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.65234375,
+          "n": 64,
+          "value": 0.703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 179.04017698222106,
+          "lo": 150.9375537745882,
+          "n": 64,
+          "value": 165.05702209451556
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58203125,
+          "lo": 0.46474609375000003,
+          "n": 64,
+          "value": 0.5234375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.73828125,
+          "lo": 0.6328125,
+          "n": 64,
+          "value": 0.6875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 214.04171818168152,
+          "lo": 173.06142447371258,
+          "n": 64,
+          "value": 193.27226807854458
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.56640625,
+          "lo": 0.4453125,
+          "n": 64,
+          "value": 0.5078125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.65234375,
+          "n": 64,
+          "value": 0.703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 175.10117593687937,
+          "lo": 147.82662807853058,
+          "n": 64,
+          "value": 161.6135385402231
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58203125,
+          "lo": 0.46474609375000003,
+          "n": 64,
+          "value": 0.5234375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6592122094079969,
+      "lo": 0.5696266032158747,
+      "n": 64,
+      "value": 0.6156072685844265
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.4568684895833333,
+      "lo": 0.37125244140625,
+      "n": 64,
+      "value": 0.4134114583333333
+    }
+  },
+  "visited-isolated/raw/base/0/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.72265625,
+        "lo": 0.62890625,
+        "n": 64,
+        "value": 0.67578125
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 64.60245954052937,
+        "lo": 47.216908332543994,
+        "n": 64,
+        "value": 55.658268434285674
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 32.89118298238037,
+        "lo": 20.15256768093862,
+        "n": 64,
+        "value": 26.096593059382418
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 170.99819194481825,
+        "lo": 143.6850046771724,
+        "n": 64,
+        "value": 157.29081965400837
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.546875,
+        "lo": 0.4453125,
+        "n": 64,
+        "value": 0.49609375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.6758789062500004,
+        "lo": 0.58203125,
+        "n": 64,
+        "value": 0.62890625
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5,
+        "lo": 0.3984375,
+        "n": 64,
+        "value": 0.44921875
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6796875,
+          "lo": 0.5390625,
+          "n": 32,
+          "value": 0.609375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 83.46371069728775,
+          "lo": 57.50473942307508,
+          "n": 32,
+          "value": 70.69908336598019
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5,
+          "lo": 0.34375,
+          "n": 32,
+          "value": 0.421875
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8046875,
+          "lo": 0.6796875,
+          "n": 32,
+          "value": 0.7421875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 53.868503601154316,
+          "lo": 29.577095632515693,
+          "n": 32,
+          "value": 40.61745350259116
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6328125,
+          "lo": 0.5,
+          "n": 32,
+          "value": 0.5703125
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4140625,
+      "34": 0.578125
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.72265625,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.67578125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 174.57448326408382,
+          "lo": 146.12506930714346,
+          "n": 64,
+          "value": 160.431778249972
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.546875,
+          "lo": 0.4453125,
+          "n": 64,
+          "value": 0.49609375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.71484375,
+          "lo": 0.61328125,
+          "n": 64,
+          "value": 0.6640625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 209.42452221919723,
+          "lo": 168.932579213336,
+          "n": 64,
+          "value": 188.84648483310684
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.53515625,
+          "lo": 0.4375,
+          "n": 64,
+          "value": 0.484375
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.72265625,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.67578125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 172.35217502924058,
+          "lo": 144.24949242554987,
+          "n": 64,
+          "value": 158.27819705248203
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.546875,
+          "lo": 0.4453125,
+          "n": 64,
+          "value": 0.49609375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.7321991727338173,
+      "lo": 0.6435133349761599,
+      "n": 64,
+      "value": 0.688086501089856
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.4029947916666667,
+      "lo": 0.31916910807291665,
+      "n": 64,
+      "value": 0.361328125
+    }
+  },
+  "visited-isolated/transport/protected/1411/directpath/oracle/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.92578125,
+        "lo": 0.8515625,
+        "n": 64,
+        "value": 0.890625
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 19.749870478682396,
+        "lo": 14.430366052619092,
+        "n": 64,
+        "value": 16.989149258506586
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 38.179651974969026,
+        "lo": 23.7942157702672,
+        "n": 64,
+        "value": 30.648315235918624
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 207.72458948922576,
+        "lo": 184.34183862082136,
+        "n": 64,
+        "value": 195.95993839902803
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.71484375,
+        "lo": 0.5859375,
+        "n": 64,
+        "value": 0.65234375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.91015625,
+        "lo": 0.83203125,
+        "n": 64,
+        "value": 0.87109375
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.69140625,
+        "lo": 0.56640625,
+        "n": 64,
+        "value": 0.62890625
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.9140625,
+          "lo": 0.7890625,
+          "n": 32,
+          "value": 0.8515625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 23.812136038384324,
+          "lo": 14.59437847179288,
+          "n": 32,
+          "value": 19.031999791423004
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.671875,
+          "lo": 0.46875,
+          "n": 32,
+          "value": 0.5703125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.9609375,
+          "lo": 0.890625,
+          "n": 32,
+          "value": 0.9296875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 17.96092067340851,
+          "lo": 12.246233798305184,
+          "n": 32,
+          "value": 14.946298725590168
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8046875,
+          "lo": 0.65625,
+          "n": 32,
+          "value": 0.734375
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.6328125,
+      "34": 0.671875
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.92578125,
+          "lo": 0.8515625,
+          "n": 64,
+          "value": 0.890625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 210.70053708245382,
+          "lo": 186.6606049743723,
+          "n": 64,
+          "value": 198.6992746208216
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.71484375,
+          "lo": 0.5859375,
+          "n": 64,
+          "value": 0.65234375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.921875,
+          "lo": 0.84375,
+          "n": 64,
+          "value": 0.8828125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 257.6245864345253,
+          "lo": 218.68005079639943,
+          "n": 64,
+          "value": 238.83337908432622
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.70703125,
+          "lo": 0.578125,
+          "n": 64,
+          "value": 0.64453125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.92578125,
+          "lo": 0.8515625,
+          "n": 64,
+          "value": 0.890625
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 208.54461041350305,
+          "lo": 185.66138014863327,
+          "n": 64,
+          "value": 197.0361980895632
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.71484375,
+          "lo": 0.5859375,
+          "n": 64,
+          "value": 0.65234375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.792006035882514,
+      "lo": 0.7226008019904839,
+      "n": 64,
+      "value": 0.7561872993828729
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.38314615885416675,
+      "lo": 0.32307942708333337,
+      "n": 64,
+      "value": 0.3536783854166667
+    }
+  },
+  "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7890625,
+        "lo": 0.70703125,
+        "n": 64,
+        "value": 0.75
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 56.2205480044895,
+        "lo": 39.386246385413415,
+        "n": 64,
+        "value": 47.37404938373402
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 34.35883161679309,
+        "lo": 20.12276734176807,
+        "n": 64,
+        "value": 26.696754102671335
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 179.07154569293198,
+        "lo": 151.7283666824369,
+        "n": 64,
+        "value": 165.57503804506268
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.59765625,
+        "lo": 0.48046875,
+        "n": 64,
+        "value": 0.5390625
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7734375,
+        "lo": 0.6875,
+        "n": 64,
+        "value": 0.73046875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.57421875,
+        "lo": 0.4609375,
+        "n": 64,
+        "value": 0.51953125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7501953125000007,
+          "lo": 0.6328125,
+          "n": 32,
+          "value": 0.6953125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 71.8566379715071,
+          "lo": 47.96169342640724,
+          "n": 32,
+          "value": 59.74329375430898
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5390625,
+          "lo": 0.3671875,
+          "n": 32,
+          "value": 0.453125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8671875,
+          "lo": 0.7421875,
+          "n": 32,
+          "value": 0.8046875
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 48.39610605358757,
+          "lo": 23.86222387531234,
+          "n": 32,
+          "value": 35.00480501315906
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.703125,
+          "lo": 0.546875,
+          "n": 32,
+          "value": 0.625
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4140625,
+      "34": 0.6640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7890625,
+          "lo": 0.70703125,
+          "n": 64,
+          "value": 0.75
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 182.5643180750376,
+          "lo": 153.9955504020952,
+          "n": 64,
+          "value": 168.4529049741741
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.59765625,
+          "lo": 0.48046875,
+          "n": 64,
+          "value": 0.5390625
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.78515625,
+          "lo": 0.6953125,
+          "n": 64,
+          "value": 0.7421875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 218.17676520958005,
+          "lo": 178.3706115620248,
+          "n": 64,
+          "value": 198.00189289503578
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58984375,
+          "lo": 0.47265625,
+          "n": 64,
+          "value": 0.53125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7890625,
+          "lo": 0.70703125,
+          "n": 64,
+          "value": 0.75
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 180.2608554355288,
+          "lo": 152.59611621349336,
+          "n": 64,
+          "value": 166.49253700575173
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.59765625,
+          "lo": 0.48046875,
+          "n": 64,
+          "value": 0.5390625
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6849405496905092,
+      "lo": 0.5933185519796098,
+      "n": 64,
+      "value": 0.6397827010368928
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.4931640625,
+      "lo": 0.4156901041666667,
+      "n": 64,
+      "value": 0.4539388020833333
+    }
+  },
+  "visited-isolated/transport/protected/1411/directpath/speech/camera/carry/contact/mean_field": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.71484375,
+        "lo": 0.62890625,
+        "n": 64,
+        "value": 0.671875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 64.71802741209558,
+        "lo": 47.49404882741146,
+        "n": 64,
+        "value": 55.79505467085255
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 36.50556673739566,
+        "lo": 22.946501124686634,
+        "n": 64,
+        "value": 29.24237575219604
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 170.42432291709702,
+        "lo": 143.91215672148974,
+        "n": 64,
+        "value": 157.15403317881282
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5234375,
+        "lo": 0.41015625,
+        "n": 64,
+        "value": 0.46875
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.6015625,
+        "lo": 0.48046875,
+        "n": 64,
+        "value": 0.54296875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.41796875,
+        "lo": 0.30859375,
+        "n": 64,
+        "value": 0.36328125
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6953125,
+          "lo": 0.5779296875000001,
+          "n": 32,
+          "value": 0.6328125
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 81.4409293769586,
+          "lo": 56.23472112524723,
+          "n": 32,
+          "value": 68.7911180921219
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.484375,
+          "lo": 0.3125,
+          "n": 32,
+          "value": 0.3984375
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.78125,
+          "lo": 0.640625,
+          "n": 32,
+          "value": 0.7109375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 55.83981997069715,
+          "lo": 31.754272402804418,
+          "n": 32,
+          "value": 42.798991249583196
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6171875,
+          "lo": 0.4609375,
+          "n": 32,
+          "value": 0.5390625
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.34375,
+      "34": 0.59375
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.71484375,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.671875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 174.5487581648831,
+          "lo": 147.7351569088114,
+          "n": 64,
+          "value": 161.14319564894686
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5234375,
+          "lo": 0.41015625,
+          "n": 64,
+          "value": 0.46875
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.7109375,
+          "lo": 0.625,
+          "n": 64,
+          "value": 0.66796875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 208.05824321255386,
+          "lo": 168.0968345758174,
+          "n": 64,
+          "value": 187.90103730225383
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.51953125,
+          "lo": 0.41005859375000003,
+          "n": 64,
+          "value": 0.46484375
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.71484375,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.671875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 171.41276372115044,
+          "lo": 145.43889414526348,
+          "n": 64,
+          "value": 158.49941408032464
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5234375,
+          "lo": 0.41015625,
+          "n": 64,
+          "value": 0.46875
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.8246563596272608,
+      "lo": 0.7281182038685075,
+      "n": 64,
+      "value": 0.7763564517954364
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.38493245442708335,
+      "lo": 0.30256754557291665,
+      "n": 64,
+      "value": 0.34391276041666663
+    }
+  },
+  "visited-isolated/transport/protected/1411/directpath/speech/camera/reset/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 224.06717139638204,
+        "lo": 201.55490749275486,
+        "n": 64,
+        "value": 212.7704004815314
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.9537366189217121,
+        "lo": 0.11264720780092968,
+        "n": 64,
+        "value": 0.48798906912297935
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5504820655914955,
+        "lo": -0.01258135016541928,
+        "n": 64,
+        "value": 0.17868774011731148
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 237.1970400796272,
+          "lo": 202.7229584447923,
+          "n": 32,
+          "value": 219.50216527329758
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 220.17359602468787,
+          "lo": 191.90914419305045,
+          "n": 32,
+          "value": 206.03863568976521
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 32,
+          "value": 0.0
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.0,
+      "34": 0.0
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5602173550869338,
+          "lo": 0.00045122433220967656,
+          "n": 64,
+          "value": 0.18950962112285197
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 1.0328244374250062,
+          "lo": -0.022553409507963806,
+          "n": 64,
+          "value": 0.3347857855260372
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.6941499006643426,
+          "lo": -0.0010316536645404994,
+          "n": 64,
+          "value": 0.2573922974988818
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.0,
+          "lo": 0.0,
+          "n": 64,
+          "value": 0.0
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.045465491797222056,
+      "lo": 0.04170515198784415,
+      "n": 64,
+      "value": 0.04362265572126489
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.9664713541666667,
+      "lo": 0.9635416666666667,
+      "n": 64,
+      "value": 0.9650065104166667
+    }
+  },
+  "visited-isolated/transport/protected/1412/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.76171875,
+        "lo": 0.671875,
+        "n": 64,
+        "value": 0.71875
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 57.825541927365975,
+        "lo": 41.450899544599906,
+        "n": 64,
+        "value": 49.23664718853615
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 33.76924348235541,
+        "lo": 19.595566695153245,
+        "n": 64,
+        "value": 26.225482827116508
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 177.0995673341531,
+        "lo": 150.21313167962944,
+        "n": 64,
+        "value": 163.7124407570809
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.5860351562500004,
+        "lo": 0.46484375,
+        "n": 64,
+        "value": 0.52734375
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.7461914062500004,
+        "lo": 0.65625,
+        "n": 64,
+        "value": 0.703125
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.57421875,
+        "lo": 0.453125,
+        "n": 64,
+        "value": 0.515625
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.7109375,
+          "lo": 0.5859375,
+          "n": 32,
+          "value": 0.6484375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 73.97549372763024,
+          "lo": 51.91531812561152,
+          "n": 32,
+          "value": 62.62835824782087
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.5234375,
+          "lo": 0.34375,
+          "n": 32,
+          "value": 0.4375
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8515625,
+          "lo": 0.71875,
+          "n": 32,
+          "value": 0.7890625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 49.337574835294625,
+          "lo": 24.609476980322142,
+          "n": 32,
+          "value": 35.84493612925144
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6953125,
+          "lo": 0.53125,
+          "n": 32,
+          "value": 0.6171875
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.4140625,
+      "34": 0.640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.76171875,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 181.00482180509516,
+          "lo": 152.58780219061236,
+          "n": 64,
+          "value": 167.1400216141592
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5860351562500004,
+          "lo": 0.46484375,
+          "n": 64,
+          "value": 0.52734375
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.6484375,
+          "n": 64,
+          "value": 0.69921875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 215.64088087985738,
+          "lo": 175.7153693276564,
+          "n": 64,
+          "value": 195.75450959337104
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.56640625,
+          "lo": 0.44921875,
+          "n": 64,
+          "value": 0.5078125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.76171875,
+          "lo": 0.671875,
+          "n": 64,
+          "value": 0.71875
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 178.05338583641515,
+          "lo": 150.38357212050641,
+          "n": 64,
+          "value": 164.3350376393755
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.5860351562500004,
+          "lo": 0.46484375,
+          "n": 64,
+          "value": 0.52734375
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6744974887638818,
+      "lo": 0.5862999365330325,
+      "n": 64,
+      "value": 0.6315001398324966
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.45540771484375003,
+      "lo": 0.37255859375,
+      "n": 64,
+      "value": 0.41324869791666663
+    }
+  },
+  "visited-isolated/transport/protected/1413/directpath/speech/camera/carry/contact": {
+    "absolute": {
+      "arrival": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.75,
+        "lo": 0.66015625,
+        "n": 64,
+        "value": 0.70703125
+      },
+      "final_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 57.582815033822506,
+        "lo": 40.71713571048576,
+        "n": 64,
+        "value": 48.71389789286695
+      },
+      "other_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 32.43950398838731,
+        "lo": 19.2234984503594,
+        "n": 64,
+        "value": 25.45092984767111
+      },
+      "progress_mm": {
+        "families": 4,
+        "groups": 64,
+        "hi": 177.78595681666047,
+        "lo": 150.3621342824772,
+        "n": 64,
+        "value": 164.23518997908104
+      },
+      "success": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.58984375,
+        "lo": 0.47265625,
+        "n": 64,
+        "value": 0.53125
+      },
+      "terminal": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.74609375,
+        "lo": 0.65234375,
+        "n": 64,
+        "value": 0.69921875
+      },
+      "terminal_selective": {
+        "families": 4,
+        "groups": 64,
+        "hi": 0.58203125,
+        "lo": 0.46484375,
+        "n": 64,
+        "value": 0.5234375
+      }
+    },
+    "by_condition": {
+      "nominal": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.703125,
+          "lo": 0.578125,
+          "n": 32,
+          "value": 0.640625
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 74.26994335019117,
+          "lo": 50.102594838131154,
+          "n": 32,
+          "value": 61.94133575536398
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.53125,
+          "lo": 0.359375,
+          "n": 32,
+          "value": 0.4453125
+        }
+      },
+      "shift": {
+        "arrival": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.8359375,
+          "lo": 0.703125,
+          "n": 32,
+          "value": 0.7734375
+        },
+        "final_mm": {
+          "families": 2,
+          "groups": 32,
+          "hi": 49.08135052342004,
+          "lo": 24.169222574482774,
+          "n": 32,
+          "value": 35.486460030369926
+        },
+        "success": {
+          "families": 2,
+          "groups": 32,
+          "hi": 0.6955078125000007,
+          "lo": 0.53125,
+          "n": 32,
+          "value": 0.6171875
+        }
+      }
+    },
+    "by_speaker": {
+      "33": 0.421875,
+      "34": 0.640625
+    },
+    "correct_over": {
+      "both_wrong": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.66015625,
+          "n": 64,
+          "value": 0.70703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 182.66332816076556,
+          "lo": 153.6185125766906,
+          "n": 64,
+          "value": 168.3858304027126
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58984375,
+          "lo": 0.47265625,
+          "n": 64,
+          "value": 0.53125
+        }
+      },
+      "wrong_address": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.734375,
+          "lo": 0.62890625,
+          "n": 64,
+          "value": 0.68359375
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 217.16396006556806,
+          "lo": 176.34272384804035,
+          "n": 64,
+          "value": 196.2616409587099
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.56640625,
+          "lo": 0.44921875,
+          "n": 64,
+          "value": 0.5078125
+        }
+      },
+      "wrong_color": {
+        "arrival": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.75,
+          "lo": 0.66015625,
+          "n": 64,
+          "value": 0.70703125
+        },
+        "final_mm": {
+          "families": 4,
+          "groups": 64,
+          "hi": 178.17400930105123,
+          "lo": 150.43985249562866,
+          "n": 64,
+          "value": 164.48557106241424
+        },
+        "success": {
+          "families": 4,
+          "groups": 64,
+          "hi": 0.58984375,
+          "lo": 0.47265625,
+          "n": 64,
+          "value": 0.53125
+        }
+      }
+    },
+    "effort": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.6528935114401975,
+      "lo": 0.5605469995847671,
+      "n": 64,
+      "value": 0.6075343714328483
+    },
+    "noop": {
+      "families": 4,
+      "groups": 64,
+      "hi": 0.47721761067708335,
+      "lo": 0.3896484375,
+      "n": 64,
+      "value": 0.43310546875000006
+    }
+  }
+}

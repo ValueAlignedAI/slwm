@@ -1,0 +1,3249 @@
+{
+  "development": {
+    "learner_over_one_step": {
+      "families": 3,
+      "groups": 32,
+      "hi": 0.2112373803237764,
+      "lo": 0.0834564426719832,
+      "n": 32,
+      "value": 0.14646464646464646
+    },
+    "learner_over_teacher": {
+      "families": 3,
+      "groups": 32,
+      "hi": 0.04318497670271126,
+      "lo": -0.028923611793046176,
+      "n": 32,
+      "value": 0.008964646464646474
+    },
+    "teacher_over_one_step": {
+      "families": 3,
+      "groups": 32,
+      "hi": 0.2113699574023485,
+      "lo": 0.06641414388626193,
+      "n": 32,
+      "value": 0.1375
+    }
+  },
+  "gate": true,
+  "held": {
+    "fresh": {
+      "additional_executions": 256,
+      "effects": {
+        "gpt2": {
+          "arrival": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.015625,
+              "lo": -0.0546875,
+              "n": 32,
+              "value": -0.015625
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.7421875,
+              "lo": 0.6484375,
+              "n": 32,
+              "value": 0.6953125
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.7578125,
+              "lo": 0.6640625,
+              "n": 32,
+              "value": 0.7109375
+            }
+          },
+          "final_mm": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": -0.6984091478216213,
+              "lo": -5.875700315823451,
+              "n": 32,
+              "value": -3.143848175113817
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 62.289732209990234,
+              "lo": 45.83839758010981,
+              "n": 32,
+              "value": 53.79195211980914
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 59.571519784594784,
+              "lo": 42.331204341849116,
+              "n": 32,
+              "value": 50.64810394469532
+            }
+          },
+          "success": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.0234375,
+              "lo": -0.0390625,
+              "n": 32,
+              "value": -0.0078125
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.6015625,
+              "lo": 0.4453125,
+              "n": 32,
+              "value": 0.5234375
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.609375,
+              "lo": 0.4453125,
+              "n": 32,
+              "value": 0.53125
+            }
+          }
+        },
+        "transport": {
+          "arrival": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.03125,
+              "lo": -0.03125,
+              "n": 32,
+              "value": 0.0
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.7734375,
+              "lo": 0.6640625,
+              "n": 32,
+              "value": 0.71875
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.765625,
+              "lo": 0.671875,
+              "n": 32,
+              "value": 0.71875
+            }
+          },
+          "final_mm": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": -0.6690208478858022,
+              "lo": -5.282393422362475,
+              "n": 32,
+              "value": -2.825499807158849
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 61.73482324799125,
+              "lo": 44.59093133719989,
+              "n": 32,
+              "value": 52.80061120583923
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 59.04201785937744,
+              "lo": 41.62717473013231,
+              "n": 32,
+              "value": 49.97511139868038
+            }
+          },
+          "success": {
+            "improvement": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.03125,
+              "lo": -0.046875,
+              "n": 32,
+              "value": -0.0078125
+            },
+            "new": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.6015625,
+              "lo": 0.4453125,
+              "n": 32,
+              "value": 0.5234375
+            },
+            "original": {
+              "families": 4,
+              "groups": 32,
+              "hi": 0.6171875,
+              "lo": 0.4453125,
+              "n": 32,
+              "value": 0.53125
+            }
+          }
+        }
+      },
+      "rows": [
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 90.01613105647266,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 91.64753323420882,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 93.11125660315156,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 89.98969389358535,
+              "success": 0.5
+            }
+          },
+          "seed": 260000,
+          "shift": false,
+          "speaker": 33,
+          "start": "e29b3cf4154743e449de0f52826dd869f045594e6dedbbf736566c6c8b52bab5"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 58.39408643078059,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 59.9552090279758,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 41.00526683032513,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 36.79308446589857,
+              "success": 0.75
+            }
+          },
+          "seed": 260001,
+          "shift": false,
+          "speaker": 34,
+          "start": "6fec695d615209a823abe38830904f5ff02c256e0a96eafb5028f2b2d88fd323"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 68.97213705815375,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 67.98301672097296,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 70.69907861296088,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 70.1466123573482,
+              "success": 0.75
+            }
+          },
+          "seed": 260002,
+          "shift": false,
+          "speaker": 33,
+          "start": "0a57ba738d16d18b3374740edf789224a72f757e49a702b923b7f48311b776be"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 13.417141162790358,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.865604737773538,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.5019480320625,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.744349910353776,
+              "success": 1.0
+            }
+          },
+          "seed": 260003,
+          "shift": false,
+          "speaker": 34,
+          "start": "1e689313e6ad7d518a8d348df8fffd3b749b3d7a1fda0e68f176bbd9975d2c3d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 141.83323620818555,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 131.96827587671578,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 139.1820393037051,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 127.7330971788615,
+              "success": 0.0
+            }
+          },
+          "seed": 260004,
+          "shift": false,
+          "speaker": 33,
+          "start": "539e6022299ba1f2652b693759b84678f05a19ce2e228ebd59616d5e4647a61e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.854654527269304,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.891274665482342,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.616937292274088,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 11.794677935540676,
+              "success": 0.25
+            }
+          },
+          "seed": 260005,
+          "shift": false,
+          "speaker": 34,
+          "start": "e27f3e93bd9eb9848f1d39461227b34a032807b356fbcf42325eff4173775f1b"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 148.30851752776653,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 154.5524294488132,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 145.15584311448038,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 150.16592713072896,
+              "success": 0.25
+            }
+          },
+          "seed": 260006,
+          "shift": false,
+          "speaker": 33,
+          "start": "6cbf93a09ca8792f8cf36c2f83149d03bad074728b5600b2d003945e4cd4edef"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 31.042526476085186,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 32.016747049055994,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 31.22150420676917,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 30.883875850122422,
+              "success": 0.25
+            }
+          },
+          "seed": 260007,
+          "shift": false,
+          "speaker": 34,
+          "start": "591426b0fdbb25da3c681b229869373c33c35668fe30bf6cdaca3ee849237a5e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 105.80839740578085,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 105.5307291680947,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 108.2951599964872,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 103.98042504675686,
+              "success": 0.5
+            }
+          },
+          "seed": 260008,
+          "shift": false,
+          "speaker": 33,
+          "start": "5a9220bba0072ee6733ea275f7f00eefdbe5c21c835d83b09a63c24b866c75c5"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 19.476121640764177,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 25.414810166694224,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 4.600340820616111,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 16.632613609544933,
+              "success": 0.5
+            }
+          },
+          "seed": 260009,
+          "shift": false,
+          "speaker": 34,
+          "start": "332a96ffda4a6cd4e5cbcda4f8e5bdeabadf63afda9b0cc05b412e5b530ec6ed"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 141.0596874775365,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 144.05615255236626,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 143.14030716195703,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 139.71514940203633,
+              "success": 0.0
+            }
+          },
+          "seed": 260010,
+          "shift": false,
+          "speaker": 33,
+          "start": "aac36ece6f680a2b99846cbf946b05df4ccdfa25811a556621cbd7cc58312ea0"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 19.799206173047423,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 19.97959171421826,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 14.450657006818801,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 18.207623390480876,
+              "success": 0.5
+            }
+          },
+          "seed": 260011,
+          "shift": false,
+          "speaker": 34,
+          "start": "778c6c6d479334aa46b387d9489c13dc2c46d6f49c468ac7bf88157b00660b67"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 128.31841835577507,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 126.2574400898302,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 129.51154669281095,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 128.9378929650411,
+              "success": 0.25
+            }
+          },
+          "seed": 260012,
+          "shift": false,
+          "speaker": 33,
+          "start": "858073f2c43726d2d13f16979c8a62bbda997be42f5948dda2080003709d4bfa"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 20.18118870910257,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 6.085124448873103,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 13.051075336989015,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 15.611594310030341,
+              "success": 0.75
+            }
+          },
+          "seed": 260013,
+          "shift": false,
+          "speaker": 34,
+          "start": "2c339a7add173fe505d91f45888f7bc9540ebd3c00a9d1472242b6131df7f27e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 101.68847907334566,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 95.55249102413654,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 70.46491233631968,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 71.52272155508399,
+              "success": 0.25
+            }
+          },
+          "seed": 260014,
+          "shift": false,
+          "speaker": 33,
+          "start": "106140072d42b72f50e71b090682fd78f52ee031c92b8fa7d45dc2f793c16192"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 7.239941623993218,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.973308002576232,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 18.46636680420488,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 17.796095926314592,
+              "success": 0.75
+            }
+          },
+          "seed": 260015,
+          "shift": false,
+          "speaker": 34,
+          "start": "a7ed5d32f563c8d7b2f63ae01350a5b8f9965edd022baddd8f8f93b40a3b82c2"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 40.565319592133164,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 38.204312324523926,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 39.73039425909519,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 37.728153984062374,
+              "success": 0.5
+            }
+          },
+          "seed": 260032,
+          "shift": true,
+          "speaker": 33,
+          "start": "d1299c269dd81d7fdee01883c65e0ad6674e42ee0d9182572fcb32f5a5a759af"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 14.768533408641815,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 15.0837954133749,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.257571829948574,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.790533000137657,
+              "success": 0.25
+            }
+          },
+          "seed": 260033,
+          "shift": true,
+          "speaker": 34,
+          "start": "bf888338f68917edbc0cdfc764bdaf77bf7500bf024024e8ec2776b2f87e30fb"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 50.222551333718,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 51.1920879362151,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 48.41296898666769,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 48.987395130097866,
+              "success": 0.75
+            }
+          },
+          "seed": 260034,
+          "shift": true,
+          "speaker": 33,
+          "start": "4f96a78a26b6efb039dcdd73a6eeff26ea825048286591c39b72cfa9e83d1fc5"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.06993604823947,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.683012554887682,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.779159397818148,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.517385402228683,
+              "success": 1.0
+            }
+          },
+          "seed": 260035,
+          "shift": true,
+          "speaker": 34,
+          "start": "7d4f4c209fedbbbb221d915bd2900fcafc37f0c5cf5754124c063461a8d3be4a"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 124.44180261809379,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 125.99569745361805,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 123.2646211865358,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 127.53884540870786,
+              "success": 0.5
+            }
+          },
+          "seed": 260036,
+          "shift": true,
+          "speaker": 33,
+          "start": "9e95d53a7b06bef7725f8b21abdb79c5e1d0bfe592fec777b8b7b93ab559f893"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.159295073710382,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.772743050940335,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.261956602334976,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.60362674575299,
+              "success": 0.75
+            }
+          },
+          "seed": 260037,
+          "shift": true,
+          "speaker": 34,
+          "start": "41dd733c475e294284b58e33493b4da532f43a2e241886ed3a0d31a2e73f35f8"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 21.323252003639936,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 14.001528732478619,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.514849315863103,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 5.0080837099812925,
+              "success": 0.75
+            }
+          },
+          "seed": 260038,
+          "shift": true,
+          "speaker": 33,
+          "start": "e370fcbb38c0d4a1c51e331b3d86d2b88605a069afe90212e4c510c68167cb29"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 61.0404044855386,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 58.76267154235393,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 59.610601514577866,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 59.39656030386686,
+              "success": 0.75
+            }
+          },
+          "seed": 260039,
+          "shift": true,
+          "speaker": 34,
+          "start": "49f5bf0a026b10adf16e4cef00024f250d04a2902c82b87d7a589230934d06f0"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 36.2313145888038,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 37.09046705625951,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 32.65271836426109,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 32.050908950623125,
+              "success": 0.25
+            }
+          },
+          "seed": 260040,
+          "shift": true,
+          "speaker": 33,
+          "start": "ce000f4f7ac315d82817cedbb77d0d3cfc8f87df18f3c423e4f3ce45ade9c1e2"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.763974092900753,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 12.146088294684887,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 19.646329747047275,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 6.647375121247023,
+              "success": 0.75
+            }
+          },
+          "seed": 260041,
+          "shift": true,
+          "speaker": 34,
+          "start": "20db906206d93e0d1756e119d7fc797216684e039be429b96f0ba35df250d49f"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 46.19251168332994,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 40.78831634251401,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 41.288196574896574,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 39.63216405827552,
+              "success": 0.25
+            }
+          },
+          "seed": 260042,
+          "shift": true,
+          "speaker": 33,
+          "start": "402bf722006a89baa40d901118c45a60ee1a7dfe23a757d1e92911720dcc3292"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.370481802150607,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.324375296477228,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.506922331638634,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 6.921921449247748,
+              "success": 1.0
+            }
+          },
+          "seed": 260043,
+          "shift": true,
+          "speaker": 34,
+          "start": "c87715e504aa871a7861354ffdd214719f62734680ba5a263efbc26a7cc2376c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 56.913123349659145,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 55.44325092341751,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 57.40024772239849,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 61.813987558707595,
+              "success": 0.25
+            }
+          },
+          "seed": 260044,
+          "shift": true,
+          "speaker": 33,
+          "start": "d3fa0ec03a6e44c24b7eb3995621950ce066878ff0260589cf1baf53981f3d76"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 25.328047340735793,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 17.503841314464808,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 16.848638420924544,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 13.543516281060874,
+              "success": 0.5
+            }
+          },
+          "seed": 260045,
+          "shift": true,
+          "speaker": 34,
+          "start": "e23d96265982d7383caba9e68fc345eba2742441f321a10f8bc9af336b6c0ebb"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 88.58179743401706,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 89.41513474565,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 85.81556947319768,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 86.0411609755829,
+              "success": 0.5
+            }
+          },
+          "seed": 260046,
+          "shift": true,
+          "speaker": 33,
+          "start": "0ba08474da353fc6de573cc7da92040b511f9e6b39ad2c37d7288fda82556659"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.960252071730793,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 11.482497677206993,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.274340351112187,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.326511750463396,
+              "success": 1.0
+            }
+          },
+          "seed": 260047,
+          "shift": true,
+          "speaker": 34,
+          "start": "bd0f889932276ac78704b429d9c6838a90954aacb7adcf8db342a811ecb1d149"
+        }
+      ],
+      "starts": 32
+    },
+    "held": {
+      "additional_executions": 512,
+      "effects": {
+        "gpt2": {
+          "arrival": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.015625,
+              "lo": -0.046875,
+              "n": 64,
+              "value": -0.015625
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.78125,
+              "lo": 0.69140625,
+              "n": 64,
+              "value": 0.734375
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.79296875,
+              "lo": 0.703125,
+              "n": 64,
+              "value": 0.75
+            }
+          },
+          "final_mm": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.11049828029854333,
+              "lo": -3.9020932258836183,
+              "n": 64,
+              "value": -1.7554649116391374
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 52.47912549666581,
+              "lo": 37.33968379563066,
+              "n": 64,
+              "value": 44.85764412675053
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 51.12292548419646,
+              "lo": 35.40031473975205,
+              "n": 64,
+              "value": 43.10217921511139
+            }
+          },
+          "success": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.03125,
+              "lo": -0.03125,
+              "n": 64,
+              "value": 0.0
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.6640625,
+              "lo": 0.53125,
+              "n": 64,
+              "value": 0.59765625
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.66015625,
+              "lo": 0.53125,
+              "n": 64,
+              "value": 0.59765625
+            }
+          }
+        },
+        "transport": {
+          "arrival": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.01953125,
+              "lo": -0.03515625,
+              "n": 64,
+              "value": -0.0078125
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.76953125,
+              "lo": 0.66015625,
+              "n": 64,
+              "value": 0.71484375
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.76953125,
+              "lo": 0.67578125,
+              "n": 64,
+              "value": 0.72265625
+            }
+          },
+          "final_mm": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.978529916233129,
+              "lo": -3.3157164110548365,
+              "n": 64,
+              "value": -1.1611052618718531
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 53.10231482352492,
+              "lo": 37.665423305236345,
+              "n": 64,
+              "value": 45.321298394355836
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 52.08819599002936,
+              "lo": 36.559041532711944,
+              "n": 64,
+              "value": 44.16019313248398
+            }
+          },
+          "success": {
+            "improvement": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.02734375,
+              "lo": -0.02734375,
+              "n": 64,
+              "value": 0.0
+            },
+            "new": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.66796875,
+              "lo": 0.52734375,
+              "n": 64,
+              "value": 0.59765625
+            },
+            "original": {
+              "families": 16,
+              "groups": 64,
+              "hi": 0.6640625,
+              "lo": 0.52734375,
+              "n": 64,
+              "value": 0.59765625
+            }
+          }
+        }
+      },
+      "rows": [
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 12.621922418475151,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 36.885727662593126,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 13.433594955131412,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 60.02645043190569,
+              "success": 0.75
+            }
+          },
+          "seed": 250000,
+          "shift": false,
+          "speaker": 25,
+          "start": "075b665fba1c5e5620eb85ddffb04edab182f3acc07af2584a70f2b00e7d7f71"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 32.49001858057454,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 34.02835759334266,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 38.0213875323534,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 36.68173914775252,
+              "success": 0.75
+            }
+          },
+          "seed": 250001,
+          "shift": false,
+          "speaker": 26,
+          "start": "18f7b4b8188fde76a9174c401f3d204c2a0bc26c15ede51fb5947604ec42eb3c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.018496472388506,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 14.714791439473629,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 4.230807418935001,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.673103864770383,
+              "success": 1.0
+            }
+          },
+          "seed": 250002,
+          "shift": false,
+          "speaker": 27,
+          "start": "066c2e90575be8add7f6fd8d98f19cf942a367f10904e84582ce3d602dc4a9db"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.691820469219238,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.477453666273504,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 17.27407844737172,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 23.171226144768298,
+              "success": 0.25
+            }
+          },
+          "seed": 250003,
+          "shift": false,
+          "speaker": 28,
+          "start": "8eb8decc9a919758a280b87421a06af4bf1d7602530a783a2510d35b84e8a891"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 18.893044907599688,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.522049989551306,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.304572341032326,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 15.247456263750792,
+              "success": 0.75
+            }
+          },
+          "seed": 250004,
+          "shift": false,
+          "speaker": 29,
+          "start": "f21e8e3ab2fb1565b3a4bfec3ed2f4e1178f047ebe42a35e6f038c12e3ef0725"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 89.33519467245787,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 91.23102203011513,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 90.54162725806236,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 92.15294616296887,
+              "success": 0.75
+            }
+          },
+          "seed": 250005,
+          "shift": false,
+          "speaker": 30,
+          "start": "4bb27a0bed625e96c648974580c69bc071ed5483c29111e00523265816430867"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 78.70569720398635,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 79.54864762723446,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 73.98468512110412,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 75.834239134565,
+              "success": 0.0
+            }
+          },
+          "seed": 250006,
+          "shift": false,
+          "speaker": 31,
+          "start": "cb0dacb4d67ca0002be824a4dbccac286482f5c8d752736cb7ad43cbb09761a1"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 50.81835435703397,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 43.708067503757775,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 51.211595768108964,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 57.77938384562731,
+              "success": 0.25
+            }
+          },
+          "seed": 250007,
+          "shift": false,
+          "speaker": 32,
+          "start": "0e8e5649f6eef26950ff2195e95de5b6914baa34e63a932fca355a7dde4d0ba7"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 39.065435295924544,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 43.36101142689586,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 37.20654011704028,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 37.21171093638986,
+              "success": 0.75
+            }
+          },
+          "seed": 250008,
+          "shift": false,
+          "speaker": 25,
+          "start": "d90ab80b6e81c5f71a4e55f495bbb4a82d66a2adf42d7737a264bc53c5c62653"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 21.65934184449725,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 28.203050111187622,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 22.42103189928457,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 22.159074782393873,
+              "success": 0.75
+            }
+          },
+          "seed": 250009,
+          "shift": false,
+          "speaker": 26,
+          "start": "4a66e66b83831180247fccc6d283b476f986761d7c2379179e5654c2f1412d1a"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 27.510163141414523,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 40.80629488453269,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 31.67402697727084,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 37.48251567594707,
+              "success": 0.0
+            }
+          },
+          "seed": 250010,
+          "shift": false,
+          "speaker": 27,
+          "start": "f34085f77afaa7151eb613bdd0c99165cd016115ed4b932919ad375464c741c9"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 46.87930969521403,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 47.031015157699585,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 45.78266735188663,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 48.43267542310059,
+              "success": 0.5
+            }
+          },
+          "seed": 250011,
+          "shift": false,
+          "speaker": 28,
+          "start": "631407210b6bc6984c4576687c72457bafe9005d6c5ef4ce2f72319d07b694f2"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 13.02048610523343,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 14.29711189121008,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.38595789577812,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.638859551865608,
+              "success": 1.0
+            }
+          },
+          "seed": 250012,
+          "shift": false,
+          "speaker": 29,
+          "start": "94cfe137d7480b3a2bc2e8ec8efcfe29845234477076345470af8250c7c80e36"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.461157092824578,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 16.788842855021358,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.27197785070166,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 4.640734114218503,
+              "success": 0.75
+            }
+          },
+          "seed": 250013,
+          "shift": false,
+          "speaker": 30,
+          "start": "3982d70eb6dfe7c0aa11141035d7056c70f6f8cedd0cd1c4ed8fa10854938fbd"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 34.65307393344119,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 34.34170188847929,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 34.635569201782346,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 34.055600117426366,
+              "success": 0.75
+            }
+          },
+          "seed": 250014,
+          "shift": false,
+          "speaker": 31,
+          "start": "9727a7b1b71b20520028df9fccc4370194825a623cf0287e15bf8033ef266ebc"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 7.032718218397349,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.02936778543517,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.593190043233335,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.2969317920506,
+              "success": 1.0
+            }
+          },
+          "seed": 250015,
+          "shift": false,
+          "speaker": 32,
+          "start": "aaff5b4f526dc3ec20d0b91abf8865d9a218f6ef3c3563721751fddb1b733cd4"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.9941222900524735,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.2149711670354,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.830333244986832,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.56966430041939,
+              "success": 0.5
+            }
+          },
+          "seed": 250016,
+          "shift": false,
+          "speaker": 25,
+          "start": "7d7696bbcaa4cebaf9bb99cbcf2ea72ecdc3c4d5b690fab6272a9eee3b79de51"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 100.51345347892493,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 100.41581315454096,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 102.86718979477882,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 102.34679304994643,
+              "success": 0.0
+            }
+          },
+          "seed": 250017,
+          "shift": false,
+          "speaker": 26,
+          "start": "87846fe1bd73501ff6782346a246db38459e6c2789fe7b80d95d24dc4eb47637"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 76.5086819883436,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 76.45052997395396,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 76.5086819883436,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 76.5086819883436,
+              "success": 0.25
+            }
+          },
+          "seed": 250018,
+          "shift": false,
+          "speaker": 27,
+          "start": "110382887e67dd712af129c0c7cc144768e65fe8a70fd95e4399463493f5e33d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.25,
+              "final_mm": 91.39125619549304,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.0,
+              "final_mm": 98.018703982234,
+              "success": 0.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.0,
+              "final_mm": 99.56480748951435,
+              "success": 0.0
+            },
+            "transport": {
+              "arrival": 0.0,
+              "final_mm": 99.56480748951435,
+              "success": 0.0
+            }
+          },
+          "seed": 250019,
+          "shift": false,
+          "speaker": 28,
+          "start": "e330626d9c9e4abfa06fa9888423dab28c7f5fd748737193bee8af2262bdb515"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 13.875039265258238,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.404030093923211,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.55318340472877,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 6.332458433462307,
+              "success": 1.0
+            }
+          },
+          "seed": 250020,
+          "shift": false,
+          "speaker": 29,
+          "start": "58308e74d3c6e18d5ab63cbcaa85a1c3af2a108c6117db226be7a368ec77e1fd"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 32.7988836215809,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 31.28822974395007,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 33.09304849244654,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 33.43318752013147,
+              "success": 0.5
+            }
+          },
+          "seed": 250021,
+          "shift": false,
+          "speaker": 30,
+          "start": "a28a92df91651fb188f7aead2dc435666f529d4545d58a96644a94c55428b1c3"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 15.040042344480753,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.828793863765895,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 17.36928557511419,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.740666369907558,
+              "success": 0.75
+            }
+          },
+          "seed": 250022,
+          "shift": false,
+          "speaker": 31,
+          "start": "8d4883044dea93f530701d7a4029d34ce90b658cb66743e9bf455a40d99b4c2d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 32.52091119065881,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 17.04428711673245,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 30.65948118455708,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 20.273597561754286,
+              "success": 0.5
+            }
+          },
+          "seed": 250023,
+          "shift": false,
+          "speaker": 32,
+          "start": "ef494308cb10b6486a431cd568955aa9530c85dee2ce8ef29e86a2f29c1e8d71"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 98.11565722338855,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 106.68582655489445,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 99.42652093013749,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 100.21147155202925,
+              "success": 0.25
+            }
+          },
+          "seed": 250024,
+          "shift": false,
+          "speaker": 25,
+          "start": "93a45276a960ce179e707aa5b89fcbdb4c2d165ee7e8c041e8080177078011a1"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 13.999645481817424,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.30250687431544,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.192431086674333,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.26401768811047,
+              "success": 1.0
+            }
+          },
+          "seed": 250025,
+          "shift": false,
+          "speaker": 26,
+          "start": "82c934d19f805ce7a8d42fa19a0349c90ee448cb73d7f5b0a28a4c99364d0b3d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 39.158077794127166,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 20.80903318710625,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 44.03821099549532,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.67690725903958,
+              "success": 1.0
+            }
+          },
+          "seed": 250026,
+          "shift": false,
+          "speaker": 27,
+          "start": "628e49696feddd999e9aad2aea5204dbe1f1831cbd59e9b2a057a9a922156f1f"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 141.9000617461279,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 144.7267330950126,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 146.91283111460507,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 142.62869814410806,
+              "success": 0.25
+            }
+          },
+          "seed": 250027,
+          "shift": false,
+          "speaker": 28,
+          "start": "5d80b2dfbc20d7ed205c743643c6b6fc132397d2f3205f7b4958cc995438ed18"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 39.51558063272387,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 48.94875641912222,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 44.85479649156332,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 41.968622943386436,
+              "success": 0.25
+            }
+          },
+          "seed": 250028,
+          "shift": false,
+          "speaker": 29,
+          "start": "6faaeb4bf91732c0b08cd99a414fbcca4ba5088d40ab2a955cb97f903aeaae3c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.26614224165678,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 6.695864431094378,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.078672483563423,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.515449309721589,
+              "success": 0.5
+            }
+          },
+          "seed": 250029,
+          "shift": false,
+          "speaker": 30,
+          "start": "54c6f1e1dc58a5b6876b33d737b54fe512240d2df24f95f4553017e83be5166d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.563219362869859,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.467619550880045,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 4.064526641741395,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 5.166842718608677,
+              "success": 1.0
+            }
+          },
+          "seed": 250030,
+          "shift": false,
+          "speaker": 31,
+          "start": "b302ddf183e19993b004f57426674f4f65b1064dba387a9762e742af39305a57"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 59.47091639973223,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 70.78217610251158,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 6.449540640460327,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 35.925339558161795,
+              "success": 0.0
+            }
+          },
+          "seed": 250031,
+          "shift": false,
+          "speaker": 32,
+          "start": "3e390567cedecde9aa0d0f21491bc8750d221ad6df85ed84ec6b1570473dbd77"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 14.399245730601251,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 16.852029133588076,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 11.159591027535498,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 17.792606726288795,
+              "success": 0.5
+            }
+          },
+          "seed": 250128,
+          "shift": true,
+          "speaker": 25,
+          "start": "c92277b7eb1042b73186d057a1472722363f58c81fa1dfed2c8dfe5fcac0797b"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 64.84555848874152,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 64.95468167122453,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 63.501156168058515,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 64.0541969332844,
+              "success": 0.75
+            }
+          },
+          "seed": 250129,
+          "shift": true,
+          "speaker": 26,
+          "start": "2bfcfd0a221c0b43545eaaefbeadfac740259fbc7b4cc5c29001d3606b2d2e6e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.134303756989539,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 19.363535102456808,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 14.292070409283042,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 8.453324990114197,
+              "success": 1.0
+            }
+          },
+          "seed": 250130,
+          "shift": true,
+          "speaker": 27,
+          "start": "5922a32717fb78d37fd1ab59bf4f60b167d8d1f6e3c4e738c0c9768781a929a8"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 53.94317745231092,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 51.79791781120002,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 49.36473863199353,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 49.850564217194915,
+              "success": 0.75
+            }
+          },
+          "seed": 250131,
+          "shift": true,
+          "speaker": 28,
+          "start": "1b936a0d625e72389324ffd52a285622beb447d5a9ffd2d48f7d52883231923a"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 49.189602374099195,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 50.418048398569226,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 51.43727478571236,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 50.73066847398877,
+              "success": 0.25
+            }
+          },
+          "seed": 250132,
+          "shift": true,
+          "speaker": 29,
+          "start": "8959ba2d2d86215be368afad22978179d2028e164c4ed45ce30af0e1b388ef7f"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 45.77145609073341,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 45.21820950321853,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.17839600192383,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 25.20308905513957,
+              "success": 0.75
+            }
+          },
+          "seed": 250133,
+          "shift": true,
+          "speaker": 30,
+          "start": "cfae70a6ad22468651b5f4976892cbddb23bfc694466f6ecc721a8b4ae9acef4"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 58.34812764078379,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 54.86026487778872,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 57.10000218823552,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 54.01356739457697,
+              "success": 0.25
+            }
+          },
+          "seed": 250134,
+          "shift": true,
+          "speaker": 31,
+          "start": "c20042eb15abb11bba8259e971348ff2aec75c00c2480b0ed807f5bcbc7ac77e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 31.45135974045843,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 31.45135974045843,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 26.411095052026212,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 27.187576168216765,
+              "success": 0.25
+            }
+          },
+          "seed": 250135,
+          "shift": true,
+          "speaker": 32,
+          "start": "eb8dc6904c32864b6e6b25a3a9f1fe68e7aa2bbefd4c6f775e70d404da46b947"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 84.45980120450258,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 83.3157121669501,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 74.3087069131434,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 74.22903983388096,
+              "success": 0.25
+            }
+          },
+          "seed": 250136,
+          "shift": true,
+          "speaker": 25,
+          "start": "901d3340fe5c55a25f36a4ec41ae3ed3fad81872f3be1589925485aed36b3bf8"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 85.33775922842324,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 92.44849719107151,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 92.52044220920652,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 96.06364247156307,
+              "success": 0.5
+            }
+          },
+          "seed": 250137,
+          "shift": true,
+          "speaker": 26,
+          "start": "a35fb659b2bc6802a03cdb1a2f4c1f6feaeca5bb4bddc2f7a07644bf657ad52c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 17.804460134357214,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 18.030901555903256,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 14.691984164528549,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 18.369296798482537,
+              "success": 0.75
+            }
+          },
+          "seed": 250138,
+          "shift": true,
+          "speaker": 27,
+          "start": "1f518fa5df73e0331416583f9d11302637cd09a9d6eda8d5c2fc25d62603a0ae"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 161.95356816751882,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 163.52147806901485,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 166.0037892870605,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 168.45880914479494,
+              "success": 0.5
+            }
+          },
+          "seed": 250139,
+          "shift": true,
+          "speaker": 28,
+          "start": "6b64e544a29a4a6950f8187e2ca79e4cc484f94a72a077fe7ce5ecf579063e7e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.041457018814981,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.510018571745604,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.892240431625396,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.314280865713954,
+              "success": 1.0
+            }
+          },
+          "seed": 250140,
+          "shift": true,
+          "speaker": 29,
+          "start": "5d09b1906db3b7c285e6faf40a906d904cb5d7ec3c7a312e2fe5ae0c4c699d6a"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 33.012220985256135,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 23.767291917465627,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 38.68563019204885,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 41.11809411551803,
+              "success": 0.5
+            }
+          },
+          "seed": 250141,
+          "shift": true,
+          "speaker": 30,
+          "start": "e2fbc1984b42c7d6c6bfce60bef9378564e898295941c8c2f1573ce48f0c69d8"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 30.536754871718585,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 31.857615569606423,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.220759791787714,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.723014103248715,
+              "success": 1.0
+            }
+          },
+          "seed": 250142,
+          "shift": true,
+          "speaker": 31,
+          "start": "dc759f57f56e9fdf4caeef4cf499b0c61252d744a099b8eb8b3021e7eb97e62e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 47.82032425282523,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 24.159664753824472,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 51.69640656094998,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 50.86428637150675,
+              "success": 0.75
+            }
+          },
+          "seed": 250143,
+          "shift": true,
+          "speaker": 32,
+          "start": "1abbd1d8ce88f426177cab5a130726833a7450a4b61411a2e930adbf5ae3c040"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 24.286080384626985,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 44.574682833626866,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 24.329075356945395,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 16.1550851771608,
+              "success": 0.5
+            }
+          },
+          "seed": 250144,
+          "shift": true,
+          "speaker": 25,
+          "start": "2405746264b27dc814800d8232c063177c098e52deb06a4facecb9742d3556f9"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 65.71742496453226,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 56.451981887221336,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 66.96269428357482,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 68.95324774086475,
+              "success": 0.5
+            }
+          },
+          "seed": 250145,
+          "shift": true,
+          "speaker": 26,
+          "start": "0360d56403af4e9e76446cb48dd5169fc0ef511547780a7d240631570596b23e"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.668495855294168,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.779119631275535,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 12.056196574121714,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.77279053768143,
+              "success": 1.0
+            }
+          },
+          "seed": 250146,
+          "shift": true,
+          "speaker": 27,
+          "start": "812de660e937d43a2c72580d5ff002d46f4b3f0feebd9fc87b60f30719d45ac2"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 165.57569056749344,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 165.57569056749344,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 163.87476911768317,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 164.6732809022069,
+              "success": 0.5
+            }
+          },
+          "seed": 250147,
+          "shift": true,
+          "speaker": 28,
+          "start": "cc635c87401a69a2e4b9bdadf3435432019db23f002d77d8290dd6afdfedcb53"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.152609251439571,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 10.489329346455634,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 12.968392577022314,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 11.439402936957777,
+              "success": 0.5
+            }
+          },
+          "seed": 250148,
+          "shift": true,
+          "speaker": 29,
+          "start": "99ca58cd937a67cb3457a3f4c2bdcd696aff1f57a2ca95a64e1ecb654da8174c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 70.77344215940684,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 70.3765454236418,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 69.30597592145205,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 66.82520196773112,
+              "success": 0.75
+            }
+          },
+          "seed": 250149,
+          "shift": true,
+          "speaker": 30,
+          "start": "e9a871cca9d32f41d0cb6037547b2759519662ac27a76301a37c46018cc7c70c"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 15.956047805957496,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.620966389775276,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 6.995435804128647,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.471282966434956,
+              "success": 1.0
+            }
+          },
+          "seed": 250150,
+          "shift": true,
+          "speaker": 31,
+          "start": "949a6a25018d4183e5208ad21f7eb08bc111a80fb917ca74ff3e31a5ef7982de"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.116467157378793,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.84350314643234,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 8.465025341138244,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 7.250973780173808,
+              "success": 1.0
+            }
+          },
+          "seed": 250151,
+          "shift": true,
+          "speaker": 32,
+          "start": "4873d522a78eca8c0826429494eaac29056ab4202952d03550abbc3854f2106f"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 10.718402452766895,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 21.11415920080617,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 11.019394034519792,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 0.75,
+              "final_mm": 14.823355595581234,
+              "success": 0.75
+            }
+          },
+          "seed": 250152,
+          "shift": true,
+          "speaker": 25,
+          "start": "169e45cdbbe62afdc52fe53191619e1a5045a10e0fdee6157cdc30553221f31d"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 44.917951337993145,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 48.46531187649816,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 49.010241171345115,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 50.32880022190511,
+              "success": 0.5
+            }
+          },
+          "seed": 250153,
+          "shift": true,
+          "speaker": 26,
+          "start": "f59070d649751f8bd7c0fe20c30443290c8d8fe39fdcc06223c12836c9067c81"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 121.83963286224753,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 120.44811842497438,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 120.90847955550998,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 121.21123855467886,
+              "success": 0.25
+            }
+          },
+          "seed": 250154,
+          "shift": true,
+          "speaker": 27,
+          "start": "b38ea3bdec7329ff9ba63f9c00d58d5407d1fb60fe7c200840599adec2e0ccc8"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 91.32232493720949,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 90.33265698235482,
+              "success": 0.5
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 88.49360456224531,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 90.71533335372806,
+              "success": 0.5
+            }
+          },
+          "seed": 250155,
+          "shift": true,
+          "speaker": 28,
+          "start": "915bcf148be231d515928235a51c1c534dace74cac40d202e5cc9a5616b56171"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 7.9248459078371525,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 13.20701977238059,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.98323003295809,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 12.621850240975618,
+              "success": 1.0
+            }
+          },
+          "seed": 250156,
+          "shift": true,
+          "speaker": 29,
+          "start": "7af8b5a48d7ba56f5a91cb252dcfc358721029143dad6c83eaa19158c41aab0f"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 14.423815067857504,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 11.025611544027925,
+              "success": 0.75
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 12.943244888447225,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 14.27656423766166,
+              "success": 0.75
+            }
+          },
+          "seed": 250157,
+          "shift": true,
+          "speaker": 30,
+          "start": "f97c18db3330d61b935724e1f5d489811d130a2620a595d3c14d9a69c7f1d6af"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 109.44766167085618,
+              "success": 0.5
+            },
+            "transport": {
+              "arrival": 0.25,
+              "final_mm": 111.47952568717301,
+              "success": 0.25
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 0.5,
+              "final_mm": 115.20764790475368,
+              "success": 0.25
+            },
+            "transport": {
+              "arrival": 0.5,
+              "final_mm": 111.18751432513818,
+              "success": 0.25
+            }
+          },
+          "seed": 250158,
+          "shift": true,
+          "speaker": 31,
+          "start": "2efd9e136558151d252ad2ff44db1d8521aa5f4c9df6373910e982c98d3525c2"
+        },
+        {
+          "new": {
+            "gpt2": {
+              "arrival": 0.75,
+              "final_mm": 16.511228925082833,
+              "success": 0.75
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 12.193259666673839,
+              "success": 1.0
+            }
+          },
+          "original": {
+            "gpt2": {
+              "arrival": 1.0,
+              "final_mm": 9.114927088376135,
+              "success": 1.0
+            },
+            "transport": {
+              "arrival": 1.0,
+              "final_mm": 9.508527000434697,
+              "success": 1.0
+            }
+          },
+          "seed": 250159,
+          "shift": true,
+          "speaker": 32,
+          "start": "14e9567ef4acf416aa6b203313e614c7202fdda6301332820472fe90f54812bc"
+        }
+      ],
+      "starts": 64
+    }
+  },
+  "seed": 1411,
+  "stage": "visited-isolated"
+}

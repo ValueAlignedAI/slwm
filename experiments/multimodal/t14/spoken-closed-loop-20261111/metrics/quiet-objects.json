@@ -1,0 +1,80 @@
+{
+  "distractor_observations": 24576,
+  "note": "Post-hoc diagnosis following the registered aggregate/moving score difference. A quiet distractor moved at most 1 mm in 300 ms. The large-motion threshold is 5 mm.",
+  "quiet_distractor_observations": 23735,
+  "scores": {
+    "gpt2": {
+      "predicted_at_least_5mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 0.2686205125616954,
+        "lo": 0.23607153772945164,
+        "n": 64,
+        "value": 0.2523271953630223
+      },
+      "predicted_motion_mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 3.9067373244091868,
+        "lo": 3.552986297942698,
+        "n": 64,
+        "value": 3.7289978824555874
+      }
+    },
+    "persistence-nominal": {
+      "predicted_at_least_5mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      },
+      "predicted_motion_mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 0.0,
+        "lo": 0.0,
+        "n": 64,
+        "value": 0.0
+      }
+    },
+    "raw": {
+      "predicted_at_least_5mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 0.11070293147252029,
+        "lo": 0.08812419337030104,
+        "n": 64,
+        "value": 0.09943433201586369
+      },
+      "predicted_motion_mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 2.2950272880960254,
+        "lo": 1.975797604350373,
+        "n": 64,
+        "value": 2.135757773183286
+      }
+    },
+    "transport": {
+      "predicted_at_least_5mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 0.2088858574717706,
+        "lo": 0.1807400525687044,
+        "n": 64,
+        "value": 0.19477150950154032
+      },
+      "predicted_motion_mm": {
+        "families": 2,
+        "groups": 64,
+        "hi": 3.2792144348844885,
+        "lo": 2.9921262636315076,
+        "n": 64,
+        "value": 3.1343000270426273
+      }
+    }
+  },
+  "worlds": 64
+}

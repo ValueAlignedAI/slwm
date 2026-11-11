@@ -40,12 +40,13 @@ def one(args):
     conf = json.loads((ROOT / "work/routing-lock.json").read_bytes())
     routed = conf["routed"]
     variant = json.loads((ROOT / "work/geometry-choice.json").read_bytes())["variant"]
-    sig, stations = prepare(seed, seed % 3 == 0, t)
+    shift=bool(seed%2) if mode=="value-test" else seed%3==0
+    sig, stations = prepare(seed, shift, t)
     rows = []
     for trial in range(2):
         if separate and trial:
             t = collector.clean_worker()
-            new_sig, new_places = prepare(seed, seed % 3 == 0, t)
+            new_sig, new_places = prepare(seed,shift,t)
             if new_sig != sig or not np.array_equal(new_places, stations):
                 raise ValueError("Goal trial root changed")
         t.restore(t.root_state)
@@ -58,7 +59,7 @@ def one(args):
         # Fixed-length visits allow late failures and settling/no-op states to enter both arms.
         policy = (
             dict(core="geometry", routed=routed)
-            if mode == "fresh-teacher" or mode == "value-dev" and trial == 0
+            if mode == "fresh-teacher" or mode in ("value-dev","value-test") and trial == 0
             else dict(
                 core=("raw", "gpt2", "transport")[(seed + trial) % 3],
                 arm="protected",
@@ -144,7 +145,7 @@ def main(mode, count, workers, paired, separate=False):
                 [
                     (
                         mode,
-                        (156000 if mode == "value-dev" else 155000) + k,
+                        ({"value-dev":156000,"value-test":286000}.get(mode,155000)) + k,
                         paired,
                         separate,
                     )
@@ -176,7 +177,7 @@ def main(mode, count, workers, paired, separate=False):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("mode", choices=("fresh-teacher", "visited", "value-dev"))
+    p.add_argument("mode", choices=("fresh-teacher","visited","value-dev","value-test"))
     p.add_argument("--count", type=int, default=128)
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--paired", action="store_true")

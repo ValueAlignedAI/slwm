@@ -33,6 +33,9 @@ def record(repo, ctl, event, receipt, finished=False, milestone="speech"):
             study.update(
                 release=receipt,
                 neural_fits=release["fits"],
+                primary_held_worlds=release["total_held_worlds"],
+                primary_held_branches=release["total_held_branches"],
+                physical_model_files=release["published_physical_seeds"],
                 two_disk_generations=release["generations"],
                 next_decision=release["next"],
                 owned_credits_this_study=release["owned_credits"],
@@ -83,7 +86,17 @@ def main(stage, repo, ctl, head):
         title = (
             "Release G14 executed spoken-goal comparisons and live tabletop missions"
         )
-        body = "Publishes all frozen physical outcomes, same-scene counterfactuals, matched dense and spatial fields, strong control baselines, original-waveform inference, continuous mission videos, independent HDD receipts, and the updated research conclusions."
+        physics = json.loads(
+            git("show", head + ":" + str(BASE / "metrics/physical-results.json"))
+        )
+        fresh = physics["cohorts"]["fresh"]["by_policy_family"]
+        paired = physics["preregistered_positive_seeds"]
+        body = (
+            f"Executed {d['total_held_branches']:,} paired physical branches on {d['total_held_worlds']} held tabletop starts. "
+            f"On two fresh speakers the spatial field achieved {100*fresh['transport']['success']['value']:.1f}% selective placement, dense {100*fresh['gpt2']['success']['value']:.1f}%, and geometry {100*fresh['geometry']['success']['value']:.1f}%. "
+            f"The spatial-minus-dense lower bound was positive at {paired['held']}/3 seeds in the eight-speaker cohort and {paired['fresh']}/3 in the new-speaker cohort. "
+            "Includes the original speech substitutions, constant-field interventions, 16 continuous missions, independent native replays, real actuator calibration, all six deployable physical weights, and verified two-disk custody."
+        )
     elif stage == "fields":
         if len(d["models"]) != 6 or any(len(x) != 5 for x in d["models"].values()):
             raise ValueError("Unverified world inference package")
