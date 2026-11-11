@@ -45,10 +45,10 @@ def parent(runs,core,seed,family="main"):
 
 
 @lru_cache(maxsize=48)
-def kernel(s,mode,nv,nn,physical):
+def kernel(s,mode,nv,nn,physical,batch=128):
     def step(theta,m,v,base,bank,cued,bg,geo,sem,scale,i,seed):
         rng=jax.random.fold_in(jax.random.PRNGKey(seed+110781),i);a,b,c=jax.random.split(rng,3)
-        ix=jnp.r_[cued[jax.random.randint(a,(64,),0,len(cued))],bg[jax.random.randint(b,(32,),0,len(bg))],geo[jax.random.randint(c,(32,),0,len(geo))]]
+        ix=jnp.r_[cued[jax.random.randint(a,(batch//2,),0,len(cued))],bg[jax.random.randint(b,(batch//4,),0,len(bg))],geo[jax.random.randint(c,(batch-batch//2-batch//4,),0,len(geo))]]
         rows=jax.tree.map(lambda x:x[ix],bank)
         (value,metrics),g=jax.value_and_grad(loss,has_aux=True)(theta,base,s,rows,mode,nv,nn,sem,scale,physical)
         theta,m,v,norm=adam(theta,m,v,g,i,1024,5e-4)

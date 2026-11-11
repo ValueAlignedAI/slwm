@@ -61,6 +61,19 @@ class DepthFrames:
             if hpos>=0 and hpos%512==0 and hpos+512<=len(raw):
                 try:h=tarfile.TarInfo.frombuf(raw[hpos:hpos+512],"utf8","strict")
                 except (ValueError,tarfile.TarError):h=None
+                if h is not None and h.type==tarfile.XHDTYPE and hpos+512+h.size<=len(raw):
+                    payload=raw[hpos+512:hpos+512+h.size]
+                    name=None
+                    for line in payload.splitlines():
+                        _,_,field=line.partition(b" ")
+                        if field.startswith(b"path="):name=field[5:].decode()
+                    if name:
+                        pos2=hpos+512+((h.size+511)//512)*512
+                        if pos2+512<=len(raw):
+                            try:real=tarfile.TarInfo.frombuf(raw[pos2:pos2+512],"utf8","strict")
+                            except (ValueError,tarfile.TarError):real=None
+                            if real is not None and real.isfile():
+                                real.name=name;h=real;hpos=pos2
                 if h is not None and h.isfile() and h.name.endswith(".png") and Path(h.name).stem.isdigit():
                     ident=int(Path(h.name).stem);body=pos+hpos+512
                     self.headers[ident]=(body,h.size);found.append(ident)
@@ -306,7 +319,9 @@ def indices(root,partial):
 
 def one(root,idx,record,folder):
     name=record["name"];final=folder/(name+".json")
-    if final.exists():return json.loads(final.read_text())
+    if final.exists():
+        previous=json.loads(final.read_text())
+        if previous.get("range_reader",1)>=2 or not any("AHAT frame not resolved" in s for s in previous["rejected"].values()):return previous
     wanted=[e for e in record["events"] if e["physical"]];rows=[];feats=[];fids=[];ftimes=[];grids=[];refused={}
     if wanted:
         try:rec=Recording(root,idx,name,record["duration"])
@@ -322,7 +337,7 @@ def one(root,idx,record,folder):
                 stats,g=rec.effect(e);rows.append({"id":e["id"],**stats});grids.append(g)
             except (ValueError,KeyError,IndexError,np.linalg.LinAlgError) as exc:refused[str(e["id"])]=str(exc)[:120]
     np.savez_compressed(folder/(name+".npz"),ids=np.array([v["id"] for v in rows],np.int32),prefix_ids=np.asarray(fids,np.int32),prefix_times=np.asarray(ftimes,np.float64),prefix=np.asarray(feats,np.float32).reshape(-1,200),grids=np.asarray(grids,np.float32).reshape(-1,4,100))
-    doc=dict(name=name,attempted=len(wanted),valid=rows,rejected=refused);save(final,doc)
+    doc=dict(name=name,range_reader=2,attempted=len(wanted),valid=rows,rejected=refused);save(final,doc)
     return doc
 
 
