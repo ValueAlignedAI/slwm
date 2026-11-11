@@ -177,6 +177,23 @@ def main():
         metric / "process-comparisons.json",
         dict(shared_readout=readouts, natural_components=component_results),
     )
+    natural_root = ROOT / "data/components/component-banks"
+    component_splits = {
+        fold: {
+            role: read(natural_root / f"{fold}-{role}.json")["names"]
+            for role in ("train", "dev", "test")
+        }
+        for fold in ("A", "B")
+    }
+    for split in component_splits.values():
+        if set(split["test"]).intersection(split["train"] + split["dev"]):
+            raise ValueError("A component evaluation recording entered training or selection")
+    reserved = {n for fold in component_splits.values() for n in fold["test"]}
+    pilot_language = read(ROOT / "data/holo/extra-language.json")
+    write(metric / "component-lineage.json", dict(splits=component_splits, pilot_transcript_overlap=sorted(reserved.intersection(pilot_language)),
+                                                 removed_from_final_verb_expansion=sorted(reserved)))
+    write(metric / "robot-development-sweep.json", [read(file) for file in sorted((ROOT / "work/robot/dev").glob("*-1301.json"))])
+    write(metric / "speech-initial.json", read(ROOT / "work/speech/results.json"))
     p = read(metric / "prospective.json")
     d = read(metric / "direct-action.json")
     qc = read(metric / "speech-parity.json")
