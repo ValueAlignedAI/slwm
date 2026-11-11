@@ -105,7 +105,8 @@ def decode(file, media):
         return np.frombuffer(subprocess.check_output(cmd,timeout=300),np.uint8).reshape(-1,768)
     cmd=common+["-map","0:a:0","-ac","1","-ar","16000","-vn","-f","f32le","pipe:1"]
     pcm=np.frombuffer(subprocess.check_output(cmd,timeout=150),"<f4")
-    return spectrum(pcm[:,None],16000)
+    chunks = [spectrum(pcm[i:i+1600*128,None],16000) for i in range(0,len(pcm)-1599,1600*128)]
+    return np.concatenate(chunks,axis=0)
 
 
 def one(root, row, index, files):
