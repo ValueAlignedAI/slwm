@@ -69,7 +69,7 @@ def main(repo):
     report = [
         "# G14 · Spoken goals, measured counterfactuals and sustained control",
         "",
-        f"Four recordings from the same speaker instructed four different goals from each of **320 independently seeded tabletop starts**. Every registered policy acted from a private copy of the same simulator process. Each episode executed 72 native physics/control ticks. Across the two cohorts, the paired spatial-minus-dense selective placement difference was **{points(contrast('held','transport_over_gpt2'))}** and **{points(contrast('fresh','transport_over_gpt2'))} percentage points**. The matched processor comparison {passed} its registered superiority criterion. [Frozen panel](final-control-lock.json) · [All paired results](metrics/physical-results.json)",
+        f"Four recordings from the same speaker instructed four different goals from each of **320 independently seeded tabletop starts**. Every registered policy acted from a private copy of the same simulator process. Each episode executed 72 native physics/control ticks. The primary panel covers 54.4 simulated hours. Across the two cohorts, the paired spatial-minus-dense selective placement difference was **{points(contrast('held','transport_over_gpt2'))}** and **{points(contrast('fresh','transport_over_gpt2'))} percentage points**. The matched processor comparison {passed} its registered superiority criterion. [Frozen panel](final-control-lock.json) · [All paired results](metrics/physical-results.json)",
         "",
         "## What actually reached the goal?",
         "",
@@ -96,7 +96,7 @@ def main(repo):
         "",
         "![Whole-world paired intervals, matched processors and causal interventions](physical-comparison.png)",
         "",
-        f"The held panel uses {stagename} and {policy}. The parameter-matched neural processors each have {next(iter(r['physical_model_parameters'].values())):,} trainable parameters, two blocks, width 80, a 128-coordinate emitted field and eight common candidate actions. Both share an 88.15M-parameter frozen audio encoder and a 182,535-parameter speech head. Dense uses causal multihead softmax attention. The spatial processor uses position-weighted, decaying positive attention. These runs address the small physical processor. [Training curves and data hashes](metrics/physical-training.json) · [Speech and transfer](speech-and-transfer.md)",
+        f"The held panel uses {stagename} and {policy}. The parameter-matched neural processors each have {next(iter(r['physical_model_parameters'].values())):,} trainable parameters, two blocks, width 80, a 128-coordinate emitted field and eight common candidate actions. Both share an 88.15M-parameter frozen audio encoder and a 182,535-parameter speech head. A calibrated score margin and an explicit contact gate select the action. An auxiliary uncertainty head predicts large one-step utility errors and is available for inspection. Dense uses causal multihead softmax attention. The spatial processor uses position-weighted, decaying positive attention. These runs address the small physical processor. [Training curves and data hashes](metrics/physical-training.json) · [Speech and transfer](speech-and-transfer.md)",
         "",
         "## Which inputs and computations changed physical success?",
         "",
@@ -159,6 +159,45 @@ def main(repo):
         "| Mission policy | Selective placement | Arrival | Final target error |",
         "|---|---:|---:|---:|",
     ]
+    transfer = load("metrics/training-transfer.json")
+    dv = transfer["development"]
+    part = [
+        "",
+        f"Across the six development processors the geometry-visited and learner-visited continuation recipes improved one-step selective success by {points(dv['teacher_over_one_step'])} and {points(dv['learner_over_one_step'])} points. The paired learner-versus-teacher change was {points(dv['learner_over_teacher'])} points. These intervals describe development, where the recipe was selected.",
+        "",
+        "An additional 768 executions compared the chosen and original training recipes at seed 1411, with both using the same contact gate, utterance and scene. The prespecified subset contains 64 of the eight-speaker worlds and 32 of the two-speaker worlds.",
+        "",
+        "| Chosen minus original training, selective success | 64 original-cohort worlds | 32 fresh-cohort worlds |",
+        "|---|---:|---:|",
+    ]
+    for core in ("gpt2", "transport"):
+        part.append(
+            table(
+                [
+                    "Dense GPT-2 style" if core == "gpt2" else "Spatial SLWM",
+                    *[
+                        points(
+                            transfer["held"][role]["effects"][core]["success"][
+                                "improvement"
+                            ]
+                        )
+                        for role in ("held", "fresh")
+                    ],
+                ]
+            )
+        )
+    part.extend(
+        [
+            "",
+            "[Held transfer controls and raw scene data](metrics/training-transfer.json) · [Prospective subset rule](training-transfer-check.md)",
+            "",
+        ]
+    )
+    report[
+        report.index("## Ongoing operations and real records") : report.index(
+            "## Ongoing operations and real records"
+        )
+    ] = part
     for name, label in (
         ("geometry-carry", "Geometry, retained goal"),
         ("dense-carry", "Dense, retained goal"),
@@ -199,6 +238,10 @@ def main(repo):
         "# Sustained spoken tabletop control",
         "",
         "Both examples run the locked spatial model at seed 1411. They were selected by fixed mission index before their outcomes were observed. Each starts from an independently seeded scene. Six genuine human utterances arrive during continuous contact simulation. The view is sampled once per 300 ms macro, the physics clock runs at 10 Hz, and the file carries the original audio on its simulation clock. The controller receives each cached decoder result only after that recording finishes. The overlaid named stations are part of the public map.",
+        "",
+    ]
+    examples += [
+        "![The running tabletop policy at 25 seconds in the first mission](mission-00-preview.png)",
         "",
     ]
     for name, v in r["movies"].items():

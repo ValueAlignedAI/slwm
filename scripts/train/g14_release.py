@@ -22,38 +22,40 @@ def copy(p, q):
     tmp.replace(q)
 
 
-def assemble():
-    out = ROOT / "release"
-    m = out / "metrics"
-    ex = out / "examples"
-    ex.mkdir(exist_ok=True)
+def mission_assets():
+    from scripts.train.g14_stages import await_files
+
     work = ROOT / "work"
-    for source, name in (
-        ("missions/summary.json", "missions.json"),
-        ("audit-traces/audit.json", "trajectory-replay.json"),
-        ("field-replay.json", "field-replay.json"),
-        ("speech-replay.json", "speech-replay.json"),
-        ("telemetry.json", "telemetry.json"),
-        ("throughput.json", "throughput.json"),
-        ("isolation-replay.json", "isolation-replay.json"),
-        ("reset-replay.json", "snapshot-replay.json"),
-        ("training-label-audit.json", "ordinary-label-audit.json"),
-        ("isolated-label-audit.json", "isolated-label-audit.json"),
-        ("training-fidelity-decision.json", "ordinary-label-decision.json"),
-        ("final-fidelity-decision.json", "retained-label-decision.json"),
-        ("released-lock.json", "published-panel.json"),
-        ("compute.json", "compute.json"),
-        ("drive-probe.json", "drive-probe.json"),
-        ("acoustic-abstention.json", "acoustic-abstention.json"),
-        ("routing-audit.json", "routing-audit.json"),("training-transfer.json","training-transfer.json"),
-    ):
-        copy(work / source, m / name)
-    copy(work / "audit-traces/native-traces.npz", ex / "native-traces.npz")
+    out = ROOT / "release"
+    ex = out / "examples"
+    ex.mkdir(exist_ok=True, parents=True)
+    await_files([work / "missions/summary.json"])
+    (out / "metrics").mkdir(exist_ok=True)
+    copy(work / "missions/summary.json", out / "metrics/missions.json")
     movies = {}
     for i in (0, 8):
         n = f"mission-{i:02d}"
         p = work / "missions" / (n + ".mp4")
         copy(p, ex / (n + ".mp4"))
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-nostdin",
+                "-y",
+                "-v",
+                "error",
+                "-ss",
+                "25",
+                "-i",
+                str(p),
+                "-frames:v",
+                "1",
+                "-update",
+                "1",
+                str(ex / (n + "-preview.png")),
+            ],
+            check=True,
+        )
         copy(work / "missions" / (n + ".npz"), ex / (n + ".npz"))
         d = json.loads(
             subprocess.check_output(
@@ -86,6 +88,45 @@ def assemble():
         )
     raw = [read(p) for p in sorted((work / "missions").glob("mission-*.json"))]
     write(ex / "mission-outcomes.json", raw)
+    write(ex / "mission-videos.json", movies)
+    return movies
+
+
+def assemble():
+    from scripts.train.g14_stages import await_files
+
+    await_files(
+        [ROOT / "work/throughput-post.json", ROOT / "work/training-transfer.json"]
+    )
+    out = ROOT / "release"
+    m = out / "metrics"
+    ex = out / "examples"
+    ex.mkdir(exist_ok=True)
+    work = ROOT / "work"
+    for source, name in (
+        ("missions/summary.json", "missions.json"),
+        ("audit-traces/audit.json", "trajectory-replay.json"),
+        ("field-replay.json", "field-replay.json"),
+        ("speech-replay.json", "speech-replay.json"),
+        ("telemetry.json", "telemetry.json"),
+        ("throughput-post.json", "throughput.json"),
+        ("throughput.json", "throughput-active.json"),
+        ("isolation-replay.json", "isolation-replay.json"),
+        ("reset-replay.json", "snapshot-replay.json"),
+        ("training-label-audit.json", "ordinary-label-audit.json"),
+        ("isolated-label-audit.json", "isolated-label-audit.json"),
+        ("training-fidelity-decision.json", "ordinary-label-decision.json"),
+        ("final-fidelity-decision.json", "retained-label-decision.json"),
+        ("released-lock.json", "published-panel.json"),
+        ("compute.json", "compute.json"),
+        ("drive-probe.json", "drive-probe.json"),
+        ("acoustic-abstention.json", "acoustic-abstention.json"),
+        ("routing-audit.json", "routing-audit.json"),
+        ("training-transfer.json", "training-transfer.json"),
+    ):
+        copy(work / source, m / name)
+    copy(work / "audit-traces/native-traces.npz", ex / "native-traces.npz")
+    movies = mission_assets()
     cost = read(work / "compute.json")
     stats = read(m / "physical-results.json")
     storage = read(m / "custody.json")
@@ -150,4 +191,9 @@ def assemble():
 
 
 if __name__ == "__main__":
-    assemble()
+    import argparse
+
+    a = argparse.ArgumentParser()
+    a.add_argument("--missions", action="store_true")
+    args = a.parse_args()
+    (mission_assets if args.missions else assemble)()
