@@ -1,0 +1,43 @@
+{
+  "arch": "slwm_x1b",
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "3a81530050ca0eed0cb7c8902aad2071a63e844b0af6b7a8fee63fe94edf4134",
+  "eval_summary": {
+    "assoc_T1024": 1.0,
+    "assoc_T512": 1.0,
+    "av_r1": 0.015625,
+    "barrier_auroc_64": 1.0,
+    "continuous_success": 0.9583333333333334,
+    "g8_shooting_success": 0.20833333333333334,
+    "goal_switch_mpc": 0.6875,
+    "mpc_success": 0.7291666666666666,
+    "persistence_skill": 0.18521671852609345,
+    "spoof_regret_always": 0.5332357883453369,
+    "spoof_regret_learned": 0.2974945902824402,
+    "step4_persistence_skill": 0.3117026182853524,
+    "sustained_transient_mpc": 1.0,
+    "thin_barrier_mpc": 0.5,
+    "transient_04s_success": 0.6458333333333334,
+    "transient_drop_pp": 31.25
+  },
+  "eval_wall_s": 125.77,
+  "objective": "raw_pixel_linear_mse",
+  "parameter_counts": {
+    "adapters": 6401856,
+    "jepa_and_uncertainty": 4430978,
+    "policy_and_heads": 6481960,
+    "processor_core": 134702832,
+    "strict_total": 152017626
+  },
+  "portable_int8_bytes": 140338761,
+  "portable_int8_sha256": "e43cb2af89a8f19512c9f587980f3e4f322d358bf748f17195fb1ba3099122af",
+  "profile": "x150m",
+  "seed": 2002,
+  "seq_len": 32,
+  "steps": 1800,
+  "tag": "x1b-abl-raw_pixel_mse-s2002",
+  "train_wall_s": 272.11,
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}
