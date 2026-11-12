@@ -1,0 +1,117 @@
+{
+  "study_id": "X1B-20261111",
+  "wave": "wave4_3seed_1b",
+  "branch": "research/x1b-spatiotemporal-jepa-mpc-20261111",
+  "accounting_mode": "strict_total_parameters",
+  "budget": {
+    "max_compute_units": 500.0,
+    "target_compute_units": 200.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100",
+    "session_prefix": "slwm-x1b"
+  },
+  "field_contract": {
+    "image_resolution": [64, 64, 3],
+    "visual_grid": [4, 4],
+    "visual_tokens": 16,
+    "audio_tokens": 2,
+    "audio_mel_bins": 64,
+    "proprio_tokens": 1,
+    "proprio_dim": 16,
+    "text_tokens": 1,
+    "vocab_size": 4096,
+    "action_tokens": 1,
+    "action_dim": 4,
+    "register_tokens": 3,
+    "slots_per_tick": 24
+  },
+  "profiles": {
+    "x150m": {
+      "layers": 13,
+      "d_model": 768,
+      "n_heads": 12,
+      "head_dim": 64,
+      "d_ff": 2048,
+      "strict_parameters": 152017626,
+      "dtype": "bfloat16",
+      "grad_checkpoint": true
+    },
+    "x450m": {
+      "layers": 18,
+      "d_model": 1152,
+      "n_heads": 18,
+      "head_dim": 64,
+      "d_ff": 3072,
+      "strict_parameters": 453199938,
+      "dtype": "bfloat16",
+      "grad_checkpoint": true
+    },
+    "x1b": {
+      "layers": 23,
+      "d_model": 1536,
+      "n_heads": 24,
+      "head_dim": 64,
+      "d_ff": 4096,
+      "strict_parameters": 1008454410,
+      "dtype": "bfloat16",
+      "grad_checkpoint": true
+    }
+  },
+  "lanes": {
+    "lane1_flagship": {
+      "session": "slwm-x1b-lane1",
+      "runs": [
+        {"tag": "x1b-flagship-slwm-1b-s2001", "profile": "x1b", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2001, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": true},
+        {"tag": "x1b-flagship-slwm-1b-s2002", "profile": "x1b", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2002, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false},
+        {"tag": "x1b-flagship-slwm-1b-s2003", "profile": "x1b", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2003, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false},
+        {"tag": "x1b-scale-slwm-450m-s2001", "profile": "x450m", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2001, "steps": 2600, "batch_size": 12, "seq_len": 32, "save_bf16": true},
+        {"tag": "x1b-scale-slwm-450m-s2002", "profile": "x450m", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2002, "steps": 2600, "batch_size": 12, "seq_len": 32, "save_bf16": false},
+        {"tag": "x1b-scale-slwm-450m-s2003", "profile": "x450m", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg", "seed": 2003, "steps": 2600, "batch_size": 12, "seq_len": 32, "save_bf16": false}
+      ]
+    },
+    "lane2_baselines1b": {
+      "session": "slwm-x1b-lane2",
+      "runs": [
+        {"tag": "x1b-baseline-dense-1b-s2001", "profile": "x1b", "arch": "dense_transformer", "objective": "residual_ema_jepa_sigreg", "seed": 2001, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": true},
+        {"tag": "x1b-baseline-dense-1b-s2002", "profile": "x1b", "arch": "dense_transformer", "objective": "residual_ema_jepa_sigreg", "seed": 2002, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false},
+        {"tag": "x1b-baseline-dense-1b-s2003", "profile": "x1b", "arch": "dense_transformer", "objective": "residual_ema_jepa_sigreg", "seed": 2003, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false}
+      ]
+    },
+    "lane5_legacy1b": {
+      "session": "slwm-x1b-lane5",
+      "runs": [
+        {"tag": "x1b-baseline-legacy-1b-s2001", "profile": "x1b", "arch": "legacy_scalar_hybrid", "objective": "raw_pixel_linear_mse", "seed": 2001, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": true},
+        {"tag": "x1b-baseline-legacy-1b-s2002", "profile": "x1b", "arch": "legacy_scalar_hybrid", "objective": "raw_pixel_linear_mse", "seed": 2002, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false},
+        {"tag": "x1b-baseline-legacy-1b-s2003", "profile": "x1b", "arch": "legacy_scalar_hybrid", "objective": "raw_pixel_linear_mse", "seed": 2003, "steps": 2800, "batch_size": 12, "seq_len": 32, "save_bf16": false}
+      ]
+    },
+    "lane3_mem_ablation": {
+      "session": "slwm-x1b-lane3",
+      "seeds": [2001, 2002, 2003],
+      "profile": "x150m",
+      "steps": 1800,
+      "batch_size": 12,
+      "seq_len": 32,
+      "variants": [
+        {"name": "slwm_full", "arch": "slwm_x1b", "objective": "residual_ema_jepa_sigreg"},
+        {"name": "no_registers", "arch": "slwm_no_registers", "objective": "residual_ema_jepa_sigreg"},
+        {"name": "scalar_retention", "arch": "scalar_retention_hybrid", "objective": "residual_ema_jepa_sigreg"},
+        {"name": "dense_attn", "arch": "dense_transformer", "objective": "residual_ema_jepa_sigreg"}
+      ]
+    },
+    "lane4_jepa_policy": {
+      "session": "slwm-x1b-lane4",
+      "seeds": [2001, 2002, 2003],
+      "profile": "x150m",
+      "steps": 1800,
+      "batch_size": 12,
+      "seq_len": 32,
+      "variants": [
+        {"name": "separate_cores", "arch": "separate_modality_cores", "objective": "residual_ema_jepa_sigreg"},
+        {"name": "raw_pixel_mse", "arch": "slwm_x1b", "objective": "raw_pixel_linear_mse"},
+        {"name": "direct_jepa_no_res", "arch": "slwm_x1b", "objective": "direct_jepa_no_residual"},
+        {"name": "jepa_no_sigreg", "arch": "slwm_x1b", "objective": "residual_jepa_no_sigreg"}
+      ]
+    }
+  }
+}

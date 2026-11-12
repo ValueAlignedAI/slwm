@@ -1,0 +1,40 @@
+{
+  "backend": "tpu",
+  "batch_size": 8,
+  "config_sha256": "4ba804f387f935cd273b3465c3e11a399dc6dd21daa88e1cc1ae4ad0aae86b00",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11692804,
+    "processor_core": 420025464,
+    "strict_total": 453179166
+  },
+  "peak_lr": 0.0002,
+  "real_bank_path": "/content/x1b-data/x1b_real_bank_v1.npz",
+  "seed": 2001,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "slwm_x1b",
+    "audio_dim": 64,
+    "d_ff": 3072,
+    "d_model": 1152,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 18,
+    "n_heads": 18,
+    "profile": "x450m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2400,
+  "tag": "x1b-scale-slwm-450m-s2001"
+}

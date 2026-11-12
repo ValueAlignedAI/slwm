@@ -1,0 +1,36 @@
+{
+  "arch": "scalar_retention_hybrid",
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "63544d4a303d928f1121d57782898b4b8b639f00175f7ffd5d0bb989a12b0e59",
+  "eval_summary": {
+    "assoc_T512": 0.0,
+    "av_r1": 0.96875,
+    "barrier_auroc_64": 1.0,
+    "g8_shooting_success": 0.3541666666666667,
+    "mpc_success": 0.75,
+    "persistence_skill": 0.23884076597196247,
+    "spoof_regret_always": 0.43778061866760254,
+    "spoof_regret_learned": 0.3235258162021637,
+    "transient_drop_pp": -2.0833333333333335
+  },
+  "eval_wall_s": 25.3,
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 6401856,
+    "jepa_and_uncertainty": 4430978,
+    "policy_and_heads": 6468100,
+    "processor_core": 134694912,
+    "strict_total": 151995846
+  },
+  "portable_int8_bytes": 140126730,
+  "portable_int8_sha256": "046a30870e52be1cd01c9174726eff83f42c7419ba020571fa68079031528133",
+  "profile": "x150m",
+  "seed": 2002,
+  "seq_len": 32,
+  "steps": 1600,
+  "tag": "x1b-abl-scalar_retention-s2002",
+  "train_wall_s": 215.02,
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}

@@ -1,0 +1,40 @@
+{
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "89ef5f1ead3312a21c0f9cfea91c76850f3a093825e2621fc17d01116230535d",
+  "devices": [
+    "cuda:0"
+  ],
+  "objective": "residual_jepa_no_sigreg",
+  "parameter_counts": {
+    "adapters": 6401856,
+    "jepa_and_uncertainty": 4430978,
+    "policy_and_heads": 6468100,
+    "processor_core": 134702832,
+    "strict_total": 152003766
+  },
+  "peak_lr": 0.0003,
+  "real_bank_path": "/content/x1b-data/x1b_real_bank_v1.npz",
+  "seed": 2003,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "slwm_x1b",
+    "audio_dim": 64,
+    "d_ff": 2048,
+    "d_model": 768,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 13,
+    "n_heads": 12,
+    "profile": "x150m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 1600,
+  "tag": "x1b-abl-jepa_no_sigreg-s2003"
+}

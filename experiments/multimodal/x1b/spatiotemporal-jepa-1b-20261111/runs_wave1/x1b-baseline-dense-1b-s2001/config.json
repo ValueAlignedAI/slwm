@@ -1,0 +1,40 @@
+{
+  "backend": "tpu",
+  "batch_size": 8,
+  "config_sha256": "4ac1e71096c74c769a913a37638712d3db58877192736e3c4e82cc2d4047b7b0",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 19033728,
+    "jepa_and_uncertainty": 16529666,
+    "policy_and_heads": 18244612,
+    "processor_core": 954599424,
+    "strict_total": 1008407430
+  },
+  "peak_lr": 0.00015,
+  "real_bank_path": "/content/x1b-data/x1b_real_bank_v1.npz",
+  "seed": 2001,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "dense_transformer",
+    "audio_dim": 64,
+    "d_ff": 4910,
+    "d_model": 1536,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 23,
+    "n_heads": 24,
+    "profile": "x1b",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2400,
+  "tag": "x1b-baseline-dense-1b-s2001"
+}

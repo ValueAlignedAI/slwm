@@ -56,3 +56,7 @@ experiments/multimodal/t3/predictive-bottleneck-20261106/
 # G3 checkpoints and probe outputs are mirrored separately. Curated results are explicitly added.
 experiments/multimodal/t4/joint-transfer-20261109/
 .replay-deps/
+
+# Study X1B local Colab SSH/session state (never commit ephemeral credentials/sockets)
+.ops/
+experiments/multimodal/x1b/*/runs_wave2_bs8_diag/
