@@ -531,38 +531,49 @@ def eval_closed_loop_mpc_and_spoofing(
     goal_vec = jnp.concatenate([targ_xy - obj_init, targ_xy], axis=-1)
 
     planner_results: dict[str, Any] = {}
+    chunk_bs = 24 if (spec.arch == "dense_transformer" and spec.d_model >= 1152) else bs
 
     for planner_name in ("latent_cem_mpc", "g8_random_shooting_3", "open_loop_policy"):
         @jax.jit
-        def _roll_mpc(p: dict[str, jax.Array], p_kind: str = planner_name) -> jax.Array:
+        def _roll_mpc(
+            p: dict[str, jax.Array],
+            ee_c: jax.Array,
+            obj_c: jax.Array,
+            targ_c: jax.Array,
+            bar_c: jax.Array,
+            goal_c: jax.Array,
+            rk_c: jax.Array,
+            p_kind: str = planner_name,
+        ) -> jax.Array:
+            c_n = ee_c.shape[0]
             st0 = {
-                "ee_xy": ee_init,
-                "obj_xy": obj_init,
-                "obj_vel": jnp.zeros((bs, 2), dtype=jnp.float32),
-                "obj_theta": jnp.zeros((bs,), dtype=jnp.float32),
-                "has_barrier": has_bar,
-                "polarity": jnp.ones((bs,), dtype=jnp.float32),
+                "ee_xy": ee_c,
+                "obj_xy": obj_c,
+                "obj_vel": jnp.zeros((c_n, 2), dtype=jnp.float32),
+                "obj_theta": jnp.zeros((c_n,), dtype=jnp.float32),
+                "has_barrier": bar_c,
+                "polarity": jnp.ones((c_n,), dtype=jnp.float32),
             }
-            mem0 = init_streaming_memories(spec, bs, cache_len=64)
-            u0 = jnp.zeros((bs, 4), dtype=jnp.float32)
-            con0 = jnp.zeros((bs, 2), dtype=jnp.float32)
-            aud0 = jnp.zeros((bs, 64), dtype=jnp.float32) - 0.35
+            mem0 = init_streaming_memories(spec, c_n, cache_len=64)
+            u0 = jnp.zeros((c_n, 4), dtype=jnp.float32)
+            con0 = jnp.zeros((c_n, 2), dtype=jnp.float32)
+            aud0 = jnp.zeros((c_n, 64), dtype=jnp.float32) - 0.35
 
             def _mpc_body(carry, tick_idx):
                 st, mem, prev_u, prev_con, prev_aud, rk = carry
                 rk, subk = jax.random.split(rk)
                 vid_t = render_scene_64x64(
-                    st["ee_xy"], st["obj_xy"], st["obj_theta"], targ_xy, has_bar, jnp.ones((bs,), bool)
+                    st["ee_xy"], st["obj_xy"], st["obj_theta"], targ_c, bar_c, jnp.ones((c_n,), bool)
                 )
                 prop_t = state_to_proprio(st, prev_u[:, :2], prev_con)
                 step_b = {
                     "video": vid_t[:, None],
                     "audio": prev_aud[:, None],
                     "proprio": prop_t[:, None],
-                    "text": jnp.zeros((bs, 1, 4), dtype=jnp.int32),
+                    "text": jnp.zeros((c_n, 1, 4), dtype=jnp.int32),
                     "action": prev_u[:, None],
-                    "modality_mask": jnp.ones((bs, 1, 4), dtype=jnp.float32),
-                    "valid": jnp.ones((bs, 1), dtype=bool),
+                    "modality_mask": jnp.ones((c_n, 1, 4), dtype=jnp.float32),
+                    "valid": jnp.ones((c_n, 1), dtype=bool),
                 }
                 z_t, next_mem = forward_world_model(p, spec, step_b, memories=mem, offset=tick_idx)
                 if p_kind == "latent_cem_mpc":
@@ -570,7 +581,7 @@ def eval_closed_loop_mpc_and_spoofing(
                         p,
                         spec,
                         z_t[:, 0],
-                        goal_vec,
+                        goal_c,
                         subk,
                         obs_proprio=prop_t,
                         horizon=6,
@@ -578,14 +589,14 @@ def eval_closed_loop_mpc_and_spoofing(
                         num_elites=8,
                         cem_iters=3,
                         residual=use_residual,
-                        trust_proprio_only=jnp.zeros((bs,), dtype=bool),
+                        trust_proprio_only=jnp.zeros((c_n,), dtype=bool),
                     )
                 elif p_kind == "g8_random_shooting_3":
                     u_cmd = plan_random_shooting_g8(
                         p,
                         spec,
                         z_t[:, 0],
-                        goal_vec,
+                        goal_c,
                         subk,
                         obs_proprio=prop_t,
                         num_candidates=3,
@@ -594,7 +605,7 @@ def eval_closed_loop_mpc_and_spoofing(
                 else:
                     zn_t, lv_t = predict_latent_step(p, spec, z_t, prev_u[:, None], residual=use_residual)
                     h_t = decode_world_heads(
-                        p, spec, z_t, zn_t, lv_t, goal_vec, obs_proprio=prop_t[:, None], use_residual=use_residual
+                        p, spec, z_t, zn_t, lv_t, goal_c, obs_proprio=prop_t[:, None], use_residual=use_residual
                     )
                     u_cmd = h_t["action_proposal"][:, 0]
 
@@ -602,11 +613,30 @@ def eval_closed_loop_mpc_and_spoofing(
                 return (st_next, next_mem, u_cmd, obs["contacts"], obs["audio"], rk), None
 
             (st_end, _, _, _, _, _), _ = jax.lax.scan(
-                _mpc_body, (st0, mem0, u0, con0, aud0, k_plan), jnp.arange(t_ep, dtype=jnp.int32)
+                _mpc_body, (st0, mem0, u0, con0, aud0, rk_c), jnp.arange(t_ep, dtype=jnp.int32)
             )
             return st_end["obj_xy"]
 
-        end_obj = jax.device_get(_roll_mpc(params))
+        if chunk_bs == bs:
+            end_obj = jax.device_get(_roll_mpc(params, ee_init, obj_init, targ_xy, has_bar, goal_vec, k_plan))
+        else:
+            obj_parts = []
+            for c_idx in range(bs // chunk_bs):
+                sl = slice(c_idx * chunk_bs, (c_idx + 1) * chunk_bs)
+                obj_parts.append(
+                    jax.device_get(
+                        _roll_mpc(
+                            params,
+                            ee_init[sl],
+                            obj_init[sl],
+                            targ_xy[sl],
+                            has_bar[sl],
+                            goal_vec[sl],
+                            jax.random.fold_in(k_plan, c_idx),
+                        )
+                    )
+                )
+            end_obj = np.concatenate(obj_parts, axis=0)
         dist_end = np.asarray(jnp.sqrt(jnp.sum((end_obj - targ_xy) ** 2, axis=-1)))
         succ = (dist_end < 0.25).astype(np.float32)
         planner_results[planner_name] = {
@@ -733,27 +763,42 @@ def eval_long_horizon_memory_mpc(
     has_bar = jnp.arange(bs) % 2 == 0
     zero_goal = jnp.zeros((bs, 4), dtype=jnp.float32)
 
+    chunk_bs = 16 if (spec.arch == "dense_transformer" and spec.d_model >= 1152) else bs
+
     @jax.jit
-    def _roll_memory_mpc(p: dict[str, jax.Array], switch_flag: jax.Array) -> jax.Array:
+    def _roll_memory_mpc(
+        p: dict[str, jax.Array],
+        switch_flag: jax.Array,
+        ee_c: jax.Array,
+        obj_c: jax.Array,
+        ta_c: jax.Array,
+        tb_c: jax.Array,
+        qa_c: jax.Array,
+        qb_c: jax.Array,
+        bar_c: jax.Array,
+        rk_c: jax.Array,
+    ) -> jax.Array:
+        c_n = ee_c.shape[0]
+        zg_c = jnp.zeros((c_n, 4), dtype=jnp.float32)
         st0 = {
-            "ee_xy": ee_init,
-            "obj_xy": obj_init,
-            "obj_vel": jnp.zeros((bs, 2), dtype=jnp.float32),
-            "obj_theta": jnp.zeros((bs,), dtype=jnp.float32),
-            "has_barrier": has_bar,
-            "polarity": jnp.ones((bs,), dtype=jnp.float32),
+            "ee_xy": ee_c,
+            "obj_xy": obj_c,
+            "obj_vel": jnp.zeros((c_n, 2), dtype=jnp.float32),
+            "obj_theta": jnp.zeros((c_n,), dtype=jnp.float32),
+            "has_barrier": bar_c,
+            "polarity": jnp.ones((c_n,), dtype=jnp.float32),
         }
-        mem0 = init_streaming_memories(spec, bs, cache_len=80)
-        u0 = jnp.zeros((bs, 4), dtype=jnp.float32)
-        con0 = jnp.zeros((bs, 2), dtype=jnp.float32)
-        aud0 = jnp.zeros((bs, 64), dtype=jnp.float32) - 0.35
+        mem0 = init_streaming_memories(spec, c_n, cache_len=80)
+        u0 = jnp.zeros((c_n, 4), dtype=jnp.float32)
+        con0 = jnp.zeros((c_n, 2), dtype=jnp.float32)
+        aud0 = jnp.zeros((c_n, 64), dtype=jnp.float32) - 0.35
 
         def _body(carry, tick_idx):
             st, mem, prev_u, prev_con, prev_aud, rk = carry
             rk, subk = jax.random.split(rk)
             in_b_phase = switch_flag & (tick_idx >= t_sw)
-            curr_targ = jnp.where(in_b_phase, targ_b, targ_a)
-            curr_quad = jnp.where(in_b_phase, quad_b, quad_a)
+            curr_targ = jnp.where(in_b_phase, tb_c, ta_c)
+            curr_quad = jnp.where(in_b_phase, qb_c, qa_c)
             cue_on = (tick_idx < 4) | (switch_flag & (tick_idx >= t_sw) & (tick_idx < t_sw + 4))
 
             vid_t = render_scene_64x64(
@@ -761,14 +806,14 @@ def eval_long_horizon_memory_mpc(
                 st["obj_xy"],
                 st["obj_theta"],
                 curr_targ,
-                has_bar,
-                jnp.broadcast_to(cue_on, (bs,)),
+                bar_c,
+                jnp.broadcast_to(cue_on, (c_n,)),
             )
             prop_t = state_to_proprio(st, prev_u[:, :2], prev_con)
             txt_t = jnp.where(
                 cue_on,
-                jnp.zeros((bs, 1, 4), dtype=jnp.int32).at[:, 0, 0].set(curr_quad),
-                jnp.zeros((bs, 1, 4), dtype=jnp.int32),
+                jnp.zeros((c_n, 1, 4), dtype=jnp.int32).at[:, 0, 0].set(curr_quad),
+                jnp.zeros((c_n, 1, 4), dtype=jnp.int32),
             )
             step_b = {
                 "video": vid_t[:, None],
@@ -776,15 +821,15 @@ def eval_long_horizon_memory_mpc(
                 "proprio": prop_t[:, None],
                 "text": txt_t,
                 "action": prev_u[:, None],
-                "modality_mask": jnp.ones((bs, 1, 4), dtype=jnp.float32),
-                "valid": jnp.ones((bs, 1), dtype=bool),
+                "modality_mask": jnp.ones((c_n, 1, 4), dtype=jnp.float32),
+                "valid": jnp.ones((c_n, 1), dtype=bool),
             }
             z_t, next_mem = forward_world_model(p, spec, step_b, memories=mem, offset=tick_idx)
             u_cmd, _ = plan_latent_cem_mpc(
                 p,
                 spec,
                 z_t[:, 0],
-                zero_goal,
+                zg_c,
                 subk,
                 obs_proprio=prop_t,
                 horizon=6,
@@ -792,21 +837,50 @@ def eval_long_horizon_memory_mpc(
                 num_elites=8,
                 cem_iters=3,
                 residual=use_residual,
-                trust_proprio_only=jnp.zeros((bs,), dtype=bool),
+                trust_proprio_only=jnp.zeros((c_n,), dtype=bool),
             )
             st_next, obs = step_physics_world(st, u_cmd)
             return (st_next, next_mem, u_cmd, obs["contacts"], obs["audio"], rk), None
 
         (st_end, _, _, _, _, _), _ = jax.lax.scan(
-            _body, (st0, mem0, u0, con0, aud0, k_plan), jnp.arange(t_ep, dtype=jnp.int32)
+            _body, (st0, mem0, u0, con0, aud0, rk_c), jnp.arange(t_ep, dtype=jnp.int32)
         )
         return st_end["obj_xy"]
 
-    end_sust = jax.device_get(_roll_memory_mpc(params, jnp.asarray(False, dtype=bool)))
+    def _exec_panel8(sw_bool: bool) -> np.ndarray:
+        sw_arr = jnp.asarray(sw_bool, dtype=bool)
+        if chunk_bs == bs:
+            return np.asarray(
+                jax.device_get(
+                    _roll_memory_mpc(params, sw_arr, ee_init, obj_init, targ_a, targ_b, quad_a, quad_b, has_bar, k_plan)
+                )
+            )
+        parts = []
+        for c_idx in range(bs // chunk_bs):
+            sl = slice(c_idx * chunk_bs, (c_idx + 1) * chunk_bs)
+            parts.append(
+                jax.device_get(
+                    _roll_memory_mpc(
+                        params,
+                        sw_arr,
+                        ee_init[sl],
+                        obj_init[sl],
+                        targ_a[sl],
+                        targ_b[sl],
+                        quad_a[sl],
+                        quad_b[sl],
+                        has_bar[sl],
+                        jax.random.fold_in(k_plan, c_idx),
+                    )
+                )
+            )
+        return np.concatenate(parts, axis=0)
+
+    end_sust = _exec_panel8(False)
     dist_sust = np.asarray(jnp.sqrt(jnp.sum((end_sust - targ_a) ** 2, axis=-1)))
     succ_sust = (dist_sust < 0.25).astype(np.float32)
 
-    end_sw = jax.device_get(_roll_memory_mpc(params, jnp.asarray(True, dtype=bool)))
+    end_sw = _exec_panel8(True)
     dist_sw_b = np.asarray(jnp.sqrt(jnp.sum((end_sw - targ_b) ** 2, axis=-1)))
     dist_sw_a = np.asarray(jnp.sqrt(jnp.sum((end_sw - targ_a) ** 2, axis=-1)))
     succ_sw = (dist_sw_b < 0.25).astype(np.float32)

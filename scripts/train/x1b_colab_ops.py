@@ -221,7 +221,9 @@ def ssh_cmd_base(session_name: str) -> list[str]:
 
 
 def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) -> subprocess.CompletedProcess[str]:
-    """Execute Python directly inside the Colab session kernel (which holds the warmed-up v6e-1 TPU)."""
+    """Execute Python directly inside the Colab session kernel (killing hung WebSocket exits promptly)."""
+    import threading
+
     cfg_p = session_config_path(session_name)
     cmd = [
         str(COLAB_BIN),
@@ -235,7 +237,48 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
         "--timeout",
         "3600",
     ]
-    return subprocess.run(cmd, input=code, env=colab_env(), text=True, timeout=timeout, check=True)
+    proc = subprocess.Popen(
+        cmd,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        env=colab_env(),
+        text=True,
+        bufsize=1,
+    )
+    assert proc.stdin is not None and proc.stdout is not None
+    proc.stdin.write(code)
+    proc.stdin.close()
+
+    out_lines: list[str] = []
+    lost_at: list[float] = []
+
+    def _reader() -> None:
+        assert proc.stdout is not None
+        for line in proc.stdout:
+            sys.stdout.write(line)
+            sys.stdout.flush()
+            out_lines.append(line)
+            if "RuntimeError: Connection was lost." in line or "JaxRuntimeError:" in line:
+                lost_at.append(time.monotonic())
+
+    reader_t = threading.Thread(target=_reader, daemon=True)
+    reader_t.start()
+    t0 = time.monotonic()
+    while proc.poll() is None:
+        if time.monotonic() - t0 > timeout:
+            proc.kill()
+            raise subprocess.TimeoutExpired(cmd, timeout)
+        if lost_at and (time.monotonic() - lost_at[0] > 6.0):
+            proc.kill()
+            break
+        time.sleep(0.5)
+    reader_t.join(timeout=3.0)
+    rc = proc.returncode if proc.returncode is not None else -9
+    full_out = "".join(out_lines)
+    if rc != 0 or any("RuntimeError: Connection was lost." in ln for ln in out_lines):
+        raise subprocess.CalledProcessError(rc if rc != 0 else 1, cmd, output=full_out)
+    return subprocess.CompletedProcess(cmd, 0, stdout=full_out, stderr="")
 
 
 def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 5400) -> None:
