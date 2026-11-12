@@ -24,6 +24,12 @@ from models.x1b_world import (
     init_x1b_params,
     make_x1b_spec,
 )
+from scripts.eval.x1b_analyze_and_plot import aggregate_seed_group, generate_figures, load_run_bundle, paired_bootstrap_95_99
+from scripts.eval.x1b_infer import (
+    load_verified_checkpoint,
+    render_comparison_filmstrip,
+    replay_closed_loop_mission,
+)
 from scripts.train.x1b_train import (
     load_bf16_weights,
     load_portable_int8,
@@ -182,3 +188,71 @@ def test_smoke_train_eval_and_checkpoint_roundtrip(tmp_path: Path) -> None:
     restored_i8 = load_portable_int8(int8_file)
     assert set(restored.keys()) == set(init_x1b_params(make_x1b_spec("x_tiny", "slwm_x1b")).keys())
     assert set(restored_i8.keys()) == set(restored.keys())
+
+
+def test_standalone_inference_replay_and_analysis_pipeline(tmp_path: Path) -> None:
+    """Verify SHA-256 checkpoint verification, 3 closed-loop replay missions, filmstrip rendering, and 4-figure analysis."""
+    import hashlib
+    import json
+
+    runs_dir = tmp_path / "runs"
+    run_dir = runs_dir / "x1b-flagship-slwm-1b-s2001"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    spec = make_x1b_spec("x_tiny", "slwm_x1b", grad_checkpoint=False)
+    params = init_x1b_params(spec, seed=2001)
+    i8_path = run_dir / "portable_int8.npz"
+    i8_sha = save_portable_int8(i8_path, params)
+    p_counts = count_parameters(params)
+    (run_dir / "config.json").write_text(json.dumps({"spec": spec.__dict__}))
+    (run_dir / "receipt.json").write_text(
+        json.dumps(
+            {
+                "tag": "x1b-flagship-slwm-1b-s2001",
+                "objective": "residual_ema_jepa_sigreg",
+                "parameter_counts": p_counts,
+                "portable_int8_sha256": i8_sha,
+                "portable_int8_bytes": i8_path.stat().st_size,
+                "weights_bf16_sha256": "",
+                "weights_bf16_bytes": 0,
+            }
+        )
+    )
+    loaded_p, loaded_spec, receipt = load_verified_checkpoint(run_dir)
+    assert count_parameters(loaded_p)["strict_total"] == receipt["parameter_counts"]["strict_total"]
+
+    rep_thin = replay_closed_loop_mission(loaded_p, loaded_spec, mission_kind="thin_barrier_mpc", seed=11, cem_candidates=6, cem_iters=1)
+    rep_sw = replay_closed_loop_mission(loaded_p, loaded_spec, mission_kind="ood_goal_switch_barrier_mpc", seed=12, cem_candidates=6, cem_iters=1)
+    rep_sp = replay_closed_loop_mission(loaded_p, loaded_spec, mission_kind="camera_spoofing_safety", seed=13, cem_candidates=6, cem_iters=1)
+    assert len(rep_thin["frames"]) == 38
+    assert len(rep_sw["frames"]) == 76
+    assert len(rep_sp["frames"]) == 28
+
+    film_p = tmp_path / "preview.png"
+    render_comparison_filmstrip(
+        {"SLWM-X1B": rep_sw},
+        tick_indices=[2, 37, 75],
+        title="Smoke Filmstrip",
+        out_path=film_p,
+    )
+    assert film_p.is_file() and film_p.stat().st_size > 2048
+
+    # Verify 4-figure Wave 4 summary/CI pipeline against archived Wave 3 schema + new Panel 8/T1024 keys
+    ci = paired_bootstrap_95_99(np.array([1.0, 1.0, 0.0, 1.0]), np.array([0.0, 0.0, 0.0, 1.0]))
+    assert ci["n"] == 4 and ci["ci99_low"] <= ci["ci95_low"] <= ci["mean"]
+    mock_grp = {
+        "n_seeds": 3,
+        "strict_params": p_counts["strict_total"],
+        **{
+            k: {"mean": 0.85, "std": 0.03, "values": [0.82, 0.85, 0.88]}
+            for k in (
+                "mpc_success", "mpc_thin_barrier", "pr", "persist_skill_1", "persist_skill_4", "av_r1",
+                "assoc_T32", "assoc_T128", "assoc_T256", "assoc_T512", "assoc_T1024",
+                "transient_cont", "transient_04s", "streaming_state_mb_T64", "streaming_state_mb_T1024",
+                "open_loop_success", "g8_shoot_success", "spoof_regret_learned", "spoof_regret_always",
+                "unsupp_claim_learned", "unsupp_claim_always", "clean_usefulness_learned", "clean_usefulness_always",
+                "sustained_mpc_overall", "sustained_mpc_barrier", "goal_switch_mpc_overall", "stale_goal_a_trap",
+            )
+        },
+    }
+    figs = generate_figures({}, {"flagship_1b": mock_grp, "abl_slwm_full": mock_grp}, {"1b_pooled_slwm_vs_dense_goal_switch_mpc": ci}, tmp_path / "figs")
+    assert len(figs) == 4 and all(f.is_file() for f in figs)

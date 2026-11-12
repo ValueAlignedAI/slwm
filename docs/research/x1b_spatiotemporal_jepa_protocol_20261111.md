@@ -84,3 +84,17 @@ All headline comparisons use **`AGENTS.md` §4 Mode 1 (Strict Total Parameter Co
 2. Zero train/dev/test recording or scene leakage (enforced by recording SHA-256 manifests).
 3. All `1.002B` and `455M` and canonical `152M` checkpoints (`weights.npz` + `portable_int8.npz` + `receipt.json`) verified bit-for-bit via SHA-256 across **both** physical 9.1 TB HDDs on Fedora (`/mnt/slwm-checkpoints-a/SLWM/x1b` and `/mnt/slwm-checkpoints-b/SLWM/x1b`).
 4. Hard compute budget ceiling: `<= 500.0` Colab compute units (target `< 120.0` units via TPU `v6e1` preference); mandatory `colab stop` verification of zero remaining `slwm-x1b-*` runtimes upon completion.
+
+---
+
+## 6. Wave 4 (`X1B-v4`) 3-Seed `1.008B` & `T=1024` / OOD Goal-Switch Expansion (`36` Runs; `120` Cumulative)
+
+Following Waves 1–3 (`84` runs), Wave 4 (`X1B-v4`, `36` runs) resolves the remaining statistical power, open-loop policy readout coupling, and long-horizon OOD control tests:
+
+1. **Decoupled Physical & Working-Memory Readout Heads (`1,008,454,410` Strict Params, `< 0.30%` Dense / `< 0.01%` Legacy Parity):** Separate `head_vis_pose_w/b`, `head_proprio_w/b`, and `head_goal_w/b` with decoupled core/head AdamW gradient clipping eliminate cross-objective interference between camera-spoof pose verification, residual state forecasting, and `0.4 s` working-memory goal retention, while bounding streaming recurrent + `3:1` attention state to $O(1)$ (`6.79 MB` at both `T=64` and `T=1024` vs `7,200.00 MB` for `DenseTransformer-X1B` at `T=1024`).
+2. **4-Step Unrolled Residual-EMA-JEPA + Off-Policy Calibration:** Unrolled latent rollouts (`jepa_1 + 0.5*jepa_2 + 0.35*jepa_4` + `8.0*prop_step4_loss`) with 15% uniform off-policy motor perturbations and `0.75 * prop_delta + 0.25 * vis_delta` spatial-visual fusion sharpen multi-step `1-px` barrier collision forecasting.
+3. **3-Seed `1.008B` & `453M` + 8-Panel OOD Evaluation (`36` Runs):**
+   - `9` `1.008B` runs: `3 seeds (2001, 2002, 2003) × {SLWM-X1B, DenseTransformer-X1B, LegacyScalarHybrid-X1B}` (`steps=2800, batch_size=12, seq_len=32`, `N=288` pooled `Panel 5` episodes and `N=192` pooled `Panel 8` OOD `T=76` episodes per architecture).
+   - `3` `453M` runs: `3 seeds (2001, 2002, 2003) × SLWM-X450M` (`steps=2600`).
+   - `24` `152M` runs: `3 seeds (2001, 2002, 2003) × 8` architecture/objective factorials (`steps=1800`).
+   - Expanded `Panel 3` to **`T=1024` (`32×` OOD = `24,576` spatiotemporal slots)** and added **`Panel 8`** (`T=76 = 2.38× T_train` Sustained Transient Thin-Barrier MPC & Mid-Episode Goal-B Overwrite MPC at `t=36..39 > T_train`, zero external goal vector).
