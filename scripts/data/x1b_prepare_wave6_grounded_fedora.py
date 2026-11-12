@@ -16,15 +16,14 @@ Writes ONLY to `/mnt/slwm-data/SLWM/x1b/datasets/`:
 from __future__ import annotations
 
 import hashlib
-import io
 import json
 from pathlib import Path
 import struct
 import sys
 from typing import Any
 
+import cv2
 import numpy as np
-from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
@@ -55,11 +54,13 @@ def _read_tfrecord_at_offset(tf_path: Path, offset: int) -> bytes:
     return payload
 
 
-def _decode_frames_bilinear(jpegs: list[bytes], max_t: int = 32, img_res: int = 64) -> tuple[np.ndarray, int]:
+def _decode_frames_bilinear(jpegs: list[memoryview], max_t: int = 32, img_res: int = 64) -> tuple[np.ndarray, int]:
     frames = []
     for raw in jpegs:
-        with Image.open(io.BytesIO(raw)) as im:
-            rgb = np.asarray(im.convert("RGB").resize((img_res, img_res), Image.Resampling.BILINEAR), dtype=np.uint8)
+        bgr = cv2.imdecode(np.frombuffer(raw, dtype=np.uint8), cv2.IMREAD_COLOR)
+        if bgr is None:
+            continue
+        rgb = cv2.cvtColor(cv2.resize(bgr, (img_res, img_res), interpolation=cv2.INTER_AREA), cv2.COLOR_BGR2RGB)
         if not frames or int(np.max(np.abs(rgb.astype(np.int16) - frames[-1].astype(np.int16)))) > 0:
             frames.append(rgb)
         if len(frames) >= max_t:
@@ -110,9 +111,10 @@ def build_wave6_grounded_datasets(
     max_vault: int = 512,
     img_res: int = 64,
 ) -> dict[str, Any]:
+    cv2.setNumThreads(1)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     vocab_doc = json.loads((OUT_DIR / "vocab_4096_ext.json").read_text())
-    vocab_map: dict[str, int] = vocab_doc["word_to_id"]
+    vocab_map: dict[str, int] = vocab_doc.get("word_to_id", vocab_doc)
     spoken_pools = _load_real_spoken_pools()
     rng = np.random.default_rng(20261113)
 
