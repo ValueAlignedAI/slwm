@@ -606,11 +606,101 @@ class RealMultimodalBank:
         }
 
 
+ROBOT_SCALE_MM = 350.0
+
+
+class RealRobotBank:
+    """Zero-leakage physical xArm6 / Language-Table 64x64x3 RGB + Cartesian kinematics + counterfactual bank."""
+
+    def __init__(self, path: str | Path, split: str = "train") -> None:
+        self.path = Path(path)
+        self.split = split
+        with np.load(self.path, allow_pickle=False) as f:
+            pfx = f"{split}_"
+            self.video = np.asarray(f[pfx + "video"], dtype=np.uint8)
+            self.proprio = np.asarray(f[pfx + "proprio"], dtype=np.float32)
+            self.next_proprio = np.asarray(f[pfx + "next_proprio"], dtype=np.float32)
+            self.prev_action = np.asarray(f[pfx + "prev_action"], dtype=np.float32)
+            self.exec_action = np.asarray(f[pfx + "exec_action"], dtype=np.float32)
+            self.text_header = np.asarray(f[pfx + "text_header"], dtype=np.int32)
+            self.wrong_header = np.asarray(f[pfx + "wrong_header"], dtype=np.int32)
+            self.endpoint_xy = np.asarray(f[pfx + "endpoint_xy"], dtype=np.float32)
+            self.ep_len = np.asarray(f[pfx + "ep_len"], dtype=np.int32)
+            self.novel = np.asarray(f[pfx + "novel"], dtype=bool)
+            self.paired = np.asarray(f[pfx + "paired"], dtype=bool)
+        self.size = int(self.video.shape[0])
+
+    def build_text_stream(self, headers: np.ndarray, seq_len: int, transient_mask: np.ndarray) -> np.ndarray:
+        """Format 4x4 (16-token, 0.4s) natural-language headers as transient (ticks 0..3) or sustained streams."""
+        b = headers.shape[0]
+        reps = (seq_len + 3) // 4
+        sustained = np.tile(headers, (1, reps, 1))[:, :seq_len, :]
+        transient = np.zeros((b, seq_len, 4), dtype=np.int32)
+        take = min(4, seq_len)
+        transient[:, :take, :] = headers[:, :take, :]
+        return np.where(transient_mask[:, None, None], transient, sustained)
+
+    def sample_batch(self, rng: np.random.Generator, batch_size: int, seq_len: int = 32) -> dict[str, np.ndarray]:
+        """Sample physical xArm6 episodes (50% 0.4s transient instruction, 50% sustained, zero goal-coord leak)."""
+        idx = rng.integers(0, self.size, size=(batch_size,))
+        t = min(seq_len, self.video.shape[1])
+        vid = self.video[idx, :t]
+        prop = self.proprio[idx, :t]
+        nprop = self.next_proprio[idx, :t]
+        prev_u = self.prev_action[idx, :t]
+        u_exec = self.exec_action[idx, :t]
+        end_xy = self.endpoint_xy[idx]
+        eplen = self.ep_len[idx]
+
+        transient_mask = rng.random((batch_size,)) < 0.5
+        txt = self.build_text_stream(self.text_header[idx], t, transient_mask)
+
+        aud = np.full((batch_size, t, 64), -0.35, dtype=np.float32)
+        moving = (np.linalg.norm(prop[:, :, 4:6], axis=-1) > 0.04).astype(np.float32)
+        con = np.stack([moving, np.zeros_like(moving)], axis=-1)
+        dist = np.sqrt(np.sum((prop[:, :, 0:2] - end_xy[:, None, :]) ** 2, axis=-1))
+        val = (-1.35 * dist).astype(np.float32)
+        tgoal = np.broadcast_to(end_xy[:, None, :], (batch_size, t, 2)).copy().astype(np.float32)
+        zero_goal = np.zeros((batch_size, 4), dtype=np.float32)
+        true_goal = np.concatenate([end_xy - prop[:, 0, 0:2], end_xy], axis=-1).astype(np.float32)
+        mm = np.broadcast_to(np.array([0.0, 1.0, 1.0, 1.0], dtype=np.float32), (batch_size, t, 4)).copy()
+        active_mask = (
+            (np.arange(t)[None, :] < eplen[:, None]) & (np.linalg.norm(u_exec[:, :, :2], axis=-1) > 1e-3)
+        ).astype(np.float32)
+
+        return {
+            "video": vid,
+            "clean_video": vid,
+            "audio": aud,
+            "proprio": prop,
+            "target_proprio": prop,
+            "target_next_proprio": nprop,
+            "text": txt,
+            "target_text": np.zeros((batch_size, t), dtype=np.int32),
+            "action": prev_u,
+            "next_action": u_exec,
+            "target_action": u_exec,
+            "target_contacts": con,
+            "target_value": val,
+            "target_commit": np.zeros((batch_size, t), dtype=np.int32),
+            "target_goal_xy": tgoal,
+            "goal": zero_goal,
+            "true_goal": true_goal,
+            "modality_mask": mm,
+            "full_modality_mask": mm,
+            "has_av_pair": np.zeros((batch_size,), dtype=np.float32),
+            "action_supervision_mask": active_mask,
+            "valid": np.ones((batch_size, t), dtype=bool),
+            "scenario": np.full((batch_size,), -2, dtype=np.int32),
+        }
+
+
 def mix_real_and_synthetic_batches(
     real_batch: dict[str, Any],
     synth_batch: dict[str, jax.Array],
+    robot_batch: dict[str, Any] | None = None,
 ) -> dict[str, jax.Array]:
-    """Concatenate half-real, half-interactive episodes along batch dimension."""
+    """Concatenate real multimodal (+ optional physical robot) and interactive episodes along batch axis."""
     keys = (
         "video",
         "clean_video",
@@ -636,4 +726,5 @@ def mix_real_and_synthetic_batches(
         "valid",
         "scenario",
     )
-    return {k: jnp.concatenate([jnp.asarray(real_batch[k]), synth_batch[k]], axis=0) for k in keys}
+    parts = [real_batch] + ([robot_batch] if robot_batch is not None else []) + [synth_batch]
+    return {k: jnp.concatenate([jnp.asarray(p[k]) for p in parts], axis=0) for k in keys}

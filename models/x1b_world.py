@@ -51,6 +51,8 @@ TOTAL_SLOTS = 24
 VALID_ARCHS = (
     "slwm_x1b",
     "dense_transformer",
+    "sliding_window_transformer",
+    "diagonal_ssm_hybrid",
     "scalar_retention_hybrid",
     "legacy_scalar_hybrid",
     "slwm_no_registers",
@@ -138,7 +140,10 @@ def make_x1b_spec(profile: str = "x1b", arch: str = "slwm_x1b", **overrides: Any
     # Extra per GatedDelta layer = 2*D^2 + 2*D*H + 2*H + D.
     delta_layers_ref = sum(1 for i in range(layers) if (i + 1) % 4 != 0)
     extra_ref = delta_layers_ref * (2 * d * d + 2 * d * h + 2 * h + d)
-    if arch in ("dense_transformer", "scalar_retention_hybrid", "legacy_scalar_hybrid") and "d_ff" not in overrides:
+    if (
+        arch in ("dense_transformer", "sliding_window_transformer", "scalar_retention_hybrid", "legacy_scalar_hybrid")
+        and "d_ff" not in overrides
+    ):
         add_ff = int(round(extra_ref / max(1, 3 * d * layers)))
         cfg["d_ff"] = base_ff + add_ff
 
@@ -282,7 +287,7 @@ def init_x1b_params(spec: X1BSpec, seed: int = 2001) -> dict[str, jax.Array]:
 
         # Across-tick causal temporal mixer
         p[pfx + "tnorm"] = np.ones((d,), dtype=np.float32)
-        is_attn = spec.arch == "dense_transformer" or ((i + 1) % 4 == 0)
+        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
         if is_attn:
             p[pfx + "tqkv"] = glorot((d, 3 * d), 1.0)
             p[pfx + "to"] = glorot((d, d), res_scale)
@@ -395,7 +400,7 @@ def count_spec_parameters(spec: X1BSpec) -> dict[str, int]:
     for i in range(spec.layers):
         core += d + 3 * d * d + d * d  # spatial
         core += d  # tnorm
-        is_attn = spec.arch == "dense_transformer" or ((i + 1) % 4 == 0)
+        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
         if is_attn or spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
             core += 3 * d * d + d * d
         else:
@@ -662,10 +667,15 @@ def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64)
     d = spec.d_model
     h = spec.n_heads
     dh = spec.head_dim
-    eff_cache_len = cache_len if spec.arch == "dense_transformer" else min(8, cache_len)
+    if spec.arch == "dense_transformer":
+        eff_cache_len = cache_len
+    elif spec.arch == "sliding_window_transformer":
+        eff_cache_len = min(64, cache_len)
+    else:
+        eff_cache_len = min(8, cache_len)
     mems = []
     for i in range(spec.layers):
-        is_attn = spec.arch == "dense_transformer" or ((i + 1) % 4 == 0)
+        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
         if is_attn:
             mems.append(
                 (
@@ -676,6 +686,13 @@ def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64)
             )
         elif spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
             mems.append(jnp.zeros((b, s, 8, d // 8), dtype=jnp.float32))
+        elif spec.arch == "diagonal_ssm_hybrid":
+            mems.append(
+                (
+                    jnp.zeros((b, h, dh), dtype=jnp.float32),
+                    jnp.zeros((b, s, d), dtype=jnp.float32),
+                )
+            )
         else:
             mems.append(
                 (
@@ -917,6 +934,153 @@ def _gated_delta_temporal(
     return out, (m_last, c_last)
 
 
+def _diagonal_ssm_temporal(
+    x: jax.Array,
+    tq_w: jax.Array,
+    tkv_write_w: jax.Array,
+    tslot_u_w: jax.Array,
+    tgates_w: jax.Array,
+    tgates_b: jax.Array,
+    to_w: jax.Array,
+    valid: jax.Array,
+    n_heads: int,
+    head_dim: int,
+    prev_state: tuple[jax.Array, jax.Array] | None = None,
+) -> tuple[jax.Array, tuple[jax.Array, jax.Array]]:
+    """Mamba-style Input-Selective Diagonal Vector SSM Recurrence (exact parameter match to GatedDelta).
+
+    Replaces GatedDelta's rank-1 Householder outer-product matrix M_t in R^{H x dh x dh} with an
+    input-selective diagonal vector state s_t in R^{H x dh}:
+        s_t^(h) = alpha_t^(h) * s_{t-1}^(h) + beta_t^(h) * (B_sel(x_t)^(h) * v_t^(h))
+        o_{t,s}^(h) = q_{t,s}^(h) * s_{t-1}^(h)
+    while keeping identical gates, registers, Zero-Lag kinematics bypass, and parameter count (0.0000% delta).
+    """
+    b, t, s, d = x.shape
+    q_all = (x @ tq_w).reshape(b, t, s, n_heads, head_dim)
+    q_all = q_all * jax.lax.rsqrt(
+        jnp.sum(q_all.astype(jnp.float32) ** 2, axis=-1, keepdims=True) + 1e-6
+    ).astype(x.dtype)
+    u_slot = x @ tslot_u_w
+
+    h_long = n_heads // 2
+    reg_mean = x[:, :, SLOTS_REGISTER, :].mean(axis=2)
+    write_src_long = x[:, :, SLOT_TEXT, :]
+    write_src_emb = (
+        0.60 * reg_mean
+        + 0.22 * x[:, :, SLOT_PROPRIO, :]
+        + 0.18 * x[:, :, SLOTS_VISUAL, :].mean(axis=2)
+    )
+    w_long_gates = jnp.concatenate(
+        [tgates_w[:, :h_long], tgates_w[:, n_heads : n_heads + h_long]], axis=-1
+    )
+    b_long_gates = jnp.concatenate(
+        [tgates_b[:h_long], tgates_b[n_heads : n_heads + h_long]], axis=-1
+    )
+    gates_long = (write_src_long @ w_long_gates).astype(jnp.float32) + b_long_gates[None, None, :]
+
+    w_emb_gates = jnp.concatenate(
+        [tgates_w[:, h_long:n_heads], tgates_w[:, n_heads + h_long : 2 * n_heads], tgates_w[:, 2 * n_heads :]],
+        axis=-1,
+    )
+    b_emb_gates = jnp.concatenate(
+        [tgates_b[h_long:n_heads], tgates_b[n_heads + h_long : 2 * n_heads], tgates_b[2 * n_heads :]],
+        axis=-1,
+    )
+    gates_emb = (write_src_emb @ w_emb_gates).astype(jnp.float32) + b_emb_gates[None, None, :]
+
+    h_emb = n_heads - h_long
+    alpha = jax.nn.sigmoid(
+        jnp.concatenate([gates_long[:, :, :h_long], gates_emb[:, :, :h_emb]], axis=-1)
+    )
+    beta = jax.nn.sigmoid(
+        jnp.concatenate([gates_long[:, :, h_long:], gates_emb[:, :, h_emb : 2 * h_emb]], axis=-1)
+    )
+    gamma_raw = gates_emb[:, :, 2 * h_emb :]
+
+    kv_w_reshaped = tkv_write_w.reshape(d, 2, n_heads, head_dim)
+    kv_long = jnp.einsum("btd,dchk->btchk", write_src_long, kv_w_reshaped[:, :, :h_long, :])
+    kv_emb = jnp.einsum("btd,dchk->btchk", write_src_emb, kv_w_reshaped[:, :, h_long:, :])
+    kv_write = jnp.concatenate([kv_long, kv_emb], axis=3)
+    b_sel = jnp.tanh(kv_write[:, :, 0].astype(jnp.float32))
+    v_w = kv_write[:, :, 1].astype(jnp.float32)
+
+    gamma_sens = jax.nn.sigmoid(gamma_raw - 2.5)
+    gamma_reg = jax.nn.sigmoid(gamma_raw)
+
+    if prev_state is None:
+        s_init = jnp.zeros((b, n_heads, head_dim), dtype=jnp.float32)
+        c_init = jnp.zeros((b, s, d), dtype=jnp.float32)
+    else:
+        s_init, c_init = prev_state[0].astype(jnp.float32), prev_state[1].astype(jnp.float32)
+
+    slot_u_weight = jnp.concatenate(
+        [
+            jnp.full((19,), 0.82, dtype=jnp.float32),
+            jnp.array([1.0, 0.82], dtype=jnp.float32),
+            jnp.full((3,), 0.20, dtype=jnp.float32),
+        ]
+    )[None, :, None]
+    slot_c_weight = 1.0 - slot_u_weight
+    slot_assoc_gain = jnp.concatenate(
+        [
+            jnp.full((16,), 0.10, dtype=jnp.float32),
+            jnp.full((3,), 0.30, dtype=jnp.float32),
+            jnp.array([1.0, 0.30], dtype=jnp.float32),
+            jnp.full((3,), 1.0, dtype=jnp.float32),
+        ]
+    )[None, :, None]
+
+    def scan_step(
+        carry: tuple[jax.Array, jax.Array],
+        step_inp: tuple[
+            jax.Array, jax.Array, jax.Array, jax.Array, jax.Array, jax.Array, jax.Array, jax.Array, jax.Array
+        ],
+    ) -> tuple[tuple[jax.Array, jax.Array], jax.Array]:
+        s_prev, c_prev = carry
+        q_t, bsel_t, v_t, a_t, b_t, gs_t, gr_t, u_t, ok_t = step_inp
+        q_scaled = q_t.astype(jnp.float32) * (head_dim**0.5)
+        assoc_heads = q_scaled * s_prev[:, None, :, :]
+        assoc_heads = assoc_heads.at[:, SLOT_TEXT, h_long:, :].set(0.0)
+        assoc_out = assoc_heads.reshape(b, s, d)
+
+        s_cand = a_t[:, :, None] * s_prev + b_t[:, :, None] * (bsel_t * v_t)
+        g_slot = jnp.concatenate(
+            [
+                jnp.broadcast_to(gs_t[:, None, :], (b, 21, d)),
+                jnp.broadcast_to(gr_t[:, None, :], (b, 3, d)),
+            ],
+            axis=1,
+        )
+        u_f32 = u_t.astype(jnp.float32)
+        c_cand = g_slot * c_prev + (1.0 - g_slot) * u_f32
+        c_cand = c_cand.at[:, SLOT_TEXT, :].set(u_f32[:, SLOT_TEXT, :])
+
+        s_next = jnp.where(ok_t[:, None, None], s_cand, s_prev)
+        c_next = jnp.where(ok_t[:, None, None], c_cand, c_prev)
+
+        local_kin = slot_u_weight * u_f32 + slot_c_weight * c_next
+        combined = (slot_assoc_gain * assoc_out + local_kin).astype(x.dtype)
+        return (s_next, c_next), combined
+
+    (s_last, c_last), seq_out = jax.lax.scan(
+        scan_step,
+        (s_init, c_init),
+        (
+            jnp.swapaxes(q_all, 0, 1),
+            jnp.swapaxes(b_sel, 0, 1),
+            jnp.swapaxes(v_w, 0, 1),
+            jnp.swapaxes(alpha, 0, 1),
+            jnp.swapaxes(beta, 0, 1),
+            jnp.swapaxes(gamma_sens, 0, 1),
+            jnp.swapaxes(gamma_reg, 0, 1),
+            jnp.swapaxes(u_slot, 0, 1),
+            valid.T,
+        ),
+    )
+    out = jnp.swapaxes(seq_out, 0, 1) @ to_w
+    return out, (s_last, c_last)
+
+
 def _run_single_block(
     x: jax.Array,
     layer_idx: int,
@@ -939,17 +1103,22 @@ def _run_single_block(
         spec.n_heads,
         spec.head_dim,
         separate_cores=(spec.arch == "separate_modality_cores"),
-        shield_text_slot=(spec.arch in ("slwm_x1b", "slwm_no_registers")),
+        shield_text_slot=(spec.arch in ("slwm_x1b", "diagonal_ssm_hybrid", "slwm_no_registers")),
     )
 
     # 2. Across-tick Causal Temporal Mixer
     z_t = rms_norm(x, params[pfx + "tnorm"])
-    is_attn = spec.arch == "dense_transformer" or ((layer_idx + 1) % 4 == 0)
+    is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((layer_idx + 1) % 4 == 0)
     if is_attn:
         # Hybrid world models use bounded O(1) sub-second sliding-window attention (W=8 ticks = 0.8s) paired with
         # global position-free GatedDelta so multi-second associative recall & overwrite MUST flow through M_t;
-        # DenseTransformer relies on full-window RoPE attention across the whole sequence.
-        attn_win = spec.rope_Window if spec.arch == "dense_transformer" else min(8, spec.rope_Window)
+        # SlidingWindowTransformer uses fixed W=64 (6.4s) O(1) ring buffer; DenseTransformer uses full O(T) window.
+        if spec.arch == "dense_transformer":
+            attn_win = spec.rope_Window
+        elif spec.arch == "sliding_window_transformer":
+            attn_win = min(64, spec.rope_Window)
+        else:
+            attn_win = min(8, spec.rope_Window)
         t_out, mem_out = _causal_rope_temporal_attn(
             z_t,
             params[pfx + "tqkv"].astype(dtype),
@@ -967,6 +1136,20 @@ def _run_single_block(
             params[pfx + "tqkv"].astype(dtype),
             params[pfx + "to"].astype(dtype),
             valid,
+            prev_state=prev_mem,
+        )
+    elif spec.arch == "diagonal_ssm_hybrid":
+        t_out, mem_out = _diagonal_ssm_temporal(
+            z_t,
+            params[pfx + "tq"].astype(dtype),
+            params[pfx + "tkv_write"].astype(dtype),
+            params[pfx + "tslot_u"].astype(dtype),
+            params[pfx + "tgates"].astype(dtype),
+            params[pfx + "tgates_b"],
+            params[pfx + "to"].astype(dtype),
+            valid,
+            spec.n_heads,
+            spec.head_dim,
             prev_state=prev_mem,
         )
     else:

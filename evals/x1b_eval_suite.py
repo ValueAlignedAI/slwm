@@ -17,7 +17,9 @@ import numpy as np
 from data.x1b_multimodal import (
     ASSOC_NUM_VALS,
     ASSOC_VAL_OFFSET,
+    ROBOT_SCALE_MM,
     RealMultimodalBank,
+    RealRobotBank,
     generate_synthetic_world_batch,
     render_scene_64x64,
     state_to_proprio,
@@ -531,7 +533,11 @@ def eval_closed_loop_mpc_and_spoofing(
     goal_vec = jnp.concatenate([targ_xy - obj_init, targ_xy], axis=-1)
 
     planner_results: dict[str, Any] = {}
-    chunk_bs = 24 if (spec.arch == "dense_transformer" and spec.d_model >= 1152) else bs
+    chunk_bs = (
+        24
+        if (spec.arch in ("dense_transformer", "sliding_window_transformer") and spec.d_model >= 1152)
+        else bs
+    )
 
     for planner_name in ("latent_cem_mpc", "g8_random_shooting_3", "open_loop_policy"):
         @jax.jit
@@ -763,7 +769,11 @@ def eval_long_horizon_memory_mpc(
     has_bar = jnp.arange(bs) % 2 == 0
     zero_goal = jnp.zeros((bs, 4), dtype=jnp.float32)
 
-    chunk_bs = 16 if (spec.arch == "dense_transformer" and spec.d_model >= 1152) else bs
+    chunk_bs = (
+        16
+        if (spec.arch in ("dense_transformer", "sliding_window_transformer") and spec.d_model >= 1152)
+        else bs
+    )
 
     @jax.jit
     def _roll_memory_mpc(
@@ -906,6 +916,228 @@ def eval_long_horizon_memory_mpc(
     }
 
 
+def eval_real_robot_transfer(
+    params: dict[str, jax.Array],
+    spec: X1BSpec,
+    robot_test_bank: RealRobotBank | None,
+    *,
+    use_residual: bool = True,
+) -> dict[str, Any]:
+    """Panel 9: Zero-Leakage Physical xArm6 / Language-Table 64x64x3 Multi-Step & Counterfactual Evaluation.
+
+    Evaluates on N=256 held-out frame-deduplicated, recording-disjoint physical robot episodes in millimeters (mm):
+      1) 1-step & 4-step Cartesian effector rollout error (mm) vs zero-velocity persistence on unpadded active ticks.
+      2) Causal motor-plan conditioning gain (mm): error under negated motor plan (-u) minus true executed plan (+u).
+      3) Visual-linguistic instruction grounding at t=3 (0.4s header, BEFORE operator trajectory unfolds):
+         predicted endpoint error (mm), pairwise discrimination accuracy (true vs recording-matched counterfactual
+         `wrong` human instruction on the exact same camera image), policy cosine alignment, and novel color-pair
+         compositional generalization.
+      4) Transient 0.4s instruction working-memory retention across full physical trajectories.
+    """
+    if robot_test_bank is None:
+        return {"available": False}
+
+    n_eval = robot_test_bank.size
+    bs = 16
+    t_seq = robot_test_bank.video.shape[1]
+
+    @jax.jit
+    def _eval_robot_batch(
+        p: dict[str, jax.Array],
+        vid: jax.Array,
+        prop: jax.Array,
+        prev_u: jax.Array,
+        u_exec: jax.Array,
+        txt_true: jax.Array,
+        txt_wrong: jax.Array,
+        txt_tran: jax.Array,
+    ) -> dict[str, jax.Array]:
+        aud = jnp.full((bs, t_seq, 64), -0.35, dtype=jnp.float32)
+        mm = jnp.broadcast_to(jnp.array([0.0, 1.0, 1.0, 1.0], dtype=jnp.float32), (bs, t_seq, 4))
+        val_mask = jnp.ones((bs, t_seq), dtype=bool)
+        z_goal = jnp.zeros((bs, 4), dtype=jnp.float32)
+
+        def _forward_cond(txt_in: jax.Array):
+            b_in = {
+                "video": vid,
+                "audio": aud,
+                "proprio": prop,
+                "text": txt_in,
+                "action": prev_u,
+                "modality_mask": mm,
+                "valid": val_mask,
+            }
+            z, _ = forward_world_model(p, spec, b_in)
+            zn, lv = predict_latent_step(p, spec, z, u_exec, residual=use_residual)
+            h = decode_world_heads(p, spec, z, zn, lv, z_goal, obs_proprio=prop, use_residual=use_residual)
+            return z, h
+
+        z_true, h_true = _forward_cond(txt_true)
+        _, h_wrong = _forward_cond(txt_wrong)
+        _, h_tran = _forward_cond(txt_tran)
+
+        # 4-step open-loop latent rollout under true motor plan (+u) vs counterfactual motor plan (-u)
+        z_anchor = z_true[:, :-4]
+        hw = p["head_proprio_w"].astype(jnp.float32)
+        hb = p["head_proprio_b"].astype(jnp.float32)
+
+        def _roll4(u_seq_4: jax.Array) -> jax.Array:
+            zr = z_anchor
+            for k_step in range(4):
+                zr, _ = predict_latent_step(
+                    p, spec, zr, u_seq_4[:, k_step : (t_seq - 4) + k_step], residual=use_residual
+                )
+            zfr = zr.astype(jnp.float32)
+            zf0 = z_anchor.astype(jnp.float32)
+            if use_residual and spec.arch != "legacy_scalar_hybrid":
+                d4 = (
+                    0.75 * (zfr[:, :, SLOT_PROPRIO, :] - zf0[:, :, SLOT_PROPRIO, :])
+                    + 0.25 * (jnp.mean(zfr[:, :, SLOTS_VISUAL, :], axis=2) - jnp.mean(zf0[:, :, SLOTS_VISUAL, :], axis=2))
+                ) @ hw
+                return (prop[:, :-4].astype(jnp.float32) + d4)[:, :, 0:2]
+            return ((0.75 * zfr[:, :, SLOT_PROPRIO, :] + 0.25 * jnp.mean(zfr[:, :, SLOTS_VISUAL, :], axis=2)) @ hw + hb)[
+                :, :, 0:2
+            ]
+
+        pred4_true = _roll4(u_exec)
+        pred4_neg = _roll4(-u_exec)
+
+        return {
+            "pred1_xy": h_true["proprio_next"][:, :, 0:2],
+            "pred4_true_xy": pred4_true,
+            "pred4_neg_xy": pred4_neg,
+            "goal_true_xy": h_true["pred_goal_xy"],
+            "goal_wrong_xy": h_wrong["pred_goal_xy"],
+            "goal_tran_xy": h_tran["pred_goal_xy"],
+            "act_true_xy": h_true["action_proposal"][:, :, 0:2],
+            "act_wrong_xy": h_wrong["action_proposal"][:, :, 0:2],
+        }
+
+    err1_mod_list: list[float] = []
+    err1_per_list: list[float] = []
+    err4_mod_list: list[float] = []
+    err4_per_list: list[float] = []
+    err4_neg_list: list[float] = []
+    end_true_t3_list: list[float] = []
+    end_wrong_t3_list: list[float] = []
+    disc_t3_list: list[float] = []
+    disc_tran_late_list: list[float] = []
+    end_tran_late_list: list[float] = []
+    cos_true_list: list[float] = []
+    cos_wrong_list: list[float] = []
+    novel_flags: list[bool] = []
+
+    all_false = np.zeros((bs,), dtype=bool)
+    all_true = np.ones((bs,), dtype=bool)
+
+    for start in range(0, n_eval - bs + 1, bs):
+        idx = np.arange(start, start + bs)
+        txt_true_np = robot_test_bank.build_text_stream(robot_test_bank.text_header[idx], t_seq, all_false)
+        txt_wrong_np = robot_test_bank.build_text_stream(robot_test_bank.wrong_header[idx], t_seq, all_false)
+        txt_tran_np = robot_test_bank.build_text_stream(robot_test_bank.text_header[idx], t_seq, all_true)
+
+        out = jax.device_get(
+            _eval_robot_batch(
+                params,
+                jnp.asarray(robot_test_bank.video[idx]),
+                jnp.asarray(robot_test_bank.proprio[idx]),
+                jnp.asarray(robot_test_bank.prev_action[idx]),
+                jnp.asarray(robot_test_bank.exec_action[idx]),
+                jnp.asarray(txt_true_np),
+                jnp.asarray(txt_wrong_np),
+                jnp.asarray(txt_tran_np),
+            )
+        )
+
+        prop_b = robot_test_bank.proprio[idx, :, 0:2]
+        nprop_b = robot_test_bank.next_proprio[idx, :, 0:2]
+        end_b = robot_test_bank.endpoint_xy[idx]
+        eplen_b = robot_test_bank.ep_len[idx]
+        nov_b = robot_test_bank.novel[idx]
+
+        for i in range(bs):
+            ln = int(max(5, min(eplen_b[i], t_seq)))
+            e1_m = np.linalg.norm(out["pred1_xy"][i, :ln] - nprop_b[i, :ln], axis=-1) * ROBOT_SCALE_MM
+            e1_p = np.linalg.norm(prop_b[i, :ln] - nprop_b[i, :ln], axis=-1) * ROBOT_SCALE_MM
+            err1_mod_list.append(float(np.mean(e1_m)))
+            err1_per_list.append(float(np.mean(e1_p)))
+
+            ln4 = max(1, ln - 4)
+            targ4 = prop_b[i, 4 : 4 + ln4]
+            e4_m = np.linalg.norm(out["pred4_true_xy"][i, :ln4] - targ4, axis=-1) * ROBOT_SCALE_MM
+            e4_p = np.linalg.norm(prop_b[i, :ln4] - targ4, axis=-1) * ROBOT_SCALE_MM
+            e4_n = np.linalg.norm(out["pred4_neg_xy"][i, :ln4] - targ4, axis=-1) * ROBOT_SCALE_MM
+            err4_mod_list.append(float(np.mean(e4_m)))
+            err4_per_list.append(float(np.mean(e4_p)))
+            err4_neg_list.append(float(np.mean(e4_n)))
+
+            et = float(np.linalg.norm(out["goal_true_xy"][i, 3] - end_b[i]) * ROBOT_SCALE_MM)
+            ew = float(np.linalg.norm(out["goal_wrong_xy"][i, 3] - end_b[i]) * ROBOT_SCALE_MM)
+            end_true_t3_list.append(et)
+            end_wrong_t3_list.append(ew)
+            disc_t3_list.append(1.0 if et < ew - 1e-5 else (0.5 if abs(et - ew) <= 1e-5 else 0.0))
+
+            t_late = min(ln - 1, 20)
+            etr_late = float(np.linalg.norm(out["goal_tran_xy"][i, t_late] - end_b[i]) * ROBOT_SCALE_MM)
+            ew_late = float(np.linalg.norm(out["goal_wrong_xy"][i, t_late] - end_b[i]) * ROBOT_SCALE_MM)
+            end_tran_late_list.append(etr_late)
+            disc_tran_late_list.append(
+                1.0 if etr_late < ew_late - 1e-5 else (0.5 if abs(etr_late - ew_late) <= 1e-5 else 0.0)
+            )
+
+            disp = end_b[i] - prop_b[i, 3]
+            disp_mm = float(np.linalg.norm(disp) * ROBOT_SCALE_MM)
+            if disp_mm >= 15.0:
+                d_unit = disp / (np.linalg.norm(disp) + 1e-8)
+                at = out["act_true_xy"][i, 3]
+                aw = out["act_wrong_xy"][i, 3]
+                cos_true_list.append(float(np.dot(at, d_unit) / (np.linalg.norm(at) + 1e-6)))
+                cos_wrong_list.append(float(np.dot(aw, d_unit) / (np.linalg.norm(aw) + 1e-6)))
+
+            novel_flags.append(bool(nov_b[i]))
+
+    e1_m_arr = np.asarray(err1_mod_list, dtype=np.float64)
+    e1_p_arr = np.asarray(err1_per_list, dtype=np.float64)
+    e4_m_arr = np.asarray(err4_mod_list, dtype=np.float64)
+    e4_p_arr = np.asarray(err4_per_list, dtype=np.float64)
+    e4_n_arr = np.asarray(err4_neg_list, dtype=np.float64)
+    et_arr = np.asarray(end_true_t3_list, dtype=np.float64)
+    ew_arr = np.asarray(end_wrong_t3_list, dtype=np.float64)
+    disc_arr = np.asarray(disc_t3_list, dtype=np.float64)
+    disc_tr_arr = np.asarray(disc_tran_late_list, dtype=np.float64)
+    etr_arr = np.asarray(end_tran_late_list, dtype=np.float64)
+    nov_mask = np.asarray(novel_flags, dtype=bool)
+    cos_t_arr = np.asarray(cos_true_list, dtype=np.float64)
+    cos_w_arr = np.asarray(cos_wrong_list, dtype=np.float64)
+
+    return {
+        "available": True,
+        "n_episodes": int(len(e4_m_arr)),
+        "n_novel_compositions": int(np.sum(nov_mask)),
+        "step1_error_mm": paired_bootstrap_ci(e1_m_arr),
+        "step1_persistence_mm": float(np.mean(e1_p_arr)),
+        "step1_skill_vs_persistence": float(1.0 - np.mean(e1_m_arr) / max(float(np.mean(e1_p_arr)), 1e-6)),
+        "step4_error_mm": paired_bootstrap_ci(e4_m_arr),
+        "step4_persistence_mm": float(np.mean(e4_p_arr)),
+        "step4_counterfactual_plan_mm": float(np.mean(e4_n_arr)),
+        "step4_skill_vs_persistence": float(1.0 - np.mean(e4_m_arr) / max(float(np.mean(e4_p_arr)), 1e-6)),
+        "causal_plan_gain_mm": paired_bootstrap_ci(e4_n_arr, e4_m_arr),
+        "endpoint_true_t3_mm": paired_bootstrap_ci(et_arr),
+        "endpoint_wrong_t3_mm": paired_bootstrap_ci(ew_arr),
+        "counterfactual_endpoint_gain_mm": paired_bootstrap_ci(ew_arr, et_arr),
+        "command_discrimination_acc": paired_bootstrap_ci(disc_arr),
+        "transient_04s_late_endpoint_mm": paired_bootstrap_ci(etr_arr),
+        "transient_04s_discrimination_acc": paired_bootstrap_ci(disc_tr_arr),
+        "policy_cosine_true": float(np.mean(cos_t_arr)) if len(cos_t_arr) else 0.0,
+        "policy_cosine_wrong": float(np.mean(cos_w_arr)) if len(cos_w_arr) else 0.0,
+        "policy_cosine_gain": paired_bootstrap_ci(cos_t_arr, cos_w_arr) if len(cos_t_arr) else {"mean": 0.0, "ci95_low": 0.0, "ci95_high": 0.0},
+        "novel_pair_step4_mm": paired_bootstrap_ci(e4_m_arr[nov_mask]) if np.any(nov_mask) else {"mean": 0.0, "ci95_low": 0.0, "ci95_high": 0.0},
+        "novel_pair_discrimination_acc": paired_bootstrap_ci(disc_arr[nov_mask]) if np.any(nov_mask) else {"mean": 0.5, "ci95_low": 0.5, "ci95_high": 0.5},
+        "step4_mm_vec": e4_m_arr.tolist(),
+        "disc_vec": disc_arr.tolist(),
+    }
+
+
 def _streaming_memory_megabytes(spec: X1BSpec, cache_len: int) -> float:
     mem = init_streaming_memories(spec, batch_size=1, cache_len=cache_len)
     total_bytes = sum(int(x.size) * int(x.dtype.itemsize) for x in jax.tree.leaves(mem))
@@ -945,12 +1177,14 @@ def run_full_evaluation(
     *,
     objective_mode: str = "residual_ema_jepa_sigreg",
     real_bank_path: str | None = None,
+    real_robot_path: str | None = None,
     pymunk_panels_path: str | None = None,
     include_scaling_bench: bool = True,
 ) -> dict[str, Any]:
-    """Execute the complete frozen 8-panel evaluation suite for a trained X1B checkpoint."""
+    """Execute the complete frozen 9-panel evaluation suite for a trained X1B checkpoint."""
     use_res = objective_mode != "direct_jepa_no_residual"
     real_test = RealMultimodalBank(real_bank_path, split="test") if real_bank_path else None
+    robot_test = RealRobotBank(real_robot_path, split="test") if real_robot_path else None
 
     eval_spec = X1BSpec(
         profile=spec.profile,
@@ -979,6 +1213,8 @@ def run_full_evaluation(
     print("  [EVAL] Panels 5 & 6 (N=96 Latent-CEM-MPC & CommitGate spoofing) done", flush=True)
     p8 = eval_long_horizon_memory_mpc(params, eval_spec, use_residual=use_res)
     print("  [EVAL] Panel 8 (T=76 OOD transient barrier & goal-switch MPC) done", flush=True)
+    p9 = eval_real_robot_transfer(params, eval_spec, robot_test, use_residual=use_res)
+    print("  [EVAL] Panel 9 (real physical xArm6 / Language-Table transfer) done", flush=True)
     p7 = benchmark_context_scaling(params, eval_spec) if include_scaling_bench else {}
     print("  [EVAL] Panel 7 (throughput & O(1) memory scaling) done", flush=True)
 
@@ -989,6 +1225,7 @@ def run_full_evaluation(
         "transient_goal_retention": p4,
         "closed_loop_mpc": p56["planners"],
         "long_horizon_memory_mpc": p8,
+        "real_robot_transfer": p9,
         "spoofing_and_commit_gate": p56["commit_gate"],
         "throughput_scaling": p7,
     }

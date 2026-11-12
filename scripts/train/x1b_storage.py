@@ -46,17 +46,22 @@ def atomic_json(path: Path, data: dict) -> None:
     tmp.replace(path)
 
 
-def verified_roots() -> tuple[Path, Path]:
+SUBDIR_RE = re.compile(r"runs(?:_wave[0-9]+)?")
+
+
+def verified_roots(subdir: str = "runs") -> tuple[Path, Path]:
+    if not SUBDIR_RE.fullmatch(subdir):
+        raise ValueError(f"Disallowed runs subdir: {subdir!r}")
     roots = []
     for mount, expected_uuid in DISK_PAIR:
         actual = subprocess.check_output(["findmnt", "-nro", "UUID", "-M", mount], text=True).strip()
         if actual != expected_uuid:
             raise RuntimeError(f"Mount {mount} UUID mismatch: expected {expected_uuid}, got {actual}")
-        roots.append(Path(mount) / "SLWM/x1b/runs")
+        roots.append(Path(mount) / "SLWM/x1b" / subdir)
     return roots[0], roots[1]
 
 
-def receive_stream(tag: str, filename: str, expected_sha: str, expected_bytes: int) -> None:
+def receive_stream(tag: str, filename: str, expected_sha: str, expected_bytes: int, subdir: str = "runs") -> None:
     if not TAG_RE.fullmatch(tag):
         raise ValueError(f"Invalid X1B run tag: {tag!r}")
     if filename not in ALLOWED_FILES:
@@ -64,7 +69,7 @@ def receive_stream(tag: str, filename: str, expected_sha: str, expected_bytes: i
     if not (0 < expected_bytes <= MAX_BYTES):
         raise ValueError(f"Invalid size {expected_bytes}")
 
-    root_a, _ = verified_roots()
+    root_a, _ = verified_roots(subdir)
     run_a = root_a / tag
     run_a.mkdir(parents=True, exist_ok=True)
     dest = run_a / filename
@@ -90,10 +95,10 @@ def receive_stream(tag: str, filename: str, expected_sha: str, expected_bytes: i
     print("RECEIVED_OK", actual_sha, flush=True)
 
 
-def mirror_and_verify(tag: str) -> None:
+def mirror_and_verify(tag: str, subdir: str = "runs") -> None:
     if not TAG_RE.fullmatch(tag):
         raise ValueError(f"Invalid X1B run tag: {tag!r}")
-    root_a, root_b = verified_roots()
+    root_a, root_b = verified_roots(subdir)
     run_a = root_a / tag
     run_b = root_b / tag
     run_b.mkdir(parents=True, exist_ok=True)
@@ -149,14 +154,15 @@ def mirror_and_verify(tag: str) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--subdir", default="runs")
     ap.add_argument("op", choices=["receive", "mirror"])
     ap.add_argument("tag")
     ap.add_argument("rest", nargs="*")
     args = ap.parse_args()
     if args.op == "receive":
-        receive_stream(args.tag, args.rest[0], args.rest[1], int(args.rest[2]))
+        receive_stream(args.tag, args.rest[0], args.rest[1], int(args.rest[2]), subdir=args.subdir)
     elif args.op == "mirror":
-        mirror_and_verify(args.tag)
+        mirror_and_verify(args.tag, subdir=args.subdir)
 
 
 if __name__ == "__main__":

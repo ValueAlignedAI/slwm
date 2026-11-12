@@ -220,7 +220,7 @@ def ssh_cmd_base(session_name: str) -> list[str]:
     ]
 
 
-def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) -> subprocess.CompletedProcess[str]:
+def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) -> subprocess.CompletedProcess[str]:
     """Execute Python directly inside the Colab session kernel (killing hung WebSocket exits promptly)."""
     import threading
 
@@ -235,7 +235,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
         "-s",
         session_name,
         "--timeout",
-        "3600",
+        "7200",
     ]
     proc = subprocess.Popen(
         cmd,
@@ -281,7 +281,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
     return subprocess.CompletedProcess(cmd, 0, stdout=full_out, stderr="")
 
 
-def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 5400) -> None:
+def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 9000) -> None:
     """Execute a training/eval job inside the Colab kernel with automatic recovery from WebSocket drops."""
     for attempt in range(1, 4):
         try:
@@ -291,7 +291,7 @@ def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout:
             print(f"[RECOVER {session_name}] colab exec interrupted on attempt {attempt}/3 ({exc}); checking remote kernel state...", flush=True)
             base = ssh_cmd_base(session_name)
             # If kernel continues executing after WebSocket drop, monitor progress until done.json appears or stalls!
-            for _ in range(45):
+            for _ in range(360):
                 chk = subprocess.run(
                     [
                         *base,
@@ -328,7 +328,7 @@ def restart_session_kernel(session_name: str) -> None:
     run_colab_cli("restart-kernel", "-s", session_name, session_name=session_name, timeout=120)
 
 
-def stage_code_and_data(session_name: str) -> None:
+def stage_code_and_data(session_name: str, *, include_real_robot: bool = False) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
     # 1. Verify real TPU/GPU JAX backend directly inside the Colab kernel & create remote dirs
     verify_py = """
@@ -380,10 +380,19 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         timeout=30,
     )
     card = json.loads(card_raw)
-    for fname, exp_sha in (
+    datasets_to_stage = [
         ("x1b_real_bank_v1.npz", card["sha256"]),
         ("x1b_pymunk_panels_64.npz", card["pymunk_panels_sha256"]),
-    ):
+    ]
+    if include_real_robot:
+        rob_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_real_robot_v2.card.json"],
+            text=True,
+            timeout=30,
+        )
+        rob_card = json.loads(rob_card_raw)
+        datasets_to_stage.append(("x1b_real_robot_v2.npz", rob_card["sha256"]))
+    for fname, exp_sha in datasets_to_stage:
         chk = subprocess.run(
             [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
             env=colab_env(),
@@ -428,7 +437,7 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
             time.sleep(1.8 * ds_try)
 
 
-def archive_run_to_fedora(session_name: str, tag: str) -> dict[str, Any]:
+def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "runs") -> dict[str, Any]:
     """Stream completed run artifacts from Colab -> Fedora primary HDD -> mirror & verify on secondary HDD."""
     # Ensure latest x1b_storage.py is installed atomically on Fedora under ops_lock
     with ops_lock():
@@ -491,7 +500,8 @@ print(json.dumps(items))
             dst_p = subprocess.Popen(
                 [
                     *FEDORA_SSH,
-                    f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py receive "
+                    f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py "
+                    f"--subdir {shlex.quote(runs_subdir)} receive "
                     f"{shlex.quote(tag)} {shlex.quote(fname)} {shlex.quote(sha_hex)} {int(n_bytes)}",
                 ],
                 stdin=src_p.stdout,
@@ -517,20 +527,29 @@ print(json.dumps(items))
     mir_out = subprocess.check_output(
         [
             *FEDORA_SSH,
-            f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py mirror {shlex.quote(tag)}",
+            f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py "
+            f"--subdir {shlex.quote(runs_subdir)} mirror {shlex.quote(tag)}",
         ],
         text=True,
         timeout=600,
     )
     print(f"[MIRROR {tag}] {mir_out.strip()}", flush=True)
 
-    # Also save small JSON metrics locally in experiments/multimodal/x1b/results/<tag>/ for plotting & git!
-    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111/runs" / tag
+    # Also save small JSON metrics locally in experiments/multimodal/x1b/.../<runs_subdir>/<tag>/ for plotting & git!
+    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir / tag
     local_res_dir.mkdir(parents=True, exist_ok=True)
     for small in ("receipt.json", "eval_metrics.json", "config.json", "train.jsonl"):
-        txt = subprocess.check_output([*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/runs/{shlex.quote(tag)}/{small}"], text=True, timeout=60)
+        txt = subprocess.check_output(
+            [*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/{shlex.quote(runs_subdir)}/{shlex.quote(tag)}/{small}"],
+            text=True,
+            timeout=60,
+        )
         (local_res_dir / small).write_text(txt)
-    ver_txt = subprocess.check_output([*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/runs/{shlex.quote(tag)}/verified.json"], text=True, timeout=60)
+    ver_txt = subprocess.check_output(
+        [*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/{shlex.quote(runs_subdir)}/{shlex.quote(tag)}/verified.json"],
+        text=True,
+        timeout=60,
+    )
     (local_res_dir / "verified.json").write_text(ver_txt)
     return receipt
 
