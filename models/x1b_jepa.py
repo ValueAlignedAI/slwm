@@ -48,8 +48,10 @@ def predict_latent_step(
     h_emb = params["jepa_horizon_emb"].astype(dtype)[horizon_idx]
     h = rms_norm(z_in + act_emb + h_emb, params["jepa_norm"])
 
-    global_ctx = h.mean(axis=-2, keepdims=True)
-    h_mix = h + 0.25 * global_ctx
+    vis_peak = jnp.max(h[..., SLOTS_VISUAL, :], axis=-2, keepdims=True)
+    prop_ctx = h[..., SLOT_PROPRIO : SLOT_PROPRIO + 1, :]
+    global_ctx = 0.45 * jnp.mean(h, axis=-2, keepdims=True) + 0.30 * vis_peak + 0.25 * prop_ctx
+    h_mix = h + 0.35 * global_ctx
     gate = jax.nn.silu(h_mix @ params["jepa_gate"].astype(dtype))
     up = h_mix @ params["jepa_w1"].astype(dtype)
     raw_delta = (gate * up) @ params["jepa_w2"].astype(dtype)
@@ -117,9 +119,31 @@ def compute_innovation_features(
     )
 
 
-def _ego_push_kinematics(ee_xy: jax.Array, obj_xy: jax.Array, goal_xy: jax.Array, has_ext_goal: jax.Array) -> jax.Array:
-    """Causal tick-t relative pushing geometry [drive_vec (2), obj_minus_ee (2)] from decoded or proprio pose."""
-    to_goal = goal_xy - obj_xy
+def _ego_push_kinematics(
+    ee_xy: jax.Array,
+    obj_xy: jax.Array,
+    goal_xy: jax.Array,
+    has_ext_goal: jax.Array,
+    avoid_barrier: jax.Array | None = None,
+) -> jax.Array:
+    """Causal tick-t relative pushing geometry [drive_vec (2), obj_minus_ee (2)] from decoded or proprio pose.
+
+    When `avoid_barrier` is provided (strictly from the model's own predicted visual barrier head),
+    routes the push waypoint around the central barrier gap (+/-0.55) instead of driving into x=0.
+    """
+    if avoid_barrier is not None:
+        av_b = avoid_barrier.astype(bool)
+        on_opp = (obj_xy[..., 0] * goal_xy[..., 0]) < 0.02
+        blocked = av_b & on_opp & (jnp.abs(obj_xy[..., 1]) < 0.46)
+        detour_y = jnp.where(obj_xy[..., 1] + 0.5 * goal_xy[..., 1] >= 0.0, 0.55, -0.55)
+        targ_side = jnp.broadcast_to(jnp.where(goal_xy[..., 0] >= 0.0, 1.0, -1.0), detour_y.shape)
+        eff_target = jnp.where(blocked[..., None], jnp.stack([targ_side * 0.22, detour_y], axis=-1), goal_xy)
+    else:
+        av_b = None
+        detour_y = jnp.zeros_like(obj_xy[..., 1])
+        eff_target = goal_xy
+
+    to_goal = eff_target - obj_xy
     push_unit = to_goal * jax.lax.rsqrt(jnp.sum(to_goal * to_goal, axis=-1, keepdims=True) + 1e-6)
     rel_ee = ee_xy - obj_xy
     proj_along = jnp.sum(rel_ee * push_unit, axis=-1, keepdims=True)
@@ -131,6 +155,13 @@ def _ego_push_kinematics(ee_xy: jax.Array, obj_xy: jax.Array, goal_xy: jax.Array
     aligned = (proj_along <= -0.10) & (jnp.abs(lat_err) < 0.09)
     staging = obj_xy - 0.20 * push_unit
     drive_pt = jnp.where(need_wrap, wrap_pt, jnp.where(aligned, obj_xy + 0.08 * push_unit, staging))
+    if av_b is not None:
+        ee_blocked = av_b & ((ee_xy[..., 0] * drive_pt[..., 0]) < 0.0) & (jnp.abs(ee_xy[..., 1]) < 0.42)
+        drive_pt = jnp.where(
+            ee_blocked[..., None],
+            jnp.stack([ee_xy[..., 0] * 0.25, detour_y], axis=-1),
+            drive_pt,
+        )
     drive_vec = has_ext_goal * jnp.clip((drive_pt - ee_xy) * 3.5, -2.0, 2.0)
     return jnp.concatenate([drive_vec, obj_xy - ee_xy], axis=-1)
 
@@ -147,7 +178,7 @@ def decode_world_heads(
     use_residual: bool = True,
     stop_grad_diagnostics: bool = True,
 ) -> dict[str, jax.Array]:
-    """Decode physical state, contacts, action/value proposals, commitment logits, text, and diagnostic media."""
+    """Decode physical state, contacts, latent goal latch, action/value proposals, commit gate, and text."""
     b, t, _, _ = z.shape
     zf = z.astype(jnp.float32)
     z_next_f = z_next_pred.astype(jnp.float32)
@@ -160,45 +191,57 @@ def decode_world_heads(
     prop_lat = zf[:, :, SLOT_PROPRIO, :]
     prop_next_lat = z_next_f[:, :, SLOT_PROPRIO, :]
 
-    # Uncorrupted Euclidean proprioceptive embedding directly from trusted joint/state sensors (immune to visual spoofing!)
+    # Persistent working-memory goal latch from SLOTS_REGISTER (retains & overwrites 0.4s transient goals!)
+    head_gw = params["head_goal_w"].astype(jnp.float32)
+    head_gb = params["head_goal_b"].astype(jnp.float32)
+    pred_goal_xy = jnp.tanh(reg_sum @ head_gw + head_gb)
+
     g_f = goal.astype(jnp.float32)
     if g_f.ndim == 2:
         g_f = g_f[:, None, :]
     goal_bt = jnp.broadcast_to(g_f, (b, t, spec.goal_dim))
     has_ext_goal = (jnp.sum(jnp.abs(goal_bt), axis=-1, keepdims=True) > 1e-4).astype(jnp.float32)
+    eff_goal_xy = jnp.where(has_ext_goal > 0.5, goal_bt[:, :, 2:4], jax.lax.stop_gradient(pred_goal_xy))
+    active_goal_flag = jnp.ones_like(has_ext_goal)
 
+    # Dedicated unbiased instantaneous pose decoder (decoupled from Euler differential transition head_proprio_w!)
+    head_vw = params["head_vis_pose_w"].astype(jnp.float32)
+    head_vb = params["head_vis_pose_b"].astype(jnp.float32)
     head_pw = params["head_proprio_w"].astype(jnp.float32)
-    # Pure visual pose readout enables continuous cross-modal visual-vs-proprioception spoofing verification,
-    # while proprio_curr matches the exact (0.5 prop + 0.5 vis) basis of the Euler latent difference!
-    vis_proprio_curr = vis_sum @ head_pw
+    head_pb = params["head_proprio_b"].astype(jnp.float32)
+    vis_proprio_curr = vis_sum @ head_vw + head_vb
 
     if obs_proprio is not None:
         obs_pf = obs_proprio.astype(jnp.float32)
-        prop_kin = _ego_push_kinematics(obs_pf[:, :, 0:2], obs_pf[:, :, 2:4], goal_bt[:, :, 2:4], has_ext_goal)
+        prop_kin = _ego_push_kinematics(obs_pf[:, :, 0:2], obs_pf[:, :, 2:4], eff_goal_xy, active_goal_flag)
         obs_pf_aug = obs_pf.at[..., 12:15].set(prop_kin[..., :3]).at[..., 15].set(1.0)
         clean_prop_emb = 3.5 * (obs_pf_aug @ params["prop_w"].astype(jnp.float32))
     else:
         clean_prop_emb = prop_lat
 
-    proprio_curr = (0.5 * prop_lat + 0.5 * vis_sum) @ head_pw
-    proprio_trusted = (0.7 * clean_prop_emb + 0.3 * reg_sum) @ head_pw
+    proprio_curr = (0.5 * prop_lat + 0.5 * vis_sum) @ head_vw + head_vb
+    proprio_trusted = (0.7 * clean_prop_emb + 0.3 * reg_sum) @ head_vw + head_vb
 
-    # Unit-scale Euler Physical Residual Integration: s_hat_{t+1} = s_t + (s_hat(z_hat_{t+1}) - s_hat(z_t))
+    # Homogeneous telescopic Euler Physical Residual Integration: s_hat_{t+k} = s_t + (z_hat_{t+k} - z_t) @ W_delta
     use_euler = (obs_proprio is not None) and use_residual and (spec.arch != "legacy_scalar_hybrid")
     if use_euler:
         obs_pf = obs_proprio.astype(jnp.float32)
-        delta_full = (0.5 * (prop_next_lat - prop_lat) + 0.5 * (vis_next_sum - vis_sum)) @ head_pw
-        delta_trust = (0.7 * (prop_next_lat - prop_lat) + 0.3 * (reg_next_sum - reg_sum)) @ head_pw
+        delta_full = (0.75 * (prop_next_lat - prop_lat) + 0.25 * (vis_next_sum - vis_sum)) @ head_pw
+        delta_trust = (0.80 * (prop_next_lat - prop_lat) + 0.20 * (reg_next_sum - reg_sum)) @ head_pw
         proprio_next = obs_pf + delta_full
         proprio_next_trusted = obs_pf + delta_trust
     else:
-        proprio_next = (0.5 * prop_next_lat + 0.5 * vis_next_sum) @ head_pw
-        proprio_next_trusted = (0.7 * prop_next_lat + 0.3 * reg_next_sum) @ head_pw
+        proprio_next = (0.75 * prop_next_lat + 0.25 * vis_next_sum) @ head_pw + head_pb
+        proprio_next_trusted = (0.80 * prop_next_lat + 0.20 * reg_next_sum) @ head_pw + head_pb
 
     # Impact & 64x64 thin-barrier contact logits (draws from spatial visual max + mean + audio + registers)
     vis_max = jnp.max(zf[:, :, SLOTS_VISUAL, :], axis=2)
     contact_ctx = 0.45 * vis_max + 0.25 * vis_sum + 0.15 * aud_sum + 0.15 * reg_sum
-    contact_logits = contact_ctx @ params["head_contact_w"].astype(jnp.float32)
+    contact_logits = (
+        contact_ctx @ params["head_contact_w"].astype(jnp.float32)
+        + params["head_contact_b"].astype(jnp.float32)
+    )
+    pred_bar_prob = jax.nn.sigmoid(jax.lax.stop_gradient(contact_logits[:, :, 1]))
 
     vis_ee_xy = jax.lax.stop_gradient(vis_proprio_curr[:, :, 0:2])
     vis_obj_xy = jax.lax.stop_gradient(vis_proprio_curr[:, :, 2:4])
@@ -208,8 +251,12 @@ def decode_world_heads(
     else:
         prop_ee_xy = jax.lax.stop_gradient(proprio_trusted[:, :, 0:2])
         prop_obj_xy = jax.lax.stop_gradient(proprio_trusted[:, :, 2:4])
-    vis_rel_goal = 3.5 * _ego_push_kinematics(vis_ee_xy, vis_obj_xy, goal_bt[:, :, 2:4], has_ext_goal)
-    prop_rel_goal = 3.5 * _ego_push_kinematics(prop_ee_xy, prop_obj_xy, goal_bt[:, :, 2:4], has_ext_goal)
+    vis_rel_goal = 3.5 * _ego_push_kinematics(
+        vis_ee_xy, vis_obj_xy, eff_goal_xy, active_goal_flag, avoid_barrier=(pred_bar_prob > 0.5)
+    )
+    prop_rel_goal = 3.5 * _ego_push_kinematics(
+        prop_ee_xy, prop_obj_xy, eff_goal_xy, active_goal_flag, avoid_barrier=None
+    )
 
     # Disjoint subspace routing in head_action_w1 ([0:D] = visual+register, [D:2D] = trusted proprio):
     # Mode 0 (commit_full): relies on high-res visual slots + working-memory registers + visual-relative target
@@ -247,7 +294,8 @@ def decode_world_heads(
         vis_pose_discrepancy=jax.lax.stop_gradient(vis_pose_disc) if vis_pose_disc is not None else None,
     )
 
-    commit_in = jnp.concatenate([reg_sum, goal_bt, innov_feats], axis=-1)
+    commit_goal_bt = jnp.concatenate([eff_goal_xy - prop_obj_xy, eff_goal_xy], axis=-1)
+    commit_in = jnp.concatenate([reg_sum, jax.lax.stop_gradient(commit_goal_bt), innov_feats], axis=-1)
     commit_logits = (
         jax.nn.silu(commit_in @ params["commit_w1"].astype(jnp.float32))
         @ params["commit_w2"].astype(jnp.float32)
@@ -270,6 +318,7 @@ def decode_world_heads(
     diag_audio = jnp.mean(z_diag[:, :, SLOTS_AUDIO, :], axis=2) @ params["diag_aud_w"].astype(jnp.float32)
 
     return {
+        "pred_goal_xy": pred_goal_xy,
         "vis_proprio_curr": vis_proprio_curr,
         "proprio_curr": proprio_curr,
         "proprio_next": proprio_next,
@@ -323,6 +372,22 @@ def world_model_loss(
     # Causal action u_t executed at tick t to transition Z_t -> Z_{t+1}
     u_exec = batch.get("next_action", batch["action"])
     z_next_1, log_var_1 = predict_latent_step(params, spec, z, u_exec, horizon_idx=0, residual=use_residual)
+    if t > 2:
+        z_next_2, _ = predict_latent_step(
+            params, spec, z_next_1[:, :-1], u_exec[:, 1:], horizon_idx=0, residual=use_residual
+        )
+    else:
+        z_next_2 = None
+
+    if t > 4 and z_next_2 is not None:
+        z_next_3, _ = predict_latent_step(
+            params, spec, z_next_2[:, :-1], u_exec[:, 2:], horizon_idx=0, residual=use_residual
+        )
+        z_next_4, _ = predict_latent_step(
+            params, spec, z_next_3[:, :-1], u_exec[:, 3:], horizon_idx=0, residual=use_residual
+        )
+    else:
+        z_next_4 = None
 
     if not is_raw_mse:
         clean_batch = dict(batch)
@@ -336,16 +401,19 @@ def world_model_loss(
         err_1 = jnp.mean((l2_normalize(z_next_1[:, :-1]) - l2_normalize(z_target[:, 1:])) ** 2, axis=(-2, -1))
         jepa_1 = jnp.sum(err_1 * valid_pair) / jnp.maximum(jnp.sum(valid_pair), 1.0)
 
-        if t > 2:
-            z_next_2, _ = predict_latent_step(
-                params, spec, z_next_1[:, :-1], u_exec[:, 1:], horizon_idx=0, residual=use_residual
-            )
+        if z_next_2 is not None:
             v2 = valid[:, :-2] * valid[:, 2:]
             err_2 = jnp.mean((l2_normalize(z_next_2[:, :-1]) - l2_normalize(z_target[:, 2:])) ** 2, axis=(-2, -1))
             jepa_2 = jnp.sum(err_2 * v2) / jnp.maximum(jnp.sum(v2), 1.0)
         else:
-            z_next_2 = None
             jepa_2 = jnp.zeros((), dtype=jnp.float32)
+
+        if z_next_4 is not None:
+            v4 = valid[:, :-4] * valid[:, 4:]
+            err_4 = jnp.mean((l2_normalize(z_next_4[:, :-1]) - l2_normalize(z_target[:, 4:])) ** 2, axis=(-2, -1))
+            jepa_4 = jnp.sum(err_4 * v4) / jnp.maximum(jnp.sum(v4), 1.0)
+        else:
+            jepa_4 = jnp.zeros((), dtype=jnp.float32)
 
         raw_sq = jax.lax.stop_gradient(
             jnp.mean(
@@ -357,9 +425,8 @@ def world_model_loss(
         lv = log_var_1[:, :-1]
         nll = 0.5 * (raw_sq * jnp.exp(-lv) + lv)
         unc_loss = jnp.sum(jnp.mean(nll, axis=(-2, -1)) * valid_pair) / jnp.maximum(jnp.sum(valid_pair), 1.0)
-        jepa_loss = jepa_1 + 0.5 * jepa_2
+        jepa_loss = jepa_1 + 0.5 * jepa_2 + 0.35 * jepa_4
     else:
-        z_next_2 = None
         jepa_loss = jnp.zeros((), dtype=jnp.float32)
         unc_loss = jnp.zeros((), dtype=jnp.float32)
 
@@ -431,8 +498,31 @@ def world_model_loss(
         prop_trusted_loss = jnp.sum(
             jnp.mean(((heads["proprio_next_trusted"][:, :-1] - target_prop[:, 1:]) ** 2) * dim_w, axis=-1) * valid_pair
         ) / jnp.maximum(jnp.sum(valid_pair), 1.0)
-    # Scale 100ms step transition MSE by 1/dt^2 (~35x) so velocity errors O(0.045^2 = 0.002) match position scale O(0.35)!
-    state_loss = 1.5 * prop_curr_loss + 35.0 * prop_next_loss + 10.0 * prop_trusted_loss
+    # 4-step unrolled physical state transition supervision for horizon-consistent MPC rollouts
+    if z_next_4 is not None:
+        zr4 = z_next_4[:, :-1].astype(jnp.float32)
+        z04 = z[:, :-4].astype(jnp.float32)
+        hw4 = params["head_proprio_w"].astype(jnp.float32)
+        hb4 = params["head_proprio_b"].astype(jnp.float32)
+        if use_residual and spec.arch != "legacy_scalar_hybrid":
+            d4 = (
+                0.75 * (zr4[:, :, SLOT_PROPRIO, :] - z04[:, :, SLOT_PROPRIO, :])
+                + 0.25 * (jnp.mean(zr4[:, :, SLOTS_VISUAL, :], axis=2) - jnp.mean(z04[:, :, SLOTS_VISUAL, :], axis=2))
+            ) @ hw4
+            pred_s4 = batch["proprio"][:, :-4].astype(jnp.float32) + d4
+        else:
+            pred_s4 = (
+                0.75 * zr4[:, :, SLOT_PROPRIO, :] + 0.25 * jnp.mean(zr4[:, :, SLOTS_VISUAL, :], axis=2)
+            ) @ hw4 + hb4
+        m4 = valid[:, :-4] * valid[:, 4:] * (commit_target[:, :-4] == 0).astype(jnp.float32) * (commit_target[:, 4:] == 0).astype(jnp.float32)
+        prop_step4_loss = jnp.sum(
+            jnp.mean(((pred_s4 - target_prop[:, 4:]) ** 2) * dim_w, axis=-1) * m4
+        ) / jnp.maximum(jnp.sum(m4), 1.0)
+    else:
+        prop_step4_loss = jnp.zeros((), dtype=jnp.float32)
+
+    # Scale 100ms step transition MSE by 1/dt^2 (~35x) + 4-step trajectory consistency + decoupled visual pose
+    state_loss = 3.0 * prop_curr_loss + 35.0 * prop_next_loss + 10.0 * prop_trusted_loss + 8.0 * prop_step4_loss
 
     # Contact & 64x64 Thin-Barrier Hazard BCE
     target_contacts = batch["target_contacts"].astype(jnp.float32)
@@ -476,6 +566,20 @@ def world_model_loss(
     lm_ce = jnp.sum(txt_nll * real_tmask) / jnp.maximum(jnp.sum(real_tmask), 1.0)
     text_loss = assoc_ce + 0.5 * lm_ce
 
+    # Working-memory goal latch supervision across active physical ticks (including post-0.4s transient episodes!)
+    if "target_goal_xy" in batch:
+        tg_xy = batch["target_goal_xy"].astype(jnp.float32)
+    else:
+        gf_raw = batch["goal"].astype(jnp.float32)
+        if gf_raw.ndim == 2:
+            gf_raw = gf_raw[:, None, :]
+        tg_xy = jnp.broadcast_to(gf_raw[:, :, 2:4], (b, t, 2))
+    goal_w = jnp.where((scen_arr == 1)[:, None], 2.5, 1.0)
+    goal_mask = goal_w * is_synth * (scen_arr != 4).astype(jnp.float32)[:, None] * valid
+    goal_loss = jnp.sum(
+        jnp.mean((heads["pred_goal_xy"] - tg_xy) ** 2, axis=-1) * goal_mask
+    ) / jnp.maximum(jnp.sum(goal_mask), 1.0)
+
     clean_vid = batch.get("clean_video", batch["video"]).astype(jnp.float32) / 127.5 - 1.0
     vid_mse = jnp.mean((heads["diag_video"] - clean_vid) ** 2)
     aud_mse = jnp.mean((heads["diag_audio"] - batch["audio"].astype(jnp.float32)) ** 2)
@@ -490,6 +594,7 @@ def world_model_loss(
             + 0.25 * val_loss
             + 0.5 * commit_loss
             + 0.85 * text_loss
+            + 2.5 * goal_loss
         )
     else:
         total_loss = (
@@ -503,6 +608,7 @@ def world_model_loss(
             + 0.35 * val_loss
             + 0.6 * commit_loss
             + 1.0 * text_loss
+            + 3.0 * goal_loss
             + 0.2 * recon_loss
         )
 
@@ -512,6 +618,8 @@ def world_model_loss(
         "sigreg": sig_loss,
         "pr": pr_val,
         "state_mse": prop_next_loss,
+        "step4_mse": prop_step4_loss,
+        "goal_mse": goal_loss,
         "contact_bce": contact_bce,
         "commit_ce": commit_loss,
         "text_ce": assoc_ce,

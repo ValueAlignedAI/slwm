@@ -12,6 +12,42 @@ from models.x1b_jepa import _ego_push_kinematics, predict_latent_step
 from models.x1b_world import SLOT_PROPRIO, SLOTS_AUDIO, SLOTS_REGISTER, SLOTS_VISUAL, X1BSpec
 
 
+def _resolve_mpc_goal_and_barrier(
+    params: dict[str, jax.Array],
+    z_curr: jax.Array,
+    goal: jax.Array,
+    obs_proprio: jax.Array | None,
+) -> tuple[jax.Array, jax.Array, jax.Array]:
+    """Resolve active goal (external or working-memory latent goal latch) + observed 64x64 barrier probability."""
+    zf = z_curr.astype(jnp.float32)
+    vis_sum = jnp.mean(zf[:, SLOTS_VISUAL, :], axis=1)
+    vis_max = jnp.max(zf[:, SLOTS_VISUAL, :], axis=1)
+    aud_sum = jnp.mean(zf[:, SLOTS_AUDIO, :], axis=1)
+    reg_sum = jnp.mean(zf[:, SLOTS_REGISTER, :], axis=1)
+
+    head_vw = params["head_vis_pose_w"].astype(jnp.float32)
+    head_vb = params["head_vis_pose_b"].astype(jnp.float32)
+    v_dec0 = vis_sum @ head_vw + head_vb
+
+    pred_goal_xy = jnp.tanh(
+        reg_sum @ params["head_goal_w"].astype(jnp.float32)
+        + params["head_goal_b"].astype(jnp.float32)
+    )
+    gf = goal.astype(jnp.float32)
+    has_ext = jnp.sum(jnp.abs(gf), axis=-1, keepdims=True) > 1e-4
+    ref_obj = obs_proprio.astype(jnp.float32)[:, 2:4] if obs_proprio is not None else v_dec0[:, 2:4]
+    latched_goal = jnp.concatenate([pred_goal_xy - ref_obj, pred_goal_xy], axis=-1)
+    eff_goal = jnp.where(has_ext, gf, latched_goal)
+
+    c_ctx0 = 0.45 * vis_max + 0.25 * vis_sum + 0.15 * aud_sum + 0.15 * reg_sum
+    c_logits0 = (
+        c_ctx0 @ params["head_contact_w"].astype(jnp.float32)
+        + params["head_contact_b"].astype(jnp.float32)
+    )
+    bar0_prob = jax.nn.sigmoid(c_logits0[:, 1])
+    return eff_goal, bar0_prob, v_dec0
+
+
 def _score_latent_state(
     params: dict[str, jax.Array],
     spec: X1BSpec,
@@ -20,6 +56,7 @@ def _score_latent_state(
     obs_proprio: jax.Array | None,
     log_var_step: jax.Array,
     goal_xy: jax.Array,
+    bar0_prob: jax.Array,
     *,
     residual: bool = True,
     trust_proprio_only: jax.Array,
@@ -38,26 +75,31 @@ def _score_latent_state(
     prop0_lat = z0[:, :, SLOT_PROPRIO, :]
 
     head_pw = params["head_proprio_w"].astype(jnp.float32)
+    head_pb = params["head_proprio_b"].astype(jnp.float32)
     use_euler = (obs_proprio is not None) and residual and (spec.arch != "legacy_scalar_hybrid")
     if use_euler:
         base_p = obs_proprio.astype(jnp.float32)[:, None, :]
-        prop_full = base_p + ((0.5 * (prop_lat - prop0_lat) + 0.5 * (vis_sum - vis0_sum)) @ head_pw)
-        prop_trust = base_p + ((0.7 * (prop_lat - prop0_lat) + 0.3 * (reg_sum - reg0_sum)) @ head_pw)
+        prop_full = base_p + ((0.75 * (prop_lat - prop0_lat) + 0.25 * (vis_sum - vis0_sum)) @ head_pw)
+        prop_trust = base_p + ((0.80 * (prop_lat - prop0_lat) + 0.20 * (reg_sum - reg0_sum)) @ head_pw)
     else:
-        prop_full = (0.5 * prop_lat + 0.5 * vis_sum) @ head_pw
-        prop_trust = (0.7 * prop_lat + 0.3 * reg_sum) @ head_pw
+        prop_full = (0.75 * prop_lat + 0.25 * vis_sum) @ head_pw + head_pb
+        prop_trust = (0.80 * prop_lat + 0.20 * reg_sum) @ head_pw + head_pb
     pred_prop = jnp.where(trust_proprio_only[:, None, None], prop_trust, prop_full)
 
     obj_xy = pred_prop[:, :, 2:4]
     ee_xy = pred_prop[:, :, 0:2]
     target_xy = goal_xy[:, None, 2:4]
 
-    # Predicted thin-barrier hazard probability from spatial patches + registers
+    # Predicted thin-barrier hazard probability anchored on crisp observed Z_t + unrolled Z_{t+k}
     vis_max = jnp.max(zf[:, :, SLOTS_VISUAL, :], axis=2)
     contact_ctx = 0.45 * vis_max + 0.25 * vis_sum + 0.15 * aud_sum + 0.15 * reg_sum
-    contact_logits = contact_ctx @ params["head_contact_w"].astype(jnp.float32)
-    barrier_prob = jax.nn.sigmoid(contact_logits[:, :, 1])
-    has_vis_bar = avoid_barrier & (barrier_prob > 0.5)
+    contact_logits = (
+        contact_ctx @ params["head_contact_w"].astype(jnp.float32)
+        + params["head_contact_b"].astype(jnp.float32)
+    )
+    step_bar_prob = jax.nn.sigmoid(contact_logits[:, :, 1])
+    barrier_prob = jnp.maximum(bar0_prob[:, None], step_bar_prob)
+    has_vis_bar = avoid_barrier & (barrier_prob > 0.5) & (~trust_proprio_only[:, None])
 
     dist_goal = geodesic_goal_distance(obj_xy, target_xy, has_vis_bar)
     on_opp = (obj_xy[..., 0] * target_xy[..., 0]) < 0.02
@@ -73,17 +115,25 @@ def _score_latent_state(
     lat_err = jnp.abs(jnp.sum(rel_ee * perp, axis=-1, keepdims=True))
     aligned = (proj_along <= -0.09) & (lat_err < 0.10)
     drive_xy = jnp.where(aligned, obj_xy + 0.06 * push_unit, obj_xy - 0.19 * push_unit)
+    ee_blocked = has_vis_bar & ((ee_xy[..., 0] * drive_xy[..., 0]) < 0.0) & (jnp.abs(ee_xy[..., 1]) < 0.42)
+    drive_xy = jnp.where(
+        ee_blocked[..., None],
+        jnp.stack([ee_xy[..., 0] * 0.25, detour_y], axis=-1),
+        drive_xy,
+    )
     dist_reach = jnp.sqrt(jnp.sum((ee_xy - drive_xy) ** 2, axis=-1) + 1e-6)
 
-    # Penalize trajectories driving puck or EE directly into central thin barrier
-    near_wall = (jnp.abs(obj_xy[:, :, 0]) < 0.14) & (jnp.abs(obj_xy[:, :, 1]) < 0.36)
-    barrier_pen = (0.45 * barrier_prob * near_wall.astype(jnp.float32)) if avoid_barrier else 0.0
+    # Penalize trajectories driving either puck OR end-effector directly into central thin barrier
+    obj_near_wall = (jnp.abs(obj_xy[:, :, 0]) < 0.14) & (jnp.abs(obj_xy[:, :, 1]) < 0.39)
+    ee_near_wall = (jnp.abs(ee_xy[:, :, 0]) < 0.10) & (jnp.abs(ee_xy[:, :, 1]) < 0.37)
+    near_wall = obj_near_wall | ee_near_wall
+    barrier_pen = (0.85 * barrier_prob * near_wall.astype(jnp.float32)) if avoid_barrier else 0.0
     unc_pen = 0.12 * jnp.mean(jnp.exp(0.5 * jnp.squeeze(log_var_step, axis=-1)), axis=-1)
 
     k_cand = zf.shape[1]
     goal_bk = jnp.broadcast_to(goal_xy[:, None, :], (zf.shape[0], k_cand, spec.goal_dim))
-    has_ext = (jnp.sum(jnp.abs(goal_bk), axis=-1, keepdims=True) > 1e-4).astype(jnp.float32)
-    rel_goal = 3.5 * _ego_push_kinematics(ee_xy, obj_xy, goal_bk[:, :, 2:4], has_ext)
+    act_flag = jnp.ones((zf.shape[0], k_cand, 1), dtype=jnp.float32)
+    rel_goal = 3.5 * _ego_push_kinematics(ee_xy, obj_xy, goal_bk[:, :, 2:4], act_flag, avoid_barrier=has_vis_bar)
     pol_ctx = jnp.where(
         trust_proprio_only[:, None, None],
         jnp.concatenate([jnp.zeros_like(vis_sum), prop_lat, rel_goal], axis=-1),
@@ -95,7 +145,7 @@ def _score_latent_state(
         axis=-1,
     )
 
-    step_reward = -1.8 * dist_goal - 0.35 * dist_reach - barrier_pen - unc_pen
+    step_reward = -1.85 * dist_goal - 0.38 * dist_reach - barrier_pen - unc_pen
     return step_reward, val_boot
 
 
@@ -119,29 +169,35 @@ def plan_latent_cem_mpc(
     if trust_proprio_only is None:
         trust_proprio_only = jnp.zeros((b,), dtype=bool)
 
+    eff_goal, bar0_prob, v_dec0 = _resolve_mpc_goal_and_barrier(params, z_curr, goal, obs_proprio)
+    avoid0 = (bar0_prob > 0.5) & (~trust_proprio_only)
+
     zf = z_curr.astype(jnp.float32)
     reg_sum = jnp.mean(zf[:, SLOTS_REGISTER, :], axis=1)
     vis_sum = jnp.mean(zf[:, SLOTS_VISUAL, :], axis=1)
     head_pw = params["head_proprio_w"].astype(jnp.float32)
-    gf = goal.astype(jnp.float32)
-    has_ext = (jnp.sum(jnp.abs(gf), axis=-1, keepdims=True) > 1e-4).astype(jnp.float32)
+    head_pb = params["head_proprio_b"].astype(jnp.float32)
+    head_vw = params["head_vis_pose_w"].astype(jnp.float32)
+    head_vb = params["head_vis_pose_b"].astype(jnp.float32)
+    act_flag0 = jnp.ones((b, 1), dtype=jnp.float32)
+
     if obs_proprio is not None:
         obs_pf = obs_proprio.astype(jnp.float32)
         prop_ee_xy = obs_pf[:, 0:2]
         prop_obj_xy = obs_pf[:, 2:4]
-        prop_kin0 = _ego_push_kinematics(prop_ee_xy, prop_obj_xy, gf[:, 2:4], has_ext)
+        prop_kin0 = _ego_push_kinematics(prop_ee_xy, prop_obj_xy, eff_goal[:, 2:4], act_flag0)
         obs_pf_aug = obs_pf.at[..., 12:15].set(prop_kin0[..., :3]).at[..., 15].set(1.0)
         prop_emb = 3.5 * (obs_pf_aug @ params["prop_w"].astype(jnp.float32))
     else:
         prop_emb = zf[:, SLOT_PROPRIO, :]
-        p_dec0 = (0.7 * prop_emb + 0.3 * reg_sum) @ head_pw
+        p_dec0 = (0.7 * prop_emb + 0.3 * reg_sum) @ head_vw + head_vb
         prop_ee_xy = p_dec0[:, 0:2]
         prop_obj_xy = p_dec0[:, 2:4]
-    v_dec0 = vis_sum @ head_pw
+
     vis_ee_xy = v_dec0[:, 0:2]
     vis_obj_xy = v_dec0[:, 2:4]
-    vis_rel = 3.5 * _ego_push_kinematics(vis_ee_xy, vis_obj_xy, gf[:, 2:4], has_ext)
-    prop_rel = 3.5 * _ego_push_kinematics(prop_ee_xy, prop_obj_xy, gf[:, 2:4], has_ext)
+    vis_rel = 3.5 * _ego_push_kinematics(vis_ee_xy, vis_obj_xy, eff_goal[:, 2:4], act_flag0, avoid_barrier=avoid0)
+    prop_rel = 3.5 * _ego_push_kinematics(prop_ee_xy, prop_obj_xy, eff_goal[:, 2:4], act_flag0, avoid_barrier=None)
 
     pol_in = jnp.where(
         trust_proprio_only[:, None],
@@ -153,7 +209,7 @@ def plan_latent_cem_mpc(
         @ params["head_action_w2"].astype(jnp.float32)
     )
 
-    # Warm-start candidate 0 with multi-step latent policy rollout (model-based shooting + CEM refinement!)
+    # Warm-start candidate 0 with multi-step barrier-aware latent policy rollout
     prop0_lat = zf[:, SLOT_PROPRIO, :]
     vis0_sum = vis_sum
     reg0_sum = reg_sum
@@ -165,13 +221,17 @@ def plan_latent_cem_mpc(
         vw = jnp.mean(zw_f[:, SLOTS_VISUAL, :], axis=1)
         pw = zw_f[:, SLOT_PROPRIO, :]
         if use_euler and obs_proprio is not None:
-            p_full = obs_proprio.astype(jnp.float32) + ((0.5 * (pw - prop0_lat) + 0.5 * (vw - vis0_sum)) @ head_pw)
-            p_tr = obs_proprio.astype(jnp.float32) + ((0.7 * (pw - prop0_lat) + 0.3 * (rw - reg0_sum)) @ head_pw)
+            p_full = obs_proprio.astype(jnp.float32) + ((0.75 * (pw - prop0_lat) + 0.25 * (vw - vis0_sum)) @ head_pw)
+            p_tr = obs_proprio.astype(jnp.float32) + ((0.80 * (pw - prop0_lat) + 0.20 * (rw - reg0_sum)) @ head_pw)
         else:
-            p_full = (0.5 * pw + 0.5 * vw) @ head_pw
-            p_tr = (0.7 * pw + 0.3 * rw) @ head_pw
-        w_vis_rel = 3.5 * _ego_push_kinematics(p_full[:, 0:2], p_full[:, 2:4], gf[:, 2:4], has_ext)
-        w_prop_rel = 3.5 * _ego_push_kinematics(p_tr[:, 0:2], p_tr[:, 2:4], gf[:, 2:4], has_ext)
+            p_full = (0.75 * pw + 0.25 * vw) @ head_pw + head_pb
+            p_tr = (0.80 * pw + 0.20 * rw) @ head_pw + head_pb
+        w_vis_rel = 3.5 * _ego_push_kinematics(
+            p_full[:, 0:2], p_full[:, 2:4], eff_goal[:, 2:4], act_flag0, avoid_barrier=avoid0
+        )
+        w_prop_rel = 3.5 * _ego_push_kinematics(
+            p_tr[:, 0:2], p_tr[:, 2:4], eff_goal[:, 2:4], act_flag0, avoid_barrier=None
+        )
         p_in = jnp.where(
             trust_proprio_only[:, None],
             jnp.concatenate([jnp.zeros_like(vw), pw, w_prop_rel], axis=-1),
@@ -187,7 +247,7 @@ def plan_latent_cem_mpc(
     _, warm_seq = jax.lax.scan(_warm_step, z_curr, None, length=horizon)
     warm_traj = jnp.swapaxes(warm_seq, 0, 1).at[:, 0, :].set(init_act)
     mu = warm_traj
-    std = jnp.full((b, horizon, spec.action_dim), 0.36, dtype=jnp.float32)
+    std = jnp.full((b, horizon, spec.action_dim), 0.38, dtype=jnp.float32)
     best_return = jnp.full((b,), -1e9, dtype=jnp.float32)
     best_first_act = init_act
     z_anchor = jnp.broadcast_to(z_curr[:, None, :, :], (b, num_candidates, spec.slots_per_tick, spec.d_model))
@@ -217,12 +277,13 @@ def plan_latent_cem_mpc(
                 z_anchor,
                 obs_proprio,
                 lv_next,
-                goal,
+                eff_goal,
+                bar0_prob,
                 residual=residual,
                 trust_proprio_only=trust_proprio_only,
             )
             discount = 0.95 ** t_idx.astype(jnp.float32)
-            u_pen = 0.015 * jnp.sum(u_t * u_t, axis=-1) + 0.08 * jnp.sum((u_t - u_prior_t[:, None, :]) ** 2, axis=-1)
+            u_pen = 0.012 * jnp.sum(u_t * u_t, axis=-1) + 0.03 * jnp.sum((u_t - u_prior_t[:, None, :]) ** 2, axis=-1)
             return (z_next, acc_ret + discount * (r_t - u_pen)), v_t
 
         (_, total_ret), v_seq = jax.lax.scan(
@@ -262,6 +323,7 @@ def plan_random_shooting_g8(
 ) -> jax.Array:
     """G8 baseline planner: 1-decision 3-candidate random shooting without multi-horizon CEM refinement."""
     b = z_curr.shape[0]
+    eff_goal, bar0_prob, _ = _resolve_mpc_goal_and_barrier(params, z_curr, goal, obs_proprio)
     cand = jax.random.uniform(rng_key, (b, num_candidates, spec.action_dim), minval=-1.0, maxval=1.0)
     z_roll = jnp.broadcast_to(z_curr[:, None, :, :], (b, num_candidates, spec.slots_per_tick, spec.d_model))
     z_next, lv_next = predict_latent_step(params, spec, z_roll, cand, horizon_idx=0, residual=residual)
@@ -273,7 +335,8 @@ def plan_random_shooting_g8(
         z_roll,
         obs_proprio,
         lv_next,
-        goal,
+        eff_goal,
+        bar0_prob,
         residual=residual,
         trust_proprio_only=trust_none,
     )
