@@ -20,7 +20,7 @@ def _load_json(path: Path) -> dict:
 
 def test_all_84_runs_across_three_waves_pass_cryptographic_custody():
     """Verify every run in Wave 1 (28), Wave 2 (28), and Wave 3 (28) matches its dual-HDD SHA-256 manifest."""
-    for wave_subdir in ("runs_wave1", "runs_wave2", "runs"):
+    for wave_subdir in ("runs_wave1", "runs_wave2", "runs_wave3"):
         wave_dir = EXP_DIR / wave_subdir
         run_dirs = sorted(p for p in wave_dir.iterdir() if p.is_dir())
         assert len(run_dirs) == 28, f"Expected 28 runs in {wave_subdir}, found {len(run_dirs)}"
@@ -48,13 +48,13 @@ def test_all_84_runs_across_three_waves_pass_cryptographic_custody():
 
 
 def test_wave3_1b_parameter_parity_and_primary_metrics_recompute_from_raw_ledgers():
-    """Recompute primary 1.008B, 453M, and 3-seed 152M factorial numbers directly from raw eval_metrics.json."""
-    summary = _load_json(EXP_DIR / "summary_metrics.json")
+    """Recompute Wave 3 1.008B, 453M, and 3-seed 152M factorial numbers directly from raw eval_metrics.json."""
+    summary = _load_json(EXP_DIR / "wave3_1seed_1b_summary_metrics.json")
     assert summary["total_verified_runs"] == 28
 
-    slwm_1b_rec = _load_json(EXP_DIR / "runs/x1b-flagship-slwm-1b-s2001/receipt.json")
-    dense_1b_rec = _load_json(EXP_DIR / "runs/x1b-baseline-dense-1b-s2001/receipt.json")
-    legacy_1b_rec = _load_json(EXP_DIR / "runs/x1b-baseline-legacy-1b-s2001/receipt.json")
+    slwm_1b_rec = _load_json(EXP_DIR / "runs_wave3/x1b-flagship-slwm-1b-s2001/receipt.json")
+    dense_1b_rec = _load_json(EXP_DIR / "runs_wave3/x1b-baseline-dense-1b-s2001/receipt.json")
+    legacy_1b_rec = _load_json(EXP_DIR / "runs_wave3/x1b-baseline-legacy-1b-s2001/receipt.json")
 
     p_slwm = slwm_1b_rec["parameter_counts"]["strict_total"]
     p_dense = dense_1b_rec["parameter_counts"]["strict_total"]
@@ -67,9 +67,9 @@ def test_wave3_1b_parameter_parity_and_primary_metrics_recompute_from_raw_ledger
     assert dense_1b_rec["backend"] == "tpu"
     assert legacy_1b_rec["backend"] == "tpu"
 
-    slwm_1b = _load_json(EXP_DIR / "runs/x1b-flagship-slwm-1b-s2001/eval_metrics.json")
-    dense_1b = _load_json(EXP_DIR / "runs/x1b-baseline-dense-1b-s2001/eval_metrics.json")
-    legacy_1b = _load_json(EXP_DIR / "runs/x1b-baseline-legacy-1b-s2001/eval_metrics.json")
+    slwm_1b = _load_json(EXP_DIR / "runs_wave3/x1b-flagship-slwm-1b-s2001/eval_metrics.json")
+    dense_1b = _load_json(EXP_DIR / "runs_wave3/x1b-baseline-dense-1b-s2001/eval_metrics.json")
+    legacy_1b = _load_json(EXP_DIR / "runs_wave3/x1b-baseline-legacy-1b-s2001/eval_metrics.json")
 
     assert np.isclose(slwm_1b["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"], 37 / 48)
     assert np.isclose(slwm_1b["closed_loop_mpc"]["latent_cem_mpc"]["thin_barrier_success"], 13 / 24)
@@ -89,8 +89,8 @@ def test_wave3_1b_parameter_parity_and_primary_metrics_recompute_from_raw_ledger
     slwm_150_mpc = []
     dense_150_mpc = []
     for seed in (2001, 2002, 2003):
-        m_full = _load_json(EXP_DIR / f"runs/x1b-abl-slwm_full-s{seed}/eval_metrics.json")
-        m_dense = _load_json(EXP_DIR / f"runs/x1b-abl-dense_attn-s{seed}/eval_metrics.json")
+        m_full = _load_json(EXP_DIR / f"runs_wave3/x1b-abl-slwm_full-s{seed}/eval_metrics.json")
+        m_dense = _load_json(EXP_DIR / f"runs_wave3/x1b-abl-dense_attn-s{seed}/eval_metrics.json")
         assert m_full["associative_recall_512"]["T512"]["mean"] == 1.0
         slwm_150_mpc.append(m_full["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"])
         dense_150_mpc.append(m_dense["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"])

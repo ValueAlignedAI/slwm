@@ -43,7 +43,7 @@ def expand_lane_jobs(study_cfg: dict[str, Any], lane_key: str) -> tuple[str, lis
                     "steps": int(r["steps"]),
                     "batch_size": int(r["batch_size"]),
                     "seq_len": int(r["seq_len"]),
-                    "save_bf16": True,
+                    "save_bf16": bool(r.get("save_bf16", int(r["seed"]) == 2001)),
                 }
             )
         return session_name, jobs
@@ -169,7 +169,13 @@ def main() -> None:
     ap.add_argument(
         "lanes",
         nargs="+",
-        choices=["lane1_flagship", "lane2_baselines1b", "lane3_mem_ablation", "lane4_jepa_policy"],
+        choices=[
+            "lane1_flagship",
+            "lane2_baselines1b",
+            "lane3_mem_ablation",
+            "lane4_jepa_policy",
+            "lane5_legacy1b",
+        ],
     )
     ap.add_argument("--gpu-only", action="store_true")
     ap.add_argument("--tpu-only", action="store_true")
