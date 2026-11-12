@@ -1,0 +1,36 @@
+{
+  "arch": "slwm_x1b",
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "71bf1b53a771916af6a9bb302b6d0032d9a6f99aa91eeb23677f274d6bd17028",
+  "eval_summary": {
+    "assoc_T512": 1.0,
+    "av_r1": 1.0,
+    "barrier_auroc_64": 1.0,
+    "g8_shooting_success": 0.16666666666666666,
+    "mpc_success": 0.3333333333333333,
+    "persistence_skill": -0.04944295024991363,
+    "spoof_regret_always": 0.55030757188797,
+    "spoof_regret_learned": 0.3074115514755249,
+    "transient_drop_pp": 18.75
+  },
+  "eval_wall_s": 141.41,
+  "objective": "direct_jepa_no_residual",
+  "parameter_counts": {
+    "adapters": 6401856,
+    "jepa_and_uncertainty": 4430978,
+    "policy_and_heads": 6468100,
+    "processor_core": 134702832,
+    "strict_total": 152003766
+  },
+  "portable_int8_bytes": 140304250,
+  "portable_int8_sha256": "481fd035004b28bbe65478f2591a82faa7971c20b09936968672e0205939af14",
+  "profile": "x150m",
+  "seed": 2001,
+  "seq_len": 32,
+  "steps": 1600,
+  "tag": "x1b-abl-direct_jepa_no_res-s2001",
+  "train_wall_s": 325.6,
+  "weights_bf16_bytes": 240836670,
+  "weights_bf16_sha256": "0c5b8ebd893df322c5b29bae3da73cb37863615a931173def4529edf85a8d81f"
+}
