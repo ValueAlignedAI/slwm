@@ -136,7 +136,7 @@ def allocate_accelerator(
         _record_session(session_name, "reused", ep)
         return {"session": session_name, "endpoint": ep, "status": "reused"}
 
-    for wave in range(1, 45):  # Up to ~40 min slot-wait when waiting for single-TPU quota slot
+    for wave in range(1, 200):  # Up to ~150 min slot-wait when queuing onto single-TPU quota slot
         check_usage_and_budget()
         refused_cap = False
         if prefer_tpu or tpu_only:
@@ -233,7 +233,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
         "-s",
         session_name,
         "--timeout",
-        "1800",
+        "3600",
     ]
     return subprocess.run(cmd, input=code, env=colab_env(), text=True, timeout=timeout, check=True)
 
@@ -268,7 +268,7 @@ def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout:
                     return
                 if st_txt.startswith("PROG:"):
                     age = int(st_txt.split(":", 1)[1])
-                    if age < 150:
+                    if age < 600:
                         time.sleep(20)
                         continue
                 break
