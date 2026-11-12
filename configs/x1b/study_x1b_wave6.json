@@ -1,0 +1,86 @@
+{
+  "study_id": "spatiotemporal-jepa-wave6-zero-compromise",
+  "runs_subdir": "runs_wave6",
+  "use_real_robot": true,
+  "use_wave6_grounded": true,
+  "description": "Wave 6 Zero-Compromise Grounded Embodied World Model: (1) Single-factor Leave-One-Out causal isolation at 453M (Symbolic-Key Shielding, Zero-Lag Bypass, Decoupled Heads, Epps-Pulley SIGReg vs VICReg); (2) Clean Bounded-Memory Architecture Comparison under identical encoders/heads/JEPA (SLWM W=8 + GatedDelta vs SlidingWindow W=64 vs ScalarRetention-JEPA vs DiagonalSSM-JEPA); (3) De-privileged End-Effector-Only Proprioception + Geometry-Free Learned-Cost Latent-MPPI vs Explicit-Goal-Latch Reactive Controller across unseen obstacle layouts (off-center walls, dual-barrier chicanes, multi-block clutter, 2.2x mass / 0.35x friction shifts); (4) Beyond-Window Delayed & Distractor Embodied Goal-Switch (T=160 ticks = 16.0s > W=64); (5) Unseen OOD Sensor Corruptions (frozen frame, cross-scene replay, 90-deg rotation, half-occlusion); and (6) Multi-shard Real Physical xArm6 + Speaker-Disjoint Real Human Spoken Utterances + Untouched Final Vault.",
+  "budget": {
+    "max_compute_units": 500.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100"
+  },
+  "cohorts_453m_3seed": [
+    {
+      "cohort": "w6_slwm_450m_full_epps_sigreg",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_slwm_450m_vicreg",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "vicreg_var_cov",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_loo_no_key_shield_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": false, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_loo_no_zerolag_bypass_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": false, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_loo_no_decoupled_heads_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": false},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_sliding_window_w64_450m",
+      "profile": "x450m",
+      "arch": "sliding_window_transformer",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_scalar_retention_jepa_450m",
+      "profile": "x450m",
+      "arch": "scalar_retention_hybrid",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    },
+    {
+      "cohort": "w6_diagonal_ssm_jepa_450m",
+      "profile": "x450m",
+      "arch": "diagonal_ssm_hybrid",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 4000
+    }
+  ]
+}
