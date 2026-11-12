@@ -270,7 +270,7 @@ def generate_figures(
     axes[0].set_ylabel("Associative Overwrite Recall (%)")
     axes[0].set_title("A. Key-Value Overwrite Extrapolation (T=32 -> 1024)")
     axes[0].set_ylim(-3, 108)
-    axes[0].legend(fontsize=7.3, loc="center right")
+    axes[0].legend(fontsize=6.9, loc="lower left", bbox_to_anchor=(0.02, 0.14), framealpha=0.92)
 
     mem_keys = [
         ("SLWM-Full\n(152M)", "abl_slwm_full"),
@@ -378,14 +378,14 @@ def generate_figures(
     # -------------------------------------------------------------------------
     # Figure 4: OOD Long-Horizon (T=76) Transient Barrier & Goal-Switch Overwrite MPC
     # -------------------------------------------------------------------------
-    fig, axes = plt.subplots(1, 3, figsize=(15.6, 4.7))
+    fig, axes = plt.subplots(1, 3, figsize=(16.8, 4.8))
     p8_keys = [
-        ("SLWM-X1B\n(1.008B)", "flagship_1b", "#117A65"),
-        ("SLWM-X450M\n(453M)", "scale_450m", "#1F618D"),
-        ("SLWM-Full\n(152M)", "abl_slwm_full", "#4C78A8"),
-        ("Dense-TF\n(1.008B)", "dense_1b", "#E67E22"),
-        ("No-Regs\n(152M)", "abl_no_registers", "#8E44AD"),
-        ("Legacy-G10\n(1.008B)", "legacy_1b", "#C0392B"),
+        ("SLWM\n1.008B", "flagship_1b", "#117A65"),
+        ("SLWM\n453M", "scale_450m", "#1F618D"),
+        ("SLWM\n152M", "abl_slwm_full", "#4C78A8"),
+        ("Dense-TF\n1.008B", "dense_1b", "#E67E22"),
+        ("No-Regs\n152M", "abl_no_registers", "#8E44AD"),
+        ("Legacy\n1.008B", "legacy_1b", "#C0392B"),
     ]
     p8_pres = [(l, k, c) for l, k, c in p8_keys if k in summary_table and "sustained_mpc_overall" in summary_table[k]]
     if p8_pres:
@@ -396,18 +396,18 @@ def generate_figures(
         axes[0].bar(xp8 - 0.18, su_m, 0.35, yerr=su_s, error_kw=eb_kw, label="Overall OOD Sustained MPC", color=cols8, edgecolor="black")
         axes[0].bar(xp8 + 0.18, sb_m, 0.35, yerr=sb_s, error_kw=eb_kw, label="1-px Thin-Barrier OOD MPC", color=cols8, alpha=0.55, hatch="//", edgecolor="black")
         axes[0].set_xticks(xp8)
-        axes[0].set_xticklabels([l for l, _, _ in p8_pres], fontsize=8.5)
+        axes[0].set_xticklabels([l for l, _, _ in p8_pres], fontsize=8.2)
         axes[0].set_ylabel("Closed-Loop Success at T=76 (%)")
         axes[0].set_title("A. T=76 OOD Sustained 0.4s Transient-Goal MPC")
         axes[0].set_ylim(0, 108)
-        axes[0].legend(fontsize=7.6, loc="upper right")
+        axes[0].legend(fontsize=7.6, loc="lower left", framealpha=0.92)
 
         sw_m, sw_s = zip(*[_m_s(k, "goal_switch_mpc_overall") for _, k, _ in p8_pres])
         tr_m, tr_s = zip(*[_m_s(k, "stale_goal_a_trap") for _, k, _ in p8_pres])
         axes[1].bar(xp8 - 0.18, sw_m, 0.35, yerr=sw_s, error_kw=eb_kw, label="Goal-B Overwrite Success (%)", color=cols8, edgecolor="black")
         axes[1].bar(xp8 + 0.18, tr_m, 0.35, yerr=tr_s, error_kw=eb_kw, label="Stale Goal-A Trap Rate (%)", color="#95A5A6", hatch="xx", edgecolor="black")
         axes[1].set_xticks(xp8)
-        axes[1].set_xticklabels([l for l, _, _ in p8_pres], fontsize=8.5)
+        axes[1].set_xticklabels([l for l, _, _ in p8_pres], fontsize=8.2)
         axes[1].set_ylabel("Rate at T=76 (%)")
         axes[1].set_title("B. Mid-Episode Goal-B Overwrite (t=36..39 > T_train)")
         axes[1].set_ylim(0, 108)

@@ -1,0 +1,59 @@
+{
+  "entrypoint": "scripts/eval/x1b_infer.py",
+  "fedora_archive_roots": [
+    "/mnt/slwm-checkpoints-a/SLWM/x1b/runs",
+    "/mnt/slwm-checkpoints-b/SLWM/x1b/runs"
+  ],
+  "models": [
+    {
+      "arch": "slwm_x1b",
+      "fedora_disk_uuids": [
+        "fbbb53d9-dd42-4f19-95e6-dadab02a201e",
+        "c961a363-8d77-4fba-a48d-622b00a6d8c3"
+      ],
+      "fedora_verified_copies": 2,
+      "label": "SLWM-X1B (1.008B)",
+      "portable_int8_bytes": 918915368,
+      "portable_int8_sha256": "0e0ae653c5af1f8746f58d56ab25d220e5caca1a0e5ddd79a4283d8aeb41825b",
+      "strict_total_parameters": 1008454410,
+      "tag": "x1b-flagship-slwm-1b-s2001",
+      "use_residual": true,
+      "weights_bf16_bytes": 1603808648,
+      "weights_bf16_sha256": "e3b947c8fb8eae11db2c5f5d3c9557c30b209b5d701f1e6dcb96410910a4beb8"
+    },
+    {
+      "arch": "dense_transformer",
+      "fedora_disk_uuids": [
+        "fbbb53d9-dd42-4f19-95e6-dadab02a201e",
+        "c961a363-8d77-4fba-a48d-622b00a6d8c3"
+      ],
+      "fedora_verified_copies": 2,
+      "label": "DenseTransformer-X1B",
+      "portable_int8_bytes": 916813654,
+      "portable_int8_sha256": "5fd4c02104d1e96ec2eb35c6022e057feb7588a8d72684daaf1eac67303b1649",
+      "strict_total_parameters": 1008435114,
+      "tag": "x1b-baseline-dense-1b-s2001",
+      "use_residual": true,
+      "weights_bf16_bytes": 1604569773,
+      "weights_bf16_sha256": "e323ebbf426adff76b8285f30965b14004519629a128936352ac4736c2886d2b"
+    },
+    {
+      "arch": "legacy_scalar_hybrid",
+      "fedora_disk_uuids": [
+        "fbbb53d9-dd42-4f19-95e6-dadab02a201e",
+        "c961a363-8d77-4fba-a48d-622b00a6d8c3"
+      ],
+      "fedora_verified_copies": 2,
+      "label": "LegacyScalar-X1B",
+      "portable_int8_bytes": 915058802,
+      "portable_int8_sha256": "a8d90699d340874012da12fed5ae234d4ed6798c5bed103b0b0c8179f6851c5d",
+      "strict_total_parameters": 1008435114,
+      "tag": "x1b-baseline-legacy-1b-s2001",
+      "use_residual": true,
+      "weights_bf16_bytes": 1605290301,
+      "weights_bf16_sha256": "be999e144dd252df9fa2501aee14cf9ee989c9084486654c978bcdde60d9dd25"
+    }
+  ],
+  "study_id": "X1B-20261111",
+  "wave": "wave4_3seed_1b"
+}

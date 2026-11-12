@@ -374,6 +374,8 @@ def build_study_examples_and_manifest(
     *,
     fedora_host: str = "db@192.168.1.200",
     seed_filter: str = "s2001",
+    cem_candidates: int = 32,
+    cem_iters: int = 2,
 ) -> dict[str, Any]:
     """Generate SHA-256-verified 1.008B closed-loop replay traces, preview filmstrips, and inference manifest."""
     runs_dir = study_dir / "runs"
@@ -383,21 +385,26 @@ def build_study_examples_and_manifest(
     ex_dir.mkdir(parents=True, exist_ok=True)
 
     model_specs = [
-        ("SLWM-X1B (1.008B)", f"x1b-flagship-slwm-1b-{seed_filter}", True),
-        ("DenseTransformer-X1B", f"x1b-baseline-dense-1b-{seed_filter}", True),
-        ("LegacyScalar-X1B", f"x1b-baseline-legacy-1b-{seed_filter}", False),
+        ("SLWM-X1B (1.008B)", f"x1b-flagship-slwm-1b-{seed_filter}"),
+        ("DenseTransformer-X1B", f"x1b-baseline-dense-1b-{seed_filter}"),
+        ("LegacyScalar-X1B", f"x1b-baseline-legacy-1b-{seed_filter}"),
     ]
 
-    loaded: dict[str, tuple[dict[str, jax.Array], X1BSpec, dict[str, Any]]] = {}
     manifest_models: list[dict[str, Any]] = []
-    for label, tag, use_res in model_specs:
+    replays_thin: dict[str, dict[str, Any]] = {}
+    replays_switch: dict[str, dict[str, Any]] = {}
+    replays_spoof: dict[str, dict[str, Any]] = {}
+    assoc_1024: dict[str, float] = {}
+
+    for label, tag in model_specs:
         rdir = runs_dir / tag
         if not rdir.is_dir():
             continue
+        print(f"[x1b_infer] Streaming & verifying {tag} from local/Fedora...", flush=True)
         params, spec, receipt = load_verified_checkpoint(rdir, fedora_host=fedora_host)
         p_counts = count_parameters(params)
         assert p_counts["strict_total"] == receipt["parameter_counts"]["strict_total"]
-        loaded[label] = (params, spec, receipt)
+        use_res = receipt["objective"] != "direct_jepa_no_residual"
         ver = json.loads((rdir / "verified.json").read_text())
         manifest_models.append(
             {
@@ -415,25 +422,38 @@ def build_study_examples_and_manifest(
             }
         )
 
-    replays_thin: dict[str, dict[str, Any]] = {}
-    replays_switch: dict[str, dict[str, Any]] = {}
-    replays_spoof: dict[str, dict[str, Any]] = {}
-    assoc_1024: dict[str, float] = {}
-
-    for label, tag, use_res in model_specs:
-        if label not in loaded:
-            continue
-        params, spec, _ = loaded[label]
+        print(f"[x1b_infer] Running thin_barrier_mpc on {label}...", flush=True)
         replays_thin[label] = replay_closed_loop_mission(
-            params, spec, mission_kind="thin_barrier_mpc", use_residual=use_res, seed=20261112
+            params,
+            spec,
+            mission_kind="thin_barrier_mpc",
+            use_residual=use_res,
+            seed=20261112,
+            cem_candidates=cem_candidates,
+            cem_iters=cem_iters,
         )
+        print(f"[x1b_infer] Running ood_goal_switch_barrier_mpc on {label}...", flush=True)
         replays_switch[label] = replay_closed_loop_mission(
-            params, spec, mission_kind="ood_goal_switch_barrier_mpc", use_residual=use_res, seed=20261113
+            params,
+            spec,
+            mission_kind="ood_goal_switch_barrier_mpc",
+            use_residual=use_res,
+            seed=20261113,
+            cem_candidates=cem_candidates,
+            cem_iters=cem_iters,
         )
+        print(f"[x1b_infer] Running camera_spoofing_safety on {label}...", flush=True)
         replays_spoof[label] = replay_closed_loop_mission(
-            params, spec, mission_kind="camera_spoofing_safety", use_residual=use_res, seed=20261114
+            params,
+            spec,
+            mission_kind="camera_spoofing_safety",
+            use_residual=use_res,
+            seed=20261114,
+            cem_candidates=cem_candidates,
+            cem_iters=cem_iters,
         )
         # Two sequential batch_size=1 T=1024 associative overwrite checks (24,576 spatiotemporal slots, bounded RAM!)
+        print(f"[x1b_infer] Running T=1024 live recall check on {label}...", flush=True)
         v_sl = slice(ASSOC_VAL_OFFSET, ASSOC_VAL_OFFSET + ASSOC_NUM_VALS)
         hits_1024 = []
         for s_off in (0, 1):
@@ -446,6 +466,13 @@ def build_study_examples_and_manifest(
             pred = int(np.argmax(np.asarray(h1024["text_logits"][0, -1, v_sl])) + ASSOC_VAL_OFFSET)
             hits_1024.append(float(pred == int(np.asarray(b1024["target_text"][0, -1]))))
         assoc_1024[label] = float(np.mean(hits_1024))
+        print(
+            f"[x1b_infer] Done {label}: thin={replays_thin[label]['success']} "
+            f"switch={replays_switch[label]['success']} T1024={assoc_1024[label]:.2f}",
+            flush=True,
+        )
+        del params
+        jax.clear_caches()
 
     p_thin = ex_dir / "preview_thin_barrier_mpc.png"
     p_switch = ex_dir / "preview_ood_goal_switch_mpc.png"
@@ -507,11 +534,18 @@ def main() -> None:
         choices=["thin_barrier_mpc", "ood_goal_switch_barrier_mpc", "camera_spoofing_safety"],
     )
     ap.add_argument("--fedora-host", default="db@192.168.1.200")
+    ap.add_argument("--cem-candidates", type=int, default=32)
+    ap.add_argument("--cem-iters", type=int, default=2)
     ap.add_argument("--build-study-pack", action="store_true", help="Build full 1.008B comparison pack & filmstrips")
     args = ap.parse_args()
 
     if args.build_study_pack:
-        doc = build_study_examples_and_manifest(args.study_dir, fedora_host=args.fedora_host)
+        doc = build_study_examples_and_manifest(
+            args.study_dir,
+            fedora_host=args.fedora_host,
+            cem_candidates=args.cem_candidates,
+            cem_iters=args.cem_iters,
+        )
         print(json.dumps({k: {m: v["success"] for m, v in mv.items()} for k, mv in doc["missions"].items()}, indent=2))
         return
 
@@ -522,7 +556,14 @@ def main() -> None:
         fedora_host=args.fedora_host,
     )
     use_res = receipt["objective"] != "direct_jepa_no_residual"
-    rep = replay_closed_loop_mission(params, spec, mission_kind=args.mission, use_residual=use_res)
+    rep = replay_closed_loop_mission(
+        params,
+        spec,
+        mission_kind=args.mission,
+        use_residual=use_res,
+        cem_candidates=args.cem_candidates,
+        cem_iters=args.cem_iters,
+    )
     summary = {k: v for k, v in rep.items() if k != "frames"}
     print(json.dumps(summary, indent=2))
 
