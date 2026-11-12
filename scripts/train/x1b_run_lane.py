@@ -1,0 +1,182 @@
+"""End-to-end autonomous Colab TPU v6e1 / GPU lane runner with dual-HDD archival & auto-stop."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+import shlex
+import subprocess
+import sys
+from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.train.x1b_colab_ops import (
+    allocate_accelerator,
+    archive_run_to_fedora,
+    check_usage_and_budget,
+    colab_env,
+    restart_session_kernel,
+    run_kernel_job_resilient,
+    ssh_cmd_base,
+    stage_code_and_data,
+    stop_session,
+)
+
+
+def expand_lane_jobs(study_cfg: dict[str, Any], lane_key: str) -> tuple[str, list[dict[str, Any]]]:
+    lane = study_cfg["lanes"][lane_key]
+    session_name = lane["session"]
+    if "runs" in lane:
+        jobs = []
+        for r in lane["runs"]:
+            jobs.append(
+                {
+                    "tag": r["tag"],
+                    "profile": r["profile"],
+                    "arch": r["arch"],
+                    "objective": r["objective"],
+                    "seed": int(r["seed"]),
+                    "steps": int(r["steps"]),
+                    "batch_size": int(r["batch_size"]),
+                    "seq_len": int(r["seq_len"]),
+                    "save_bf16": True,
+                }
+            )
+        return session_name, jobs
+
+    jobs = []
+    for var in lane["variants"]:
+        for seed in lane["seeds"]:
+            tag = f"x1b-abl-{var['name']}-s{seed}"
+            jobs.append(
+                {
+                    "tag": tag,
+                    "profile": lane["profile"],
+                    "arch": var["arch"],
+                    "objective": var["objective"],
+                    "seed": int(seed),
+                    "steps": int(lane["steps"]),
+                    "batch_size": int(lane["batch_size"]),
+                    "seq_len": int(lane["seq_len"]),
+                    "save_bf16": (int(seed) == 2001),
+                }
+            )
+    return session_name, jobs
+
+
+def run_lanes(
+    lane_keys: list[str],
+    *,
+    prefer_tpu: bool = True,
+    tpu_only: bool = False,
+    smoke: bool = False,
+) -> None:
+    cfg_path = REPO_ROOT / "configs/x1b/study_x1b.json"
+    study_cfg = json.loads(cfg_path.read_text())
+
+    session_name: str | None = None
+    jobs: list[dict[str, Any]] = []
+    for lk in lane_keys:
+        s_name, l_jobs = expand_lane_jobs(study_cfg, lk)
+        if session_name is None:
+            session_name = s_name
+        jobs.extend(l_jobs)
+    assert session_name is not None
+
+    lane_title = "+".join(lane_keys)
+    if smoke:
+        session_name = f"{session_name}-smoke"
+        jobs = [{**jobs[0], "tag": f"x1b-smoke-{lane_keys[0]}", "profile": "x_tiny", "steps": 6, "batch_size": 4}]
+
+    alloc = allocate_accelerator(
+        session_name,
+        prefer_tpu=prefer_tpu,
+        tpu_retries=1,
+        allow_h100_fallback=(not tpu_only),
+        tpu_only=tpu_only,
+    )
+    print(f"[LANE {lane_title}] Allocated: {alloc}", flush=True)
+
+    try:
+        stage_code_and_data(session_name)
+        base = ssh_cmd_base(session_name)
+        prev_compile_sig: tuple[Any, ...] | None = None
+
+        for idx, job in enumerate(jobs, start=1):
+            check_usage_and_budget(max_spend=float(study_cfg["budget"]["max_compute_units"]))
+            local_ver = (
+                REPO_ROOT
+                / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111/runs"
+                / job["tag"]
+                / "verified.json"
+            )
+            if local_ver.is_file():
+                print(f"[LANE {lane_title}] ({idx}/{len(jobs)}) {job['tag']} already archived & verified, skipping.", flush=True)
+                continue
+
+            print(f"[LANE {lane_title}] ({idx}/{len(jobs)}) Training {job['tag']} on {session_name}...", flush=True)
+            cur_sig = (job["profile"], job["arch"], job["objective"], job["batch_size"], job["seq_len"])
+            if prev_compile_sig is not None and (cur_sig != prev_compile_sig or job["profile"] in ("x1b", "x450m")):
+                restart_session_kernel(session_name)
+            prev_compile_sig = cur_sig
+            py_job = f"""
+import gc, glob, os, pathlib, sys
+for _old_npz in glob.glob('/content/x1b-out/*/*.npz'):
+    try:
+        os.remove(_old_npz)
+    except OSError:
+        pass
+if '/content/x1b-code' not in sys.path:
+    sys.path.insert(0, '/content/x1b-code')
+import jax
+jax.config.update('jax_compilation_cache_dir', '/content/x1b-cache')
+from scripts.train.x1b_train import train_and_evaluate
+train_and_evaluate(
+    tag={job['tag']!r},
+    profile={job['profile']!r},
+    arch={job['arch']!r},
+    objective={job['objective']!r},
+    seed={int(job['seed'])},
+    steps={int(job['steps'])},
+    batch_size={int(job['batch_size'])},
+    seq_len={int(job['seq_len'])},
+    out_dir=pathlib.Path('/content/x1b-out'),
+    real_bank_path='/content/x1b-data/x1b_real_bank_v1.npz',
+    pymunk_panels_path='/content/x1b-data/x1b_pymunk_panels_64.npz',
+    save_bf16={bool(job['save_bf16'])},
+)
+gc.collect()
+"""
+            run_kernel_job_resilient(session_name, job["tag"], py_job, timeout=5400)
+            archive_run_to_fedora(session_name, job["tag"])
+
+        final_ledger = check_usage_and_budget(max_spend=float(study_cfg["budget"]["max_compute_units"]))
+        print(
+            f"[LANE {lane_title}] ALL {len(jobs)} JOBS COMPLETED & ARCHIVED. Balance={final_ledger['current_balance']}",
+            flush=True,
+        )
+    finally:
+        print(f"[LANE {lane_title}] Releasing Colab session {session_name}...", flush=True)
+        stop_session(session_name)
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "lanes",
+        nargs="+",
+        choices=["lane1_flagship", "lane2_baselines1b", "lane3_mem_ablation", "lane4_jepa_policy"],
+    )
+    ap.add_argument("--gpu-only", action="store_true")
+    ap.add_argument("--tpu-only", action="store_true")
+    ap.add_argument("--smoke", action="store_true")
+    args = ap.parse_args()
+    run_lanes(args.lanes, prefer_tpu=(not args.gpu_only), tpu_only=args.tpu_only, smoke=args.smoke)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,40 @@
+{
+  "backend": "tpu",
+  "batch_size": 4,
+  "config_sha256": "0ff4b5b35e7371167ccedd9704f89cd5b42d8822577fcd50072fe5f0f0404d1c",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 714176,
+    "jepa_and_uncertainty": 156866,
+    "policy_and_heads": 709380,
+    "processor_core": 1119256,
+    "strict_total": 2699678
+  },
+  "peak_lr": 0.0006,
+  "real_bank_path": "/content/x1b-data/x1b_real_bank_v1.npz",
+  "seed": 2001,
+  "seq_len": 16,
+  "spec": {
+    "action_dim": 4,
+    "arch": "slwm_x1b",
+    "audio_dim": 64,
+    "d_ff": 320,
+    "d_model": 128,
+    "dtype": "float32",
+    "goal_dim": 4,
+    "grad_checkpoint": false,
+    "head_dim": 32,
+    "layers": 4,
+    "n_heads": 4,
+    "profile": "x_tiny",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 4,
+  "tag": "x1b-smoke-v6e1"
+}
