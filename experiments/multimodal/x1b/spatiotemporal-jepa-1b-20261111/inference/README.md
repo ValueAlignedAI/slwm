@@ -1,10 +1,10 @@
 # SLWM-X1B (`1.008B`) Standalone Inference & Checkpoint Streaming
 
-This directory tracks the cryptographic manifest (`manifest.json`, generated post-verification by [`scripts/eval/x1b_infer.py`](../../../../scripts/eval/x1b_infer.py)) for the `1,008,454,410`-parameter Wave 4 (`X1B-v4`) world models:
+This directory tracks the cryptographic manifest (`manifest.json`, generated post-verification by [`scripts/eval/x1b_infer.py`](../../../../../scripts/eval/x1b_infer.py)) for the `1,008,454,410`-parameter Wave 4 (`X1B-v4`) world models:
 
-- **`SLWM-X1B` (`slwm_x1b`)**: 3:1 Multi-Head Gated Delta Matrix Recurrence + Ring-Buffer Causal RoPE (`O(1)` streaming state = `6.79 MB` at both `T=64` and `T=1024`), `S=24` spatiotemporal field (`16` visual `64x64` patches + `2` spectral audio + `1` proprio + `1` text + `1` action + `3` persistent working-memory registers), 4-step unrolled Residual-EMA-JEPA + `SIGReg`, decoupled `head_vis_pose` / `head_proprio` / `head_goal` readouts, and Mahalanobis `PolicyCommitGate`.
-- **`DenseTransformer-X1B` (`dense_transformer`)**: Matched `1.008B` (`< 0.30%` delta) all-RoPE causal transformer baseline (`O(T)` KV state = `450.00 MB` at `T=64`, `7,200.00 MB` at `T=1024`).
-- **`LegacyScalarHybrid-X1B` (`legacy_scalar_hybrid`)**: Matched `1.008B` (`< 0.01%` delta) G5/G10-style scalar-decay + block-diagonal modality baseline.
+- **`SLWM-X1B` (`slwm_x1b`)**: 3:1 Multi-Head Gated Delta Matrix Recurrence + Ring-Buffer Causal RoPE (`O(1)` streaming state = `14.91 MB` at both `T=64` and `T=1024`), `S=24` spatiotemporal field (`16` visual `64x64` patches + `2` spectral audio + `1` proprio + `1` text + `1` action + `3` persistent working-memory registers), 4-step unrolled Residual-EMA-JEPA + `SIGReg`, decoupled `head_vis_pose` / `head_proprio` / `head_goal` readouts, and Mahalanobis `PolicyCommitGate`.
+- **`DenseTransformer-X1B` (`dense_transformer`)**: Matched `1,008,435,114`-parameter (`-0.0019%` delta) all-RoPE causal transformer baseline (`O(T)` KV state = `207.03 MB` at `T=64`, `3,312.54 MB` at `T=1024` per single `batch_size=1` stream — `222.2×` larger than `SLWM-X1B`).
+- **`LegacyScalarHybrid-X1B` (`legacy_scalar_hybrid`)**: Matched `1,008,435,114`-parameter (`-0.0019%` delta) G5/G10-style scalar-decay + block-diagonal modality baseline.
 
 ## Quickstart Commands
 
