@@ -327,6 +327,20 @@ def generate_synthetic_world_batch(
         axis=-1,
     )
 
+    # On 50% of transient-instruction episodes (scen == 1, t >= 20), inject a mid-episode 0.4s Goal-B overwrite
+    # at ticks [t_sw .. t_sw + 3] in a distinct arena quadrant so working memory must erase Goal A -> Goal B!
+    ks1, ks2, ks3, ks4 = jax.random.split(jax.random.fold_in(k_init, 99), 4)
+    t_sw = t // 2 + 1
+    has_goal_switch = (scen == 1) & jax.random.bernoulli(ks1, 0.5, (b,)) & (t >= 20)
+    gx_sign_2 = jnp.where(jax.random.bernoulli(ks4, 0.5, (b,)), -gx_sign, gx_sign)
+    targ_xy_2 = jnp.stack(
+        [
+            gx_sign_2 * jax.random.uniform(ks2, (b,), minval=0.30, maxval=0.44),
+            (-gy_sign) * jax.random.uniform(ks3, (b,), minval=0.22, maxval=0.36),
+        ],
+        axis=-1,
+    )
+
     coin_bar = jax.random.bernoulli(k1, 0.5, (b,))
     vis_barrier = ((scen == 0) & coin_bar) | ((scen == 1) & coin_bar)
     has_barrier = vis_barrier | (scen == 3)
@@ -344,30 +358,40 @@ def generate_synthetic_world_batch(
     init_prev_con = jnp.zeros((b, 2), dtype=jnp.float32)
     init_prev_aud = jnp.zeros((b, 64), dtype=jnp.float32) - 0.35
 
-    act_noise = jax.random.normal(k_act, (t, b, 4), dtype=jnp.float32) * 0.18
-    # Occasional straight-push exploratory episodes (25%) so dynamics also observe direct barrier collisions!
+    k_act_n, k_act_u, k_act_b = jax.random.split(k_act, 3)
+    act_noise = jax.random.normal(k_act_n, (t, b, 4), dtype=jnp.float32) * 0.18
+    rand_u = jax.random.uniform(k_act_u, (t, b, 4), minval=-1.0, maxval=1.0, dtype=jnp.float32)
+    rand_tick = jax.random.bernoulli(k_act_b, 0.15, (t, b))
+    # Occasional straight-push exploratory episodes (25%) + 15% off-policy action ticks calibrate CEM-MPC dynamics!
     direct_explore = jax.random.bernoulli(k_act, 0.25, (b,))
 
     def sim_step(
         carry: tuple[dict[str, jax.Array], jax.Array, jax.Array, jax.Array],
-        inp: tuple[jax.Array, jax.Array],
+        inp: tuple[jax.Array, jax.Array, jax.Array, jax.Array],
     ):
         st, prev_u, prev_con, prev_aud = carry
-        step_idx, eps_u = inp
-        show_cue = (scen != 1) | (step_idx < 4)
+        step_idx, eps_u, u_unif, is_rand = inp
+        switched_now = has_goal_switch & (step_idx >= t_sw)
+        curr_targ = jnp.where(switched_now[:, None], targ_xy_2, targ_xy)
+        show_cue = (
+            (scen != 1)
+            | (step_idx < 4)
+            | (has_goal_switch & (step_idx >= t_sw) & (step_idx < t_sw + 4))
+        )
         vid_t = render_scene_64x64(
-            st["ee_xy"], st["obj_xy"], st["obj_theta"], targ_xy, vis_barrier, show_cue
+            st["ee_xy"], st["obj_xy"], st["obj_theta"], curr_targ, vis_barrier, show_cue
         )
         prop_t = state_to_proprio(st, prev_u[:, :2], prev_con)
 
-        u_true_exp = expert_barrier_aware_action(st, targ_xy, has_barrier)
-        u_vis_exp = expert_barrier_aware_action(st, targ_xy, vis_barrier & (~direct_explore))
-        u_issued = jnp.clip(u_vis_exp + eps_u, -1.0, 1.0)
+        u_true_exp = expert_barrier_aware_action(st, curr_targ, has_barrier)
+        u_vis_exp = expert_barrier_aware_action(st, curr_targ, vis_barrier & (~direct_explore))
+        u_noisy = jnp.clip(u_vis_exp + eps_u, -1.0, 1.0)
+        u_issued = jnp.where(is_rand[:, None], u_unif.at[:, 2:].set(0.0), u_noisy)
 
         st_next, obs_next = step_physics_world(st, u_issued)
 
         # Geodesic barrier-respecting value function on current state s_t
-        dist_geo = geodesic_goal_distance(st["obj_xy"], targ_xy, vis_barrier)
+        dist_geo = geodesic_goal_distance(st["obj_xy"], curr_targ, vis_barrier)
         dist_ee = jnp.sqrt(jnp.sum((st["ee_xy"] - st["obj_xy"]) ** 2, axis=-1) + 1e-6)
         val_t = -1.35 * dist_geo - 0.25 * dist_ee
 
@@ -386,12 +410,13 @@ def generate_synthetic_world_batch(
             "u_issued": u_issued,
             "u_expert": u_true_exp,
             "value": val_t,
+            "target_goal_xy": curr_targ,
         }
 
     _, traj = jax.lax.scan(
         sim_step,
         (init_state, init_prev_u, init_prev_con, init_prev_aud),
-        (jnp.arange(t, dtype=jnp.int32), act_noise),
+        (jnp.arange(t, dtype=jnp.int32), act_noise, rand_u, rand_tick),
     )
     clean_video = jnp.swapaxes(traj["video"], 0, 1)           # [B, T, 64, 64, 3]
     audio = jnp.swapaxes(traj["audio"], 0, 1)                 # [B, T, 64]
@@ -403,6 +428,7 @@ def generate_synthetic_world_batch(
     u_issued = jnp.swapaxes(traj["u_issued"], 0, 1)           # [B, T, 4]
     u_expert = jnp.swapaxes(traj["u_expert"], 0, 1)           # [B, T, 4]
     values = jnp.swapaxes(traj["value"], 0, 1)                # [B, T]
+    target_goal_xy = jnp.swapaxes(traj["target_goal_xy"], 0, 1)  # [B, T, 2]
 
     # Inject 180-degree Inverted Wrong-Camera Spoofing on scen == 2 from tick t >= 4 onwards!
     flipped_video = jnp.flip(clean_video, axis=(2, 3))
@@ -434,6 +460,17 @@ def generate_synthetic_world_batch(
     for tick_i in range(min(4, t)):
         text = text.at[:, tick_i, 0].set(quad_tok)
     target_text = target_text.at[:, 0].set(quad_tok)
+
+    if t >= 20:
+        quad_tok_2 = (
+            4
+            + (targ_xy_2[:, 0] >= 0.0).astype(jnp.int32) * 2
+            + (targ_xy_2[:, 1] >= 0.0).astype(jnp.int32)
+        )
+        for off_i in range(4):
+            if t_sw + off_i < t:
+                prev_t0 = text[:, t_sw + off_i, 0]
+                text = text.at[:, t_sw + off_i, 0].set(jnp.where(has_goal_switch, quad_tok_2, prev_t0))
 
     if t >= 8:
         t_ov = max(4, t // 2)
@@ -489,6 +526,7 @@ def generate_synthetic_world_batch(
         "target_contacts": contacts,
         "target_value": values,
         "target_commit": target_commit,
+        "target_goal_xy": target_goal_xy,
         "goal": obs_goal,
         "true_goal": full_goal,
         "modality_mask": mod_mask,
@@ -540,6 +578,7 @@ class RealMultimodalBank:
 
         dist = np.sqrt(np.sum((prop[:, :, 2:4] - gl[:, None, 2:4]) ** 2, axis=-1))
         val = (-1.35 * dist).astype(np.float32)
+        tgoal = np.broadcast_to(gl[:, None, 2:4], (batch_size, t, 2)).copy().astype(np.float32)
         return {
             "video": vid,
             "clean_video": vid,
@@ -555,6 +594,7 @@ class RealMultimodalBank:
             "target_contacts": con,
             "target_value": val,
             "target_commit": np.zeros((batch_size, t), dtype=np.int32),
+            "target_goal_xy": tgoal,
             "goal": gl,
             "true_goal": gl,
             "modality_mask": mm,
@@ -586,6 +626,7 @@ def mix_real_and_synthetic_batches(
         "target_contacts",
         "target_value",
         "target_commit",
+        "target_goal_xy",
         "goal",
         "true_goal",
         "modality_mask",

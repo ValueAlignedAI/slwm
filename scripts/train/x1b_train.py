@@ -84,7 +84,7 @@ def load_bf16_weights(path: Path) -> dict[str, jax.Array]:
 
 
 def save_portable_int8(path: Path, params: dict[str, jax.Array]) -> str:
-    """Export symmetric per-channel int8 portable inference package (~1.0 GB at 1.002B params)."""
+    """Export symmetric per-channel int8 portable inference package (~1.0 GB at 1.008B params)."""
     arrays: dict[str, np.ndarray] = {}
     scales: dict[str, str] = {}
     host_p = jax.device_get(params)
@@ -107,6 +107,24 @@ def save_portable_int8(path: Path, params: dict[str, jax.Array]) -> str:
     return sha256_file(path)
 
 
+def load_portable_int8(path: Path) -> dict[str, jax.Array]:
+    """Restore float32 parameter tree from a symmetric per-channel int8 portable checkpoint."""
+    with np.load(path, allow_pickle=False) as f:
+        manifest = json.loads(str(f["__quant_manifest__"].item()))
+        out: dict[str, jax.Array] = {}
+        for k, kind in manifest.items():
+            if kind == "int8_pc":
+                val = f[k].astype(np.float32) * f[k + "__scale"].astype(np.float32)
+            else:
+                val = f[k].astype(np.float32)
+            out[k] = jnp.asarray(val)
+        return out
+
+
+def _is_readout_or_jepa_key(k: str) -> bool:
+    return k.startswith(("head_", "jepa_", "unc_", "commit_", "align_", "diag_"))
+
+
 def memory_efficient_adamw_step(
     params: dict[str, jax.Array],
     m_bf16: dict[str, jax.Array],
@@ -117,14 +135,20 @@ def memory_efficient_adamw_step(
     peak_lr: float,
     weight_decay: float = 0.02,
 ) -> tuple[dict[str, jax.Array], dict[str, jax.Array], dict[str, jax.Array], jax.Array, jax.Array]:
-    """Clipped cosine AdamW with bfloat16 moments so 1.002B params + moments + EMA fit in ~10 GB HBM!"""
-    clean_grads = jax.tree.map(
-        lambda g: jnp.nan_to_num(g.astype(jnp.float32), nan=0.0, posinf=1e4, neginf=-1e4),
-        grads,
-    )
-    sq_sum = sum(jnp.sum(gf * gf) for gf in jax.tree.leaves(clean_grads))
-    grad_norm = jnp.sqrt(sq_sum + 1e-12)
-    clip_coef = jnp.minimum(1.0, 1.0 / (grad_norm + 1e-6))
+    """Decoupled-clip cosine AdamW with bfloat16 moments (~10 GB HBM at 1.008B params + moments + EMA).
+
+    Decouples gradient clipping between the L-layer spatiotemporal core/adapters and the readout/JEPA
+    heads so 23-layer 1B backbone gradient norms never throttle task/goal/pose readout convergence.
+    """
+    clean_grads = {
+        k: jnp.nan_to_num(g.astype(jnp.float32), nan=0.0, posinf=1e4, neginf=-1e4)
+        for k, g in grads.items()
+    }
+    core_sq = sum(jnp.sum(gf * gf) for k, gf in clean_grads.items() if not _is_readout_or_jepa_key(k))
+    head_sq = sum(jnp.sum(gf * gf) for k, gf in clean_grads.items() if _is_readout_or_jepa_key(k))
+    grad_norm = jnp.sqrt(core_sq + head_sq + 1e-12)
+    clip_core = jnp.minimum(1.0, 1.0 / (jnp.sqrt(core_sq + 1e-12) + 1e-6))
+    clip_head = jnp.minimum(1.0, 1.0 / (jnp.sqrt(head_sq + 1e-12) + 1e-6))
 
     t = step.astype(jnp.float32) + 1.0
     warmup = float(max(10, min(160, total_steps // 10)))
@@ -135,25 +159,22 @@ def memory_efficient_adamw_step(
     bc1 = 1.0 - (b1**t)
     bc2 = 1.0 - (b2**t)
 
-    def _upd_m(m: jax.Array, gf_raw: jax.Array) -> jax.Array:
-        gf = gf_raw * clip_coef
-        return (b1 * m.astype(jnp.float32) + (1.0 - b1) * gf).astype(jnp.bfloat16)
-
-    def _upd_v(v: jax.Array, gf_raw: jax.Array) -> jax.Array:
-        gf = gf_raw * clip_coef
-        return (b2 * v.astype(jnp.float32) + (1.0 - b2) * (gf * gf)).astype(jnp.bfloat16)
-
-    m_next = jax.tree.map(_upd_m, m_bf16, clean_grads)
-    v_next = jax.tree.map(_upd_v, v_f32_or_bf16, clean_grads)
-
-    def _upd_p(k: str, p: jax.Array, m: jax.Array, v: jax.Array) -> jax.Array:
+    m_next: dict[str, jax.Array] = {}
+    v_next: dict[str, jax.Array] = {}
+    p_next: dict[str, jax.Array] = {}
+    for k, p in params.items():
+        cc = clip_head if _is_readout_or_jepa_key(k) else clip_core
+        gf = clean_grads[k] * cc
+        mn = (b1 * m_bf16[k].astype(jnp.float32) + (1.0 - b1) * gf).astype(jnp.bfloat16)
+        vn = (b2 * v_f32_or_bf16[k].astype(jnp.float32) + (1.0 - b2) * (gf * gf)).astype(jnp.bfloat16)
+        m_next[k] = mn
+        v_next[k] = vn
         pf = p.astype(jnp.float32)
-        m_hat = m.astype(jnp.float32) / bc1
-        v_hat = jnp.maximum(v.astype(jnp.float32) / bc2, 0.0)
+        m_hat = mn.astype(jnp.float32) / bc1
+        v_hat = jnp.maximum(vn.astype(jnp.float32) / bc2, 0.0)
         decay = weight_decay if (p.ndim >= 2 and k != "text_emb") else 0.0
-        return pf - lr * (m_hat / (jnp.sqrt(v_hat) + 1e-8) + decay * pf)
+        p_next[k] = pf - lr * (m_hat / (jnp.sqrt(v_hat) + 1e-8) + decay * pf)
 
-    p_next = {k: _upd_p(k, params[k], m_next[k], v_next[k]) for k in params}
     return p_next, m_next, v_next, grad_norm, lr
 
 
@@ -350,11 +371,18 @@ def train_and_evaluate(
         "eval_summary": {
             "av_r1": eval_results["real_multimodal_and_text"].get("av_r1", {}).get("mean"),
             "persistence_skill": eval_results["thin_barrier_and_persistence"]["step1_skill_vs_persistence"],
+            "step4_persistence_skill": eval_results["thin_barrier_and_persistence"]["step4_skill_vs_persistence"],
             "barrier_auroc_64": eval_results["thin_barrier_and_persistence"]["barrier_auroc_64x64"],
             "assoc_T512": eval_results["associative_recall_512"]["T512"]["mean"],
+            "assoc_T1024": eval_results["associative_recall_512"].get("T1024", {}).get("mean"),
+            "continuous_success": eval_results["transient_goal_retention"]["continuous_success"]["mean"],
+            "transient_04s_success": eval_results["transient_goal_retention"]["transient_04s_success"]["mean"],
             "transient_drop_pp": eval_results["transient_goal_retention"]["transient_drop_pp"]["mean"],
             "mpc_success": eval_results["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"],
+            "thin_barrier_mpc": eval_results["closed_loop_mpc"]["latent_cem_mpc"]["thin_barrier_success"],
             "g8_shooting_success": eval_results["closed_loop_mpc"]["g8_random_shooting_3"]["success_rate"]["mean"],
+            "sustained_transient_mpc": eval_results["long_horizon_memory_mpc"]["sustained_transient_barrier_mpc"]["success_rate"]["mean"],
+            "goal_switch_mpc": eval_results["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"],
             "spoof_regret_learned": eval_results["spoofing_and_commit_gate"]["learned_innovation"]["spoofed_action_regret"],
             "spoof_regret_always": eval_results["spoofing_and_commit_gate"]["always_commit"]["spoofed_action_regret"],
         },

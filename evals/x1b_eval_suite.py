@@ -270,48 +270,46 @@ def eval_thin_barrier_and_persistence(
     eval_inp16 = dict(eval_inp64, video=vid16_deg)
 
     @jax.jit
-    def _run_panel2(
+    def _run_panel2_single(
         p: dict[str, jax.Array],
-        inp64: dict[str, jax.Array],
-        inp16: dict[str, jax.Array],
-    ) -> tuple[jax.Array, jax.Array, jax.Array, jax.Array]:
-        z64, _ = forward_world_model(p, spec, inp64)
-        zn64, lv64 = predict_latent_step(p, spec, z64, u_exec_seq, residual=use_residual)
-        h64 = decode_world_heads(
-            p, spec, z64, zn64, lv64, goal, obs_proprio=inp64["proprio"], use_residual=use_residual
-        )
-
-        z16, _ = forward_world_model(p, spec, inp16)
-        zn16, lv16 = predict_latent_step(p, spec, z16, u_exec_seq, residual=use_residual)
-        h16 = decode_world_heads(
-            p, spec, z16, zn16, lv16, goal, obs_proprio=inp16["proprio"], use_residual=use_residual
+        inp_b: dict[str, jax.Array],
+        u_seq: jax.Array,
+        g_vec: jax.Array,
+    ) -> tuple[jax.Array, jax.Array, jax.Array]:
+        z_f, _ = forward_world_model(p, spec, inp_b)
+        zn_f, lv_f = predict_latent_step(p, spec, z_f, u_seq, residual=use_residual)
+        h_f = decode_world_heads(
+            p, spec, z_f, zn_f, lv_f, g_vec, obs_proprio=inp_b["proprio"], use_residual=use_residual
         )
 
         # 4-step open-loop rollout in latent space from ticks 0..11
-        z_anchor = z64[:, :-4]
+        z_anchor = z_f[:, :-4]
         z_r = z_anchor
         for step_k in range(4):
-            z_r, _ = predict_latent_step(p, spec, z_r, u_exec_seq[:, step_k : 12 + step_k], residual=use_residual)
+            z_r, _ = predict_latent_step(p, spec, z_r, u_seq[:, step_k : 12 + step_k], residual=use_residual)
         zf_r = z_r.astype(jnp.float32)
         zf_0 = z_anchor.astype(jnp.float32)
         hw = p["head_proprio_w"].astype(jnp.float32)
+        hb = p["head_proprio_b"].astype(jnp.float32)
         if use_residual and spec.arch != "legacy_scalar_hybrid":
             delta4 = (
-                0.5 * (zf_r[:, :, SLOT_PROPRIO, :] - zf_0[:, :, SLOT_PROPRIO, :])
-                + 0.5 * (jnp.mean(zf_r[:, :, SLOTS_VISUAL, :], axis=2) - jnp.mean(zf_0[:, :, SLOTS_VISUAL, :], axis=2))
+                0.75 * (zf_r[:, :, SLOT_PROPRIO, :] - zf_0[:, :, SLOT_PROPRIO, :])
+                + 0.25 * (jnp.mean(zf_r[:, :, SLOTS_VISUAL, :], axis=2) - jnp.mean(zf_0[:, :, SLOTS_VISUAL, :], axis=2))
             ) @ hw
-            pred4 = inp64["proprio"][:, :-4].astype(jnp.float32) + delta4
+            pred4 = inp_b["proprio"][:, :-4].astype(jnp.float32) + delta4
         else:
-            pred4 = (0.5 * zf_r[:, :, SLOT_PROPRIO, :] + 0.5 * jnp.mean(zf_r[:, :, SLOTS_VISUAL, :], axis=2)) @ hw
+            pred4 = (0.75 * zf_r[:, :, SLOT_PROPRIO, :] + 0.25 * jnp.mean(zf_r[:, :, SLOTS_VISUAL, :], axis=2)) @ hw + hb
 
         return (
-            jax.nn.sigmoid(h64["contact_logits"][:, :3, 1]).mean(axis=1),
-            jax.nn.sigmoid(h16["contact_logits"][:, :3, 1]).mean(axis=1),
-            h64["proprio_next"][:, :, :4],
-            pred4[:, :, :4],
+            jax.nn.sigmoid(h_f["contact_logits"][:, :3, 1]).mean(axis=1),
+            h_f["proprio_next"],
+            pred4,
         )
 
-    s64, s16, p_mod1_j, p_mod4_j = jax.device_get(_run_panel2(params, eval_inp64, eval_inp16))
+    s64, p_mod1_full, p_mod4_full = jax.device_get(_run_panel2_single(params, eval_inp64, u_exec_seq, goal))
+    s16, _, _ = jax.device_get(_run_panel2_single(params, eval_inp16, u_exec_seq, goal))
+    p_mod1_j = p_mod1_full[:, :, :4]
+    p_mod4_j = p_mod4_full[:, :, :4]
     wall_labels = np.asarray(has_wall, dtype=np.float32)
 
     p_true1 = np.asarray(next_prop_seq[:, :, :4])
@@ -377,13 +375,20 @@ def eval_thin_barrier_and_persistence(
 def eval_long_horizon_associative_recall(
     params: dict[str, jax.Array],
     spec: X1BSpec,
-    horizons: tuple[int, ...] = (32, 128, 256, 512),
+    horizons: tuple[int, ...] = (32, 128, 256, 512, 1024),
 ) -> dict[str, Any]:
-    """Panel 3: Associative Key-Value Overwrite Recall from T=32 up to T=512 (16x OOD extrapolation!)."""
+    """Panel 3: Associative Key-Value Overwrite Recall from T=32 up to T=1024 (32x OOD = 24,576 slots!)."""
     results: dict[str, Any] = {}
     for h_len in horizons:
         total_n = 32 if h_len <= 128 else 16
-        chunk_bs = 4 if (spec.d_model >= 1536 and h_len >= 256) else (8 if h_len >= 256 else 16)
+        if h_len >= 1024:
+            chunk_bs = 1 if spec.d_model >= 1152 else 2
+        elif h_len >= 512:
+            chunk_bs = 2 if spec.d_model >= 1536 else 4
+        elif h_len >= 256:
+            chunk_bs = 4 if spec.d_model >= 1536 else 8
+        else:
+            chunk_bs = 8 if spec.d_model >= 1536 else 16
 
         @jax.jit
         def _eval_assoc_chunk(
@@ -514,8 +519,8 @@ def eval_closed_loop_mpc_and_spoofing(
     """Panels 5 & 6: Closed-Loop Manipulation (Latent-CEM-MPC vs G8 Random Shooting vs Open-Loop)
     AND 180-deg Wrong-Camera Spoofing / Hidden-Barrier / Unsupported-Query CommitGate Calibration.
     """
-    bs = 48
-    t_ep = 34
+    bs = 96
+    t_ep = 38
     key = jax.random.key(55109)
     k1, k2, k_plan = jax.random.split(key, 3)
     side = jnp.where(jax.random.bernoulli(k1, 0.5, (bs,)), 1.0, -1.0)
@@ -696,15 +701,155 @@ def eval_closed_loop_mpc_and_spoofing(
     }
 
 
+def eval_long_horizon_memory_mpc(
+    params: dict[str, jax.Array],
+    spec: X1BSpec,
+    *,
+    use_residual: bool = True,
+) -> dict[str, Any]:
+    """Panel 8: Long-Horizon OOD (T=76 = 2.38x T_train) Transient-Goal Thin-Barrier MPC & Mid-Episode Goal-Switch MPC.
+
+    Evaluates 64 held-out physical worlds (32 with 1-px central barrier, 32 open) with ZERO external goal vector:
+      1) sustained_transient_barrier_mpc: 0.4s goal cue at ticks 0..3, extinguished for ticks 4..75.
+      2) mid_episode_goal_switch_mpc: 0.4s Goal A at ticks 0..3, extinguished 4..35, new 0.4s Goal B overwrite at
+         OOD ticks 36..39 (t > T_train=32!), extinguished 40..75; scored on reaching Goal B (and stale Goal-A trap).
+    """
+    bs = 64
+    t_ep = 76
+    t_sw = 36
+    key = jax.random.key(99107)
+    k1, k2, k3, k_plan = jax.random.split(key, 4)
+    side = jnp.where(jax.random.bernoulli(k1, 0.5, (bs,)), 1.0, -1.0)
+    gy_sign = jnp.where(jax.random.bernoulli(k3, 0.5, (bs,)), 1.0, -1.0)
+    y_jit = jax.random.uniform(k2, (bs,), minval=-0.06, maxval=0.06)
+    obj_init = jnp.stack([side * 0.36, gy_sign * 0.24 + y_jit], axis=-1)
+    ee_init = jnp.clip(obj_init + jnp.stack([side * 0.20, jnp.zeros((bs,))], axis=-1), -0.88, 0.88)
+    # Goal A is across the central barrier in (-side, +gy_sign); Goal B is across the barrier in (-side, -gy_sign)
+    # so do-nothing (dist ~0.91), barrier-stall (~0.49), stale Goal A (0.58), and Goal A/B midpoint (0.29) ALL score 0%!
+    targ_a = jnp.stack([-side * 0.36, gy_sign * 0.28], axis=-1)
+    targ_b = jnp.stack([-side * 0.36, (-gy_sign) * 0.30], axis=-1)
+    quad_a = 4 + (targ_a[:, 0] >= 0.0).astype(jnp.int32) * 2 + (targ_a[:, 1] >= 0.0).astype(jnp.int32)
+    quad_b = 4 + (targ_b[:, 0] >= 0.0).astype(jnp.int32) * 2 + (targ_b[:, 1] >= 0.0).astype(jnp.int32)
+    has_bar = jnp.arange(bs) % 2 == 0
+    zero_goal = jnp.zeros((bs, 4), dtype=jnp.float32)
+
+    @jax.jit
+    def _roll_memory_mpc(p: dict[str, jax.Array], switch_flag: jax.Array) -> jax.Array:
+        st0 = {
+            "ee_xy": ee_init,
+            "obj_xy": obj_init,
+            "obj_vel": jnp.zeros((bs, 2), dtype=jnp.float32),
+            "obj_theta": jnp.zeros((bs,), dtype=jnp.float32),
+            "has_barrier": has_bar,
+            "polarity": jnp.ones((bs,), dtype=jnp.float32),
+        }
+        mem0 = init_streaming_memories(spec, bs, cache_len=80)
+        u0 = jnp.zeros((bs, 4), dtype=jnp.float32)
+        con0 = jnp.zeros((bs, 2), dtype=jnp.float32)
+        aud0 = jnp.zeros((bs, 64), dtype=jnp.float32) - 0.35
+
+        def _body(carry, tick_idx):
+            st, mem, prev_u, prev_con, prev_aud, rk = carry
+            rk, subk = jax.random.split(rk)
+            in_b_phase = switch_flag & (tick_idx >= t_sw)
+            curr_targ = jnp.where(in_b_phase, targ_b, targ_a)
+            curr_quad = jnp.where(in_b_phase, quad_b, quad_a)
+            cue_on = (tick_idx < 4) | (switch_flag & (tick_idx >= t_sw) & (tick_idx < t_sw + 4))
+
+            vid_t = render_scene_64x64(
+                st["ee_xy"],
+                st["obj_xy"],
+                st["obj_theta"],
+                curr_targ,
+                has_bar,
+                jnp.broadcast_to(cue_on, (bs,)),
+            )
+            prop_t = state_to_proprio(st, prev_u[:, :2], prev_con)
+            txt_t = jnp.where(
+                cue_on,
+                jnp.zeros((bs, 1, 4), dtype=jnp.int32).at[:, 0, 0].set(curr_quad),
+                jnp.zeros((bs, 1, 4), dtype=jnp.int32),
+            )
+            step_b = {
+                "video": vid_t[:, None],
+                "audio": prev_aud[:, None],
+                "proprio": prop_t[:, None],
+                "text": txt_t,
+                "action": prev_u[:, None],
+                "modality_mask": jnp.ones((bs, 1, 4), dtype=jnp.float32),
+                "valid": jnp.ones((bs, 1), dtype=bool),
+            }
+            z_t, next_mem = forward_world_model(p, spec, step_b, memories=mem, offset=tick_idx)
+            u_cmd, _ = plan_latent_cem_mpc(
+                p,
+                spec,
+                z_t[:, 0],
+                zero_goal,
+                subk,
+                obs_proprio=prop_t,
+                horizon=6,
+                num_candidates=48,
+                num_elites=8,
+                cem_iters=3,
+                residual=use_residual,
+                trust_proprio_only=jnp.zeros((bs,), dtype=bool),
+            )
+            st_next, obs = step_physics_world(st, u_cmd)
+            return (st_next, next_mem, u_cmd, obs["contacts"], obs["audio"], rk), None
+
+        (st_end, _, _, _, _, _), _ = jax.lax.scan(
+            _body, (st0, mem0, u0, con0, aud0, k_plan), jnp.arange(t_ep, dtype=jnp.int32)
+        )
+        return st_end["obj_xy"]
+
+    end_sust = jax.device_get(_roll_memory_mpc(params, jnp.asarray(False, dtype=bool)))
+    dist_sust = np.asarray(jnp.sqrt(jnp.sum((end_sust - targ_a) ** 2, axis=-1)))
+    succ_sust = (dist_sust < 0.25).astype(np.float32)
+
+    end_sw = jax.device_get(_roll_memory_mpc(params, jnp.asarray(True, dtype=bool)))
+    dist_sw_b = np.asarray(jnp.sqrt(jnp.sum((end_sw - targ_b) ** 2, axis=-1)))
+    dist_sw_a = np.asarray(jnp.sqrt(jnp.sum((end_sw - targ_a) ** 2, axis=-1)))
+    succ_sw = (dist_sw_b < 0.25).astype(np.float32)
+    stale_trap = (dist_sw_a < 0.25).astype(np.float32)
+
+    bar_np = np.asarray(has_bar)
+    return {
+        "sustained_transient_barrier_mpc": {
+            "success_rate": paired_bootstrap_ci(succ_sust),
+            "final_distance": paired_bootstrap_ci(dist_sust),
+            "open_success": float(np.mean(succ_sust[~bar_np])),
+            "thin_barrier_success": float(np.mean(succ_sust[bar_np])),
+            "succ_vec": succ_sust.tolist(),
+        },
+        "mid_episode_goal_switch_mpc": {
+            "success_rate": paired_bootstrap_ci(succ_sw),
+            "final_distance": paired_bootstrap_ci(dist_sw_b),
+            "stale_goal_a_trap_rate": float(np.mean(stale_trap)),
+            "open_success": float(np.mean(succ_sw[~bar_np])),
+            "thin_barrier_success": float(np.mean(succ_sw[bar_np])),
+            "succ_vec": succ_sw.tolist(),
+        },
+    }
+
+
+def _streaming_memory_megabytes(spec: X1BSpec, cache_len: int) -> float:
+    mem = init_streaming_memories(spec, batch_size=1, cache_len=cache_len)
+    total_bytes = sum(int(x.size) * int(x.dtype.itemsize) for x in jax.tree.leaves(mem))
+    return round(total_bytes / (1024.0 * 1024.0), 3)
+
+
 def benchmark_context_scaling(
     params: dict[str, jax.Array],
     spec: X1BSpec,
-    lengths: tuple[int, ...] = (32, 128, 256),
+    lengths: tuple[int, ...] = (32, 128, 256, 512),
 ) -> dict[str, float]:
-    """Panel 7: Compiled XLA forward throughput (slots/sec) across sequence horizons (zero constant capture)."""
-    timings: dict[str, float] = {}
+    """Panel 7: Compiled XLA forward throughput (slots/sec) & streaming state MB across sequence horizons."""
+    timings: dict[str, float] = {
+        "streaming_state_mb_T64": _streaming_memory_megabytes(spec, 64),
+        "streaming_state_mb_T1024": _streaming_memory_megabytes(spec, 1024),
+    }
     for seq_t in lengths:
-        b = 2
+        b = 1 if (seq_t >= 512 and spec.d_model >= 1536) else 2
         dummy = generate_synthetic_world_batch(jax.random.key(seq_t), b, seq_len=seq_t, vocab_size=spec.vocab_size)
         fn = jax.jit(lambda p, d_in: forward_world_model(p, spec, d_in)[0])
         out = fn(params, dummy)
@@ -715,7 +860,7 @@ def benchmark_context_scaling(
             out = fn(params, dummy)
             out.block_until_ready()
         dt = (time.perf_counter() - t0) / iters
-        timings[f"T{seq_t}_ms"] = round(dt * 1000.0, 2)
+        timings[f"T{seq_t}_ms"] = round((dt / b) * 2.0 * 1000.0, 2)
         timings[f"T{seq_t}_slots_per_s"] = round(float(b * seq_t * spec.slots_per_tick) / max(dt, 1e-6), 1)
     return timings
 
@@ -729,7 +874,7 @@ def run_full_evaluation(
     pymunk_panels_path: str | None = None,
     include_scaling_bench: bool = True,
 ) -> dict[str, Any]:
-    """Execute the complete frozen 7-panel evaluation suite for a trained X1B checkpoint."""
+    """Execute the complete frozen 8-panel evaluation suite for a trained X1B checkpoint."""
     use_res = objective_mode != "direct_jepa_no_residual"
     real_test = RealMultimodalBank(real_bank_path, split="test") if real_bank_path else None
 
@@ -745,7 +890,7 @@ def run_full_evaluation(
         vocab_size=spec.vocab_size,
         dtype=spec.dtype,
         grad_checkpoint=False,
-        rope_Window=512,
+        rope_Window=1024,
     )
 
     p1 = eval_real_multimodal_and_text(params, eval_spec, real_test, use_residual=use_res)
@@ -753,13 +898,15 @@ def run_full_evaluation(
     p2 = eval_thin_barrier_and_persistence(params, eval_spec, pymunk_panels_path, use_residual=use_res)
     print("  [EVAL] Panel 2 (64x64 thin-barrier & persistence) done", flush=True)
     p3 = eval_long_horizon_associative_recall(params, eval_spec)
-    print("  [EVAL] Panel 3 (T=32..512 associative recall) done", flush=True)
+    print("  [EVAL] Panel 3 (T=32..1024 associative recall) done", flush=True)
     p4 = eval_transient_command_retention(params, eval_spec, use_residual=use_res)
     print("  [EVAL] Panel 4 (transient 0.4s command retention) done", flush=True)
     p56 = eval_closed_loop_mpc_and_spoofing(params, eval_spec, use_residual=use_res)
-    print("  [EVAL] Panels 5 & 6 (Latent-CEM-MPC & CommitGate spoofing) done", flush=True)
+    print("  [EVAL] Panels 5 & 6 (N=96 Latent-CEM-MPC & CommitGate spoofing) done", flush=True)
+    p8 = eval_long_horizon_memory_mpc(params, eval_spec, use_residual=use_res)
+    print("  [EVAL] Panel 8 (T=76 OOD transient barrier & goal-switch MPC) done", flush=True)
     p7 = benchmark_context_scaling(params, eval_spec) if include_scaling_bench else {}
-    print("  [EVAL] Panel 7 (throughput scaling) done", flush=True)
+    print("  [EVAL] Panel 7 (throughput & O(1) memory scaling) done", flush=True)
 
     return {
         "real_multimodal_and_text": p1,
@@ -767,6 +914,7 @@ def run_full_evaluation(
         "associative_recall_512": p3,
         "transient_goal_retention": p4,
         "closed_loop_mpc": p56["planners"],
+        "long_horizon_memory_mpc": p8,
         "spoofing_and_commit_gate": p56["commit_gate"],
         "throughput_scaling": p7,
     }

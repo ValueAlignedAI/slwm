@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 from data.x1b_multimodal import generate_synthetic_world_batch, render_scene_64x64, step_physics_world
-from evals.x1b_eval_suite import binary_auroc, paired_bootstrap_ci, run_full_evaluation
+from evals.x1b_eval_suite import _streaming_memory_megabytes, binary_auroc, paired_bootstrap_ci, run_full_evaluation
 from evals.x1b_mpc import plan_latent_cem_mpc, plan_random_shooting_g8
 from models.x1b_commit import route_proposals_with_commit_gate
 from models.x1b_jepa import VALID_OBJECTIVES, predict_latent_step, sigreg_loss_and_pr, world_model_loss
@@ -24,7 +24,13 @@ from models.x1b_world import (
     init_x1b_params,
     make_x1b_spec,
 )
-from scripts.train.x1b_train import load_bf16_weights, save_bf16_weights, save_portable_int8, train_and_evaluate
+from scripts.train.x1b_train import (
+    load_bf16_weights,
+    load_portable_int8,
+    save_bf16_weights,
+    save_portable_int8,
+    train_and_evaluate,
+)
 
 
 def test_1b_parameter_scale_and_strict_baseline_parity() -> None:
@@ -68,15 +74,15 @@ def test_strict_temporal_causality_zero_future_leakage(arch: str) -> None:
 
 @pytest.mark.parametrize("arch", ("slwm_x1b", "dense_transformer", "scalar_retention_hybrid"))
 def test_online_streaming_recurrence_matches_parallel_sequence(arch: str) -> None:
-    """Step-by-step online carry execution must match full-sequence parallel forward pass."""
+    """Step-by-step online carry execution must match full-sequence parallel forward pass (including W=8 wrap)."""
     spec = make_x1b_spec("x_tiny", arch, grad_checkpoint=False)
     params = init_x1b_params(spec, seed=202)
-    batch = generate_synthetic_world_batch(jax.random.key(9), batch_size=2, seq_len=6, vocab_size=spec.vocab_size)
+    batch = generate_synthetic_world_batch(jax.random.key(9), batch_size=2, seq_len=14, vocab_size=spec.vocab_size)
 
     z_full, _ = forward_world_model(params, spec, batch)
     memories = init_streaming_memories(spec, batch_size=2, cache_len=16)
     steps_z = []
-    for t in range(6):
+    for t in range(14):
         step_b = {
             "video": batch["video"][:, t : t + 1],
             "audio": batch["audio"][:, t : t + 1],
@@ -90,6 +96,11 @@ def test_online_streaming_recurrence_matches_parallel_sequence(arch: str) -> Non
         steps_z.append(z_t)
     z_stream = jnp.concatenate(steps_z, axis=1)
     np.testing.assert_allclose(np.asarray(z_full), np.asarray(z_stream), rtol=1e-4, atol=1e-4)
+
+    if arch != "dense_transformer":
+        assert _streaming_memory_megabytes(spec, 64) == _streaming_memory_megabytes(spec, 1024)
+    else:
+        assert _streaming_memory_megabytes(spec, 1024) > 10.0 * _streaming_memory_megabytes(spec, 64)
 
 
 @pytest.mark.parametrize("objective_mode", VALID_OBJECTIVES)
@@ -149,7 +160,7 @@ def test_thin_barrier_64x64_visibility_and_mpc_commit_gate() -> None:
 
 
 def test_smoke_train_eval_and_checkpoint_roundtrip(tmp_path: Path) -> None:
-    """End-to-end smoke test of x1b_train + 7-panel eval + bf16/int8 checkpoint serialization."""
+    """End-to-end smoke test of x1b_train + 8-panel eval + bf16/int8 checkpoint serialization."""
     receipt = train_and_evaluate(
         tag="x1b-unit-smoke",
         profile="x_tiny",
@@ -158,12 +169,16 @@ def test_smoke_train_eval_and_checkpoint_roundtrip(tmp_path: Path) -> None:
         seed=2001,
         steps=3,
         batch_size=4,
-        seq_len=8,
+        seq_len=20,
         out_dir=tmp_path,
     )
     assert receipt["parameter_counts"]["strict_total"] == count_spec_parameters(make_x1b_spec("x_tiny", "slwm_x1b"))["strict_total"]
+    assert receipt["eval_summary"]["assoc_T1024"] is not None
+    assert receipt["eval_summary"]["goal_switch_mpc"] is not None
     bf16_file = tmp_path / "x1b-unit-smoke/weights_bf16.npz"
     int8_file = tmp_path / "x1b-unit-smoke/portable_int8.npz"
     assert bf16_file.is_file() and int8_file.is_file()
     restored = load_bf16_weights(bf16_file)
+    restored_i8 = load_portable_int8(int8_file)
     assert set(restored.keys()) == set(init_x1b_params(make_x1b_spec("x_tiny", "slwm_x1b")).keys())
+    assert set(restored_i8.keys()) == set(restored.keys())
