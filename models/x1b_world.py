@@ -337,8 +337,16 @@ def init_x1b_params(spec: X1BSpec, seed: int = 2001) -> dict[str, jax.Array]:
     p["align_logit_scale"] = np.array([np.log(10.0)], dtype=np.float32)
 
     # 4. Grounded Task, Policy Commit Gate, Value Critic & Diagnostic Decoder Heads
+    # Decouple Euler differential transition head (head_proprio_*) from unbiased absolute visual pose
+    # (head_vis_pose_*) and persistent working-memory goal latch (head_goal_*).
     p["head_proprio_w"] = glorot((d, spec.proprio_dim), 0.5)
+    p["head_proprio_b"] = np.zeros((spec.proprio_dim,), dtype=np.float32)
+    p["head_vis_pose_w"] = glorot((d, spec.proprio_dim), 0.5)
+    p["head_vis_pose_b"] = np.zeros((spec.proprio_dim,), dtype=np.float32)
+    p["head_goal_w"] = glorot((d, 2), 0.5)
+    p["head_goal_b"] = np.zeros((2,), dtype=np.float32)
     p["head_contact_w"] = glorot((d, 2), 0.5)  # [impact_event, barrier_contact]
+    p["head_contact_b"] = np.array([-0.5, -0.5], dtype=np.float32)
     act_w1 = glorot((2 * d + spec.goal_dim, d), 1.2)
     act_w1[2 * d :, :] = (rng.standard_normal((spec.goal_dim, d), dtype=np.float32) * 0.45).astype(np.float32)
     p["head_action_w1"] = act_w1
@@ -407,8 +415,10 @@ def count_spec_parameters(spec: X1BSpec) -> dict[str, int]:
         + 1
     )
     heads = (
-        d * spec.proprio_dim
-        + d * 2
+        (d * spec.proprio_dim + spec.proprio_dim)
+        + (d * spec.proprio_dim + spec.proprio_dim)
+        + (d * 2 + 2)
+        + (d * 2 + 2)
         + (2 * d + spec.goal_dim) * d
         + d * spec.action_dim
         + (2 * d + spec.goal_dim) * d
@@ -641,22 +651,27 @@ def _causal_rope_temporal_attn(
 
 
 def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64) -> tuple[Any, ...]:
-    """Allocate static-shape recurrent carries / KV ring buffers for zero-recompilation XLA streaming."""
+    """Allocate static-shape recurrent carries / KV ring buffers for zero-recompilation XLA streaming.
+
+    Hybrid world models bound local attention ring buffers strictly to W=8 ticks (true O(1) memory in T),
+    whereas DenseTransformer requires O(T) KV cache_len.
+    """
     dtype = getattr(jnp, spec.dtype)
     b = batch_size
     s = spec.slots_per_tick
     d = spec.d_model
     h = spec.n_heads
     dh = spec.head_dim
+    eff_cache_len = cache_len if spec.arch == "dense_transformer" else min(8, cache_len)
     mems = []
     for i in range(spec.layers):
         is_attn = spec.arch == "dense_transformer" or ((i + 1) % 4 == 0)
         if is_attn:
             mems.append(
                 (
-                    jnp.zeros((b * s, cache_len, h, dh), dtype=dtype),
-                    jnp.zeros((b * s, cache_len, h, dh), dtype=dtype),
-                    jnp.zeros((b * s, cache_len), dtype=bool),
+                    jnp.zeros((b * s, eff_cache_len, h, dh), dtype=dtype),
+                    jnp.zeros((b * s, eff_cache_len, h, dh), dtype=dtype),
+                    jnp.zeros((b * s, eff_cache_len), dtype=bool),
                 )
             )
         elif spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
