@@ -1,0 +1,43 @@
+{
+  "arch": "dense_transformer",
+  "backend": "tpu",
+  "batch_size": 12,
+  "config_sha256": "196e8d97bfd759f852027affdae2495ace84d708deb4f04ecb3e58c18a77eaca",
+  "eval_summary": {
+    "assoc_T1024": 0.375,
+    "assoc_T512": 0.5,
+    "av_r1": 0.96875,
+    "barrier_auroc_64": 1.0,
+    "continuous_success": 0.75,
+    "g8_shooting_success": 0.23958333333333334,
+    "goal_switch_mpc": 0.0,
+    "mpc_success": 0.4791666666666667,
+    "persistence_skill": 0.15669423850652708,
+    "spoof_regret_always": 0.5063456296920776,
+    "spoof_regret_learned": 0.30261820554733276,
+    "step4_persistence_skill": 0.3013173640015787,
+    "sustained_transient_mpc": 0.84375,
+    "thin_barrier_mpc": 0.0,
+    "transient_04s_success": 0.7916666666666666,
+    "transient_drop_pp": -4.166666666666667
+  },
+  "eval_wall_s": 122.22,
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 19033728,
+    "jepa_and_uncertainty": 16529666,
+    "policy_and_heads": 18272296,
+    "processor_core": 954599424,
+    "strict_total": 1008435114
+  },
+  "portable_int8_bytes": 916942173,
+  "portable_int8_sha256": "1394e8328a469131a1977796d99577539a1273eb4b199b2f3b5bb284daf05dab",
+  "profile": "x1b",
+  "seed": 2002,
+  "seq_len": 32,
+  "steps": 2800,
+  "tag": "x1b-baseline-dense-1b-s2002",
+  "train_wall_s": 1280.63,
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}

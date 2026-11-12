@@ -1,0 +1,43 @@
+{
+  "arch": "slwm_x1b",
+  "backend": "tpu",
+  "batch_size": 12,
+  "config_sha256": "fee357252d6f1cba012c5215200a20c076bad9d87c0592abde739e57e9313806",
+  "eval_summary": {
+    "assoc_T1024": 1.0,
+    "assoc_T512": 1.0,
+    "av_r1": 0.9375,
+    "barrier_auroc_64": 1.0,
+    "continuous_success": 0.9166666666666666,
+    "g8_shooting_success": 0.21875,
+    "goal_switch_mpc": 0.890625,
+    "mpc_success": 0.5416666666666666,
+    "persistence_skill": 0.13128291468729225,
+    "spoof_regret_always": 0.45866525173187256,
+    "spoof_regret_learned": 0.3053787350654602,
+    "step4_persistence_skill": 0.2928688356188177,
+    "sustained_transient_mpc": 1.0,
+    "thin_barrier_mpc": 0.2708333432674408,
+    "transient_04s_success": 0.8125,
+    "transient_drop_pp": 10.416666666666666
+  },
+  "eval_wall_s": 97.07,
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 19033728,
+    "jepa_and_uncertainty": 16529666,
+    "policy_and_heads": 18272296,
+    "processor_core": 954618720,
+    "strict_total": 1008454410
+  },
+  "portable_int8_bytes": 918840698,
+  "portable_int8_sha256": "457c5521bd1f12d194d6e26e8eeca2846642994deca1bcded20645c5271113d8",
+  "profile": "x1b",
+  "seed": 2002,
+  "seq_len": 32,
+  "steps": 2800,
+  "tag": "x1b-flagship-slwm-1b-s2002",
+  "train_wall_s": 1280.49,
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}
