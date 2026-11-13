@@ -25,7 +25,7 @@ from scripts.train.x1b_colab_ops import (
 
 
 def build_wave6_lanes(study_cfg: dict[str, Any]) -> dict[str, tuple[str, list[dict[str, Any]]]]:
-    """Partition the 8 Wave 6 cohorts (24 total 453M runs) evenly across 4 parallel Colab lanes (6 runs/lane)."""
+    """Partition the 8 Wave 6 cohorts (24 total 453M runs) evenly across 3 parallel Colab lanes (8 runs/lane)."""
     cohorts = study_cfg["cohorts_453m_3seed"]
     all_jobs: list[dict[str, Any]] = []
     for c in cohorts:
@@ -43,18 +43,18 @@ def build_wave6_lanes(study_cfg: dict[str, Any]) -> dict[str, tuple[str, list[di
                     "zerolag_bypass": bool(iv["zerolag_bypass"]),
                     "decoupled_heads": bool(iv["decoupled_heads"]),
                     "seed": int(seed),
-                    "steps": int(c.get("steps", 3000)),
+                    "steps": int(c.get("steps", 2600)),
                     "batch_size": 12,
                     "seq_len": 32,
-                    "save_bf16": False,
+                    "save_bf16": bool(c["cohort"] == "w6_slwm_450m_full_epps_sigreg" and int(seed) == 2001),
                 }
             )
 
     lanes: dict[str, tuple[str, list[dict[str, Any]]]] = {}
-    for li in range(4):
+    for li in range(3):
         lname = f"w6_lane{li + 1}"
         sname = f"slwm-x1b-w6l{li + 1}"
-        lanes[lname] = (sname, all_jobs[li::4])
+        lanes[lname] = (sname, all_jobs[li::3])
     return lanes
 
 
@@ -155,7 +155,7 @@ train_and_evaluate_wave6(
     real_bank_path='/content/x1b-data/x1b_real_bank_v1.npz',
     grounded_robot_path='/content/x1b-data/x1b_wave6_grounded_v1.npz',
     vault_robot_path='/content/x1b-data/x1b_wave6_vault_test.npz',
-    save_bf16=False,
+    save_bf16={bool(job['save_bf16'])},
 )
 gc.collect()
 """

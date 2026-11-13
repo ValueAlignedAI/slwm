@@ -321,6 +321,7 @@ def train_and_evaluate_wave6(
         "batch_size": batch_size,
         "seq_len": seq_len,
         "peak_lr": peak_lr,
+        "save_bf16": bool(save_bf16),
         "parameter_counts": param_counts,
         "backend": jax.default_backend(),
         "devices": [str(d) for d in jax.devices()],
