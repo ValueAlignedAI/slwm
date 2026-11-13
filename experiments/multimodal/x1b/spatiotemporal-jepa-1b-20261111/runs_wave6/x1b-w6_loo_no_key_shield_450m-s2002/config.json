@@ -1,0 +1,48 @@
+{
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "39ec7ee826b63e6dba45d3beee297606904f04d1fbd14adab9aba31fd643de61",
+  "de_privileged_proprio": "ee_only",
+  "devices": [
+    "cuda:0"
+  ],
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": false,
+    "regularizer": "epps_pulley_sigreg",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420025464,
+    "strict_total": 453199938
+  },
+  "peak_lr": 0.00026,
+  "planner": "geometry_free_learned_mppi",
+  "save_bf16": false,
+  "seed": 2002,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "slwm_x1b",
+    "audio_dim": 64,
+    "d_ff": 3072,
+    "d_model": 1152,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 18,
+    "n_heads": 18,
+    "profile": "x450m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2600,
+  "tag": "x1b-w6_loo_no_key_shield_450m-s2002",
+  "wave": "wave6_zero_compromise"
+}

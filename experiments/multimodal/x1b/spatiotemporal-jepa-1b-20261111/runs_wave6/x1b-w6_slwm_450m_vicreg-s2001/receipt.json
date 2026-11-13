@@ -1,0 +1,42 @@
+{
+  "arch": "slwm_x1b",
+  "backend": "tpu",
+  "batch_size": 12,
+  "config_sha256": "08825b0a86e38ab3f8ac3c87548b8d1090769a38630708bd887386950aa7e8e3",
+  "eval_summary": {
+    "T160_post_perturb_goal_b_success": 0.0,
+    "dyn_visual_assoc_T1024": 1.0,
+    "explicit_latch_reactive_success": 0.0,
+    "latch_mse_beyond_W64": 0.22415205836296082,
+    "symbolic_key_visual_drift": 0.0,
+    "unseen_mppi_success": 0.0,
+    "unseen_ood_corruption_auroc": 0.5075545192035148,
+    "vault_spoken_disc_acc": 0.490234375,
+    "vault_step4_mm": 30.479148518294096
+  },
+  "eval_wall_s": 476.04,
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": true,
+    "regularizer": "vicreg_var_cov",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420025464,
+    "strict_total": 453199938
+  },
+  "portable_int8_bytes": 414666438,
+  "portable_int8_sha256": "95a7c0aa5f538d46917b590ed3bd064b48eaf698a831c9c9d15deed889de9ae3",
+  "profile": "x450m",
+  "seed": 2001,
+  "seq_len": 32,
+  "steps": 2600,
+  "tag": "x1b-w6_slwm_450m_vicreg-s2001",
+  "train_wall_s": 784.49,
+  "wave": "wave6_zero_compromise",
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}
