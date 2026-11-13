@@ -44,9 +44,9 @@ def colab_env() -> dict[str, str]:
     return {
         **os.environ,
         "CLOUDSDK_CONFIG": str(PRIVATE_COLAB / "gcloud"),
-        "COLAB_CLI_REQUEST_TIMEOUT": "360",
-        "COLAB_CLI_ASSIGN_RETRIES": "1",
-        "COLAB_CLI_RETRY_BACKOFF": "8",
+        "COLAB_CLI_REQUEST_TIMEOUT": "75",
+        "COLAB_CLI_ASSIGN_RETRIES": "0",
+        "COLAB_CLI_RETRY_BACKOFF": "4",
     }
 
 
@@ -118,11 +118,32 @@ def get_session_endpoint(session_name: str) -> str | None:
     return None
 
 
+def _pool_in_cooldown(pool_key: str, cooldown_s: float) -> bool:
+    p = OPS_DIR / f"cooldown_{pool_key}.txt"
+    try:
+        if p.is_file():
+            return (time.time() - float(p.read_text().strip())) < cooldown_s
+    except Exception:
+        return False
+    return False
+
+
+def _mark_pool_cooldown(pool_key: str) -> None:
+    OPS_DIR.mkdir(parents=True, exist_ok=True)
+    (OPS_DIR / f"cooldown_{pool_key}.txt").write_text(f"{time.time():.3f}\n")
+
+
+def _clear_pool_cooldown(pool_key: str) -> None:
+    p = OPS_DIR / f"cooldown_{pool_key}.txt"
+    if p.is_file():
+        p.unlink(missing_ok=True)
+
+
 def allocate_accelerator(
     session_name: str,
     *,
     prefer_tpu: bool = True,
-    tpu_retries: int = 2,
+    tpu_retries: int = 1,
     allow_h100_fallback: bool = True,
     tpu_only: bool = False,
 ) -> dict[str, str]:
@@ -136,47 +157,102 @@ def allocate_accelerator(
         _record_session(session_name, "reused", ep)
         return {"session": session_name, "endpoint": ep, "status": "reused"}
 
+    cap_keywords = (
+        "allocation refused",
+        "precondition failed",
+        "service unavailable",
+        "bad gateway",
+        "gateway timeout",
+        "aborted",
+        "exhausted",
+        "already",
+        "timed out",
+        "timeout",
+    )
+
     for wave in range(1, 200):  # Up to ~150 min slot-wait when queuing onto single-TPU quota slot
         check_usage_and_budget()
         refused_cap = False
         alloc_lock = OPS_DIR / "colab_new_rpc.lock"
-        if prefer_tpu or tpu_only:
+        if (prefer_tpu or tpu_only) and (tpu_only or not _pool_in_cooldown("tpu_v6e1", 480.0)):
             attempts = 1 if tpu_only else tpu_retries
             for attempt in range(1, attempts + 1):
+                timed_out = False
+                res = None
                 with alloc_lock.open("a") as alf:
                     fcntl.flock(alf, fcntl.LOCK_EX)
                     try:
+                        if not tpu_only and _pool_in_cooldown("tpu_v6e1", 480.0):
+                            print(f"[ALLOC] Skipping TPU v6e1 for {session_name} (recent 502/capacity cooldown active)...", flush=True)
+                            break
                         print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
-                        res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=780)
-                        time.sleep(1.2)
+                        try:
+                            res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=105)
+                        except subprocess.TimeoutExpired:
+                            timed_out = True
+                        time.sleep(1.0)
                     finally:
                         fcntl.flock(alf, fcntl.LOCK_UN)
-                if res.returncode == 0:
+                if timed_out:
+                    ep = get_session_endpoint(session_name)
+                    if ep:
+                        _clear_pool_cooldown("tpu_v6e1")
+                        _record_session(session_name, "tpu:v6e1", ep)
+                        return {"session": session_name, "accelerator": "tpu:v6e1", "endpoint": ep}
+                    _mark_pool_cooldown("tpu_v6e1")
+                    print(f"[WARN] v6e1 request timed out (105s) for {session_name}; marking 8m TPU cooldown.", flush=True)
+                    refused_cap = True
+                    break
+                if res is not None and res.returncode == 0:
+                    _clear_pool_cooldown("tpu_v6e1")
                     ep = get_session_endpoint(session_name) or "assigned"
                     _record_session(session_name, "tpu:v6e1", ep)
                     return {"session": session_name, "accelerator": "tpu:v6e1", "endpoint": ep}
-                msg = (res.stderr or res.stdout).strip()
-                print(f"[WARN] v6e1 request failed ({res.returncode}): {msg[-240:]}", flush=True)
-                if any(k in msg.lower() for k in ("allocation refused", "precondition failed", "service unavailable")):
-                    refused_cap = True
-                    break
+                if res is not None:
+                    msg = (res.stderr or res.stdout).strip()
+                    print(f"[WARN] v6e1 request failed ({res.returncode}): {msg[-240:]}", flush=True)
+                    if any(k in msg.lower() for k in cap_keywords):
+                        _mark_pool_cooldown("tpu_v6e1")
+                        refused_cap = True
+                        break
                 if attempt < attempts:
-                    time.sleep(6)
+                    time.sleep(4)
+        elif prefer_tpu and not tpu_only:
+            print(f"[ALLOC] TPU v6e1 in 8m cooldown; trying H100/A100 fallback for {session_name}...", flush=True)
 
         if allow_h100_fallback and not tpu_only:
             with alloc_lock.open("a") as alf:
                 fcntl.flock(alf, fcntl.LOCK_EX)
                 try:
                     for gpu_kind in ("H100", "A100"):
+                        pool_tag = f"gpu_{gpu_kind.lower()}"
+                        if gpu_kind == "H100" and _pool_in_cooldown(pool_tag, 300.0):
+                            print(f"[ALLOC] Skipping GPU H100 for {session_name} (5m cooldown active); trying A100...", flush=True)
+                            continue
                         print(f"[ALLOC] Requesting GPU {gpu_kind} for {session_name} (wave {wave})...", flush=True)
-                        res = run_colab_cli("new", "-s", session_name, "--gpu", gpu_kind, session_name=session_name, timeout=540)
+                        try:
+                            res = run_colab_cli("new", "-s", session_name, "--gpu", gpu_kind, session_name=session_name, timeout=110)
+                        except subprocess.TimeoutExpired:
+                            ep = get_session_endpoint(session_name)
+                            if ep:
+                                _clear_pool_cooldown(pool_tag)
+                                _record_session(session_name, f"gpu:{gpu_kind}", ep)
+                                return {"session": session_name, "accelerator": f"gpu:{gpu_kind}", "endpoint": ep}
+                            if gpu_kind == "H100":
+                                _mark_pool_cooldown(pool_tag)
+                            print(f"[WARN] GPU {gpu_kind} request timed out (110s) for {session_name}.", flush=True)
+                            refused_cap = True
+                            continue
                         if res.returncode == 0:
+                            _clear_pool_cooldown(pool_tag)
                             ep = get_session_endpoint(session_name) or f"gpu-{gpu_kind.lower()}"
                             _record_session(session_name, f"gpu:{gpu_kind}", ep)
                             return {"session": session_name, "accelerator": f"gpu:{gpu_kind}", "endpoint": ep}
                         gmsg = (res.stderr or res.stdout).strip()
                         print(f"[WARN] GPU {gpu_kind} request failed ({res.returncode}): {gmsg[-240:]}", flush=True)
-                        if any(k in gmsg.lower() for k in ("allocation refused", "precondition failed", "service unavailable", "aborted", "exhausted", "already")):
+                        if any(k in gmsg.lower() for k in cap_keywords):
+                            if gpu_kind == "H100":
+                                _mark_pool_cooldown(pool_tag)
                             refused_cap = True
                 finally:
                     fcntl.flock(alf, fcntl.LOCK_UN)
@@ -380,7 +456,7 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "scripts/train/x1b_train.py",
         "scripts/train/x1b_storage.py",
     ]
-    for opt_rel in ("scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
+    for opt_rel in ("models/x1b_wave6_core.py", "scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
     with tarfile.open(buf_path, "w:gz") as tf:

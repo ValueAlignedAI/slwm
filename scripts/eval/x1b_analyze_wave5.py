@@ -17,6 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+from evals.x1b_stats import hierarchical_seed_bootstrap_ci
 from scripts.eval.x1b_analyze_and_plot import (
     aggregate_seed_group,
     load_run_bundle,
@@ -76,6 +77,55 @@ def _pooled_vec(bundles: dict[str, dict[str, Any]], prefix: str, fn) -> np.ndarr
             if arr is not None and len(arr):
                 parts.append(np.asarray(arr, dtype=np.float64))
     return np.concatenate(parts, axis=0) if parts else np.array([], dtype=np.float64)
+
+
+def _seed_mat(bundles: dict[str, dict[str, Any]], prefix: str, fn) -> np.ndarray | None:
+    rows = []
+    for k, v in sorted(bundles.items()):
+        if k.startswith(prefix):
+            arr = fn(v["eval"])
+            if arr is not None and len(arr):
+                rows.append(np.asarray(arr, dtype=np.float64))
+    if not rows:
+        return None
+    if len({r.shape for r in rows}) != 1:
+        return None
+    return np.stack(rows, axis=0)
+
+
+def compute_wave5_hierarchical_cis(
+    w5_bundles: dict[str, dict[str, Any]],
+    w4_bundles: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    """Compute two-level seed-aware hierarchical cluster bootstrap CIs alongside episode-pooled CIs."""
+    hier: dict[str, Any] = {}
+    metrics_spec = (
+        ("mpc", lambda e: e["closed_loop_mpc"]["latent_cem_mpc"]["succ_vec"]),
+        ("thin_barrier_mpc", lambda e: e["closed_loop_mpc"]["latent_cem_mpc"].get("thin_barrier_vec")),
+        ("sustained_T76_mpc", lambda e: e["long_horizon_memory_mpc"]["sustained_transient_barrier_mpc"]["succ_vec"]),
+        ("goal_switch_mpc", lambda e: e["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["succ_vec"]),
+        ("T1024_assoc", lambda e: e["associative_recall_512"].get("T1024_vec")),
+        ("robot_step4_mm", lambda e: e.get("real_robot_transfer", {}).get("step4_mm_vec")),
+        ("robot_disc_acc", lambda e: e.get("real_robot_transfer", {}).get("disc_vec")),
+    )
+
+    slwm_w5_mpc = _seed_mat(w5_bundles, "x1b-w5-slwm-1b-", lambda e: e["closed_loop_mpc"]["latent_cem_mpc"]["succ_vec"])
+    slwm_w4_mpc = _seed_mat(w4_bundles, "x1b-flagship-slwm-1b-", lambda e: e["closed_loop_mpc"]["latent_cem_mpc"]["succ_vec"])
+    if slwm_w5_mpc is not None and slwm_w4_mpc is not None and slwm_w5_mpc.shape == slwm_w4_mpc.shape:
+        hier["chinchilla_slwm1b_5600_vs_2800_mpc"] = hierarchical_seed_bootstrap_ci(slwm_w5_mpc, slwm_w4_mpc)
+
+    for bname, bpref in (
+        ("dense_5600", "x1b-w5-dense-1b-"),
+        ("swin64_5600", "x1b-w5-swin64-1b-"),
+        ("diagssm_5600", "x1b-w5-diagssm-1b-"),
+        ("slwm_450m", "x1b-w5-slwm-450m-"),
+    ):
+        for mname, mfn in metrics_spec:
+            s_mat = _seed_mat(w5_bundles, "x1b-w5-slwm-1b-", mfn)
+            b_mat = _seed_mat(w5_bundles, bpref, mfn)
+            if s_mat is not None and b_mat is not None and s_mat.shape == b_mat.shape:
+                hier[f"slwm1b_vs_{bname}_{mname}"] = hierarchical_seed_bootstrap_ci(s_mat, b_mat)
+    return hier
 
 
 def compute_wave5_paired_cis(
@@ -333,6 +383,7 @@ def main() -> None:
         "w4_slwm_450m": aggregate_wave5_group(w4_bundles, "x1b-scale-slwm-450m-"),
     }
     paired_cis = compute_wave5_paired_cis(w5_bundles, w4_bundles)
+    hier_cis = compute_wave5_hierarchical_cis(w5_bundles, w4_bundles)
     figs = render_wave5_figures(groups, args.exp_dir / "figures")
 
     out_doc = {
@@ -341,6 +392,7 @@ def main() -> None:
         "cumulative_verified_runs_waves_1_to_5": 120 + len(w5_bundles),
         "groups": groups,
         "paired_bootstrap_cis": paired_cis,
+        "hierarchical_seed_cis": hier_cis,
         "figures": [str(f.relative_to(REPO_ROOT)) for f in figs],
     }
     out_path = args.exp_dir / "wave5_summary_metrics.json"

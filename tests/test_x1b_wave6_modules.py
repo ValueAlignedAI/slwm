@@ -110,3 +110,57 @@ def test_geometry_free_mppi_and_unseen_beyond_window_worlds() -> None:
         corr = apply_unseen_ood_sensor_corruption(vid_seq, kind)
         assert corr.shape == vid_seq.shape and corr.dtype == jnp.uint8
         assert np.array_equal(np.asarray(corr[:, :8]), np.asarray(vid_seq[:, :8]))
+
+
+def test_wave6_end_to_end_loo_key_shield_theorem_and_vault(tmp_path) -> None:
+    from evals.x1b_eval_wave6 import eval_symbolic_key_drift_and_recall
+    from models.x1b_wave6_core import Wave6Interventions
+    from scripts.train.x1b_train_wave6 import train_and_evaluate_wave6
+
+    spec = make_x1b_spec("x_tiny", "slwm_x1b")
+    params = init_x1b_params(spec, seed=303)
+
+    # Verify Symbolic-Key Shielding invariance theorem directly:
+    res_shielded = eval_symbolic_key_drift_and_recall(
+        params, spec, Wave6Interventions(key_shield=True), n_episodes=4
+    )
+    res_unshielded = eval_symbolic_key_drift_and_recall(
+        params, spec, Wave6Interventions(key_shield=False), n_episodes=4
+    )
+    assert res_shielded["symbolic_key_visual_drift"] < 1e-5
+    assert res_unshielded["symbolic_key_visual_drift"] > 1e-4
+
+    # Create tiny mock grounded + untouched vault NPZs and run full Wave 6 train + 5-panel eval smoke
+    rng = np.random.default_rng(19)
+    for fname, sp_keys in [("grounded.npz", ("train", "dev")), ("vault.npz", ("vault",))]:
+        arrs = {}
+        for sp in sp_keys:
+            n = 12
+            arrs[f"{sp}_video"] = rng.integers(0, 255, size=(n, 32, 64, 64, 3), dtype=np.uint8)
+            arrs[f"{sp}_spoken_audio"] = rng.standard_normal((n, 32, 64)).astype(np.float16)
+            arrs[f"{sp}_ee_xy"] = np.clip(np.cumsum(0.03 * rng.standard_normal((n, 32, 2)), axis=1), -0.9, 0.9).astype(np.float32)
+            arrs[f"{sp}_action_xy"] = np.clip(0.4 * rng.standard_normal((n, 32, 2)), -1.0, 1.0).astype(np.float32)
+            arrs[f"{sp}_length"] = rng.integers(12, 32, size=(n,), dtype=np.int32)
+            arrs[f"{sp}_true_text_ids"] = rng.integers(10, 500, size=(n, 16), dtype=np.int32)
+            arrs[f"{sp}_wrong_text_ids"] = rng.integers(10, 500, size=(n, 16), dtype=np.int32)
+        np.savez_compressed(tmp_path / fname, **arrs)
+
+    rec = train_and_evaluate_wave6(
+        tag="w6-smoke-slwm",
+        profile="x_tiny",
+        arch="slwm_x1b",
+        regularizer="epps_pulley_sigreg",
+        key_shield=True,
+        zerolag_bypass=True,
+        decoupled_heads=True,
+        seed=2001,
+        steps=3,
+        batch_size=4,
+        seq_len=16,
+        out_dir=tmp_path / "out",
+        grounded_robot_path=str(tmp_path / "grounded.npz"),
+        vault_robot_path=str(tmp_path / "vault.npz"),
+        smoke=True,
+    )
+    assert rec["eval_summary"]["vault_step4_mm"] is not None
+    assert 0.0 <= rec["eval_summary"]["T160_post_perturb_goal_b_success"] <= 1.0
