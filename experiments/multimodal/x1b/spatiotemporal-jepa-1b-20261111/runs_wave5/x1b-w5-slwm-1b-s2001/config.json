@@ -1,0 +1,41 @@
+{
+  "backend": "tpu",
+  "batch_size": 12,
+  "config_sha256": "cca9e2ca4e9ccde614b3261a59d939953218168d70af3bae213952652c02087a",
+  "devices": [
+    "TPU_0(process=0,(0,0,0,0))"
+  ],
+  "objective": "residual_ema_jepa_sigreg",
+  "parameter_counts": {
+    "adapters": 19033728,
+    "jepa_and_uncertainty": 16529666,
+    "policy_and_heads": 18272296,
+    "processor_core": 954618720,
+    "strict_total": 1008454410
+  },
+  "peak_lr": 0.00024,
+  "real_bank_path": "/content/x1b-data/x1b_real_bank_v1.npz",
+  "real_robot_path": "/content/x1b-data/x1b_real_robot_v2.npz",
+  "seed": 2001,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "slwm_x1b",
+    "audio_dim": 64,
+    "d_ff": 4096,
+    "d_model": 1536,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 23,
+    "n_heads": 24,
+    "profile": "x1b",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 5600,
+  "tag": "x1b-w5-slwm-1b-s2001"
+}

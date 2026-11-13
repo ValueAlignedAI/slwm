@@ -139,11 +139,18 @@ def allocate_accelerator(
     for wave in range(1, 200):  # Up to ~150 min slot-wait when queuing onto single-TPU quota slot
         check_usage_and_budget()
         refused_cap = False
+        alloc_lock = OPS_DIR / "colab_new_rpc.lock"
         if prefer_tpu or tpu_only:
             attempts = 1 if tpu_only else tpu_retries
             for attempt in range(1, attempts + 1):
-                print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
-                res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=780)
+                with alloc_lock.open("a") as alf:
+                    fcntl.flock(alf, fcntl.LOCK_EX)
+                    try:
+                        print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
+                        res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=780)
+                        time.sleep(1.2)
+                    finally:
+                        fcntl.flock(alf, fcntl.LOCK_UN)
                 if res.returncode == 0:
                     ep = get_session_endpoint(session_name) or "assigned"
                     _record_session(session_name, "tpu:v6e1", ep)
@@ -157,7 +164,6 @@ def allocate_accelerator(
                     time.sleep(6)
 
         if allow_h100_fallback and not tpu_only:
-            alloc_lock = OPS_DIR / "colab_new_rpc.lock"
             with alloc_lock.open("a") as alf:
                 fcntl.flock(alf, fcntl.LOCK_EX)
                 try:
@@ -328,7 +334,12 @@ def restart_session_kernel(session_name: str) -> None:
     run_colab_cli("restart-kernel", "-s", session_name, session_name=session_name, timeout=120)
 
 
-def stage_code_and_data(session_name: str, *, include_real_robot: bool = False) -> None:
+def stage_code_and_data(
+    session_name: str,
+    *,
+    include_real_robot: bool = False,
+    include_wave6_grounded: bool = False,
+) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
     # 1. Verify real TPU/GPU JAX backend directly inside the Colab kernel & create remote dirs
     verify_py = """
@@ -340,25 +351,42 @@ assert b in ('tpu', 'gpu'), f'Expected tpu/gpu backend, got {b}'
 devs = [(d.device_kind, d.memory_stats().get('bytes_limit', 0) if d.memory_stats() else 0) for d in jax.devices()]
 print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
 """
-    exec_python_in_kernel(session_name, verify_py, timeout=180)
+    for v_try in range(1, 4):
+        try:
+            exec_python_in_kernel(session_name, verify_py, timeout=180)
+            break
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            if v_try == 3:
+                raise
+            print(f"[WARN] Initial kernel verify failed on {session_name} (try {v_try}/3: {exc}); restarting kernel...", flush=True)
+            restart_session_kernel(session_name)
+            time.sleep(5)
     base = ssh_cmd_base(session_name)
 
-    # 2. Upload code tarball (< 200 KB)
+    # 2. Upload code tarball (< 250 KB)
     buf_path = OPS_DIR / f".code-{session_name}.tar.gz"
     include_paths = [
         "configs/x1b",
         "models/x1b_world.py",
         "models/x1b_jepa.py",
         "models/x1b_commit.py",
+        "models/x1b_sigreg_epps_pulley.py",
         "data/x1b_multimodal.py",
+        "data/x1b_unseen_worlds.py",
         "evals/x1b_mpc.py",
+        "evals/x1b_learned_mpc.py",
+        "evals/x1b_stats.py",
         "evals/x1b_eval_suite.py",
         "scripts/train/x1b_train.py",
         "scripts/train/x1b_storage.py",
     ]
+    for opt_rel in ("scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
+        if (REPO_ROOT / opt_rel).exists():
+            include_paths.append(opt_rel)
     with tarfile.open(buf_path, "w:gz") as tf:
         for rel in include_paths:
-            tf.add(REPO_ROOT / rel, arcname=rel)
+            if (REPO_ROOT / rel).exists():
+                tf.add(REPO_ROOT / rel, arcname=rel)
     for up_try in range(1, 7):
         try:
             with buf_path.open("rb") as f:
@@ -392,6 +420,21 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         )
         rob_card = json.loads(rob_card_raw)
         datasets_to_stage.append(("x1b_real_robot_v2.npz", rob_card["sha256"]))
+    if include_wave6_grounded:
+        w6_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave6_grounded_v1.card.json"],
+            text=True,
+            timeout=30,
+        )
+        w6_card = json.loads(w6_card_raw)
+        v_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave6_vault_test.card.json"],
+            text=True,
+            timeout=30,
+        )
+        v_card = json.loads(v_card_raw)
+        datasets_to_stage.append(("x1b_wave6_grounded_v1.npz", w6_card["sha256"]))
+        datasets_to_stage.append(("x1b_wave6_vault_test.npz", v_card["sha256"]))
     for fname, exp_sha in datasets_to_stage:
         chk = subprocess.run(
             [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
@@ -511,9 +554,14 @@ print(json.dumps(items))
             )
             assert src_p.stdout is not None
             src_p.stdout.close()
-            out_s, err_s = dst_p.communicate(timeout=900)
-            src_err_b = src_p.stderr.read() if src_p.stderr is not None else b""
-            src_rc = src_p.wait(timeout=30)
+            try:
+                out_s, err_s = dst_p.communicate(timeout=2400)
+                src_err_b = src_p.stderr.read() if src_p.stderr is not None else b""
+                src_rc = src_p.wait(timeout=30)
+            except subprocess.TimeoutExpired:
+                src_p.kill()
+                dst_p.kill()
+                out_s, err_s, src_err_b, src_rc = "", "SSH stream timeout (2400s)", b"timeout", -9
             if src_rc == 0 and dst_p.returncode == 0:
                 break
             src_err_s = src_err_b.decode("utf-8", errors="replace").strip()
