@@ -1,4 +1,4 @@
-"""Independently audit Study X1B 120-run SHA-256 custody ledgers, 3-seed 1.008B parity, and published metrics."""
+"""Independently audit Study X1B 135-run SHA-256 custody ledgers, 3-seed 1.008B parity, Wave 5 O(1) baselines & xArm6 transfer."""
 
 from __future__ import annotations
 
@@ -18,13 +18,14 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_all_120_runs_across_four_waves_pass_cryptographic_custody():
-    """Verify every run across Waves 1–3 (28 each) and Wave 4 (36) matches its dual-HDD SHA-256 manifest."""
+def test_all_135_runs_across_five_waves_pass_cryptographic_custody():
+    """Verify every run across Waves 1–3 (28 each), Wave 4 (36), and Wave 5 (15) matches its dual-HDD SHA-256 manifest."""
     expected_counts = {
         "runs_wave1": 28,
         "runs_wave2": 28,
         "runs_wave3": 28,
         "runs": 36,
+        "runs_wave5": 15,
     }
     total_verified = 0
     for wave_subdir, exp_n in expected_counts.items():
@@ -51,10 +52,11 @@ def test_all_120_runs_across_four_waves_pass_cryptographic_custody():
             if receipt["weights_bf16_bytes"] > 0:
                 assert receipt["weights_bf16_sha256"] == sha_map["weights_bf16.npz"]
             else:
-                assert receipt["seed"] in (2002, 2003)
+                cfg = _load_json(run_dir / "config.json")
+                assert not receipt["weights_bf16_sha256"] and not cfg.get("save_bf16", False)
             total_verified += 1
 
-    assert total_verified == 120
+    assert total_verified == 135
 
 
 def test_wave4_3seed_1b_parity_and_metrics_recompute_from_raw_ledgers():
@@ -159,8 +161,103 @@ def test_wave3_1b_parameter_parity_and_primary_metrics_recompute_from_raw_ledger
     assert slwm_1b_rec["backend"] == "tpu"
 
 
+def test_wave5_chinchilla_o1_baselines_and_real_robot_recompute_from_raw_ledgers():
+    """Recompute Wave 5 15-run Chinchilla 5,600-step 1.008B, SlidingWindow-W64, DiagonalSSM, and xArm6 metrics."""
+    w5 = _load_json(EXP_DIR / "wave5_summary_metrics.json")
+    assert w5["cumulative_verified_runs_waves_1_to_5"] == 135
+    groups = w5["groups"]
+    for gname in ("w5_slwm_1b", "w5_dense_1b", "w5_swin64_1b", "w5_diagssm_1b", "w5_slwm_450m"):
+        assert groups[gname]["n_seeds"] == 3
+
+    slwm_mpc, slwm_bar, slwm_sust, slwm_sw, slwm_t1024, slwm_r4 = [], [], [], [], [], []
+    swin_sust, swin_sw, swin_t1024 = [], [], []
+    dssm_mpc, dssm_sw, dssm_t1024 = [], [], []
+    dense_sw, s450_mpc = [], []
+
+    for seed in (2001, 2002, 2003):
+        r_slwm = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-slwm-1b-s{seed}/receipt.json")
+        r_dense = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-dense-1b-s{seed}/receipt.json")
+        r_swin = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-swin64-1b-s{seed}/receipt.json")
+        r_dssm = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-diagssm-1b-s{seed}/receipt.json")
+        r_450 = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-slwm-450m-s{seed}/receipt.json")
+
+        assert r_slwm["steps"] == 5600 and r_dense["steps"] == 5600
+        assert r_swin["steps"] == 5600 and r_dssm["steps"] == 5600
+        assert r_450["steps"] == 2600
+
+        assert r_slwm["parameter_counts"]["strict_total"] == 1_008_454_410
+        assert r_dssm["parameter_counts"]["strict_total"] == 1_008_454_410
+        assert r_dense["parameter_counts"]["strict_total"] == 1_008_435_114
+        assert r_swin["parameter_counts"]["strict_total"] == 1_008_435_114
+        assert r_450["parameter_counts"]["strict_total"] == 453_199_938
+
+        m_s = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-slwm-1b-s{seed}/eval_metrics.json")
+        m_d = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-dense-1b-s{seed}/eval_metrics.json")
+        m_w = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-swin64-1b-s{seed}/eval_metrics.json")
+        m_m = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-diagssm-1b-s{seed}/eval_metrics.json")
+        m_4 = _load_json(EXP_DIR / f"runs_wave5/x1b-w5-slwm-450m-s{seed}/eval_metrics.json")
+
+        slwm_mpc.append(m_s["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"])
+        slwm_bar.append(m_s["closed_loop_mpc"]["latent_cem_mpc"]["thin_barrier_success"])
+        slwm_sust.append(m_s["long_horizon_memory_mpc"]["sustained_transient_barrier_mpc"]["success_rate"]["mean"])
+        slwm_sw.append(m_s["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"])
+        slwm_t1024.append(m_s["associative_recall_512"]["T1024"]["mean"])
+        slwm_r4.append(m_s["real_robot_transfer"]["step4_error_mm"]["mean"])
+
+        swin_sust.append(m_w["long_horizon_memory_mpc"]["sustained_transient_barrier_mpc"]["success_rate"]["mean"])
+        swin_sw.append(m_w["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"])
+        swin_t1024.append(m_w["associative_recall_512"]["T1024"]["mean"])
+
+        dssm_mpc.append(m_m["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"])
+        dssm_sw.append(m_m["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"])
+        dssm_t1024.append(m_m["associative_recall_512"]["T1024"]["mean"])
+
+        dense_sw.append(m_d["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"])
+        s450_mpc.append(m_4["closed_loop_mpc"]["latent_cem_mpc"]["success_rate"]["mean"])
+
+    # Chinchilla doubling cures Wave 4's thin-barrier outlier and reaches 100% OOD Sustained & Goal-Switch
+    assert np.isclose(np.mean(slwm_mpc), groups["w5_slwm_1b"]["mpc_success"]["mean"])
+    assert np.mean(slwm_bar) > 0.85 and np.mean(slwm_mpc) > 0.80
+    assert np.isclose(np.mean(slwm_sust), 1.0)
+    assert np.isclose(np.mean(slwm_sw), 1.0)
+    assert np.mean(slwm_mpc) > np.mean(s450_mpc) + 0.15
+
+    # SlidingWindow-W64 O(1) baseline evicts cues past W=64 and collapses on T=76 Sustained & T=1024
+    assert np.mean(slwm_sust) > np.mean(swin_sust) + 0.50
+    assert np.mean(slwm_sw) > np.mean(swin_sw) + 0.20
+    assert np.mean(slwm_t1024) > np.mean(swin_t1024) + 0.75
+    assert np.isclose(groups["w5_swin64_1b"]["streaming_state_mb_T64"]["mean"], groups["w5_swin64_1b"]["streaming_state_mb_T1024"]["mean"])
+
+    # DiagonalSSM O(1) baseline retains strong short-horizon MPC but loses on selective overwrite (T=1024 & Goal-Switch)
+    assert np.mean(dssm_mpc) > 0.80
+    assert np.mean(slwm_t1024) > np.mean(dssm_t1024) + 0.40
+    assert np.mean(slwm_sw) > np.mean(dssm_sw) + 0.05
+    assert np.mean(slwm_sw) > np.mean(dense_sw) + 0.55
+
+    # Physical xArm6 transfer & hierarchical seed-cluster CIs
+    assert np.mean(slwm_r4) < 7.5 and groups["w5_slwm_1b"]["robot_step4_skill"]["mean"] > 0.91
+    assert groups["w5_slwm_1b"]["robot_plan_gain_mm"]["mean"] > 160.0
+    assert groups["w5_slwm_1b"]["robot_cf_end_gain_mm"]["mean"] > 15.0
+    assert w5["paired_bootstrap_cis"]["slwm1b_robot_disc_above_chance"]["ci99_low"] > 0.0
+
+    hcis = w5["hierarchical_seed_cis"]
+    for pos_hkey in (
+        "slwm1b_vs_dense_5600_goal_switch_mpc",
+        "slwm1b_vs_swin64_5600_sustained_T76_mpc",
+        "slwm1b_vs_swin64_5600_goal_switch_mpc",
+        "slwm1b_vs_swin64_5600_T1024_assoc",
+        "slwm1b_vs_diagssm_5600_goal_switch_mpc",
+        "slwm1b_vs_diagssm_5600_T1024_assoc",
+        "slwm1b_vs_slwm_450m_mpc",
+        "slwm1b_vs_slwm_450m_goal_switch_mpc",
+    ):
+        assert hcis[pos_hkey]["hierarchical_ci99"][0] > 0.0, f"Expected hierarchical 99% CI > 0 for {pos_hkey}"
+    assert hcis["slwm1b_vs_dense_5600_robot_step4_mm"]["hierarchical_ci99"][1] < 0.0
+    assert hcis["slwm1b_vs_slwm_450m_robot_step4_mm"]["hierarchical_ci99"][1] < 0.0
+
+
 def test_inference_manifest_replays_and_figures_integrity():
-    """Verify standalone 1.008B manifest SHA-256 parity, closed-loop replay pack, and all 6 visual figures."""
+    """Verify standalone 1.008B manifest SHA-256 parity, closed-loop replay pack, and all 8 visual figures."""
     manifest = _load_json(EXP_DIR / "inference/manifest.json")
     assert manifest["study_id"] == "X1B-20261111"
     assert len(manifest["models"]) == 3
@@ -184,6 +281,8 @@ def test_inference_manifest_replays_and_figures_integrity():
         "figures/x1b_memory_and_horizon_extrapolation.png",
         "figures/x1b_jepa_mpc_and_spoofing_safety.png",
         "figures/x1b_long_horizon_ood_goal_switch_mpc.png",
+        "figures/x1b_wave5_chinchilla_and_o1_baselines.png",
+        "figures/x1b_wave5_real_robot_transfer.png",
         "examples/preview_thin_barrier_mpc.png",
         "examples/preview_ood_goal_switch_mpc.png",
     ):

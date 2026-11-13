@@ -219,12 +219,12 @@ def render_wave5_figures(
     # -------------------------------------------------------------------------
     fig, axes = plt.subplots(1, 3, figsize=(15.8, 4.7))
     cohorts = [
-        ("453M SLWM\n(2.6k steps)", "w5_slwm_450m", "#2B5C8F"),
-        ("1.008B SLWM\n(Wave4 2.8k)", "w4_slwm_1b", "#7FB3D5"),
-        ("1.008B SLWM\n(Chinchilla 5.6k)", "w5_slwm_1b", "#117A65"),
-        ("1.008B Diag-SSM\n(Mamba-Vec 5.6k)", "w5_diagssm_1b", "#8E44AD"),
-        ("1.008B SWin-64\n(O(1) KV 5.6k)", "w5_swin64_1b", "#D35400"),
-        ("1.008B Dense-TF\n(Full KV 5.6k)", "w5_dense_1b", "#E67E22"),
+        ("SLWM-450M\n(2.6k)", "w5_slwm_450m", "#2B5C8F"),
+        ("SLWM-1B\n(W4 2.8k)", "w4_slwm_1b", "#7FB3D5"),
+        ("SLWM-1B\n(5.6k)", "w5_slwm_1b", "#117A65"),
+        ("Diag-SSM\n(5.6k)", "w5_diagssm_1b", "#8E44AD"),
+        ("SWin-64\n(5.6k)", "w5_swin64_1b", "#D35400"),
+        ("Dense-TF\n(5.6k)", "w5_dense_1b", "#E67E22"),
     ]
     pres = [(lbl, k, c) for lbl, k, c in cohorts if k in groups and groups[k]]
     if pres:
@@ -267,11 +267,11 @@ def render_wave5_figures(
     axes[1].legend(fontsize=7.0, loc="lower left")
 
     mem_cohorts = [
-        ("SLWM-X1B\n(14.9 MB)", "w5_slwm_1b"),
-        ("Diag-SSM\n(7.1 MB)", "w5_diagssm_1b"),
-        ("SWin-64\n(207 MB)", "w5_swin64_1b"),
-        ("Dense-TF\n(3,312 MB)", "w5_dense_1b"),
-        ("SLWM-450M\n(8.6 MB)", "w5_slwm_450m"),
+        ("SLWM-X1B\n(14.91 MB)", "w5_slwm_1b"),
+        ("Diag-SSM\n(8.26 MB)", "w5_diagssm_1b"),
+        ("SWin-64\n(207.0 MB)", "w5_swin64_1b"),
+        ("Dense-TF\n(3,312.5 MB)", "w5_dense_1b"),
+        ("SLWM-450M\n(8.79 MB)", "w5_slwm_450m"),
     ]
     mpres = [(l, k) for l, k in mem_cohorts if k in groups and groups[k]]
     if mpres:
