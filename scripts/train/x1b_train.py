@@ -28,6 +28,7 @@ import numpy as np
 
 from data.x1b_multimodal import (
     RealMultimodalBank,
+    RealRobotBank,
     generate_synthetic_world_batch,
     mix_real_and_synthetic_batches,
 )
@@ -151,7 +152,8 @@ def memory_efficient_adamw_step(
     clip_head = jnp.minimum(1.0, 1.0 / (jnp.sqrt(head_sq + 1e-12) + 1e-6))
 
     t = step.astype(jnp.float32) + 1.0
-    warmup = float(max(10, min(160, total_steps // 10)))
+    max_warm = 240 if total_steps >= 4000 else 160
+    warmup = float(max(10, min(max_warm, total_steps // 10)))
     prog = jnp.clip((t - warmup) / float(max(1, total_steps - int(warmup))), 0.0, 1.0)
     lr = peak_lr * jnp.minimum(1.0, t / warmup) * (0.1 + 0.45 * (1.0 + jnp.cos(jnp.pi * prog)))
 
@@ -190,6 +192,7 @@ def train_and_evaluate(
     seq_len: int,
     out_dir: Path,
     real_bank_path: str | None = None,
+    real_robot_path: str | None = None,
     pymunk_panels_path: str | None = None,
     peak_lr: float | None = None,
     eval_every: int = 0,
@@ -237,6 +240,7 @@ def train_and_evaluate(
         "backend": jax.default_backend(),
         "devices": [str(d) for d in jax.devices()],
         "real_bank_path": str(real_bank_path) if real_bank_path else None,
+        "real_robot_path": str(real_robot_path) if real_robot_path else None,
     }
     config_hash = hashlib.sha256(json.dumps(config_doc, sort_keys=True).encode()).hexdigest()
     config_doc["config_sha256"] = config_hash
@@ -250,6 +254,7 @@ def train_and_evaluate(
 
     if not (bf16_path.is_file() or resume_bf16_path.is_file()):
         real_train = RealMultimodalBank(real_bank_path, split="train") if real_bank_path else None
+        robot_train = RealRobotBank(real_robot_path, split="train") if real_robot_path else None
         np_rng = np.random.default_rng(seed + 31337)
 
         def _step_kernel(
@@ -277,8 +282,18 @@ def train_and_evaluate(
             return p_new, ema_new, m_new, v_new, metrics
 
         compiled_step = jax.jit(_step_kernel, donate_argnums=(0, 1, 2, 3))
-        synth_half = batch_size // 2 if real_train is not None else batch_size
-        real_half = batch_size - synth_half
+        has_any_real = (real_train is not None) or (robot_train is not None)
+        synth_half = batch_size // 2 if has_any_real else batch_size
+        rem_real = batch_size - synth_half
+        if (real_train is not None) and (robot_train is not None):
+            robot_n = max(1, rem_real // 2)
+            real_n = rem_real - robot_n
+        elif robot_train is not None:
+            robot_n = rem_real
+            real_n = 0
+        else:
+            robot_n = 0
+            real_n = rem_real
         jit_synth = jax.jit(lambda rk: generate_synthetic_world_batch(rk, synth_half, seq_len=seq_len, vocab_size=spec.vocab_size))
 
         t_start = time.monotonic()
@@ -288,9 +303,17 @@ def train_and_evaluate(
         for step in range(steps):
             rk = jax.random.fold_in(jax.random.key(seed), step)
             s_batch = jit_synth(rk)
-            if real_train is not None and real_half > 0:
-                r_batch = real_train.sample_batch(np_rng, real_half, seq_len=seq_len)
-                batch = mix_real_and_synthetic_batches(r_batch, s_batch)
+            if real_train is not None and real_n > 0:
+                r_batch = real_train.sample_batch(np_rng, real_n, seq_len=seq_len)
+                rob_batch = (
+                    robot_train.sample_batch(np_rng, robot_n, seq_len=seq_len)
+                    if (robot_train is not None and robot_n > 0)
+                    else None
+                )
+                batch = mix_real_and_synthetic_batches(r_batch, s_batch, rob_batch)
+            elif robot_train is not None and robot_n > 0:
+                rob_batch = robot_train.sample_batch(np_rng, robot_n, seq_len=seq_len)
+                batch = mix_real_and_synthetic_batches(rob_batch, s_batch)
             else:
                 batch = s_batch
 
@@ -336,13 +359,14 @@ def train_and_evaluate(
     elif not resume_bf16_path.is_file():
         save_bf16_weights(resume_bf16_path, params)
 
-    print(f"[EVAL] Running frozen 7-panel evaluation for {tag}...", flush=True)
+    print(f"[EVAL] Running frozen evaluation suite for {tag}...", flush=True)
     t_eval0 = time.monotonic()
     eval_results = run_full_evaluation(
         params,
         spec,
         objective_mode=objective,
         real_bank_path=real_bank_path,
+        real_robot_path=real_robot_path,
         pymunk_panels_path=pymunk_panels_path,
         include_scaling_bench=(profile in ("x1b", "x450m") or tag.endswith("s2001")),
     )
@@ -350,6 +374,7 @@ def train_and_evaluate(
     atomic_write_json(job_dir / "eval_metrics.json", eval_results)
     resume_bf16_path.unlink(missing_ok=True)
 
+    rob_res = eval_results.get("real_robot_transfer", {})
     receipt = {
         "tag": tag,
         "profile": profile,
@@ -383,6 +408,9 @@ def train_and_evaluate(
             "g8_shooting_success": eval_results["closed_loop_mpc"]["g8_random_shooting_3"]["success_rate"]["mean"],
             "sustained_transient_mpc": eval_results["long_horizon_memory_mpc"]["sustained_transient_barrier_mpc"]["success_rate"]["mean"],
             "goal_switch_mpc": eval_results["long_horizon_memory_mpc"]["mid_episode_goal_switch_mpc"]["success_rate"]["mean"],
+            "real_robot_step4_mm": rob_res.get("step4_error_mm", {}).get("mean") if rob_res.get("available") else None,
+            "real_robot_plan_gain_mm": rob_res.get("causal_plan_gain_mm", {}).get("mean") if rob_res.get("available") else None,
+            "real_robot_cmd_disc_acc": rob_res.get("command_discrimination_acc", {}).get("mean") if rob_res.get("available") else None,
             "spoof_regret_learned": eval_results["spoofing_and_commit_gate"]["learned_innovation"]["spoofed_action_regret"],
             "spoof_regret_always": eval_results["spoofing_and_commit_gate"]["always_commit"]["spoofed_action_regret"],
         },
@@ -405,6 +433,7 @@ def main() -> None:
     ap.add_argument("--seq-len", type=int, default=32)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--real-bank", default=None)
+    ap.add_argument("--real-robot", default=None)
     ap.add_argument("--pymunk-panels", default=None)
     ap.add_argument("--no-bf16", action="store_true")
     ap.add_argument("--cache-dir", default="/tmp/x1b-jax-cache")
@@ -425,6 +454,7 @@ def main() -> None:
         seq_len=args.seq_len,
         out_dir=args.out,
         real_bank_path=args.real_bank,
+        real_robot_path=args.real_robot,
         pymunk_panels_path=args.pymunk_panels,
         save_bf16=(not args.no_bf16),
     )

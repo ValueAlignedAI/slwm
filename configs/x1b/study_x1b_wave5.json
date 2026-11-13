@@ -1,0 +1,198 @@
+{
+  "study_id": "spatiotemporal-jepa-1b-20261111-wave5",
+  "runs_subdir": "runs_wave5",
+  "use_real_robot": true,
+  "description": "Wave 5 Reviewer-2 Clincher: Chinchilla Token-Matched 1.008B Scaling (5600 steps = 67,200 episodes), Modern O(1) 1.008B Baselines (SlidingWindowTransformer W=64 & Mamba-style DiagonalSSM), and Zero-Leakage Physical xArm6 Robot Multi-Step & Counterfactual Evaluation (Panel 9).",
+  "budget": {
+    "max_compute_units": 500.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100"
+  },
+  "lanes": {
+    "w5_lane1_slwm1b": {
+      "session": "slwm-x1b-w5l1",
+      "runs": [
+        {
+          "tag": "x1b-w5-slwm-1b-s2001",
+          "profile": "x1b",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2001,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": true
+        },
+        {
+          "tag": "x1b-w5-slwm-1b-s2002",
+          "profile": "x1b",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2002,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-slwm-1b-s2003",
+          "profile": "x1b",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2003,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        }
+      ]
+    },
+    "w5_lane2_dense1b": {
+      "session": "slwm-x1b-w5l2",
+      "runs": [
+        {
+          "tag": "x1b-w5-dense-1b-s2001",
+          "profile": "x1b",
+          "arch": "dense_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2001,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": true
+        },
+        {
+          "tag": "x1b-w5-dense-1b-s2002",
+          "profile": "x1b",
+          "arch": "dense_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2002,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-dense-1b-s2003",
+          "profile": "x1b",
+          "arch": "dense_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2003,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        }
+      ]
+    },
+    "w5_lane3_swin64": {
+      "session": "slwm-x1b-w5l3",
+      "runs": [
+        {
+          "tag": "x1b-w5-swin64-1b-s2001",
+          "profile": "x1b",
+          "arch": "sliding_window_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2001,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": true
+        },
+        {
+          "tag": "x1b-w5-swin64-1b-s2002",
+          "profile": "x1b",
+          "arch": "sliding_window_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2002,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-swin64-1b-s2003",
+          "profile": "x1b",
+          "arch": "sliding_window_transformer",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2003,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-slwm-450m-s2001",
+          "profile": "x450m",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2001,
+          "steps": 2600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": true
+        }
+      ]
+    },
+    "w5_lane4_diagssm": {
+      "session": "slwm-x1b-w5l4",
+      "runs": [
+        {
+          "tag": "x1b-w5-diagssm-1b-s2001",
+          "profile": "x1b",
+          "arch": "diagonal_ssm_hybrid",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2001,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": true
+        },
+        {
+          "tag": "x1b-w5-diagssm-1b-s2002",
+          "profile": "x1b",
+          "arch": "diagonal_ssm_hybrid",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2002,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-diagssm-1b-s2003",
+          "profile": "x1b",
+          "arch": "diagonal_ssm_hybrid",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2003,
+          "steps": 5600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-slwm-450m-s2002",
+          "profile": "x450m",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2002,
+          "steps": 2600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        },
+        {
+          "tag": "x1b-w5-slwm-450m-s2003",
+          "profile": "x450m",
+          "arch": "slwm_x1b",
+          "objective": "residual_ema_jepa_sigreg",
+          "seed": 2003,
+          "steps": 2600,
+          "batch_size": 12,
+          "seq_len": 32,
+          "save_bf16": false
+        }
+      ]
+    }
+  }
+}

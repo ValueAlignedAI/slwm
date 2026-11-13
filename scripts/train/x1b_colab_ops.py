@@ -44,9 +44,9 @@ def colab_env() -> dict[str, str]:
     return {
         **os.environ,
         "CLOUDSDK_CONFIG": str(PRIVATE_COLAB / "gcloud"),
-        "COLAB_CLI_REQUEST_TIMEOUT": "360",
-        "COLAB_CLI_ASSIGN_RETRIES": "1",
-        "COLAB_CLI_RETRY_BACKOFF": "8",
+        "COLAB_CLI_REQUEST_TIMEOUT": "75",
+        "COLAB_CLI_ASSIGN_RETRIES": "0",
+        "COLAB_CLI_RETRY_BACKOFF": "4",
     }
 
 
@@ -118,11 +118,32 @@ def get_session_endpoint(session_name: str) -> str | None:
     return None
 
 
+def _pool_in_cooldown(pool_key: str, cooldown_s: float) -> bool:
+    p = OPS_DIR / f"cooldown_{pool_key}.txt"
+    try:
+        if p.is_file():
+            return (time.time() - float(p.read_text().strip())) < cooldown_s
+    except Exception:
+        return False
+    return False
+
+
+def _mark_pool_cooldown(pool_key: str) -> None:
+    OPS_DIR.mkdir(parents=True, exist_ok=True)
+    (OPS_DIR / f"cooldown_{pool_key}.txt").write_text(f"{time.time():.3f}\n")
+
+
+def _clear_pool_cooldown(pool_key: str) -> None:
+    p = OPS_DIR / f"cooldown_{pool_key}.txt"
+    if p.is_file():
+        p.unlink(missing_ok=True)
+
+
 def allocate_accelerator(
     session_name: str,
     *,
     prefer_tpu: bool = True,
-    tpu_retries: int = 2,
+    tpu_retries: int = 1,
     allow_h100_fallback: bool = True,
     tpu_only: bool = False,
 ) -> dict[str, str]:
@@ -136,41 +157,102 @@ def allocate_accelerator(
         _record_session(session_name, "reused", ep)
         return {"session": session_name, "endpoint": ep, "status": "reused"}
 
+    cap_keywords = (
+        "allocation refused",
+        "precondition failed",
+        "service unavailable",
+        "bad gateway",
+        "gateway timeout",
+        "aborted",
+        "exhausted",
+        "already",
+        "timed out",
+        "timeout",
+    )
+
     for wave in range(1, 200):  # Up to ~150 min slot-wait when queuing onto single-TPU quota slot
         check_usage_and_budget()
         refused_cap = False
-        if prefer_tpu or tpu_only:
+        alloc_lock = OPS_DIR / "colab_new_rpc.lock"
+        if (prefer_tpu or tpu_only) and (tpu_only or not _pool_in_cooldown("tpu_v6e1", 480.0)):
             attempts = 1 if tpu_only else tpu_retries
             for attempt in range(1, attempts + 1):
-                print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
-                res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=780)
-                if res.returncode == 0:
+                timed_out = False
+                res = None
+                with alloc_lock.open("a") as alf:
+                    fcntl.flock(alf, fcntl.LOCK_EX)
+                    try:
+                        if not tpu_only and _pool_in_cooldown("tpu_v6e1", 480.0):
+                            print(f"[ALLOC] Skipping TPU v6e1 for {session_name} (recent 502/capacity cooldown active)...", flush=True)
+                            break
+                        print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
+                        try:
+                            res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=105)
+                        except subprocess.TimeoutExpired:
+                            timed_out = True
+                        time.sleep(1.0)
+                    finally:
+                        fcntl.flock(alf, fcntl.LOCK_UN)
+                if timed_out:
+                    ep = get_session_endpoint(session_name)
+                    if ep:
+                        _clear_pool_cooldown("tpu_v6e1")
+                        _record_session(session_name, "tpu:v6e1", ep)
+                        return {"session": session_name, "accelerator": "tpu:v6e1", "endpoint": ep}
+                    _mark_pool_cooldown("tpu_v6e1")
+                    print(f"[WARN] v6e1 request timed out (105s) for {session_name}; marking 8m TPU cooldown.", flush=True)
+                    refused_cap = True
+                    break
+                if res is not None and res.returncode == 0:
+                    _clear_pool_cooldown("tpu_v6e1")
                     ep = get_session_endpoint(session_name) or "assigned"
                     _record_session(session_name, "tpu:v6e1", ep)
                     return {"session": session_name, "accelerator": "tpu:v6e1", "endpoint": ep}
-                msg = (res.stderr or res.stdout).strip()
-                print(f"[WARN] v6e1 request failed ({res.returncode}): {msg[-240:]}", flush=True)
-                if any(k in msg.lower() for k in ("allocation refused", "precondition failed", "service unavailable")):
-                    refused_cap = True
-                    break
+                if res is not None:
+                    msg = (res.stderr or res.stdout).strip()
+                    print(f"[WARN] v6e1 request failed ({res.returncode}): {msg[-240:]}", flush=True)
+                    if any(k in msg.lower() for k in cap_keywords):
+                        _mark_pool_cooldown("tpu_v6e1")
+                        refused_cap = True
+                        break
                 if attempt < attempts:
-                    time.sleep(6)
+                    time.sleep(4)
+        elif prefer_tpu and not tpu_only:
+            print(f"[ALLOC] TPU v6e1 in 8m cooldown; trying H100/A100 fallback for {session_name}...", flush=True)
 
         if allow_h100_fallback and not tpu_only:
-            alloc_lock = OPS_DIR / "colab_new_rpc.lock"
             with alloc_lock.open("a") as alf:
                 fcntl.flock(alf, fcntl.LOCK_EX)
                 try:
                     for gpu_kind in ("H100", "A100"):
+                        pool_tag = f"gpu_{gpu_kind.lower()}"
+                        if gpu_kind == "H100" and _pool_in_cooldown(pool_tag, 300.0):
+                            print(f"[ALLOC] Skipping GPU H100 for {session_name} (5m cooldown active); trying A100...", flush=True)
+                            continue
                         print(f"[ALLOC] Requesting GPU {gpu_kind} for {session_name} (wave {wave})...", flush=True)
-                        res = run_colab_cli("new", "-s", session_name, "--gpu", gpu_kind, session_name=session_name, timeout=540)
+                        try:
+                            res = run_colab_cli("new", "-s", session_name, "--gpu", gpu_kind, session_name=session_name, timeout=110)
+                        except subprocess.TimeoutExpired:
+                            ep = get_session_endpoint(session_name)
+                            if ep:
+                                _clear_pool_cooldown(pool_tag)
+                                _record_session(session_name, f"gpu:{gpu_kind}", ep)
+                                return {"session": session_name, "accelerator": f"gpu:{gpu_kind}", "endpoint": ep}
+                            if gpu_kind == "H100":
+                                _mark_pool_cooldown(pool_tag)
+                            print(f"[WARN] GPU {gpu_kind} request timed out (110s) for {session_name}.", flush=True)
+                            refused_cap = True
+                            continue
                         if res.returncode == 0:
+                            _clear_pool_cooldown(pool_tag)
                             ep = get_session_endpoint(session_name) or f"gpu-{gpu_kind.lower()}"
                             _record_session(session_name, f"gpu:{gpu_kind}", ep)
                             return {"session": session_name, "accelerator": f"gpu:{gpu_kind}", "endpoint": ep}
                         gmsg = (res.stderr or res.stdout).strip()
                         print(f"[WARN] GPU {gpu_kind} request failed ({res.returncode}): {gmsg[-240:]}", flush=True)
-                        if any(k in gmsg.lower() for k in ("allocation refused", "precondition failed", "service unavailable", "aborted", "exhausted", "already")):
+                        if any(k in gmsg.lower() for k in cap_keywords):
+                            if gpu_kind == "H100":
+                                _mark_pool_cooldown(pool_tag)
                             refused_cap = True
                 finally:
                     fcntl.flock(alf, fcntl.LOCK_UN)
@@ -220,7 +302,7 @@ def ssh_cmd_base(session_name: str) -> list[str]:
     ]
 
 
-def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) -> subprocess.CompletedProcess[str]:
+def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) -> subprocess.CompletedProcess[str]:
     """Execute Python directly inside the Colab session kernel (killing hung WebSocket exits promptly)."""
     import threading
 
@@ -235,7 +317,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
         "-s",
         session_name,
         "--timeout",
-        "3600",
+        "7200",
     ]
     proc = subprocess.Popen(
         cmd,
@@ -281,7 +363,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 5400) 
     return subprocess.CompletedProcess(cmd, 0, stdout=full_out, stderr="")
 
 
-def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 5400) -> None:
+def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 9000) -> None:
     """Execute a training/eval job inside the Colab kernel with automatic recovery from WebSocket drops."""
     for attempt in range(1, 4):
         try:
@@ -291,7 +373,7 @@ def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout:
             print(f"[RECOVER {session_name}] colab exec interrupted on attempt {attempt}/3 ({exc}); checking remote kernel state...", flush=True)
             base = ssh_cmd_base(session_name)
             # If kernel continues executing after WebSocket drop, monitor progress until done.json appears or stalls!
-            for _ in range(45):
+            for _ in range(360):
                 chk = subprocess.run(
                     [
                         *base,
@@ -328,7 +410,12 @@ def restart_session_kernel(session_name: str) -> None:
     run_colab_cli("restart-kernel", "-s", session_name, session_name=session_name, timeout=120)
 
 
-def stage_code_and_data(session_name: str) -> None:
+def stage_code_and_data(
+    session_name: str,
+    *,
+    include_real_robot: bool = False,
+    include_wave6_grounded: bool = False,
+) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
     # 1. Verify real TPU/GPU JAX backend directly inside the Colab kernel & create remote dirs
     verify_py = """
@@ -340,25 +427,42 @@ assert b in ('tpu', 'gpu'), f'Expected tpu/gpu backend, got {b}'
 devs = [(d.device_kind, d.memory_stats().get('bytes_limit', 0) if d.memory_stats() else 0) for d in jax.devices()]
 print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
 """
-    exec_python_in_kernel(session_name, verify_py, timeout=180)
+    for v_try in range(1, 4):
+        try:
+            exec_python_in_kernel(session_name, verify_py, timeout=180)
+            break
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            if v_try == 3:
+                raise
+            print(f"[WARN] Initial kernel verify failed on {session_name} (try {v_try}/3: {exc}); restarting kernel...", flush=True)
+            restart_session_kernel(session_name)
+            time.sleep(5)
     base = ssh_cmd_base(session_name)
 
-    # 2. Upload code tarball (< 200 KB)
+    # 2. Upload code tarball (< 250 KB)
     buf_path = OPS_DIR / f".code-{session_name}.tar.gz"
     include_paths = [
         "configs/x1b",
         "models/x1b_world.py",
         "models/x1b_jepa.py",
         "models/x1b_commit.py",
+        "models/x1b_sigreg_epps_pulley.py",
         "data/x1b_multimodal.py",
+        "data/x1b_unseen_worlds.py",
         "evals/x1b_mpc.py",
+        "evals/x1b_learned_mpc.py",
+        "evals/x1b_stats.py",
         "evals/x1b_eval_suite.py",
         "scripts/train/x1b_train.py",
         "scripts/train/x1b_storage.py",
     ]
+    for opt_rel in ("models/x1b_wave6_core.py", "scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
+        if (REPO_ROOT / opt_rel).exists():
+            include_paths.append(opt_rel)
     with tarfile.open(buf_path, "w:gz") as tf:
         for rel in include_paths:
-            tf.add(REPO_ROOT / rel, arcname=rel)
+            if (REPO_ROOT / rel).exists():
+                tf.add(REPO_ROOT / rel, arcname=rel)
     for up_try in range(1, 7):
         try:
             with buf_path.open("rb") as f:
@@ -380,10 +484,34 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         timeout=30,
     )
     card = json.loads(card_raw)
-    for fname, exp_sha in (
+    datasets_to_stage = [
         ("x1b_real_bank_v1.npz", card["sha256"]),
         ("x1b_pymunk_panels_64.npz", card["pymunk_panels_sha256"]),
-    ):
+    ]
+    if include_real_robot:
+        rob_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_real_robot_v2.card.json"],
+            text=True,
+            timeout=30,
+        )
+        rob_card = json.loads(rob_card_raw)
+        datasets_to_stage.append(("x1b_real_robot_v2.npz", rob_card["sha256"]))
+    if include_wave6_grounded:
+        w6_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave6_grounded_v1.card.json"],
+            text=True,
+            timeout=30,
+        )
+        w6_card = json.loads(w6_card_raw)
+        v_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave6_vault_test.card.json"],
+            text=True,
+            timeout=30,
+        )
+        v_card = json.loads(v_card_raw)
+        datasets_to_stage.append(("x1b_wave6_grounded_v1.npz", w6_card["sha256"]))
+        datasets_to_stage.append(("x1b_wave6_vault_test.npz", v_card["sha256"]))
+    for fname, exp_sha in datasets_to_stage:
         chk = subprocess.run(
             [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
             env=colab_env(),
@@ -428,7 +556,7 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
             time.sleep(1.8 * ds_try)
 
 
-def archive_run_to_fedora(session_name: str, tag: str) -> dict[str, Any]:
+def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "runs") -> dict[str, Any]:
     """Stream completed run artifacts from Colab -> Fedora primary HDD -> mirror & verify on secondary HDD."""
     # Ensure latest x1b_storage.py is installed atomically on Fedora under ops_lock
     with ops_lock():
@@ -491,7 +619,8 @@ print(json.dumps(items))
             dst_p = subprocess.Popen(
                 [
                     *FEDORA_SSH,
-                    f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py receive "
+                    f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py "
+                    f"--subdir {shlex.quote(runs_subdir)} receive "
                     f"{shlex.quote(tag)} {shlex.quote(fname)} {shlex.quote(sha_hex)} {int(n_bytes)}",
                 ],
                 stdin=src_p.stdout,
@@ -501,9 +630,14 @@ print(json.dumps(items))
             )
             assert src_p.stdout is not None
             src_p.stdout.close()
-            out_s, err_s = dst_p.communicate(timeout=900)
-            src_err_b = src_p.stderr.read() if src_p.stderr is not None else b""
-            src_rc = src_p.wait(timeout=30)
+            try:
+                out_s, err_s = dst_p.communicate(timeout=2400)
+                src_err_b = src_p.stderr.read() if src_p.stderr is not None else b""
+                src_rc = src_p.wait(timeout=30)
+            except subprocess.TimeoutExpired:
+                src_p.kill()
+                dst_p.kill()
+                out_s, err_s, src_err_b, src_rc = "", "SSH stream timeout (2400s)", b"timeout", -9
             if src_rc == 0 and dst_p.returncode == 0:
                 break
             src_err_s = src_err_b.decode("utf-8", errors="replace").strip()
@@ -517,20 +651,29 @@ print(json.dumps(items))
     mir_out = subprocess.check_output(
         [
             *FEDORA_SSH,
-            f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py mirror {shlex.quote(tag)}",
+            f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py "
+            f"--subdir {shlex.quote(runs_subdir)} mirror {shlex.quote(tag)}",
         ],
         text=True,
         timeout=600,
     )
     print(f"[MIRROR {tag}] {mir_out.strip()}", flush=True)
 
-    # Also save small JSON metrics locally in experiments/multimodal/x1b/results/<tag>/ for plotting & git!
-    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111/runs" / tag
+    # Also save small JSON metrics locally in experiments/multimodal/x1b/.../<runs_subdir>/<tag>/ for plotting & git!
+    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir / tag
     local_res_dir.mkdir(parents=True, exist_ok=True)
     for small in ("receipt.json", "eval_metrics.json", "config.json", "train.jsonl"):
-        txt = subprocess.check_output([*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/runs/{shlex.quote(tag)}/{small}"], text=True, timeout=60)
+        txt = subprocess.check_output(
+            [*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/{shlex.quote(runs_subdir)}/{shlex.quote(tag)}/{small}"],
+            text=True,
+            timeout=60,
+        )
         (local_res_dir / small).write_text(txt)
-    ver_txt = subprocess.check_output([*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/runs/{shlex.quote(tag)}/verified.json"], text=True, timeout=60)
+    ver_txt = subprocess.check_output(
+        [*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/{shlex.quote(runs_subdir)}/{shlex.quote(tag)}/verified.json"],
+        text=True,
+        timeout=60,
+    )
     (local_res_dir / "verified.json").write_text(ver_txt)
     return receipt
 

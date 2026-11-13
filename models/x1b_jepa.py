@@ -154,7 +154,12 @@ def _ego_push_kinematics(
     wrap_pt = obj_xy + perp * perp_side * 0.25 - 0.14 * push_unit
     aligned = (proj_along <= -0.10) & (jnp.abs(lat_err) < 0.09)
     staging = obj_xy - 0.20 * push_unit
-    drive_pt = jnp.where(need_wrap, wrap_pt, jnp.where(aligned, obj_xy + 0.08 * push_unit, staging))
+    is_ee_only = jnp.sum(rel_ee * rel_ee, axis=-1, keepdims=True) < 1e-5
+    drive_pt = jnp.where(
+        is_ee_only,
+        eff_target,
+        jnp.where(need_wrap, wrap_pt, jnp.where(aligned, obj_xy + 0.08 * push_unit, staging)),
+    )
     if av_b is not None:
         ee_blocked = av_b & ((ee_xy[..., 0] * drive_pt[..., 0]) < 0.0) & (jnp.abs(ee_xy[..., 1]) < 0.42)
         drive_pt = jnp.where(
@@ -305,7 +310,7 @@ def decode_world_heads(
     # Subword text / associative recall logits:
     # Symbol-pure GatedDelta world models decode directly from SLOT_TEXT without physical register variance,
     # while non-GatedDelta baselines preserve exact Wave-2 readout parity.
-    if spec.arch in ("slwm_x1b", "slwm_no_registers", "separate_modality_cores"):
+    if spec.arch in ("slwm_x1b", "diagonal_ssm_hybrid", "slwm_no_registers", "separate_modality_cores"):
         txt_ctx = zf[:, :, SLOT_TEXT, :]
     else:
         txt_ctx = 0.50 * zf[:, :, SLOT_TEXT, :] + 0.50 * reg_sum
@@ -441,11 +446,12 @@ def world_model_loss(
     a_clip = l2_normalize(jnp.mean(aud_pool, axis=1))
     temp = jnp.clip(jnp.exp(params["align_logit_scale"].astype(jnp.float32))[0], 1.0, 50.0)
     sim = temp * (v_clip @ a_clip.T)
-    av_nce = 0.5 * (
-        -jnp.mean(jnp.diag(jax.nn.log_softmax(sim, axis=-1)))
-        - jnp.mean(jnp.diag(jax.nn.log_softmax(sim, axis=0)))
-    )
     has_av = batch.get("has_av_pair", jnp.ones((b,), dtype=jnp.float32)).astype(jnp.float32)
+    av_nce_rows = -0.5 * (
+        jnp.diag(jax.nn.log_softmax(sim, axis=-1)) + jnp.diag(jax.nn.log_softmax(sim, axis=0))
+    )
+    av_nce = jnp.sum(av_nce_rows * has_av) / jnp.maximum(jnp.sum(has_av), 1.0)
+    av_scale = jnp.where(jnp.sum(has_av) > 0.5, 1.0, 0.0)
 
     # Calibrate visual-proprio cosine consistency on clean non-spoofed ticks so spoofing spikes disagree!
     commit_target = batch["target_commit"].astype(jnp.int32)
@@ -456,7 +462,7 @@ def world_model_loss(
         axis=-1,
     )
     vp_align = jnp.sum((1.0 - vp_cos) * clean_tick_mask) / jnp.maximum(jnp.sum(clean_tick_mask), 1.0)
-    align_loss = av_nce * jnp.mean(has_av) + 0.35 * vp_align
+    align_loss = av_nce * av_scale + 0.35 * vp_align
 
     # 3. Task, Control, Commit Gate, Language & Diagnostic Decoders
     heads = decode_world_heads(
@@ -483,7 +489,7 @@ def world_model_loss(
     if "target_next_proprio" in batch:
         tnp = batch["target_next_proprio"].astype(jnp.float32)
         scen_vec = batch.get("scenario", jnp.zeros((b,), dtype=jnp.int32))
-        last_valid = jnp.where(scen_vec < 0, 0.0, 1.0)[:, None]
+        last_valid = jnp.where(scen_vec == -1, 0.0, 1.0)[:, None]
         next_mask = valid.at[:, -1].set(valid[:, -1] * last_valid[:, 0]) * (commit_target != 2).astype(jnp.float32)
         prop_next_loss = jnp.sum(
             jnp.mean(((heads["proprio_next"] - tnp) ** 2) * dim_w, axis=-1) * next_mask * (commit_target == 0).astype(jnp.float32)
@@ -574,8 +580,9 @@ def world_model_loss(
         if gf_raw.ndim == 2:
             gf_raw = gf_raw[:, None, :]
         tg_xy = jnp.broadcast_to(gf_raw[:, :, 2:4], (b, t, 2))
-    goal_w = jnp.where((scen_arr == 1)[:, None], 2.5, 1.0)
-    goal_mask = goal_w * is_synth * (scen_arr != 4).astype(jnp.float32)[:, None] * valid
+    goal_w = jnp.where((scen_arr == 1)[:, None], 2.5, jnp.where((scen_arr == -2)[:, None], 2.0, 1.0))
+    has_goal_sup = (((scen_arr >= 0) & (scen_arr != 4)) | (scen_arr == -2)).astype(jnp.float32)[:, None]
+    goal_mask = goal_w * has_goal_sup * valid
     goal_loss = jnp.sum(
         jnp.mean((heads["pred_goal_xy"] - tg_xy) ** 2, axis=-1) * goal_mask
     ) / jnp.maximum(jnp.sum(goal_mask), 1.0)

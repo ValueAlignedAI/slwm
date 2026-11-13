@@ -8,8 +8,19 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
-from data.x1b_multimodal import generate_synthetic_world_batch, render_scene_64x64, step_physics_world
-from evals.x1b_eval_suite import _streaming_memory_megabytes, binary_auroc, paired_bootstrap_ci, run_full_evaluation
+from data.x1b_multimodal import (
+    RealRobotBank,
+    generate_synthetic_world_batch,
+    render_scene_64x64,
+    step_physics_world,
+)
+from evals.x1b_eval_suite import (
+    _streaming_memory_megabytes,
+    binary_auroc,
+    eval_real_robot_transfer,
+    paired_bootstrap_ci,
+    run_full_evaluation,
+)
 from evals.x1b_mpc import plan_latent_cem_mpc, plan_random_shooting_g8
 from models.x1b_commit import route_proposals_with_commit_gate
 from models.x1b_jepa import VALID_OBJECTIVES, predict_latent_step, sigreg_loss_and_pr, world_model_loss
@@ -47,10 +58,15 @@ def test_1b_parameter_scale_and_strict_baseline_parity() -> None:
 
     for prof in ("x150m", "x450m", "x1b"):
         ref = count_spec_parameters(make_x1b_spec(prof, "slwm_x1b"))["strict_total"]
-        for base_arch in ("dense_transformer", "scalar_retention_hybrid", "legacy_scalar_hybrid", "slwm_no_registers", "separate_modality_cores"):
+        for base_arch in VALID_ARCHS:
             other = count_spec_parameters(make_x1b_spec(prof, base_arch))["strict_total"]
             rel_diff = abs(ref - other) / ref
             assert rel_diff < 1e-4, f"Parameter mismatch on {prof}/{base_arch}: {ref:,} vs {other:,} ({rel_diff:.6%})"
+
+    # Verify analytical counter matches actual initialized tensor tree bit-for-bit on new Wave 5 architectures
+    for arch in ("sliding_window_transformer", "diagonal_ssm_hybrid"):
+        sp = make_x1b_spec("x_tiny", arch)
+        assert count_parameters(init_x1b_params(sp, seed=7))["strict_total"] == count_spec_parameters(sp)["strict_total"]
 
 
 @pytest.mark.parametrize("arch", VALID_ARCHS)
@@ -78,17 +94,22 @@ def test_strict_temporal_causality_zero_future_leakage(arch: str) -> None:
     assert future_diff > 1e-3, f"Model ignored future inputs in {arch}"
 
 
-@pytest.mark.parametrize("arch", ("slwm_x1b", "dense_transformer", "scalar_retention_hybrid"))
+@pytest.mark.parametrize(
+    "arch",
+    ("slwm_x1b", "dense_transformer", "sliding_window_transformer", "diagonal_ssm_hybrid", "scalar_retention_hybrid"),
+)
 def test_online_streaming_recurrence_matches_parallel_sequence(arch: str) -> None:
-    """Step-by-step online carry execution must match full-sequence parallel forward pass (including W=8 wrap)."""
+    """Step-by-step online carry execution must match full-sequence parallel forward pass (including W=8 & W=64 wrap)."""
+    seq_len = 70 if arch == "sliding_window_transformer" else 14
+    cache_cap = 80 if arch in ("dense_transformer", "sliding_window_transformer") else 16
     spec = make_x1b_spec("x_tiny", arch, grad_checkpoint=False)
     params = init_x1b_params(spec, seed=202)
-    batch = generate_synthetic_world_batch(jax.random.key(9), batch_size=2, seq_len=14, vocab_size=spec.vocab_size)
+    batch = generate_synthetic_world_batch(jax.random.key(9), batch_size=2, seq_len=seq_len, vocab_size=spec.vocab_size)
 
     z_full, _ = forward_world_model(params, spec, batch)
-    memories = init_streaming_memories(spec, batch_size=2, cache_len=16)
+    memories = init_streaming_memories(spec, batch_size=2, cache_len=cache_cap)
     steps_z = []
-    for t in range(14):
+    for t in range(seq_len):
         step_b = {
             "video": batch["video"][:, t : t + 1],
             "audio": batch["audio"][:, t : t + 1],
@@ -256,3 +277,44 @@ def test_standalone_inference_replay_and_analysis_pipeline(tmp_path: Path) -> No
     }
     figs = generate_figures({}, {"flagship_1b": mock_grp, "abl_slwm_full": mock_grp}, {"1b_pooled_slwm_vs_dense_goal_switch_mpc": ci}, tmp_path / "figs")
     assert len(figs) == 4 and all(f.is_file() for f in figs)
+
+
+def test_real_robot_bank_and_panel9_transfer(tmp_path: Path) -> None:
+    """Verify RealRobotBank sampling, counterfactual streams, and Panel 9 millimeter evaluation."""
+    rng = np.random.default_rng(42)
+    arrays: dict[str, np.ndarray] = {}
+    for split, n in (("train", 20), ("test", 16)):
+        arrays[f"{split}_video"] = rng.integers(0, 255, size=(n, 32, 64, 64, 3), dtype=np.uint8)
+        prop = np.zeros((n, 32, 16), dtype=np.float32)
+        xy = np.linspace(-0.2, 0.2, 32, dtype=np.float32)[None, :, None] * np.ones((n, 32, 2), dtype=np.float32)
+        prop[:, :, 0:2] = xy
+        prop[:, :, 2:4] = xy
+        prop[:, :, 6:8] = (0.0, 1.0)
+        arrays[f"{split}_proprio"] = prop
+        arrays[f"{split}_next_proprio"] = np.concatenate([prop[:, 1:], prop[:, -1:]], axis=1)
+        arrays[f"{split}_prev_action"] = np.zeros((n, 32, 4), dtype=np.float32)
+        u_ex = np.zeros((n, 32, 4), dtype=np.float32)
+        u_ex[:, :, :2] = 0.25
+        arrays[f"{split}_exec_action"] = u_ex
+        arrays[f"{split}_text_header"] = rng.integers(512, 600, size=(n, 4, 4), dtype=np.int32)
+        arrays[f"{split}_wrong_header"] = rng.integers(601, 700, size=(n, 4, 4), dtype=np.int32)
+        arrays[f"{split}_endpoint_xy"] = np.full((n, 2), 0.25, dtype=np.float32)
+        arrays[f"{split}_ep_len"] = np.full((n,), 24, dtype=np.int32)
+        arrays[f"{split}_novel"] = (np.arange(n) % 2 == 0)
+        arrays[f"{split}_paired"] = np.ones((n,), dtype=bool)
+
+    rob_npz = tmp_path / "mock_robot_v2.npz"
+    np.savez_compressed(rob_npz, **arrays)
+    bank_tr = RealRobotBank(rob_npz, split="train")
+    samp = bank_tr.sample_batch(rng, batch_size=4, seq_len=32)
+    assert samp["video"].shape == (4, 32, 64, 64, 3)
+    assert np.all(samp["goal"] == 0.0)  # Zero coordinate leakage!
+    assert np.all(samp["scenario"] == -2)
+
+    spec = make_x1b_spec("x_tiny", "diagonal_ssm_hybrid", grad_checkpoint=False)
+    params = init_x1b_params(spec, seed=99)
+    p9 = eval_real_robot_transfer(params, spec, RealRobotBank(rob_npz, split="test"))
+    assert p9["available"] is True
+    assert p9["n_episodes"] == 16
+    assert p9["step4_error_mm"]["mean"] > 0.0
+    assert 0.0 <= p9["command_discrimination_acc"]["mean"] <= 1.0
