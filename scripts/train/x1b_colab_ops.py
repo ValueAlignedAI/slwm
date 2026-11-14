@@ -456,7 +456,14 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "scripts/train/x1b_train.py",
         "scripts/train/x1b_storage.py",
     ]
-    for opt_rel in ("models/x1b_wave6_core.py", "scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
+    for opt_rel in (
+        "models/x1b_wave6_core.py",
+        "scripts/train/x1b_train_wave6.py",
+        "evals/x1b_eval_wave6.py",
+        "models/x1b_wave7_core.py",
+        "scripts/train/x1b_train_wave7.py",
+        "evals/x1b_eval_wave7.py",
+    ):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
     with tarfile.open(buf_path, "w:gz") as tf:
