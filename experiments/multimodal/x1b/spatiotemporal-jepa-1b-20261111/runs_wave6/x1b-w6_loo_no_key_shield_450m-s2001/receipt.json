@@ -1,0 +1,42 @@
+{
+  "arch": "slwm_x1b",
+  "backend": "tpu",
+  "batch_size": 12,
+  "config_sha256": "469a6335f9091282c7a37a8e0e146857063349e5b27cab85b148abe4183a060d",
+  "eval_summary": {
+    "T160_post_perturb_goal_b_success": 0.0,
+    "dyn_visual_assoc_T1024": 0.0,
+    "explicit_latch_reactive_success": 0.0,
+    "latch_mse_beyond_W64": 0.25659680366516113,
+    "symbolic_key_visual_drift": 2.0444393157958984e-05,
+    "unseen_mppi_success": 0.0,
+    "unseen_ood_corruption_auroc": 0.5023102014243197,
+    "vault_spoken_disc_acc": 0.55078125,
+    "vault_step4_mm": 31.981329544447362
+  },
+  "eval_wall_s": 638.15,
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": false,
+    "regularizer": "epps_pulley_sigreg",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420025464,
+    "strict_total": 453199938
+  },
+  "portable_int8_bytes": 415482747,
+  "portable_int8_sha256": "89899346dc63bd22d206ba649cb2591a11e50d0492d05dba4aea6e34e843f3e6",
+  "profile": "x450m",
+  "seed": 2001,
+  "seq_len": 32,
+  "steps": 2600,
+  "tag": "x1b-w6_loo_no_key_shield_450m-s2001",
+  "train_wall_s": 768.75,
+  "wave": "wave6_zero_compromise",
+  "weights_bf16_bytes": 0,
+  "weights_bf16_sha256": null
+}

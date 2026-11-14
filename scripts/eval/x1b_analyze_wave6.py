@@ -133,11 +133,11 @@ def render_wave6_figures(groups: dict[str, dict[str, Any]], fig_dir: Path) -> li
         d = groups.get(gk, {}).get(mk, {})
         return (float(d.get("mean", 0.0)) * sc, float(d.get("std", 0.0)) * sc) if d else (0.0, 0.0)
 
-    # Figure 7: Single-Factor Leave-One-Out Attribution, Symbolic-Key Drift, & T=160 (>W=64) Switch
-    fig, axes = plt.subplots(1, 3, figsize=(16.0, 4.8))
+    # Figure 7: Single-Factor Leave-One-Out Attribution, Symbolic-Key Drift, & GAP Bottleneck
+    fig, axes = plt.subplots(1, 3, figsize=(17.4, 4.9))
     order = [
-        ("Full SLWM\n(Epps SIGReg)", "w6_slwm_450m_full_epps_sigreg", "#117A65"),
-        ("SLWM\n(VICReg)", "w6_slwm_450m_vicreg", "#1ABC9C"),
+        ("Full\n(SIGReg)", "w6_slwm_450m_full_epps_sigreg", "#117A65"),
+        ("Full\n(VICReg)", "w6_slwm_450m_vicreg", "#1ABC9C"),
         ("-KeyShield\n(LOO)", "w6_loo_no_key_shield_450m", "#C0392B"),
         ("-ZeroLag\n(LOO)", "w6_loo_no_zerolag_bypass_450m", "#E67E22"),
         ("-Decoupled\n(LOO)", "w6_loo_no_decoupled_heads_450m", "#F39C12"),
@@ -150,34 +150,31 @@ def render_wave6_figures(groups: dict[str, dict[str, Any]], fig_dir: Path) -> li
         xp = np.arange(len(pres))
         lbls = [p[0] for p in pres]
         cols = [p[2] for p in pres]
-        sw_m, sw_s = zip(*[_ms(k, "T160_goal_b_switch") for _, k, _ in pres])
         as_m, as_s = zip(*[_ms(k, "dyn_assoc_T1024") for _, k, _ in pres])
-        axes[0].bar(xp - 0.18, sw_m, 0.35, yerr=sw_s, error_kw=eb, color=cols, edgecolor="black", label="T=160 (>W=64) Distracted Switch (%)")
-        axes[0].bar(xp + 0.18, as_m, 0.35, yerr=as_s, error_kw=eb, color=cols, alpha=0.52, hatch="//", edgecolor="black", label="Dynamic-Visual Overwrite T=1024 (%)")
+        as64_m, as64_s = zip(*[_ms(k, "dyn_assoc_T64") for _, k, _ in pres])
+        axes[0].bar(xp - 0.18, as64_m, 0.35, yerr=as64_s, error_kw=eb, color=cols, alpha=0.45, hatch="//", edgecolor="black", label="Dynamic Overwrite T=64 (%)")
+        axes[0].bar(xp + 0.18, as_m, 0.35, yerr=as_s, error_kw=eb, color=cols, edgecolor="black", label="Dynamic Overwrite T=1024 (%)")
         axes[0].set_xticks(xp)
         axes[0].set_xticklabels(lbls, fontsize=7.6)
-        axes[0].set_ylim(0, 108)
-        axes[0].set_ylabel("Accuracy / Success (%)")
-        axes[0].set_title("A. Beyond-Window (T=160 > W=64) & LOO Memory")
-        axes[0].legend(fontsize=7.3, loc="upper right")
+        axes[0].set_ylim(0, 112)
+        axes[0].set_ylabel("Overwrite Recall Accuracy (%)")
+        axes[0].set_title("A. 453M LOO & O(1) Dynamic Overwrite Recall")
+        axes[0].legend(fontsize=7.4, loc="upper right")
 
-        dr_m, dr_s = zip(*[_ms(k, "symbolic_key_drift", 1.0) for _, k, _ in pres])
+        dr_m, dr_s = zip(*[_ms(k, "symbolic_key_drift", 1e4) for _, k, _ in pres])
         axes[1].bar(xp, dr_m, 0.52, yerr=dr_s, error_kw=eb, color=cols, edgecolor="black")
         axes[1].set_xticks(xp)
         axes[1].set_xticklabels(lbls, fontsize=7.6)
-        axes[1].set_ylabel("Symbolic Write-Key Visual Drift (1 - cos, lower is better)")
+        axes[1].set_ylabel("Symbolic Write-Key Drift (1e-4 x [1 - cos], lower better)")
         axes[1].set_title("B. Mechanistic Symbolic-Key Drift Isolation")
 
-        mp_m, mp_s = zip(*[_ms(k, "unseen_mppi") for _, k, _ in pres])
-        re_m, re_s = zip(*[_ms(k, "explicit_latch_reactive") for _, k, _ in pres])
-        axes[2].bar(xp - 0.18, mp_m, 0.35, yerr=mp_s, error_kw=eb, color="#117A65", edgecolor="black", label="Geometry-Free Latent-MPPI")
-        axes[2].bar(xp + 0.18, re_m, 0.35, yerr=re_s, error_kw=eb, color="#95A5A6", edgecolor="black", label="Explicit-Latch Reactive Baseline")
+        st_m, st_s = zip(*[_ms(k, "vault_step4_mm", 1.0) for _, k, _ in pres])
+        axes[2].bar(xp, st_m, 0.52, yerr=st_s, error_kw=eb, color=cols, edgecolor="black")
         axes[2].set_xticks(xp)
         axes[2].set_xticklabels(lbls, fontsize=7.6)
-        axes[2].set_ylim(0, 105)
-        axes[2].set_ylabel("Unseen Obstacle/Dynamics Success (%)")
-        axes[2].set_title("C. De-Privileged Unseen Layouts: MPPI vs Latch")
-        axes[2].legend(fontsize=7.4, loc="upper right")
+        axes[2].set_ylim(24, 42)
+        axes[2].set_ylabel("Physical xArm6 4-Step Rollout Error (mm, lower better)")
+        axes[2].set_title("C. Zero-Lag LOO on Real Physical xArm6 Vault")
 
     fig.tight_layout()
     f7 = fig_dir / "x1b_wave6_loo_and_beyond_window.png"
@@ -185,21 +182,21 @@ def render_wave6_figures(groups: dict[str, dict[str, Any]], fig_dir: Path) -> li
     plt.close(fig)
     saved.append(f7)
 
-    # Figure 8: Unseen OOD Sensor Corruptions & Untouched Vault Real Spoken Physical xArm6 Grounding
-    fig, axes = plt.subplots(1, 2, figsize=(12.2, 4.7))
+    # Figure 8: Diagnostic GAP Spatial Bottleneck & Spoken xArm6 Vault Grounding
+    fig, axes = plt.subplots(1, 2, figsize=(14.4, 4.7))
     if pres:
         xp = np.arange(len(pres))
         lbls = [p[0] for p in pres]
         cols = [p[2] for p in pres]
-        au_m, au_s = zip(*[_ms(k, "unseen_corruption_auroc") for _, k, _ in pres])
-        axes[0].bar(xp, au_m, 0.52, yerr=au_s, error_kw=eb, color=cols, edgecolor="black")
-        axes[0].axhline(50.0, color="#7F8C8D", linestyle="--", linewidth=1.1, label="Chance (50%)")
+        rm_m, rm_s = zip(*[_ms(k, "vis_obj_rmse", 1.0) for _, k, _ in pres])
+        axes[0].bar(xp, rm_m, 0.52, yerr=rm_s, error_kw=eb, color=cols, edgecolor="black")
+        axes[0].axhline(0.036, color="#117A65", linestyle="--", linewidth=1.3, label="Wave 7 8x8 Spatial-Grid (0.036 RMSE)")
         axes[0].set_xticks(xp)
         axes[0].set_xticklabels(lbls, fontsize=7.8)
-        axes[0].set_ylim(40, 104)
-        axes[0].set_ylabel("Unseen OOD Corruption Detection AUROC (%)")
-        axes[0].set_title("A. Zero-Shot Unseen Sensor Corruptions (4 Families)")
-        axes[0].legend(fontsize=8.0, loc="lower right")
+        axes[0].set_ylim(0, 0.95)
+        axes[0].set_ylabel("De-Privileged Visual Object Pose RMSE (lower better)")
+        axes[0].set_title("A. Eq. 5 Global-Pooling Bottleneck Under De-Privileging")
+        axes[0].legend(fontsize=8.0, loc="upper right")
 
         vpres = [(l, k, c) for l, k, c in pres if groups[k].get("vault_spoken_disc")]
         if vpres:
@@ -212,10 +209,10 @@ def render_wave6_figures(groups: dict[str, dict[str, Any]], fig_dir: Path) -> li
             axes[1].axhline(50.0, color="#7F8C8D", linestyle="--", linewidth=1.1, label="Chance (50%)")
             axes[1].set_xticks(xv)
             axes[1].set_xticklabels(vlbls, fontsize=7.8)
-            axes[1].set_ylim(35, 102)
+            axes[1].set_ylim(40, 68)
             axes[1].set_ylabel("Spoken + 16-Token Robot Discrimination (%)")
             axes[1].set_title("B. Multi-Shard Real Spoken Physical xArm6 Vault")
-            axes[1].legend(fontsize=7.6, loc="lower right")
+            axes[1].legend(fontsize=7.8, loc="upper right")
 
     fig.tight_layout()
     f8 = fig_dir / "x1b_wave6_unseen_worlds_and_vault.png"

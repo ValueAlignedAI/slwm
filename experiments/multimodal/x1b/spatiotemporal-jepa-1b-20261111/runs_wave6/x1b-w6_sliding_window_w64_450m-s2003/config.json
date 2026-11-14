@@ -1,0 +1,48 @@
+{
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "7e788ed6a13b3b2aea6bfda43eb0815ef7636f978039ce424caf95211f9f8475",
+  "de_privileged_proprio": "ee_only",
+  "devices": [
+    "cuda:0"
+  ],
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": true,
+    "regularizer": "epps_pulley_sigreg",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420029568,
+    "strict_total": 453204042
+  },
+  "peak_lr": 0.00026,
+  "planner": "geometry_free_learned_mppi",
+  "save_bf16": false,
+  "seed": 2003,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "sliding_window_transformer",
+    "audio_dim": 64,
+    "d_ff": 3679,
+    "d_model": 1152,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 18,
+    "n_heads": 18,
+    "profile": "x450m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2600,
+  "tag": "x1b-w6_sliding_window_w64_450m-s2003",
+  "wave": "wave6_zero_compromise"
+}

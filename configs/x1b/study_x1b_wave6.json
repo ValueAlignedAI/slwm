@@ -17,7 +17,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_slwm_450m_vicreg",
@@ -26,7 +26,7 @@
       "regularizer": "vicreg_var_cov",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_loo_no_key_shield_450m",
@@ -35,7 +35,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": false, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_loo_no_zerolag_bypass_450m",
@@ -44,7 +44,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": false, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_loo_no_decoupled_heads_450m",
@@ -53,7 +53,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": false},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_sliding_window_w64_450m",
@@ -62,7 +62,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_scalar_retention_jepa_450m",
@@ -71,7 +71,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     },
     {
       "cohort": "w6_diagonal_ssm_jepa_450m",
@@ -80,7 +80,7 @@
       "regularizer": "epps_pulley_sigreg",
       "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
       "seeds": [2001, 2002, 2003],
-      "steps": 4000
+      "steps": 2600
     }
   ]
 }

@@ -1,0 +1,50 @@
+{
+  "study_id": "spatiotemporal-jepa-wave7-spatial-grid-clincher",
+  "runs_subdir": "runs_wave7",
+  "use_real_robot": true,
+  "use_wave6_grounded": true,
+  "description": "Wave 7 Spatial-Grid De-Privileged Grounding Clincher (12 x 453M runs = 4 cohorts x 3 seeds at 0.00% parameter parity): Resolves the Global-Average-Pooling 2D localization bottleneck discovered in Wave 6 via zero-extra-parameter pure-vision + latent 4x4 Spatial Soft-Argmax visual pose readout, key-addressed 2D symbolic + visual goal latching/overwriting across T=160 (>2.5x W=64) with post-window physical reset perturbation, geometry-free isotropic 2D subgoal Latent-MPPI across 4 truly blocked unseen obstacle/dynamics families, zero-shot cross-modal Spatial-JEPA OOD camera corruption detection, and initial-scene contrastive spoken + 16-token physical xArm6 grounding on dev and untouched vault (00147, 00419).",
+  "budget": {
+    "max_compute_units": 500.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100"
+  },
+  "cohorts_453m_3seed": [
+    {
+      "cohort": "w7_slwm_450m_full",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200
+    },
+    {
+      "cohort": "w7_sliding_window_w64_450m",
+      "profile": "x450m",
+      "arch": "sliding_window_transformer",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200
+    },
+    {
+      "cohort": "w7_diagonal_ssm_450m",
+      "profile": "x450m",
+      "arch": "diagonal_ssm_hybrid",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": true, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200
+    },
+    {
+      "cohort": "w7_loo_no_key_shield_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {"key_shield": false, "zerolag_bypass": true, "decoupled_heads": true},
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200
+    }
+  ]
+}

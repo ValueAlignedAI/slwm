@@ -170,7 +170,7 @@ def allocate_accelerator(
         "timeout",
     )
 
-    for wave in range(1, 200):  # Up to ~150 min slot-wait when queuing onto single-TPU quota slot
+    for wave in range(1, 400):  # Up to ~300 min slot-wait across multi-run lanes
         check_usage_and_budget()
         refused_cap = False
         alloc_lock = OPS_DIR / "colab_new_rpc.lock"
@@ -456,7 +456,14 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "scripts/train/x1b_train.py",
         "scripts/train/x1b_storage.py",
     ]
-    for opt_rel in ("models/x1b_wave6_core.py", "scripts/train/x1b_train_wave6.py", "evals/x1b_eval_wave6.py"):
+    for opt_rel in (
+        "models/x1b_wave6_core.py",
+        "scripts/train/x1b_train_wave6.py",
+        "evals/x1b_eval_wave6.py",
+        "models/x1b_wave7_core.py",
+        "scripts/train/x1b_train_wave7.py",
+        "evals/x1b_eval_wave7.py",
+    ):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
     with tarfile.open(buf_path, "w:gz") as tf:
@@ -544,7 +551,7 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
             )
             assert fed_p.stdout is not None
             fed_p.stdout.close()
-            out_s, err_s = col_p.communicate(timeout=300)
+            out_s, err_s = col_p.communicate(timeout=600)
             fed_rc = fed_p.wait(timeout=30)
             time.sleep(0.8)
             if fed_rc == 0 and col_p.returncode == 0:

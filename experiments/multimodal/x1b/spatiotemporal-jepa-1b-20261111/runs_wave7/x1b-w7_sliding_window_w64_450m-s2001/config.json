@@ -1,0 +1,49 @@
+{
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "8abf6ea4ba99ea24a22f46584cb570b2111ebca1db5c164056b94721a051c62e",
+  "de_privileged_proprio": "ee_only",
+  "devices": [
+    "cuda:0"
+  ],
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": true,
+    "regularizer": "epps_pulley_sigreg",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420029568,
+    "strict_total": 453204042
+  },
+  "peak_lr": 0.00027,
+  "planner": "spatial_geometry_free_subgoal_mppi",
+  "save_bf16": false,
+  "seed": 2001,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "sliding_window_transformer",
+    "audio_dim": 64,
+    "d_ff": 3679,
+    "d_model": 1152,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 18,
+    "n_heads": 18,
+    "profile": "x450m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2200,
+  "tag": "x1b-w7_sliding_window_w64_450m-s2001",
+  "visual_pose_readout": "pure_vision_spatial_soft_argmax_4x4",
+  "wave": "wave7_spatial_grid_clincher"
+}
