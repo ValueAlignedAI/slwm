@@ -1,4 +1,4 @@
-"""Independently audit Study X1B 135-run SHA-256 custody ledgers, 3-seed 1.008B parity, Wave 5 O(1) baselines & xArm6 transfer."""
+"""Independently audit Study X1B 171-run SHA-256 custody ledgers (Waves 1–7), 1.008B parity, Wave 6 LOO, and Wave 7 spatial-grid clincher."""
 
 from __future__ import annotations
 
@@ -18,14 +18,16 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_all_135_runs_across_five_waves_pass_cryptographic_custody():
-    """Verify every run across Waves 1–3 (28 each), Wave 4 (36), and Wave 5 (15) matches its dual-HDD SHA-256 manifest."""
+def test_all_171_runs_across_seven_waves_pass_cryptographic_custody():
+    """Verify every run across Waves 1–3 (28 each), Wave 4 (36), Wave 5 (15), Wave 6 (24), and Wave 7 (12) matches its dual-HDD SHA-256 manifest."""
     expected_counts = {
         "runs_wave1": 28,
         "runs_wave2": 28,
         "runs_wave3": 28,
         "runs": 36,
         "runs_wave5": 15,
+        "runs_wave6": 24,
+        "runs_wave7": 12,
     }
     total_verified = 0
     for wave_subdir, exp_n in expected_counts.items():
@@ -56,7 +58,7 @@ def test_all_135_runs_across_five_waves_pass_cryptographic_custody():
                 assert not receipt["weights_bf16_sha256"] and not cfg.get("save_bf16", False)
             total_verified += 1
 
-    assert total_verified == 135
+    assert total_verified == 171
 
 
 def test_wave4_3seed_1b_parity_and_metrics_recompute_from_raw_ledgers():
@@ -256,8 +258,151 @@ def test_wave5_chinchilla_o1_baselines_and_real_robot_recompute_from_raw_ledgers
     assert hcis["slwm1b_vs_slwm_450m_robot_step4_mm"]["hierarchical_ci99"][1] < 0.0
 
 
+def test_wave6_24run_loo_and_gap_bottleneck_recompute_from_raw_ledgers():
+    """Recompute Wave 6 24-run single-factor 453M LOO isolations, O(1) dynamic overwrite recall, and Eq. 5 GAP bottleneck."""
+    w6 = _load_json(EXP_DIR / "wave6_summary_metrics.json")
+    assert w6["wave6_verified_runs"] == 24
+    groups = w6["groups"]
+    assert len(groups) == 8
+    for gname, gdata in groups.items():
+        assert gdata["n_seeds"] == 3, f"Expected 3 seeds for {gname}"
+
+    full_t1024, vic_t1024, noks_t1024, nodec_t1024 = [], [], [], []
+    swin_t1024, scal_t1024, dssm_t1024 = [], [], []
+    full_step4, nozl_step4 = [], []
+    full_drift, noks_drift = [], []
+
+    for seed in (2001, 2002, 2003):
+        for exact_453m in (
+            "w6_slwm_450m_full_epps_sigreg",
+            "w6_slwm_450m_vicreg",
+            "w6_loo_no_key_shield_450m",
+            "w6_loo_no_zerolag_bypass_450m",
+            "w6_loo_no_decoupled_heads_450m",
+            "w6_diagonal_ssm_jepa_450m",
+        ):
+            rec = _load_json(EXP_DIR / f"runs_wave6/x1b-{exact_453m}-s{seed}/receipt.json")
+            assert rec["parameter_counts"]["strict_total"] == 453_199_938
+
+        for matched_453m in ("w6_sliding_window_w64_450m", "w6_scalar_retention_jepa_450m"):
+            rec_m = _load_json(EXP_DIR / f"runs_wave6/x1b-{matched_453m}-s{seed}/receipt.json")
+            assert rec_m["parameter_counts"]["strict_total"] == 453_204_042
+
+        e_full = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_slwm_450m_full_epps_sigreg-s{seed}/eval_metrics.json")
+        e_vic = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_slwm_450m_vicreg-s{seed}/eval_metrics.json")
+        e_noks = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_loo_no_key_shield_450m-s{seed}/eval_metrics.json")
+        e_nozl = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_loo_no_zerolag_bypass_450m-s{seed}/eval_metrics.json")
+        e_nodec = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_loo_no_decoupled_heads_450m-s{seed}/eval_metrics.json")
+        e_swin = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_sliding_window_w64_450m-s{seed}/eval_metrics.json")
+        e_scal = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_scalar_retention_jepa_450m-s{seed}/eval_metrics.json")
+        e_dssm = _load_json(EXP_DIR / f"runs_wave6/x1b-w6_diagonal_ssm_jepa_450m-s{seed}/eval_metrics.json")
+
+        full_t1024.append(e_full["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        vic_t1024.append(e_vic["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        noks_t1024.append(e_noks["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        nodec_t1024.append(e_nodec["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        swin_t1024.append(e_swin["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        scal_t1024.append(e_scal["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+        dssm_t1024.append(e_dssm["symbolic_key_drift_and_recall"]["dyn_visual_assoc_T1024"])
+
+        full_drift.append(e_full["symbolic_key_drift_and_recall"]["symbolic_key_visual_drift"])
+        noks_drift.append(e_noks["symbolic_key_drift_and_recall"]["symbolic_key_visual_drift"])
+
+        full_step4.append(e_full["untouched_vault_spoken_robot"]["step4_mm"])
+        nozl_step4.append(e_nozl["untouched_vault_spoken_robot"]["step4_mm"])
+
+        # Under ee_only de-privileging, Eq. 5 global slot pooling destroys 2D coordinates across all 8 Wave 6 cohorts
+        assert e_full["unseen_layout_deprivileged_mpc"]["vis_decoded_obj_rmse"] > 0.50
+
+    assert np.isclose(np.mean(full_t1024), 1.0) and np.isclose(np.mean(vic_t1024), 1.0)
+    assert all(d == 0.0 for d in full_drift)
+    assert all(d > 0.0 for d in noks_drift)
+    assert np.mean(full_t1024) > np.mean(noks_t1024) + 0.50
+    assert np.mean(full_t1024) > np.mean(nodec_t1024) + 0.25
+    assert np.mean(full_t1024) > np.mean(swin_t1024) + 0.90
+    assert np.mean(full_t1024) > np.mean(scal_t1024) + 0.90
+    assert np.mean(full_t1024) > np.mean(dssm_t1024) + 0.75
+    assert np.mean(nozl_step4) > np.mean(full_step4) + 5.0
+
+    hattr = w6["hierarchical_seed_attributions"]
+    assert hattr["full_vs_w6_loo_no_zerolag_bypass_450m_vault_step4_mm"]["hierarchical_ci99"][1] < -2.5
+    assert hattr["full_vs_w6_loo_no_decoupled_heads_450m_dyn_assoc_T1024"]["hierarchical_ci99"][0] > 0.0
+    assert hattr["full_vs_w6_diagonal_ssm_jepa_450m_dyn_assoc_T1024"]["hierarchical_ci99"][0] > 0.55
+    assert hattr["full_vs_w6_sliding_window_w64_450m_dyn_assoc_T1024"]["hierarchical_ci99"][0] > 0.70
+    assert hattr["full_vs_w6_scalar_retention_jepa_450m_dyn_assoc_T1024"]["hierarchical_ci99"][0] > 0.80
+
+
+def test_wave7_12run_spatial_grid_clincher_recompute_from_raw_ledgers():
+    """Recompute Wave 7 12-run zero-extra-parameter 8x8 spatial-grid grounding, Subgoal MPPI, T=160 switch, and OOD AUROC."""
+    w7 = _load_json(EXP_DIR / "wave7_summary_metrics.json")
+    assert w7["wave7_verified_runs"] == 12
+    groups = w7["groups"]
+    assert len(groups) == 4
+
+    slwm_mppi, slwm_reac, slwm_open = [], [], []
+    slwm_t160, swin_t160, dssm_t160 = [], [], []
+    slwm_lmse, swin_lmse, dssm_lmse = [], [], []
+    slwm_auroc, slwm_ee_rmse, slwm_obj_rmse = [], [], []
+    slwm_drift, noks_drift = [], []
+
+    for seed in (2001, 2002, 2003):
+        for exact_453m in ("w7_slwm_450m_full", "w7_diagonal_ssm_450m", "w7_loo_no_key_shield_450m"):
+            rec = _load_json(EXP_DIR / f"runs_wave7/x1b-{exact_453m}-s{seed}/receipt.json")
+            assert rec["parameter_counts"]["strict_total"] == 453_199_938
+
+        rec_swin = _load_json(EXP_DIR / f"runs_wave7/x1b-w7_sliding_window_w64_450m-s{seed}/receipt.json")
+        assert rec_swin["parameter_counts"]["strict_total"] == 453_204_042
+
+        e_slwm = _load_json(EXP_DIR / f"runs_wave7/x1b-w7_slwm_450m_full-s{seed}/eval_metrics.json")
+        e_swin = _load_json(EXP_DIR / f"runs_wave7/x1b-w7_sliding_window_w64_450m-s{seed}/eval_metrics.json")
+        e_dssm = _load_json(EXP_DIR / f"runs_wave7/x1b-w7_diagonal_ssm_450m-s{seed}/eval_metrics.json")
+        e_noks = _load_json(EXP_DIR / f"runs_wave7/x1b-w7_loo_no_key_shield_450m-s{seed}/eval_metrics.json")
+
+        slwm_mppi.append(e_slwm["unseen_layout_deprivileged_mpc"]["geometry_free_mppi_success"])
+        slwm_reac.append(e_slwm["unseen_layout_deprivileged_mpc"]["explicit_latch_reactive_success"])
+        slwm_open.append(e_slwm["unseen_layout_deprivileged_mpc"]["open_loop_policy_success"])
+
+        slwm_ee_rmse.append(e_slwm["unseen_layout_deprivileged_mpc"]["vis_decoded_ee_rmse"])
+        slwm_obj_rmse.append(e_slwm["unseen_layout_deprivileged_mpc"]["vis_decoded_obj_rmse"])
+
+        slwm_t160.append(e_slwm["beyond_window_T160_distractor_switch"]["T160_post_perturbation_goal_b_success"])
+        swin_t160.append(e_swin["beyond_window_T160_distractor_switch"]["T160_post_perturbation_goal_b_success"])
+        dssm_t160.append(e_dssm["beyond_window_T160_distractor_switch"]["T160_post_perturbation_goal_b_success"])
+
+        slwm_lmse.append(e_slwm["beyond_window_T160_distractor_switch"]["latch_mse_beyond_W64_t92_160"])
+        swin_lmse.append(e_swin["beyond_window_T160_distractor_switch"]["latch_mse_beyond_W64_t92_160"])
+        dssm_lmse.append(e_dssm["beyond_window_T160_distractor_switch"]["latch_mse_beyond_W64_t92_160"])
+
+        slwm_auroc.append(e_slwm["unseen_ood_sensor_corruptions"]["mean_unseen_ood_corruption_auroc"])
+        slwm_drift.append(e_slwm["symbolic_key_drift_and_recall"]["symbolic_key_visual_drift"])
+        noks_drift.append(e_noks["symbolic_key_drift_and_recall"]["symbolic_key_visual_drift"])
+
+    # 18x-36x spatial pose grounding improvement at zero extra parameters
+    assert np.mean(slwm_ee_rmse) < 0.025 and np.mean(slwm_obj_rmse) < 0.045
+    assert np.isclose(np.mean(slwm_mppi), groups["w7_slwm_450m_full"]["unseen_mppi"]["mean"])
+    assert np.mean(slwm_mppi) > np.mean(slwm_reac) + 0.25
+    assert np.isclose(np.mean(slwm_open), 0.0)
+
+    # Beyond-window T=160 (> 2.5x W=64) perturbed embodied goal-switch
+    assert np.mean(slwm_t160) > 0.88
+    assert np.mean(slwm_t160) > np.mean(swin_t160) + 0.60
+    assert np.mean(slwm_t160) > np.mean(dssm_t160) + 0.20
+    assert np.mean(swin_lmse) > 200.0 * np.mean(slwm_lmse)
+    assert np.mean(dssm_lmse) > 8.0 * np.mean(slwm_lmse)
+
+    # Zero-shot unseen sensor corruption AUROC & symbolic-key shield invariance
+    assert np.mean(slwm_auroc) > 0.995
+    assert all(d == 0.0 for d in slwm_drift)
+    assert np.mean(noks_drift) > 0.002
+
+    hattr7 = w7["hierarchical_seed_attributions"]
+    assert hattr7["full_mppi_vs_explicit_latch_reactive"]["hierarchical_ci95"][0] > 0.05
+    assert hattr7["full_vs_w7_sliding_window_w64_450m_T160_goal_b_switch"]["hierarchical_ci99"][0] > 0.50
+    assert hattr7["full_vs_w7_diagonal_ssm_450m_T160_goal_b_switch"]["hierarchical_ci99"][0] > 0.04
+
+
 def test_inference_manifest_replays_and_figures_integrity():
-    """Verify standalone 1.008B manifest SHA-256 parity, closed-loop replay pack, and all 8 visual figures."""
+    """Verify standalone 1.008B manifest SHA-256 parity, closed-loop replay pack, and all 12 visual figures."""
     manifest = _load_json(EXP_DIR / "inference/manifest.json")
     assert manifest["study_id"] == "X1B-20261111"
     assert len(manifest["models"]) == 3
@@ -283,6 +428,10 @@ def test_inference_manifest_replays_and_figures_integrity():
         "figures/x1b_long_horizon_ood_goal_switch_mpc.png",
         "figures/x1b_wave5_chinchilla_and_o1_baselines.png",
         "figures/x1b_wave5_real_robot_transfer.png",
+        "figures/x1b_wave6_loo_and_beyond_window.png",
+        "figures/x1b_wave6_unseen_worlds_and_vault.png",
+        "figures/x1b_wave7_spatial_mpc_and_t160.png",
+        "figures/x1b_wave7_ood_safety_and_spoken_vault.png",
         "examples/preview_thin_barrier_mpc.png",
         "examples/preview_ood_goal_switch_mpc.png",
     ):

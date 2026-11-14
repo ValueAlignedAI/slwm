@@ -1,0 +1,49 @@
+{
+  "backend": "gpu",
+  "batch_size": 12,
+  "config_sha256": "049627204ba2adf4ccd73f8ba0b0421af7fb23526a2104faca78f6db0fc042af",
+  "de_privileged_proprio": "ee_only",
+  "devices": [
+    "cuda:0"
+  ],
+  "interventions": {
+    "decoupled_heads": true,
+    "key_shield": true,
+    "regularizer": "epps_pulley_sigreg",
+    "zerolag_bypass": true
+  },
+  "parameter_counts": {
+    "adapters": 11939040,
+    "jepa_and_uncertainty": 9521858,
+    "policy_and_heads": 11713576,
+    "processor_core": 420025464,
+    "strict_total": 453199938
+  },
+  "peak_lr": 0.00027,
+  "planner": "spatial_geometry_free_subgoal_mppi",
+  "save_bf16": false,
+  "seed": 2003,
+  "seq_len": 32,
+  "spec": {
+    "action_dim": 4,
+    "arch": "diagonal_ssm_hybrid",
+    "audio_dim": 64,
+    "d_ff": 3072,
+    "d_model": 1152,
+    "dtype": "bfloat16",
+    "goal_dim": 4,
+    "grad_checkpoint": true,
+    "head_dim": 64,
+    "layers": 18,
+    "n_heads": 18,
+    "profile": "x450m",
+    "proprio_dim": 16,
+    "rope_Window": 512,
+    "slots_per_tick": 24,
+    "vocab_size": 4096
+  },
+  "steps": 2200,
+  "tag": "x1b-w7_diagonal_ssm_450m-s2003",
+  "visual_pose_readout": "pure_vision_spatial_soft_argmax_4x4",
+  "wave": "wave7_spatial_grid_clincher"
+}
