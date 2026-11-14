@@ -1,6 +1,6 @@
 # SLWM-X1B (`1.008B`) Closed-Loop Mission Replays & Filmstrips
 
-Generated deterministically from SHA-256-verified `1,008,454,410`-parameter checkpoints via:
+Generated deterministically from trained `1,008,454,410`-parameter checkpoints via:
 
 ```bash
 .venv/bin/python scripts/eval/x1b_infer.py --build-study-pack

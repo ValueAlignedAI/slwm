@@ -144,6 +144,17 @@ Maintain two parameter accounting modes:
 
 Every experiment must report which accounting mode was used. Larger runs must not be compared against 124M or GPT-2-small baselines without clear labels for parameter, data, and compute differences.
 
+### 4.1 Pretrained / Frozen Codecs, Causal Streaming State, and GQA Baselines (Scale-Up Studies)
+
+When experiments scale beyond 124M or incorporate frozen perceptual/semantic encoders or generative decoders:
+
+1. **Dual-Track Accounting (`Core Comparison` + `Strict System Cost`):**
+   - **Core comparison:** All compared backbones must share identical frozen encoders/codecs, projections, packet rates, decoders, and training exposures; processor budgets are matched and peripheral costs reported separately.
+   - **Strict system comparison:** Count every inference-active component—trainable and frozen parameters reported separately across encoders, embeddings, world core, transition/uncertainty predictors, generative decoders/vocoders, and policy heads—alongside per-tick inference FLOPs, wall-clock latency, peak device memory, and upstream pretraining provenance (`unknown` if undisclosed). Freezing a module never makes its parameters, compute, or state free.
+   - Whenever switching from scratch adapters to pretrained codecs, run a `Backbone × Representation` comparison so representation gains are never misattributed to the sequence backbone.
+2. **Causal $\mathcal{O}(1)$ Codec Contract:** Any module included in a bounded-memory ($\mathcal{O}(1)$) streaming system must execute strictly causally without future lookahead or multi-second bidirectional windows, and its internal recurrent/convolutional/KV state bytes must be included in total streaming state accounting.
+3. **Strong Contemporary Baselines:** Attention baselines (`Dense` and `SlidingWindow`) should include Grouped-Query Attention (GQA) variants alongside established recurrent/SSM and explicit-memory controllers so state-size and control comparisons are never inflated by ungrouped KV caches.
+
 ---
 
 ## 5. Memory Policy
@@ -500,6 +511,23 @@ Must output:
 - what was observed,
 - what cannot be concluded.
 
+### Peer Review & Stage-Gate Agent (Mandatory Dual Independent Review)
+
+Every iteration must run **two independent peer-review agents across all five stage gates** before advancing or scaling compute:
+
+- **Reviewer 1 (Internal Antigravity `peer-reviewer` Subagent):** Context-isolated scientific critic inspecting mathematical derivations, single-factor causal isolation, shortcut/leakage confounds, and regression transparency.
+- **Reviewer 2 (External Codex `gpt-6-astra` at `max` reasoning effort):** Invoked non-interactively in read-only mode (`codex exec -m gpt-6-astra -c model_reasoning_effort="max" -s read-only --ephemeral --skip-git-repo-check`) to independently stress-test observability, planner ceilings, dataset/codec contracts, baseline fairness, statistical uncertainty, and presentation hygiene.
+
+Mandatory stage gates per iteration:
+
+1. **Gate 1 — Hypothesis, Observability & Environment Hardening Gate:** Verify one falsifiable primary question per wave, physical observability of target states, oracle-perception × oracle-dynamics planner ceilings, and shortcut-free counterfactual tests before training.
+2. **Gate 2 — Connected Data Contract & Codec Parity Gate:** Verify source/scene/speaker-disjoint splits, complete partition coverage with exclusion manifests, synchronized modality support for every claimed task, and Dual-Track (`Core` + `Strict System`) codec accounting.
+3. **Gate 3 — Pre-Run Code, Causality & Leak Audit Gate:** Audit exact code diffs, causal masking (zero future lookahead in encoders/ring buffers/registers), gradient-isolation boundaries, and unit tests before launching multi-seed training.
+4. **Gate 4 — Post-Run Statistical, Non-Regression & Showcase Gate:** Audit multi-seed hierarchical + scene-cluster CIs, simultaneous capability retention (no hidden regressions on recall, control, or calibration), condition-shuffling/intervention checks, and deterministic `inference_showcase/` artifacts.
+5. **Gate 5 — Scientific Report & Manuscript Hygiene Gate:** Verify complete compliance with §13.1–§13.2 before merging to `main` or updating external manuscripts.
+
+Reviewers must inspect concrete artifacts (configs, code, JSON ledgers, showcase manifests, and report text), not narrative summaries alone. Blocking flaws halt stage progression until resolved or falsified.
+
 ---
 
 ## 13. Reporting Standard
@@ -522,6 +550,31 @@ Every experiment report must include:
 - next allowed step.
 
 Use cautious language. Do not claim “thinking,” “understanding,” “worldview,” or “reduced hallucination” unless supported by specific evaluations and ablations.
+
+### 13.1 Rules for Scientifically Relevant Presentation vs. Operational Telemetry
+
+Written scientific reports (`report.md`, `README.md` summaries, and standalone research manuscripts) must present **only information relevant to the scientific questions, methodology, and reproducibility**:
+
+1. **Include (Scientifically Relevant Substance):**
+   - Precise research question, falsifiable hypotheses, and mathematical equations (with exact assumptions/limiting conditions stated).
+   - Exact model architecture, trainable vs. frozen parameter counts, streaming state byte footprint (`MiB`), per-tick inference latency/FLOPs, hardware accelerator model, and numerical precision.
+   - Dataset identities, partition rules (recording/scene/speaker-disjoint splits), sample/token exposure counts, batch schedules, modality proportions, and missing-modality masks.
+   - Matched contemporary baselines, single-factor ablations, hierarchical seed-cluster and source/scene-cluster uncertainty intervals, and **all regressions, trade-offs, and negative results in primary summary tables** (never buried solely in discussion prose).
+2. **Exclude from Scientific Prose & Tables (Keep in Operational Logs / JSON Receipts Only):**
+   - Storage-custody and backup telemetry (e.g., `dual-HDD verified`, disk UUIDs, mount paths, server hostnames, LAN IPs, SSH transfer commands).
+   - File-transfer checksum narratives in prose (keep cryptographic config/checkpoint hashes in structured `manifest.json` / `receipt.json` provenance files).
+   - Cloud billing, credit balances, or compute-unit consumption counters.
+   - Compiler crash logs, retry stories, internal sprint/panel shorthand without self-contained scientific task names, or raw internal shard filenames.
+3. **Repository Scope Boundary:** Standalone academic paper drafts (`.tex`, `.bib`, compiled `.pdf` manuscripts) must never be committed inside the code repository.
+
+### 13.2 Persistent Qualitative Inference Gallery & Cross-Modal Generation Protocol
+
+Across every iteration wave, teams must store deterministic, uncurated inference artifacts (`inference_showcase/`) and rigorously evaluate cross-modal generation:
+
+1. **Development vs. Sealed Test Gallery:** Use a fixed `dev` gallery during iteration; generate the `test` gallery once after architecture, checkpoint selection, and decoding hyperparameters are frozen, with model weights strictly frozen (`no` online weight updates).
+2. **Pre-Registered Selection Manifest (`showcase_manifest.json`):** Lock common cross-model episode IDs prior to evaluation alongside a deterministic post-evaluation percentile selector (`P05` failure, `P25`, `P50` median, `P75`, `P95`) ranked by pre-registered physical grounding metrics on the median seed. Fix random seeds and sample counts—no best-of-$N$ regeneration, cherry-picking, or omitted failures.
+3. **Side-by-Side Provenance & Epistemic Labels:** Render synchronized comparisons (`Ground Truth | Trivial Copy/Retrieval Baseline | Matched Baselines | SLWM`) and explicitly label every output channel as `observed`, `reconstructed`, `predicted`, `imagined`, or `abstained` (distinguishing forced diagnostic decoding from `PolicyCommitGate`-routed output).
+4. **Cross-Modal Generation Evaluation:** Evaluating cross-modal synthesis (`Video+Action -> Audio`, glimpsed vs. blind `Audio+Proprio -> Scene/Geometry`, `Language+Scene+Action -> Rollout`, `Stream -> Grounded Narration`) requires: (a) condition-shuffling and action-intervention tests proving causal conditioning rather than unconditional prior hallucination, (b) separation of previously observed occluded appearance from unobservable blind attributes, and (c) pre-registered non-inferiority gates confirming that adding generative detail pathways does not degrade core closed-loop control, long-horizon overwrite recall, or commitment calibration.
 
 ---
 
