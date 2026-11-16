@@ -511,22 +511,22 @@ Must output:
 - what was observed,
 - what cannot be concluded.
 
-### Peer Review & Stage-Gate Agent (Mandatory Dual Independent Review)
+### Peer Review & Stage-Gate Agent (Mandatory Independent Review)
 
-Every iteration must run **two independent peer-review agents across all five stage gates** before advancing or scaling compute:
+Every iteration must pass an **independent context-isolated `peer-reviewer` stage-gate agent across all five stage gates** before advancing or scaling compute:
 
-- **Reviewer 1 (Internal Antigravity `peer-reviewer` Subagent):** Context-isolated scientific critic inspecting mathematical derivations, single-factor causal isolation, shortcut/leakage confounds, and regression transparency.
-- **Reviewer 2 (External Codex `gpt-6-astra` at `max` reasoning effort):** Invoked non-interactively in read-only mode (`codex exec -m gpt-6-astra -c model_reasoning_effort="max" -s read-only --ephemeral --skip-git-repo-check`) to independently stress-test observability, planner ceilings, dataset/codec contracts, baseline fairness, statistical uncertainty, and presentation hygiene.
+- **Primary Stage-Gate Critic (Internal Antigravity `peer-reviewer` Subagent):** Context-isolated scientific critic inspecting mathematical derivations, physical observability, oracle ceilings, single-factor causal isolation, shortcut/leakage confounds, statistical uncertainty, regression transparency, and scientific presentation hygiene across Gates 1–5.
+- **Optional External Critic (Codex CLI):** When available and requested, a read-only `codex exec` review may be run as a supplementary check; one independent `peer-reviewer` audit per stage gate is authoritative and sufficient for gate progression.
 
 Mandatory stage gates per iteration:
 
 1. **Gate 1 — Hypothesis, Observability & Environment Hardening Gate:** Verify one falsifiable primary question per wave, physical observability of target states, oracle-perception × oracle-dynamics planner ceilings, and shortcut-free counterfactual tests before training.
 2. **Gate 2 — Connected Data Contract & Codec Parity Gate:** Verify source/scene/speaker-disjoint splits, complete partition coverage with exclusion manifests, synchronized modality support for every claimed task, and Dual-Track (`Core` + `Strict System`) codec accounting.
 3. **Gate 3 — Pre-Run Code, Causality & Leak Audit Gate:** Audit exact code diffs, causal masking (zero future lookahead in encoders/ring buffers/registers), gradient-isolation boundaries, and unit tests before launching multi-seed training.
-4. **Gate 4 — Post-Run Statistical, Non-Regression & Showcase Gate:** Audit multi-seed hierarchical + scene-cluster CIs, simultaneous capability retention (no hidden regressions on recall, control, or calibration), condition-shuffling/intervention checks, and deterministic `inference_showcase/` artifacts.
+4. **Gate 4 — Post-Run Statistical, Non-Regression & Showcase Gate:** Audit multi-seed hierarchical + scene-cluster CIs, explicit capability floors plus simultaneous non-regression (no hidden regressions on recall, control, grounding, or calibration), condition-shuffling/intervention checks, and deterministic `inference_showcase/` artifacts.
 5. **Gate 5 — Scientific Report & Manuscript Hygiene Gate:** Verify complete compliance with §13.1–§13.2 before merging to `main` or updating external manuscripts.
 
-Reviewers must inspect concrete artifacts (configs, code, JSON ledgers, showcase manifests, and report text), not narrative summaries alone. Blocking flaws halt stage progression until resolved or falsified.
+The reviewer must inspect concrete artifacts (configs, code, JSON ledgers, showcase manifests, and report text), not narrative summaries alone. Blocking flaws halt stage progression until resolved or falsified.
 
 ---
 

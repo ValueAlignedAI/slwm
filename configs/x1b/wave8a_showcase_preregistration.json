@@ -1,0 +1,43 @@
+{
+  "artifacts": [
+    "wave8a_p05_to_p95_unseen_mpc_gallery.png",
+    "wave8a_cross_cohort_t160_and_k16_showcase.png",
+    "wave8a_common_episodes_cross_cohort_gallery.png"
+  ],
+  "cohort_seed_selection_rule": "median_seed_by_unseen_layout_mppi_success",
+  "common_cross_model_episode_ids": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "expected_cohorts": [
+    "w8a_slwm_x2_isolated_450m",
+    "w8a_ablation_no_zmem_iso_450m",
+    "w8a_ablation_spatial_control_only_450m",
+    "w8a_sliding_window_w64_gqa_450m",
+    "w8a_diagonal_ssm_450m"
+  ],
+  "expected_seeds": [
+    2001,
+    2002,
+    2003
+  ],
+  "figure2_fixed_episode_ids": {
+    "panel_b_k16_overwrite_episode_id": 0,
+    "panel_c_ood_camera_episode_id": 0,
+    "panel_d_xarm6_dev_episode_id": 0
+  },
+  "percentile_quantiles": [
+    "P05",
+    "P25",
+    "P50",
+    "P75",
+    "P95"
+  ],
+  "percentile_ranking_metric": "negative_final_min_object_to_goal_distance",
+  "percentile_reference_cohort": "w8a_slwm_x2_isolated_450m",
+  "schema_version": "wave8a_showcase_preregistration_v1",
+  "split": "dev",
+  "wave": "wave8a"
+}

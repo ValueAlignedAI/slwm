@@ -26,6 +26,7 @@ TAG_RE = re.compile(r"x1b-[a-z0-9_-]{3,80}")
 ALLOWED_FILES = {
     "portable_int8.npz",
     "weights_bf16.npz",
+    "showcase_bundle.npz",
     "eval_metrics.json",
     "config.json",
     "train.jsonl",
@@ -46,7 +47,7 @@ def atomic_json(path: Path, data: dict) -> None:
     tmp.replace(path)
 
 
-SUBDIR_RE = re.compile(r"runs(?:_wave[0-9]+)?")
+SUBDIR_RE = re.compile(r"runs(?:_[a-z0-9_]{1,48})?")
 
 
 def verified_roots(subdir: str = "runs") -> tuple[Path, Path]:
@@ -110,6 +111,8 @@ def mirror_and_verify(tag: str, subdir: str = "runs") -> None:
     must_check = [("portable_int8.npz", receipt["portable_int8_sha256"])]
     if receipt.get("weights_bf16_sha256"):
         must_check.append(("weights_bf16.npz", receipt["weights_bf16_sha256"]))
+    if receipt.get("showcase_bundle_sha256"):
+        must_check.append(("showcase_bundle.npz", receipt["showcase_bundle_sha256"]))
 
     aux_files = ["receipt.json", "eval_metrics.json", "config.json", "train.jsonl"]
     digests: dict[str, str] = {}
@@ -144,7 +147,7 @@ def mirror_and_verify(tag: str, subdir: str = "runs") -> None:
         ver = {
             "tag": tag,
             "verified_copies": 2,
-            "disk_uuids": [u for _, u in DISK_PAIR],
+            "disk_uuid_sha256": [hashlib.sha256(u.encode()).hexdigest() for _, u in DISK_PAIR],
             "sha256": digests,
         }
         atomic_json(run_a / "verified.json", ver)

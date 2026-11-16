@@ -1,0 +1,119 @@
+{
+  "study_id": "spatiotemporal-jepa-x2-wave8a-trunk-isolation-and-gqa-parity",
+  "runs_subdir": "runs_wave8a",
+  "use_real_multimodal_bank": true,
+  "real_bank_name": "x1b_real_bank_v2",
+  "use_wave8a_grounded_v2": true,
+  "grounded_bank_name": "x1b_wave8a_grounded_v2",
+  "vault_bank_name": "x1b_wave8a_vault_v2",
+  "use_legacy_wave5_robot": false,
+  "training_schedule": {
+    "steps": 1800,
+    "batch_size": 8,
+    "seq_len": 64,
+    "sequence_tensor_budget_ticks": 921600
+  },
+  "description": "Study X2 Wave 8A (15 x 453M runs = 5 cohorts x 3 seeds, 1800 steps x B=8 x T=64 = 9.216e5 ticks/run): Resolves Wave 7 cross-task interference between spatial/goal-latch supervision and long-horizon symbolic overwrite recall via Z_mem (+) Z_task head/gradient isolation (H_sym (+) H_goal (+) H_phys + custom_vjp top-slot isolation + disjoint subspace softmax), adds parameter-matched 9:1 Grouped-Query Sliding-Window (SlidingWindow-W64-GQA, 13.5264 / 13.5898 MiB Core / Strict System state) and matched DiagonalSSM (4.9138 / 4.9773 MiB Core / Strict System state) baselines against SLWM-X2 (8.7898 / 8.8533 MiB Core / Strict System state, including +55,397 B streaming decoder/commit carry, +10,876 B audio frontend, and +292 B MPPI controller carry), evaluates K in {1, 2, 4, 8, 16} x T in {64, 256, 1024} dynamic-visual selective overwrite capacity, and enforces <= 2.0 pp non-inferiority across all 9 spatial control, safety, and scene-grounded spoken robot metrics against a Spatial-Control-Only ceiling anchor.",
+  "budget": {
+    "max_compute_units": 962.0,
+    "min_balance_reserve": 3.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100"
+  },
+  "pre_registered_gates": {
+    "min_dyn_visual_assoc_T1024": 0.95,
+    "min_T160_paired_causal_switch": 0.50,
+    "min_scene_grounding_margin_over_shuffled_and_prior": 0.10,
+    "min_paired_flip_dual_scene_grounding": 0.25,
+    "min_paired_flip_dual_audio_only_grounding": 0.20,
+    "max_spatial_control_non_inferiority_drop": 0.02,
+    "max_parameter_parity_delta_pct": 0.01
+  },
+  "cohorts_453m_3seed": [
+    {
+      "cohort": "w8a_slwm_x2_isolated_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 1800,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_ablation_no_zmem_iso_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": false,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 1800,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_ablation_spatial_control_only_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": false
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 1800,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_sliding_window_w64_gqa_450m",
+      "profile": "x450m",
+      "arch": "sliding_window_gqa_transformer",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 1800,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_diagonal_ssm_450m",
+      "profile": "x450m",
+      "arch": "diagonal_ssm_hybrid",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 1800,
+      "batch_size": 8,
+      "seq_len": 64
+    }
+  ]
+}

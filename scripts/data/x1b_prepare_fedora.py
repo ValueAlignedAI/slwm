@@ -21,6 +21,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import tempfile
 import zipfile
@@ -135,24 +136,103 @@ def render_pymunk_poses_64(
     return np.clip(np.rint(img), 0.0, 255.0).astype(np.uint8)
 
 
-def wav_to_logmel_64(wav_bytes: bytes, n_ticks: int) -> np.ndarray:
-    """Compute 64-band log-power spectral features at 10 Hz ticks from WAV bytes."""
-    data, sr = sf.read(io.BytesIO(wav_bytes), dtype="float32", always_2d=False)
+TARGET_AUDIO_SR = 16_000
+CAUSAL_LOG10_MEAN = -4.523
+CAUSAL_LOG10_STD = 2.524
+MAX_CAUSAL_AUDIO_FRONTEND_BYTES = 10_876
+SUPPORTED_CAUSAL_AUDIO_SRS: dict[int, tuple[int, int]] = {
+    16_000: (16_000, 1),
+    24_000: (24_000, 1),
+    32_000: (16_000, 2),
+    44_100: (22_050, 2),
+    48_000: (16_000, 3),
+    96_000: (16_000, 6),
+}
+STARSS_SPLITS: dict[str, str] = {
+    "train": "dev-train-tau",
+    "dev": "dev-test-tau",
+    "test": "dev-test-sony",
+}
+
+
+def causal_decimate_pcm_to_16khz(pcm: np.ndarray, sr: int) -> np.ndarray:
+    """Causally convert mono/multichannel PCM to exact `16,000 Hz` mono with zero future lookahead."""
+    sr_i = int(sr)
+    if sr_i <= 0:
+        raise ValueError(f"Invalid audio sample rate: {sr_i}")
+    data = np.asarray(pcm, dtype=np.float32)
     if data.ndim > 1:
         data = data.mean(axis=-1)
-    hop = max(1, sr // 10)
-    win = max(64, hop)
-    spec_rows = []
-    freqs = np.fft.rfftfreq(win, d=1.0 / sr)
-    # 64 log-spaced frequency bands from 60 Hz to min(8000, sr/2)
-    edges = np.geomspace(60.0, min(8000.0, sr * 0.48), 65)
+    if sr_i == TARGET_AUDIO_SR:
+        return data
+    if sr_i < TARGET_AUDIO_SR or (sr_i % TARGET_AUDIO_SR) != 0:
+        raise ValueError(
+            f"Causal 16 kHz frontend requires sr == {TARGET_AUDIO_SR} or an exact integer multiple; got sr={sr_i}"
+        )
+    factor = sr_i // TARGET_AUDIO_SR
+    n_out = int(data.shape[0]) // factor
+    if n_out == 0:
+        return np.zeros((0,), dtype=np.float32)
+    return data[: n_out * factor].reshape(n_out, factor).mean(axis=1).astype(np.float32)
+
+
+def causal_decimate_pcm_10hz(pcm: np.ndarray, sr: int) -> tuple[np.ndarray, int]:
+    """Causally convert source PCM to an exact `10 Hz`-commensurate rate (`16 kHz`, `22.05 kHz`, or `24 kHz`).
+
+    Uses strictly non-overlapping integer `factor:1` boxcar averaging with zero future lookahead across all
+    registered corpora (`16 kHz` SpeechCommands, `24 kHz` STARSS23 FOA W, `44.1->22.05 kHz` GRID, and
+    `96->16 kHz` GreatestHits), strictly bounded by `<= 10,876 B` total streaming frontend state.
+    """
+    sr_i = int(sr)
+    if sr_i not in SUPPORTED_CAUSAL_AUDIO_SRS:
+        raise ValueError(
+            f"Unsupported audio sample rate {sr_i} for strict causal 10 Hz frontend; supported={sorted(SUPPORTED_CAUSAL_AUDIO_SRS)}"
+        )
+    eff_sr, factor = SUPPORTED_CAUSAL_AUDIO_SRS[sr_i]
+    data = np.asarray(pcm, dtype=np.float32)
+    if data.ndim > 1:
+        data = data.mean(axis=-1)
+    if factor == 1:
+        return data, eff_sr
+    n_out = int(data.shape[0]) // factor
+    if n_out == 0:
+        return np.zeros((0,), dtype=np.float32), eff_sr
+    return data[: n_out * factor].reshape(n_out, factor).mean(axis=1).astype(np.float32), eff_sr
+
+
+def pcm_to_causal_logmel_64(pcm: np.ndarray, sr: int, n_ticks: int) -> np.ndarray:
+    """Compute strictly causal 64-band `10 Hz` log-power features (`[60 Hz, 7,680 Hz]`) with zero lookahead.
+
+    Causally decimates registered source PCM (`16/24/32/44.1/48/96 kHz`), reads strictly samples
+    `< (t_idx + 1) * hop` at tick `t_idx` (`hop = eff_sr // 10`), normalizes FFT window length via
+    `scale = win / 1600.0` (`1.0` at `16 kHz`), and applies fixed reference constants (`CAUSAL_LOG10_MEAN`,
+    `CAUSAL_LOG10_STD`) with zero whole-waveform `max(abs)` normalization.
+    """
+    data, eff_sr = causal_decimate_pcm_10hz(pcm, int(sr))
+    hop = eff_sr // 10  # 1,600 @ 16 kHz; 2,205 @ 22.05 kHz; 2,400 @ 24 kHz (exact 100 ms window)
+    win = hop
+    scale = float(win) / 1600.0
+    freqs = np.fft.rfftfreq(win, d=1.0 / float(eff_sr))
+    edges = np.geomspace(60.0, 7680.0, 65)
     hann = np.hanning(win).astype(np.float32)
+    spec_rows = []
+    n_tot = int(data.shape[0])
     for t_idx in range(n_ticks):
-        start = t_idx * hop
-        seg = data[start : start + win]
-        if len(seg) < win:
-            seg = np.pad(seg, (0, win - len(seg)))
-        mag = np.abs(np.fft.rfft(seg * hann)) ** 2
+        end = (t_idx + 1) * hop
+        raw_start = end - win
+        clip_end = min(end, n_tot)
+        clip_start = max(0, raw_start)
+        if clip_end > clip_start:
+            core = data[clip_start:clip_end]
+        else:
+            core = np.zeros((0,), dtype=np.float32)
+        left_pad = max(0, -raw_start)
+        right_pad = max(0, win - left_pad - int(core.shape[0]))
+        if left_pad > 0 or right_pad > 0:
+            seg = np.pad(core, (left_pad, right_pad))
+        else:
+            seg = core
+        mag = (np.abs(np.fft.rfft(seg * hann)) / scale) ** 2
         bands = np.zeros((64,), dtype=np.float32)
         for b in range(64):
             mask = (freqs >= edges[b]) & (freqs < edges[b + 1])
@@ -163,8 +243,47 @@ def wav_to_logmel_64(wav_bytes: bytes, n_ticks: int) -> np.ndarray:
                 bands[b] = float(mag[idx])
         spec_rows.append(np.log10(bands + 1e-7))
     spec = np.stack(spec_rows, axis=0)
-    spec = (spec - np.mean(spec)) / (np.std(spec) + 1e-5)
+    spec = (spec - CAUSAL_LOG10_MEAN) / CAUSAL_LOG10_STD
     return np.clip(spec, -4.0, 4.0).astype(np.float32)
+
+
+def wav_to_logmel_64(wav_bytes: bytes | Path, n_ticks: int) -> np.ndarray:
+    """Compute strictly causal 64-band log-power spectral features at 10 Hz ticks from WAV bytes or Path."""
+    raw = wav_bytes.read_bytes() if isinstance(wav_bytes, Path) else wav_bytes
+    data, sr = sf.read(io.BytesIO(raw), dtype="float32", always_2d=False)
+    return pcm_to_causal_logmel_64(data, int(sr), n_ticks)
+
+
+def mpg_to_causal_logmel_64(
+    mpg_bytes: bytes | Path,
+    n_ticks: int,
+    *,
+    expected_sr: int = 44_100,
+    ffmpeg_bin: str | None = None,
+) -> np.ndarray:
+    """Decode MPEG-1 Layer II (`44.1 kHz`) audio with zero FFmpeg resampling (`-ar` forbidden) & fixed `1/32768` scale."""
+    raw = mpg_bytes.read_bytes() if isinstance(mpg_bytes, Path) else mpg_bytes
+    ff_exe = ffmpeg_bin or shutil.which("ffmpeg") or "/usr/bin/ffmpeg"
+    cmd = [
+        ff_exe,
+        "-v",
+        "error",
+        "-threads",
+        "1",
+        "-i",
+        "pipe:0",
+        "-map",
+        "0:a:0",
+        "-vn",
+        "-ac",
+        "1",
+        "-f",
+        "s16le",
+        "pipe:1",
+    ]
+    pcm_s16 = subprocess.check_output(cmd, input=raw, timeout=20)
+    pcm = np.frombuffer(pcm_s16, dtype="<i2").astype(np.float32) / 32768.0
+    return pcm_to_causal_logmel_64(pcm, int(expected_sr), n_ticks)
 
 
 def extract_greatest_hits_64(
@@ -260,11 +379,8 @@ def extract_greatest_hits_64(
                 if 0 <= rel < SEQ_LEN:
                     contacts[rel, 0] = 1.0
 
-            # Optical motion energy as physical proxy in proprioceptive slots
-            f_diff = np.mean(np.abs(np.diff(frames.astype(np.float32) / 255.0, axis=0, prepend=frames[:1].astype(np.float32) / 255.0)), axis=(1, 2, 3))
+            # Passive AV corpus: zero robot proprioception (contacts target-only, modality_mask = [1, 1, 0, 0])
             proprio = np.zeros((SEQ_LEN, 16), dtype=np.float32)
-            proprio[:, 4] = f_diff * 4.0
-            proprio[:, 10] = contacts[:, 0]
 
             buckets[split].append(
                 {
@@ -276,7 +392,7 @@ def extract_greatest_hits_64(
                     "action": np.zeros((SEQ_LEN, 4), dtype=np.float32),
                     "contacts": contacts,
                     "goal": np.zeros((4,), dtype=np.float32),
-                    "modality_mask": np.array([[1.0, 1.0, 1.0, 0.0]] * SEQ_LEN, dtype=np.float32),
+                    "modality_mask": np.array([[1.0, 1.0, 0.0, 0.0]] * SEQ_LEN, dtype=np.float32),
                     "has_av_pair": np.float32(1.0),
                 }
             )
@@ -285,51 +401,68 @@ def extract_greatest_hits_64(
     return buckets, used_stems
 
 
-def load_starss_64(starss_dir: Path, counts_per_split: dict[str, int]) -> dict[str, list[dict[str, np.ndarray]]]:
-    """Load real STARSS23 spatial audio-video clips upsampled cleanly to 64x64x3."""
+def load_starss_64(
+    starss_dir: Path,
+    foa_zip_path: Path,
+    counts_per_split: dict[str, int],
+) -> dict[str, list[dict[str, np.ndarray]]]:
+    """Load real STARSS23 spatial audio-video clips using raw `24 kHz` FOA omnidirectional channel `W` (`0` annotations)."""
     out: dict[str, list[dict[str, np.ndarray]]] = {"train": [], "dev": [], "test": []}
     rng = np.random.default_rng(20261111)
-    for split in ("train", "dev", "test"):
-        with np.load(starss_dir / f"starss-{split}.npz", allow_pickle=False) as f:
-            a = f["a"]        # [T_tot, 64] uint8
-            v = f["v"]        # [T_tot, 768] uint8 (16x16x3)
-            n = f["n"]        # [T_tot, 12] float32
-            lengths = f["lengths"].astype(int)
-        offsets = np.cumsum(np.r_[0, lengths[:-1]])
-        valid_starts = []
-        for off, ln in zip(offsets, lengths):
-            if ln >= SEQ_LEN + 4:
-                for s in range(off, off + ln - SEQ_LEN, SEQ_LEN):
-                    valid_starts.append(s)
-        chosen = rng.choice(valid_starts, size=min(counts_per_split[split], len(valid_starts)), replace=False)
-        for st in chosen:
-            v16 = v[st : st + SEQ_LEN].reshape(SEQ_LEN, 16, 16, 3)
-            # Smooth bilinear upsample (order=1) from 16x16x3 -> 64x64x3
-            v64 = np.clip(zoom(v16.astype(np.float32), (1, 4, 4, 1), order=1), 0, 255).astype(np.uint8)
-            aud = (a[st : st + SEQ_LEN].astype(np.float32) / 48.0 - 2.33).astype(np.float32)
-            prop = np.zeros((SEQ_LEN, 16), dtype=np.float32)
-            prop[:, :12] = n[st : st + SEQ_LEN]
-            con = np.zeros((SEQ_LEN, 2), dtype=np.float32)
-            con[:, 0] = (np.linalg.norm(n[st : st + SEQ_LEN, :3], axis=-1) > 0.25).astype(np.float32)
-            out[split].append(
-                {
-                    "video": v64,
-                    "audio": aud,
-                    "proprio": prop,
-                    "text": np.zeros((SEQ_LEN, 4), dtype=np.int32),
-                    "target_text": np.zeros((SEQ_LEN,), dtype=np.int32),
-                    "action": np.zeros((SEQ_LEN, 4), dtype=np.float32),
-                    "contacts": con,
-                    "goal": np.zeros((4,), dtype=np.float32),
-                    "modality_mask": np.array([[1.0, 1.0, 1.0, 0.0]] * SEQ_LEN, dtype=np.float32),
-                    "has_av_pair": np.float32(1.0),
-                }
+    with zipfile.ZipFile(foa_zip_path, "r") as foa_zf:
+        for split in ("train", "dev", "test"):
+            role = STARSS_SPLITS[split]
+            with np.load(starss_dir / f"starss-{split}.npz", allow_pickle=False) as f:
+                v = f["v"]        # [T_tot, 768] uint8 (16x16x3)
+                lengths = f["lengths"].astype(int)
+                names = [str(nm) for nm in f["names"]]
+            offsets = np.cumsum(np.r_[0, lengths[:-1]])
+            valid_candidates: list[tuple[int, int, int, str]] = []
+            for off, ln, stem in zip(offsets, lengths, names):
+                if ln >= SEQ_LEN + 4:
+                    for s in range(int(off), int(off + ln - SEQ_LEN), SEQ_LEN):
+                        valid_candidates.append((int(s), int(s - off), int(ln), stem))
+            chosen_idx = rng.choice(
+                len(valid_candidates),
+                size=min(counts_per_split[split], len(valid_candidates)),
+                replace=False,
             )
+            chosen_rows = [valid_candidates[int(ci)] for ci in chosen_idx]
+            rec_mel_cache: dict[str, np.ndarray] = {}
+            for _, _, ln, stem in chosen_rows:
+                if stem not in rec_mel_cache:
+                    wav_member = f"foa_dev/{role}/{stem}.wav"
+                    wave_raw, sr = sf.read(io.BytesIO(foa_zf.read(wav_member)), dtype="float32", always_2d=True)
+                    if int(sr) != 24_000:
+                        raise ValueError(f"Expected 24 kHz STARSS23 FOA WAV for {wav_member}, got sr={sr}")
+                    # FOA channel 0 is omnidirectional acoustic pressure W (zero spatial/annotation leakage!)
+                    rec_mel_cache[stem] = pcm_to_causal_logmel_64(wave_raw[:, 0], int(sr), int(ln))
+
+            for st, rel_tick, _, stem in chosen_rows:
+                v16 = v[st : st + SEQ_LEN].reshape(SEQ_LEN, 16, 16, 3)
+                v64 = np.clip(zoom(v16.astype(np.float32), (1, 4, 4, 1), order=1), 0, 255).astype(np.uint8)
+                aud = rec_mel_cache[stem][rel_tick : rel_tick + SEQ_LEN]
+                prop = np.zeros((SEQ_LEN, 16), dtype=np.float32)
+                con = np.zeros((SEQ_LEN, 2), dtype=np.float32)
+                out[split].append(
+                    {
+                        "video": v64,
+                        "audio": aud,
+                        "proprio": prop,
+                        "text": np.zeros((SEQ_LEN, 4), dtype=np.int32),
+                        "target_text": np.zeros((SEQ_LEN,), dtype=np.int32),
+                        "action": np.zeros((SEQ_LEN, 4), dtype=np.float32),
+                        "contacts": con,
+                        "goal": np.zeros((4,), dtype=np.float32),
+                        "modality_mask": np.array([[1.0, 1.0, 0.0, 0.0]] * SEQ_LEN, dtype=np.float32),
+                        "has_av_pair": np.float32(1.0),
+                    }
+                )
     return out
 
 
 def load_pymunk_pusht_64(pusht_root: Path, counts_per_split: dict[str, int]) -> dict[str, list[dict[str, np.ndarray]]]:
-    """Re-render real PyMunk Push-T trajectories at native 64x64x3 anti-aliased RGB."""
+    """Re-render real PyMunk Push-T trajectories at native 64x64x3 anti-aliased RGB (silent vision+proprio)."""
     out: dict[str, list[dict[str, np.ndarray]]] = {"train": [], "dev": [], "test": []}
     for split in ("train", "dev", "test"):
         d = pusht_root / split
@@ -360,8 +493,7 @@ def load_pymunk_pusht_64(pusht_root: Path, counts_per_split: dict[str, int]) -> 
 
             obj_moved = (np.linalg.norm(prop[:, 4:6], axis=-1) > 0.03).astype(np.float32)
             con = np.stack([obj_moved, np.zeros_like(obj_moved)], axis=-1)
-            aud = np.zeros((SEQ_LEN, 64), dtype=np.float32) - 0.35
-            aud[:, 12:24] += obj_moved[:, None] * 1.1
+            aud = np.zeros((SEQ_LEN, 64), dtype=np.float32)
 
             out[split].append(
                 {
@@ -373,8 +505,8 @@ def load_pymunk_pusht_64(pusht_root: Path, counts_per_split: dict[str, int]) -> 
                     "action": u_seq,
                     "contacts": con,
                     "goal": np.concatenate([goal_xy - poses32[0, 2:4], goal_xy]).astype(np.float32),
-                    "modality_mask": np.array([[1.0, 1.0, 1.0, 0.0]] * SEQ_LEN, dtype=np.float32),
-                    "has_av_pair": np.float32(1.0),
+                    "modality_mask": np.array([[0.0, 1.0, 1.0, 0.0]] * SEQ_LEN, dtype=np.float32),
+                    "has_av_pair": np.float32(0.0),
                 }
             )
     return out
@@ -459,19 +591,26 @@ def build_g8_panels_64(panels_root: Path, out_dir: Path) -> dict[str, str]:
 
 
 def main() -> None:
+    import argparse
+
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--bank-name", default="x1b_real_bank_v2")
+    ap.add_argument("--force-rebuild", action="store_true")
+    args = ap.parse_args()
+
     src_root = Path("/mnt/slwm-data/SLWM")
     out_dir = src_root / "x1b/datasets"
     out_dir.mkdir(parents=True, exist_ok=True)
-    bank_path = out_dir / "x1b_real_bank_v1.npz"
-    card_path = out_dir / "x1b_real_bank_v1.card.json"
+    bank_path = out_dir / f"{args.bank_name}.npz"
+    card_path = out_dir / f"{args.bank_name}.card.json"
 
-    if bank_path.is_file() and card_path.is_file():
+    if not args.force_rebuild and bank_path.is_file() and card_path.is_file():
         meta = json.loads(card_path.read_text())
         if sha256_file(bank_path) == meta["sha256"]:
-            print("X1B_REAL_BANK_ALREADY_VERIFIED", meta["sha256"], flush=True)
+            print("X1B_REAL_BANK_ALREADY_VERIFIED", args.bank_name, meta["sha256"], flush=True)
             return
 
-    print("1/5 Extracting real GreatestHits 64x64x3 impact video+audio...", flush=True)
+    print("1/5 Extracting real GreatestHits 64x64x3 impact video+audio (strictly causal log-mel)...", flush=True)
     gh_buckets, gh_stems = extract_greatest_hits_64(
         src_root / "g5/sources/vis-data-256.zip",
         {"train": 320, "dev": 64, "test": 96},
@@ -480,8 +619,12 @@ def main() -> None:
     assert set(gh_stems["train"]).isdisjoint(gh_stems["test"])
     assert set(gh_stems["dev"]).isdisjoint(gh_stems["test"])
 
-    print("2/5 Loading real STARSS23 spatial audio-video...", flush=True)
-    st_buckets = load_starss_64(src_root / "g9/data", {"train": 256, "dev": 64, "test": 64})
+    print("2/5 Loading real STARSS23 spatial audio-video (raw 24 kHz FOA omni W, zero annotations)...", flush=True)
+    st_buckets = load_starss_64(
+        src_root / "g9/data",
+        src_root / "g7/starss/foa_dev.zip",
+        {"train": 256, "dev": 64, "test": 64},
+    )
 
     print("3/5 Rendering real PyMunk Push-T trajectories at 64x64x3...", flush=True)
     pt_buckets = load_pymunk_pusht_64(src_root / "g5/pusht", {"train": 320, "dev": 64, "test": 96})
@@ -492,8 +635,12 @@ def main() -> None:
         {"train": 320, "dev": 64, "test": 96},
     )
 
-    print("5/5 Building held-out G8 PyMunk 64x64 panels & writing bank...", flush=True)
-    panel_info = build_g8_panels_64(src_root / "g8/panels", out_dir)
+    print("5/5 Verifying held-out G8 PyMunk 64x64 panels & writing bank...", flush=True)
+    panels_card_p = out_dir / "x1b_pymunk_panels_64.card.json"
+    if (out_dir / "x1b_pymunk_panels_64.npz").is_file() and panels_card_p.is_file():
+        panel_info = {"pymunk_panels_sha256": json.loads(panels_card_p.read_text())["sha256"]}
+    else:
+        panel_info = build_g8_panels_64(src_root / "g8/panels", out_dir)
 
     arrays: dict[str, np.ndarray] = {}
     counts: dict[str, int] = {}
@@ -501,26 +648,58 @@ def main() -> None:
     fields = ("video", "audio", "proprio", "text", "target_text", "action", "contacts", "goal", "modality_mask", "has_av_pair")
 
     for split in ("train", "dev", "test"):
-        items = gh_buckets[split] + st_buckets[split] + pt_buckets[split] + fw_buckets[split]
-        perm = rng.permutation(len(items))
-        items = [items[int(i)] for i in perm]
-        counts[split] = len(items)
+        tagged_items = (
+            [(it, "greatest_hits", gh_stems[split][i]) for i, it in enumerate(gh_buckets[split])]
+            + [(it, "starss23", f"starss_{split}_{i:04d}") for i, it in enumerate(st_buckets[split])]
+            + [(it, "pymunk_pusht", f"pusht_{split}_{i:04d}") for i, it in enumerate(pt_buckets[split])]
+            + [(it, "fineweb_edu", f"fineweb_{split}_{i:04d}") for i, it in enumerate(fw_buckets[split])]
+        )
+        perm = rng.permutation(len(tagged_items))
+        tagged_items = [tagged_items[int(i)] for i in perm]
+        counts[split] = len(tagged_items)
         for f_name in fields:
-            arrays[f"{split}_{f_name}"] = np.stack([it[f_name] for it in items], axis=0)
+            arrays[f"{split}_{f_name}"] = np.stack([it[0][f_name] for it in tagged_items], axis=0)
+        arrays[f"{split}_source_domain"] = np.asarray([it[1] for it in tagged_items], dtype="<U20")
+        arrays[f"{split}_source_id"] = np.asarray([it[2] for it in tagged_items], dtype="<U48")
 
     tmp_bank = bank_path.with_suffix(".tmp.npz")
     np.savez_compressed(tmp_bank, **arrays)
     tmp_bank.replace(bank_path)
     bank_sha = sha256_file(bank_path)
 
-    (out_dir / "vocab_4096.json").write_text(json.dumps(vocab, sort_keys=True) + "\n")
+    if not (out_dir / "vocab_4096.json").is_file():
+        (out_dir / "vocab_4096.json").write_text(json.dumps(vocab, sort_keys=True) + "\n")
     card = {
-        "dataset": "x1b_real_bank_v1",
+        "dataset": args.bank_name,
         "sha256": bank_sha,
         "seq_len": SEQ_LEN,
         "vocab_size": VOCAB_SIZE,
+        "audio_frontend": {
+            "causal": True,
+            "supported_source_rates_hz": sorted(SUPPORTED_CAUSAL_AUDIO_SRS),
+            "source_decimation": "strict_integer_causal_boxcar_10hz_commensurate",
+            "passband_hz": [60.0, 7680.0],
+            "greatest_hits_state_bytes": 6424,
+            "starss23_foa_w_state_bytes": 9600,
+            "universal_max_frontend_state_bytes": MAX_CAUSAL_AUDIO_FRONTEND_BYTES,
+            "normalization": "fixed_train_reference_log10_power",
+            "log10_mean": CAUSAL_LOG10_MEAN,
+            "log10_std": CAUSAL_LOG10_STD,
+            "future_lookahead_samples": 0,
+        },
+        "proprioception_contract": {
+            "greatest_hits": "none_masked_zero",
+            "starss23": "none_masked_zero_no_metadata_annotations",
+            "pymunk_pusht": "ee_only_at_model_input",
+            "fineweb_edu": "none_masked_zero",
+        },
         "counts": counts,
         "greatest_hits_stems": {k: len(v) for k, v in gh_stems.items()},
+        "greatest_hits_split_overlap": {
+            "train_dev": len(set(gh_stems["train"]) & set(gh_stems["dev"])),
+            "train_test": len(set(gh_stems["train"]) & set(gh_stems["test"])),
+            "dev_test": len(set(gh_stems["dev"]) & set(gh_stems["test"])),
+        },
         "zero_recording_leakage_verified": True,
         **panel_info,
     }

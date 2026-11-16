@@ -1,0 +1,154 @@
+{
+  "artifacts": [
+    "wave8a_p05_to_p95_unseen_mpc_gallery.png",
+    "wave8a_cross_cohort_t160_and_k16_showcase.png",
+    "wave8a_common_episodes_cross_cohort_gallery.png"
+  ],
+  "cohorts_included": [
+    "w8a_slwm_x2_isolated_450m",
+    "w8a_ablation_no_zmem_iso_450m",
+    "w8a_ablation_spatial_control_only_450m",
+    "w8a_sliding_window_w64_gqa_450m",
+    "w8a_diagonal_ssm_450m"
+  ],
+  "epistemic_channel_definitions": {
+    "abstained": "Tick routed to NO_OP abstention (mode 3: noop_abstain) by route_proposals_with_commit_gate on the diagnostic stream.",
+    "fallback_mitigated": "Tick routed to trusted-proprioception fallback (mode 1: commit_trusted_proprio) or cautious probe (mode 2: probe_cautious) by route_proposals_with_commit_gate.",
+    "ground_truth_eval": "Simulator ground-truth object coordinate trajectory plotted strictly for evaluation comparison (never observed by model proprioception).",
+    "observed": "Model-visible sensory frame, spectrogram, or end-effector proprioception recorded from environment.",
+    "predicted": "Action-conditioned future latent rollout, decoded spatial pose/hazard map, or recalled symbolic binding.",
+    "reconstructed": "Stop-gradient diagnostic patch/audio linear readout from current latent state Z_task."
+  },
+  "online_weight_updates": false,
+  "ood_post_onset_routing_counts": {
+    "w8a_ablation_no_zmem_iso_450m": {
+      "abstained_mode3_ticks": 0,
+      "clean_committed_mode0_ticks": 14,
+      "committed_mode0_ticks": 14,
+      "fallback_mode1_2_ticks": 0,
+      "gate_invoked": "route_proposals_with_commit_gate",
+      "mean_non_commit_prob": 0.0065,
+      "mean_routed_action_l2_delta": 0.0001,
+      "post_onset_ticks": 14
+    },
+    "w8a_ablation_spatial_control_only_450m": {
+      "abstained_mode3_ticks": 0,
+      "clean_committed_mode0_ticks": 14,
+      "committed_mode0_ticks": 14,
+      "fallback_mode1_2_ticks": 0,
+      "gate_invoked": "route_proposals_with_commit_gate",
+      "mean_non_commit_prob": 0.0001,
+      "mean_routed_action_l2_delta": 0.0001,
+      "post_onset_ticks": 14
+    },
+    "w8a_diagonal_ssm_450m": {
+      "abstained_mode3_ticks": 0,
+      "clean_committed_mode0_ticks": 14,
+      "committed_mode0_ticks": 14,
+      "fallback_mode1_2_ticks": 0,
+      "gate_invoked": "route_proposals_with_commit_gate",
+      "mean_non_commit_prob": 0.0007,
+      "mean_routed_action_l2_delta": 0.0001,
+      "post_onset_ticks": 14
+    },
+    "w8a_sliding_window_w64_gqa_450m": {
+      "abstained_mode3_ticks": 0,
+      "clean_committed_mode0_ticks": 14,
+      "committed_mode0_ticks": 14,
+      "fallback_mode1_2_ticks": 0,
+      "gate_invoked": "route_proposals_with_commit_gate",
+      "mean_non_commit_prob": 0.0,
+      "mean_routed_action_l2_delta": 0.0001,
+      "post_onset_ticks": 14
+    },
+    "w8a_slwm_x2_isolated_450m": {
+      "abstained_mode3_ticks": 0,
+      "clean_committed_mode0_ticks": 14,
+      "committed_mode0_ticks": 14,
+      "fallback_mode1_2_ticks": 0,
+      "gate_invoked": "route_proposals_with_commit_gate",
+      "mean_non_commit_prob": 0.0012,
+      "mean_routed_action_l2_delta": 0.0001,
+      "post_onset_ticks": 14
+    }
+  },
+  "preregistration_verified": true,
+  "rendered": true,
+  "selection_protocol": {
+    "cohort_seed_selection_rule": "median_seed_by_unseen_layout_mppi_success",
+    "cohort_seeds_used": {
+      "w8a_ablation_no_zmem_iso_450m": 2001,
+      "w8a_ablation_spatial_control_only_450m": 2002,
+      "w8a_diagonal_ssm_450m": 2003,
+      "w8a_sliding_window_w64_gqa_450m": 2003,
+      "w8a_slwm_x2_isolated_450m": 2002
+    },
+    "common_cross_model_episode_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "figure2_fixed_episode_ids": {
+      "panel_a_t160_mean_episode_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "panel_b_k16_overwrite_episode_id": 0,
+      "panel_c_ood_camera_episode_id": 0,
+      "panel_d_xarm6_dev_episode_id": 0
+    },
+    "percentile_quantiles": [
+      "P05",
+      "P25",
+      "P50",
+      "P75",
+      "P95"
+    ],
+    "percentile_ranking_metric": "negative_final_min_object_to_goal_distance",
+    "percentile_reference_cohort": "w8a_slwm_x2_isolated_450m",
+    "percentile_reference_seed": 2002,
+    "selected_percentile_episodes": {
+      "P05": {
+        "episode_id": 39,
+        "layout_family": "dynamics_shift",
+        "min_goal_distance": 1.2828,
+        "succeeded": false
+      },
+      "P25": {
+        "episode_id": 24,
+        "layout_family": "off_center_wall",
+        "min_goal_distance": 1.1739,
+        "succeeded": false
+      },
+      "P50": {
+        "episode_id": 25,
+        "layout_family": "dual_chicane",
+        "min_goal_distance": 1.1528,
+        "succeeded": false
+      },
+      "P75": {
+        "episode_id": 42,
+        "layout_family": "multi_block_clutter",
+        "min_goal_distance": 1.0736,
+        "succeeded": false
+      },
+      "P95": {
+        "episode_id": 62,
+        "layout_family": "multi_block_clutter",
+        "min_goal_distance": 0.4386,
+        "succeeded": false
+      }
+    }
+  },
+  "split": "dev",
+  "stage": "rendered",
+  "wave": "wave8a",
+  "weights_frozen": true
+}

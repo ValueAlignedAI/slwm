@@ -72,6 +72,7 @@ def _gated_delta_temporal_wave6(
     key_shield: bool = True,
     zerolag_bypass: bool = True,
     prev_state: tuple[jax.Array, jax.Array] | None = None,
+    modality_mask: jax.Array | None = None,
 ) -> tuple[jax.Array, tuple[jax.Array, jax.Array], jax.Array]:
     """GatedDelta temporal recurrence with configurable `key_shield` & `zerolag_bypass`, returning symbolic keys."""
     b, t, s, d = x.shape
@@ -83,11 +84,20 @@ def _gated_delta_temporal_wave6(
 
     h_long = n_heads // 2
     reg_mean = x[:, :, SLOTS_REGISTER, :].mean(axis=2)
+    if modality_mask is not None:
+        aud_p = modality_mask[:, :, 0:1].astype(jnp.float32)
+        txt_p = modality_mask[:, :, 3:4].astype(jnp.float32)
+        w_t = txt_p.astype(x.dtype)
+        w_a = (aud_p * (1.0 - txt_p)).astype(x.dtype)
+        lang_long = w_t * x[:, :, SLOT_TEXT, :] + w_a * x[:, :, SLOTS_AUDIO, :].mean(axis=2)
+    else:
+        lang_long = x[:, :, SLOT_TEXT, :]
+
     if key_shield:
-        write_src_long = x[:, :, SLOT_TEXT, :]
+        write_src_long = lang_long
     else:
         # Without Symbolic-Key Shielding, visual/embodied features contaminate the symbolic write stream:
-        write_src_long = 0.55 * x[:, :, SLOT_TEXT, :] + 0.45 * x[:, :, SLOTS_VISUAL, :].mean(axis=2)
+        write_src_long = 0.55 * lang_long + 0.45 * x[:, :, SLOTS_VISUAL, :].mean(axis=2)
 
     write_src_emb = (
         0.60 * reg_mean
