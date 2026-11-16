@@ -1,0 +1,123 @@
+{
+  "study_id": "spatiotemporal-jepa-x2-wave8a-r2-trunk-isolation-and-gqa-parity",
+  "runs_subdir": "runs_wave8a_r2",
+  "use_real_multimodal_bank": true,
+  "real_bank_name": "x1b_real_bank_v2",
+  "use_wave8a_grounded_v2": true,
+  "grounded_bank_name": "x1b_wave8a_grounded_v2",
+  "vault_bank_name": "x1b_wave8a_vault_v2",
+  "use_legacy_wave5_robot": false,
+  "training_schedule": {
+    "steps": 2200,
+    "batch_size": 8,
+    "seq_len": 64,
+    "sequence_tensor_budget_ticks": 1126400
+  },
+  "description": "Study X2 Wave 8A-r2 (15 x 453M runs = 5 cohorts x 3 seeds, 2200 steps x B=8 x T=64 = 1.1264e6 ticks/run): Remediates Wave 8A v1 Gate 4 findings via strict across-depth Z_mem (+) Z_task gradient isolation, modality-aware H_goal audio-only & symbolic write/query routing, scale-balanced leak-free PolicyCommitGate innovation routing, and visual-pose-anchored H=6 multi-step subgoal MPPI, evaluated against parameter-matched SlidingWindow-W64-GQA (9:1 GQA), DiagonalSSM, No-Zmem-Iso, and Spatial-Control-Only cohorts.",
+  "budget": {
+    "max_compute_units": 962.0,
+    "min_balance_reserve": 3.0,
+    "preferred_accelerator": "tpu:v6e1",
+    "fallback_accelerator": "gpu:H100"
+  },
+  "pre_registered_gates": {
+    "min_unseen_mppi": 0.65,
+    "max_mppi_drop_vs_no_jepa_subgoal": 0.02,
+    "min_commit_selective_routing": 0.80,
+    "min_vault_spoken_audio_only_disc": 0.70,
+    "min_dyn_visual_assoc_T1024": 0.95,
+    "min_T160_paired_causal_switch": 0.50,
+    "min_scene_grounding_margin_over_shuffled_and_prior": 0.10,
+    "min_paired_flip_dual_scene_grounding": 0.25,
+    "min_paired_flip_dual_audio_only_grounding": 0.20,
+    "max_spatial_control_non_inferiority_drop": 0.02,
+    "max_parameter_parity_delta_pct": 0.01
+  },
+  "cohorts_453m_3seed": [
+    {
+      "cohort": "w8a_slwm_x2_isolated_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_ablation_no_zmem_iso_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": false,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_ablation_spatial_control_only_450m",
+      "profile": "x450m",
+      "arch": "slwm_x1b",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": false
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_sliding_window_w64_gqa_450m",
+      "profile": "x450m",
+      "arch": "sliding_window_gqa_transformer",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200,
+      "batch_size": 8,
+      "seq_len": 64
+    },
+    {
+      "cohort": "w8a_diagonal_ssm_450m",
+      "profile": "x450m",
+      "arch": "diagonal_ssm_hybrid",
+      "regularizer": "epps_pulley_sigreg",
+      "interventions": {
+        "key_shield": true,
+        "zerolag_bypass": true,
+        "decoupled_heads": true,
+        "zmem_isolation": true,
+        "enable_assoc_loss": true
+      },
+      "seeds": [2001, 2002, 2003],
+      "steps": 2200,
+      "batch_size": 8,
+      "seq_len": 64
+    }
+  ]
+}

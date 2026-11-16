@@ -76,7 +76,7 @@ def run_colab_cli(*args: str, session_name: str | None = None, timeout: int = 12
     return subprocess.run(cmd, env=colab_env(), text=True, capture_output=True, timeout=timeout, check=False)
 
 
-def check_usage_and_budget(max_spend: float = 500.0) -> dict[str, Any]:
+def check_usage_and_budget(max_spend: float = 962.0, min_balance_reserve: float = 3.0) -> dict[str, Any]:
     with ops_lock():
         res = run_colab_cli("usage", timeout=60)
         if res.returncode != 0:
@@ -100,12 +100,15 @@ def check_usage_and_budget(max_spend: float = 500.0) -> dict[str, Any]:
         ledger["current_balance"] = balance
         ledger["current_rate_per_hr"] = rate
         ledger["estimated_total_account_delta"] = spent
+        ledger["max_spend_units"] = max(float(ledger.get("max_spend_units", 0.0)), float(max_spend))
         ledger["updated_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         BUDGET_LEDGER.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n")
 
-    if spent > max_spend:
+    if spent > max_spend or balance < min_balance_reserve:
         stop_all_x1b_sessions()
-        raise RuntimeError(f"HARD BUDGET STOP: account delta {spent:.2f} > {max_spend:.2f} credits!")
+        raise RuntimeError(
+            f"HARD BUDGET STOP: account delta {spent:.2f} > {max_spend:.2f} or balance {balance:.2f} < {min_balance_reserve:.2f}!"
+        )
     return ledger
 
 
@@ -415,6 +418,8 @@ def stage_code_and_data(
     *,
     include_real_robot: bool = False,
     include_wave6_grounded: bool = False,
+    include_wave8a_grounded: bool = False,
+    real_bank_name: str = "x1b_real_bank_v1",
 ) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
     # 1. Verify real TPU/GPU JAX backend directly inside the Colab kernel & create remote dirs
@@ -463,13 +468,28 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "models/x1b_wave7_core.py",
         "scripts/train/x1b_train_wave7.py",
         "evals/x1b_eval_wave7.py",
+        "models/x1b_wave8a_core.py",
+        "scripts/train/x1b_train_wave8a.py",
+        "evals/x1b_eval_wave8a.py",
+        "evals/x1b_showcase_wave8a.py",
     ):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
+    for pat in ("models/x1b_wave*.py", "data/x1b_*.py", "evals/x1b_*.py", "scripts/train/x1b_train_wave*.py"):
+        for p_extra in sorted(REPO_ROOT.glob(pat)):
+            rel_s = str(p_extra.relative_to(REPO_ROOT))
+            if rel_s not in include_paths:
+                include_paths.append(rel_s)
+    def _tar_filter(ti: tarfile.TarInfo) -> tarfile.TarInfo | None:
+        base_n = Path(ti.name).name
+        if base_n == "__pycache__" or base_n.endswith(".pyc") or base_n.endswith(".jsonl.gz") or "provenance" in base_n:
+            return None
+        return ti
+
     with tarfile.open(buf_path, "w:gz") as tf:
         for rel in include_paths:
             if (REPO_ROOT / rel).exists():
-                tf.add(REPO_ROOT / rel, arcname=rel)
+                tf.add(REPO_ROOT / rel, arcname=rel, filter=_tar_filter)
     for up_try in range(1, 7):
         try:
             with buf_path.open("rb") as f:
@@ -485,14 +505,40 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
     time.sleep(0.8)
 
     # 3. Stream Fedora's real multimodal bank + PyMunk 64x64 panels directly Fedora -> Colab SSH (zero Mac disk write!)
+    reg_cards_path = REPO_ROOT / "configs/x1b/wave8a_dataset_cards.json"
+    strict_v2_cards_required = bool(include_wave8a_grounded or real_bank_name == "x1b_real_bank_v2")
+    if strict_v2_cards_required and not reg_cards_path.is_file():
+        raise RuntimeError(f"Missing frozen Wave 8A dataset cards registry: {reg_cards_path}")
+    reg_cards = json.loads(reg_cards_path.read_text()) if reg_cards_path.is_file() else {}
+
+    def _verify_against_registered_card(ds_key: str, remote_card: dict[str, Any], *, required: bool = False) -> None:
+        if ds_key not in reg_cards:
+            if required:
+                raise RuntimeError(f"Required Wave 8A dataset role {ds_key!r} missing from {reg_cards_path}")
+            return
+        exp_sha = reg_cards[ds_key]["sha256"]
+        got_sha = remote_card.get("sha256")
+        if got_sha != exp_sha:
+            raise RuntimeError(
+                f"Remote dataset card SHA mismatch for {ds_key}: remote={got_sha} vs frozen registered={exp_sha}"
+            )
+        if "pymunk_panels_sha256" in reg_cards[ds_key]:
+            exp_p = reg_cards[ds_key]["pymunk_panels_sha256"]
+            got_p = remote_card.get("pymunk_panels_sha256")
+            if got_p != exp_p:
+                raise RuntimeError(
+                    f"Remote PyMunk panel SHA mismatch for {ds_key}: remote={got_p} vs frozen registered={exp_p}"
+                )
+
     card_raw = subprocess.check_output(
-        [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_real_bank_v1.card.json"],
+        [*FEDORA_SSH, f"cat /mnt/slwm-data/SLWM/x1b/datasets/{shlex.quote(real_bank_name)}.card.json"],
         text=True,
         timeout=30,
     )
     card = json.loads(card_raw)
+    _verify_against_registered_card(real_bank_name, card, required=(real_bank_name == "x1b_real_bank_v2"))
     datasets_to_stage = [
-        ("x1b_real_bank_v1.npz", card["sha256"]),
+        (f"{real_bank_name}.npz", card["sha256"]),
         ("x1b_pymunk_panels_64.npz", card["pymunk_panels_sha256"]),
     ]
     if include_real_robot:
@@ -518,6 +564,23 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         v_card = json.loads(v_card_raw)
         datasets_to_stage.append(("x1b_wave6_grounded_v1.npz", w6_card["sha256"]))
         datasets_to_stage.append(("x1b_wave6_vault_test.npz", v_card["sha256"]))
+    if include_wave8a_grounded:
+        w8a_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_grounded_v2.card.json"],
+            text=True,
+            timeout=30,
+        )
+        w8a_card = json.loads(w8a_card_raw)
+        _verify_against_registered_card("x1b_wave8a_grounded_v2", w8a_card, required=True)
+        v8a_card_raw = subprocess.check_output(
+            [*FEDORA_SSH, "cat /mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_vault_v2.card.json"],
+            text=True,
+            timeout=30,
+        )
+        v8a_card = json.loads(v8a_card_raw)
+        _verify_against_registered_card("x1b_wave8a_vault_v2", v8a_card, required=True)
+        datasets_to_stage.append(("x1b_wave8a_grounded_v2.npz", w8a_card["sha256"]))
+        datasets_to_stage.append(("x1b_wave8a_vault_v2.npz", v8a_card["sha256"]))
     for fname, exp_sha in datasets_to_stage:
         chk = subprocess.run(
             [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
@@ -591,7 +654,7 @@ def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "ru
 import hashlib, json, pathlib
 d = pathlib.Path('/content/x1b-out/{tag}')
 items = []
-for name in ['receipt.json', 'eval_metrics.json', 'config.json', 'train.jsonl', 'portable_int8.npz', 'weights_bf16.npz']:
+for name in ['receipt.json', 'eval_metrics.json', 'config.json', 'train.jsonl', 'portable_int8.npz', 'weights_bf16.npz', 'showcase_bundle.npz']:
     p = d / name
     if p.is_file():
         with p.open('rb') as f:
@@ -682,6 +745,14 @@ print(json.dumps(items))
         timeout=60,
     )
     (local_res_dir / "verified.json").write_text(ver_txt)
+    if receipt.get("showcase_bundle_sha256"):
+        sc_bytes = subprocess.check_output(
+            [*FEDORA_SSH, f"cat /mnt/slwm-checkpoints-a/SLWM/x1b/{shlex.quote(runs_subdir)}/{shlex.quote(tag)}/showcase_bundle.npz"],
+            timeout=120,
+        )
+        if hashlib.sha256(sc_bytes).hexdigest() != receipt["showcase_bundle_sha256"]:
+            raise RuntimeError(f"Local pull SHA256 mismatch on {tag}/showcase_bundle.npz")
+        (local_res_dir / "showcase_bundle.npz").write_bytes(sc_bytes)
     return receipt
 
 

@@ -52,12 +52,20 @@ VALID_ARCHS = (
     "slwm_x1b",
     "dense_transformer",
     "sliding_window_transformer",
+    "sliding_window_gqa_transformer",
     "diagonal_ssm_hybrid",
     "scalar_retention_hybrid",
     "legacy_scalar_hybrid",
     "slwm_no_registers",
     "separate_modality_cores",
 )
+
+DEFAULT_GQA_KV_HEADS: dict[str, int] = {
+    "x_tiny": 1,   # 4:1 GQA
+    "x150m": 2,    # 6:1 GQA
+    "x450m": 2,    # 9:1 GQA (13.50 MiB BF16 KV cache @ W=64)
+    "x1b": 3,      # 8:1 GQA (25.88 MiB BF16 KV cache @ W=64)
+}
 
 
 @dataclass(frozen=True)
@@ -80,6 +88,16 @@ class X1BSpec:
     dtype: str = "bfloat16"
     grad_checkpoint: bool = True
     rope_Window: int = 512
+    n_kv_heads: int = 0
+
+
+def effective_kv_heads(spec: X1BSpec) -> int:
+    """Return effective temporal KV head count (`n_heads` for MHA; `n_kv_heads` for GQA)."""
+    if spec.n_kv_heads > 0:
+        return int(spec.n_kv_heads)
+    if spec.arch == "sliding_window_gqa_transformer":
+        return int(DEFAULT_GQA_KV_HEADS.get(spec.profile, max(1, spec.n_heads // 8)))
+    return int(spec.n_heads)
 
 
 PROFILE_DEFAULTS: dict[str, dict[str, Any]] = {
@@ -132,8 +150,12 @@ def make_x1b_spec(profile: str = "x1b", arch: str = "slwm_x1b", **overrides: Any
     cfg.update(overrides)
     d = int(cfg["d_model"])
     h = int(cfg["n_heads"])
+    dh = int(cfg["head_dim"])
     layers = int(cfg["layers"])
     base_ff = int(cfg["d_ff"])
+
+    if arch == "sliding_window_gqa_transformer" and int(cfg.get("n_kv_heads", 0)) <= 0:
+        cfg["n_kv_heads"] = int(DEFAULT_GQA_KV_HEADS.get(profile, max(1, h // 8)))
 
     # GatedDelta layer uses tq(D^2) + tkv_write(2D^2) + tslot_u(D^2) + tgates(D*(2H+D)) + tgates_b(2H+D) + to(D^2)
     # = 6*D^2 + 2*D*H + (2*H + D), whereas Dense/Scalar layer uses tqkv(3D^2) + to(D^2) = 4*D^2.
@@ -145,6 +167,15 @@ def make_x1b_spec(profile: str = "x1b", arch: str = "slwm_x1b", **overrides: Any
         and "d_ff" not in overrides
     ):
         add_ff = int(round(extra_ref / max(1, 3 * d * layers)))
+        cfg["d_ff"] = base_ff + add_ff
+    elif arch == "sliding_window_gqa_transformer" and "d_ff" not in overrides:
+        h_kv = int(cfg["n_kv_heads"])
+        if h % h_kv != 0:
+            raise ValueError(f"Expected n_heads ({h}) divisible by n_kv_heads ({h_kv})")
+        d_kv = h_kv * dh
+        # GQA uses tqkv[D, D + 2*D_kv] + to[D, D] = 2*D^2 + 2*D*D_kv per layer (saving 2*D*(D - D_kv) vs MHA).
+        gqa_saved = layers * (2 * d * (d - d_kv))
+        add_ff = int(round((extra_ref + gqa_saved) / max(1, 3 * d * layers)))
         cfg["d_ff"] = base_ff + add_ff
 
     return X1BSpec(profile=profile, arch=arch, **cfg)
@@ -287,9 +318,13 @@ def init_x1b_params(spec: X1BSpec, seed: int = 2001) -> dict[str, jax.Array]:
 
         # Across-tick causal temporal mixer
         p[pfx + "tnorm"] = np.ones((d,), dtype=np.float32)
-        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
+        is_attn = (
+            spec.arch in ("dense_transformer", "sliding_window_transformer", "sliding_window_gqa_transformer")
+            or ((i + 1) % 4 == 0)
+        )
         if is_attn:
-            p[pfx + "tqkv"] = glorot((d, 3 * d), 1.0)
+            h_kv = effective_kv_heads(spec) if spec.arch == "sliding_window_gqa_transformer" else h
+            p[pfx + "tqkv"] = glorot((d, d + 2 * h_kv * dh), 1.0)
             p[pfx + "to"] = glorot((d, d), res_scale)
         elif spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
             p[pfx + "tqkv"] = glorot((d, 3 * d), 1.0)
@@ -400,8 +435,14 @@ def count_spec_parameters(spec: X1BSpec) -> dict[str, int]:
     for i in range(spec.layers):
         core += d + 3 * d * d + d * d  # spatial
         core += d  # tnorm
-        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
-        if is_attn or spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
+        is_attn = (
+            spec.arch in ("dense_transformer", "sliding_window_transformer", "sliding_window_gqa_transformer")
+            or ((i + 1) % 4 == 0)
+        )
+        if is_attn:
+            h_kv = effective_kv_heads(spec) if spec.arch == "sliding_window_gqa_transformer" else h
+            core += d * (d + 2 * h_kv * spec.head_dim) + d * d
+        elif spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
             core += 3 * d * d + d * d
         else:
             core += d * d + 2 * d * d + d * d + d * (2 * h + d) + (2 * h + d) + d * d
@@ -616,20 +657,28 @@ def _causal_rope_temporal_attn(
     window: int,
     offset: int = 0,
     prev_cache: tuple[jax.Array, jax.Array, jax.Array] | None = None,
+    n_kv_heads: int | None = None,
 ) -> tuple[jax.Array, tuple[jax.Array, jax.Array, jax.Array]]:
-    """Across-tick Causal RoPE Self-Attention per slot across time 1..T.
+    """Across-tick Causal RoPE Self-Attention (MHA or Grouped-Query Attention) per slot across time 1..T.
 
     Args:
         x: Tensor[B, T, S, D]
         valid: bool Tensor[B, T]
     Returns:
-        (out: Tensor[B, T, S, D], cache: (K, V, valid))
+        (out: Tensor[B, T, S, D], cache: (K[B*S, W, H_kv, Dh], V[B*S, W, H_kv, Dh], valid[B*S, W]))
     """
     b, t, s, d = x.shape
+    h_kv = n_heads if (n_kv_heads is None or n_kv_heads <= 0) else int(n_kv_heads)
     # Transpose to [B*S, T, D] so every slot attends causally along its temporal trajectory
     xs = jnp.swapaxes(x, 1, 2).reshape(b * s, t, d)
-    qkv = (xs @ qkv_w).reshape(b * s, t, 3, n_heads, head_dim)
-    q, k, v = qkv[:, :, 0], qkv[:, :, 1], qkv[:, :, 2]
+    if h_kv == n_heads:
+        qkv = (xs @ qkv_w).reshape(b * s, t, 3, n_heads, head_dim)
+        q, k, v = qkv[:, :, 0], qkv[:, :, 1], qkv[:, :, 2]
+    else:
+        qkv = xs @ qkv_w
+        q = qkv[:, :, :d].reshape(b * s, t, n_heads, head_dim)
+        kv = qkv[:, :, d:].reshape(b * s, t, 2, h_kv, head_dim)
+        k, v = kv[:, :, 0], kv[:, :, 1]
 
     pos_q = jnp.arange(t, dtype=jnp.int32) + offset
     q = _apply_rope_1d(q, pos_q)
@@ -638,28 +687,40 @@ def _causal_rope_temporal_attn(
     valid_bs = jnp.repeat(valid, s, axis=0)  # [B*S, T]
     if prev_cache is not None:
         c_len = prev_cache[0].shape[1]
-        if t < c_len:
-            k = jnp.concatenate([prev_cache[0][:, t:], k], axis=1)
-            v = jnp.concatenate([prev_cache[1][:, t:], v], axis=1)
-            valid_bs = jnp.concatenate([prev_cache[2][:, t:], valid_bs], axis=1)
+        k_cat = jnp.concatenate([prev_cache[0], k], axis=1)
+        v_cat = jnp.concatenate([prev_cache[1], v], axis=1)
+        valid_cat = jnp.concatenate([prev_cache[2], valid_bs], axis=1)
+    else:
+        c_len = 0
+        k_cat = k
+        v_cat = v
+        valid_cat = valid_bs
 
-    k_len = k.shape[1]
+    k_len = k_cat.shape[1]
     dist = (jnp.arange(t)[:, None] + (k_len - t)) - jnp.arange(k_len)[None, :]
     causal_mask = (dist >= 0) & (dist < window)
-    scores = jnp.einsum("bthd,bshd->bhts", q, k).astype(jnp.float32) * (head_dim**-0.5)
-    full_mask = causal_mask[None, None, :, :] & valid_bs[:, None, None, :]
-    probs = jax.nn.softmax(jnp.where(full_mask, scores, -1e9), axis=-1).astype(x.dtype)
-    out_bs = jnp.einsum("bhts,bshd->bthd", probs, v).reshape(b, s, t, d)
+    if h_kv == n_heads:
+        scores = jnp.einsum("bthd,bshd->bhts", q, k_cat).astype(jnp.float32) * (head_dim**-0.5)
+        full_mask = causal_mask[None, None, :, :] & valid_cat[:, None, None, :]
+        probs = jax.nn.softmax(jnp.where(full_mask, scores, -1e9), axis=-1).astype(x.dtype)
+        out_bs = jnp.einsum("bhts,bshd->bthd", probs, v_cat).reshape(b, s, t, d)
+    else:
+        groups = n_heads // h_kv
+        q_g = q.reshape(b * s, t, h_kv, groups, head_dim)
+        scores = jnp.einsum("bthgd,bshd->bhgts", q_g, k_cat).astype(jnp.float32) * (head_dim**-0.5)
+        full_mask = causal_mask[None, None, None, :, :] & valid_cat[:, None, None, None, :]
+        probs = jax.nn.softmax(jnp.where(full_mask, scores, -1e9), axis=-1).astype(x.dtype)
+        out_bs = jnp.einsum("bhgts,bshd->bthgd", probs, v_cat).reshape(b, s, t, d)
     out = jnp.swapaxes(out_bs, 1, 2) @ o_w
-    keep = k_len if prev_cache is not None else min(window, k_len)
-    return out, (k[:, -keep:], v[:, -keep:], valid_bs[:, -keep:])
+    keep = c_len if prev_cache is not None else min(window, k_len)
+    return out, (k_cat[:, -keep:], v_cat[:, -keep:], valid_cat[:, -keep:])
 
 
 def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64) -> tuple[Any, ...]:
     """Allocate static-shape recurrent carries / KV ring buffers for zero-recompilation XLA streaming.
 
     Hybrid world models bound local attention ring buffers strictly to W=8 ticks (true O(1) memory in T),
-    whereas DenseTransformer requires O(T) KV cache_len.
+    SlidingWindow (MHA/GQA) bounds ring buffers to W=64 ticks, whereas DenseTransformer requires O(T) KV cache_len.
     """
     dtype = getattr(jnp, spec.dtype)
     b = batch_size
@@ -669,18 +730,22 @@ def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64)
     dh = spec.head_dim
     if spec.arch == "dense_transformer":
         eff_cache_len = cache_len
-    elif spec.arch == "sliding_window_transformer":
+    elif spec.arch in ("sliding_window_transformer", "sliding_window_gqa_transformer"):
         eff_cache_len = min(64, cache_len)
     else:
         eff_cache_len = min(8, cache_len)
     mems = []
     for i in range(spec.layers):
-        is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((i + 1) % 4 == 0)
+        is_attn = (
+            spec.arch in ("dense_transformer", "sliding_window_transformer", "sliding_window_gqa_transformer")
+            or ((i + 1) % 4 == 0)
+        )
         if is_attn:
+            h_kv = effective_kv_heads(spec) if spec.arch == "sliding_window_gqa_transformer" else h
             mems.append(
                 (
-                    jnp.zeros((b * s, eff_cache_len, h, dh), dtype=dtype),
-                    jnp.zeros((b * s, eff_cache_len, h, dh), dtype=dtype),
+                    jnp.zeros((b * s, eff_cache_len, h_kv, dh), dtype=dtype),
+                    jnp.zeros((b * s, eff_cache_len, h_kv, dh), dtype=dtype),
                     jnp.zeros((b * s, eff_cache_len), dtype=bool),
                 )
             )
@@ -701,6 +766,62 @@ def init_streaming_memories(spec: X1BSpec, batch_size: int, cache_len: int = 64)
                 )
             )
     return tuple(mems)
+
+
+def compute_streaming_state_bytes(
+    spec: X1BSpec,
+    batch_size: int = 1,
+    cache_len: int = 64,
+    *,
+    include_controller_carry: bool = True,
+    include_decoder_carry: bool = True,
+    include_frontend_state: bool = True,
+) -> dict[str, Any]:
+    """Compute exact live streaming state bytes and binary MiB (`2^20`) under Core & Strict System accounting."""
+    mems = init_streaming_memories(spec, batch_size=batch_size, cache_len=cache_len)
+    leaves = jax.tree.leaves(mems)
+    total_bytes = int(sum(int(np.prod(a.shape)) * int(a.dtype.itemsize) for a in leaves))
+    kv_only_bytes = 0
+    for layer_mem in mems:
+        if isinstance(layer_mem, tuple) and len(layer_mem) == 3 and layer_mem[2].dtype == jnp.bool_:
+            kv_only_bytes += int(np.prod(layer_mem[0].shape)) * int(layer_mem[0].dtype.itemsize)
+            kv_only_bytes += int(np.prod(layer_mem[1].shape)) * int(layer_mem[1].dtype.itemsize)
+    rec_bytes = total_bytes - kv_only_bytes
+    # Closed-loop MPPI controller carry per stream: occ_8x8 (256B) + prev_u (16B) + prev_wp (8B) + prev_vobj (8B) + contact_c (4B) = 292B
+    ctrl_bytes = int(batch_size * 292) if include_controller_carry else 0
+    # Streaming world-head & innovation-gate carry (`init_decoder_streaming_carry`):
+    # has_prev_tick (1B bool) + modality_seen (4B bool) + prev_z_next_pred (S*D*dtype_bytes) + prev_log_var_next (S*4B f32)
+    dtype = getattr(jnp, spec.dtype)
+    dec_item_bytes = (
+        int(jnp.dtype(jnp.bool_).itemsize)
+        + 4 * int(jnp.dtype(jnp.bool_).itemsize)
+        + int(spec.slots_per_tick) * int(spec.d_model) * int(jnp.dtype(dtype).itemsize)
+        + int(spec.slots_per_tick) * int(jnp.dtype(jnp.float32).itemsize)
+    )
+    dec_bytes = int(batch_size * dec_item_bytes) if include_decoder_carry else 0
+    # Universal causal 10 Hz audio frontend upper bound across all active corpora (16/24/44.1/96 kHz):
+    # worst-case GRID 44.1->22.05 kHz MP2 path = 2205*4B (8820B) 100 ms STFT window + 8B 2-sample boxcar + 2048B ISO-11172-3 synthesis carry = 10876B
+    # (strictly bounds STARSS23 24 kHz = 9600B, GreatestHits 96->16 kHz = 6424B, SpeechCommands 16 kHz = 6400B; 0 future lookahead).
+    frontend_bytes = int(batch_size * 10876) if include_frontend_state else 0
+    codec_bytes = 0
+    strict_bytes = total_bytes + ctrl_bytes + dec_bytes + frontend_bytes + codec_bytes
+    return {
+        "core_state_bytes": total_bytes,
+        "core_state_mib": round(total_bytes / float(1 << 20), 4),
+        "controller_state_bytes": ctrl_bytes,
+        "decoder_carry_bytes": dec_bytes,
+        "audio_frontend_state_bytes": frontend_bytes,
+        "codec_temporal_state_bytes": codec_bytes,
+        "strict_system_state_bytes": strict_bytes,
+        "strict_system_state_mib": round(strict_bytes / float(1 << 20), 4),
+        "total_state_bytes": total_bytes,
+        "total_state_mib": round(total_bytes / float(1 << 20), 4),
+        "kv_tensors_only_bytes": kv_only_bytes,
+        "kv_tensors_only_mib": round(kv_only_bytes / float(1 << 20), 4),
+        "kv_cache_bytes": kv_only_bytes,
+        "recurrent_state_bytes": rec_bytes,
+        "n_kv_heads": effective_kv_heads(spec),
+    }
 
 
 def _scalar_retention_temporal(
@@ -1103,22 +1224,28 @@ def _run_single_block(
         spec.n_heads,
         spec.head_dim,
         separate_cores=(spec.arch == "separate_modality_cores"),
-        shield_text_slot=(spec.arch in ("slwm_x1b", "diagonal_ssm_hybrid", "slwm_no_registers")),
+        shield_text_slot=(
+            spec.arch in ("slwm_x1b", "diagonal_ssm_hybrid", "slwm_no_registers", "sliding_window_gqa_transformer")
+        ),
     )
 
     # 2. Across-tick Causal Temporal Mixer
     z_t = rms_norm(x, params[pfx + "tnorm"])
-    is_attn = spec.arch in ("dense_transformer", "sliding_window_transformer") or ((layer_idx + 1) % 4 == 0)
+    is_attn = (
+        spec.arch in ("dense_transformer", "sliding_window_transformer", "sliding_window_gqa_transformer")
+        or ((layer_idx + 1) % 4 == 0)
+    )
     if is_attn:
         # Hybrid world models use bounded O(1) sub-second sliding-window attention (W=8 ticks = 0.8s) paired with
         # global position-free GatedDelta so multi-second associative recall & overwrite MUST flow through M_t;
-        # SlidingWindowTransformer uses fixed W=64 (6.4s) O(1) ring buffer; DenseTransformer uses full O(T) window.
+        # SlidingWindow (MHA/GQA) uses fixed W=64 (6.4s) O(1) ring buffer; DenseTransformer uses full O(T) window.
         if spec.arch == "dense_transformer":
             attn_win = spec.rope_Window
-        elif spec.arch == "sliding_window_transformer":
+        elif spec.arch in ("sliding_window_transformer", "sliding_window_gqa_transformer"):
             attn_win = min(64, spec.rope_Window)
         else:
             attn_win = min(8, spec.rope_Window)
+        h_kv = effective_kv_heads(spec) if spec.arch == "sliding_window_gqa_transformer" else spec.n_heads
         t_out, mem_out = _causal_rope_temporal_attn(
             z_t,
             params[pfx + "tqkv"].astype(dtype),
@@ -1129,6 +1256,7 @@ def _run_single_block(
             window=attn_win,
             offset=offset,
             prev_cache=prev_mem,
+            n_kv_heads=h_kv,
         )
     elif spec.arch in ("scalar_retention_hybrid", "legacy_scalar_hybrid"):
         t_out, mem_out = _scalar_retention_temporal(
