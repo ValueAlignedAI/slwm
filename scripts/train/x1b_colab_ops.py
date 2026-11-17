@@ -76,7 +76,7 @@ def run_colab_cli(*args: str, session_name: str | None = None, timeout: int = 12
     return subprocess.run(cmd, env=colab_env(), text=True, capture_output=True, timeout=timeout, check=False)
 
 
-def check_usage_and_budget(max_spend: float = 962.0, min_balance_reserve: float = 3.0) -> dict[str, Any]:
+def check_usage_and_budget(max_spend: float = 2495.0, min_balance_reserve: float = 5.0) -> dict[str, Any]:
     with ops_lock():
         res = run_colab_cli("usage", timeout=60)
         if res.returncode != 0:
@@ -89,6 +89,8 @@ def check_usage_and_budget(max_spend: float = 962.0, min_balance_reserve: float 
 
         if BUDGET_LEDGER.is_file():
             ledger = json.loads(BUDGET_LEDGER.read_text())
+            if balance > float(ledger.get("initial_balance", 0.0)):
+                ledger["initial_balance"] = balance
         else:
             ledger = {
                 "initial_balance": balance,
@@ -320,7 +322,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) 
         "-s",
         session_name,
         "--timeout",
-        "7200",
+        str(max(60, int(timeout))),
     ]
     proc = subprocess.Popen(
         cmd,
@@ -396,7 +398,7 @@ def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout:
                     return
                 if st_txt.startswith("PROG:"):
                     age = int(st_txt.split(":", 1)[1])
-                    if age < 600:
+                    if age < 2400:
                         time.sleep(20)
                         continue
                 break
@@ -419,6 +421,7 @@ def stage_code_and_data(
     include_real_robot: bool = False,
     include_wave6_grounded: bool = False,
     include_wave8a_grounded: bool = False,
+    include_x3_480p: bool = False,
     real_bank_name: str = "x1b_real_bank_v1",
 ) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
@@ -472,6 +475,11 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "scripts/train/x1b_train_wave8a.py",
         "evals/x1b_eval_wave8a.py",
         "evals/x1b_showcase_wave8a.py",
+        "configs/x3",
+        "models/x3_480p_core.py",
+        "scripts/train/x3_train_480p.py",
+        "evals/x3_eval_480p.py",
+        "scripts/eval/x3_analyze_480p.py",
     ):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
@@ -529,6 +537,83 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
                 raise RuntimeError(
                     f"Remote PyMunk panel SHA mismatch for {ds_key}: remote={got_p} vs frozen registered={exp_p}"
                 )
+
+    if include_x3_480p:
+        # Fail-fast 1-second check that all X3_BOUND_SOURCE_FILES staged cleanly & match local SHA-256!
+        local_x3_sha = subprocess.check_output(
+            [str(REPO_ROOT / ".venv/bin/python"), "-c", "from scripts.train.x3_train_480p import compute_x3_source_code_sha256; print(compute_x3_source_code_sha256())"],
+            cwd=str(REPO_ROOT),
+            text=True,
+            timeout=30,
+        ).strip()
+        rem_x3_sha = subprocess.check_output(
+            [*base, "python -c \"import sys; sys.path.insert(0, '/content/x1b-code'); from scripts.train.x3_train_480p import compute_x3_source_code_sha256; print(compute_x3_source_code_sha256())\""],
+            env=colab_env(),
+            text=True,
+            timeout=45,
+        ).strip().splitlines()[-1]
+        if rem_x3_sha != local_x3_sha:
+            raise RuntimeError(f"Remote X3 source_code_sha256 mismatch: remote={rem_x3_sha} vs local={local_x3_sha}")
+        print(f"[CODE {session_name}] Verified remote X3 source_code_sha256={rem_x3_sha[:16]}", flush=True)
+
+        x3_cards_p = REPO_ROOT / "configs/x3/x3_dataset_cards.json"
+        if not x3_cards_p.is_file():
+            raise RuntimeError(f"Missing frozen Study X3 dataset cards registry: {x3_cards_p}")
+        x3_cards = json.loads(x3_cards_p.read_text())
+        x3_files: list[tuple[str, str, str]] = [
+            ("x3_multimodal_480p_train.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_train.npz", x3_cards["x3_multimodal_480p_train"]["sha256"]),
+            ("x3_multimodal_480p_dev.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_dev.npz", x3_cards["x3_multimodal_480p_dev"]["sha256"]),
+            ("x3_multimodal_480p_vault.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_vault.npz", x3_cards["x3_multimodal_480p_vault"]["sha256"]),
+            ("x1b_wave8a_grounded_v2.npz", "/mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_grounded_v2.npz", x3_cards["x1b_wave8a_grounded_v2"]["sha256"]),
+            ("x1b_wave8a_vault_v2.npz", "/mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_vault_v2.npz", x3_cards["x1b_wave8a_vault_v2"]["sha256"]),
+        ]
+        voc_sha = subprocess.check_output(
+            [*FEDORA_SSH, "sha256sum /mnt/slwm-data/SLWM/x1b/datasets/vocab_4096_ext.json | awk '{print $1}'"],
+            text=True,
+            timeout=30,
+        ).strip()
+        x3_files.append(("vocab_4096_ext.json", "/mnt/slwm-data/SLWM/x1b/datasets/vocab_4096_ext.json", voc_sha))
+        for fname, fed_src, exp_sha in x3_files:
+            chk = subprocess.run(
+                [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
+                env=colab_env(),
+                text=True,
+                capture_output=True,
+                timeout=45,
+            )
+            time.sleep(0.6)
+            if chk.returncode == 0 and chk.stdout.strip() == exp_sha:
+                print(f"[DATA {session_name}] {fname} already verified ({exp_sha[:12]})", flush=True)
+                continue
+            for ds_try in range(1, 7):
+                print(f"[DATA {session_name}] Streaming {fname} from Fedora -> Colab (try {ds_try}/6)...", flush=True)
+                fed_p = subprocess.Popen([*FEDORA_SSH, f"cat {shlex.quote(fed_src)}"], stdout=subprocess.PIPE)
+                col_p = subprocess.Popen(
+                    [
+                        *base,
+                        f"cat > /content/x1b-data/{fname}.tmp && "
+                        f"echo '{exp_sha}  /content/x1b-data/{fname}.tmp' | sha256sum -c - && "
+                        f"mv /content/x1b-data/{fname}.tmp /content/x1b-data/{fname}",
+                    ],
+                    env=colab_env(),
+                    stdin=fed_p.stdout,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                assert fed_p.stdout is not None
+                fed_p.stdout.close()
+                out_s, err_s = col_p.communicate(timeout=900)
+                fed_rc = fed_p.wait(timeout=30)
+                time.sleep(0.8)
+                if fed_rc == 0 and col_p.returncode == 0:
+                    print(f"[DATA {session_name}] Verified {fname} ({exp_sha[:12]})", flush=True)
+                    break
+                if ds_try == 6:
+                    raise RuntimeError(f"Study X3 dataset stream failed for {fname}: {err_s or out_s}")
+                print(f"[WARN] Dataset stream retry {ds_try}/6 for {fname}: {(err_s or out_s).strip()}", flush=True)
+                time.sleep(1.8 * ds_try)
+        return
 
     card_raw = subprocess.check_output(
         [*FEDORA_SSH, f"cat /mnt/slwm-data/SLWM/x1b/datasets/{shlex.quote(real_bank_name)}.card.json"],
@@ -626,7 +711,13 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
             time.sleep(1.8 * ds_try)
 
 
-def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "runs") -> dict[str, Any]:
+def archive_run_to_fedora(
+    session_name: str,
+    tag: str,
+    *,
+    runs_subdir: str = "runs",
+    local_runs_base_dir: Path | None = None,
+) -> dict[str, Any]:
     """Stream completed run artifacts from Colab -> Fedora primary HDD -> mirror & verify on secondary HDD."""
     # Ensure latest x1b_storage.py is installed atomically on Fedora under ops_lock
     with ops_lock():
@@ -729,8 +820,13 @@ print(json.dumps(items))
     )
     print(f"[MIRROR {tag}] {mir_out.strip()}", flush=True)
 
-    # Also save small JSON metrics locally in experiments/multimodal/x1b/.../<runs_subdir>/<tag>/ for plotting & git!
-    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir / tag
+    # Also save small JSON metrics locally in <local_runs_base_dir>/<tag>/ (default: experiments/multimodal/x1b/.../<runs_subdir>/<tag>/)!
+    local_base = (
+        local_runs_base_dir
+        if local_runs_base_dir is not None
+        else (REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir)
+    )
+    local_res_dir = local_base / tag
     local_res_dir.mkdir(parents=True, exist_ok=True)
     for small in ("receipt.json", "eval_metrics.json", "config.json", "train.jsonl"):
         txt = subprocess.check_output(
