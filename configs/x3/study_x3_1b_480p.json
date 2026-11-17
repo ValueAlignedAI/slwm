@@ -1,0 +1,114 @@
+{
+  "study_id": "spatiotemporal-jepa-x3-1b-480p-multimodal-livestream",
+  "wave": "x3_1b_480p_scaling_composition_and_livestream",
+  "runs_subdir": "runs_x3_1b_480p",
+  "exp_dir": "experiments/multimodal/x3/livestream-1b-480p-20261116",
+  "video_resolution": {
+    "native_height": 480,
+    "native_width": 640,
+    "ablation_height": 240,
+    "ablation_width": 320,
+    "macro_patch_grid": [6, 8],
+    "fine_spatial_grid": [15, 20]
+  },
+  "slot_contract": {
+    "total_slots": 60,
+    "visual_480p_slots": [0, 48],
+    "audio_conv_slots": [48, 51],
+    "movement_proprio_slots": [51, 53],
+    "action_slot": 53,
+    "sym_mem_slot": 54,
+    "goal_lang_slot": 55,
+    "obj_color_register_slot": 56,
+    "spatial_dir_register_slots": [57, 59],
+    "sysid_register_slot": 59
+  },
+  "training_schedule": {
+    "steps": 5600,
+    "batch_size": 8,
+    "seq_len": 24,
+    "aux_long_horizon_batch_size": 2,
+    "aux_long_horizon_seq_len": 80,
+    "xarm6_batch_size": 2,
+    "xarm6_counterfactual_branches": 3,
+    "xarm6_seq_len": 32,
+    "val_eval_every_steps": 400,
+    "slot_tokens_per_step": 21120,
+    "xarm6_slot_tokens_per_step": 11520,
+    "total_grad_slot_tokens_per_step": 32640,
+    "total_slot_tokens_per_run": 118272000,
+    "total_grad_slot_tokens_per_run": 182784000,
+    "precision": "bfloat16_mixed_f32_state"
+  },
+  "gate4_criteria": {
+    "min_seeds_per_cohort": 3,
+    "expected_seeds": [3001, 3002, 3003],
+    "min_dyn_visual_assoc_T1024": 0.95,
+    "min_T160_paired_causal_switch": 0.55,
+    "min_unseen_mppi": 0.72,
+    "min_unseen_dynamics_shift_mppi": 0.40,
+    "max_mppi_drop_vs_no_jepa_subgoal": 0.02,
+    "min_commit_selective_routing": 0.82,
+    "min_vault_spoken_audio_only_disc": 0.70,
+    "min_vault_audio_only_scene_color_lift_vs_shuffle": 0.10,
+    "min_480p_over_240p_psnr_gain_db": 0.50,
+    "min_any_to_any_shuffle_lift_positive_directions": 6,
+    "max_livestream_T1024_state_growth_bytes": 0
+  },
+  "cohorts": [
+    {
+      "cohort": "x3_slwm_150m_480p",
+      "profile": "x3_150m",
+      "arch": "slwm_x3",
+      "resolution_mode": "480p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Scaling-law rung 1 (140.0M, 480p)"
+    },
+    {
+      "cohort": "x3_slwm_450m_480p",
+      "profile": "x3_450m",
+      "arch": "slwm_x3",
+      "resolution_mode": "480p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Scaling-law rung 2 (473.5M, 480p)"
+    },
+    {
+      "cohort": "x3_slwm_1b_480p",
+      "profile": "x3_1b",
+      "arch": "slwm_x3",
+      "resolution_mode": "480p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Primary 1.022B 480p Livestream Multimodal World Model"
+    },
+    {
+      "cohort": "x3_sliding_window_w64_gqa_1b_480p",
+      "profile": "x3_1b",
+      "arch": "sliding_window_gqa_x3",
+      "resolution_mode": "480p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Parameter-matched (-0.00013%) 8:1 GQA W=64 1.022B baseline"
+    },
+    {
+      "cohort": "x3_diagonal_ssm_1b_480p",
+      "profile": "x3_1b",
+      "arch": "diagonal_ssm_x3",
+      "resolution_mode": "480p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Parameter-matched (0.0000%) DiagonalSSM 1.022B vector-state baseline"
+    },
+    {
+      "cohort": "x3_slwm_1b_240p_ablation",
+      "profile": "x3_1b",
+      "arch": "slwm_x3",
+      "resolution_mode": "240p",
+      "seeds": [3001, 3002, 3003],
+      "steps": 5600,
+      "role": "Single-factor 240p (320x240) vs 480p (640x480) resolution ablation at 1.022B"
+    }
+  ]
+}

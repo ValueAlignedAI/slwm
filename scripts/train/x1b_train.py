@@ -93,7 +93,7 @@ def save_portable_int8(path: Path, params: dict[str, jax.Array]) -> str:
         vf = np.asarray(v, dtype=np.float32)
         if vf.ndim >= 2 and vf.size >= 256:
             max_abs = np.max(np.abs(vf), axis=0, keepdims=True)
-            sc = np.maximum(max_abs / 127.0, 1e-8).astype(np.float16)
+            sc = np.maximum(max_abs / 127.0, 1e-6).astype(np.float16)
             q = np.clip(np.rint(vf / sc.astype(np.float32)), -127, 127).astype(np.int8)
             arrays[k] = q
             arrays[k + "__scale"] = sc

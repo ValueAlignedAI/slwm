@@ -1,0 +1,234 @@
+{
+  "ablation_video_resolution": [
+    240,
+    320,
+    3
+  ],
+  "cards": {
+    "x1b_wave8a_grounded_v2": {
+      "path": "x1b_wave8a_grounded_v2.npz",
+      "sha256": "cfb0396a1922b453fc1c133fbcd3895e6ed75d6b80494c97fd52aa7fd49f9137"
+    },
+    "x1b_wave8a_vault_v2": {
+      "path": "x1b_wave8a_vault_v2.npz",
+      "sha256": "a29e2e46ab44f2d048ae9d982445d74392b66ffcb6d5bd00e438559349827ba1"
+    },
+    "x3_multimodal_480p_dev": {
+      "clip_ticks": 24,
+      "clips_by_source_id": {
+        "0": 14,
+        "1": 36,
+        "2": 32,
+        "3": 37,
+        "4": 47,
+        "5": 65,
+        "6": 30,
+        "7": 110,
+        "8": 28,
+        "9": 32
+      },
+      "native_resolution": [
+        480,
+        640,
+        3
+      ],
+      "natural_language_clips": 284,
+      "num_clips": 431,
+      "path": "x3_multimodal_480p_dev.npz",
+      "physical_movement_clips": 166,
+      "sha256": "83b2e8a2e0635e69820f4d00a29aa59bbb4c97b6a65ba3db6243efc55178250f",
+      "size_bytes": 275767417,
+      "split": "dev",
+      "true_action_clips": 102,
+      "unique_groups": 221,
+      "unique_groups_by_source_id": {
+        "0": 7,
+        "1": 18,
+        "2": 4,
+        "3": 37,
+        "4": 6,
+        "5": 11,
+        "6": 5,
+        "7": 110,
+        "8": 7,
+        "9": 16
+      }
+    },
+    "x3_multimodal_480p_train": {
+      "clip_ticks": 24,
+      "clips_by_source_id": {
+        "0": 360,
+        "1": 720,
+        "2": 48,
+        "3": 335,
+        "4": 205,
+        "5": 216,
+        "6": 108,
+        "7": 850,
+        "8": 210,
+        "9": 240
+      },
+      "native_resolution": [
+        480,
+        640,
+        3
+      ],
+      "natural_language_clips": 2151,
+      "num_clips": 3292,
+      "path": "x3_multimodal_480p_train.npz",
+      "physical_movement_clips": 1668,
+      "sha256": "f68f8e78b980492986cf8e6c5e412197786af750b2da649ed94a1530d3c73502",
+      "size_bytes": 2058623633,
+      "split": "train",
+      "true_action_clips": 1452,
+      "unique_groups": 1308,
+      "unique_groups_by_source_id": {
+        "0": 36,
+        "1": 144,
+        "2": 4,
+        "3": 170,
+        "4": 10,
+        "5": 10,
+        "6": 6,
+        "7": 850,
+        "8": 30,
+        "9": 48
+      }
+    },
+    "x3_multimodal_480p_vault": {
+      "clip_ticks": 24,
+      "clips_by_source_id": {
+        "0": 14,
+        "1": 36,
+        "2": 16,
+        "3": 48,
+        "4": 47,
+        "5": 30,
+        "6": 30,
+        "7": 110,
+        "8": 28,
+        "9": 32
+      },
+      "native_resolution": [
+        480,
+        640,
+        3
+      ],
+      "natural_language_clips": 258,
+      "num_clips": 391,
+      "path": "x3_multimodal_480p_vault.npz",
+      "physical_movement_clips": 161,
+      "sha256": "a9f6323c35147d7fe3de1aadaff8d327174abd49ecbfb132d477ee82ac09f586",
+      "size_bytes": 237085184,
+      "split": "vault",
+      "true_action_clips": 113,
+      "unique_groups": 227,
+      "unique_groups_by_source_id": {
+        "0": 7,
+        "1": 18,
+        "2": 4,
+        "3": 48,
+        "4": 6,
+        "5": 6,
+        "6": 5,
+        "7": 110,
+        "8": 7,
+        "9": 16
+      }
+    }
+  },
+  "clip_ticks_at_10hz": 24,
+  "dispositions_sha256": "8a3ed05c6a62b926962516934ccd8a8690fd7c0e21a09d2753f3c573034bffac",
+  "native_video_resolution": [
+    480,
+    640,
+    3
+  ],
+  "source_registry": {
+    "0": {
+      "has_true_action": true,
+      "license": "Apache-2.0",
+      "repo": "lerobot/svla_so101_pickplace",
+      "split_key": "episode_index",
+      "status": "INCLUDED"
+    },
+    "1": {
+      "has_true_action": true,
+      "license": "CC-BY-4.0",
+      "repo": "lerobot/FineART",
+      "split_key": "episode_index",
+      "status": "INCLUDED"
+    },
+    "2": {
+      "has_true_action": false,
+      "license": "CC-BY-4.0",
+      "repo": "nvidia/PhysicalAI-Human-1M-100K",
+      "split_key": "scene_bundle",
+      "status": "INCLUDED"
+    },
+    "3": {
+      "has_true_action": true,
+      "license": "Apache-2.0",
+      "repo": "DAGroup-PKU/Open-HumanWAM-50K",
+      "split_key": "lerobot_part",
+      "status": "INCLUDED"
+    },
+    "4": {
+      "has_true_action": "Go2-W=True, Car=False",
+      "license": "MIT",
+      "repo": "anthonytec2/OctoSense",
+      "split_key": "rosbag2_session_and_date",
+      "status": "INCLUDED"
+    },
+    "5": {
+      "has_true_action": false,
+      "license": "CC-BY-NC-4.0",
+      "repo": "facebook/seamless-interaction",
+      "split_key": "participant_id",
+      "status": "INCLUDED"
+    },
+    "6": {
+      "has_true_action": false,
+      "license": "CC-BY-4.0",
+      "repo": "TheAgenticDataCompany/open-yap-1k",
+      "split_key": "conversation_key",
+      "status": "INCLUDED"
+    },
+    "7": {
+      "has_true_action": false,
+      "license": "CC-BY-4.0",
+      "repo": "google/fleurs",
+      "split_key": "prompt_id_and_audio_sha256",
+      "status": "INCLUDED"
+    },
+    "8": {
+      "has_true_action": false,
+      "license": "Academic/Research",
+      "repo": "GreatestHits",
+      "split_key": "recording_id",
+      "status": "INCLUDED"
+    },
+    "9": {
+      "has_true_action": false,
+      "license": "Academic/Research",
+      "repo": "STARSS23",
+      "split_key": "official_room_split",
+      "status": "INCLUDED"
+    },
+    "excluded_gaia": {
+      "license": "Gated Benchmark",
+      "repo": "gaia-benchmark/GAIA",
+      "status": "EXCLUDED_BENCHMARK_CONTAMINATION_GUARD"
+    },
+    "excluded_mmh": {
+      "license": "CC-BY-NC-4.0",
+      "repo": "HFUT-MMH-Lab/multimodal_mental_health_dataset_MMH::pretraindata/3",
+      "status": "EXCLUDED_PREEXTRACTED_FEATURES_NO_RAW_480P_MEDIA"
+    }
+  },
+  "study": "Study X3 \u2014 SLWM-1B-480p Multimodal Livestream World Model",
+  "total_disposition_records": 1511,
+  "zero_boilerplate_template_text_verified": true,
+  "zero_cross_split_group_overlap_verified": true,
+  "zero_synthetic_pixel_motion_verified": true
+}

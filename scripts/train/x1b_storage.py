@@ -22,7 +22,7 @@ DISK_PAIR = (
     ("/mnt/slwm-checkpoints-a", "fbbb53d9-dd42-4f19-95e6-dadab02a201e"),
     ("/mnt/slwm-checkpoints-b", "c961a363-8d77-4fba-a48d-622b00a6d8c3"),
 )
-TAG_RE = re.compile(r"x1b-[a-z0-9_-]{3,80}")
+TAG_RE = re.compile(r"(?:x1b|x3)-[a-z0-9_-]{3,80}")
 ALLOWED_FILES = {
     "portable_int8.npz",
     "weights_bf16.npz",
