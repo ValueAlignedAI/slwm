@@ -37,6 +37,17 @@ from models.x1b_jepa import VALID_OBJECTIVES, update_ema_params, world_model_los
 from models.x1b_world import count_parameters, init_x1b_params, make_x1b_spec
 
 
+if not hasattr(hashlib, 'file_digest'):
+    def file_digest(file, digest_name):
+        h = hashlib.new(digest_name)
+        while True:
+            chunk = file.read(65536)
+            if not chunk:
+                break
+            h.update(chunk)
+        return h
+    setattr(hashlib, 'file_digest', file_digest)
+
 def sha256_file(path: Path) -> str:
     with path.open("rb") as f:
         return hashlib.file_digest(f, "sha256").hexdigest()

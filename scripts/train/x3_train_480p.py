@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
+import gc
 import hashlib
 import io
 import json
@@ -1117,6 +1118,86 @@ def _sample_rob_batch_two_utterance(rob_bank: Wave8AGroundedRobotBank, rng: np.r
     return rb, toks
 
 
+POST_TRAIN_PARAMS_NAME = "post_train_params_f32.npz"
+POST_TRAIN_META_NAME = "post_train.json"
+
+
+def save_x3_post_train_checkpoint(
+    npz_path: Path,
+    meta_path: Path,
+    params: dict[str, jax.Array],
+    *,
+    binding_sha: str,
+    source_sha: str,
+    steps: int,
+    train_wall_s: float,
+) -> str:
+    """Atomically persist exact float32 post-train weights + binding metadata (local resume only; never archived)."""
+    host_p = {k: np.asarray(v, dtype=np.float32) for k, v in jax.device_get(params).items()}
+    tmp = npz_path.with_name(f".{npz_path.name}.tmp.npz")
+    np.savez(tmp, **host_p)
+    tmp.replace(npz_path)
+    npz_sha = sha256_file(npz_path)
+    meta = {
+        "binding_sha256": binding_sha,
+        "source_code_sha256": source_sha,
+        "steps": int(steps),
+        "train_wall_s": float(train_wall_s),
+        "params_sha256": npz_sha,
+    }
+    tmp_m = meta_path.with_name(f".{meta_path.name}.tmp")
+    tmp_m.write_text(json.dumps(meta, sort_keys=True) + "\n")
+    tmp_m.replace(meta_path)
+    return npz_sha
+
+
+def load_x3_post_train_checkpoint_meta(
+    meta_path: Path,
+    npz_path: Path,
+    log_path: Path,
+    *,
+    binding_sha: str,
+    source_sha: str,
+    steps: int,
+) -> dict[str, Any] | None:
+    """Return checkpoint metadata only if binding, source, steps, train log, and weight digest all verify."""
+    if not (meta_path.is_file() and npz_path.is_file() and log_path.is_file()):
+        return None
+    try:
+        meta = json.loads(meta_path.read_text())
+        if (
+            meta.get("binding_sha256") != binding_sha
+            or meta.get("source_code_sha256") != source_sha
+            or int(meta.get("steps", -1)) != int(steps)
+        ):
+            return None
+        last_step = -1
+        for ln in log_path.read_text().splitlines():
+            if ln.strip():
+                last_step = int(json.loads(ln).get("step", -1))
+    except (OSError, ValueError, TypeError):
+        return None
+    if last_step != int(steps):
+        return None
+    if sha256_file(npz_path) != meta.get("params_sha256"):
+        return None
+    return meta
+
+
+def load_x3_post_train_params(npz_path: Path, ref_params: dict[str, jax.Array]) -> dict[str, jax.Array]:
+    """Load float32 post-train weights, failing closed on any key/shape mismatch with the freshly built spec."""
+    out: dict[str, jax.Array] = {}
+    with np.load(npz_path, allow_pickle=False) as d:
+        if set(d.files) != set(ref_params.keys()):
+            raise RuntimeError(f"Post-train checkpoint key mismatch in {npz_path}")
+        for k, ref in ref_params.items():
+            arr = d[k]
+            if tuple(arr.shape) != tuple(ref.shape):
+                raise RuntimeError(f"Post-train checkpoint shape mismatch for {k}: {arr.shape} vs {ref.shape}")
+            out[k] = jnp.asarray(arr, dtype=ref.dtype)
+    return out
+
+
 def train_and_evaluate_x3(
     *,
     tag: str,
@@ -1213,55 +1294,73 @@ def train_and_evaluate_x3(
     t0 = time.monotonic()
     log_path = job_dir / "train.jsonl"
     prog_path = out_dir / f"{tag}-progress.json"
-    with log_path.open("w", encoding="utf-8") as lf:
-        for step in range(steps):
-            sk = jax.random.fold_in(base_key, step)
-            k_sim, k_loss = jax.random.split(sk, 2)
-            sim_b = generate_x3_sim_batch_480p(k_sim, sim_n, seq_len=seq_len)
-            real_b = real_bank.sample_batch(np_rng, real_n, seq_len=seq_len, augment_photometric=True) if real_bank is not None else None
-            if rob_bank is not None and rob_n > 0:
-                rob_b, rob_toks = _sample_rob_batch_two_utterance(rob_bank, np_rng, rob_n)
-            else:
-                rob_b, rob_toks = None, None
-            batch = mix_x3_real_and_sim_batches(real_b, rob_b, sim_b, rob_tok16_tuple=rob_toks)
+    post_npz = job_dir / POST_TRAIN_PARAMS_NAME
+    post_meta = job_dir / POST_TRAIN_META_NAME
+    resumed_meta = load_x3_post_train_checkpoint_meta(
+        post_meta, post_npz, log_path, binding_sha=binding_sha, source_sha=source_sha, steps=steps
+    )
+    if resumed_meta is not None:
+        params = load_x3_post_train_params(post_npz, params)
+        train_wall_s = float(resumed_meta["train_wall_s"])
+        print(f"[RESUME X3] {tag} | exact fp32 post-train checkpoint verified; skipping {steps} training steps -> eval.", flush=True)
+    else:
+        with log_path.open("w", encoding="utf-8") as lf:
+            for step in range(steps):
+                sk = jax.random.fold_in(base_key, step)
+                k_sim, k_loss = jax.random.split(sk, 2)
+                sim_b = generate_x3_sim_batch_480p(k_sim, sim_n, seq_len=seq_len)
+                real_b = real_bank.sample_batch(np_rng, real_n, seq_len=seq_len, augment_photometric=True) if real_bank is not None else None
+                if rob_bank is not None and rob_n > 0:
+                    rob_b, rob_toks = _sample_rob_batch_two_utterance(rob_bank, np_rng, rob_n)
+                else:
+                    rob_b, rob_toks = None, None
+                batch = mix_x3_real_and_sim_batches(real_b, rob_b, sim_b, rob_tok16_tuple=rob_toks)
 
-            params, ema_params, m_st, v_st, mets = compiled_step(
-                params, ema_params, m_st, v_st, batch, jnp.int32(step), k_loss
-            )
-            if step == 0 or (step + 1) % 100 == 0 or (step + 1) == steps:
-                mh = {k: float(v) for k, v in jax.device_get(mets).items()}
-                if not np.isfinite(mh["loss"]):
-                    raise FloatingPointError(f"Non-finite loss at step {step + 1} in {tag}: {mh}")
-                if step == 0 or (step + 1) % 400 == 0 or (step + 1) == steps:
-                    vl_list, vv_list, vt_list, va_list = [], [], [], []
-                    for vi_b, vb_eval in enumerate(val_batches):
-                        _, vm_d = jax.device_get(
-                            compiled_val_loss(params, ema_params, vb_eval, jax.random.fold_in(jax.random.key(309902), vi_b))
+                params, ema_params, m_st, v_st, mets = compiled_step(
+                    params, ema_params, m_st, v_st, batch, jnp.int32(step), k_loss
+                )
+                if step == 0 or (step + 1) % 100 == 0 or (step + 1) == steps:
+                    mh = {k: float(v) for k, v in jax.device_get(mets).items()}
+                    if not np.isfinite(mh["loss"]):
+                        raise FloatingPointError(f"Non-finite loss at step {step + 1} in {tag}: {mh}")
+                    if step == 0 or (step + 1) % 400 == 0 or (step + 1) == steps:
+                        vl_list, vv_list, vt_list, va_list = [], [], [], []
+                        for vi_b, vb_eval in enumerate(val_batches):
+                            _, vm_d = jax.device_get(
+                                compiled_val_loss(params, ema_params, vb_eval, jax.random.fold_in(jax.random.key(309902), vi_b))
+                            )
+                            vl_list.append(float(vm_d["loss"]))
+                            vv_list.append(float(vm_d["vid480_l1"]))
+                            vt_list.append(float(vm_d["va2txt_ce"]))
+                            va_list.append(float(vm_d["v2aud_mse"]))
+                        mh["val_loss"] = float(np.mean(vl_list))
+                        mh["val_vid480_l1"] = float(np.mean(vv_list))
+                        mh["val_va2txt_ce"] = float(np.mean(vt_list))
+                        mh["val_v2aud_mse"] = float(np.mean(va_list))
+                    mh["step"] = step + 1
+                    mh["elapsed_s"] = round(time.monotonic() - t0, 2)
+                    lf.write(json.dumps(mh, sort_keys=True) + "\n")
+                    lf.flush()
+                    prog_path.write_text(json.dumps({"tag": tag, "step": step + 1, "steps": steps, "loss": mh["loss"]}, sort_keys=True) + "\n")
+                    if step == 0 or (step + 1) % 200 == 0 or (step + 1) == steps:
+                        v_str = f" val={mh['val_loss']:.4f}" if "val_loss" in mh else ""
+                        print(
+                            f"[{tag}] step {step + 1}/{steps} | loss={mh['loss']:.4f}{v_str} sym={mh['sym_ce']:.3f}(aux80={mh['sym_aux80']:.3f}) "
+                            f"va2t={mh['va2txt_ce']:.3f} v480={mh['vid480_l1']:.3f} v2a={mh['v2aud_mse']:.3f} "
+                            f"mov={mh['mov_mse']:.3f} act={mh['act_mse']:.3f} pr={mh['pr']:.3f}",
+                            flush=True,
                         )
-                        vl_list.append(float(vm_d["loss"]))
-                        vv_list.append(float(vm_d["vid480_l1"]))
-                        vt_list.append(float(vm_d["va2txt_ce"]))
-                        va_list.append(float(vm_d["v2aud_mse"]))
-                    mh["val_loss"] = float(np.mean(vl_list))
-                    mh["val_vid480_l1"] = float(np.mean(vv_list))
-                    mh["val_va2txt_ce"] = float(np.mean(vt_list))
-                    mh["val_v2aud_mse"] = float(np.mean(va_list))
-                mh["step"] = step + 1
-                mh["elapsed_s"] = round(time.monotonic() - t0, 2)
-                lf.write(json.dumps(mh, sort_keys=True) + "\n")
-                lf.flush()
-                prog_path.write_text(json.dumps({"tag": tag, "step": step + 1, "steps": steps, "loss": mh["loss"]}, sort_keys=True) + "\n")
-                if step == 0 or (step + 1) % 200 == 0 or (step + 1) == steps:
-                    v_str = f" val={mh['val_loss']:.4f}" if "val_loss" in mh else ""
-                    print(
-                        f"[{tag}] step {step + 1}/{steps} | loss={mh['loss']:.4f}{v_str} sym={mh['sym_ce']:.3f}(aux80={mh['sym_aux80']:.3f}) "
-                        f"va2t={mh['va2txt_ce']:.3f} v480={mh['vid480_l1']:.3f} v2a={mh['v2aud_mse']:.3f} "
-                        f"mov={mh['mov_mse']:.3f} act={mh['act_mse']:.3f} pr={mh['pr']:.3f}",
-                        flush=True,
-                    )
 
-    train_wall_s = round(time.monotonic() - t0, 2)
-    del m_st, v_st
+        train_wall_s = round(time.monotonic() - t0, 2)
+        # Persist exact fp32 post-train weights BEFORE any export/eval so kernel death during eval
+        # resumes straight into evaluation instead of silently re-running all training steps.
+        save_x3_post_train_checkpoint(
+            post_npz, post_meta, params, binding_sha=binding_sha, source_sha=source_sha, steps=steps, train_wall_s=train_wall_s
+        )
+    del m_st, v_st, ema_params, compiled_step, compiled_val_loss
+    # Release training-only host banks before evaluation (eval re-opens dev/vault shards itself).
+    del real_bank, dev_val_bank, rob_bank, val_batches
+    gc.collect()
 
     int8_path = job_dir / "portable_int8.npz"
     int8_sha = save_portable_int8(int8_path, params)
@@ -1284,6 +1383,9 @@ def train_and_evaluate_x3(
         vocab_path=vocab_path,
         showcase_out_npz=(job_dir / "showcase_bundle.npz") if export_showcase else None,
         smoke=smoke,
+        progress_cb=lambda stage: prog_path.write_text(
+            json.dumps({"tag": tag, "phase": "eval", "stage": stage, "steps": steps}, sort_keys=True) + "\n"
+        ),
     )
     eval_wall_s = round(time.monotonic() - t_eval0, 2)
     eval_path = job_dir / "eval_metrics.json"
@@ -1329,6 +1431,7 @@ def train_and_evaluate_x3(
             "total_grad_slot_tokens": int(steps * total_grad_tok_per_step),
         },
         "train_wall_s": train_wall_s,
+        "resumed_from_post_train_checkpoint": bool(resumed_meta is not None),
         "eval_wall_s": eval_wall_s,
         "eval_summary": eval_res["summary"],
     }

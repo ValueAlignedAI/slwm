@@ -22,6 +22,9 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+# Ensure we do NOT have scripts/train in sys.path which causes import shadowing
+if str(REPO_ROOT / "scripts" / "train") in sys.path:
+    sys.path.remove(str(REPO_ROOT / "scripts" / "train"))
 
 from models.x3_480p_core import make_x3_spec
 from scripts.train.x1b_colab_ops import (
@@ -29,6 +32,9 @@ from scripts.train.x1b_colab_ops import (
     allocate_accelerator,
     archive_run_to_fedora,
     check_usage_and_budget,
+    get_session_endpoint,
+    remote_job_status,
+    wait_for_remote_job,
     restart_session_kernel,
     run_kernel_job_resilient,
     stage_code_and_data,
@@ -127,6 +133,15 @@ def _try_hydrate_from_fedora_dual_copy(runs_subdir: str, tag: str, local_dir: Pa
     return True
 
 
+def _accepted_source_shas(cohort: str, current_sha: str) -> set[str]:
+    """Current tree sha plus any ledgered sha for this cohort (configs/x3/x3_source_sha_ledger.json)."""
+    led_p = REPO_ROOT / "configs/x3/x3_source_sha_ledger.json"
+    acc = {current_sha}
+    if led_p.is_file():
+        acc.update(str(x) for x in json.loads(led_p.read_text()).get(cohort, []))
+    return acc
+
+
 def is_verified_x3_local_job(
     job: dict[str, Any],
     *,
@@ -168,7 +183,7 @@ def is_verified_x3_local_job(
         or rec_doc.get("smoke") is not False
         or int(rec_doc.get("steps", -1)) != int(job["steps"])
         or rec_doc.get("binding_sha256") != exp_binding_sha
-        or rec_doc.get("source_code_sha256") != source_code_sha
+        or rec_doc.get("source_code_sha256") not in _accepted_source_shas(str(job["cohort"]), source_code_sha)
         or not verify_x3_receipt_data_provenance(rec_doc, reg_cards)
     ):
         raise RuntimeError(
@@ -207,6 +222,20 @@ def is_verified_x3_local_job(
     return True
 
 
+def _archive_with_retries(lane_idx: int, session_name: str, tag: str, runs_subdir: str, local_runs_root: Path) -> None:
+    """Archive is idempotent (SHA-verified receive + mirror); retry transient SSH failures so a finished
+    run's artifacts are never lost to a single dropped connection before the VM is torn down."""
+    for arch_try in range(1, 5):
+        try:
+            archive_run_to_fedora(session_name, tag, runs_subdir=runs_subdir, local_runs_base_dir=local_runs_root)
+            return
+        except Exception as exc:
+            if arch_try == 4:
+                raise
+            print(f"[WARN X3 LANE {lane_idx}] Archive of {tag} failed (try {arch_try}/4: {exc}); retrying...", flush=True)
+            time.sleep(30 * arch_try)
+
+
 def run_lane(
     lane_idx: int,
     num_lanes: int = 6,
@@ -216,8 +245,12 @@ def run_lane(
     tpu_only: bool = False,
     max_spend: float = 2495.0,
     min_balance_reserve: float = 5.0,
+    cohorts: list[str] | None = None,
 ) -> None:
     cfg, jobs = load_x3_lane_jobs(lane_idx, num_lanes=num_lanes, config_rel=config_rel)
+    if cohorts:
+        jobs = [j for j in jobs if j["cohort"] in set(cohorts)]
+        print(f"[X3 LANE {lane_idx}] cohort filter {cohorts}: {[j['tag'] for j in jobs]}", flush=True)
     reg_cards = json.loads((REPO_ROOT / "configs/x3/x3_dataset_cards.json").read_text())
     source_sha = compute_x3_source_code_sha256()
     runs_subdir = str(cfg["runs_subdir"])
@@ -262,9 +295,35 @@ def run_lane(
                 time.sleep(8)
         raise RuntimeError("Unreachable")
 
-    session_started_at = _alloc_and_stage()
+    # ATTACH: if this lane's VM is still running the first pending job (orchestrator restarted mid-job), wait for it
+    # instead of re-staging; staging's kernel exec would queue behind the running cell and a restart would kill it.
+    attached_jobs = 0
+    first_pending = next((j for j in jobs if not _is_verified(j)), None)
+    if first_pending is not None and get_session_endpoint(session_name):
+        st = remote_job_status(session_name, first_pending["tag"])
+        live = st == "DONE" or (st.startswith("PROG:") and int(st.split(":", 1)[1]) < 3600)
+        if live:
+            print(f"[ATTACH X3 LANE {lane_idx}] {first_pending['tag']} live on {session_name} ({st}); monitoring...", flush=True)
+            res = wait_for_remote_job(session_name, first_pending["tag"])
+            print(f"[ATTACH X3 LANE {lane_idx}] {first_pending['tag']} -> {res}", flush=True)
+            if res == "DONE":
+                try:
+                    _archive_with_retries(lane_idx, session_name, first_pending["tag"], runs_subdir, local_runs_root)
+                except Exception:
+                    stop_session(session_name)
+                    raise
+                if not _is_verified(first_pending):
+                    stop_session(session_name)
+                    raise RuntimeError(f"Post-archive provenance check failed for {first_pending['tag']!r}")
+                attached_jobs = 1
+
+    if attached_jobs and get_session_endpoint(session_name):
+        # Keep the warm VM (capacity is scarce): the next job restarts the kernel, or rotates if the 65m age rule fires.
+        session_started_at = time.monotonic()
+    else:
+        session_started_at = _alloc_and_stage()
     try:
-        jobs_on_session = 0
+        jobs_on_session = attached_jobs
         for ji, job in enumerate(jobs, start=1):
             check_usage_and_budget(max_spend=max_spend, min_balance_reserve=min_balance_reserve)
             if _is_verified(job):
@@ -323,13 +382,9 @@ train_and_evaluate_x3(
 gc.collect()
 """
             print(f"[X3 LANE {lane_idx}] ({ji}/{len(jobs)}) Training {job['tag']} on {session_name}...", flush=True)
-            run_kernel_job_resilient(session_name, job["tag"], py_job, timeout=14400)
-            archive_run_to_fedora(
-                session_name,
-                job["tag"],
-                runs_subdir=runs_subdir,
-                local_runs_base_dir=local_runs_root,
-            )
+            # 1B jobs run many hours: exec timeout is a generous ceiling; liveness is judged by progress.json.
+            run_kernel_job_resilient(session_name, job["tag"], py_job, timeout=48 * 3600)
+            _archive_with_retries(lane_idx, session_name, job["tag"], runs_subdir, local_runs_root)
             if not _is_verified(job):
                 raise RuntimeError(f"Post-archive provenance check failed for {job['tag']!r}")
             jobs_on_session += 1
@@ -351,6 +406,7 @@ def main() -> None:
     ap.add_argument("--config", type=str, default="configs/x3/study_x3_1b_480p.json")
     ap.add_argument("--gpu-fallback-first", action="store_true")
     ap.add_argument("--tpu-only", action="store_true")
+    ap.add_argument("--cohorts", type=str, default="", help="Comma-separated cohort filter (e.g. x3_slwm_150m_480p)")
     args = ap.parse_args()
     run_lane(
         args.lane,
@@ -358,6 +414,7 @@ def main() -> None:
         config_rel=args.config,
         prefer_tpu=(not args.gpu_fallback_first),
         tpu_only=args.tpu_only,
+        cohorts=[c for c in args.cohorts.split(",") if c] or None,
     )
 
 

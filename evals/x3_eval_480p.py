@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import functools
+import gc
 import json
 from pathlib import Path
 import time
@@ -175,6 +176,44 @@ def _psnr_and_ssim_480p(pred_u8: np.ndarray, targ_u8: np.ndarray) -> tuple[np.nd
     return psnr, ssim, edge_rmse
 
 
+_METRIC_CHUNK = 16
+
+
+def _pred480_to_u8(v: np.ndarray) -> np.ndarray:
+    """Exact elementwise `[-1, 1] -> uint8` quantization used for all 480p video metrics."""
+    return np.clip((v + 1.0) * 127.5, 0.0, 255.0).astype(np.uint8)
+
+
+def _chunked_psnr_ssim_480p(pred_u8: np.ndarray, targ_u8: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Per-episode `_psnr_and_ssim_480p` evaluated in episode chunks (bounded float32 temporaries)."""
+    parts = [
+        _psnr_and_ssim_480p(pred_u8[c0 : c0 + _METRIC_CHUNK], targ_u8[c0 : c0 + _METRIC_CHUNK])
+        for c0 in range(0, pred_u8.shape[0], _METRIC_CHUNK)
+    ]
+    if not parts:
+        z = np.zeros((0,), dtype=np.float32)
+        return z, z, z
+    return tuple(np.concatenate([pt[i] for pt in parts], axis=0) for i in range(3))  # type: ignore[return-value]
+
+
+def _host_rss_gb() -> tuple[float, float]:
+    """(current, peak) host RSS in GB; current read from /proc on Linux, else peak only."""
+    import resource
+    import sys
+
+    peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    peak_gb = peak / 1e9 if sys.platform == "darwin" else peak * 1024 / 1e9
+    cur_gb = peak_gb
+    try:
+        with open("/proc/self/statm") as f:
+            import os
+
+            cur_gb = int(f.read().split()[1]) * os.sysconf("SC_PAGE_SIZE") / 1e9
+    except OSError:
+        pass
+    return cur_gb, peak_gb
+
+
 def _build_synthetic_480p_eval_clips(seed: int = 3009, n_clips: int = 12, seq_len: int = 24) -> dict[str, np.ndarray]:
     """Self-contained `480p` multimodal probe bank used ONLY in `smoke=True` unit tests."""
     rng = np.random.default_rng(seed)
@@ -280,7 +319,9 @@ def _load_eval_480p_clips(
                     chosen.append(extras_by_k[sk].pop(0))
         idx_arr = np.asarray(sorted(chosen), dtype=np.int64)
 
-    vids = np.stack([bank.decode_clip_frames(int(ci), 24) for ci in idx_arr], axis=0)
+    vids = np.empty((idx_arr.size, 24, 480, 640, 3), dtype=np.uint8)
+    for vi, ci in enumerate(idx_arr):
+        vids[vi] = bank.decode_clip_frames(int(ci), 24)
     return {
         "video": vids,
         "audio": bank.audio[idx_arr, :24],
@@ -533,15 +574,25 @@ def eval_x3_any_to_any_composition(
             "contact_logits": hds["contact_logits"],
         }
 
-    def _batched_call(vid_arr, aud_arr, mov_arr, act_arr, lang_arr, mm_arr, ctx0_arr, *, use_obs_action: bool):
+    def _batched_call(
+        vid_arr, aud_arr, mov_arr, act_arr, lang_arr, mm_arr, ctx0_arr, *,
+        use_obs_action: bool, keep: tuple[str, ...], vid_idx: np.ndarray | None = None,
+    ):
+        """Chunked forward that retains ONLY the consumed head outputs (host-RAM bounded).
+
+        `pred_v480` is quantized to uint8 per chunk with the exact same elementwise expression
+        previously applied after concatenation, and `vid_idx` gathers permuted video per chunk
+        instead of materializing a full permuted copy of the `[N, T, 480, 640, 3]` clip tensor.
+        """
         outs: dict[str, list[np.ndarray]] = {}
         cbs = min(chunk_bs, n)
         for i0 in range(0, n, cbs):
             sl = slice(i0, i0 + cbs)
+            vid_chunk = vid_arr[vid_idx[sl]] if vid_idx is not None else vid_arr[sl]
             res = jax.device_get(
                 _forward_masked(
                     params,
-                    jnp.asarray(vid_arr[sl]),
+                    jnp.asarray(vid_chunk),
                     jnp.asarray(aud_arr[sl]),
                     jnp.asarray(mov_arr[sl]),
                     jnp.asarray(act_arr[sl]),
@@ -552,8 +603,12 @@ def eval_x3_any_to_any_composition(
                     use_obs_action,
                 )
             )
-            for k, v in res.items():
-                outs.setdefault(k, []).append(np.asarray(v))
+            for k in keep:
+                v = np.asarray(res[k])
+                if k == "pred_v480":
+                    v = _pred480_to_u8(v)
+                outs.setdefault(k, []).append(v)
+            del res
         return {k: np.concatenate(v, axis=0) for k, v in outs.items()}
 
     ctx_zero = np.zeros((n, 1, 480, 640, 3), dtype=np.uint8)
@@ -563,12 +618,13 @@ def eval_x3_any_to_any_composition(
     # --- Direction 1: `Video / Audio -> Text` (`mm[txt] = 0`, `action = 0`, within-source disjoint-group shuffle!) ---
     mm_d1 = mm_full.copy()
     mm_d1[:, :, 3] = 0.0
+    k1 = ("pred_lang_logits",)
     d1_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d1, ctx_zero, use_obs_action=False
+        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d1, ctx_zero, use_obs_action=False, keep=k1
     )
     d1_shuf = _batched_call(
-        clips["video"][perm_within_src], clips["audio"][perm_within_src], clips["movement"][perm_within_src],
-        z_act_np, clips["lang_tokens"], mm_d1[perm_within_src], ctx_zero, use_obs_action=False,
+        clips["video"], clips["audio"][perm_within_src], clips["movement"][perm_within_src],
+        z_act_np, clips["lang_tokens"], mm_d1[perm_within_src], ctx_zero, use_obs_action=False, keep=k1, vid_idx=perm_within_src,
     )
     tlang = clips["target_lang_tokens"]
     has_txt_ep = (mm_full[:, 0, 3] > 0.5) & (np.sum(tlang > 0, axis=1) > 0)
@@ -624,18 +680,19 @@ def eval_x3_any_to_any_composition(
     mm_d2[:, :, 0] = 0.0
     mm_d2[:, 1:, 1] = 0.0
     mm_d2[:, 1:, 2] = 0.0
+    k2 = ("pred_v480",)
     d2_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], causal_prev_act, clips["lang_tokens"], mm_d2, ctx_true0, use_obs_action=True
+        clips["video"], clips["audio"], clips["movement"], causal_prev_act, clips["lang_tokens"], mm_d2, ctx_true0, use_obs_action=True, keep=k2
     )
     mm_d2_shuf = mm_d2.copy()
     mm_d2_shuf[:, :, 3] = mm_full[perm_within_src, :, 3]
     d2_shuf = _batched_call(
         clips["video"], clips["audio"], clips["movement"],
-        causal_prev_act[perm_within_src], clips["lang_tokens"][perm_within_src], mm_d2_shuf, ctx_true0, use_obs_action=True,
+        causal_prev_act[perm_within_src], clips["lang_tokens"][perm_within_src], mm_d2_shuf, ctx_true0, use_obs_action=True, keep=k2,
     )
     d2_neg_u = _batched_call(
         clips["video"], clips["audio"], clips["movement"],
-        -causal_prev_act, clips["lang_tokens"][perm_within_src], mm_d2_shuf, ctx_true0, use_obs_action=True,
+        -causal_prev_act, clips["lang_tokens"][perm_within_src], mm_d2_shuf, ctx_true0, use_obs_action=True, keep=k2,
     )
     v_t_eval = np.array([1, min(6, t - 1), min(14, t - 1), max(1, t - 1)], dtype=np.int64)
     has_vis_cond_ep = (mm_full[:, 0, 1] > 0.5) & ((mm_full[:, 0, 3] > 0.5) | (has_true_act > 0.5))
@@ -643,21 +700,29 @@ def eval_x3_any_to_any_composition(
         has_vis_cond_ep = mm_full[:, 0, 1] > 0.5
     if not np.any(has_vis_cond_ep):
         has_vis_cond_ep = np.ones((n,), dtype=bool)
-    pred_v_u8 = np.clip((d2_true["pred_v480"][has_vis_cond_ep] + 1.0) * 127.5, 0.0, 255.0).astype(np.uint8)
-    shuf_v_u8 = np.clip((d2_shuf["pred_v480"][has_vis_cond_ep] + 1.0) * 127.5, 0.0, 255.0).astype(np.uint8)
-    negu_v_u8 = np.clip((d2_neg_u["pred_v480"][has_vis_cond_ep] + 1.0) * 127.5, 0.0, 255.0).astype(np.uint8)
-    targ_v_u8 = clips["video"][has_vis_cond_ep][:, v_t_eval]
+    idx_vis = np.flatnonzero(has_vis_cond_ep).astype(np.int64)
+    pred_v_u8 = d2_true["pred_v480"][idx_vis]
+    shuf_v_u8 = d2_shuf["pred_v480"][idx_vis]
+    negu_v_u8 = d2_neg_u["pred_v480"][idx_vis]
+    del d2_true, d2_shuf, d2_neg_u
+    targ_v_u8 = clips["video"][idx_vis[:, None], v_t_eval[None, :]]
 
-    psnr_true, ssim_true, edge_rmse_true = _psnr_and_ssim_480p(pred_v_u8, targ_v_u8)
-    psnr_shuf, _, _ = _psnr_and_ssim_480p(shuf_v_u8, targ_v_u8)
-    psnr_negu, _, _ = _psnr_and_ssim_480p(negu_v_u8, targ_v_u8)
-    f0_ref = clips["video"][has_vis_cond_ep][:, :1].astype(np.float32) / 255.0
-    pf_m = pred_v_u8.astype(np.float32) / 255.0
-    tf_m = targ_v_u8.astype(np.float32) / 255.0
-    mov_pix = (np.mean(np.abs(tf_m - f0_ref), axis=-1, keepdims=True) > (15.0 / 255.0)).astype(np.float32)
-    mov_mse_pix = np.sum(((pf_m - tf_m) ** 2) * mov_pix) / np.maximum(np.sum(mov_pix) * 3.0, 1.0)
+    psnr_true, ssim_true, edge_rmse_true = _chunked_psnr_ssim_480p(pred_v_u8, targ_v_u8)
+    psnr_shuf, _, _ = _chunked_psnr_ssim_480p(shuf_v_u8, targ_v_u8)
+    psnr_negu, _, _ = _chunked_psnr_ssim_480p(negu_v_u8, targ_v_u8)
+    mov_num, mov_den, cf_abs_sum = 0.0, 0.0, 0.0
+    for c0 in range(0, idx_vis.size, _METRIC_CHUNK):
+        csl = slice(c0, c0 + _METRIC_CHUNK)
+        f0_ref = clips["video"][idx_vis[csl], :1].astype(np.float32) / 255.0
+        pf_m = pred_v_u8[csl].astype(np.float32) / 255.0
+        tf_m = targ_v_u8[csl].astype(np.float32) / 255.0
+        mov_pix = (np.mean(np.abs(tf_m - f0_ref), axis=-1, keepdims=True) > (15.0 / 255.0)).astype(np.float32)
+        mov_num += float(np.sum(((pf_m - tf_m) ** 2) * mov_pix, dtype=np.float64))
+        mov_den += float(np.sum(mov_pix, dtype=np.float64))
+        cf_abs_sum += float(np.sum(np.abs(pf_m - (negu_v_u8[csl].astype(np.float32) / 255.0)), dtype=np.float64))
+    mov_mse_pix = mov_num / max(mov_den * 3.0, 1.0)
     mov_psnr = float(10.0 * np.log10(1.0 / max(float(mov_mse_pix), 1e-8)))
-    cf_div_l1 = float(np.mean(np.abs(pf_m - (negu_v_u8.astype(np.float32) / 255.0))))
+    cf_div_l1 = float(cf_abs_sum / max(1, pred_v_u8.size))
     d2_lift_vec = psnr_true - psnr_shuf
 
     dir2_metrics = {
@@ -681,12 +746,14 @@ def eval_x3_any_to_any_composition(
     # --- Direction 3: `Video (+ Action) -> 16 kHz Audio` (`mm[aud]=0, mm[mov]=0, mm[txt]=0`) ---
     mm_d3 = np.zeros_like(mm_full)
     mm_d3[:, :, 1] = mm_full[:, :, 1]
+    k3 = ("pred_audio_mel",)
     d3_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], causal_prev_act, clips["lang_tokens"], mm_d3, ctx_zero, use_obs_action=True
+        clips["video"], clips["audio"], clips["movement"], causal_prev_act, clips["lang_tokens"], mm_d3, ctx_zero, use_obs_action=True, keep=k3
     )
     d3_shuf = _batched_call(
-        clips["video"][perm_within_src], clips["audio"], clips["movement"],
+        clips["video"], clips["audio"], clips["movement"],
         causal_prev_act[perm_within_src], clips["lang_tokens"], mm_d3[perm_within_src], ctx_zero, use_obs_action=True,
+        keep=k3, vid_idx=perm_within_src,
     )
     has_av_ep = (mm_full[:, 0, 0] > 0.5) & (mm_full[:, 0, 1] > 0.5)
     if not np.any(has_av_ep):
@@ -721,12 +788,14 @@ def eval_x3_any_to_any_composition(
     # --- Direction 4: `Text / Video -> Physical 3D Movement` (`mm[mov]=0, action=0`, physical kinematics ONLY!) ---
     mm_d4 = mm_full.copy()
     mm_d4[:, :, 2] = 0.0
+    k4 = ("pred_mov_next", "pred_mov_step4")
     d4_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d4, ctx_zero, use_obs_action=False
+        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d4, ctx_zero, use_obs_action=False, keep=k4
     )
     d4_shuf = _batched_call(
-        clips["video"][perm_within_src], clips["audio"][perm_within_src], clips["movement"],
+        clips["video"], clips["audio"][perm_within_src], clips["movement"],
         z_act_np, clips["lang_tokens"][perm_within_src], mm_d4[perm_within_src], ctx_zero, use_obs_action=False,
+        keep=k4, vid_idx=perm_within_src,
     )
     has_mov_ep = (mm_full[:, 0, 2] > 0.5) & ((mm_full[:, 0, 1] > 0.5) | (mm_full[:, 0, 3] > 0.5))
     if not np.any(has_mov_ep):
@@ -757,16 +826,18 @@ def eval_x3_any_to_any_composition(
     # --- Direction 5: `Audio + Video (+ Text) -> Continuous Robot Actions` (`has_true_action==1`, `action=0`, fixed `t=0` state!) ---
     mm_d5 = mm_full.copy()
     mm_d5[:, 1:, 2] = 0.0
+    k5 = ("pred_action",)
     d5_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d5, ctx_zero, use_obs_action=False
+        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d5, ctx_zero, use_obs_action=False, keep=k5
     )
     mm_d5_shuf = mm_d5.copy()
     mm_d5_shuf[:, :, 0] = mm_full[perm_within_src, :, 0]
     mm_d5_shuf[:, :, 1] = mm_full[perm_within_src, :, 1]
     mm_d5_shuf[:, :, 3] = mm_full[perm_within_src, :, 3]
     d5_shuf = _batched_call(
-        clips["video"][perm_within_src], clips["audio"][perm_within_src], clips["movement"],
+        clips["video"], clips["audio"][perm_within_src], clips["movement"],
         z_act_np, clips["lang_tokens"][perm_within_src], mm_d5_shuf, ctx_zero, use_obs_action=False,
+        keep=k5, vid_idx=perm_within_src,
     )
     has_act_ep = has_true_act > 0.5
     if not np.any(has_act_ep):
@@ -795,14 +866,15 @@ def eval_x3_any_to_any_composition(
     mm_d6 = np.zeros_like(mm_full)
     mm_d6[:, :, 0] = mm_full[:, :, 0]
     mm_d6[:, :, 2] = mm_full[:, :, 2]
+    k6 = ("contact_logits",)
     d6_true = _batched_call(
-        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d6, ctx_zero, use_obs_action=False
+        clips["video"], clips["audio"], clips["movement"], z_act_np, clips["lang_tokens"], mm_d6, ctx_zero, use_obs_action=False, keep=k6
     )
     mm_d6_shuf = mm_d6.copy()
     mm_d6_shuf[:, :, 0] = mm_full[perm_within_src, :, 0]
     d6_shuf = _batched_call(
         clips["video"], clips["audio"][perm_within_src], clips["movement"],
-        z_act_np, clips["lang_tokens"], mm_d6_shuf, ctx_zero, use_obs_action=False,
+        z_act_np, clips["lang_tokens"], mm_d6_shuf, ctx_zero, use_obs_action=False, keep=k6,
     )
     has_av_vis_ep = (mm_full[:, 0, 0] > 0.5) & (mm_full[:, 0, 1] > 0.5)
     if not np.any(has_av_vis_ep):
@@ -810,9 +882,13 @@ def eval_x3_any_to_any_composition(
     if not np.any(has_av_vis_ep):
         has_av_vis_ep = np.ones((n,), dtype=bool)
     # Ground-truth is genuinely OCCLUDED 480p visual frame-difference motion (`||V_t - V_{t-1}||_1 > 0.025`), NEVER `audio_t`!
-    vf_occ = clips["video"][has_av_vis_ep].astype(np.float32) / 255.0
-    vf_occ_prev = np.concatenate([vf_occ[:, :1], vf_occ[:, :-1]], axis=1)
-    vis_mot_gt = np.mean(np.abs(vf_occ - vf_occ_prev), axis=(2, 3, 4))
+    idx_av_vis = np.flatnonzero(has_av_vis_ep).astype(np.int64)
+    vis_mot_parts: list[np.ndarray] = []
+    for c0 in range(0, idx_av_vis.size, _METRIC_CHUNK):
+        vf_occ = clips["video"][idx_av_vis[c0 : c0 + _METRIC_CHUNK]].astype(np.float32) / 255.0
+        vf_occ_prev = np.concatenate([vf_occ[:, :1], vf_occ[:, :-1]], axis=1)
+        vis_mot_parts.append(np.mean(np.abs(vf_occ - vf_occ_prev), axis=(2, 3, 4)))
+    vis_mot_gt = np.concatenate(vis_mot_parts, axis=0) if vis_mot_parts else np.zeros((0, t), dtype=np.float32)
     targ_impact = (vis_mot_gt > 0.025).astype(np.float32)
     logit_imp_t = d6_true["contact_logits"][has_av_vis_ep, :, 0]
     logit_imp_s = d6_shuf["contact_logits"][has_av_vis_ep, :, 0]
@@ -864,13 +940,13 @@ def eval_x3_any_to_any_composition(
             "dir2_percentile_labels": np.array([5, 25, 50, 75, 95], dtype=np.int32),
             "dir2_percentile_ep_ids": cond_global_ids[pct_idx],
             "dir2_percentile_psnr_db": psnr_true[pct_idx].astype(np.float32),
-            "dir2_obs_f0_480p_u8": clips["video"][has_vis_cond_ep][pct_idx, :1],
+            "dir2_obs_f0_480p_u8": clips["video"][idx_vis[pct_idx], :1],
             "dir2_targ_480p_u8": targ_v_u8[pct_idx],
             "dir2_pred_480p_u8": pred_v_u8[pct_idx],
             "dir2_negu_480p_u8": negu_v_u8[pct_idx],
             "dir2_common_ep_ids": cond_global_ids[common_idx],
             "dir2_common_psnr_db": psnr_true[common_idx].astype(np.float32),
-            "dir2_common_obs_f0_480p_u8": clips["video"][has_vis_cond_ep][common_idx, :1],
+            "dir2_common_obs_f0_480p_u8": clips["video"][idx_vis[common_idx], :1],
             "dir2_common_targ_480p_u8": targ_v_u8[common_idx],
             "dir2_common_pred_480p_u8": pred_v_u8[common_idx],
             "dir3_pred_mel64": pa_mel[:n_aud_keep],
@@ -1850,8 +1926,20 @@ def run_x3_full_evaluation(
     vocab_path: str | Path | None = None,
     showcase_out_npz: str | Path | None = None,
     smoke: bool = False,
+    progress_cb: Any = None,
 ) -> tuple[dict[str, Any], str | None, int]:
     """Execute leak-free Panels X3-1, X3-2, & X3-3; fail closed on missing vault/robot shards when `smoke=False`."""
+    t_stage0 = time.monotonic()
+
+    def _stage(name: str) -> None:
+        cur_gb, peak_gb = _host_rss_gb()
+        print(
+            f"[EVAL X3] stage={name} t={time.monotonic() - t_stage0:.1f}s host_rss={cur_gb:.2f}GB peak={peak_gb:.2f}GB",
+            flush=True,
+        )
+        if progress_cb is not None:
+            progress_cb(name)
+
     if not smoke:
         for role_name, role_p in (
             ("dev_480p_path", dev_480p_path),
@@ -1874,18 +1962,26 @@ def run_x3_full_evaluation(
     ov_ks = (1, 4) if smoke else (1, 2, 4, 8, 16)
     n_ood = 8 if smoke else 24
 
+    _stage("start")
     ood_res = eval_x3_unseen_ood_480p(params, spec, n_worlds=n_ood, chunk_bs=4)
+    _stage("ood_done")
     dev_clips = _load_eval_480p_clips(dev_480p_path, max_clips=dev_max_clips, seed=302411, smoke=smoke)
-    vault_clips = _load_eval_480p_clips(vault_480p_path, max_clips=vault_max_clips, seed=302412, smoke=smoke)
-
     comp_dev, _ = eval_x3_any_to_any_composition(
         params, spec, dev_clips, inv_vocab=inv_vocab, ood_panel=ood_res, chunk_bs=4,
         collect_showcase=False, strict_within_source=(not smoke),
     )
+    del dev_clips
+    gc.collect()
+    _stage("any_to_any_dev_done")
+    vault_clips = _load_eval_480p_clips(vault_480p_path, max_clips=vault_max_clips, seed=302412, smoke=smoke)
+    _stage(f"vault_clips_loaded_n{int(vault_clips['video'].shape[0])}")
     comp_vault, sc_vault = eval_x3_any_to_any_composition(
         params, spec, vault_clips, inv_vocab=inv_vocab, ood_panel=ood_res, chunk_bs=4,
         collect_showcase=bool(showcase_out_npz), strict_within_source=(not smoke),
     )
+    del vault_clips
+    gc.collect()
+    _stage("any_to_any_vault_done")
 
     ls_res, sc_ls = eval_x3_livestream_T1024_and_overwrite(
         params,
@@ -1895,14 +1991,19 @@ def run_x3_full_evaluation(
         horizons=ov_horizons,
         k_items_list=ov_ks,
     )
+    _stage("livestream_done")
     mppi_res = eval_x3_unseen_layout_mppi_480p(params, spec, n_worlds=n_mppi, horizon_ticks=mppi_h, chunk_bs=8)
+    _stage("mppi_done")
     t160_res = eval_x3_T160_paired_switch_480p(params, spec, n_worlds=n_t160, chunk_bs=8)
+    _stage("t160_done")
     rob_dev = eval_x3_spoken_xarm6_grounding(
         params, spec, grounded_robot_path, train_ref_npz_path=grounded_robot_path, split="dev", max_episodes=(16 if smoke else 128), smoke=smoke
     )
+    _stage("xarm6_dev_done")
     rob_vault = eval_x3_spoken_xarm6_grounding(
         params, spec, vault_robot_path, train_ref_npz_path=grounded_robot_path, split="vault", max_episodes=(16 if smoke else 284), smoke=smoke
     )
+    _stage("xarm6_vault_done")
 
     ov_dict = ls_res["multi_item_overwrite_capacity"]
     t_max_key = f"K1_T{ov_horizons[-1]}_overwritten_acc"
