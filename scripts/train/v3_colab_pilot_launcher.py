@@ -77,9 +77,9 @@ def _colab_env() -> dict[str, str]:
     return {
         **os.environ,
         "CLOUDSDK_CONFIG": str(resolve_gcloud_config_dir()),
-        "COLAB_CLI_REQUEST_TIMEOUT": "180",
+        "COLAB_CLI_REQUEST_TIMEOUT": "120",
         "COLAB_CLI_ASSIGN_RETRIES": "2",
-        "COLAB_CLI_RETRY_BACKOFF": "8",
+        "COLAB_CLI_RETRY_BACKOFF": "10",
     }
 
 
@@ -626,9 +626,27 @@ def main() -> None:
 
     try:
         print(f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r}...", flush=True)
-        assign_res = run_colab("new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=240)
+        assign_res = run_colab("--logtostderr", "new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=420)
+        if assign_res.stdout.strip():
+            print(assign_res.stdout.strip(), flush=True)
+        if assign_res.stderr.strip():
+            print(assign_res.stderr.strip(), flush=True)
         if assign_res.returncode != 0:
             raise RuntimeError(f"TPU v6e-1 assign failed: {assign_res.stderr or assign_res.stdout}")
+
+        topo_script = REPO_ROOT / "scripts/train/g4_colab_topology.py"
+        if not topo_script.is_file():
+            raise FileNotFoundError(f"Required Colab TPU topology script missing: {topo_script}")
+        print("[PILOT] Exporting Colab notebook TPU topology env to /content/g4-topology.env...", flush=True)
+        topo_res = run_colab(
+            "exec", "-s", args.session_name, "-f", str(topo_script), "--timeout", "90", cfg_path=cfg_path, timeout=150
+        )
+        if topo_res.stdout.strip():
+            print(topo_res.stdout.strip(), flush=True)
+        if topo_res.stderr.strip():
+            print(topo_res.stderr.strip(), flush=True)
+        if topo_res.returncode != 0:
+            raise RuntimeError(f"TPU topology export failed rc={topo_res.returncode}: {topo_res.stderr or topo_res.stdout}")
 
         with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
             tmp.write(tar_bytes)
@@ -642,10 +660,18 @@ def main() -> None:
         finally:
             tmp_path.unlink(missing_ok=True)
 
+        tpu_env_prefix = (
+            "set -euo pipefail && "
+            "source /content/g4-topology.env && "
+            "export JAX_PLATFORMS=tpu JAX_COMPILATION_CACHE_DIR=/content/slwm_v3_xla "
+            "JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=2 && "
+        )
         prep_cmd = (
-            "mkdir -p /content/slwm_v3 /content/slwm_v3_out && "
-            "tar -xzf /content/slwm_v3_bundle.tar.gz -C /content/slwm_v3 && "
-            "python3 -c 'import jax, optax; print(\"JAX:\", jax.__version__, \"OPTAX:\", optax.__version__, \"DEVS:\", [d.device_kind for d in jax.devices()])'"
+            tpu_env_prefix
+            + "mkdir -p /content/slwm_v3 /content/slwm_v3_out /content/slwm_v3_xla && "
+            + "tar -xzf /content/slwm_v3_bundle.tar.gz -C /content/slwm_v3 && "
+            + "{ python3 -c 'import optax' 2>/dev/null || python3 -m pip -q install optax; } && "
+            + "python3 -c 'import jax, optax; print(\"JAX:\", jax.__version__, \"OPTAX:\", optax.__version__, \"DEVS:\", [d.device_kind for d in jax.devices()])'"
         )
         rc, out, err, _ = _run_remote_bash_with_watchdog(
             args.session_name,
@@ -690,9 +716,10 @@ def main() -> None:
 
             lr_flag = f"--base-lr {chosen_lr}" if ph in ("dev_ablation", "long_stream") else ""
             run_cmd = (
-                "cd /content/slwm_v3 && PYTHONPATH=. "
-                f"python3 scripts/train/v3_tpu_pilot_suite.py --phases {ph} {lr_flag} "
-                f"--bundle-sha256 {bundle_sha} --require-tpu-v6e --out-dir /content/slwm_v3_out"
+                tpu_env_prefix
+                + "cd /content/slwm_v3 && PYTHONPATH=. "
+                + f"python3 scripts/train/v3_tpu_pilot_suite.py --phases {ph} {lr_flag} "
+                + f"--bundle-sha256 {bundle_sha} --require-tpu-v6e --out-dir /content/slwm_v3_out"
             )
             rc, out, err, tripped = _run_remote_bash_with_watchdog(
                 args.session_name,
