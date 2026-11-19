@@ -460,6 +460,53 @@ def _run_subprocess_with_watchdog(
         return int(proc.returncode or 0), out_txt, err_txt, budget_tripped
 
 
+def _run_remote_kernel_python_with_watchdog(
+    session_name: str,
+    python_code: str,
+    *,
+    cfg_path: Path,
+    log_dir: Path,
+    log_prefix: str,
+    bal_start: float,
+    prior_spent_cu: float,
+    max_spend_cu: float,
+    t_alloc_start: float,
+    phase_timeout_s: int = 2400,
+    exec_timeout_s: int = 1800,
+    poll_interval_s: int = WATCHDOG_POLL_INTERVAL_S,
+) -> tuple[int, str, str, bool]:
+    """Execute Python directly inside the Colab TPU Jupyter kernel (`colab exec -f`) under the CU watchdog."""
+    with tempfile.NamedTemporaryFile("w", suffix=".py", encoding="utf-8", delete=False) as tf:
+        tf.write(python_code)
+        script_path = Path(tf.name)
+    try:
+        cmd = _colab_cmd(
+            "exec",
+            "-s",
+            session_name,
+            "-f",
+            str(script_path),
+            "--timeout",
+            str(int(exec_timeout_s)),
+            cfg_path=cfg_path,
+        )
+        return _run_subprocess_with_watchdog(
+            cmd,
+            env=_colab_env(),
+            log_dir=log_dir,
+            log_prefix=log_prefix,
+            cfg_path=cfg_path,
+            bal_start=bal_start,
+            prior_spent_cu=prior_spent_cu,
+            max_spend_cu=max_spend_cu,
+            t_alloc_start=t_alloc_start,
+            phase_timeout_s=phase_timeout_s,
+            poll_interval_s=poll_interval_s,
+        )
+    finally:
+        script_path.unlink(missing_ok=True)
+
+
 def _run_remote_bash_with_watchdog(
     session_name: str,
     remote_bash_cmd: str,
@@ -634,20 +681,6 @@ def main() -> None:
         if assign_res.returncode != 0:
             raise RuntimeError(f"TPU v6e-1 assign failed: {assign_res.stderr or assign_res.stdout}")
 
-        topo_script = REPO_ROOT / "scripts/train/g4_colab_topology.py"
-        if not topo_script.is_file():
-            raise FileNotFoundError(f"Required Colab TPU topology script missing: {topo_script}")
-        print("[PILOT] Exporting Colab notebook TPU topology env to /content/g4-topology.env...", flush=True)
-        topo_res = run_colab(
-            "exec", "-s", args.session_name, "-f", str(topo_script), "--timeout", "90", cfg_path=cfg_path, timeout=150
-        )
-        if topo_res.stdout.strip():
-            print(topo_res.stdout.strip(), flush=True)
-        if topo_res.stderr.strip():
-            print(topo_res.stderr.strip(), flush=True)
-        if topo_res.returncode != 0:
-            raise RuntimeError(f"TPU topology export failed rc={topo_res.returncode}: {topo_res.stderr or topo_res.stdout}")
-
         with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
             tmp.write(tar_bytes)
             tmp_path = Path(tmp.name)
@@ -660,22 +693,28 @@ def main() -> None:
         finally:
             tmp_path.unlink(missing_ok=True)
 
-        tpu_env_prefix = (
-            "set -euo pipefail && "
-            "source /content/g4-topology.env && "
-            "export JAX_PLATFORMS=tpu JAX_COMPILATION_CACHE_DIR=/content/slwm_v3_xla "
-            "JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=2 && "
-        )
-        prep_cmd = (
-            tpu_env_prefix
-            + "mkdir -p /content/slwm_v3 /content/slwm_v3_out /content/slwm_v3_xla && "
-            + "tar -xzf /content/slwm_v3_bundle.tar.gz -C /content/slwm_v3 && "
-            + "{ python3 -c 'import optax' 2>/dev/null || python3 -m pip -q install optax; } && "
-            + "python3 -c 'import jax, optax; print(\"JAX:\", jax.__version__, \"OPTAX:\", optax.__version__, \"DEVS:\", [d.device_kind for d in jax.devices()])'"
-        )
-        rc, out, err, _ = _run_remote_bash_with_watchdog(
+        prep_py = """
+import os, pathlib, subprocess, sys, tarfile
+for d in ("/content/slwm_v3", "/content/slwm_v3_out", "/content/slwm_v3_xla"):
+    pathlib.Path(d).mkdir(parents=True, exist_ok=True)
+with tarfile.open("/content/slwm_v3_bundle.tar.gz", "r:gz") as tf:
+    tf.extractall("/content/slwm_v3")
+try:
+    import optax
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "-q", "install", "optax"])
+    import optax
+os.environ["JAX_COMPILATION_CACHE_DIR"] = "/content/slwm_v3_xla"
+os.environ["JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS"] = "1"
+import jax
+b = jax.default_backend()
+assert b == "tpu", f"Expected TPU backend in Colab kernel, got {b!r}"
+devs = [(d.device_kind, (d.memory_stats() or {}).get("bytes_limit", 0)) for d in jax.devices()]
+print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BACKEND:", b, "DEVS:", devs, flush=True)
+"""
+        rc, out, err, _ = _run_remote_kernel_python_with_watchdog(
             args.session_name,
-            prep_cmd,
+            prep_py,
             cfg_path=cfg_path,
             log_dir=log_dir,
             log_prefix="00_prep",
@@ -683,12 +722,13 @@ def main() -> None:
             prior_spent_cu=prior_spent_cu,
             max_spend_cu=args.max_spend_cu,
             t_alloc_start=t_alloc_start,
-            phase_timeout_s=300,
+            phase_timeout_s=360,
+            exec_timeout_s=300,
         )
         print(out, flush=True)
-        if rc != 0:
+        if rc != 0 or "KERNEL_TPU_OK" not in out:
             print(err, flush=True)
-            raise RuntimeError(f"Remote environment prep failed rc={rc}")
+            raise RuntimeError(f"Remote kernel prep failed rc={rc}")
 
         # If resuming Phases 3/4, upload the validated local Phase 2 receipt so remote paid dispatch verifies it too!
         if resumed_lr is not None:
@@ -714,16 +754,42 @@ def main() -> None:
                 print(f"[PILOT] Reserve/budget cap reached before dispatching phase {ph!r}; stopping cleanly.", flush=True)
                 break
 
-            lr_flag = f"--base-lr {chosen_lr}" if ph in ("dev_ablation", "long_stream") else ""
-            run_cmd = (
-                tpu_env_prefix
-                + "cd /content/slwm_v3 && PYTHONPATH=. "
-                + f"python3 scripts/train/v3_tpu_pilot_suite.py --phases {ph} {lr_flag} "
-                + f"--bundle-sha256 {bundle_sha} --require-tpu-v6e --out-dir /content/slwm_v3_out"
+            # Restart the Colab kernel before every phase to release 100% of TPU HBM cleanly while keeping XLA disk cache!
+            rk_res = run_colab("restart-kernel", "-s", args.session_name, cfg_path=cfg_path, timeout=120)
+            if rk_res.returncode != 0:
+                print(f"[PILOT WARN] restart-kernel before {ph!r} returned rc={rk_res.returncode}: {rk_res.stderr or rk_res.stdout}", flush=True)
+            time.sleep(4.0)
+
+            argv_list = [
+                "scripts/train/v3_tpu_pilot_suite.py",
+                "--phases",
+                ph,
+                "--bundle-sha256",
+                bundle_sha,
+                "--require-tpu-v6e",
+                "--out-dir",
+                "/content/slwm_v3_out",
+            ]
+            if ph in ("dev_ablation", "long_stream"):
+                argv_list.extend(["--base-lr", str(chosen_lr)])
+
+            phase_py = (
+                "import os, sys\n"
+                'os.environ["JAX_COMPILATION_CACHE_DIR"] = "/content/slwm_v3_xla"\n'
+                'os.environ["JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS"] = "1"\n'
+                'os.environ["OPENBLAS_NUM_THREADS"] = "1"\n'
+                'os.environ["OMP_NUM_THREADS"] = "2"\n'
+                'os.chdir("/content/slwm_v3")\n'
+                'if "/content/slwm_v3" not in sys.path:\n'
+                '    sys.path.insert(0, "/content/slwm_v3")\n'
+                f"sys.argv = {json.dumps(argv_list)}\n"
+                "from scripts.train import v3_tpu_pilot_suite\n"
+                "v3_tpu_pilot_suite.main()\n"
+                'print("PHASE_EXEC_OK", flush=True)\n'
             )
-            rc, out, err, tripped = _run_remote_bash_with_watchdog(
+            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
                 args.session_name,
-                run_cmd,
+                phase_py,
                 cfg_path=cfg_path,
                 log_dir=log_dir,
                 log_prefix=f"{idx:02d}_{ph}",
@@ -732,6 +798,7 @@ def main() -> None:
                 max_spend_cu=args.max_spend_cu,
                 t_alloc_start=t_alloc_start,
                 phase_timeout_s=2400,
+                exec_timeout_s=1800,
             )
             print(out, flush=True)
             if err.strip():
@@ -739,7 +806,7 @@ def main() -> None:
             if tripped:
                 print(f"[PILOT] Watchdog halted phase {ph!r} to protect <= {args.max_spend_cu:.1f} CU cap.", flush=True)
                 break
-            if rc != 0:
+            if rc != 0 or "PHASE_EXEC_OK" not in out:
                 raise RuntimeError(f"Remote phase {ph!r} failed with rc={rc}")
 
             remote_receipt = f"/content/slwm_v3_out/phase_{ph}_receipt.json"
