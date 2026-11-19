@@ -32,7 +32,7 @@ Each layer maintains a strictly bounded $\mathcal{O}(1)$ `float32` matrix bank s
    $$M_t^{(b,h)} = \widetilde{M}_t^{(b,h)} + r_{bt}\,\beta_t^{(h)}\bigl(v_t^{(h)} - \widetilde{M}_t^{(b,h)} k_t^{(h)}\bigr)(k_t^{(h)})^\top.$$
    Because $\eta = r_{bt}\beta_t^{(h)} \in [0, 1]$ and $\|k_t^{(h)}\|_2 \le 1$, the rank-1 update operator $(I - \eta k k^\top)$ has eigenvalues in $[0, 1]$ (with eigenvalue $1$ in directions orthogonal to $k$). **Exact uniform boundedness condition:** under **uniformly bounded forgetting** $\alpha_{bt}^{(h)} \le \bar{\alpha} < 1$ and bounded values $\|v_t\|_2 \le V_{\max}$, the Frobenius norm $\|M_t^{(b,h)}\|_F$ stays uniformly bounded as $T \to \infty$; conversely, if $\alpha_{bt}^{(h)} = 1$ (e.g., $\Delta t_t = 0$) or $\alpha_t \to 1$ slowly alongside orthogonal unit keys and non-square-summable write energy ($\sum_t \eta_t^2 v_t^2 = \infty$), additive variance accumulates without uniform bound ($\|m_t\|_2^2 = \alpha_t^2 \|m_{t-1}\|_2^2 + \eta_t^2 v_t^2$).
 5. **Local Ring-Buffer GQA, Chunked Rematerialization & Extra Zero-Lag Bypass:**
-   Each layer pairs the memory branch with a strictly causal $\mathcal{O}(1)$ sliding-window GQA ring buffer (`[B, W, H_kv, d_head]` in `bfloat16`) and CompleteP $\alpha = 1.0$ depth residual branch scaling $L_{\text{base}} / L$ ([`SLWMv3Spec.depth_residual_scale`](../../models/v3/spec.py#L135-L138), `arXiv:2505.01618`, Table 1; using standard fixed Adam $\epsilon = 10^{-8}$ rather than full width/depth $\epsilon$ rescaling). Long-sequence scans (`scan_core`) use outer chunked `jax.checkpoint` rematerialization (`remat_chunk_size = 64`), cutting saved-carry HBM by $64\times$ while matching `step_core`. After the $L$-layer stack, a learned gated bypass $Z_t = \operatorname{RMSNorm}(h_t^{(L)}) + \sigma(\gamma_{z0}) \odot W_{z0} x_{\text{raw}, t}$ augments the standard residual stream.
+   Each layer pairs the memory branch with a strictly causal $\mathcal{O}(1)$ sliding-window GQA ring buffer (`[B, W, H_kv, d_head]` in `bfloat16`) and CompleteP $\alpha = 1.0$ normalized depth residual branch scaling `0.25 * (L_base / L)` (`3.0 / L` at `L_base = 12`; [`SLWMv3Spec.depth_residual_scale`](../../models/v3/spec.py#L135-L138), `arXiv:2505.01618`, Table 1; using standard fixed Adam $\epsilon = 10^{-8}$ rather than full width/depth $\epsilon$ rescaling). Long-sequence scans (`scan_core`) use outer chunked `jax.checkpoint` rematerialization (`remat_chunk_size = 64`), cutting saved-carry HBM by $64\times$ while matching `step_core`. After the $L$-layer stack, a learned gated bypass $Z_t = \operatorname{RMSNorm}(h_t^{(L)}) + \sigma(\gamma_{z0}) \odot W_{z0} x_{\text{raw}, t}$ augments the standard residual stream.
 
 ### 1.2 Fair Single-Factor Ablation & Comparator Contracts
 
@@ -71,11 +71,11 @@ Under exact base-shape $\mu$P ($m_d = d / d_{\text{base}}$):
 
 Production masked `optax` AdamW 5-step coordinate audits on 100%-observable masked batches ([gate3_architecture_and_mup_receipt.json](../../reports/v3/gate3_architecture_and_mup_receipt.json)) confirm:
 - **Width $\mu$P (`L = 4`, `d ∈ {128, 256, 512}`):**
-  - `init_z_rms`: `1.00175 / 1.00055 / 1.00107` (**max/min ratio `1.0012`**).
-  - `step5_delta_z_rms`: **$\mu$P `0.83708 / 0.81470 / 0.81450` (ratio `1.0277`; loss `0.27718 / 0.27700 / 0.27741`)** vs. uniform-LR SP `0.83708 / 0.94506 / 1.00649` (ratio `1.2024`; loss `0.27718 / 0.19822 / 0.10920`).
-  - `mean_mem_out_rms`: `0.01173 / 0.01282 / 0.01389`; `mean_key_norm`: `1.000000`.
-- **Separate Depth CompleteP Residual Scaling (`d = 128`, `L ∈ {4, 6, 8}`, $\alpha = 1.0$ `L_base / L`, fixed Adam $\epsilon = 10^{-8}$):**
-  - `step5_delta_z_rms`: **`0.83708 / 0.82764 / 0.80574` (ratio `1.0389`; loss `0.27718 / 0.27743 / 0.27793`)**.
+  - `init_z_rms`: `1.00168 / 1.00164 / 1.00134` (**max/min ratio `1.0003`**).
+  - `step5_delta_z_rms`: **$\mu$P `0.57642 / 0.56438 / 0.55764` (ratio `1.0337`; loss `0.17966 / 0.18070 / 0.18147`)** vs. uniform-LR SP `0.57642 / 0.68534 / 0.50124` (ratio `1.3673`; loss `0.17966 / 0.13870 / 0.09915`).
+  - `mean_mem_out_rms`: `0.01635 / 0.01246 / 0.01260`; `mean_key_norm`: `1.000000`.
+- **Separate Depth CompleteP Residual Scaling (`d = 128`, `L ∈ {4, 6, 8}`, $\alpha = 1.0$ `0.25 * L_base / L`, fixed Adam $\epsilon = 10^{-8}$):**
+  - `step5_delta_z_rms`: **`0.57642 / 0.57070 / 0.57074` (ratio `1.0100`; loss `0.17966 / 0.18019 / 0.18142`)**.
 - **All 8 Wave A Backbones (`T = 40`, 3 steps real AdamW):** `8/8` finite gradients and finite losses.
 
 ---

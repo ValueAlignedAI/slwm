@@ -1,7 +1,7 @@
 {
   "gate": "SLWM-v3 Gate 3 (Rev 4) \u2014 Exact Comparator Parity, Real-AdamW muP/CompleteP & Zero-Crutch Audit",
-  "models_v3_sha256": "80196859069edd034f6aa3ef4a42296e47aa9ce369514dc5d093d436c7329932",
-  "pilot_bundle_sha256": "ab6d8aeb07eee0d1cb854980d7a559b96ddc7d6e34d8d28ba8c20260e1cdc26e",
+  "models_v3_sha256": "5870c226873f760981032f10a3784dbd55c1dd1c92d9f038a40af4081a07f775",
+  "pilot_bundle_sha256": "c7b3d8f4c9ed9f649e579b14c75cf74abcaf79ea3a47a367137de3a98613676d",
   "comparators_dual_track": {
     "pilot_d256": {
       "slwm_v3_routed": {
@@ -491,113 +491,113 @@
     "scalar_timescale_norm_weight_decay_zero": true,
     "mup_by_width": {
       "d128": {
-        "init_z_rms": 1.00175,
-        "end_delta_z_rms": 0.83708,
-        "init_loss": 0.36538,
-        "end_loss": 0.27718,
+        "init_z_rms": 1.00168,
+        "end_delta_z_rms": 0.57642,
+        "init_loss": 0.25349,
+        "end_loss": 0.17966,
         "grad_finite": true,
-        "step2_grad_l2": 0.10822,
-        "mean_mem_out_rms": 0.01173,
+        "step2_grad_l2": 0.12207,
+        "mean_mem_out_rms": 0.01635,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1941
+        "mean_nowrite": 0.1947
       },
       "d256": {
-        "init_z_rms": 1.00055,
-        "end_delta_z_rms": 0.8147,
-        "init_loss": 0.36538,
-        "end_loss": 0.277,
+        "init_z_rms": 1.00164,
+        "end_delta_z_rms": 0.56438,
+        "init_loss": 0.25349,
+        "end_loss": 0.1807,
         "grad_finite": true,
-        "step2_grad_l2": 0.1497,
-        "mean_mem_out_rms": 0.01282,
+        "step2_grad_l2": 0.16686,
+        "mean_mem_out_rms": 0.01246,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1941
+        "mean_nowrite": 0.1958
       },
       "d512": {
-        "init_z_rms": 1.00107,
-        "end_delta_z_rms": 0.8145,
-        "init_loss": 0.36538,
-        "end_loss": 0.27741,
+        "init_z_rms": 1.00134,
+        "end_delta_z_rms": 0.55764,
+        "init_loss": 0.25349,
+        "end_loss": 0.18147,
         "grad_finite": true,
-        "step2_grad_l2": 0.208,
-        "mean_mem_out_rms": 0.01389,
+        "step2_grad_l2": 0.23158,
+        "mean_mem_out_rms": 0.0126,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1922
+        "mean_nowrite": 0.1947
       }
     },
     "sp_uniform_lr_by_width": {
       "d128": {
-        "init_z_rms": 1.00175,
-        "end_delta_z_rms": 0.83708,
-        "init_loss": 0.36538,
-        "end_loss": 0.27718,
+        "init_z_rms": 1.00168,
+        "end_delta_z_rms": 0.57642,
+        "init_loss": 0.25349,
+        "end_loss": 0.17966,
         "grad_finite": true,
-        "step2_grad_l2": 0.10822,
-        "mean_mem_out_rms": 0.01173,
+        "step2_grad_l2": 0.12207,
+        "mean_mem_out_rms": 0.01635,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1941
+        "mean_nowrite": 0.1947
       },
       "d256": {
-        "init_z_rms": 1.00055,
-        "end_delta_z_rms": 0.94506,
-        "init_loss": 0.36538,
-        "end_loss": 0.19822,
+        "init_z_rms": 1.00164,
+        "end_delta_z_rms": 0.68534,
+        "init_loss": 0.25349,
+        "end_loss": 0.1387,
         "grad_finite": true,
-        "step2_grad_l2": 0.14628,
-        "mean_mem_out_rms": 0.01732,
+        "step2_grad_l2": 0.1592,
+        "mean_mem_out_rms": 0.02167,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1909
+        "mean_nowrite": 0.1897
       },
       "d512": {
-        "init_z_rms": 1.00107,
-        "end_delta_z_rms": 1.00649,
-        "init_loss": 0.36538,
-        "end_loss": 0.1092,
+        "init_z_rms": 1.00134,
+        "end_delta_z_rms": 0.50124,
+        "init_loss": 0.25349,
+        "end_loss": 0.09915,
         "grad_finite": true,
-        "step2_grad_l2": 0.19171,
-        "mean_mem_out_rms": 0.01423,
+        "step2_grad_l2": 0.19753,
+        "mean_mem_out_rms": 0.01435,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1938
+        "mean_nowrite": 0.1957
       }
     },
     "completep_by_depth": {
       "L4": {
-        "init_z_rms": 1.00175,
-        "end_delta_z_rms": 0.83708,
-        "init_loss": 0.36538,
-        "end_loss": 0.27718,
+        "init_z_rms": 1.00168,
+        "end_delta_z_rms": 0.57642,
+        "init_loss": 0.25349,
+        "end_loss": 0.17966,
         "grad_finite": true,
-        "step2_grad_l2": 0.10822,
-        "mean_mem_out_rms": 0.01173,
+        "step2_grad_l2": 0.12207,
+        "mean_mem_out_rms": 0.01635,
         "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1941
+        "mean_nowrite": 0.1947
       },
       "L6": {
-        "init_z_rms": 1.00126,
-        "end_delta_z_rms": 0.82764,
-        "init_loss": 0.36538,
-        "end_loss": 0.27743,
+        "init_z_rms": 1.00039,
+        "end_delta_z_rms": 0.5707,
+        "init_loss": 0.25349,
+        "end_loss": 0.18019,
         "grad_finite": true,
-        "step2_grad_l2": 0.10904,
-        "mean_mem_out_rms": 0.01322,
-        "mean_key_norm": 1.0,
-        "mean_nowrite": 0.1934
-      },
-      "L8": {
-        "init_z_rms": 1.00097,
-        "end_delta_z_rms": 0.80574,
-        "init_loss": 0.36538,
-        "end_loss": 0.27793,
-        "grad_finite": true,
-        "step2_grad_l2": 0.10223,
-        "mean_mem_out_rms": 0.0116,
+        "step2_grad_l2": 0.12069,
+        "mean_mem_out_rms": 0.01314,
         "mean_key_norm": 1.0,
         "mean_nowrite": 0.1959
+      },
+      "L8": {
+        "init_z_rms": 1.00125,
+        "end_delta_z_rms": 0.57074,
+        "init_loss": 0.25349,
+        "end_loss": 0.18142,
+        "grad_finite": true,
+        "step2_grad_l2": 0.12192,
+        "mean_mem_out_rms": 0.01457,
+        "mean_key_norm": 1.0,
+        "mean_nowrite": 0.1958
       }
     },
-    "mup_init_z_rms_max_min_ratio": 1.0012,
-    "mup_step5_delta_z_max_min_ratio": 1.0277,
-    "sp_step5_delta_z_max_min_ratio": 1.2024,
-    "completep_depth_step5_delta_z_max_min_ratio": 1.0389,
+    "mup_init_z_rms_max_min_ratio": 1.0003,
+    "mup_step5_delta_z_max_min_ratio": 1.0337,
+    "sp_step5_delta_z_max_min_ratio": 1.3673,
+    "completep_depth_step5_delta_z_max_min_ratio": 1.01,
     "mup_nonzero_hidden_update": true,
     "mup_strictly_more_width_stable_than_sp": true,
     "all_8_backbones_multistep_t40_grads_finite": {

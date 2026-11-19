@@ -272,6 +272,70 @@ def _session_lines_contain_target_or_unnamed(lines: list[str], session_name: str
     return False
 
 
+def _colab_cli_python() -> Path | None:
+    """Resolve the Python interpreter backing `COLAB_BIN` (for official `colab_cli` orphan recovery/unassign)."""
+    try:
+        first_line = COLAB_BIN.read_text(encoding="utf-8", errors="ignore").splitlines()[0].strip()
+        if first_line.startswith("#!"):
+            cand = Path(first_line[2:].strip().split()[0])
+            if cand.is_file():
+                return cand
+    except Exception:
+        pass
+    fallback = Path.home() / ".local/share/uv/tools/google-colab-cli/bin/python"
+    return fallback if fallback.is_file() else None
+
+
+def _adopt_single_unnamed_v6e1(session_name: str, cfg_path: Path) -> bool:
+    """If `colab new` timed out right after server provisioned ONE V6E1 TPU, adopt it into `cfg_path`."""
+    py = _colab_cli_python()
+    if py is None:
+        return False
+    code = (
+        "import sys; from colab_cli.auth import AuthProvider; from colab_cli.common import state; "
+        "from colab_cli.state import SessionState\n"
+        "state.config_path = sys.argv[1]; state.auth_provider = AuthProvider.ADC\n"
+        "asg = state.client.list_assignments()\n"
+        "v6 = [a for a in asg if a.accelerator.value == 'V6E1' and a.variant.name == 'TPU']\n"
+        "if len(asg) != 1 or len(v6) != 1: sys.exit(2)\n"
+        "a = v6[0]\n"
+        "s = SessionState(name=sys.argv[2], token=a.runtime_proxy_info.token, url=a.runtime_proxy_info.url, "
+        "endpoint=a.endpoint, token_expires_at=a.runtime_proxy_info.expires_at(), variant=a.variant.name, "
+        "accelerator=a.accelerator.value, machine_shape=a.machine_shape.name)\n"
+        "state.store.add(s); print('ADOPTED', s.name, s.endpoint)\n"
+    )
+    try:
+        res = subprocess.run([str(py), "-c", code, str(cfg_path), session_name], env=_colab_env(), text=True, capture_output=True, timeout=60, check=False)
+        if res.returncode == 0 and "ADOPTED" in res.stdout:
+            print(f"[PILOT] {res.stdout.strip()}", flush=True)
+            return True
+    except Exception as exc:
+        print(f"[PILOT WARN] Orphan V6E1 adopt failed: {exc}", flush=True)
+    return False
+
+
+def _unassign_unnamed_assignments(cfg_path: Path) -> None:
+    """Cleanly unassign any orphaned `[?]` server assignment not tracked in `cfg_path` via official `colab_cli` client."""
+    py = _colab_cli_python()
+    if py is None:
+        return
+    code = (
+        "import sys; from colab_cli.auth import AuthProvider; from colab_cli.common import state\n"
+        "state.config_path = sys.argv[1]; state.auth_provider = AuthProvider.ADC\n"
+        "known = {s.endpoint for s in state.store.list().values()}\n"
+        "for a in state.client.list_assignments():\n"
+        "    if a.endpoint not in known:\n"
+        "        state.client.unassign(a.endpoint)\n"
+        "        print('UNASSIGNED_ORPHAN', a.endpoint)\n"
+    )
+    try:
+        res = subprocess.run([str(py), "-c", code, str(cfg_path)], env=_colab_env(), text=True, capture_output=True, timeout=60, check=False)
+        if res.stdout.strip():
+            print(f"[TEARDOWN] {res.stdout.strip()}", flush=True)
+    except Exception as exc:
+        print(f"[TEARDOWN WARN] Orphan unassign error: {exc}", flush=True)
+
+
 def verified_stop_session(session_name: str, cfg_path: Path, *, runner=run_colab, sleep_s: float = 3.0) -> bool:
     """Stop named Colab session and strictly verify disappearance via BOTH `stop rc==0` AND recognized `sessions` inventory.
 
@@ -294,6 +358,13 @@ def verified_stop_session(session_name: str, cfg_path: Path, *, runner=run_colab
         if active is None:
             print(f"[TEARDOWN attempt {attempt}] `colab sessions` failed or returned unrecognized output.", flush=True)
             continue
+        if (runner is run_colab) and any(ln.startswith("[?]") or " [?]" in ln for ln in active):
+            _unassign_unnamed_assignments(cfg_path)
+            if sleep_s > 0.0:
+                time.sleep(sleep_s)
+            active = query_active_sessions(cfg_path, runner=runner)
+            if active is None:
+                continue
         if stop_ok and (not _session_lines_contain_target_or_unnamed(active, session_name)):
             print(f"[TEARDOWN] Verified stop rc=0 AND session {session_name!r} / `[?]` absent from server.", flush=True)
             return True
@@ -604,6 +675,7 @@ def main() -> None:
     ap.add_argument("--max-spend-cu", type=float, default=45.0)
     ap.add_argument("--phases", type=str, default="profile,mup_check,dev_ablation,long_stream")
     ap.add_argument("--out-dir", type=Path, default=REPO_ROOT / "reports/v3/pilot_v6e1")
+    ap.add_argument("--adopt-existing", action="store_true", help="Reuse an already-active named TPU v6e-1 session instead of calling `colab new`.")
     ap.add_argument("--dry-run", action="store_true", help="Verify gates, balance, digests, and CLI without assigning a TPU.")
     args = ap.parse_args()
 
@@ -648,13 +720,27 @@ def main() -> None:
         raise RuntimeError(
             f"CUMULATIVE BUDGET CAP: prior_spent={prior_spent_cu:.2f} CU (projected={proj_pre:.2f} CU) >= hard_limit={hard_limit_cu:.2f} CU!"
         )
-    if rate_start > 0.0:
-        raise RuntimeError(f"Active Colab session already burning {rate_start:.2f} CU/hr! Stop it before launching.")
     active_pre = query_active_sessions(cfg_path)
     if active_pre is None:
-        raise RuntimeError("Pre-launch `colab sessions` failed or returned unrecognized output; refusing to assign TPU!")
-    if active_pre:
-        raise RuntimeError(f"Active Colab sessions already exist on server: {active_pre}! Stop them first.")
+        raise RuntimeError("Pre-launch `colab sessions` failed or returned unrecognized output; refusing to proceed!")
+    adopting_active = False
+    if args.adopt_existing:
+        matching = [
+            ln for ln in active_pre
+            if (ln.startswith(f"[{args.session_name}]") or f" [{args.session_name}]" in ln)
+            and ("Hardware: V6E1" in ln)
+            and ("Variant: TPU" in ln)
+        ]
+        if len(active_pre) == 1 and len(matching) == 1:
+            adopting_active = True
+            print(f"[PILOT] Adopting active named TPU v6e-1 session: {matching[0]}", flush=True)
+        elif active_pre:
+            raise RuntimeError(f"--adopt-existing expected single active V6E1 [{args.session_name}], found: {active_pre}")
+    else:
+        if rate_start > 0.0:
+            raise RuntimeError(f"Active Colab session already burning {rate_start:.2f} CU/hr! Stop it before launching.")
+        if active_pre:
+            raise RuntimeError(f"Active Colab sessions already exist on server: {active_pre}! Stop them first.")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     log_dir = args.out_dir / "logs"
@@ -672,9 +758,11 @@ def main() -> None:
     )
 
     try:
-        assigned_ok = False
+        assigned_ok = adopting_active
         last_assign_err = ""
         for assign_try in range(1, 5):
+            if assigned_ok:
+                break
             print(
                 f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r} (attempt {assign_try}/4)...",
                 flush=True,
@@ -700,6 +788,9 @@ def main() -> None:
                 assigned_ok = True
                 break
             if any(ln.startswith("[?]") or " [?]" in ln for ln in active_chk):
+                if _adopt_single_unnamed_v6e1(args.session_name, cfg_path):
+                    assigned_ok = True
+                    break
                 raise RuntimeError(f"Unnamed Colab assignment `[?]` detected during assign retry: {active_chk}")
             if assign_try < 4:
                 time.sleep(25.0)

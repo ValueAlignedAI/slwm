@@ -50,6 +50,7 @@ from scripts.train.v3_pilot_train import (
     build_optimizer,
     compile_pilot_steps,
     effective_rank_participation_ratio,
+    lr_schedule_mult,
     make_synthetic_multimodal_batch,
     run_pilot_train,
 )
@@ -882,13 +883,13 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
         assert abs(p_delta_pct) <= 1.0, f"Pilot arm {arm} param delta {p_delta_pct:+.2f}% exceeds ±1.0%"
 
         probe_p = init_decoupled_probe_params(jax.random.PRNGKey(3302), spec.d_model, out_dim=2 * vocab_sz, hidden_dim=128)
-        tx_core = build_optimizer(params, spec, base_lr=base_lr, use_mup_lr_scaling=True)
+        tx_core_unit = build_optimizer(params, spec, base_lr=1.0, use_mup_lr_scaling=True)
         tx_probe = optax.adamw(learning_rate=3e-3, weight_decay=1e-4)
-        opt_core = tx_core.init(params)
+        opt_core = tx_core_unit.init(params)
         opt_probe = tx_probe.init(probe_p)
 
         @jax.jit(donate_argnums=(0, 1))
-        def core_step(p, o_st, pkts, targs, tvalid):
+        def core_step(p, o_st, pkts, targs, tvalid, step_lr_arr):
             b = pkts["valid_mask"].shape[1]
             st0 = init_core_state(spec, b)
             (loss, m), g = jax.value_and_grad(
@@ -897,7 +898,8 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
                 ),
                 has_aux=True,
             )(p)
-            upd, new_o = tx_core.update(g, o_st, p)
+            unit_upd, new_o = tx_core_unit.update(g, o_st, p)
+            upd = jax.tree_util.tree_map(lambda u: u * step_lr_arr.astype(u.dtype), unit_upd)
             return optax.apply_updates(p, upd), new_o, loss, m
 
         @jax.jit
@@ -938,13 +940,17 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
         # 1. Self-supervised predictive core training on observable sensory stream + future echoes (ZERO downstream labels!)
         core_losses: list[float] = []
         last_m: dict[str, Any] = {}
+        total_core_steps = epochs * len(train_batches)
+        step_counter = 0
         for ep in range(epochs):
             for bi, tb in enumerate(train_batches):
                 use_b = ((ep + bi) % 2) == 1
                 pkts = tb["pkts_b"] if use_b else tb["pkts_a"]
                 targs = tb["targs_b"] if use_b else tb["targs_a"]
                 tvalid = tb["tvalid_b"] if use_b else tb["tvalid_a"]
-                params, opt_core, l_val, last_m = core_step(params, opt_core, pkts, targs, tvalid)
+                step_lr = jnp.asarray(base_lr * lr_schedule_mult(step_counter, total_core_steps), dtype=jnp.float32)
+                params, opt_core, l_val, last_m = core_step(params, opt_core, pkts, targs, tvalid, step_lr)
+                step_counter += 1
                 core_losses.append(float(l_val))
 
         # 2. Strictly frozen-core decoupled probe training on pre-echo `Z[t_pre_echo]` (both A and B train views)

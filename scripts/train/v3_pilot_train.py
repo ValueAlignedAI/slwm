@@ -20,6 +20,7 @@ import argparse
 from dataclasses import asdict
 import hashlib
 import json
+import math
 from pathlib import Path
 import resource
 import time
@@ -120,6 +121,19 @@ def build_optimizer(
     )
 
 
+def lr_schedule_mult(step_idx: int, total_steps: int, min_mult: float = 0.1) -> float:
+    """Deterministic 10% linear warmup + cosine decay multiplier in `[min_mult, 1.0]`."""
+    if total_steps <= 1:
+        return 1.0
+    warmup = max(1, min(total_steps // 5, int(round(0.10 * total_steps))))
+    if step_idx < warmup:
+        return float(step_idx + 1) / float(warmup)
+    denom = max(1, total_steps - warmup)
+    progress = min(1.0, float(step_idx - warmup + 1) / float(denom))
+    cosine = 0.5 * (1.0 + math.cos(math.pi * progress))
+    return float(min_mult + (1.0 - min_mult) * cosine)
+
+
 def make_synthetic_multimodal_batch(
     spec: SLWMv3Spec,
     *,
@@ -127,60 +141,21 @@ def make_synthetic_multimodal_batch(
     batch_size: int,
     seed: int,
 ) -> tuple[dict[str, jax.Array], jax.Array, jax.Array]:
-    """Build deterministic causal multimodal batch where 100% of target factor coordinates are observable.
+    """Build deterministic causal multimodal batch where 100% of dynamical & overwrite targets are observable.
 
-    Exposes ALL `16 + 16 = 32` coordinates of persistent world factors `(f1, f2)` at `t = 0` and ALL `16`
-    coordinates of the randomized overwrite `f1_new` at `t = t_switch` (with `probe_dim == 32`). Every target
-    coordinate in `target_feat_dim` is an exact observable function of `[cur_f1(16), f2(16), phase(t)]` so
-    predictive loss reflects genuine memory retention, overwrite, and multimodal continuation.
+    Combines:
+      1. Smooth coupled damped multimodal latent dynamics `z_dyn[t]` driven by strictly observable
+         action impulses (`has_true_action[t - 1] == 1`) and projected across ALL 5 modalities
+         (`video_feat`, `audio_codes` & `audio_cont`, `text_byte`, `proprio_feat`, `probe_feat`).
+      2. Persistent world factors `(f1, f2)` exposed at `t = 0` and randomized overwrite `f1_new`
+         exposed at `t = t_switch`, with `[t_switch, t_switch + max_h)` strictly masked (`tvalid = 0`)
+         so NO pre-switch source `t < t_switch` is ever supervised on an unrevealed future `f1_new`.
     """
     rng = np.random.default_rng(seed)
     f_dim = min(16, spec.probe_dim // 2)
-    f1 = rng.normal(0.0, 1.0, size=(batch_size, f_dim)).astype(np.float32)
-    f2 = rng.normal(0.0, 1.0, size=(batch_size, f_dim)).astype(np.float32)
     t_lo = max(2, seq_len // 4)
     t_hi = max(t_lo + 1, seq_len // 2)
     t_switch = rng.integers(t_lo, t_hi, size=(batch_size,))
-    f1_new = rng.normal(0.0, 1.0, size=(batch_size, f_dim)).astype(np.float32)
-
-    targs = np.zeros((seq_len, batch_size, spec.target_feat_dim), dtype=np.float32)
-    probe = np.zeros((seq_len, batch_size, spec.probe_dim), dtype=np.float32)
-    tvalid = np.ones((seq_len, batch_size), dtype=np.float32)
-    max_h = max(spec.pred_horizons)
-    for b in range(batch_size):
-        ts = int(t_switch[b])
-        # Mask target validity strictly across the unrevealed overwrite crossing `[ts, ts + max_h)` so
-        # NO pre-switch source `t < ts` is supervised on an independently sampled future `f1_new`!
-        tvalid[ts : min(seq_len, ts + max_h), b] = 0.0
-        for t in range(seq_len):
-            cur_f1 = f1_new[b] if t >= ts else f1[b]
-            # Strictly observable time-only phase (ZERO hidden batch-row index `b`!)
-            sin_t = np.float32(np.sin(0.15 * t) * 0.25)
-            cos_t = np.float32(np.cos(0.15 * t) * 0.25)
-            full_state = np.concatenate(
-                [
-                    cur_f1 + sin_t,
-                    f2[b] - cos_t,
-                    0.5 * (cur_f1 + f2[b]) + cos_t,
-                    0.5 * (cur_f1 - f2[b]) - sin_t,
-                ],
-                axis=0,
-            )
-            if len(full_state) >= spec.target_feat_dim:
-                targs[t, b, :] = full_state[: spec.target_feat_dim]
-            else:
-                reps = (spec.target_feat_dim + len(full_state) - 1) // len(full_state)
-                targs[t, b, :] = np.tile(full_state, reps)[: spec.target_feat_dim]
-
-            # Expose 100% of both factor vectors at t=0 and 100% of overwrite f1_new at t=ts!
-            if t == 0:
-                probe[t, b, :f_dim] = f1[b]
-                probe[t, b, f_dim : 2 * f_dim] = f2[b]
-            elif t == ts:
-                probe[t, b, :f_dim] = f1_new[b]
-                probe[t, b, f_dim : 2 * f_dim] = 0.0
-            else:
-                probe[t, b] = rng.normal(0.0, 0.20, size=(spec.probe_dim,)).astype(np.float32)
 
     mod_ids = np.full((seq_len, batch_size), 4, dtype=np.int32)
     for t in range(1, seq_len):
@@ -197,19 +172,87 @@ def make_synthetic_multimodal_batch(
         mod_ids[0, b] = 4
         mod_ids[int(t_switch[b]), b] = 4
 
+    has_act = (mod_ids == 3).astype(np.float32)
+    act = rng.normal(0.0, 0.4, size=(seq_len, batch_size, spec.action_dim)).astype(np.float32)
+    z_dyn = np.zeros((seq_len, batch_size, f_dim), dtype=np.float32)
+    z_dyn[0] = rng.normal(0.0, 0.8, size=(batch_size, f_dim)).astype(np.float32)
+    omega = np.linspace(0.08, 0.35, f_dim, dtype=np.float32)[None, :]
+    act_dims = min(f_dim, spec.action_dim)
+    for t in range(1, seq_len):
+        z_dyn[t] = 0.88 * z_dyn[t - 1] + 0.25 * np.sin(omega * float(t) + z_dyn[t - 1])
+        z_dyn[t, :, :act_dims] += 0.30 * act[t - 1, :, :act_dims] * has_act[t - 1, :, None]
+
+    f1 = rng.normal(0.0, 0.8, size=(batch_size, f_dim)).astype(np.float32)
+    f2 = rng.normal(0.0, 0.8, size=(batch_size, f_dim)).astype(np.float32)
+    f1_new = rng.normal(0.0, 0.8, size=(batch_size, f_dim)).astype(np.float32)
+
+    targs = np.zeros((seq_len, batch_size, spec.target_feat_dim), dtype=np.float32)
+    probe = np.zeros((seq_len, batch_size, spec.probe_dim), dtype=np.float32)
+    vid = np.zeros((seq_len, batch_size, spec.video_patch_dim), dtype=np.float32)
+    prop = np.zeros((seq_len, batch_size, spec.proprio_dim), dtype=np.float32)
+    aud_cont = np.zeros((seq_len, batch_size, spec.audio_cont_dim), dtype=np.float32)
+    tvalid = np.ones((seq_len, batch_size), dtype=np.float32)
+    max_h = max(spec.pred_horizons)
+    prop_dims = min(f_dim, spec.proprio_dim)
+    for b in range(batch_size):
+        ts = int(t_switch[b])
+        # Mask target validity strictly across the unrevealed overwrite crossing `[ts, ts + max_h)` so
+        # NO pre-switch source `t < ts` is supervised on an independently sampled future `f1_new`!
+        tvalid[ts : min(seq_len, ts + max_h), b] = 0.0
+        for t in range(seq_len):
+            cur_f1 = f1_new[b] if t >= ts else f1[b]
+            zd = z_dyn[t, b]
+            full_state = np.concatenate(
+                [
+                    zd,
+                    cur_f1,
+                    f2[b],
+                    0.5 * (zd + cur_f1),
+                ],
+                axis=0,
+            )
+            if len(full_state) >= spec.target_feat_dim:
+                targs[t, b, :] = full_state[: spec.target_feat_dim]
+            else:
+                reps = (spec.target_feat_dim + len(full_state) - 1) // len(full_state)
+                targs[t, b, :] = np.tile(full_state, reps)[: spec.target_feat_dim]
+
+            prop[t, b, :prop_dims] = zd[:prop_dims]
+            vid[t, b, :f_dim] = zd
+            if spec.video_patch_dim >= 2 * f_dim:
+                vid[t, b, f_dim : 2 * f_dim] = np.tanh(zd * 0.7)
+            aud_reps = (spec.audio_cont_dim + f_dim - 1) // f_dim
+            aud_cont[t, b, :] = np.tile(zd, aud_reps)[: spec.audio_cont_dim]
+
+            # Expose 100% of both factor vectors at t=0 and 100% of overwrite f1_new at t=ts!
+            if t == 0:
+                probe[t, b, :f_dim] = f1[b]
+                probe[t, b, f_dim : 2 * f_dim] = f2[b]
+            elif t == ts:
+                probe[t, b, :f_dim] = f1_new[b]
+                probe[t, b, f_dim : 2 * f_dim] = zd
+            else:
+                probe[t, b, :f_dim] = zd
+                probe[t, b, f_dim : 2 * f_dim] = rng.normal(0.0, 0.15, size=(f_dim,)).astype(np.float32)
+
+    aud_q = np.clip(((z_dyn + 3.0) * 300.0).astype(np.int32), 0, spec.audio_vocab_size - 1)
+    cb_reps = (spec.audio_codebooks + f_dim - 1) // f_dim
+    aud_codes = np.tile(aud_q, (1, 1, cb_reps))[:, :, : spec.audio_codebooks]
+    text_b = np.clip((z_dyn[:, :, 0] * 20.0 + 80.0).astype(np.int32), 32, min(126, spec.text_vocab_size - 1))
+
     pkts = {
         "modality_id": jnp.asarray(mod_ids, dtype=jnp.int32),
         "dt_s": jnp.full((seq_len, batch_size), 0.08, dtype=jnp.float32),
         "valid_mask": jnp.ones((seq_len, batch_size), dtype=jnp.float32),
         "reliability": jnp.ones((seq_len, batch_size), dtype=jnp.float32),
-        "video_feat": jnp.asarray(rng.normal(0.0, 0.5, size=(seq_len, batch_size, spec.video_patch_dim)), dtype=jnp.float32),
-        "spatial_pos": jnp.asarray(rng.integers(0, spec.video_spatial_packets, size=(seq_len, batch_size)), dtype=jnp.int32),
-        "audio_codes": jnp.asarray(rng.integers(0, spec.audio_vocab_size, size=(seq_len, batch_size, spec.audio_codebooks)), dtype=jnp.int32),
-        "audio_cont": jnp.asarray(rng.normal(0.0, 0.5, size=(seq_len, batch_size, spec.audio_cont_dim)), dtype=jnp.float32),
-        "text_byte": jnp.asarray(rng.integers(32, 127, size=(seq_len, batch_size)), dtype=jnp.int32),
-        "proprio_feat": jnp.asarray(rng.normal(0.0, 0.5, size=(seq_len, batch_size, spec.proprio_dim)), dtype=jnp.float32),
-        "action_feat": jnp.asarray(rng.normal(0.0, 0.5, size=(seq_len, batch_size, spec.action_dim)), dtype=jnp.float32),
-        "has_true_action": jnp.asarray((mod_ids == 3).astype(np.float32)),
+        "video_feat": jnp.asarray(vid, dtype=jnp.float32),
+        "spatial_pos": jnp.zeros((seq_len, batch_size), dtype=jnp.int32),
+        "audio_codes": jnp.asarray(aud_codes, dtype=jnp.int32),
+        "audio_cont": jnp.asarray(aud_cont, dtype=jnp.float32),
+        "text_byte": jnp.asarray(text_b, dtype=jnp.int32),
+        "proprio_feat": jnp.asarray(prop, dtype=jnp.float32),
+        "action_feat": jnp.asarray(act, dtype=jnp.float32),
+        "has_true_action": jnp.asarray(has_act, dtype=jnp.float32),
         "probe_feat": jnp.asarray(probe, dtype=jnp.float32),
     }
     return pkts, jnp.asarray(targs, dtype=jnp.float32), jnp.asarray(tvalid, dtype=jnp.float32)
@@ -321,7 +364,6 @@ def run_pilot_train(
         tx_unit, train_step, eval_step = compiled_bundle
 
     opt_state = tx_unit.init(params)
-    lr_arr = jnp.asarray(base_lr, dtype=jnp.float32)
 
     if val_batch is None:
         val_pkts, val_targs, val_valid = make_synthetic_multimodal_batch(
@@ -335,7 +377,8 @@ def run_pilot_train(
 
     t_compile_0 = time.perf_counter()
     pkts_0, targs_0, tvalid_0 = make_synthetic_multimodal_batch(spec, seq_len=seq_len, batch_size=batch_size, seed=seed)
-    params, opt_state, loss_0, m_0, gn_0, nan_0 = train_step(params, opt_state, pkts_0, targs_0, tvalid_0, lr_arr)
+    lr_0 = jnp.asarray(base_lr * lr_schedule_mult(0, steps), dtype=jnp.float32)
+    params, opt_state, loss_0, m_0, gn_0, nan_0 = train_step(params, opt_state, pkts_0, targs_0, tvalid_0, lr_0)
     loss_0.block_until_ready()
     compile_plus_step0_s = time.perf_counter() - t_compile_0
 
@@ -348,8 +391,9 @@ def run_pilot_train(
 
     for st in range(1, steps):
         pkts, targs, tvalid = make_synthetic_multimodal_batch(spec, seq_len=seq_len, batch_size=batch_size, seed=seed + st)
+        step_lr = jnp.asarray(base_lr * lr_schedule_mult(st, steps), dtype=jnp.float32)
         t0 = time.perf_counter()
-        params, opt_state, loss, last_metrics, gn, nans = train_step(params, opt_state, pkts, targs, tvalid, lr_arr)
+        params, opt_state, loss, last_metrics, gn, nans = train_step(params, opt_state, pkts, targs, tvalid, step_lr)
         loss.block_until_ready()
         warm_times_ms.append((time.perf_counter() - t0) * 1000.0)
         train_losses.append(float(loss))

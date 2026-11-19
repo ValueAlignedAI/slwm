@@ -57,7 +57,8 @@ class SLWMv3Spec:
     d_model: int = 512
     d_base: int = 256  # Base width for base-shape muP multiplier m_d = d_model / d_base
     n_layers: int = 12
-    n_base_layers: int = 12  # Base depth for CompleteP alpha=1.0 residual scaling (L_base / L)
+    n_base_layers: int = 12  # Base depth for CompleteP alpha=1.0 residual scaling (residual_base_gain * L_base / L)
+    residual_base_gain: float = 0.25  # Normalizes 3-sublayer block gain to O(1) at L_base (3.0 / L for L_base=12)
     ffn_mult: float = 2.6667
     ffn_dim_override: int | None = None  # Exact multiple-of-64 override for ±1.0% comparator param parity
 
@@ -133,8 +134,8 @@ class SLWMv3Spec:
 
     @property
     def depth_residual_scale(self) -> float:
-        """CompleteP alpha=1.0 depth residual branch multiplier L_base / L (`arXiv:2505.01618`, Table 1)."""
-        return float(self.n_base_layers) / float(self.n_layers)
+        """CompleteP alpha=1.0 normalized depth residual branch multiplier `residual_base_gain * L_base / L`."""
+        return float(self.residual_base_gain) * (float(self.n_base_layers) / float(self.n_layers))
 
     @property
     def ffn_dim(self) -> int:
