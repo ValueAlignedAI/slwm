@@ -77,9 +77,9 @@ def _colab_env() -> dict[str, str]:
     return {
         **os.environ,
         "CLOUDSDK_CONFIG": str(resolve_gcloud_config_dir()),
-        "COLAB_CLI_REQUEST_TIMEOUT": "120",
-        "COLAB_CLI_ASSIGN_RETRIES": "2",
-        "COLAB_CLI_RETRY_BACKOFF": "10",
+        "COLAB_CLI_REQUEST_TIMEOUT": "180",
+        "COLAB_CLI_ASSIGN_RETRIES": "1",
+        "COLAB_CLI_RETRY_BACKOFF": "15",
     }
 
 
@@ -672,14 +672,41 @@ def main() -> None:
     )
 
     try:
-        print(f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r}...", flush=True)
-        assign_res = run_colab("--logtostderr", "new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=420)
-        if assign_res.stdout.strip():
-            print(assign_res.stdout.strip(), flush=True)
-        if assign_res.stderr.strip():
-            print(assign_res.stderr.strip(), flush=True)
-        if assign_res.returncode != 0:
-            raise RuntimeError(f"TPU v6e-1 assign failed: {assign_res.stderr or assign_res.stdout}")
+        assigned_ok = False
+        last_assign_err = ""
+        for assign_try in range(1, 5):
+            print(
+                f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r} (attempt {assign_try}/4)...",
+                flush=True,
+            )
+            try:
+                assign_res = run_colab(
+                    "--logtostderr", "new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=420
+                )
+                if assign_res.stdout.strip():
+                    print(assign_res.stdout.strip(), flush=True)
+                if assign_res.returncode == 0:
+                    assigned_ok = True
+                    break
+                last_assign_err = (assign_res.stderr or assign_res.stdout)[-1000:]
+                print(f"[PILOT WARN] TPU v6e-1 assign attempt {assign_try}/4 failed (rc={assign_res.returncode}): {last_assign_err.splitlines()[-1] if last_assign_err.strip() else 'unknown'}", flush=True)
+            except subprocess.TimeoutExpired:
+                last_assign_err = "subprocess timeout (420s)"
+                print(f"[PILOT WARN] TPU v6e-1 assign attempt {assign_try}/4 timed out after 420s.", flush=True)
+
+            active_chk = query_active_sessions(cfg_path) or []
+            if any(ln.startswith(f"[{args.session_name}]") or f" [{args.session_name}]" in ln for ln in active_chk):
+                print(f"[PILOT] Session {args.session_name!r} confirmed active after transient assign error!", flush=True)
+                assigned_ok = True
+                break
+            if any(ln.startswith("[?]") or " [?]" in ln for ln in active_chk):
+                raise RuntimeError(f"Unnamed Colab assignment `[?]` detected during assign retry: {active_chk}")
+            if assign_try < 4:
+                time.sleep(25.0)
+
+        if not assigned_ok:
+            raise RuntimeError(f"TPU v6e-1 assign failed after 4 attempts: {last_assign_err}")
+        t_alloc_start = time.monotonic()
 
         with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
             tmp.write(tar_bytes)
