@@ -1,0 +1,25 @@
+{
+  "n_prototype_episodes": 64,
+  "total_duration_sec": 46,
+  "mimi_cadence_hz": 12.5,
+  "comparator_layers": 12,
+  "comparator_window": 32,
+  "stacked_receptive_field_ticks": 372,
+  "min_delay_after_corr_ticks": 460,
+  "strictly_beyond_receptive_field": true,
+  "min_init_to_corr_ticks": 47,
+  "overwrite_after_local_window_eviction": true,
+  "unique_unseen_test_speakers_drawn": 199,
+  "init_order_frac_digit_first": 0.5781,
+  "update_target_frac_digit": 0.6094,
+  "post_corr_pcm_max_abs_diff": 0.0,
+  "corr_window_pcm_min_abs_diff": 0.4725,
+  "anti_splice_lowlevel_acoustic_auroc": {
+    "rms": 0.5576,
+    "peak": 0.4973,
+    "zcr": 0.4395,
+    "spectral_centroid_hz": 0.3967
+  },
+  "anti_splice_max_deviation_from_0p5": 0.1033,
+  "gate1_speech_prototype_pass": true
+}

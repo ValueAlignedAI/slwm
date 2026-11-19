@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -29,9 +30,13 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 OPS_DIR = REPO_ROOT / ".ops"
 SESSIONS_CONFIG = OPS_DIR / "colab_sessions.json"
 BUDGET_LEDGER = OPS_DIR / "budget.json"
-COLAB_BIN = REPO_ROOT / ".venv/bin/colab"
+COLAB_BIN = next(
+    (p for p in (REPO_ROOT / ".venv/bin/colab", Path.home() / ".local/bin/colab") if p.exists()),
+    Path.home() / ".local/bin/colab",
+)
 PRIVATE_COLAB = Path.home() / ".config/slwm-colab"
-SSH_KEY = PRIVATE_COLAB / "session_ed25519"
+GCLOUD_CONFIG_DIR = (PRIVATE_COLAB / "gcloud") if (PRIVATE_COLAB / "gcloud").is_dir() else (Path.home() / ".config/gcloud")
+SSH_KEY = (PRIVATE_COLAB / "session_ed25519") if (PRIVATE_COLAB / "session_ed25519").is_file() else (Path.home() / ".ssh/id_ed25519")
 KNOWN_HOSTS = OPS_DIR / "known_hosts"
 FEDORA_SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=30", "db@192.168.1.200"]
 
@@ -43,10 +48,10 @@ def colab_env() -> dict[str, str]:
     OPS_DIR.mkdir(parents=True, exist_ok=True)
     return {
         **os.environ,
-        "CLOUDSDK_CONFIG": str(PRIVATE_COLAB / "gcloud"),
-        "COLAB_CLI_REQUEST_TIMEOUT": "75",
-        "COLAB_CLI_ASSIGN_RETRIES": "0",
-        "COLAB_CLI_RETRY_BACKOFF": "4",
+        "CLOUDSDK_CONFIG": str(GCLOUD_CONFIG_DIR),
+        "COLAB_CLI_REQUEST_TIMEOUT": "150",
+        "COLAB_CLI_ASSIGN_RETRIES": "1",
+        "COLAB_CLI_RETRY_BACKOFF": "6",
     }
 
 
@@ -76,7 +81,7 @@ def run_colab_cli(*args: str, session_name: str | None = None, timeout: int = 12
     return subprocess.run(cmd, env=colab_env(), text=True, capture_output=True, timeout=timeout, check=False)
 
 
-def check_usage_and_budget(max_spend: float = 962.0, min_balance_reserve: float = 3.0) -> dict[str, Any]:
+def check_usage_and_budget(max_spend: float = 2495.0, min_balance_reserve: float = 5.0) -> dict[str, Any]:
     with ops_lock():
         res = run_colab_cli("usage", timeout=60)
         if res.returncode != 0:
@@ -89,6 +94,8 @@ def check_usage_and_budget(max_spend: float = 962.0, min_balance_reserve: float 
 
         if BUDGET_LEDGER.is_file():
             ledger = json.loads(BUDGET_LEDGER.read_text())
+            if balance > float(ledger.get("initial_balance", 0.0)):
+                ledger["initial_balance"] = balance
         else:
             ledger = {
                 "initial_balance": balance,
@@ -149,6 +156,7 @@ def allocate_accelerator(
     tpu_retries: int = 1,
     allow_h100_fallback: bool = True,
     tpu_only: bool = False,
+    allow_a100: bool = False,
 ) -> dict[str, str]:
     """Allocate a named session preferring TPU v6e1 (~5.09 credits/hr), with H100/A100 fallback or TPU queue."""
     if not session_name.startswith("slwm-x1b-"):
@@ -190,7 +198,7 @@ def allocate_accelerator(
                             break
                         print(f"[ALLOC] Requesting TPU v6e1 for {session_name} (wave {wave}, attempt {attempt}/{attempts})...", flush=True)
                         try:
-                            res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=105)
+                            res = run_colab_cli("new", "-s", session_name, "--tpu", "v6e1", session_name=session_name, timeout=180)
                         except subprocess.TimeoutExpired:
                             timed_out = True
                         time.sleep(1.0)
@@ -202,8 +210,9 @@ def allocate_accelerator(
                         _clear_pool_cooldown("tpu_v6e1")
                         _record_session(session_name, "tpu:v6e1", ep)
                         return {"session": session_name, "accelerator": "tpu:v6e1", "endpoint": ep}
-                    _mark_pool_cooldown("tpu_v6e1")
-                    print(f"[WARN] v6e1 request timed out (105s) for {session_name}; marking 8m TPU cooldown.", flush=True)
+                    if not tpu_only:
+                        _mark_pool_cooldown("tpu_v6e1")
+                    print(f"[WARN] v6e1 request timed out (180s) for {session_name}.", flush=True)
                     refused_cap = True
                     break
                 if res is not None and res.returncode == 0:
@@ -215,7 +224,8 @@ def allocate_accelerator(
                     msg = (res.stderr or res.stdout).strip()
                     print(f"[WARN] v6e1 request failed ({res.returncode}): {msg[-240:]}", flush=True)
                     if any(k in msg.lower() for k in cap_keywords):
-                        _mark_pool_cooldown("tpu_v6e1")
+                        if not tpu_only:
+                            _mark_pool_cooldown("tpu_v6e1")
                         refused_cap = True
                         break
                 if attempt < attempts:
@@ -227,7 +237,8 @@ def allocate_accelerator(
             with alloc_lock.open("a") as alf:
                 fcntl.flock(alf, fcntl.LOCK_EX)
                 try:
-                    for gpu_kind in ("H100", "A100"):
+                    # A100-40GB excluded by default: poor cost-efficiency and insufficient HBM for 480p X3 profiles.
+                    for gpu_kind in (("H100", "A100") if allow_a100 else ("H100",)):
                         pool_tag = f"gpu_{gpu_kind.lower()}"
                         if gpu_kind == "H100" and _pool_in_cooldown(pool_tag, 300.0):
                             print(f"[ALLOC] Skipping GPU H100 for {session_name} (5m cooldown active); trying A100...", flush=True)
@@ -283,26 +294,71 @@ def _record_session(name: str, accel: str, endpoint: str) -> None:
         BUDGET_LEDGER.write_text(json.dumps(ledger, indent=2, sort_keys=True) + "\n")
 
 
+_SSH_EXEC_SHIM = r"""
+import os, shlex, sys
+colab_bin, cfg, sess, key, cmd = sys.argv[1:6]
+proxy = " ".join(shlex.quote(x) for x in (colab_bin, "--config", cfg, "--auth", "adc", "ssh", "--proxy-mode", "-s", sess, "-i", key))
+# exec (not a child) so a caller's kill()/timeout terminates ssh itself and never orphans the runtime's single
+# ssh slot. Colab allows ONE ssh connection per runtime (HTTP 429 otherwise): callers retry with backoff.
+os.execvp("ssh", [
+    "ssh", "-o", "ProxyCommand=" + proxy, "-i", key, "-o", "IdentitiesOnly=yes",
+    "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-o", "LogLevel=ERROR",
+    "-o", "ConnectTimeout=60", "-o", "ServerAliveInterval=30", "-o", "ServerAliveCountMax=6",
+    "root@colab-" + sess, "bash -lc " + shlex.quote(cmd),
+])
+"""
+
+
+def _run_remote_retry(args: list[str], *, attempts: int = 4, **kwargs: Any) -> subprocess.CompletedProcess:
+    """`subprocess.run` that retries transient SSH/proxy hangs (TimeoutExpired) instead of aborting staging.
+
+    Returns a synthetic rc=255 result if every attempt times out (callers treat it as "not verified").
+    """
+    for att in range(1, attempts + 1):
+        try:
+            res = subprocess.run(args, **kwargs)
+            if res.returncode == 255 and "429" in str(res.stderr or "") and att < attempts:
+                print(f"[WARN] remote ssh slot busy (HTTP 429, attempt {att}/{attempts}); retrying...", flush=True)
+                time.sleep(10.0 * att)
+                continue
+            return res
+        except subprocess.TimeoutExpired:
+            print(f"[WARN] remote command timed out (attempt {att}/{attempts}); retrying...", flush=True)
+            time.sleep(3.0 * att)
+    return subprocess.CompletedProcess(args, 255, stdout="", stderr="timeout")
+
+
+def _check_output_retry(args: list[str], *, attempts: int = 5, **kwargs: Any) -> Any:
+    """`subprocess.check_output` with retry on transient SSH/proxy timeouts or non-zero exits."""
+    for att in range(1, attempts + 1):
+        try:
+            return subprocess.check_output(args, **kwargs)
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+            if att == attempts:
+                raise
+            print(f"[WARN] remote check_output failed (attempt {att}/{attempts}: {type(exc).__name__}); retrying...", flush=True)
+            time.sleep(10.0 * att)
+    raise RuntimeError("unreachable")
+
+
+def _stable_python_executable() -> str:
+    """Resolve an existing Python binary even if an ephemeral orchestrator venv symlink was removed mid-run."""
+    if sys.executable and Path(sys.executable).exists():
+        return sys.executable
+    return shutil.which("python3") or "/usr/bin/python3"
+
+
 def ssh_cmd_base(session_name: str) -> list[str]:
+    """Return argv prefix; callers append ONE remote bash command string (`[*base, cmd]`).
+
+    Colab CLI >= 0.7 no longer accepts a remote command after `colab ssh ... --`, so we run OpenSSH through the
+    documented `colab ssh --proxy-mode` ProxyCommand bridge. stdin/stdout pass straight through (tar/data streaming).
+    """
     endpoint = get_session_endpoint(session_name)
     if not endpoint:
         raise RuntimeError(f"Session {session_name} has no active Colab assignment")
     cfg_p = session_config_path(session_name)
-    return [
-        str(COLAB_BIN),
-        "--config",
-        str(cfg_p),
-        "--auth",
-        "adc",
-        "ssh",
-        "-s",
-        session_name,
-        "-i",
-        str(SSH_KEY),
-        "--",
-        "bash",
-        "-lc",
-    ]
+    return [_stable_python_executable(), "-c", _SSH_EXEC_SHIM, str(COLAB_BIN), str(cfg_p), session_name, str(SSH_KEY)]
 
 
 def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) -> subprocess.CompletedProcess[str]:
@@ -320,7 +376,7 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) 
         "-s",
         session_name,
         "--timeout",
-        "7200",
+        str(max(60, int(timeout))),
     ]
     proc = subprocess.Popen(
         cmd,
@@ -366,7 +422,68 @@ def exec_python_in_kernel(session_name: str, code: str, *, timeout: int = 9000) 
     return subprocess.CompletedProcess(cmd, 0, stdout=full_out, stderr="")
 
 
-def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 9000) -> None:
+def remote_job_status(session_name: str, tag: str) -> str:
+    """Return "DONE", "PROG:<age_s>", "NONE", or "" if the status could not be read (ssh failure)."""
+    try:
+        chk = subprocess.run(
+            [
+                *ssh_cmd_base(session_name),
+                f"if [ -f /content/x1b-out/{shlex.quote(tag)}/done.json ]; then echo DONE; "
+                f"elif [ -f /content/x1b-out/{shlex.quote(tag)}-progress.json ]; then "
+                f"echo PROG:$(( $(date +%s) - $(stat -c %Y /content/x1b-out/{shlex.quote(tag)}-progress.json) )); "
+                f"else echo NONE; fi",
+            ],
+            env=colab_env(),
+            text=True,
+            capture_output=True,
+            timeout=90,
+        )
+    except subprocess.TimeoutExpired:
+        return ""
+    st_txt = chk.stdout.strip().splitlines()[-1] if chk.stdout.strip() else ""
+    if st_txt in ("DONE", "NONE") or st_txt.startswith("PROG:"):
+        return st_txt
+    return ""
+
+
+def wait_for_remote_job(session_name: str, tag: str, *, stall_s: int = 3600, max_wait_s: int = 48 * 3600) -> str:
+    """Poll a detached remote job until "DONE", "STALLED" (progress older than `stall_s`), or "NONE".
+
+    SSH failures (HTTP 429 single-slot contention, proxy hangs) are NEVER treated as a stalled job; only
+    20 consecutive unreadable checks (~15 min) give up with "UNREACHABLE".
+    """
+    t0 = time.monotonic()
+    ssh_fail = 0
+    n_polls = 0
+    while time.monotonic() - t0 < max_wait_s:
+        st = remote_job_status(session_name, tag)
+        if not st:
+            ssh_fail += 1
+            if ssh_fail > 20:
+                return "UNREACHABLE"
+            print(f"[MONITOR {session_name}] status check failed ({ssh_fail}/20); retrying...", flush=True)
+            time.sleep(min(60, 10 * ssh_fail))
+            continue
+        ssh_fail = 0
+        if st == "DONE" or st == "NONE":
+            return st
+        if int(st.split(":", 1)[1]) >= stall_s:
+            return "STALLED"
+        n_polls += 1
+        if n_polls % 20 == 1:
+            try:
+                prog = subprocess.run(
+                    [*ssh_cmd_base(session_name), f"cat /content/x1b-out/{shlex.quote(tag)}-progress.json"],
+                    env=colab_env(), text=True, capture_output=True, timeout=90,
+                ).stdout.strip()
+            except subprocess.TimeoutExpired:
+                prog = ""
+            print(f"[MONITOR {session_name}] {tag} alive ({st}) {prog}", flush=True)
+        time.sleep(30)
+    return "STALLED"
+
+
+def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout: int = 48 * 3600) -> None:
     """Execute a training/eval job inside the Colab kernel with automatic recovery from WebSocket drops."""
     for attempt in range(1, 4):
         try:
@@ -374,32 +491,12 @@ def run_kernel_job_resilient(session_name: str, tag: str, code: str, *, timeout:
             return
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
             print(f"[RECOVER {session_name}] colab exec interrupted on attempt {attempt}/3 ({exc}); checking remote kernel state...", flush=True)
-            base = ssh_cmd_base(session_name)
-            # If kernel continues executing after WebSocket drop, monitor progress until done.json appears or stalls!
-            for _ in range(360):
-                chk = subprocess.run(
-                    [
-                        *base,
-                        f"if [ -f /content/x1b-out/{shlex.quote(tag)}/done.json ]; then echo DONE; "
-                        f"elif [ -f /content/x1b-out/{shlex.quote(tag)}-progress.json ]; then "
-                        f"echo PROG:$(( $(date +%s) - $(stat -c %Y /content/x1b-out/{shlex.quote(tag)}-progress.json) )); "
-                        f"else echo NONE; fi",
-                    ],
-                    env=colab_env(),
-                    text=True,
-                    capture_output=True,
-                    timeout=45,
-                )
-                st_txt = chk.stdout.strip()
-                if st_txt == "DONE":
-                    print(f"[RECOVER {session_name}] {tag} finished cleanly on remote kernel!", flush=True)
-                    return
-                if st_txt.startswith("PROG:"):
-                    age = int(st_txt.split(":", 1)[1])
-                    if age < 600:
-                        time.sleep(20)
-                        continue
-                break
+            # If kernel continues executing after a client/WebSocket drop, monitor progress until done.json or stall.
+            res = wait_for_remote_job(session_name, tag)
+            if res == "DONE":
+                print(f"[RECOVER {session_name}] {tag} finished cleanly on remote kernel!", flush=True)
+                return
+            print(f"[RECOVER {session_name}] remote state for {tag}: {res}", flush=True)
             if attempt < 3:
                 print(f"[RECOVER {session_name}] Restarting kernel & re-invoking {tag} (resumes eval if weights saved)...", flush=True)
                 restart_session_kernel(session_name)
@@ -419,6 +516,7 @@ def stage_code_and_data(
     include_real_robot: bool = False,
     include_wave6_grounded: bool = False,
     include_wave8a_grounded: bool = False,
+    include_x3_480p: bool = False,
     real_bank_name: str = "x1b_real_bank_v1",
 ) -> None:
     """Bundle X1B Python modules + configs and stream Fedora's verified real dataset bank to Colab."""
@@ -472,6 +570,11 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         "scripts/train/x1b_train_wave8a.py",
         "evals/x1b_eval_wave8a.py",
         "evals/x1b_showcase_wave8a.py",
+        "configs/x3",
+        "models/x3_480p_core.py",
+        "scripts/train/x3_train_480p.py",
+        "evals/x3_eval_480p.py",
+        "scripts/eval/x3_analyze_480p.py",
     ):
         if (REPO_ROOT / opt_rel).exists():
             include_paths.append(opt_rel)
@@ -490,17 +593,17 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         for rel in include_paths:
             if (REPO_ROOT / rel).exists():
                 tf.add(REPO_ROOT / rel, arcname=rel, filter=_tar_filter)
-    for up_try in range(1, 7):
+    for up_try in range(1, 10):
         try:
             with buf_path.open("rb") as f:
                 subprocess.run([*base, "tar -xzf - -C /content/x1b-code"], env=colab_env(), stdin=f, check=True, timeout=90)
             break
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
-            if up_try == 6:
+            if up_try == 9:
                 buf_path.unlink(missing_ok=True)
                 raise
-            print(f"[WARN] Code upload retry {up_try}/6 ({exc})", flush=True)
-            time.sleep(1.5 * up_try)
+            print(f"[WARN] Code upload retry {up_try}/9 ({exc})", flush=True)
+            time.sleep(2.5 * up_try)
     buf_path.unlink(missing_ok=True)
     time.sleep(0.8)
 
@@ -529,6 +632,94 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
                 raise RuntimeError(
                     f"Remote PyMunk panel SHA mismatch for {ds_key}: remote={got_p} vs frozen registered={exp_p}"
                 )
+
+    if include_x3_480p:
+        # Fail-fast 1-second check that all X3_BOUND_SOURCE_FILES staged cleanly & match local SHA-256 (pure stdlib AST)!
+        import ast as _ast
+        _tree = _ast.parse((REPO_ROOT / "scripts/train/x3_train_480p.py").read_text())
+        _bound_files = next(
+            _ast.literal_eval(node.value)
+            for node in _tree.body
+            if isinstance(node, _ast.Assign)
+            and any(isinstance(t, _ast.Name) and t.id == "X3_BOUND_SOURCE_FILES" for t in node.targets)
+        )
+        _h_src = hashlib.sha256()
+        for _rel in _bound_files:
+            _fp = REPO_ROOT / _rel
+            _hf = hashlib.sha256()
+            with _fp.open("rb") as _f:
+                for _ch in iter(lambda: _f.read(1 << 20), b""):
+                    _hf.update(_ch)
+            _h_src.update(f"{_rel}:{_hf.hexdigest()}\n".encode())
+        local_x3_sha = _h_src.hexdigest()
+        rem_x3_sha = _check_output_retry(
+            [*base, "python -c \"import sys; sys.path.insert(0, '/content/x1b-code'); from scripts.train.x3_train_480p import compute_x3_source_code_sha256; print(compute_x3_source_code_sha256())\""],
+            env=colab_env(),
+            text=True,
+            timeout=45,
+        ).strip().splitlines()[-1]
+        if rem_x3_sha != local_x3_sha:
+            raise RuntimeError(f"Remote X3 source_code_sha256 mismatch: remote={rem_x3_sha} vs local={local_x3_sha}")
+        print(f"[CODE {session_name}] Verified remote X3 source_code_sha256={rem_x3_sha[:16]}", flush=True)
+
+        x3_cards_p = REPO_ROOT / "configs/x3/x3_dataset_cards.json"
+        if not x3_cards_p.is_file():
+            raise RuntimeError(f"Missing frozen Study X3 dataset cards registry: {x3_cards_p}")
+        x3_cards = json.loads(x3_cards_p.read_text())
+        x3_files: list[tuple[str, str, str]] = [
+            ("x3_multimodal_480p_train.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_train.npz", x3_cards["x3_multimodal_480p_train"]["sha256"]),
+            ("x3_multimodal_480p_dev.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_dev.npz", x3_cards["x3_multimodal_480p_dev"]["sha256"]),
+            ("x3_multimodal_480p_vault.npz", "/mnt/slwm-data/SLWM/x3_480p/x3_multimodal_480p_vault.npz", x3_cards["x3_multimodal_480p_vault"]["sha256"]),
+            ("x1b_wave8a_grounded_v2.npz", "/mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_grounded_v2.npz", x3_cards["x1b_wave8a_grounded_v2"]["sha256"]),
+            ("x1b_wave8a_vault_v2.npz", "/mnt/slwm-data/SLWM/x1b/datasets/x1b_wave8a_vault_v2.npz", x3_cards["x1b_wave8a_vault_v2"]["sha256"]),
+        ]
+        voc_sha = subprocess.check_output(
+            [*FEDORA_SSH, "sha256sum /mnt/slwm-data/SLWM/x1b/datasets/vocab_4096_ext.json | awk '{print $1}'"],
+            text=True,
+            timeout=30,
+        ).strip()
+        x3_files.append(("vocab_4096_ext.json", "/mnt/slwm-data/SLWM/x1b/datasets/vocab_4096_ext.json", voc_sha))
+        for fname, fed_src, exp_sha in x3_files:
+            chk = _run_remote_retry(
+                [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
+                env=colab_env(),
+                text=True,
+                capture_output=True,
+                timeout=45,
+            )
+            time.sleep(0.6)
+            if chk.returncode == 0 and chk.stdout.strip() == exp_sha:
+                print(f"[DATA {session_name}] {fname} already verified ({exp_sha[:12]})", flush=True)
+                continue
+            for ds_try in range(1, 7):
+                print(f"[DATA {session_name}] Streaming {fname} from Fedora -> Colab (try {ds_try}/6)...", flush=True)
+                fed_p = subprocess.Popen([*FEDORA_SSH, f"cat {shlex.quote(fed_src)}"], stdout=subprocess.PIPE)
+                col_p = subprocess.Popen(
+                    [
+                        *base,
+                        f"cat > /content/x1b-data/{fname}.tmp && "
+                        f"echo '{exp_sha}  /content/x1b-data/{fname}.tmp' | sha256sum -c - && "
+                        f"mv /content/x1b-data/{fname}.tmp /content/x1b-data/{fname}",
+                    ],
+                    env=colab_env(),
+                    stdin=fed_p.stdout,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                assert fed_p.stdout is not None
+                fed_p.stdout.close()
+                out_s, err_s = col_p.communicate(timeout=3600)
+                fed_rc = fed_p.wait(timeout=30)
+                time.sleep(0.8)
+                if fed_rc == 0 and col_p.returncode == 0:
+                    print(f"[DATA {session_name}] Verified {fname} ({exp_sha[:12]})", flush=True)
+                    break
+                if ds_try == 6:
+                    raise RuntimeError(f"Study X3 dataset stream failed for {fname}: {err_s or out_s}")
+                print(f"[WARN] Dataset stream retry {ds_try}/6 for {fname}: {(err_s or out_s).strip()}", flush=True)
+                time.sleep(10.0 * ds_try)
+        return
 
     card_raw = subprocess.check_output(
         [*FEDORA_SSH, f"cat /mnt/slwm-data/SLWM/x1b/datasets/{shlex.quote(real_bank_name)}.card.json"],
@@ -582,7 +773,7 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
         datasets_to_stage.append(("x1b_wave8a_grounded_v2.npz", w8a_card["sha256"]))
         datasets_to_stage.append(("x1b_wave8a_vault_v2.npz", v8a_card["sha256"]))
     for fname, exp_sha in datasets_to_stage:
-        chk = subprocess.run(
+        chk = _run_remote_retry(
             [*base, f"test -f /content/x1b-data/{fname} && echo $(sha256sum /content/x1b-data/{fname} | awk '{{print $1}}')"],
             env=colab_env(),
             text=True,
@@ -623,10 +814,16 @@ print('REMOTE_KERNEL_JAX_OK', jax.__version__, b, devs, flush=True)
             if ds_try == 6:
                 raise RuntimeError(f"Dataset stream failed for {fname}: {err_s or out_s}")
             print(f"[WARN] Dataset stream retry {ds_try}/6 for {fname}: {(err_s or out_s).strip()}", flush=True)
-            time.sleep(1.8 * ds_try)
+            time.sleep(10.0 * ds_try)
 
 
-def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "runs") -> dict[str, Any]:
+def archive_run_to_fedora(
+    session_name: str,
+    tag: str,
+    *,
+    runs_subdir: str = "runs",
+    local_runs_base_dir: Path | None = None,
+) -> dict[str, Any]:
     """Stream completed run artifacts from Colab -> Fedora primary HDD -> mirror & verify on secondary HDD."""
     # Ensure latest x1b_storage.py is installed atomically on Fedora under ops_lock
     with ops_lock():
@@ -641,7 +838,7 @@ def archive_run_to_fedora(session_name: str, tag: str, *, runs_subdir: str = "ru
             timeout=30,
         )
     base = ssh_cmd_base(session_name)
-    rec_raw = subprocess.check_output(
+    rec_raw = _check_output_retry(
         [*base, f"cat /content/x1b-out/{shlex.quote(tag)}/receipt.json"],
         env=colab_env(),
         text=True,
@@ -662,7 +859,7 @@ for name in ['receipt.json', 'eval_metrics.json', 'config.json', 'train.jsonl', 
         items.append([name, h, p.stat().st_size])
 print(json.dumps(items))
 """
-    manifest_raw = subprocess.check_output(
+    manifest_raw = _check_output_retry(
         [*base, f"python -c {shlex.quote(file_list_py)}"],
         env=colab_env(),
         text=True,
@@ -673,7 +870,7 @@ print(json.dumps(items))
     for fname, sha_hex, n_bytes in files_meta:
         for arch_try in range(1, 7):
             if arch_try > 1:
-                time.sleep(2.5 * arch_try)
+                time.sleep(10.0 * arch_try)
             else:
                 time.sleep(0.6)
             print(
@@ -718,7 +915,7 @@ print(json.dumps(items))
             if arch_try == 6:
                 raise RuntimeError(f"Archive stream failed on {tag}/{fname}: {src_err_s or err_s or out_s}")
 
-    mir_out = subprocess.check_output(
+    mir_out = _check_output_retry(
         [
             *FEDORA_SSH,
             f"/home/db/dev/slwm-x1b/.venv/bin/python /home/db/dev/slwm-x1b/x1b_storage.py "
@@ -729,8 +926,13 @@ print(json.dumps(items))
     )
     print(f"[MIRROR {tag}] {mir_out.strip()}", flush=True)
 
-    # Also save small JSON metrics locally in experiments/multimodal/x1b/.../<runs_subdir>/<tag>/ for plotting & git!
-    local_res_dir = REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir / tag
+    # Also save small JSON metrics locally in <local_runs_base_dir>/<tag>/ (default: experiments/multimodal/x1b/.../<runs_subdir>/<tag>/)!
+    local_base = (
+        local_runs_base_dir
+        if local_runs_base_dir is not None
+        else (REPO_ROOT / "experiments/multimodal/x1b/spatiotemporal-jepa-1b-20261111" / runs_subdir)
+    )
+    local_res_dir = local_base / tag
     local_res_dir.mkdir(parents=True, exist_ok=True)
     for small in ("receipt.json", "eval_metrics.json", "config.json", "train.jsonl"):
         txt = subprocess.check_output(

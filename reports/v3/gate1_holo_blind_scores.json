@@ -1,0 +1,226 @@
+{
+  "rater": "context_isolated_blind_subagent_a9653a67",
+  "n_cases": 20,
+  "chance_4way": 0.25,
+  "blind_top1_acc": 0.75,
+  "n_correct": 15,
+  "by_observability_rating": {
+    "clearly_observable": {
+      "n": 10,
+      "correct": 9,
+      "acc": 0.9
+    },
+    "partially_ambiguous": {
+      "n": 9,
+      "correct": 6,
+      "acc": 0.6667
+    },
+    "unobservable_from_text_alone": {
+      "n": 1,
+      "correct": 0,
+      "acc": 0.0
+    }
+  },
+  "per_case": [
+    {
+      "case_id": "HOLO-BLIND-01",
+      "predicted": "coffee_capsule",
+      "true_next_noun": "coffee_capsule",
+      "true_next_action": "push coffee_capsule",
+      "stale_prev_noun": "lever",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "Maybe the capsule is not."
+    },
+    {
+      "case_id": "HOLO-BLIND-02",
+      "predicted": "button",
+      "true_next_noun": "button",
+      "true_next_action": "press button",
+      "stale_prev_noun": "dslr",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "To open it you can press the button that's on the bottom right corner of the screen."
+    },
+    {
+      "case_id": "HOLO-BLIND-03",
+      "predicted": "screwdriver",
+      "true_next_noun": "screwdriver",
+      "true_next_action": "place screwdriver",
+      "stale_prev_noun": "hexagon_cap_nut",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "You can use, also the screwdriver to completely fix the screws."
+    },
+    {
+      "case_id": "HOLO-BLIND-04",
+      "predicted": "touch_screen",
+      "true_next_noun": "touch_screen",
+      "true_next_action": "tap touch_screen",
+      "stale_prev_noun": "moon_button",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "On screen, I believe there is a."
+    },
+    {
+      "case_id": "HOLO-BLIND-05",
+      "predicted": "stop_button",
+      "true_next_noun": "button",
+      "true_next_action": "press button",
+      "stale_prev_noun": "stop_button",
+      "hit": false,
+      "observability": "partially_ambiguous",
+      "utterance": "No, press stop."
+    },
+    {
+      "case_id": "HOLO-BLIND-06",
+      "predicted": "ratchet",
+      "true_next_noun": "ratchet",
+      "true_next_action": "withdraw ratchet",
+      "stale_prev_noun": "bolt",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "Use, there's a shifting button on the ratchet, go ahead and flip the left side. And then you should be able to,"
+    },
+    {
+      "case_id": "HOLO-BLIND-07",
+      "predicted": "screw",
+      "true_next_noun": "bag",
+      "true_next_action": "place bag",
+      "stale_prev_noun": "screw",
+      "hit": false,
+      "observability": "unobservable_from_text_alone",
+      "utterance": "Please first place the plastic washer before placing the screw."
+    },
+    {
+      "case_id": "HOLO-BLIND-08",
+      "predicted": "battery_door",
+      "true_next_noun": "battery_door",
+      "true_next_action": "open battery_door",
+      "stale_prev_noun": "dslr",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "The battery is at the bottom."
+    },
+    {
+      "case_id": "HOLO-BLIND-09",
+      "predicted": "release_button",
+      "true_next_noun": "release_button",
+      "true_next_action": "press release_button",
+      "stale_prev_noun": "dslr",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "The button is on the other side of lens."
+    },
+    {
+      "case_id": "HOLO-BLIND-10",
+      "predicted": "battery_door",
+      "true_next_noun": "battery",
+      "true_next_action": "push battery",
+      "stale_prev_noun": "battery_door",
+      "hit": false,
+      "observability": "clearly_observable",
+      "utterance": "You can push it the other way."
+    },
+    {
+      "case_id": "HOLO-BLIND-11",
+      "predicted": "joy_con_controller",
+      "true_next_noun": "joy_con_controller",
+      "true_next_action": "grab joy_con_controller",
+      "stale_prev_noun": "comfort_grip",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "Take the controller, the blue and red one. The stick. The blue one and take well the stick."
+    },
+    {
+      "case_id": "HOLO-BLIND-12",
+      "predicted": "wheel",
+      "true_next_noun": "wheel",
+      "true_next_action": "screw wheel",
+      "stale_prev_noun": "spanner_wrench",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "Please use the provided wrench to tighten the wheel."
+    },
+    {
+      "case_id": "HOLO-BLIND-13",
+      "predicted": "leg",
+      "true_next_noun": "leg",
+      "true_next_action": "place leg",
+      "stale_prev_noun": "washer",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "Please place the feet on the baseboard."
+    },
+    {
+      "case_id": "HOLO-BLIND-14",
+      "predicted": "hexagonal_wrench",
+      "true_next_noun": "hexagonal_wrench",
+      "true_next_action": "insert hexagonal_wrench",
+      "stale_prev_noun": "bolt",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "Please use the wrench to tighten them out."
+    },
+    {
+      "case_id": "HOLO-BLIND-15",
+      "predicted": "wheel",
+      "true_next_noun": "wheel",
+      "true_next_action": "insert wheel",
+      "stale_prev_noun": "utility_cart",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "Plese screw the wheel again."
+    },
+    {
+      "case_id": "HOLO-BLIND-16",
+      "predicted": "screwdriver",
+      "true_next_noun": "hex_nut",
+      "true_next_action": "screw hex_nut",
+      "stale_prev_noun": "stool",
+      "hit": false,
+      "observability": "partially_ambiguous",
+      "utterance": "Before turning it over, you should make sure that the middle screw is well tightened with using the tools that you have."
+    },
+    {
+      "case_id": "HOLO-BLIND-17",
+      "predicted": "lid",
+      "true_next_noun": "lid",
+      "true_next_action": "close lid",
+      "stale_prev_noun": "water_container",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "And if you open the lid it will attach itself to the back."
+    },
+    {
+      "case_id": "HOLO-BLIND-18",
+      "predicted": "strap",
+      "true_next_noun": "strap",
+      "true_next_action": "grab strap",
+      "stale_prev_noun": "gopro",
+      "hit": true,
+      "observability": "partially_ambiguous",
+      "utterance": "The strap is the other stick and."
+    },
+    {
+      "case_id": "HOLO-BLIND-19",
+      "predicted": "joy_con_strap",
+      "true_next_noun": "joy_con_controller",
+      "true_next_action": "withdraw joy_con_controller",
+      "stale_prev_noun": "joy_con_strap",
+      "hit": false,
+      "observability": "partially_ambiguous",
+      "utterance": "You should hold the black Joy-con in the other way around."
+    },
+    {
+      "case_id": "HOLO-BLIND-20",
+      "predicted": "sd_card",
+      "true_next_noun": "sd_card",
+      "true_next_action": "withdraw sd_card",
+      "stale_prev_noun": "dslr",
+      "hit": true,
+      "observability": "clearly_observable",
+      "utterance": "The SD card is at the same place as the battery."
+    }
+  ]
+}

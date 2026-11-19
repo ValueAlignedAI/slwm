@@ -1,0 +1,256 @@
+{
+  "gate": "SLWM-v3 Gate 1 \u2014 Hardened Real-Data Connected-Component, Joint-Support & Observability Audit",
+  "holoassist_audit": {
+    "local_av_recordings": 672,
+    "duplicate_local_av_recordings_deduped": 48,
+    "unmatched_local_av_recordings_excluded": 0,
+    "split_granularity_honest_label": "session_performer_prefix_disjoint_casefold_not_instructor_disjoint",
+    "unique_session_prefixes": 282,
+    "zero_session_prefix_split_overlap": true,
+    "by_split": {
+      "train": {
+        "recordings": 457,
+        "unique_session_prefixes": 196,
+        "hours": 31.18,
+        "all_substantive_no_intervening_corrections": 432,
+        "delayed_ge_1s_corrections": 225,
+        "component_explicit_delayed_corrections": 52,
+        "with_causal_off_window_preserved_fact": 187
+      },
+      "dev": {
+        "recordings": 86,
+        "unique_session_prefixes": 39,
+        "hours": 6.14,
+        "all_substantive_no_intervening_corrections": 65,
+        "delayed_ge_1s_corrections": 38,
+        "component_explicit_delayed_corrections": 13,
+        "with_causal_off_window_preserved_fact": 30
+      },
+      "test": {
+        "recordings": 129,
+        "unique_session_prefixes": 47,
+        "hours": 9.02,
+        "all_substantive_no_intervening_corrections": 116,
+        "delayed_ge_1s_corrections": 66,
+        "component_explicit_delayed_corrections": 17,
+        "with_causal_off_window_preserved_fact": 59
+      }
+    },
+    "total_local_hours": 46.34,
+    "trivial_baselines_all_delayed_ge_1s": {
+      "n_total": 329,
+      "n_eval": 104,
+      "persistence_verb_acc": 0.1702,
+      "persistence_noun_acc": 0.4468,
+      "persistence_pair_acc": 0.1064,
+      "same_task_train_majority_next_noun_acc_eval": 0.2308,
+      "same_task_train_majority_offwin_noun_acc_eval": 0.1798,
+      "n_eval_with_offwin": 89
+    },
+    "trivial_baselines_component_explicit_subset": {
+      "n_total": 82,
+      "n_eval": 30,
+      "persistence_verb_acc": 0.2073,
+      "persistence_noun_acc": 0.3902,
+      "persistence_pair_acc": 0.1463,
+      "same_task_train_majority_next_noun_acc_eval": 0.1,
+      "same_task_train_majority_offwin_noun_acc_eval": 0.2105,
+      "n_eval_with_offwin": 19
+    },
+    "blind_sheet_case_count": 20,
+    "blind_sheet_distinct_recordings": 20,
+    "window_eviction_honest_note": "HoloAssist-DC queries at c_end + min(1.0s, 0.5*delay) (<= 10 ticks @ 10 Hz, inside W=32) and off-window facts average 20-60s prior (200-600 ticks, straddling L*(W-1)=372); it is an ecological short/medium-delay real-AV benchmark, NOT a structural eviction test."
+  },
+  "speech_commands_v002_audit": {
+    "available": true,
+    "by_split": {
+      "train": {
+        "wavs": 84843,
+        "unique_speakers": 2112
+      },
+      "val": {
+        "wavs": 9981,
+        "unique_speakers": 256
+      },
+      "test": {
+        "wavs": 11005,
+        "unique_speakers": 250
+      }
+    },
+    "zero_speaker_overlap_verified": true,
+    "test_fact_family_1_directions": {
+      "left": {
+        "wavs": 412,
+        "speakers": 168
+      },
+      "right": {
+        "wavs": 396,
+        "speakers": 165
+      },
+      "up": {
+        "wavs": 425,
+        "speakers": 157
+      },
+      "down": {
+        "wavs": 406,
+        "speakers": 165
+      }
+    },
+    "test_fact_family_2_digits": {
+      "zero": {
+        "wavs": 418,
+        "speakers": 156
+      },
+      "one": {
+        "wavs": 399,
+        "speakers": 158
+      },
+      "two": {
+        "wavs": 424,
+        "speakers": 161
+      },
+      "three": {
+        "wavs": 405,
+        "speakers": 170
+      }
+    },
+    "test_same_domain_distractors_total_wavs": 2417,
+    "domain_and_grammar_guarantee": "All initial facts (Direction, Digit), single-attribute corrections (updating ONLY Direction OR ONLY Digit), and non-correction distractors come from the exact same 16 kHz SpeechCommands v0.02 domain and speaker pool (250 held-out test speakers, zero studio-vs-audiobook splice shortcut, zero 6-word grammar conflict)."
+  },
+  "other_corpora_inventory": {
+    "grid_av_speaker_disjoint": {
+      "active_speakers_count": 31,
+      "excluded_speakers": [
+        "GRID-21",
+        "GRID-33",
+        "GRID-34"
+      ],
+      "splits": {
+        "train": {
+          "utterances": 12704,
+          "n_speakers": 16,
+          "speakers": [
+            "GRID-01",
+            "GRID-02",
+            "GRID-03",
+            "GRID-04",
+            "GRID-05",
+            "GRID-06",
+            "GRID-07",
+            "GRID-08",
+            "GRID-09",
+            "GRID-10",
+            "GRID-11",
+            "GRID-12",
+            "GRID-13",
+            "GRID-14",
+            "GRID-15",
+            "GRID-16"
+          ]
+        },
+        "val": {
+          "utterances": 395,
+          "n_speakers": 4,
+          "speakers": [
+            "GRID-17",
+            "GRID-18",
+            "GRID-19",
+            "GRID-20"
+          ]
+        },
+        "cal": {
+          "utterances": 278,
+          "n_speakers": 3,
+          "speakers": [
+            "GRID-22",
+            "GRID-23",
+            "GRID-24"
+          ]
+        },
+        "test": {
+          "utterances": 749,
+          "n_speakers": 8,
+          "speakers": [
+            "GRID-25",
+            "GRID-26",
+            "GRID-27",
+            "GRID-28",
+            "GRID-29",
+            "GRID-30",
+            "GRID-31",
+            "GRID-32"
+          ]
+        }
+      }
+    },
+    "physical_xarm6_provenance": {
+      "schema_version": "wave8a_grounded_provenance_v2_scene_color_and_dispositions",
+      "total_source_episodes_scanned": 24792,
+      "retained_counts_by_split": {
+        "dev": 351,
+        "train": 1745,
+        "vault": 284
+      },
+      "unique_scene_clusters_by_split": {
+        "dev": 151,
+        "train": 763,
+        "vault": 135
+      },
+      "zero_overlap_verified_all_zero": true
+    },
+    "librispeech_flacs": 75139,
+    "fineart_bimanual_robot_mp4s": 180
+  },
+  "joint_modality_support_matrix": {
+    "SpeechCommands_v002": {
+      "video": false,
+      "audio": true,
+      "text_label": true,
+      "true_robot_action": false,
+      "test_speakers": 250
+    },
+    "HoloAssist_local_av": {
+      "video": true,
+      "audio": true,
+      "text_transcript": true,
+      "true_robot_action": false,
+      "hours_local": 46.34,
+      "hours_full_index": 131.47
+    },
+    "GRID_31spk_av": {
+      "video": true,
+      "audio": true,
+      "text_transcript": true,
+      "true_robot_action": false,
+      "active_speakers": 31
+    },
+    "Physical_xArm6_v2": {
+      "video": true,
+      "audio": true,
+      "text_transcript": true,
+      "true_robot_action": true,
+      "vault_scene_clusters": 135
+    },
+    "FineART_ALOHA": {
+      "video": true,
+      "audio": false,
+      "text_transcript": true,
+      "true_robot_action": true,
+      "mp4_clips": 180
+    },
+    "LibriSpeech_360": {
+      "video": false,
+      "audio": true,
+      "text_transcript": true,
+      "true_robot_action": false,
+      "flacs": 75139
+    },
+    "FineWeb_Edu_v1": {
+      "video": false,
+      "audio": false,
+      "text_transcript": true,
+      "true_robot_action": false,
+      "size_gb": 11.0
+    }
+  }
+}

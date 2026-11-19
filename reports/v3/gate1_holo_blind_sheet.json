@@ -1,0 +1,402 @@
+[
+  {
+    "case_id": "HOLO-BLIND-01",
+    "split_origin": "dev",
+    "video_name": "z030-june-22-22-nespresso",
+    "task_type": "make coffee with nespresso machine",
+    "allowed_history_end_s": 64.6,
+    "earlier_directive_before_corr": "And now make a cup of coffee.",
+    "prev_wrong_action_before_corr": "push lever",
+    "correction_window_s": [
+      61.1,
+      64.1
+    ],
+    "correction_utterance": "Maybe the capsule is not.",
+    "candidate_target_nouns_4way": [
+      "lever",
+      "cup",
+      "coffee_capsule",
+      "sink"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-02",
+    "split_origin": "dev",
+    "video_name": "z105-july-14-22-dslr",
+    "task_type": "setup camera",
+    "allowed_history_end_s": 138.749,
+    "earlier_directive_before_corr": "The next step is to change the SD card.",
+    "prev_wrong_action_before_corr": "rotate dslr",
+    "correction_window_s": [
+      131.134,
+      137.749
+    ],
+    "correction_utterance": "To open it you can press the button that's on the bottom right corner of the screen.",
+    "candidate_target_nouns_4way": [
+      "dslr",
+      "rotary_switch",
+      "button",
+      "sd_card"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-03",
+    "split_origin": "dev",
+    "video_name": "z125-aug-10-22-rashult_assemble",
+    "task_type": "assemble utility cart",
+    "allowed_history_end_s": 98.327,
+    "earlier_directive_before_corr": "Please start by assembling the leg, the straight leg pieces.",
+    "prev_wrong_action_before_corr": "screw hexagon_cap_nut",
+    "correction_window_s": [
+      91.727,
+      97.327
+    ],
+    "correction_utterance": "You can use, also the screwdriver to completely fix the screws.",
+    "candidate_target_nouns_4way": [
+      "hexagon_cap_nut",
+      "bolt",
+      "spanner_wrench",
+      "screwdriver"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-04",
+    "split_origin": "train",
+    "video_name": "R042-13July-BigPrinter",
+    "task_type": "setup big printer",
+    "allowed_history_end_s": 51.787,
+    "earlier_directive_before_corr": "Now we are going to put it back into sleep mode.",
+    "prev_wrong_action_before_corr": "press moon_button",
+    "correction_window_s": [
+      46.984,
+      50.8
+    ],
+    "correction_utterance": "On screen, I believe there is a.",
+    "candidate_target_nouns_4way": [
+      "touch_screen",
+      "paper_stack",
+      "paper_tray",
+      "moon_button"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-05",
+    "split_origin": "train",
+    "video_name": "R101-2Aug-Coffee",
+    "task_type": "make coffee with espresso machine",
+    "allowed_history_end_s": 42.98,
+    "earlier_directive_before_corr": "All right, and then make a cup of coffee.",
+    "prev_wrong_action_before_corr": "press stop_button",
+    "correction_window_s": [
+      40.377,
+      41.98
+    ],
+    "correction_utterance": "No, press stop.",
+    "candidate_target_nouns_4way": [
+      "furniture",
+      "button",
+      "bean_hopper_lid",
+      "stop_button"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-06",
+    "split_origin": "train",
+    "video_name": "R190-24Oct-ATV",
+    "task_type": "fix motorcycle",
+    "allowed_history_end_s": 287.756,
+    "earlier_directive_before_corr": "Now go ahead and detach the bolt with the ratchet.",
+    "prev_wrong_action_before_corr": "unscrew bolt",
+    "correction_window_s": [
+      277.1,
+      286.756
+    ],
+    "correction_utterance": "Use, there's a shifting button on the ratchet, go ahead and flip the left side. And then you should be able to,",
+    "candidate_target_nouns_4way": [
+      "bolt",
+      "shift_arm",
+      "ratchet",
+      "quality_control_bench"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-07",
+    "split_origin": "train",
+    "video_name": "z023-june-21-22-marius_assemble",
+    "task_type": "assemble stool",
+    "allowed_history_end_s": 255.279,
+    "earlier_directive_before_corr": "Please flip the feet and insert them into the bottom part.",
+    "prev_wrong_action_before_corr": "insert screw",
+    "correction_window_s": [
+      251.3,
+      254.4
+    ],
+    "correction_utterance": "Please first place the plastic washer before placing the screw.",
+    "candidate_target_nouns_4way": [
+      "screw",
+      "hexagonal_wrench",
+      "seat",
+      "bag"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-08",
+    "split_origin": "train",
+    "video_name": "z024-june-21-22-dslr",
+    "task_type": "setup camera",
+    "allowed_history_end_s": 90.0,
+    "earlier_directive_before_corr": "Now please turn it off.",
+    "prev_wrong_action_before_corr": "rotate dslr",
+    "correction_window_s": [
+      87.219,
+      89.0
+    ],
+    "correction_utterance": "The battery is at the bottom.",
+    "candidate_target_nouns_4way": [
+      "dslr",
+      "battery_door",
+      "rotary_switch",
+      "power_button"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-09",
+    "split_origin": "train",
+    "video_name": "z039-june-23-22-dslr",
+    "task_type": "setup camera",
+    "allowed_history_end_s": 36.284,
+    "earlier_directive_before_corr": "now we're going to look at the DSLR camera. So, to start, please take the camera and detach the lens.",
+    "prev_wrong_action_before_corr": "inspect dslr",
+    "correction_window_s": [
+      33.187,
+      35.284
+    ],
+    "correction_utterance": "The button is on the other side of lens.",
+    "candidate_target_nouns_4way": [
+      "release_button",
+      "lens",
+      "dslr",
+      "sd_slot"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-10",
+    "split_origin": "train",
+    "video_name": "z041-june-24-22-dslr",
+    "task_type": "setup camera",
+    "allowed_history_end_s": 87.662,
+    "earlier_directive_before_corr": "Now please turn it off.",
+    "prev_wrong_action_before_corr": "pull battery_door",
+    "correction_window_s": [
+      85.198,
+      86.674
+    ],
+    "correction_utterance": "You can push it the other way.",
+    "candidate_target_nouns_4way": [
+      "battery",
+      "power_button",
+      "sd_card",
+      "battery_door"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-11",
+    "split_origin": "train",
+    "video_name": "z049-june-27-22-switch",
+    "task_type": "setup switch",
+    "allowed_history_end_s": 167.608,
+    "earlier_directive_before_corr": "Now please change the controller to the strap.",
+    "prev_wrong_action_before_corr": "grab comfort_grip",
+    "correction_window_s": [
+      159.451,
+      167.104
+    ],
+    "correction_utterance": "Take the controller, the blue and red one. The stick. The blue one and take well the stick.",
+    "candidate_target_nouns_4way": [
+      "game_slot",
+      "comfort_grip",
+      "joy_con_controller",
+      "joy_con_strap"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-12",
+    "split_origin": "train",
+    "video_name": "z051-june-27-22-rashult_assemble",
+    "task_type": "assemble utility cart",
+    "allowed_history_end_s": 1155.4,
+    "earlier_directive_before_corr": "And assemble the wheels.",
+    "prev_wrong_action_before_corr": "approach spanner_wrench",
+    "correction_window_s": [
+      1152.3,
+      1154.6
+    ],
+    "correction_utterance": "Please use the provided wrench to tighten the wheel.",
+    "candidate_target_nouns_4way": [
+      "screw",
+      "spanner_wrench",
+      "bracket",
+      "wheel"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-13",
+    "split_origin": "train",
+    "video_name": "z057-june-28-22-marius_assemble",
+    "task_type": "assemble stool",
+    "allowed_history_end_s": 108.3,
+    "earlier_directive_before_corr": "Please make sure not oriented the screw.",
+    "prev_wrong_action_before_corr": "grab washer",
+    "correction_window_s": [
+      105.2,
+      107.3
+    ],
+    "correction_utterance": "Please place the feet on the baseboard.",
+    "candidate_target_nouns_4way": [
+      "screw",
+      "bolt",
+      "leg",
+      "washer"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-14",
+    "split_origin": "train",
+    "video_name": "z057-june-28-22-rashult_assemble",
+    "task_type": "assemble utility cart",
+    "allowed_history_end_s": 509.274,
+    "earlier_directive_before_corr": "And then inside the bottom shelf.",
+    "prev_wrong_action_before_corr": "approach bolt",
+    "correction_window_s": [
+      506.182,
+      508.565
+    ],
+    "correction_utterance": "Please use the wrench to tighten them out.",
+    "candidate_target_nouns_4way": [
+      "wheel",
+      "hexagonal_wrench",
+      "hex_nut",
+      "bolt"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-15",
+    "split_origin": "train",
+    "video_name": "z068-june-29-22-rashult_assemble",
+    "task_type": "assemble utility cart",
+    "allowed_history_end_s": 1178.9,
+    "earlier_directive_before_corr": "You don't need to tighten the wheels, just screw them in.",
+    "prev_wrong_action_before_corr": "place utility_cart",
+    "correction_window_s": [
+      1174.0,
+      1177.9
+    ],
+    "correction_utterance": "Plese screw the wheel again.",
+    "candidate_target_nouns_4way": [
+      "leg",
+      "utility_cart",
+      "screw",
+      "wheel"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-16",
+    "split_origin": "train",
+    "video_name": "z111-aug-02-22-marius_assemble",
+    "task_type": "assemble stool",
+    "allowed_history_end_s": 243.274,
+    "earlier_directive_before_corr": "Now you should take the legs and turn them.",
+    "prev_wrong_action_before_corr": "rotate stool",
+    "correction_window_s": [
+      236.1,
+      242.3
+    ],
+    "correction_utterance": "Before turning it over, you should make sure that the middle screw is well tightened with using the tools that you have.",
+    "candidate_target_nouns_4way": [
+      "bolt",
+      "hex_nut",
+      "screwdriver",
+      "stool"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-17",
+    "split_origin": "train",
+    "video_name": "z115-aug-04-22-nespresso",
+    "task_type": "make coffee with nespresso machine",
+    "allowed_history_end_s": 42.983,
+    "earlier_directive_before_corr": "Could you take it off completely?",
+    "prev_wrong_action_before_corr": "assemble water_container",
+    "correction_window_s": [
+      38.1,
+      42.453
+    ],
+    "correction_utterance": "And if you open the lid it will attach itself to the back.",
+    "candidate_target_nouns_4way": [
+      "water_container",
+      "water",
+      "button",
+      "lid"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-18",
+    "split_origin": "train",
+    "video_name": "z124-aug-10-22-gopro",
+    "task_type": "setup gopro",
+    "allowed_history_end_s": 156.2,
+    "earlier_directive_before_corr": "Your next task is to put on a strap.",
+    "prev_wrong_action_before_corr": "place gopro",
+    "correction_window_s": [
+      151.082,
+      155.3
+    ],
+    "correction_utterance": "The strap is the other stick and.",
+    "candidate_target_nouns_4way": [
+      "strap",
+      "gopro",
+      "battery",
+      "tripod"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-19",
+    "split_origin": "train",
+    "video_name": "z133-aug-12-22-switch",
+    "task_type": "setup switch",
+    "allowed_history_end_s": 77.531,
+    "earlier_directive_before_corr": "It's the biggest object you have on the table.",
+    "prev_wrong_action_before_corr": "rotate joy_con_strap",
+    "correction_window_s": [
+      73.369,
+      76.962
+    ],
+    "correction_utterance": "You should hold the black Joy-con in the other way around.",
+    "candidate_target_nouns_4way": [
+      "joy_con_strap_lock",
+      "joy_con_controller",
+      "joy_con_strap",
+      "kickstand"
+    ]
+  },
+  {
+    "case_id": "HOLO-BLIND-20",
+    "split_origin": "train",
+    "video_name": "z156-aug-26-22-dslr",
+    "task_type": "setup camera",
+    "allowed_history_end_s": 92.201,
+    "earlier_directive_before_corr": "Please, change the battery of the camera.",
+    "prev_wrong_action_before_corr": "inspect dslr",
+    "correction_window_s": [
+      87.513,
+      91.201
+    ],
+    "correction_utterance": "The SD card is at the same place as the battery.",
+    "candidate_target_nouns_4way": [
+      "button",
+      "power_button",
+      "dslr",
+      "sd_card"
+    ]
+  }
+]

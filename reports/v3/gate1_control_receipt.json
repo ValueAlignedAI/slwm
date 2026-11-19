@@ -1,0 +1,489 @@
+{
+  "gate": "SLWM-v3 Gate 1 \u2014 Decoupled Oracle Matrix, Shortcut-Free Counterfactuals & Crossed Power",
+  "control_matrix": {
+    "n_worlds": 1024,
+    "horizon_ticks": 180,
+    "rollout_horizon": 14,
+    "occupancy_grid_res": 16,
+    "perception_noise_std": 0.04,
+    "arms": {
+      "oracle_perc_oracle_dyn_rollout": {
+        "closest_approach_tail16": 0.875,
+        "sustained_hold_tail16": 0.875,
+        "any_tick_reach": 0.875,
+        "mean_final_dist": 0.07790790326936303,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.044857239969132934
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5,
+            "sustained_hold_tail16": 0.5,
+            "any_tick_reach": 0.5,
+            "mean_final_dist": 0.16381774163164664
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.06359773510484956
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.03935889637182299
+          }
+        }
+      },
+      "oracle_perc_nominal_dyn_rollout": {
+        "closest_approach_tail16": 0.556640625,
+        "sustained_hold_tail16": 0.55078125,
+        "any_tick_reach": 0.556640625,
+        "mean_final_dist": 0.2916529992933192,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.044857239969132934
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5,
+            "sustained_hold_tail16": 0.5,
+            "any_tick_reach": 0.5,
+            "mean_final_dist": 0.16381774163164664
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 0.6771094871219248
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.7265625,
+            "sustained_hold_tail16": 0.703125,
+            "any_tick_reach": 0.7265625,
+            "mean_final_dist": 0.28082752845057257
+          }
+        }
+      },
+      "oracle_perc_static_geodesic_no_rollout": {
+        "closest_approach_tail16": 0.375,
+        "sustained_hold_tail16": 0.375,
+        "any_tick_reach": 0.375,
+        "mean_final_dist": 0.7413749623228796,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.10089027826325037
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5,
+            "sustained_hold_tail16": 0.5,
+            "any_tick_reach": 0.5,
+            "mean_final_dist": 0.514165506552672
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 1.3138528144918382
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 1.0365912499837577
+          }
+        }
+      },
+      "oracle_perc_no_rollout_h1": {
+        "closest_approach_tail16": 0.37890625,
+        "sustained_hold_tail16": 0.37109375,
+        "any_tick_reach": 0.5234375,
+        "mean_final_dist": 0.5484917124758795,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 0.71875,
+            "sustained_hold_tail16": 0.7109375,
+            "any_tick_reach": 0.73046875,
+            "mean_final_dist": 0.2180683014667011
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.30078125,
+            "sustained_hold_tail16": 0.30078125,
+            "any_tick_reach": 0.30078125,
+            "mean_final_dist": 0.7266260028118268
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.5625,
+            "mean_final_dist": 0.9459132046904415
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.49609375,
+            "sustained_hold_tail16": 0.47265625,
+            "any_tick_reach": 0.5,
+            "mean_final_dist": 0.3033593409345485
+          }
+        }
+      },
+      "noisy_perc_oracle_dyn_rollout": {
+        "closest_approach_tail16": 0.568359375,
+        "sustained_hold_tail16": 0.5361328125,
+        "any_tick_reach": 0.7236328125,
+        "mean_final_dist": 0.4578878074450472,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 0.91796875,
+            "sustained_hold_tail16": 0.88671875,
+            "any_tick_reach": 0.984375,
+            "mean_final_dist": 0.125520667004821
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5703125,
+            "sustained_hold_tail16": 0.52734375,
+            "any_tick_reach": 0.65625,
+            "mean_final_dist": 0.4757512044300256
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.41796875,
+            "mean_final_dist": 0.9405109090730548
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.78515625,
+            "sustained_hold_tail16": 0.73046875,
+            "any_tick_reach": 0.8359375,
+            "mean_final_dist": 0.2897684492722874
+          }
+        }
+      },
+      "noisy_perc_nominal_dyn_rollout": {
+        "closest_approach_tail16": 0.419921875,
+        "sustained_hold_tail16": 0.3955078125,
+        "any_tick_reach": 0.517578125,
+        "mean_final_dist": 0.6562178590057215,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 0.91796875,
+            "sustained_hold_tail16": 0.88671875,
+            "any_tick_reach": 0.984375,
+            "mean_final_dist": 0.125520667004821
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5703125,
+            "sustained_hold_tail16": 0.52734375,
+            "any_tick_reach": 0.65625,
+            "mean_final_dist": 0.4757512044300256
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.23046875,
+            "mean_final_dist": 1.057500209659338
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.19140625,
+            "sustained_hold_tail16": 0.16796875,
+            "any_tick_reach": 0.19921875,
+            "mean_final_dist": 0.9660993549287014
+          }
+        }
+      },
+      "noisy_perc_static_geodesic_no_rollout": {
+        "closest_approach_tail16": 0.384765625,
+        "sustained_hold_tail16": 0.3720703125,
+        "any_tick_reach": 0.384765625,
+        "mean_final_dist": 0.7995235189409868,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 1.0,
+            "sustained_hold_tail16": 1.0,
+            "any_tick_reach": 1.0,
+            "mean_final_dist": 0.11261927313171327
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.5390625,
+            "sustained_hold_tail16": 0.48828125,
+            "any_tick_reach": 0.5390625,
+            "mean_final_dist": 0.37293912445602473
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 1.665343212429434
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 1.0471924657467753
+          }
+        }
+      },
+      "exact_state_reactive": {
+        "closest_approach_tail16": 0.330078125,
+        "sustained_hold_tail16": 0.330078125,
+        "any_tick_reach": 0.330078125,
+        "mean_final_dist": 0.6253080164606217,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 0.96875,
+            "sustained_hold_tail16": 0.96875,
+            "any_tick_reach": 0.96875,
+            "mean_final_dist": 0.11375145337660797
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 0.7403939068317413
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 1.0035553728230298
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.3515625,
+            "sustained_hold_tail16": 0.3515625,
+            "any_tick_reach": 0.3515625,
+            "mean_final_dist": 0.6435313328111079
+          }
+        }
+      },
+      "noisy_state_reactive": {
+        "closest_approach_tail16": 0.3056640625,
+        "sustained_hold_tail16": 0.298828125,
+        "any_tick_reach": 0.3056640625,
+        "mean_final_dist": 0.6825070986851642,
+        "by_family": {
+          "static_off_center_wall": {
+            "closest_approach_tail16": 0.9140625,
+            "sustained_hold_tail16": 0.91015625,
+            "any_tick_reach": 0.9140625,
+            "mean_final_dist": 0.15053442992211785
+          },
+          "dual_chicane": {
+            "closest_approach_tail16": 0.01171875,
+            "sustained_hold_tail16": 0.01171875,
+            "any_tick_reach": 0.01171875,
+            "mean_final_dist": 0.7274256057280581
+          },
+          "conveyor_drift_channel": {
+            "closest_approach_tail16": 0.0,
+            "sustained_hold_tail16": 0.0,
+            "any_tick_reach": 0.0,
+            "mean_final_dist": 0.9882960243849084
+          },
+          "moving_bumper_gate": {
+            "closest_approach_tail16": 0.296875,
+            "sustained_hold_tail16": 0.2734375,
+            "any_tick_reach": 0.296875,
+            "mean_final_dist": 0.8637723347055726
+          }
+        }
+      }
+    },
+    "paired_contrasts": {
+      "oracle_rollout_vs_static_geodesic_closest": {
+        "delta_pp": 50.0,
+        "ci95_low_pp": 46.875,
+        "ci95_high_pp": 53.22265625
+      },
+      "oracle_rollout_vs_static_geodesic_hold": {
+        "delta_pp": 50.0,
+        "ci95_low_pp": 46.97265625,
+        "ci95_high_pp": 53.02734375
+      },
+      "oracle_rollout_vs_nominal_dyn_hold": {
+        "delta_pp": 32.421875,
+        "ci95_low_pp": 29.39453125,
+        "ci95_high_pp": 35.354003906249986
+      },
+      "oracle_nominal_rollout_vs_static_geodesic_hold": {
+        "delta_pp": 17.578125,
+        "ci95_low_pp": 15.32958984375,
+        "ci95_high_pp": 19.826660156249986
+      },
+      "oracle_rollout_vs_exact_reactive_closest": {
+        "delta_pp": 54.4921875,
+        "ci95_low_pp": 51.3671875,
+        "ci95_high_pp": 57.51953125
+      },
+      "oracle_rollout_vs_exact_reactive_hold": {
+        "delta_pp": 54.4921875,
+        "ci95_low_pp": 51.3671875,
+        "ci95_high_pp": 57.51953125
+      },
+      "noisy_oracle_rollout_vs_noisy_static_geodesic_closest": {
+        "delta_pp": 18.359375,
+        "ci95_low_pp": 15.0390625,
+        "ci95_high_pp": 21.6796875
+      },
+      "noisy_oracle_rollout_vs_noisy_static_geodesic_hold": {
+        "delta_pp": 16.40625,
+        "ci95_low_pp": 13.37890625,
+        "ci95_high_pp": 19.7265625
+      },
+      "noisy_nominal_rollout_vs_noisy_static_geodesic_hold": {
+        "delta_pp": 2.34375,
+        "ci95_low_pp": 0.0,
+        "ci95_high_pp": 4.6875
+      },
+      "oracle_perc_vs_noisy_perc_true_dyn_hold": {
+        "delta_pp": 33.88671875,
+        "ci95_low_pp": 30.2734375,
+        "ci95_high_pp": 37.40234375
+      }
+    },
+    "gate1_control_pass": true
+  },
+  "counterfactual_discovery_L12_W32": {
+    "total_ticks": 522,
+    "comparator_layers": 12,
+    "comparator_window": 32,
+    "stacked_receptive_field": 372,
+    "min_delay_after_corr": 442,
+    "strictly_beyond_receptive_field": true,
+    "min_init_to_corr_gap": 38,
+    "overwrite_after_local_window_eviction": true,
+    "t_corr_unique_count": 19,
+    "t_impulse_unique_count": 32,
+    "init_order_frac_f1_first": 0.40625,
+    "update_target_balance_frac_fact1": 0.4375,
+    "bg_text_nonzero_fraction": 1.0,
+    "post_cue_max_abs_diff_by_tensor": {
+      "video": 0.0,
+      "audio": 0.0,
+      "text_bytes": 0.0,
+      "proprio": 0.0,
+      "action": 0.0,
+      "modality_mask": 0.0,
+      "timestamps": 0.0
+    },
+    "cue_tick_max_abs_diff_by_modality": {
+      "video": 1.1807647347450256,
+      "audio": 1.1764995455741882,
+      "text_bytes": 180.0
+    },
+    "all_post_cue_tensors_bit_exact_equal": true,
+    "counterfactual_cue_differs_all_modalities": true,
+    "emits_clean_and_stress_paired_controls": true,
+    "gate1_counterfactual_pass": true
+  },
+  "counterfactual_confirmation_L16_W64": {
+    "total_ticks": 1190,
+    "comparator_layers": 16,
+    "comparator_window": 64,
+    "stacked_receptive_field": 1008,
+    "min_delay_after_corr": 1078,
+    "strictly_beyond_receptive_field": true,
+    "min_init_to_corr_gap": 70,
+    "overwrite_after_local_window_eviction": true,
+    "t_corr_unique_count": 19,
+    "t_impulse_unique_count": 32,
+    "init_order_frac_f1_first": 0.40625,
+    "update_target_balance_frac_fact1": 0.4375,
+    "bg_text_nonzero_fraction": 1.0,
+    "post_cue_max_abs_diff_by_tensor": {
+      "video": 0.0,
+      "audio": 0.0,
+      "text_bytes": 0.0,
+      "proprio": 0.0,
+      "action": 0.0,
+      "modality_mask": 0.0,
+      "timestamps": 0.0
+    },
+    "cue_tick_max_abs_diff_by_modality": {
+      "video": 1.1807647347450256,
+      "audio": 1.176499530673027,
+      "text_bytes": 180.0
+    },
+    "all_post_cue_tensors_bit_exact_equal": true,
+    "counterfactual_cue_differs_all_modalities": true,
+    "emits_clean_and_stress_paired_controls": true,
+    "gate1_counterfactual_pass": true
+  },
+  "statistical_power": {
+    "independent_pairs_5pp_80pct": {
+      "effect_pp": 5.0,
+      "discordant_rate": 0.25,
+      "alpha": 0.05,
+      "power": 0.8,
+      "n_independent_pairs": 783,
+      "cluster_size_m": 1.0,
+      "icc": 0.0,
+      "design_effect_deff": 1.0,
+      "n_clustered_pairs": 783
+    },
+    "speechcommands_250spk_1024ep_icc010": {
+      "n_episodes": 1024,
+      "n_clusters_a": 250,
+      "m_a": 4.096,
+      "icc_a": 0.1,
+      "n_clusters_b": 0,
+      "m_b": 0.0,
+      "icc_b": 0.0,
+      "deff": 1.31,
+      "n_eff": 781.9,
+      "discordant_rate": 0.25,
+      "null_ci95_half_width_pp": 3.5,
+      "mde_80pct_pp": 5.01
+    },
+    "grid_8spk_1024ep_icc010_underpowered_ref": {
+      "n_episodes": 1024,
+      "n_clusters_a": 8,
+      "m_a": 128.0,
+      "icc_a": 0.1,
+      "n_clusters_b": 0,
+      "m_b": 0.0,
+      "icc_b": 0.0,
+      "deff": 13.7,
+      "n_eff": 74.7,
+      "discordant_rate": 0.25,
+      "null_ci95_half_width_pp": 11.34,
+      "mde_80pct_pp": 16.2
+    },
+    "control_1024_worlds_pdisc010_noninferiority": {
+      "n_episodes": 1024,
+      "n_clusters_a": 1024,
+      "m_a": 1.0,
+      "icc_a": 0.0,
+      "n_clusters_b": 0,
+      "m_b": 0.0,
+      "icc_b": 0.0,
+      "deff": 1.0,
+      "n_eff": 1024.0,
+      "discordant_rate": 0.1,
+      "null_ci95_half_width_pp": 1.94,
+      "mde_80pct_pp": 2.77
+    },
+    "xarm6_135clusters_284ep_pdisc010_noninferiority": {
+      "n_episodes": 284,
+      "n_clusters_a": 135,
+      "m_a": 2.104,
+      "icc_a": 0.1,
+      "n_clusters_b": 0,
+      "m_b": 0.0,
+      "icc_b": 0.0,
+      "deff": 1.11,
+      "n_eff": 255.8,
+      "discordant_rate": 0.1,
+      "null_ci95_half_width_pp": 3.88,
+      "mde_80pct_pp": 5.54
+    }
+  },
+  "overall_gate1_synthetic_and_control_pass": true
+}

@@ -516,7 +516,7 @@ Must output:
 Every iteration must pass an **independent context-isolated `peer-reviewer` stage-gate agent across all five stage gates** before advancing or scaling compute:
 
 - **Primary Stage-Gate Critic (Internal Antigravity `peer-reviewer` Subagent):** Context-isolated scientific critic inspecting mathematical derivations, physical observability, oracle ceilings, single-factor causal isolation, shortcut/leakage confounds, statistical uncertainty, regression transparency, and scientific presentation hygiene across Gates 1–5.
-- **Optional External Critic (Codex CLI):** When available and requested, a read-only `codex exec` review may be run as a supplementary check; one independent `peer-reviewer` audit per stage gate is authoritative and sufficient for gate progression.
+- **Secondary External Critic (Codex CLI):** When available and requested, a read-only `codex exec` review may be run as a supplementary check; one independent `peer-reviewer` audit per stage gate is authoritative and sufficient for gate progression. Use Astra 6.2, this agent should have bash and research access and should run with a broad architectural context and goal.
 
 Mandatory stage gates per iteration:
 
