@@ -1,0 +1,677 @@
+{
+  "gate": "SLWM-v3 Gate 2 (Rev 2) \u2014 Connected-Component Split Ledger, Exclusion Manifest & Cross-Corpus Overlap Audit",
+  "expected_corpora_all_present": true,
+  "corpora": {
+    "speech_commands_v002": {
+      "split_key": "speaker_id",
+      "zero_overlap": true,
+      "background_noise_disjoint_policy": {
+        "train": [
+          "doing_the_dishes.wav",
+          "dude_miaowing.wav",
+          "exercise_bike.wav",
+          "pink_noise.wav"
+        ],
+        "dev": [
+          "running_tap.wav"
+        ],
+        "test": [
+          "white_noise.wav"
+        ]
+      },
+      "by_split": {
+        "train": {
+          "wavs": 84843,
+          "speakers": 2112
+        },
+        "dev": {
+          "wavs": 9981,
+          "speakers": 256
+        },
+        "test": {
+          "wavs": 11005,
+          "speakers": 250
+        }
+      },
+      "split_manifest_sha256": "7a7667d8920f07036b3cf51456f2f761a717479828ae9add30f6cd612167e2f6"
+    },
+    "holoassist_local_av": {
+      "split_key": "session_performer_prefix_casefold_not_instructor_disjoint",
+      "zero_overlap": true,
+      "by_split": {
+        "train": {
+          "recordings": 457,
+          "unique_prefixes": 196,
+          "hours": 31.18
+        },
+        "dev": {
+          "recordings": 86,
+          "unique_prefixes": 39,
+          "hours": 6.14
+        },
+        "test": {
+          "recordings": 129,
+          "unique_prefixes": 47,
+          "hours": 9.02
+        }
+      },
+      "total_hours": 46.34,
+      "split_manifest_sha256": "7bf0b9e0d0d4d50658f0917f217cc73d4a6888f5b2f7caa17fcf9387d29c5ecf"
+    },
+    "physical_xarm6_v2": {
+      "split_key": "connected_scene_group_and_speaker_disjoint",
+      "zero_overlap": true,
+      "zero_overlap_checks_passed": 15,
+      "zero_overlap_checks_total": 15,
+      "retained_counts_by_split": {
+        "dev": 351,
+        "train": 1745,
+        "vault": 284
+      },
+      "unique_scene_clusters_by_split": {
+        "dev": 151,
+        "train": 763,
+        "vault": 135
+      },
+      "dir_speakers_by_split": {
+        "dev": 156,
+        "train": 902,
+        "vault": 135
+      },
+      "color_speakers_by_split": {
+        "dev": [
+          17,
+          18,
+          19,
+          20
+        ],
+        "train": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "vault": [
+          33,
+          34
+        ]
+      },
+      "dataset_sha256": {
+        "x1b_wave8a_grounded_v2": "cfb0396a1922b453fc1c133fbcd3895e6ed75d6b80494c97fd52aa7fd49f9137",
+        "x1b_wave8a_vault_v2": "a29e2e46ab44f2d048ae9d982445d74392b66ffcb6d5bd00e438559349827ba1"
+      },
+      "split_manifest_sha256": "9ae0741f6556a38fbe75bc9041cd936b14a07468133c82f9538d435f459fe504"
+    },
+    "grid_content_v1": {
+      "split_key": "speaker_id",
+      "zero_overlap": true,
+      "auxiliary_split_policy": "Only `train` enters training; `train_person_holdout` and `test_seen` are NEVER used for speaker-disjoint evaluation.",
+      "by_split": {
+        "calibration": {
+          "samples": 278,
+          "n_speakers": 3,
+          "people": [
+            "GRID-22",
+            "GRID-23",
+            "GRID-24"
+          ]
+        },
+        "test": {
+          "samples": 749,
+          "n_speakers": 8,
+          "people": [
+            "GRID-25",
+            "GRID-26",
+            "GRID-27",
+            "GRID-28",
+            "GRID-29",
+            "GRID-30",
+            "GRID-31",
+            "GRID-32"
+          ]
+        },
+        "test_seen": {
+          "samples": 256,
+          "n_speakers": 8,
+          "people": [
+            "GRID-25",
+            "GRID-26",
+            "GRID-27",
+            "GRID-28",
+            "GRID-29",
+            "GRID-30",
+            "GRID-31",
+            "GRID-32"
+          ]
+        },
+        "train": {
+          "samples": 12704,
+          "n_speakers": 16,
+          "people": [
+            "GRID-01",
+            "GRID-02",
+            "GRID-03",
+            "GRID-04",
+            "GRID-05",
+            "GRID-06",
+            "GRID-07",
+            "GRID-08",
+            "GRID-09",
+            "GRID-10",
+            "GRID-11",
+            "GRID-12",
+            "GRID-13",
+            "GRID-14",
+            "GRID-15",
+            "GRID-16"
+          ]
+        },
+        "train_person_holdout": {
+          "samples": 254,
+          "n_speakers": 16,
+          "people": [
+            "GRID-01",
+            "GRID-02",
+            "GRID-03",
+            "GRID-04",
+            "GRID-05",
+            "GRID-06",
+            "GRID-07",
+            "GRID-08",
+            "GRID-09",
+            "GRID-10",
+            "GRID-11",
+            "GRID-12",
+            "GRID-13",
+            "GRID-14",
+            "GRID-15",
+            "GRID-16"
+          ]
+        },
+        "validation": {
+          "samples": 395,
+          "n_speakers": 4,
+          "people": [
+            "GRID-17",
+            "GRID-18",
+            "GRID-19",
+            "GRID-20"
+          ]
+        }
+      },
+      "split_manifest_sha256": "1e05be18b5fd9e0c1db9bdbed38d9f073735fe2335c2b3a154fe4236ffa08e5a"
+    },
+    "greatesthits_vis_data_256": {
+      "split_key": "recording_date_session_yyyy_mm_dd",
+      "zero_overlap": true,
+      "paired_denoised_video_count": 977,
+      "total_audio_clips": 977,
+      "by_split": {
+        "train": {
+          "clips": 512,
+          "recording_dates": 16
+        },
+        "dev": {
+          "clips": 232,
+          "recording_dates": 6
+        },
+        "test": {
+          "clips": 233,
+          "recording_dates": 6
+        }
+      },
+      "split_manifest_sha256": "0e6232fcae0034d73974a4626f5e464fc3de97b9567b7c411e495d51c0cb5235"
+    },
+    "fineart_aloha": {
+      "split_key": "cam_high_video_file_shard",
+      "zero_overlap": true,
+      "all_videos_under_cam_high": true,
+      "total_mp4_files": 180,
+      "unique_video_shards": 180,
+      "data_parquets_count": 2,
+      "meta_episodes_parquets_count": 1,
+      "verified_action_dof": 14,
+      "by_split": {
+        "train": {
+          "unique_video_shards": 116
+        },
+        "dev": {
+          "unique_video_shards": 37
+        },
+        "test": {
+          "unique_video_shards": 27
+        }
+      },
+      "split_manifest_sha256": "7e7ab0ccf8bd5fb9aca97543779ed536bd2f6df641086357d748a6b41e78522b"
+    },
+    "librispeech_360": {
+      "split_key": "speaker_id_train_only_disjoint_from_held_speakers",
+      "zero_overlap": true,
+      "eligible_speakers": 665,
+      "eligible_utterances": 75139,
+      "official_md5": "c0e676e450a7ff2f54aeade5171606fa",
+      "split_manifest_sha256": "883a408a5519b40c2d1833cf777e63033e632181872929704ab042d047dc5ba9",
+      "upstream_card_sha256": "4a29d3de9936fab5ef9504dc5c4da3c470f064f1a12de1a9900a946bb9a387a6"
+    },
+    "fineweb_edu_v1": {
+      "split_key": "parquet_shard_disjoint",
+      "zero_overlap": true,
+      "by_split": {
+        "train": [
+          "000_00000.parquet",
+          "001_00000.parquet",
+          "002_00000.parquet"
+        ],
+        "dev": [
+          "003_00000.parquet"
+        ],
+        "test": [
+          "004_00000.parquet"
+        ]
+      },
+      "split_manifest_sha256": "02da57dbeb0d2435b4619ab045db419c77fe9cbb1cc8d8f65765211ec09ccc0e"
+    }
+  },
+  "cross_corpus_speaker_disjointness": {
+    "xarm6_train_vs_speechcommands_dev": 0,
+    "xarm6_train_vs_speechcommands_test": 0,
+    "xarm6_dev_vs_speechcommands_train": 0,
+    "xarm6_dev_vs_speechcommands_test": 0,
+    "xarm6_vault_vs_speechcommands_train": 0,
+    "xarm6_vault_vs_speechcommands_dev": 0,
+    "xarm6_train_vs_grid_eval_splits": 0,
+    "xarm6_dev_vs_grid_train_cal_test": 0,
+    "xarm6_vault_vs_all_grid_splits": 0,
+    "aligned_same_split_overlaps_expected": {
+      "xarm6_train_in_speechcommands_train": 902,
+      "xarm6_dev_in_speechcommands_dev": 156,
+      "xarm6_vault_in_speechcommands_test": 135,
+      "xarm6_train_in_grid_train": 16,
+      "xarm6_dev_in_grid_val": 4
+    }
+  },
+  "cross_corpus_zero_leak_verified": true,
+  "exclusion_manifest_complete": {
+    "holoassist_local_av": {
+      "duplicate_file_copies_count": 48,
+      "duplicate_file_copies_complete": [
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R029-12July-DSLR-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R029-12July-DSLR-av.mp4",
+          "recording_id": "R029-12July-DSLR"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R042-13July-BigPrinter-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R042-13July-BigPrinter-av.mp4",
+          "recording_id": "R042-13July-BigPrinter"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R076-21July-GoPro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R076-21July-GoPro-av.mp4",
+          "recording_id": "R076-21July-GoPro"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R086-27July-SmallPrinter-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R086-27July-SmallPrinter-av.mp4",
+          "recording_id": "R086-27July-SmallPrinter"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R089-27July-Coffee-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R089-27July-Coffee-av.mp4",
+          "recording_id": "R089-27July-Coffee"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R098-1Aug-Nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R098-1Aug-Nespresso-av.mp4",
+          "recording_id": "R098-1Aug-Nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R149-02Sep-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R149-02Sep-RAM-av.mp4",
+          "recording_id": "R149-02Sep-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R150-02Sep-Graphicscard-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R150-02Sep-Graphicscard-av.mp4",
+          "recording_id": "R150-02Sep-Graphicscard"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R155-02Sep-BigPrinter-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R155-02Sep-BigPrinter-av.mp4",
+          "recording_id": "R155-02Sep-BigPrinter"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R160-3Oct-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R160-3Oct-RAM-av.mp4",
+          "recording_id": "R160-3Oct-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R161-3Oct-Graphicscard-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R161-3Oct-Graphicscard-av.mp4",
+          "recording_id": "R161-3Oct-Graphicscard"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R162-3Oct-Graphicscard-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R162-3Oct-Graphicscard-av.mp4",
+          "recording_id": "R162-3Oct-Graphicscard"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R182-12Oct-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R182-12Oct-RAM-av.mp4",
+          "recording_id": "R182-12Oct-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R183-12Oct-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R183-12Oct-RAM-av.mp4",
+          "recording_id": "R183-12Oct-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R187-18Oct-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R187-18Oct-RAM-av.mp4",
+          "recording_id": "R187-18Oct-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R194-25Oct-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R194-25Oct-RAM-av.mp4",
+          "recording_id": "R194-25Oct-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R198-1Nov-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R198-1Nov-RAM-av.mp4",
+          "recording_id": "R198-1Nov-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R209-16Nov-GraphicsCard-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R209-16Nov-GraphicsCard-av.mp4",
+          "recording_id": "R209-16Nov-GraphicsCard"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/R210-16Nov-RAM-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/R210-16Nov-RAM-av.mp4",
+          "recording_id": "R210-16Nov-RAM"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z025-june-21-22-gopro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z025-june-21-22-gopro-av.mp4",
+          "recording_id": "z025-june-21-22-gopro"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z029-june-22-22-printer_big-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z029-june-22-22-printer_big-av.mp4",
+          "recording_id": "z029-june-22-22-printer_big"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z039-june-23-22-espresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z039-june-23-22-espresso-av.mp4",
+          "recording_id": "z039-june-23-22-espresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z040-june-23-22-printer_small-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z040-june-23-22-printer_small-av.mp4",
+          "recording_id": "z040-june-23-22-printer_small"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z046-june-24-22-nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z046-june-24-22-nespresso-av.mp4",
+          "recording_id": "z046-june-24-22-nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z047-june-25-22-printer_big-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z047-june-25-22-printer_big-av.mp4",
+          "recording_id": "z047-june-25-22-printer_big"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z050-june-27-22-espresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z050-june-27-22-espresso-av.mp4",
+          "recording_id": "z050-june-27-22-espresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z057-june-28-22-printer_big-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z057-june-28-22-printer_big-av.mp4",
+          "recording_id": "z057-june-28-22-printer_big"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z062-june-29-22-nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z062-june-29-22-nespresso-av.mp4",
+          "recording_id": "z062-june-29-22-nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z064-june-29-22-gopro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z064-june-29-22-gopro-av.mp4",
+          "recording_id": "z064-june-29-22-gopro"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z071-june-29-22-dslr-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z071-june-29-22-dslr-av.mp4",
+          "recording_id": "z071-june-29-22-dslr"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z073-july-01-22-dslr-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z073-july-01-22-dslr-av.mp4",
+          "recording_id": "z073-july-01-22-dslr"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z076-july-01-22-gopro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z076-july-01-22-gopro-av.mp4",
+          "recording_id": "z076-july-01-22-gopro"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z077-july-01-22-gopro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z077-july-01-22-gopro-av.mp4",
+          "recording_id": "z077-july-01-22-gopro"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z081-july-06-22-nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z081-july-06-22-nespresso-av.mp4",
+          "recording_id": "z081-july-06-22-nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z082-july-06-22-dslr-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z082-july-06-22-dslr-av.mp4",
+          "recording_id": "z082-july-06-22-dslr"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z084-july-06-22-espresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z084-july-06-22-espresso-av.mp4",
+          "recording_id": "z084-july-06-22-espresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z085-july-06-22-espresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z085-july-06-22-espresso-av.mp4",
+          "recording_id": "z085-july-06-22-espresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z093-july-11-22-printer_small-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z093-july-11-22-printer_small-av.mp4",
+          "recording_id": "z093-july-11-22-printer_small"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z104-july-14-22-espresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z104-july-14-22-espresso-av.mp4",
+          "recording_id": "z104-july-14-22-espresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z104-july-14-22-printer_small-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z104-july-14-22-printer_small-av.mp4",
+          "recording_id": "z104-july-14-22-printer_small"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z109-july-27-22-printer_small-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z109-july-27-22-printer_small-av.mp4",
+          "recording_id": "z109-july-27-22-printer_small"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z129-aug-11-22-printer_small-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z129-aug-11-22-printer_small-av.mp4",
+          "recording_id": "z129-aug-11-22-printer_small"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z167-sep-01-22-dslr-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z167-sep-01-22-dslr-av.mp4",
+          "recording_id": "z167-sep-01-22-dslr"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z179-sep-06-22-nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z179-sep-06-22-nespresso-av.mp4",
+          "recording_id": "z179-sep-06-22-nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z182-sep-08-22-dslr-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z182-sep-08-22-dslr-av.mp4",
+          "recording_id": "z182-sep-08-22-dslr"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z192-sep-11-22-printer_big-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z192-sep-11-22-printer_big-av.mp4",
+          "recording_id": "z192-sep-11-22-printer_big"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z202-sep-23-22-nespresso-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z202-sep-23-22-nespresso-av.mp4",
+          "recording_id": "z202-sep-23-22-nespresso"
+        },
+        {
+          "duplicate_path": "/mnt/slwm-data/SLWM/g12/live-data/fresh/media/z208-sep-27-22-gopro-av.mp4",
+          "kept_path": "/mnt/slwm-data/SLWM/g12/data/fresh/media/z208-sep-27-22-gopro-av.mp4",
+          "recording_id": "z208-sep-27-22-gopro"
+        }
+      ],
+      "unmatched_labels_count": 0,
+      "unmatched_labels_complete": []
+    },
+    "physical_xarm6_v2": {
+      "total_source_episodes_scanned": 24792,
+      "excluded_rows_total": 22412,
+      "excluded_counts_by_reason": {
+        "ambiguous_multiple_grid_colors_in_goal": 3609,
+        "missing_separated_distractor_block_in_frame0": 44,
+        "no_supported_grid_color_word": 1409,
+        "post_sync_direction_mismatch": 1,
+        "raw_displacement_below_threshold": 127,
+        "raw_episode_shorter_than_8": 5848,
+        "synchronized_displacement_below_0p08": 3,
+        "target_color_block_not_visible_in_frame0": 10,
+        "text_physical_direction_mismatch": 5827,
+        "unsupported_color_yellow": 5534
+      },
+      "upstream_disposition_ledger_file": "wave8a_episode_dispositions.jsonl.gz",
+      "upstream_disposition_ledger_sha256": "6fb72fdc8a6da7a9761a0287d6000582a8d7a9a2fa74c4500ea3cdbe6316be2f"
+    },
+    "grid_content_v1": {
+      "absent_speakers_computed_dynamically": [
+        "GRID-21",
+        "GRID-33",
+        "GRID-34"
+      ],
+      "absent_speakers_reason": "absent_from_grid_content_v1_primary_splits",
+      "utterance_exclusions_count": 90,
+      "utterance_exclusions_by_reason": {
+        "Below the original50-packet input criterion; cannot support real shifted-video controls": 90
+      },
+      "upstream_exclusions_sha256": "edfbe4cb1054278013f8a6456d82b1c4abaed195be33a56fcb75187526558e93"
+    },
+    "librispeech_360": {
+      "existing_train_id_overlap_excluded": 21678,
+      "removed_for_existing_held_speaker": 7197,
+      "eligible_manifest_sha256": "1c020a1e7b522d3e6771ced58e4c8afa186ee5a270f2cf2c0fbc7766c60489e5"
+    }
+  },
+  "interleaved_real_speech_overwrite_schedules": {
+    "discovery_beyond_eqbyte_and_mimi_L12_Weq64_n1200": {
+      "n_episodes": 1200,
+      "total_duration_sec": 106,
+      "mimi_hz": 12.5,
+      "comparator_layers": 12,
+      "comparator_window": 64,
+      "stacked_receptive_field_ticks": 756,
+      "catch_trial_fraction": 0.2475,
+      "frac_with_pre_init_distractors": 0.6867,
+      "frac_with_mid1_distractors": 0.6667,
+      "frac_with_mid2_distractors": 1.0,
+      "min_inter_event_gap_s": 1.1516,
+      "zero_speech_collisions_verified": true,
+      "min_delay_after_last_cue_ticks": 1154,
+      "min_init_to_corr_ticks": 72
+    },
+    "confirmation_beyond_eqparam_and_mimi_L16_W64_n1200": {
+      "n_episodes": 1200,
+      "total_duration_sec": 106,
+      "mimi_hz": 12.5,
+      "comparator_layers": 16,
+      "comparator_window": 64,
+      "stacked_receptive_field_ticks": 1008,
+      "catch_trial_fraction": 0.2725,
+      "frac_with_pre_init_distractors": 0.6683,
+      "frac_with_mid1_distractors": 0.6808,
+      "frac_with_mid2_distractors": 1.0,
+      "min_inter_event_gap_s": 1.1525,
+      "zero_speech_collisions_verified": true,
+      "min_delay_after_last_cue_ticks": 1153,
+      "min_init_to_corr_ticks": 72
+    },
+    "confirmation_beyond_eqbyte_L16_Weq128_n1200": {
+      "n_episodes": 1200,
+      "total_duration_sec": 193,
+      "mimi_hz": 12.5,
+      "comparator_layers": 16,
+      "comparator_window": 128,
+      "stacked_receptive_field_ticks": 2032,
+      "catch_trial_fraction": 0.2525,
+      "frac_with_pre_init_distractors": 0.6658,
+      "frac_with_mid1_distractors": 0.6658,
+      "frac_with_mid2_distractors": 1.0,
+      "min_inter_event_gap_s": 1.1532,
+      "zero_speech_collisions_verified": true,
+      "min_delay_after_last_cue_ticks": 2207,
+      "min_init_to_corr_ticks": 136
+    },
+    "mimi_stacked_causal_rf_s": 79.68,
+    "mimi_stacked_causal_rf_ticks_12p5hz": 996,
+    "primary_speaker_cluster_key_policy": "Implemented via `assign_episode_primary_speaker_id`: anchors `corr_speaker_id` on overwrite episodes and `init1_speaker_id` on 0-correction catch trials."
+  },
+  "packet_cadence_and_availability_contract": {
+    "video_resolution_hw": [
+      192,
+      320
+    ],
+    "video_fps": 25.0,
+    "video_black_bar_fraction": 0.0,
+    "video_wan21_latent_grid_hwc": [
+      24,
+      40,
+      16
+    ],
+    "video_spatial_patch_hw": [
+      8,
+      8
+    ],
+    "video_isotropic_spatial_packets_per_group": 15,
+    "video_wan21_groups_in_1s_25fps": 7,
+    "video_group1_capture_last_avail_s": [
+      0.04,
+      0.16,
+      0.16
+    ],
+    "audio_mimi_packets_in_1s_12p5hz": 12,
+    "audio_pkt0_capture_last_avail_s": [
+      0.0,
+      0.08,
+      0.08
+    ],
+    "active_processor_positions_per_paired_av_second": 106.25,
+    "active_processor_positions_per_paired_av_hour": 382500
+  },
+  "all_connected_splits_zero_overlap": true
+}

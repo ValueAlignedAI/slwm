@@ -1,0 +1,256 @@
+{
+  "gate": "SLWM-v3 Gate 2 (Rev 2) \u2014 Small-Shard Causal Codec Ceilings, Streaming Equivalence & Dual-Track Cost Accounting",
+  "audio_codecs": {
+    "causality_and_streaming_verification": {
+      "mimi_32rvq_25frames_exact": true,
+      "mimi_8rvq_25frames_exact": true,
+      "mimi_prefix_code_diff_frac": 0.0,
+      "mimi_24s_600tf_online_vs_offline_exact": true,
+      "mimi_24s_600tf_online_vs_offline_diff_frac": 0.0,
+      "mimi_sliding_window_kv_len_by_chunk": [
+        100,
+        200,
+        249,
+        249,
+        249,
+        249
+      ],
+      "mimi_sliding_window_o1_capped_at_249": true,
+      "mimi_98s_real_speech_counterfactual_code_decay": {
+        "plus_00s": {
+          "rvq32_mismatch_frac": 0.7925,
+          "rvq0_semantic_mismatch_frac": 0.2
+        },
+        "plus_05s": {
+          "rvq32_mismatch_frac": 0.6375,
+          "rvq0_semantic_mismatch_frac": 0.32
+        },
+        "plus_15s": {
+          "rvq32_mismatch_frac": 0.35875,
+          "rvq0_semantic_mismatch_frac": 0.04
+        },
+        "plus_30s": {
+          "rvq32_mismatch_frac": 0.12375,
+          "rvq0_semantic_mismatch_frac": 0.0
+        },
+        "plus_38s": {
+          "rvq32_mismatch_frac": 0.04375,
+          "rvq0_semantic_mismatch_frac": 0.04
+        },
+        "plus_50s": {
+          "rvq32_mismatch_frac": 0.0025,
+          "rvq0_semantic_mismatch_frac": 0.04
+        },
+        "plus_65s": {
+          "rvq32_mismatch_frac": 0.0,
+          "rvq0_semantic_mismatch_frac": 0.0
+        },
+        "plus_81s": {
+          "rvq32_mismatch_frac": 0.0,
+          "rvq0_semantic_mismatch_frac": 0.0
+        }
+      },
+      "mimi_counterfactual_zero_leak_beyond_79p68s_rf": true,
+      "encodec_150frames_exact": true,
+      "encodec_prefix_code_diff_frac": 0.0
+    },
+    "speech_commands_val_n40_whisper_tiny_ceiling": {
+      "original_pcm": {
+        "keyword_acc": 0.975,
+        "n_hits": 39,
+        "n_total": 40,
+        "mean_mr_stft_log_l1": 0.0,
+        "mean_si_snr_db": null,
+        "cpu_realtime_factor": null
+      },
+      "mimi_32rvq_12p5hz": {
+        "keyword_acc": 0.95,
+        "n_hits": 38,
+        "n_total": 40,
+        "mean_mr_stft_log_l1": 0.481,
+        "mean_si_snr_db": 7.62,
+        "cpu_realtime_factor": 17.21
+      },
+      "mimi_8rvq_12p5hz": {
+        "keyword_acc": 0.725,
+        "n_hits": 29,
+        "n_total": 40,
+        "mean_mr_stft_log_l1": 0.5218,
+        "mean_si_snr_db": -2.53,
+        "cpu_realtime_factor": 17.21
+      },
+      "encodec_24khz_6kbps": {
+        "keyword_acc": 0.85,
+        "n_hits": 34,
+        "n_total": 40,
+        "mean_mr_stft_log_l1": 0.6059,
+        "mean_si_snr_db": 6.16,
+        "cpu_realtime_factor": 9.43
+      },
+      "hann10hz_nonoverlapping_gl": {
+        "keyword_acc": 0.1,
+        "n_hits": 4,
+        "n_total": 40,
+        "mean_mr_stft_log_l1": 1.0753,
+        "mean_si_snr_db": -26.36,
+        "cpu_realtime_factor": null
+      }
+    },
+    "greatest_hits_dev_stratified_impact_n12_onset_ceiling": {
+      "split": "dev_only_stratified_2_per_date_across_all_6_dev_dates",
+      "n_clips": 11,
+      "unique_dev_dates_covered": [
+        "2015-03-25",
+        "2015-03-30",
+        "2015-09-23",
+        "2015-09-26",
+        "2015-10-02",
+        "2015-10-06"
+      ],
+      "dev_clips_audited": [
+        "2015-03-25-00-01-05_denoised.wav",
+        "2015-03-25-00-02-30_denoised.wav",
+        "2015-03-30-00-22-24_denoised.wav",
+        "2015-03-30-00-25-13_denoised.wav",
+        "2015-09-23-15-18-17-1_denoised.wav",
+        "2015-09-23-15-20-31-149_denoised.wav",
+        "2015-09-26-21-06-21-1_denoised.wav",
+        "2015-10-02-11-26-31-178_denoised.wav",
+        "2015-10-02-11-26-31-1_denoised.wav",
+        "2015-10-06-17-55-16-150_denoised.wav",
+        "2015-10-06-17-55-16-1_denoised.wav"
+      ],
+      "codecs": {
+        "mimi_32rvq_12p5hz": {
+          "mean_onset_corr_20ms": 0.9976,
+          "median_peak_timing_err_ms": 0.0,
+          "mean_peak_timing_err_ms": 92.7,
+          "mean_mr_stft_log_l1": 0.4914
+        },
+        "mimi_8rvq_12p5hz": {
+          "mean_onset_corr_20ms": 0.9917,
+          "median_peak_timing_err_ms": 0.0,
+          "mean_peak_timing_err_ms": 298.2,
+          "mean_mr_stft_log_l1": 0.5045
+        },
+        "encodec_24khz_6kbps": {
+          "mean_onset_corr_20ms": 0.9976,
+          "median_peak_timing_err_ms": 0.0,
+          "mean_peak_timing_err_ms": 50.9,
+          "mean_mr_stft_log_l1": 0.4846
+        },
+        "hann10hz_nonoverlapping_gl": {
+          "mean_onset_corr_20ms": 0.2395,
+          "median_peak_timing_err_ms": 40.0,
+          "mean_peak_timing_err_ms": 305.5,
+          "mean_mr_stft_log_l1": 1.33
+        }
+      }
+    },
+    "accounting": {
+      "primary_selected_audio_codec": "kyutai/mimi (32 RVQ codebooks, 4.4 kbps, 12.5 Hz)",
+      "mimi_total_params": 79308609,
+      "mimi_encoder_plus_rvq_and_downsample_params": 39391520,
+      "mimi_decoder_and_upsample_params": 39917089,
+      "mimi_param_partition_exact": true,
+      "mimi_live_kv_cache_elems": 2039808,
+      "mimi_live_conv_cache_elems": 11526,
+      "mimi_encoder_streaming_state_mib_bf16": 3.913,
+      "mimi_encoder_streaming_state_mib_fp32": 7.825,
+      "mimi_frame_rate_hz": 12.5,
+      "mimi_codebooks_active": 32,
+      "mimi_latent_storage_mib_per_hour_32rvq_int16": 2.75,
+      "mimi_license": "cc-by-4.0",
+      "mimi_pretraining_provenance": "Kyutai Moshi 7M-hour speech/audio pretraining (exact overlap with public speech benchmarks unknown/disclosed)",
+      "encodec_24khz_total_params": 14851810,
+      "encodec_frame_rate_hz": 75.0
+    }
+  },
+  "video_codec_wan21": {
+    "causality_and_streaming_equivalence": {
+      "resolution_hw": [
+        192,
+        320
+      ],
+      "fps": 25.0,
+      "black_bar_fraction": 0.0,
+      "latent_shape_9f_192x320": [
+        1,
+        16,
+        3,
+        24,
+        40
+      ],
+      "prefix_latent_0_1_max_abs_diff_fp32": 0.0,
+      "suffix_latent_2_max_abs_diff_fp32": 1.9409,
+      "strictly_causal_zero_future_lookahead": true,
+      "online_per_chunk_quant_conv_vs_offline_max_abs_diff": 0.0,
+      "online_equals_offline": true,
+      "feat_cache_bytes_chunk1_fp32": 345047040,
+      "feat_cache_bytes_chunk2_fp32": 345047040,
+      "feat_cache_exact_o1_constant": true
+    },
+    "roundtrip_ceilings_dev_192x320_local_11x11_ssim": {
+      "holoassist_dev_n3_25fps_fp32": {
+        "split": "dev_only_session_prefix_disjoint",
+        "dev_recordings_audited": [
+          "R043-13July-BigPrinter",
+          "R055-13July-Navvis",
+          "R090-27July-Circuit-Breaker"
+        ],
+        "mean_psnr_db": 27.44,
+        "mean_local_11x11_ssim": 0.8873,
+        "mean_edge_rmse": 0.05245
+      },
+      "holoassist_dev_n1_25fps_bf16_latent_quant_check": {
+        "mean_psnr_db": 30.31,
+        "mean_local_11x11_ssim": 0.9446
+      },
+      "physical_xarm6_dev_n4": {
+        "split": "dev_video_only",
+        "mean_psnr_db": 39.68,
+        "mean_local_11x11_ssim": 0.9814,
+        "frame0_1x_color_block_xy_drift_norm": 0.00451,
+        "frames1_4_4x_temporal_color_block_xy_drift_norm": 0.00698
+      },
+      "v3_dynamics_n8_conveyor_puck_ee": {
+        "n_worlds": 8,
+        "mean_psnr_db": 28.97,
+        "mean_local_11x11_ssim": 0.964,
+        "conveyor_drift_direction_preserved_acc": 1.0,
+        "mean_puck_xy_drift_norm": 0.00819,
+        "mean_ee_xy_drift_norm": 0.00148
+      }
+    },
+    "accounting": {
+      "wan21_vae_total_params": 126892531,
+      "wan21_vae_encoder_params": 53596928,
+      "wan21_vae_decoder_params": 73295603,
+      "wan21_param_partition_exact": true,
+      "wan21_encoder_feat_cache_mib_fp32": 329.062,
+      "wan21_encoder_feat_cache_mib_bf16": 164.531,
+      "wan21_cpu_encode_9f_sec": 8.84,
+      "wan21_latent_storage_gib_per_hour_25fps_bf16": 0.644,
+      "wan21_license": "apache-2.0",
+      "wan21_pretraining_provenance": "Wan 2.1 open video VAE pretraining corpus (exact overlap with public egocentric datasets unknown/disclosed)"
+    }
+  },
+  "text_codec_byt5": {
+    "n_strings_tested": 200,
+    "total_utf8_bytes": 6951,
+    "exact_lossless_roundtrip_rate": 1.0,
+    "oov_rate": 0.0,
+    "vocab_size_with_controls": 264,
+    "frozen_params": 0,
+    "streaming_state_bytes": 0
+  },
+  "strict_system_frozen_edge_summary": {
+    "frozen_encoder_params_video_plus_audio": 92988448,
+    "frozen_decoder_params_video_plus_audio": 113212692,
+    "frozen_total_enc_dec_params_video_plus_audio": 206201140,
+    "frozen_param_partition_exact": true,
+    "frozen_encoder_streaming_state_mib_bf16": 168.444,
+    "frozen_encoder_streaming_state_mib_fp32": 336.887
+  },
+  "gate2_codec_causality_and_ceilings_pass": true
+}
