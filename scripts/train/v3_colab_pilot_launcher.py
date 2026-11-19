@@ -1,0 +1,780 @@
+"""SLWM-v3 Hard-Capped Google TPU v6e-1 Validation Pilot Launcher (Rev 4, <= 45.0 CU, TOCTOU-Free & Strict Teardown).
+
+Operational guardrails (verified against installed `colab` CLI 0.8.0):
+  1. **Single-Read TOCTOU-Free Bundle Build & Dual Digest Lock:** Reads every bundled file ONCE into memory,
+     builds the `.tar.gz` upload archive from those EXACT in-memory bytes, verifies ALL FIVE explicit boolean
+     stage-gate flags are strictly `True`, and asserts that BOTH in-memory `models_v3_sha256` AND full
+     `pilot_bundle_sha256` match `reports/v3/gate3_architecture_and_mup_receipt.json` BEFORE allocation!
+  2. **Strict Google TPU `v6e-1` Policy:** Always requests `colab new -s <name> --tpu v6e1` (`32 GiB` HBM).
+     Never uses `A100`.
+  3. **Hard Cumulative Budget Cap (`<= 45.0 CU`) + Strict 3.0 CU Reserve + Elapsed-Time Fallback Watchdog:**
+     - Persists cumulative pilot spend across resumptions (`cumulative_pilot_spend.json`) without overwriting
+       prior spend records.
+     - Enforces BOTH actual AND next-interval projected cumulative spend against `hard_limit_cu = max - 3.0`
+       (`42.0 CU`) BEFORE EVERY phase dispatch AND every `45 s` during execution, plus an independent
+       elapsed-time conservative ceiling (`12.0 CU/hr`) immune to balance-API outages.
+     - File-backed stdout/stderr logs prevent macOS 64 KiB `subprocess.PIPE` deadlocks.
+     - Requires a validated production TPU `v6e` Phase 2 receipt bound to the exact `pilot_bundle_sha256` and
+       valid finite `recommended_base_lr` before resuming Phases 3/4 (and uploads that receipt to remote on resume!).
+  4. **Strict Verified Auto-Teardown:** Wraps `colab new -s <name>` INSIDE `try ... finally:`. Handles timeouts
+     inside the 3-attempt retry loop, requires `stop` `rc == 0` AND a recognized non-empty `colab sessions`
+     `rc == 0` inventory proving BOTH `[<session_name>]` AND any unnamed `[?]` assignment are absent!
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import io
+import json
+import math
+import os
+from pathlib import Path
+import re
+import subprocess
+import tarfile
+import tempfile
+import time
+from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+OPS_DIR = REPO_ROOT / ".ops"
+COLAB_BIN = next(
+    (p for p in (REPO_ROOT / ".venv/bin/colab", Path.home() / ".local/bin/colab") if p.exists()),
+    Path.home() / ".local/bin/colab",
+)
+BALANCE_RE = re.compile(r"Current balance:\s*([0-9]+(?:\.[0-9]+)?)")
+RATE_RE = re.compile(r"Usage rate:\s*([0-9]+(?:\.[0-9]+)?)")
+SHUTDOWN_RESERVE_CU = 3.0
+CONSERVATIVE_V6E1_RATE_CU_HR = 12.0
+WATCHDOG_POLL_INTERVAL_S = 45
+
+PILOT_BUNDLE_FILES: tuple[str, ...] = (
+    "models/v3/__init__.py",
+    "models/v3/spec.py",
+    "models/v3/memory.py",
+    "models/v3/core.py",
+    "models/v3/objectives.py",
+    "data/v3_data_contract.py",
+    "evals/v3_gate3_audit_receipt.py",
+    "scripts/train/v3_pilot_train.py",
+    "scripts/train/v3_tpu_pilot_suite.py",
+)
+
+
+def resolve_gcloud_config_dir() -> Path:
+    """Prefer SLWM-isolated gcloud config if present, else standard `~/.config/gcloud`."""
+    override = os.environ.get("SLWM_CLOUDSDK_CONFIG")
+    if override:
+        return Path(override)
+    dedicated = Path.home() / ".config/slwm-colab/gcloud"
+    if dedicated.is_dir():
+        return dedicated
+    return Path.home() / ".config/gcloud"
+
+
+def _colab_env() -> dict[str, str]:
+    return {
+        **os.environ,
+        "CLOUDSDK_CONFIG": str(resolve_gcloud_config_dir()),
+        "COLAB_CLI_REQUEST_TIMEOUT": "180",
+        "COLAB_CLI_ASSIGN_RETRIES": "2",
+        "COLAB_CLI_RETRY_BACKOFF": "8",
+    }
+
+
+def _colab_cmd(*args: str, cfg_path: Path) -> list[str]:
+    return [str(COLAB_BIN), "--config", str(cfg_path), "--auth", "adc", *args]
+
+
+def run_colab(*args: str, cfg_path: Path, timeout: int = 180) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        _colab_cmd(*args, cfg_path=cfg_path),
+        env=_colab_env(),
+        text=True,
+        capture_output=True,
+        timeout=timeout,
+        check=False,
+    )
+
+
+def query_balance(cfg_path: Path) -> tuple[float, float]:
+    res = run_colab("usage", cfg_path=cfg_path, timeout=60)
+    if res.returncode != 0:
+        raise RuntimeError(f"colab usage failed: {res.stderr or res.stdout}")
+    txt = res.stdout + "\n" + res.stderr
+    bal_m = BALANCE_RE.search(txt)
+    rate_m = RATE_RE.search(txt)
+    if bal_m is None:
+        raise RuntimeError(f"Could not parse Colab balance from:\n{txt}")
+    return float(bal_m.group(1)), (float(rate_m.group(1)) if rate_m else 0.0)
+
+
+def compute_models_v3_sha256(repo_root: Path) -> str:
+    """Deterministic SHA-256 over all source files in `models/v3/*.py`."""
+    h = hashlib.sha256()
+    models_dir = repo_root / "models/v3"
+    for fp in sorted(models_dir.glob("*.py")):
+        h.update(fp.name.encode("utf-8"))
+        h.update(b"\0")
+        h.update(fp.read_bytes())
+        h.update(b"\0")
+    return h.hexdigest()
+
+
+def compute_pilot_bundle_sha256(repo_root: Path) -> str:
+    """Deterministic SHA-256 over ALL files uploaded inside the TPU pilot bundle."""
+    h = hashlib.sha256()
+    for rel in PILOT_BUNDLE_FILES:
+        p = repo_root / rel
+        if not p.is_file():
+            raise FileNotFoundError(f"Required bundle file missing: {p}")
+        h.update(rel.encode("utf-8"))
+        h.update(b"\0")
+        h.update(p.read_bytes())
+        h.update(b"\0")
+    return h.hexdigest()
+
+
+def build_and_verify_pilot_bundle(repo_root: Path) -> tuple[dict[str, Any], bytes]:
+    """Single-read TOCTOU-free Gate 1–3 lock + archive builder.
+
+    Reads every bundled file ONCE into memory, hashes those exact bytes for BOTH `models_v3_sha256` and
+    `pilot_bundle_sha256`, checks all 5 Gate 1–3 receipts against those exact digests, and writes those
+    EXACT in-memory bytes directly into the upload `.tar.gz` archive (zero reopen TOCTOU window!).
+    """
+    checks = (
+        ("gate1_control", repo_root / "reports/v3/gate1_control_receipt.json", "overall_gate1_synthetic_and_control_pass"),
+        ("gate1_speech_prototype", repo_root / "reports/v3/gate1_speech_prototype_receipt.json", "gate1_speech_prototype_pass"),
+        ("gate2_splits", repo_root / "reports/v3/gate2_split_ledger_receipt.json", "all_connected_splits_zero_overlap"),
+        ("gate2_codecs", repo_root / "reports/v3/gate2_codec_ceilings_receipt.json", "gate2_codec_causality_and_ceilings_pass"),
+        ("gate3_arch_mup", repo_root / "reports/v3/gate3_architecture_and_mup_receipt.json", "gate3_receipt_pass"),
+    )
+    status: dict[str, Any] = {}
+    gate3_data: dict[str, Any] = {}
+    for name, path, key in checks:
+        if not path.is_file():
+            raise RuntimeError(f"PRE-FLIGHT GATE LOCK: missing required receipt {path}")
+        raw_txt = path.read_text().strip()
+        if not raw_txt:
+            raise RuntimeError(f"PRE-FLIGHT GATE LOCK: empty receipt {path}")
+        data = json.loads(raw_txt)
+        if not isinstance(data, dict) or data.get(key) is not True:
+            raise RuntimeError(
+                f"PRE-FLIGHT GATE LOCK: {path.name}[{key!r}] is {data.get(key)!r} (expected strict True)!"
+            )
+        status[name] = True
+        if name == "gate3_arch_mup":
+            gate3_data = data
+
+    # Single-read snapshot of all files under `models/v3/*.py` + `PILOT_BUNDLE_FILES`
+    file_bytes: dict[str, bytes] = {}
+    for rel in PILOT_BUNDLE_FILES:
+        p = repo_root / rel
+        if not p.is_file():
+            raise FileNotFoundError(f"Required bundle file missing: {p}")
+        file_bytes[rel] = p.read_bytes()
+
+    models_dir = repo_root / "models/v3"
+    extra_model_files = sorted(fp.name for fp in models_dir.glob("*.py"))
+    h_models = hashlib.sha256()
+    for fname in extra_model_files:
+        rel = f"models/v3/{fname}"
+        raw = file_bytes.get(rel) if rel in file_bytes else (models_dir / fname).read_bytes()
+        h_models.update(fname.encode("utf-8"))
+        h_models.update(b"\0")
+        h_models.update(raw)
+        h_models.update(b"\0")
+    live_models_sha = h_models.hexdigest()
+
+    h_bundle = hashlib.sha256()
+    for rel in PILOT_BUNDLE_FILES:
+        h_bundle.update(rel.encode("utf-8"))
+        h_bundle.update(b"\0")
+        h_bundle.update(file_bytes[rel])
+        h_bundle.update(b"\0")
+    live_bundle_sha = h_bundle.hexdigest()
+
+    rec_models_sha = gate3_data.get("models_v3_sha256")
+    if not rec_models_sha or rec_models_sha != live_models_sha:
+        raise RuntimeError(
+            f"PRE-FLIGHT BUNDLE LOCK: live models/v3 SHA-256 ({live_models_sha}) != "
+            f"Gate 3 receipt models_v3_sha256 ({rec_models_sha!r})! Re-run Gate 3 audit first."
+        )
+    rec_bundle_sha = gate3_data.get("pilot_bundle_sha256")
+    if not rec_bundle_sha or rec_bundle_sha != live_bundle_sha:
+        raise RuntimeError(
+            f"PRE-FLIGHT BUNDLE LOCK: live pilot_bundle_sha256 ({live_bundle_sha}) != "
+            f"Gate 3 receipt pilot_bundle_sha256 ({rec_bundle_sha!r})! Re-run Gate 3 audit first."
+        )
+
+    # Build upload tarball strictly from the ALREADY-VERIFIED in-memory bytes!
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as tf:
+        for rel in PILOT_BUNDLE_FILES:
+            raw = file_bytes[rel]
+            ti = tarfile.TarInfo(name=rel)
+            ti.size = len(raw)
+            ti.mode = 0o644
+            tf.addfile(ti, io.BytesIO(raw))
+        for init_rel in ("models/__init__.py", "data/__init__.py", "evals/__init__.py", "scripts/__init__.py", "scripts/train/__init__.py"):
+            ti = tarfile.TarInfo(name=init_rel)
+            ti.size = 0
+            ti.mode = 0o644
+            tf.addfile(ti, io.BytesIO(b""))
+
+    status["models_v3_sha256_verified"] = live_models_sha
+    status["pilot_bundle_sha256_verified"] = live_bundle_sha
+    return status, buf.getvalue()
+
+
+def verify_gates_1_to_3_passed(repo_root: Path) -> dict[str, Any]:
+    """Convenience wrapper returning verified Gate 1–3 status dict."""
+    status, _ = build_and_verify_pilot_bundle(repo_root)
+    return status
+
+
+_STDERR_FAILURE_MARKERS = ("error", "failed", "warning", "credential", "auth", "traceback", "unavailable", "exception")
+
+
+def query_active_sessions(cfg_path: Path, *, runner=run_colab) -> list[str] | None:
+    """Query `colab sessions`; inspect stdout ONLY, reject ANY stderr error/warning or unrecognized output."""
+    try:
+        res = runner("sessions", cfg_path=cfg_path, timeout=60)
+    except Exception:
+        return None
+    if res.returncode != 0:
+        return None
+    stderr_l = (res.stderr or "").strip().lower()
+    if any(m in stderr_l for m in _STDERR_FAILURE_MARKERS):
+        return None
+    stdout_txt = (res.stdout or "").strip()
+    if not stdout_txt:
+        return None  # Empty stdout is NEVER a valid inventory!
+    stdout_l = stdout_txt.lower()
+    if any(m in stdout_l for m in _STDERR_FAILURE_MARKERS):
+        return None
+    raw_lines = [ln.strip() for ln in stdout_txt.splitlines() if ln.strip()]
+    if raw_lines == ["[colab] No active sessions found on server."]:
+        return []
+    lines = [ln for ln in raw_lines if not ln.startswith("[colab]")]
+    if not lines or not all("[" in ln and "]" in ln for ln in lines):
+        return None
+    return lines
+
+
+def _session_lines_contain_target_or_unnamed(lines: list[str], session_name: str) -> bool:
+    """Return True if `[session_name]` OR an unnamed `[?]` server assignment is present."""
+    exact_tag = f"[{session_name}]"
+    for ln in lines:
+        if ln.startswith(exact_tag) or (" " + exact_tag) in ln or ln.startswith("[?]") or " [?]" in ln:
+            return True
+    return False
+
+
+def verified_stop_session(session_name: str, cfg_path: Path, *, runner=run_colab, sleep_s: float = 3.0) -> bool:
+    """Stop named Colab session and strictly verify disappearance via BOTH `stop rc==0` AND recognized `sessions` inventory.
+
+    Catches `TimeoutExpired`/exceptions inside the retry loop; NEVER certifies teardown on failed stop or empty inventory!
+    """
+    for attempt in range(1, 4):
+        stop_ok = False
+        try:
+            stop_res = runner("stop", "-s", session_name, cfg_path=cfg_path, timeout=120)
+            stop_txt = (stop_res.stdout or stop_res.stderr or "").strip()
+            stop_ok = stop_res.returncode == 0
+            print(f"[TEARDOWN attempt {attempt}] stop rc={stop_res.returncode}: {stop_txt}", flush=True)
+        except Exception as exc:
+            print(f"[TEARDOWN attempt {attempt}] stop raised {type(exc).__name__}: {exc}", flush=True)
+
+        if sleep_s > 0.0:
+            time.sleep(sleep_s)
+
+        active = query_active_sessions(cfg_path, runner=runner)
+        if active is None:
+            print(f"[TEARDOWN attempt {attempt}] `colab sessions` failed or returned unrecognized output.", flush=True)
+            continue
+        if stop_ok and (not _session_lines_contain_target_or_unnamed(active, session_name)):
+            print(f"[TEARDOWN] Verified stop rc=0 AND session {session_name!r} / `[?]` absent from server.", flush=True)
+            return True
+        print(f"[TEARDOWN attempt {attempt}] stop_ok={stop_ok}, active={active}", flush=True)
+    print(f"[TEARDOWN CRITICAL] Session {session_name!r} or unnamed `[?]` could NOT be verified stopped!", flush=True)
+    return False
+
+
+def projected_spend_exceeds_reserve(
+    cumulative_spent_cu: float,
+    live_rate_cu_hr: float,
+    *,
+    max_spend_cu: float,
+    poll_interval_s: int = WATCHDOG_POLL_INTERVAL_S,
+) -> tuple[bool, float, float]:
+    """Check BOTH actual and conservative next-interval projected cumulative spend against `max_spend_cu - 3.0 CU`."""
+    hard_limit_cu = max(0.5, max_spend_cu - SHUTDOWN_RESERVE_CU)
+    eff_rate = max(live_rate_cu_hr, CONSERVATIVE_V6E1_RATE_CU_HR)
+    projected_cu = cumulative_spent_cu + eff_rate * (float(poll_interval_s) / 3600.0)
+    tripped = (cumulative_spent_cu >= hard_limit_cu) or (projected_cu >= hard_limit_cu)
+    return tripped, projected_cu, hard_limit_cu
+
+
+def load_prior_cumulative_spend(
+    out_dir: Path, *, current_balance_cu: float | None = None
+) -> tuple[float, list[dict[str, Any]]]:
+    """Load accumulated pilot spend across prior invocations AND reconcile any interrupted in-progress run!"""
+    ledger_path = out_dir / "cumulative_pilot_spend.json"
+    if not ledger_path.is_file():
+        return 0.0, []
+    data = json.loads(ledger_path.read_text())
+    runs = list(data.get("runs") or [])
+    prior = sum(max(0.0, float(r.get("pilot_spend_cu", 0.0))) for r in runs)
+    in_prog = data.get("in_progress_run")
+    if isinstance(in_prog, dict):
+        prev_bal = float(in_prog.get("balance_start_cu", 0.0))
+        prev_ts = float(in_prog.get("start_epoch_s", time.time()))
+        elapsed_est = max(0.0, (time.time() - prev_ts) / 3600.0) * CONSERVATIVE_V6E1_RATE_CU_HR
+        bal_delta = max(0.0, prev_bal - float(current_balance_cu)) if current_balance_cu is not None else elapsed_est
+        reconciled_spend = max(bal_delta, min(elapsed_est, 45.0)) if current_balance_cu is None else bal_delta
+        prior += reconciled_spend
+        runs.append(
+            {
+                "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "session_name": in_prog.get("session_name", "interrupted_unknown"),
+                "reconciled_interrupted_run": True,
+                "balance_start_cu": prev_bal,
+                "balance_end_cu": current_balance_cu,
+                "pilot_spend_cu": round(reconciled_spend, 4),
+            }
+        )
+    return prior, runs
+
+
+def record_in_progress_run(
+    out_dir: Path,
+    *,
+    session_name: str,
+    bal_start: float,
+    prior_runs: list[dict[str, Any]],
+    max_spend_cu: float,
+) -> None:
+    """Persist starting balance BEFORE `colab new` so an interrupted run can always be reconciled."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    ledger = {
+        "total_cumulative_spend_cu": round(sum(float(r.get("pilot_spend_cu", 0.0)) for r in prior_runs), 4),
+        "max_spend_cu": max_spend_cu,
+        "in_progress_run": {
+            "session_name": session_name,
+            "balance_start_cu": bal_start,
+            "start_epoch_s": time.time(),
+        },
+        "runs": prior_runs,
+    }
+    (out_dir / "cumulative_pilot_spend.json").write_text(json.dumps(ledger, indent=2) + "\n")
+
+
+def _run_subprocess_with_watchdog(
+    cmd: list[str],
+    *,
+    env: dict[str, str],
+    log_dir: Path,
+    log_prefix: str,
+    cfg_path: Path | None,
+    bal_start: float,
+    prior_spent_cu: float,
+    max_spend_cu: float,
+    t_alloc_start: float,
+    phase_timeout_s: int = 2400,
+    poll_interval_s: int = WATCHDOG_POLL_INTERVAL_S,
+    balance_fn=query_balance,
+) -> tuple[int, str, str, bool]:
+    """Run subprocess with file-backed stdout/stderr (ZERO pipe deadlock!) and active cumulative CU + elapsed watchdog."""
+    log_dir.mkdir(parents=True, exist_ok=True)
+    stdout_path = log_dir / f"{log_prefix}.stdout.log"
+    stderr_path = log_dir / f"{log_prefix}.stderr.log"
+
+    hard_limit_cu = max(0.5, max_spend_cu - SHUTDOWN_RESERVE_CU)
+    t_start = time.monotonic()
+    t_last_poll = t_start
+    budget_tripped = False
+
+    with stdout_path.open("w+", encoding="utf-8") as f_out, stderr_path.open("w+", encoding="utf-8") as f_err:
+        proc = subprocess.Popen(cmd, env=env, stdout=f_out, stderr=f_err, text=True)
+        while proc.poll() is None:
+            now = time.monotonic()
+            if (now - t_start) > phase_timeout_s:
+                proc.terminate()
+                try:
+                    proc.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait(timeout=15)
+                raise TimeoutError(f"Remote phase timed out after {phase_timeout_s}s")
+
+            # Independent elapsed-time cumulative spending ceiling (immune to balance-API outages!)
+            elapsed_cum_cu = prior_spent_cu + ((now - t_alloc_start) / 3600.0) * CONSERVATIVE_V6E1_RATE_CU_HR
+            if elapsed_cum_cu >= hard_limit_cu:
+                budget_tripped = True
+                print(
+                    f"[WATCHDOG] Conservative elapsed-time cumulative bound ({elapsed_cum_cu:.2f} CU) >= hard_limit ({hard_limit_cu:.2f} CU)! Halting...",
+                    flush=True,
+                )
+                proc.terminate()
+                break
+
+            if (cfg_path is not None) and ((now - t_last_poll) >= poll_interval_s):
+                t_last_poll = now
+                try:
+                    bal_now, rate_now = balance_fn(cfg_path)
+                    cum_spent = prior_spent_cu + max(0.0, bal_start - bal_now)
+                    tripped_now, projected, hard_lim = projected_spend_exceeds_reserve(
+                        cum_spent, rate_now, max_spend_cu=max_spend_cu, poll_interval_s=poll_interval_s
+                    )
+                    print(
+                        f"[WATCHDOG] cumulative_spent={cum_spent:.2f} CU, rate={rate_now:.2f} CU/hr, "
+                        f"projected={projected:.2f} CU / hard_stop={hard_lim:.2f} CU",
+                        flush=True,
+                    )
+                    if tripped_now:
+                        budget_tripped = True
+                        print("[WATCHDOG] Budget cap / 3.0 CU reserve reached! Terminating active phase cleanly...", flush=True)
+                        proc.terminate()
+                        break
+                except Exception as exc:
+                    print(
+                        f"[WATCHDOG] Balance poll error ({exc}); elapsed_cum_bound={elapsed_cum_cu:.2f}/{hard_limit_cu:.2f} CU",
+                        flush=True,
+                    )
+            time.sleep(1.0)
+
+        try:
+            proc.wait(timeout=15)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait(timeout=15)
+
+        f_out.flush()
+        f_err.flush()
+        f_out.seek(0)
+        f_err.seek(0)
+        out_txt = f_out.read()
+        err_txt = f_err.read()
+        return int(proc.returncode or 0), out_txt, err_txt, budget_tripped
+
+
+def _run_remote_bash_with_watchdog(
+    session_name: str,
+    remote_bash_cmd: str,
+    *,
+    cfg_path: Path,
+    log_dir: Path,
+    log_prefix: str,
+    bal_start: float,
+    prior_spent_cu: float,
+    max_spend_cu: float,
+    t_alloc_start: float,
+    phase_timeout_s: int = 2400,
+    poll_interval_s: int = WATCHDOG_POLL_INTERVAL_S,
+) -> tuple[int, str, str, bool]:
+    cmd = _colab_cmd("ssh", "-s", session_name, "--", "bash", "-lc", remote_bash_cmd, cfg_path=cfg_path)
+    return _run_subprocess_with_watchdog(
+        cmd,
+        env=_colab_env(),
+        log_dir=log_dir,
+        log_prefix=log_prefix,
+        cfg_path=cfg_path,
+        bal_start=bal_start,
+        prior_spent_cu=prior_spent_cu,
+        max_spend_cu=max_spend_cu,
+        t_alloc_start=t_alloc_start,
+        phase_timeout_s=phase_timeout_s,
+        poll_interval_s=poll_interval_s,
+    )
+
+
+def is_tpu_v6e_device_kind_stdlib(device_kind: str) -> bool:
+    """Pure-stdlib exact TPU v6e / TPU v6 lite check (zero JAX dependency on Mac launcher host!)."""
+    return device_kind.strip().lower() in {"tpu v6e", "tpu v6 lite"}
+
+
+def validate_reusable_mup_receipt_stdlib(
+    mup_receipt_path: Path,
+    *,
+    expected_bundle_sha256: str,
+    require_tpu_v6e: bool = True,
+) -> float:
+    """Pure-stdlib strict Phase 2 receipt validator usable on the stdlib-only Mac launcher host!"""
+    if not mup_receipt_path.is_file():
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: missing {mup_receipt_path}")
+    data = json.loads(mup_receipt_path.read_text())
+    if not isinstance(data, dict) or data.get("status") != "pass":
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: status={data.get('status')!r} (expected 'pass')")
+    if data.get("smoke_cpu") is not False:
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: smoke_cpu={data.get('smoke_cpu')!r} (expected False)")
+    if require_tpu_v6e and not is_tpu_v6e_device_kind_stdlib(str(data.get("device_kind", ""))):
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: invalid device_kind={data.get('device_kind')!r}")
+    if data.get("widths") != [256, 512, 768] or data.get("depths") != [8, 12, 16]:
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: non-production grid widths={data.get('widths')} depths={data.get('depths')}")
+    rec_sha = data.get("pilot_bundle_sha256")
+    if not isinstance(rec_sha, str) or len(rec_sha) != 64 or rec_sha != expected_bundle_sha256:
+        raise RuntimeError(
+            f"PHASE 2 PREREQUISITE LOCK: bundle digest mismatch ({rec_sha!r} != {expected_bundle_sha256!r})"
+        )
+    lr_raw = data.get("recommended_base_lr")
+    lrs_grid = data.get("lrs")
+    if (
+        isinstance(lr_raw, bool)
+        or (not isinstance(lr_raw, (int, float)))
+        or (not math.isfinite(float(lr_raw)))
+        or float(lr_raw) <= 0.0
+    ):
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: invalid recommended_base_lr={lr_raw!r}")
+    if not isinstance(lrs_grid, list) or not any(
+        (not isinstance(x, bool)) and isinstance(x, (int, float)) and abs(float(x) - float(lr_raw)) <= 1e-12
+        for x in lrs_grid
+    ):
+        raise RuntimeError(f"PHASE 2 PREREQUISITE LOCK: recommended_base_lr={lr_raw!r} not in lrs grid {lrs_grid!r}")
+    return float(lr_raw)
+
+
+def validate_phase_prerequisites(
+    phases: list[str], out_dir: Path, *, expected_bundle_sha256: str
+) -> float | None:
+    """Validate Phase 2 prerequisite strictly using pure stdlib (zero JAX import on Mac host!)."""
+    needs_mup = [p for p in phases if p in ("dev_ablation", "long_stream")]
+    if not needs_mup:
+        return None
+    if "mup_check" in phases and phases.index("mup_check") < min(phases.index(p) for p in needs_mup):
+        return None
+    return validate_reusable_mup_receipt_stdlib(
+        out_dir / "phase_mup_check_receipt.json",
+        expected_bundle_sha256=expected_bundle_sha256,
+        require_tpu_v6e=True,
+    )
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description="Launch hard-capped <= 45 CU SLWM-v3 pilot on Google TPU v6e-1 (Rev 4).")
+    ap.add_argument("--session-name", type=str, default="slwm_v3_pilot_v6e1")
+    ap.add_argument("--max-spend-cu", type=float, default=45.0)
+    ap.add_argument("--phases", type=str, default="profile,mup_check,dev_ablation,long_stream")
+    ap.add_argument("--out-dir", type=Path, default=REPO_ROOT / "reports/v3/pilot_v6e1")
+    ap.add_argument("--dry-run", action="store_true", help="Verify gates, balance, digests, and CLI without assigning a TPU.")
+    args = ap.parse_args()
+
+    if args.max_spend_cu > 45.0:
+        raise ValueError(f"Hard pilot cap exceeded: max_spend_cu={args.max_spend_cu} > 45.0 CU!")
+
+    phases = [p.strip() for p in args.phases.split(",") if p.strip()]
+    # Single-read TOCTOU-free Gate 1–3 lock + archive construction BEFORE balance check or allocation!
+    gate_status, tar_bytes = build_and_verify_pilot_bundle(REPO_ROOT)
+    bundle_sha = gate_status["pilot_bundle_sha256_verified"]
+    resumed_lr = validate_phase_prerequisites(phases, args.out_dir, expected_bundle_sha256=bundle_sha)
+    OPS_DIR.mkdir(parents=True, exist_ok=True)
+    cfg_path = OPS_DIR / f"session_{args.session_name}.json"
+
+    bal_start, rate_start = query_balance(cfg_path)
+    prior_spent_cu, prior_runs = load_prior_cumulative_spend(args.out_dir, current_balance_cu=bal_start)
+    tripped_pre, proj_pre, hard_limit_cu = projected_spend_exceeds_reserve(
+        prior_spent_cu, rate_start, max_spend_cu=args.max_spend_cu
+    )
+    summary = {
+        "gate_lock_status": gate_status,
+        "gcloud_config_dir": str(resolve_gcloud_config_dir()),
+        "colab_bin": str(COLAB_BIN),
+        "starting_balance_cu": bal_start,
+        "starting_rate_cu_hr": rate_start,
+        "prior_cumulative_spend_cu": round(prior_spent_cu, 4),
+        "max_spend_cu": args.max_spend_cu,
+        "shutdown_reserve_cu": SHUTDOWN_RESERVE_CU,
+        "hard_watchdog_stop_cu": round(hard_limit_cu, 2),
+        "accelerator_policy": "tpu_v6e1_strict",
+        "bundle_bytes": len(tar_bytes),
+        "pilot_bundle_sha256": bundle_sha,
+        "phases": phases,
+        "resumed_validated_base_lr": resumed_lr,
+        "dry_run": args.dry_run,
+    }
+    print(json.dumps(summary, indent=2), flush=True)
+    if args.dry_run:
+        return
+
+    if tripped_pre:
+        raise RuntimeError(
+            f"CUMULATIVE BUDGET CAP: prior_spent={prior_spent_cu:.2f} CU (projected={proj_pre:.2f} CU) >= hard_limit={hard_limit_cu:.2f} CU!"
+        )
+    if rate_start > 0.0:
+        raise RuntimeError(f"Active Colab session already burning {rate_start:.2f} CU/hr! Stop it before launching.")
+    active_pre = query_active_sessions(cfg_path)
+    if active_pre is None:
+        raise RuntimeError("Pre-launch `colab sessions` failed or returned unrecognized output; refusing to assign TPU!")
+    if active_pre:
+        raise RuntimeError(f"Active Colab sessions already exist on server: {active_pre}! Stop them first.")
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    log_dir = args.out_dir / "logs"
+    chosen_lr = float(resumed_lr) if resumed_lr is not None else 1e-3
+    completed_phases: list[str] = []
+    t_alloc_start = time.monotonic()
+
+    # Persist starting balance BEFORE `colab new` so an interrupted run can always be reconciled!
+    record_in_progress_run(
+        args.out_dir,
+        session_name=args.session_name,
+        bal_start=bal_start,
+        prior_runs=prior_runs,
+        max_spend_cu=args.max_spend_cu,
+    )
+
+    try:
+        print(f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r}...", flush=True)
+        assign_res = run_colab("new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=240)
+        if assign_res.returncode != 0:
+            raise RuntimeError(f"TPU v6e-1 assign failed: {assign_res.stderr or assign_res.stdout}")
+
+        with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
+            tmp.write(tar_bytes)
+            tmp_path = Path(tmp.name)
+        try:
+            up_res = run_colab(
+                "upload", "-s", args.session_name, str(tmp_path), "/content/slwm_v3_bundle.tar.gz", cfg_path=cfg_path, timeout=180
+            )
+            if up_res.returncode != 0:
+                raise RuntimeError(f"Bundle upload failed: {up_res.stderr or up_res.stdout}")
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+        prep_cmd = (
+            "mkdir -p /content/slwm_v3 /content/slwm_v3_out && "
+            "tar -xzf /content/slwm_v3_bundle.tar.gz -C /content/slwm_v3 && "
+            "python3 -c 'import jax, optax; print(\"JAX:\", jax.__version__, \"OPTAX:\", optax.__version__, \"DEVS:\", [d.device_kind for d in jax.devices()])'"
+        )
+        rc, out, err, _ = _run_remote_bash_with_watchdog(
+            args.session_name,
+            prep_cmd,
+            cfg_path=cfg_path,
+            log_dir=log_dir,
+            log_prefix="00_prep",
+            bal_start=bal_start,
+            prior_spent_cu=prior_spent_cu,
+            max_spend_cu=args.max_spend_cu,
+            t_alloc_start=t_alloc_start,
+            phase_timeout_s=300,
+        )
+        print(out, flush=True)
+        if rc != 0:
+            print(err, flush=True)
+            raise RuntimeError(f"Remote environment prep failed rc={rc}")
+
+        # If resuming Phases 3/4, upload the validated local Phase 2 receipt so remote paid dispatch verifies it too!
+        if resumed_lr is not None:
+            mup_local = args.out_dir / "phase_mup_check_receipt.json"
+            up_mup = run_colab(
+                "upload", "-s", args.session_name, str(mup_local), "/content/slwm_v3_out/phase_mup_check_receipt.json", cfg_path=cfg_path, timeout=120
+            )
+            if up_mup.returncode != 0:
+                raise RuntimeError(f"Failed to upload validated Phase 2 receipt: {up_mup.stderr or up_mup.stdout}")
+
+        for idx, ph in enumerate(phases, start=1):
+            bal_now, rate_now = query_balance(cfg_path)
+            elapsed_cu = ((time.monotonic() - t_alloc_start) / 3600.0) * CONSERVATIVE_V6E1_RATE_CU_HR
+            cum_spent = max(prior_spent_cu + max(0.0, bal_start - bal_now), prior_spent_cu + elapsed_cu)
+            tripped_entry, proj_entry, hard_lim = projected_spend_exceeds_reserve(
+                cum_spent, rate_now, max_spend_cu=args.max_spend_cu
+            )
+            print(
+                f"[PILOT] Pre-phase {ph!r}: cumulative_spent={cum_spent:.2f} CU, projected={proj_entry:.2f} CU / hard_limit={hard_lim:.2f} CU (rate={rate_now:.2f})",
+                flush=True,
+            )
+            if tripped_entry:
+                print(f"[PILOT] Reserve/budget cap reached before dispatching phase {ph!r}; stopping cleanly.", flush=True)
+                break
+
+            lr_flag = f"--base-lr {chosen_lr}" if ph in ("dev_ablation", "long_stream") else ""
+            run_cmd = (
+                "cd /content/slwm_v3 && PYTHONPATH=. "
+                f"python3 scripts/train/v3_tpu_pilot_suite.py --phases {ph} {lr_flag} "
+                f"--bundle-sha256 {bundle_sha} --require-tpu-v6e --out-dir /content/slwm_v3_out"
+            )
+            rc, out, err, tripped = _run_remote_bash_with_watchdog(
+                args.session_name,
+                run_cmd,
+                cfg_path=cfg_path,
+                log_dir=log_dir,
+                log_prefix=f"{idx:02d}_{ph}",
+                bal_start=bal_start,
+                prior_spent_cu=prior_spent_cu,
+                max_spend_cu=args.max_spend_cu,
+                t_alloc_start=t_alloc_start,
+                phase_timeout_s=2400,
+            )
+            print(out, flush=True)
+            if err.strip():
+                print(err, flush=True)
+            if tripped:
+                print(f"[PILOT] Watchdog halted phase {ph!r} to protect <= {args.max_spend_cu:.1f} CU cap.", flush=True)
+                break
+            if rc != 0:
+                raise RuntimeError(f"Remote phase {ph!r} failed with rc={rc}")
+
+            remote_receipt = f"/content/slwm_v3_out/phase_{ph}_receipt.json"
+            local_receipt = args.out_dir / f"phase_{ph}_receipt.json"
+            dl_res = run_colab(
+                "download", "-s", args.session_name, remote_receipt, str(local_receipt), cfg_path=cfg_path, timeout=120
+            )
+            if dl_res.returncode != 0 or not local_receipt.is_file():
+                raise RuntimeError(f"Failed to download {remote_receipt}: {dl_res.stderr or dl_res.stdout}")
+            ph_data = json.loads(local_receipt.read_text())
+            completed_phases.append(ph)
+            print(f"[PILOT] Downloaded {local_receipt} (status={ph_data.get('status')!r})", flush=True)
+
+            if ph == "mup_check" and ph_data.get("status") == "pass":
+                chosen_lr = float(ph_data["recommended_base_lr"])
+
+            if ph_data.get("status") != "pass":
+                print(
+                    f"[PILOT] Phase {ph!r} returned status={ph_data.get('status')!r}; "
+                    "HALTING remaining phases before further spend!",
+                    flush=True,
+                )
+                break
+    finally:
+        print(f"[PILOT] Guaranteed verified auto-teardown for session {args.session_name!r}...", flush=True)
+        stopped_ok = verified_stop_session(args.session_name, cfg_path)
+        elapsed_est = max(0.0, (time.monotonic() - t_alloc_start) / 3600.0) * CONSERVATIVE_V6E1_RATE_CU_HR
+        bal_end: float | None = None
+        rate_end: float | None = None
+        bal_query_ok = True
+        try:
+            bal_end, rate_end = query_balance(cfg_path)
+            this_spend = max(0.0, bal_start - bal_end)
+        except Exception as exc:
+            bal_query_ok = False
+            this_spend = elapsed_est
+            print(f"[PILOT WARNING] Final balance query failed ({exc}); recording conservative elapsed estimate {this_spend:.4f} CU.", flush=True)
+        run_record = {
+            "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "session_name": args.session_name,
+            "pilot_bundle_sha256": bundle_sha,
+            "models_v3_sha256": gate_status["models_v3_sha256_verified"],
+            "phases_completed": completed_phases,
+            "teardown_verified_removed": stopped_ok,
+            "final_balance_query_ok": bal_query_ok,
+            "balance_start_cu": bal_start,
+            "balance_end_cu": bal_end,
+            "pilot_spend_cu": round(this_spend, 4),
+            "cumulative_pilot_spend_cu": round(prior_spent_cu + this_spend, 4),
+            "rate_after_stop_cu_hr": rate_end,
+        }
+        prior_runs.append(run_record)
+        ledger = {
+            "total_cumulative_spend_cu": round(sum(float(r["pilot_spend_cu"]) for r in prior_runs), 4),
+            "max_spend_cu": args.max_spend_cu,
+            "runs": prior_runs,
+        }
+        (args.out_dir / "cumulative_pilot_spend.json").write_text(json.dumps(ledger, indent=2) + "\n")
+        print(json.dumps(run_record, indent=2), flush=True)
+        if not stopped_ok:
+            raise RuntimeError(f"CRITICAL: Colab session {args.session_name!r} could not be verified stopped!")
+
+
+if __name__ == "__main__":
+    main()
