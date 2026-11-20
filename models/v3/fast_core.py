@@ -557,6 +557,7 @@ def apply_matrix_memory_seq_fast(
         r_nowrite_seq = jnp.zeros((t_len, b_sz), dtype=jnp.float32)
         prior_err_seq = jnp.zeros((t_len, b_sz), dtype=jnp.float32)
         eff_eta_seq = jnp.mean(eta_seq, axis=(2, 3))
+        final_mem_state = {"M": M_fin}
     else:
         # EXACT ALGEBRAIC SURPRISE HOISTING + FULL CONTENT-ROUTER HOISTING:
         # 100% of `router_skip`, `router_w1`, AND `router_w2` are hoisted BEFORE `lax.scan`!
@@ -590,67 +591,283 @@ def apply_matrix_memory_seq_fast(
         mskip_err = mskip[-1, :]  # [n_out]
         inv_d = 1.0 / float(d)
 
-        def _lean_surprise_step(
-            M_prev: Array,
-            xs: tuple[Array, Array, Array, Array, Array, Array, Array, Array, Array, Array],
-        ) -> tuple[Array, tuple[Array, Array, Array, Array, Array, Array, Array]]:
-            q_t, k_t, v_t, dec_t, c_t, xsq_t, pmh_t, plog_t, vld_t, rst_t = xs
-            M_prev = jnp.where(rst_t[:, None, None, None, None], jnp.zeros_like(M_prev), M_prev)
-            M_tilde = M_prev * dec_t[:, :, :, None, None]
+        if spec.surprise_chunk_size > 1:
+            c_anc = int(spec.surprise_chunk_size)
 
-            # Exact causal read-before-write surprise error via hoisted Gram identity (ZERO d-dim matmul!)
-            prior_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, q_t, precision=fp32_prec)
-            prior_y = _soft_head_norm_step(prior_y_bnhv)  # [B, m]
-            y_G_y = jnp.sum(jnp.matmul(prior_y, G_P, precision=fp32_prec) * prior_y, axis=-1)
-            sq_err = jnp.maximum(xsq_t - 2.0 * jnp.sum(c_t * prior_y, axis=-1) + y_G_y, 0.0)
-            prior_err = jnp.sqrt(sq_err * inv_d + 1e-6)
-            err_feat = jnp.log1p(prior_err)
+            def _chunk_anchor_serial(_: None):
+                init_c = (
+                    M_init,
+                    init_state["M_anchor"].astype(jnp.float32),
+                    init_state["cum_decay"].astype(jnp.float32),
+                    init_state["chunk_phase"].astype(jnp.int32),
+                )
 
-            mh = jax.nn.silu(pmh_t + err_feat[:, None] * mw1_err[None, :])
-            r_logits = plog_t + err_feat[:, None] * mskip_err[None, :] + jnp.matmul(mh, mw2, precision=fp32_prec)
+                def _step(carry, xs):
+                    M_p, M_a, c_d, ph = carry
+                    q_t, k_t, v_t, dec_t, c_t, xsq_t, pmh_t, plog_t, vld_t, rst_t = xs
+                    M_p = jnp.where(rst_t[:, None, None, None, None], jnp.zeros_like(M_p), M_p)
+                    M_a = jnp.where(rst_t[:, None, None, None, None], jnp.zeros_like(M_a), M_a)
+                    c_d = jnp.where(rst_t[:, None, None], jnp.ones_like(c_d), c_d)
+                    is_st = ph == 0
+                    M_a = jnp.where(is_st[:, None, None, None, None], M_p, M_a)
+                    c_d = jnp.where(is_st[:, None, None], jnp.ones_like(c_d), c_d)
+                    c_d_next = c_d * dec_t
+                    M_tilde = M_p * dec_t[:, :, :, None, None]
 
-            route_raw = jax.nn.sigmoid(r_logits[:, :h_tot].reshape(b_sz, nb, nh))
-            if spec.use_nowrite_option:
-                r_nw_b = jax.nn.sigmoid(r_logits[:, h_tot:])
-                keep_b = 1.0 - r_nw_b
-                r_nw = jnp.mean(r_nw_b, axis=-1)
+                    prior_y_bnhv = c_d_next[..., None] * jnp.einsum("bnhvk,bnhk->bnhv", M_a, q_t, precision=fp32_prec)
+                    prior_y = _soft_head_norm_step(prior_y_bnhv)
+                    y_G_y = jnp.sum(jnp.matmul(prior_y, G_P, precision=fp32_prec) * prior_y, axis=-1)
+                    sq_err = jnp.maximum(xsq_t - 2.0 * jnp.sum(c_t * prior_y, axis=-1) + y_G_y, 0.0)
+                    prior_err = jnp.sqrt(sq_err * inv_d + 1e-6)
+                    err_feat = jnp.log1p(prior_err)
+
+                    mh = jax.nn.silu(pmh_t + err_feat[:, None] * mw1_err[None, :])
+                    r_logits = plog_t + err_feat[:, None] * mskip_err[None, :] + jnp.matmul(mh, mw2, precision=fp32_prec)
+                    route_raw = jax.nn.sigmoid(r_logits[:, :h_tot].reshape(b_sz, nb, nh))
+                    if spec.use_nowrite_option:
+                        r_nw_b = jax.nn.sigmoid(r_logits[:, h_tot:])
+                        keep_b = 1.0 - r_nw_b
+                        r_nw = jnp.mean(r_nw_b, axis=-1)
+                    else:
+                        keep_b = jnp.ones((b_sz, nb), dtype=jnp.float32)
+                        r_nw = jnp.zeros((b_sz,), dtype=jnp.float32)
+                    raw_eta = route_raw * keep_b[:, :, None]
+                    if spec.force_write_floor > 0.0:
+                        fl = float(spec.force_write_floor)
+                        raw_eta = fl + (1.0 - fl) * raw_eta
+                    if spec.use_learned_routing:
+                        eta = raw_eta * vld_t[:, None, None]
+                    else:
+                        shared = jnp.mean(raw_eta, axis=1, keepdims=True)
+                        eta = jnp.broadcast_to(shared, (b_sz, nb, nh)) * vld_t[:, None, None]
+
+                    ret_k = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, k_t, precision=fp32_prec)
+                    dM = jnp.einsum("bnh,bnhv,bnhk->bnhvk", eta, v_t - ret_k, k_t, precision=fp32_prec)
+                    M_next = M_tilde + dM
+                    post_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_next, q_t, precision=fp32_prec)
+                    post_y = _soft_head_norm_step(post_y_bnhv)
+                    d_norm = jnp.sqrt(jnp.mean(dM * dM, axis=(1, 2, 3, 4)) + 1e-12)
+                    frob_h = jnp.sqrt(jnp.sum(M_next * M_next, axis=(3, 4)) + 1e-12)
+                    ph_next = (ph + 1) % c_anc
+                    return (M_next, M_a, c_d_next, ph_next), (
+                        post_y, r_nw, jnp.mean(eta, axis=(1, 2)), d_norm,
+                        jnp.mean(frob_h, axis=(1, 2)), jnp.max(frob_h, axis=(1, 2)), prior_err,
+                    )
+
+                (M_f, Ma_f, cd_f, ph_f), outs = jax.lax.scan(
+                    _step, init_c,
+                    (q_seq, k_seq, v_seq, decay_seq, c_seq, xn_sq_seq, pre_mh_seq, pre_logits_seq, valid_f, rst_b),
+                )
+                return {"M": M_f, "M_anchor": Ma_f, "cum_decay": cd_f, "chunk_phase": ph_f}, outs
+
+            def _chunk_anchor_wy(_: None):
+                rem = t_len % c_anc
+                pad_n = (c_anc - rem) if rem != 0 else 0
+                t_pad = t_len + pad_n
+                n_chunks = t_pad // c_anc
+
+                def _pad_c(arr: Array, fill: float = 0.0) -> Array:
+                    if pad_n == 0:
+                        return arr.reshape((n_chunks, c_anc) + arr.shape[1:])
+                    pa = jnp.full((pad_n,) + arr.shape[1:], fill, dtype=arr.dtype)
+                    return jnp.concatenate([arr, pa], axis=0).reshape((n_chunks, c_anc) + arr.shape[1:])
+
+                q_c = _pad_c(q_seq, 0.0)
+                k_c = _pad_c(k_seq, 0.0)
+                v_c = _pad_c(v_seq, 0.0)
+                dec_c = _pad_c(decay_seq, 1.0)
+                c_ch_all = _pad_c(c_seq, 0.0)
+                xsq_c = _pad_c(xn_sq_seq, 0.0)
+                pmh_c = _pad_c(pre_mh_seq, 0.0)
+                plog_c = _pad_c(pre_logits_seq, 0.0)
+                vld_c = _pad_c(valid_f, 0.0)
+                rst_c = _pad_c(rst_b, False)
+
+                tril_strict = jnp.tril(jnp.ones((c_anc, c_anc), dtype=jnp.bool_), k=-1)
+                tril_incl = jnp.tril(jnp.ones((c_anc, c_anc), dtype=jnp.bool_), k=0)
+                eye_c = jnp.eye(c_anc, dtype=jnp.float32)
+
+                def _prep_static(k_ch, dec_ch, rst_ch):
+                    k_t = jnp.transpose(k_ch, (1, 2, 3, 0, 4))  # [B, nb, nh, C, dk]
+                    rst_e = jnp.transpose(rst_ch, (1, 0))[:, None, None, :]  # [B, 1, 1, C]
+                    ep_id = jnp.cumsum(rst_e.astype(jnp.int32), axis=-1)
+                    same_ep = ep_id[..., :, None] == ep_id[..., None, :]
+                    same_ep_start = ep_id == 0
+                    has_rst = jnp.any(rst_e, axis=-1)  # [B, 1, 1]
+                    log_d = jnp.log(jnp.clip(jnp.transpose(dec_ch, (1, 2, 3, 0)), 1e-7, 1.0))  # [B, nb, nh, C]
+                    gamma = jnp.cumsum(log_d, axis=-1)
+                    g_diff = jnp.where(tril_incl & same_ep, gamma[..., :, None] - gamma[..., None, :], -1e9)
+                    D_mat = jnp.where(tril_incl & same_ep, jnp.exp(jnp.clip(g_diff, -40.0, 40.0)), 0.0)
+                    kk = jnp.einsum("bnhik,bnhjk->bnhij", k_t, k_t, precision=fp32_prec)
+                    dec_fs = jnp.where(same_ep_start, jnp.exp(jnp.clip(gamma, -40.0, 0.0)), 0.0)
+                    same_ep_end = ep_id == ep_id[..., -1:]
+                    g_to_end = jnp.where(same_ep_end, gamma[..., -1:] - gamma, -1e9)
+                    dec_te = jnp.where(same_ep_end, jnp.exp(jnp.clip(g_to_end, -40.0, 40.0)), 0.0)
+                    c_decay = jnp.where(has_rst, 0.0, jnp.exp(jnp.clip(gamma[..., -1], -40.0, 0.0)))
+                    # Exact end-of-chunk `cum_decay` for final episode inside chunk (matches serial bit-for-bit!)
+                    log_d_end_ep = jnp.sum(jnp.where(same_ep_end, log_d, 0.0), axis=-1)
+                    end_cum_dec = jnp.exp(jnp.clip(log_d_end_ep, -40.0, 0.0))  # [B, nb, nh]
+                    return D_mat, kk, same_ep, dec_fs, dec_te, c_decay, has_rst[:, 0, 0], end_cum_dec
+
+                D_all, kk_all, sep_all, dfs_all, dte_all, ccd_all, hrst_all, ecd_all = jax.vmap(_prep_static)(k_c, dec_c, rst_c)
+
+                def _wy_chunk_step(carry, xs):
+                    M_prev, _, _ = carry
+                    q_ch, k_ch, v_ch, c_ch, xsq_ch, pmh_ch, plog_ch, vld_ch, D_m, kk_m, sep_m, dec_fs, dec_te, c_dec, has_r, ecd = xs
+                    q_t = jnp.transpose(q_ch, (1, 2, 3, 0, 4))  # [B, nb, nh, C, dk]
+                    k_t = jnp.transpose(k_ch, (1, 2, 3, 0, 4))
+                    v_t = jnp.transpose(v_ch, (1, 2, 3, 0, 4))
+
+                    # 1. Parallel causal chunk-entry prior read across ALL C ticks simultaneously!
+                    y_inter = dec_fs[..., None] * jnp.einsum("bnhvk,bnhik->bnhiv", M_prev, q_t, precision=fp32_prec)  # [B, nb, nh, C, dv]
+                    prior_y_cbnhv = jnp.transpose(y_inter, (3, 0, 1, 2, 4))  # [C, B, nb, nh, dv]
+                    py_flat = prior_y_cbnhv.reshape(c_anc, b_sz, h_tot, dv)
+                    inv_r = jax.lax.rsqrt(jnp.mean(py_flat * py_flat, axis=-1, keepdims=True) + 1e-2)
+                    prior_y = ((py_flat * inv_r) * o_norm_w[None, None, :, :]).reshape(c_anc, b_sz, h_tot * dv)
+
+                    y_G_y = jnp.sum(jnp.matmul(prior_y, G_P, precision=fp32_prec) * prior_y, axis=-1)
+                    sq_err = jnp.maximum(xsq_ch - 2.0 * jnp.sum(c_ch * prior_y, axis=-1) + y_G_y, 0.0)
+                    prior_err = jnp.sqrt(sq_err * inv_d + 1e-6)  # [C, B]
+                    err_feat = jnp.log1p(prior_err)
+
+                    mh = jax.nn.silu(pmh_ch + err_feat[:, :, None] * mw1_err[None, None, :])
+                    r_logits = plog_ch + err_feat[:, :, None] * mskip_err[None, None, :] + jnp.matmul(mh, mw2, precision=fp32_prec)
+                    route_raw = jax.nn.sigmoid(r_logits[:, :, :h_tot].reshape(c_anc, b_sz, nb, nh))
+                    if spec.use_nowrite_option:
+                        r_nw_b = jax.nn.sigmoid(r_logits[:, :, h_tot:])
+                        keep_b = 1.0 - r_nw_b
+                        r_nw = jnp.mean(r_nw_b, axis=-1)
+                    else:
+                        keep_b = jnp.ones((c_anc, b_sz, nb), dtype=jnp.float32)
+                        r_nw = jnp.zeros((c_anc, b_sz), dtype=jnp.float32)
+                    raw_eta = route_raw * keep_b[:, :, :, None]
+                    if spec.force_write_floor > 0.0:
+                        fl = float(spec.force_write_floor)
+                        raw_eta = fl + (1.0 - fl) * raw_eta
+                    if spec.use_learned_routing:
+                        eta_ch = raw_eta * vld_ch[:, :, None, None]
+                    else:
+                        shared = jnp.mean(raw_eta, axis=2, keepdims=True)
+                        eta_ch = jnp.broadcast_to(shared, (c_anc, b_sz, nb, nh)) * vld_ch[:, :, None, None]
+
+                    # 2. Exact parallel WY Delta-Rule factorization & update across chunk!
+                    eta_t = jnp.transpose(eta_ch, (1, 2, 3, 0))  # [B, nb, nh, C]
+                    A_mat = jnp.where(tril_strict & sep_m, eta_t[..., :, None] * D_m * kk_m, 0.0)
+                    T_mat = jax.lax.linalg.triangular_solve(
+                        eye_c + A_mat,
+                        jnp.broadcast_to(eye_c, A_mat.shape),
+                        left_side=True,
+                        lower=True,
+                        unit_diagonal=True,
+                    )
+                    U_0 = jnp.einsum("bnhij,bnhjv->bnhiv", T_mat, eta_t[..., None] * v_t, precision=fp32_prec)
+                    W_mat = jnp.einsum("bnhij,bnhjk->bnhik", T_mat, (eta_t * dec_fs)[..., None] * k_t, precision=fp32_prec)
+                    U = U_0 - jnp.einsum("bnhik,bnhvk->bnhiv", W_mat, M_prev, precision=fp32_prec)
+
+                    qk = jnp.einsum("bnhik,bnhjk->bnhij", q_t, k_t, precision=fp32_prec) * D_m
+                    y_intra = jnp.einsum("bnhij,bnhjv->bnhiv", qk, U, precision=fp32_prec)
+                    y_post_cbnhv = jnp.transpose(y_inter + y_intra, (3, 0, 1, 2, 4))  # [C, B, nb, nh, dv]
+                    yp_flat = y_post_cbnhv.reshape(c_anc, b_sz, h_tot, dv)
+                    inv_rp = jax.lax.rsqrt(jnp.mean(yp_flat * yp_flat, axis=-1, keepdims=True) + 1e-2)
+                    post_y = ((yp_flat * inv_rp) * o_norm_w[None, None, :, :]).reshape(c_anc, b_sz, h_tot * dv)
+
+                    dM_chunk = jnp.einsum("bnhj,bnhjv,bnhjk->bnhvk", dec_te, U, k_t, precision=fp32_prec)
+                    M_next = M_prev * c_dec[..., None, None] + dM_chunk
+                    M_anc_end = jnp.where(has_r[:, None, None, None, None], jnp.zeros_like(M_prev), M_prev)
+
+                    d_norm = jnp.broadcast_to(jnp.sqrt(jnp.mean(U * U, axis=(1, 2, 4)) + 1e-12).T, (c_anc, b_sz))
+                    frob_h = jnp.sqrt(jnp.sum(M_next * M_next, axis=(3, 4)) + 1e-12)
+                    fm = jnp.broadcast_to(jnp.mean(frob_h, axis=(1, 2))[None, :], (c_anc, b_sz))
+                    fx = jnp.broadcast_to(jnp.max(frob_h, axis=(1, 2))[None, :], (c_anc, b_sz))
+                    return (M_next, M_anc_end, ecd), (post_y, r_nw, jnp.mean(eta_ch, axis=(2, 3)), d_norm, fm, fx, prior_err)
+
+                init_wy = (M_init, init_state["M_anchor"].astype(jnp.float32), init_state["cum_decay"].astype(jnp.float32))
+                (M_f, Ma_f, cd_f), (py_c, rnw_c, eta_c, dn_c, fm_c, fx_c, pe_c) = jax.lax.scan(
+                    _wy_chunk_step,
+                    init_wy,
+                    (q_c, k_c, v_c, c_ch_all, xsq_c, pmh_c, plog_c, vld_c, D_all, kk_all, sep_all, dfs_all, dte_all, ccd_all, hrst_all, ecd_all),
+                )
+                ph_f = (init_state["chunk_phase"].astype(jnp.int32) + t_len) % c_anc
+                outs = (
+                    py_c.reshape(t_pad, b_sz, h_tot * dv)[:t_len],
+                    rnw_c.reshape(t_pad, b_sz)[:t_len],
+                    eta_c.reshape(t_pad, b_sz)[:t_len],
+                    dn_c.reshape(t_pad, b_sz)[:t_len],
+                    fm_c.reshape(t_pad, b_sz)[:t_len],
+                    fx_c.reshape(t_pad, b_sz)[:t_len],
+                    pe_c.reshape(t_pad, b_sz)[:t_len],
+                )
+                return {"M": M_f, "M_anchor": Ma_f, "cum_decay": cd_f, "chunk_phase": ph_f}, outs
+
+            if use_wy_chunking:
+                final_mem_state, (post_y_seq, r_nowrite_seq, eff_eta_seq, dn_seq, fm_seq, fx_seq, prior_err_seq) = jax.lax.cond(
+                    jnp.all(init_state["chunk_phase"] == 0), _chunk_anchor_wy, _chunk_anchor_serial, None
+                )
             else:
-                keep_b = jnp.ones((b_sz, nb), dtype=jnp.float32)
-                r_nw = jnp.zeros((b_sz,), dtype=jnp.float32)
+                final_mem_state, (post_y_seq, r_nowrite_seq, eff_eta_seq, dn_seq, fm_seq, fx_seq, prior_err_seq) = _chunk_anchor_serial(None)
+        else:
+            def _lean_surprise_step(
+                M_prev: Array,
+                xs: tuple[Array, Array, Array, Array, Array, Array, Array, Array, Array, Array],
+            ) -> tuple[Array, tuple[Array, Array, Array, Array, Array, Array, Array]]:
+                q_t, k_t, v_t, dec_t, c_t, xsq_t, pmh_t, plog_t, vld_t, rst_t = xs
+                M_prev = jnp.where(rst_t[:, None, None, None, None], jnp.zeros_like(M_prev), M_prev)
+                M_tilde = M_prev * dec_t[:, :, :, None, None]
 
-            raw_eta = route_raw * keep_b[:, :, None]
-            if spec.force_write_floor > 0.0:
-                fl = float(spec.force_write_floor)
-                raw_eta = fl + (1.0 - fl) * raw_eta
-            if spec.use_learned_routing:
-                eta = raw_eta * vld_t[:, None, None]
-            else:
-                shared = jnp.mean(raw_eta, axis=1, keepdims=True)
-                eta = jnp.broadcast_to(shared, (b_sz, nb, nh)) * vld_t[:, None, None]
+                # Exact causal read-before-write surprise error via hoisted Gram identity (ZERO d-dim matmul!)
+                prior_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, q_t, precision=fp32_prec)
+                prior_y = _soft_head_norm_step(prior_y_bnhv)  # [B, m]
+                y_G_y = jnp.sum(jnp.matmul(prior_y, G_P, precision=fp32_prec) * prior_y, axis=-1)
+                sq_err = jnp.maximum(xsq_t - 2.0 * jnp.sum(c_t * prior_y, axis=-1) + y_G_y, 0.0)
+                prior_err = jnp.sqrt(sq_err * inv_d + 1e-6)
+                err_feat = jnp.log1p(prior_err)
 
-            ret_k = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, k_t, precision=fp32_prec)
-            dM = jnp.einsum("bnh,bnhv,bnhk->bnhvk", eta, v_t - ret_k, k_t, precision=fp32_prec)
-            M_next = M_tilde + dM
+                mh = jax.nn.silu(pmh_t + err_feat[:, None] * mw1_err[None, :])
+                r_logits = plog_t + err_feat[:, None] * mskip_err[None, :] + jnp.matmul(mh, mw2, precision=fp32_prec)
 
-            post_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_next, q_t, precision=fp32_prec)
-            post_y = _soft_head_norm_step(post_y_bnhv)  # [B, m]
-            d_norm = jnp.sqrt(jnp.mean(dM * dM, axis=(1, 2, 3, 4)) + 1e-12)
-            frob_h = jnp.sqrt(jnp.sum(M_next * M_next, axis=(3, 4)) + 1e-12)
-            return M_next, (
-                post_y,
-                r_nw,
-                jnp.mean(eta, axis=(1, 2)),
-                d_norm,
-                jnp.mean(frob_h, axis=(1, 2)),
-                jnp.max(frob_h, axis=(1, 2)),
-                prior_err,
+                route_raw = jax.nn.sigmoid(r_logits[:, :h_tot].reshape(b_sz, nb, nh))
+                if spec.use_nowrite_option:
+                    r_nw_b = jax.nn.sigmoid(r_logits[:, h_tot:])
+                    keep_b = 1.0 - r_nw_b
+                    r_nw = jnp.mean(r_nw_b, axis=-1)
+                else:
+                    keep_b = jnp.ones((b_sz, nb), dtype=jnp.float32)
+                    r_nw = jnp.zeros((b_sz,), dtype=jnp.float32)
+
+                raw_eta = route_raw * keep_b[:, :, None]
+                if spec.force_write_floor > 0.0:
+                    fl = float(spec.force_write_floor)
+                    raw_eta = fl + (1.0 - fl) * raw_eta
+                if spec.use_learned_routing:
+                    eta = raw_eta * vld_t[:, None, None]
+                else:
+                    shared = jnp.mean(raw_eta, axis=1, keepdims=True)
+                    eta = jnp.broadcast_to(shared, (b_sz, nb, nh)) * vld_t[:, None, None]
+
+                ret_k = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, k_t, precision=fp32_prec)
+                dM = jnp.einsum("bnh,bnhv,bnhk->bnhvk", eta, v_t - ret_k, k_t, precision=fp32_prec)
+                M_next = M_tilde + dM
+
+                post_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_next, q_t, precision=fp32_prec)
+                post_y = _soft_head_norm_step(post_y_bnhv)  # [B, m]
+                d_norm = jnp.sqrt(jnp.mean(dM * dM, axis=(1, 2, 3, 4)) + 1e-12)
+                frob_h = jnp.sqrt(jnp.sum(M_next * M_next, axis=(3, 4)) + 1e-12)
+                return M_next, (
+                    post_y,
+                    r_nw,
+                    jnp.mean(eta, axis=(1, 2)),
+                    d_norm,
+                    jnp.mean(frob_h, axis=(1, 2)),
+                    jnp.max(frob_h, axis=(1, 2)),
+                    prior_err,
+                )
+
+            M_fin, (post_y_seq, r_nowrite_seq, eff_eta_seq, dn_seq, fm_seq, fx_seq, prior_err_seq) = jax.lax.scan(
+                _lean_surprise_step,
+                M_init,
+                (q_seq, k_seq, v_seq, decay_seq, c_seq, xn_sq_seq, pre_mh_seq, pre_logits_seq, valid_f, rst_b),
             )
-
-        M_fin, (post_y_seq, r_nowrite_seq, eff_eta_seq, dn_seq, fm_seq, fx_seq, prior_err_seq) = jax.lax.scan(
-            _lean_surprise_step,
-            M_init,
-            (q_seq, k_seq, v_seq, decay_seq, c_seq, xn_sq_seq, pre_mh_seq, pre_logits_seq, valid_f, rst_b),
-        )
+            final_mem_state = {"M": M_fin}
 
     # --- HOISTED POST-SCAN OUTPUT PROJECTION (ONE MXU / TensorCore GEMM!) ---
     out_seq = _dense(post_y_seq, params["w_o"], matmul_dtype) * valid_f[..., None]
@@ -665,7 +882,7 @@ def apply_matrix_memory_seq_fast(
         "prior_error": prior_err_seq,
         "key_norm": jnp.sqrt(jnp.sum(k_seq * k_seq, axis=-1)).reshape(t_len, b_sz, h_tot),
     }
-    return out_seq, {"M": M_fin}, diags
+    return out_seq, final_mem_state, diags
 
 
 # ---------------------------------------------------------------------------

@@ -262,6 +262,9 @@ def main() -> None:
     ap.add_argument("--n-train", type=int, default=160)
     ap.add_argument("--n-dev", type=int, default=64)
     ap.add_argument("--n-test", type=int, default=64)
+    ap.add_argument("--comparator-layers", type=int, default=12)
+    ap.add_argument("--comparator-window", type=int, default=64)
+    ap.add_argument("--codec-rf-ticks", type=int, default=1020)
     ap.add_argument("--device", type=str, default="auto")
     args = ap.parse_args()
 
@@ -269,6 +272,7 @@ def main() -> None:
     engine = CausalCodecEngine(device=args.device)
     counts = {"train": args.n_train, "dev": args.n_dev, "test": args.n_test}
     seeds = {"train": 32101, "dev": 32102, "test": 32103}
+    tag = f"L{args.comparator_layers}_Weq{args.comparator_window}_additive"
     receipt: dict[str, Any] = {}
     for sp in [s.strip() for s in args.splits.split(",") if s.strip()]:
         receipt[sp] = generate_split_overwrite_shard(
@@ -277,11 +281,14 @@ def main() -> None:
             bg_splits,
             split=sp,
             n_episodes=counts[sp],
-            out_path=args.out_dir / f"real_speech_overwrite_{sp}_L12_Weq64_additive.npz",
+            comparator_layers=args.comparator_layers,
+            comparator_window=args.comparator_window,
+            codec_rf_ticks=args.codec_rf_ticks,
+            out_path=args.out_dir / f"real_speech_overwrite_{sp}_{tag}.npz",
             seed=seeds[sp],
         )
-        print(f"[RSO] {sp}: {receipt[sp]}", flush=True)
-    (args.out_dir / "real_speech_overwrite_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        print(f"[RSO {tag}] {sp}: {receipt[sp]}", flush=True)
+    (args.out_dir / f"real_speech_overwrite_{tag}_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
 
 
 if __name__ == "__main__":

@@ -274,7 +274,14 @@ def reset_core_state_rows(state: list[PyTree], reset_mask: Array, spec: SLWMv3Sp
         shape = (b,) + (1,) * (cur_arr.ndim - 1)
         return jnp.where(rm.reshape(shape), f_arr, cur_arr)
 
-    return jax.tree_util.tree_map(_select_leaf, fresh, state)
+    out_state = jax.tree_util.tree_map(_select_leaf, fresh, state)
+    # For Chunk-Anchor Surprise WY (`surprise_chunk_size > 1`), `chunk_phase` is purely the global stream clock
+    # `t mod C` (zero data from prior episodes; `M` and `M_anchor` ARE zeroed bit-exactly!), preserving bit-exact
+    # equivalence with fixed-grid WY chunks across arbitrary mid-chunk episode resets!
+    if spec.backbone_type in MATRIX_MEMORY_BACKBONES and spec.use_surprise_router and spec.surprise_chunk_size > 1:
+        for li in range(spec.n_layers):
+            out_state[li]["mem"]["chunk_phase"] = state[li]["mem"]["chunk_phase"]
+    return out_state
 
 
 def step_core(

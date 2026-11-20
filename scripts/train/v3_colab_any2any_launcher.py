@@ -10,6 +10,7 @@ on Google TPU `v6e-1` (`5.09 CU/hr`) or NVIDIA `H100`/`A100` with guaranteed ver
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import hashlib
 import io
@@ -41,6 +42,7 @@ TRAIN_BUNDLE_FILES = tuple(
             *PILOT_BUNDLE_FILES,
             "data/v3_unified_shards.py",
             "models/v3/any2any_heads.py",
+            "evals/v3_external_sota_suite.py",
             "evals/v3_sota_benchmarks.py",
             "scripts/train/v3_any2any_trainer.py",
             "scripts/train/v3_wave_b_policy_gate.py",
@@ -50,10 +52,10 @@ TRAIN_BUNDLE_FILES = tuple(
 )
 
 
-def _upload_file_chunked(
+def _upload_shards_batch_chunked(
     session_name: str,
-    local_path: Path,
-    remote_path: str,
+    shard_files: list[Path],
+    local_root: Path,
     *,
     cfg_path: Path,
     log_dir: Path,
@@ -62,77 +64,110 @@ def _upload_file_chunked(
     t_alloc: float,
     chunk_bytes: int = 32 * 1024 * 1024,
 ) -> None:
-    """Upload arbitrary-size files cleanly across Colab Jupyter `/api/contents` 50-80 MiB JSON body caps."""
-    sz = local_path.stat().st_size
-    if sz <= chunk_bytes:
+    """Stateless 2-stream HTTPS PUT upload of all shards in <=32 MiB parts + ONE retried SHA-256 assembly call.
+
+    Completely immune to WebSocket drops during upload (zero WebSocket traffic while uploading parts!)
+    and handles arbitrary shard sizes (`100 MiB .. 4.1 GiB`) cleanly across Jupyter `/api/contents` caps.
+    """
+    assembly_plan: list[dict[str, Any]] = []
+
+    def _put_one(local_tmp: Path, rem_p: str) -> None:
         last_err = ""
-        for attempt in range(1, 4):
-            up = run_colab("upload", "-s", session_name, str(local_path), remote_path, cfg_path=cfg_path, timeout=300)
+        for attempt in range(1, 5):
+            up = run_colab("upload", "-s", session_name, str(local_tmp), rem_p, cfg_path=cfg_path, timeout=300)
             if up.returncode == 0:
                 return
             last_err = up.stderr or up.stdout
             time.sleep(3.0 * attempt)
-        raise RuntimeError(f"Shard upload failed for {remote_path}: {last_err}")
+        raise RuntimeError(f"Upload failed for {rem_p}: {last_err}")
 
-    # Stream file into <=32 MiB binary parts, upload each cleanly, then concatenate & verify SHA-256 remotely!
-    sha = hashlib.sha256()
-    part_paths_remote: list[str] = []
-    with local_path.open("rb") as fin:
-        idx = 0
-        while True:
-            buf = fin.read(chunk_bytes)
-            if not buf:
-                break
-            sha.update(buf)
-            rem_part = f"/content/_part_{idx:03d}.bin"
-            with tempfile.NamedTemporaryFile(suffix=".bin", delete=False) as tf:
+    for sf_idx, sf in enumerate(shard_files):
+        rel = sf.relative_to(local_root).as_posix()
+        remote_p = f"/content/shards/{rel}"
+        sz = sf.stat().st_size
+        sz_mb = sz / (1024.0**2)
+        print(f"[WAVE_LAUNCH] Uploading shard {sf_idx+1}/{len(shard_files)}: {rel} ({sz_mb:.1f} MiB)...", flush=True)
+        if sz <= chunk_bytes:
+            _put_one(sf, remote_p)
+            continue
+
+        # Split locally into <=32 MiB parts and upload 2 parts concurrently via stateless HTTPS PUT
+        sha = hashlib.sha256()
+        part_jobs: list[tuple[Path, str]] = []
+        with sf.open("rb") as fin:
+            p_idx = 0
+            while True:
+                buf = fin.read(chunk_bytes)
+                if not buf:
+                    break
+                sha.update(buf)
+                tf = tempfile.NamedTemporaryFile(suffix=".bin", delete=False)
                 tf.write(buf)
-                tmp_p = Path(tf.name)
-            try:
-                ok = False
-                last_err = ""
-                for attempt in range(1, 4):
-                    up = run_colab("upload", "-s", session_name, str(tmp_p), rem_part, cfg_path=cfg_path, timeout=300)
-                    if up.returncode == 0:
-                        ok = True
-                        break
-                    last_err = up.stderr or up.stdout
-                    time.sleep(4.0 * attempt)
-                if not ok:
-                    raise RuntimeError(f"Part {idx} upload failed for {remote_path}: {last_err}")
-            finally:
-                tmp_p.unlink(missing_ok=True)
-            part_paths_remote.append(rem_part)
-            idx += 1
+                tf.close()
+                part_jobs.append((Path(tf.name), f"/content/_part_s{sf_idx:02d}_{p_idx:03d}.bin"))
+                p_idx += 1
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                futs = [pool.submit(_put_one, lp, rp) for lp, rp in part_jobs]
+                for f in futs:
+                    f.result()
+        finally:
+            for lp, _ in part_jobs:
+                lp.unlink(missing_ok=True)
+        assembly_plan.append(
+            {
+                "dst": remote_p,
+                "size": int(sz),
+                "sha256": sha.hexdigest(),
+                "parts": [rp for _, rp in part_jobs],
+            }
+        )
 
-    expected_sha = sha.hexdigest()
+    if not assembly_plan:
+        return
+
     asm_py = (
         "import hashlib, os\n"
-        f"parts = {json.dumps(part_paths_remote)}\n"
-        f"dst = {json.dumps(remote_path)}\n"
-        "os.makedirs(os.path.dirname(dst), exist_ok=True)\n"
-        "h = hashlib.sha256()\n"
-        "tot = 0\n"
-        "with open(dst, 'wb') as fout:\n"
-        "    for pp in parts:\n"
-        "        with open(pp, 'rb') as fin:\n"
-        "            b = fin.read()\n"
-        "        fout.write(b)\n"
-        "        h.update(b)\n"
-        "        tot += len(b)\n"
-        "        os.remove(pp)\n"
-        f"assert tot == {sz}, f'size mismatch {{tot}} != {sz}'\n"
-        f"assert h.hexdigest() == {json.dumps(expected_sha)}, 'sha256 mismatch'\n"
-        "print('CHUNK_ASM_OK', dst, tot, flush=True)\n"
+        f"plan = {json.dumps(assembly_plan)}\n"
+        "for item in plan:\n"
+        "    dst = item['dst']\n"
+        "    os.makedirs(os.path.dirname(dst), exist_ok=True)\n"
+        "    if os.path.isfile(dst) and os.path.getsize(dst) == item['size']:\n"
+        "        continue\n"
+        "    h = hashlib.sha256()\n"
+        "    tot = 0\n"
+        "    with open(dst, 'wb') as fout:\n"
+        "        for pp in item['parts']:\n"
+        "            with open(pp, 'rb') as fin:\n"
+        "                b = fin.read()\n"
+        "            fout.write(b)\n"
+        "            h.update(b)\n"
+        "            tot += len(b)\n"
+        "            os.remove(pp)\n"
+        "    assert tot == item['size'], f'size mismatch on {dst}: {tot} != {item[\"size\"]}'\n"
+        "    assert h.hexdigest() == item['sha256'], f'sha256 mismatch on {dst}'\n"
+        "print('ALL_SHARDS_ASM_OK', len(plan), flush=True)\n"
     )
-    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-        session_name, asm_py, cfg_path=cfg_path, log_dir=log_dir,
-        log_prefix=f"asm_{local_path.stem}",
-        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
-        t_alloc_start=t_alloc, phase_timeout_s=300, exec_timeout_s=240,
-    )
-    if rc != 0 or tripped or "CHUNK_ASM_OK" not in out:
-        raise RuntimeError(f"Chunk assembly failed for {remote_path} rc={rc}: {err[-400:]}")
+    last_err = ""
+    for attempt in range(1, 4):
+        run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+        time.sleep(5.0)
+        try:
+            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                session_name, asm_py, cfg_path=cfg_path, log_dir=log_dir,
+                log_prefix=f"asm_all_try{attempt}",
+                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
+                t_alloc_start=t_alloc, phase_timeout_s=180, exec_timeout_s=150,
+            )
+            if rc == 0 and not tripped and "ALL_SHARDS_ASM_OK" in out:
+                print(out.strip(), flush=True)
+                return
+            last_err = f"rc={rc} err={err[-400:]}"
+        except Exception as exc:
+            last_err = repr(exc)
+        print(f"[WAVE_LAUNCH] Shard assembly attempt {attempt}/3 retry after: {last_err}", flush=True)
+        time.sleep(8.0)
+    raise RuntimeError(f"Batch shard assembly failed after 3 attempts: {last_err}")
 
 
 def _build_code_tar(repo_root: Path) -> bytes:
@@ -266,16 +301,11 @@ def main() -> None:
             shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
         if not shard_files:
             raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
-        for sf in shard_files:
-            rel = sf.relative_to(args.local_shard_dir).as_posix()
-            remote_p = f"/content/shards/{rel}"
-            sz_mb = sf.stat().st_size / (1024.0**2)
-            print(f"[WAVE_LAUNCH] Uploading shard {rel} ({sz_mb:.1f} MiB)...", flush=True)
-            _upload_file_chunked(
-                session_name, sf, remote_p,
-                cfg_path=cfg_path, log_dir=log_dir,
-                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
-            )
+        _upload_shards_batch_chunked(
+            session_name, shard_files, args.local_shard_dir,
+            cfg_path=cfg_path, log_dir=log_dir,
+            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+        )
 
         arms = [a.strip() for a in args.arms.split(",") if a.strip()]
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
@@ -283,8 +313,9 @@ def main() -> None:
 
         for arm in arms:
             for seed in seeds:
-                use_wy = (arm == "single_bank_gated_deltanet_wy")
-                bb_name = "single_bank_gated_deltanet" if use_wy else arm
+                use_wy = arm.endswith("_wy") or ("_c16" in arm) or ("_c32" in arm)
+                surprise_c = 16 if "_c16" in arm else (32 if "_c32" in arm else 1)
+                bb_name = arm.replace("_wy", "").replace("_c16", "").replace("_c32", "")
                 tag = f"{args.profile}_{arm}_s{seed}"
                 argv = [
                     "scripts/train/v3_any2any_trainer.py",
@@ -300,6 +331,8 @@ def main() -> None:
                     "--seed", str(seed),
                     "--out-dir", "/content/out",
                 ]
+                if surprise_c > 1:
+                    argv.extend(["--surprise-chunk-size", str(surprise_c)])
                 if use_wy:
                     argv.append("--use-wy-chunking")
                 if args.include_test_shards:
@@ -342,12 +375,16 @@ def main() -> None:
                 for attempt in range(1, 3):
                     run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
                     time.sleep(6.0)
-                    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                        session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
-                        log_prefix=f"arm_{arm}_s{seed}_try{attempt}",
-                        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                        t_alloc_start=t_alloc, phase_timeout_s=7200, exec_timeout_s=6600,
-                    )
+                    try:
+                        rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                            session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
+                            log_prefix=f"arm_{arm}_s{seed}_try{attempt}",
+                            bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                            t_alloc_start=t_alloc, phase_timeout_s=7200, exec_timeout_s=6600,
+                        )
+                    except TimeoutError as exc:
+                        err = repr(exc)
+                        rc = 124
                     if rc == 0 or tripped:
                         break
                     if ("Connection was lost" in err) or ("Connection was lost" in out) or ("WebSocket" in err):

@@ -325,12 +325,18 @@ def init_matrix_memory_params(key: Array, spec: SLWMv3Spec) -> PyTree:
 
 def init_matrix_memory_state(spec: SLWMv3Spec, batch_size: int) -> PyTree:
     """Allocate strict float32 O(1) matrix memory bank state `M: float32[B, n_banks, H_mem, d_v, d_k]`."""
-    return {
-        "M": jnp.zeros(
-            (batch_size, spec.n_banks, spec.n_mem_heads, spec.mem_val_dim, spec.mem_key_dim),
-            dtype=jnp.float32,
-        )
-    }
+    m_zero = jnp.zeros(
+        (batch_size, spec.n_banks, spec.n_mem_heads, spec.mem_val_dim, spec.mem_key_dim),
+        dtype=jnp.float32,
+    )
+    if spec.use_surprise_router and spec.surprise_chunk_size > 1:
+        return {
+            "M": m_zero,
+            "M_anchor": jnp.zeros_like(m_zero),
+            "cum_decay": jnp.ones((batch_size, spec.n_banks, spec.n_mem_heads), dtype=jnp.float32),
+            "chunk_phase": jnp.zeros((batch_size,), dtype=jnp.int32),
+        }
+    return {"M": m_zero}
 
 
 def step_matrix_memory(
@@ -393,12 +399,28 @@ def step_matrix_memory(
         r_banks_eff = jnp.mean(eta, axis=-1)
         r_nowrite = jnp.zeros((b,), dtype=jnp.float32)
         prior_err = jnp.zeros((b,), dtype=jnp.float32)
+        next_extra_state: PyTree = {}
     else:
         mod_idx = jnp.clip(modality_id_t, 0, spec.n_modalities - 1)
         mod_e = params["mod_emb"][mod_idx]
 
         # 2. READ-BEFORE-WRITE: strict fp32 causal prior readout & retrieval residual strictly BEFORE writing!
-        prior_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, q, precision=fp32_prec)
+        if spec.surprise_chunk_size > 1:
+            phase = state["chunk_phase"].astype(jnp.int32)  # [B]
+            is_chunk_start = phase == 0
+            M_anc = jnp.where(is_chunk_start[:, None, None, None, None], M_prev, state["M_anchor"].astype(jnp.float32))
+            c_dec = jnp.where(is_chunk_start[:, None, None], jnp.ones_like(decay), state["cum_decay"].astype(jnp.float32))
+            c_dec_next = c_dec * decay
+            prior_y_bnhv = c_dec_next[..., None] * jnp.einsum("bnhvk,bnhk->bnhv", M_anc, q, precision=fp32_prec)
+            next_phase = (phase + 1) % int(spec.surprise_chunk_size)
+            next_extra_state = {
+                "M_anchor": M_anc,
+                "cum_decay": c_dec_next,
+                "chunk_phase": next_phase,
+            }
+        else:
+            prior_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, q, precision=fp32_prec)
+            next_extra_state = {}
         prior_y = _soft_head_norm(prior_y_bnhv)
         x_prior_hat = jnp.matmul(prior_y, params["w_prior_proj"])
         prior_err = jnp.sqrt(jnp.mean((xn - x_prior_hat) ** 2, axis=-1) + 1e-6)
@@ -463,7 +485,8 @@ def step_matrix_memory(
         "prior_error": prior_err,
         "key_norm": jnp.sqrt(jnp.sum(k * k, axis=-1)).reshape(b, h_tot),
     }
-    return out, {"M": M_next}, diags
+    next_state = {"M": M_next, **next_extra_state}
+    return out, next_state, diags
 
 
 # ---------------------------------------------------------------------------

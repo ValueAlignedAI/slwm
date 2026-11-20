@@ -32,6 +32,10 @@ import numpy as np
 import optax
 
 from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, LoadedSparseShard, decode_utf8_bytes
+from evals.v3_external_sota_suite import (
+    evaluate_esc50_classification,
+    evaluate_librispeech_wer,
+)
 from evals.v3_sota_benchmarks import (
     evaluate_code_solution_bpb,
     evaluate_cross_modal_condition_shuffle,
@@ -221,6 +225,7 @@ def main() -> None:
     ap.add_argument("--backbone", type=str, default="slwm_v3_routed")
     ap.add_argument("--match-anchor", action="store_true", help="Match comparator params/bytes to slwm_v3_routed.")
     ap.add_argument("--use-wy-chunking", action="store_true")
+    ap.add_argument("--surprise-chunk-size", type=int, default=1, help="1=exact tick-by-tick; C>1=exact causal Chunk-Anchor Surprise WY.")
     ap.add_argument("--shard-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded"))
     ap.add_argument("--steps", type=int, default=2000)
     ap.add_argument("--seq-len", type=int, default=512)
@@ -237,6 +242,9 @@ def main() -> None:
         spec = build_wave_a_comparator_specs(args.profile, match_params_to_anchor=True)[args.backbone]
     else:
         spec = make_slwm_v3_spec(args.profile, backbone_type=args.backbone)
+    if int(args.surprise_chunk_size) > 1 and spec.use_surprise_router:
+        from dataclasses import replace as dc_replace
+        spec = dc_replace(spec, surprise_chunk_size=int(args.surprise_chunk_size))
 
     is_cpu = str(jax.devices()[0].platform).lower() == "cpu"
     mm_dtype = jnp.float32 if is_cpu else jnp.bfloat16
@@ -378,6 +386,13 @@ def main() -> None:
     eval_cm_seq = max(args.seq_len, 768)
     eval_bsz = min(8, args.batch_size)
     # Strictly DEV / VALIDATION frozen evaluations (ALWAYS safe during Discovery & Hyperparameter selection!)
+    def _rso_path(split: str) -> Path:
+        if spec.n_layers >= 16:
+            p16 = args.shard_dir / f"real_speech_overwrite/real_speech_overwrite_{split}_L16_Weq128_additive.npz"
+            if p16.is_file():
+                return p16
+        return args.shard_dir / f"real_speech_overwrite/real_speech_overwrite_{split}_L12_Weq64_additive.npz"
+
     evals: dict[str, Any] = {
         "text_code_dev": _safe_eval("text_code_dev", lambda: evaluate_text_sota_shard(
             all_params, spec, args.shard_dir / "text_code/text_code_dev_v1.npz",
@@ -425,10 +440,18 @@ def main() -> None:
         "real_speech_overwrite_dev_additive_rf": _safe_eval("rso_dev", lambda: evaluate_real_speech_overwrite_frozen_core(
             all_params["core"],
             spec,
-            args.shard_dir / "real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz",
-            args.shard_dir / "real_speech_overwrite/real_speech_overwrite_dev_L12_Weq64_additive.npz",
+            _rso_path("train"),
+            _rso_path("dev"),
             matmul_dtype=mm_dtype,
             use_wy_chunking=args.use_wy_chunking,
+        )),
+        "esc50_dev_50class_probe": _safe_eval("esc50_dev", lambda: evaluate_esc50_classification(
+            all_params["core"], spec, args.shard_dir / "audio_text/esc50_train_f14.npz",
+            eval_shard_path=None, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )),
+        "librispeech_dev_clean_wer": _safe_eval("librispeech_dev_wer", lambda: evaluate_librispeech_wer(
+            all_params, spec, args.shard_dir / "audio_text/librispeech_dev_clean.npz",
+            max_utterances=64, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
     }
 
@@ -481,11 +504,20 @@ def main() -> None:
                 seq_len=args.seq_len, batch_size=eval_bsz,
                 matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
             )),
+            "esc50_test_f5_50class_probe": _safe_eval("esc50_test_50cls", lambda: evaluate_esc50_classification(
+                all_params["core"], spec, args.shard_dir / "audio_text/esc50_train_f14.npz",
+                eval_shard_path=args.shard_dir / "audio_text/esc50_test_f5.npz",
+                matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "librispeech_test_clean_wer": _safe_eval("librispeech_test_wer", lambda: evaluate_librispeech_wer(
+                all_params, spec, args.shard_dir / "audio_text/librispeech_test_clean.npz",
+                max_utterances=128, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
             "real_speech_overwrite_test_additive_rf": _safe_eval("rso_test", lambda: evaluate_real_speech_overwrite_frozen_core(
                 all_params["core"],
                 spec,
-                args.shard_dir / "real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz",
-                args.shard_dir / "real_speech_overwrite/real_speech_overwrite_test_L12_Weq64_additive.npz",
+                _rso_path("train"),
+                _rso_path("test"),
                 matmul_dtype=mm_dtype,
                 use_wy_chunking=args.use_wy_chunking,
             )),

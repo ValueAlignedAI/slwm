@@ -97,6 +97,7 @@ class SLWMv3Spec:
     tie_bank_timescales: bool = False
     use_surprise_router: bool = True  # False for faithful single-bank Gated DeltaNet!
     force_write_floor: float = 0.0  # >0.0 for preregistered forced-write control (eta >= floor on valid ticks)
+    surprise_chunk_size: int = 1  # 1 = exact tick-by-tick surprise; C > 1 = causal Chunk-Anchor Surprise WY (exact online==offline!)
 
     # Edge packet interface dimensions (identical across ALL compared backbones!)
     n_modalities: int = 5  # 0:video, 1:audio, 2:text_byte, 3:proprio_action, 4:signal_probe
@@ -169,6 +170,10 @@ def compute_core_streaming_state_bytes(spec: SLWMv3Spec, batch_size: int = 1) ->
 
     if spec.backbone_type in MATRIX_MEMORY_BACKBONES:
         mem_per_layer = spec.n_banks * spec.n_mem_heads * spec.mem_val_dim * spec.mem_key_dim * mem_elem_bytes
+        if spec.use_surprise_router and spec.surprise_chunk_size > 1:
+            # Transparently account for exact causal chunk-anchor state: M_anchor + cum_decay + int32 chunk_phase!
+            mem_per_layer = 2 * mem_per_layer + spec.n_banks * spec.n_mem_heads * 4
+            book_per_layer += 4
     elif spec.backbone_type == "sliding_window_gqa":
         mem_per_layer = 0
     elif spec.backbone_type == "diag_ssm":
