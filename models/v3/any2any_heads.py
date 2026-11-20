@@ -140,7 +140,8 @@ def compute_any2any_multimodal_loss(
     rst = batch.get("reset_mask", jnp.zeros((t_len, b_sz), dtype=jnp.bool_)).astype(jnp.bool_)
     ep_id = jnp.cumsum(rst.astype(jnp.int32), axis=0)
     same_ep = (ep_id[:-1] == ep_id[1:]).astype(jnp.float32)  # [T-1, B]
-    targ_vld = batch.get("target_valid_mask", batch["valid_mask"]).astype(jnp.float32)[1:] * same_ep  # [T-1, B]
+    src_vld = batch["valid_mask"][:-1].astype(jnp.float32)  # Never supervise t -> t+1 from zeroed valid_mask[t] == 0!
+    targ_vld = batch.get("target_valid_mask", batch["valid_mask"]).astype(jnp.float32)[1:] * src_vld * same_ep  # [T-1, B]
 
     z_src = z_seq[:-1]  # [T-1, B, D]
     next_mod = batch["modality_id"][1:].astype(jnp.int32)  # [T-1, B]
@@ -155,18 +156,43 @@ def compute_any2any_multimodal_loss(
     txt_loss = jnp.sum(txt_ce_per * m_txt) / jnp.maximum(txt_cnt, 1.0)
     txt_has = (txt_cnt > 0.5).astype(jnp.float32)
 
-    # 2. Audio Mimi RVQ-0..K-1 Cross-Entropy (modality_id == 1)
+    # 2. Audio Mimi RVQ-0..K-1 Cross-Entropy (modality_id == 1) — time-chunked (`C=64`) to cut peak HBM ~8x!
     k_aud = int(n_pred_audio_codebooks)
     m_aud = targ_vld * (next_mod == 1).astype(jnp.float32)
     ha_p = heads_params["head_audio"]
-    aud_logits = _mm(rms_norm(z_src, ha_p["norm_w"]), ha_p["w"], matmul_dtype).reshape(
-        t_len - 1, b_sz, k_aud, spec.audio_vocab_size
-    ) + ha_p["bias"][None, None, :, :]
     aud_targets = jnp.clip(batch["audio_codes"][1:, :, :k_aud].astype(jnp.int32), 0, spec.audio_vocab_size - 1)
-    aud_ce_per = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(aud_logits, aud_targets), axis=-1)
     aud_cnt = jnp.sum(m_aud)
-    aud_loss = jnp.sum(aud_ce_per * m_aud) / jnp.maximum(aud_cnt, 1.0)
     aud_has = (aud_cnt > 0.5).astype(jnp.float32)
+
+    def _chunked_audio_ce(_: None) -> Array:
+        tm1 = t_len - 1
+        c_sz = min(64, max(1, tm1))
+        rem = tm1 % c_sz
+        pad_n = (c_sz - rem) if rem != 0 else 0
+        n_ch = (tm1 + pad_n) // c_sz
+        if pad_n > 0:
+            zp = jnp.concatenate([z_src, jnp.zeros((pad_n, b_sz, z_src.shape[-1]), dtype=z_src.dtype)], axis=0)
+            tp = jnp.concatenate([aud_targets, jnp.zeros((pad_n, b_sz, k_aud), dtype=jnp.int32)], axis=0)
+            mp = jnp.concatenate([m_aud, jnp.zeros((pad_n, b_sz), dtype=jnp.float32)], axis=0)
+        else:
+            zp, tp, mp = z_src, aud_targets, m_aud
+        zc = zp.reshape(n_ch, c_sz, b_sz, z_src.shape[-1])
+        tc = tp.reshape(n_ch, c_sz, b_sz, k_aud)
+        mc = mp.reshape(n_ch, c_sz, b_sz)
+
+        @jax.checkpoint
+        def _ce_chunk(acc: Array, xs: tuple[Array, Array, Array]) -> tuple[Array, None]:
+            z_i, t_i, m_i = xs
+            lg = _mm(rms_norm(z_i, ha_p["norm_w"]), ha_p["w"], matmul_dtype).reshape(
+                c_sz, b_sz, k_aud, spec.audio_vocab_size
+            ) + ha_p["bias"][None, None, :, :]
+            ce = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(lg, t_i), axis=-1)
+            return acc + jnp.sum(ce * m_i), None
+
+        tot_ce, _ = jax.lax.scan(_ce_chunk, jnp.asarray(0.0, dtype=jnp.float32), (zc, tc, mc))
+        return tot_ce / jnp.maximum(aud_cnt, 1.0)
+
+    aud_loss = jax.lax.cond(aud_cnt > 0.5, _chunked_audio_ce, lambda _: jnp.asarray(0.0, dtype=jnp.float32), None)
 
     # 3. Video Wan 2.1 Latent Patch Huber Loss (modality_id == 0)
     m_vid = targ_vld * (next_mod == 0).astype(jnp.float32)

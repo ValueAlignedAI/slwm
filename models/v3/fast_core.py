@@ -563,7 +563,9 @@ def apply_matrix_memory_seq_fast(
         # Inside `lax.scan`, ONLY the fixed-dim (19->32->n_out) epistemic/meta branch runs in fp32!
         P = params["w_prior_proj"].astype(jnp.float32)  # [m, d]
         G_P = jnp.matmul(P, P.T, precision=fp32_prec)  # [m, m] (independent of T & B!)
-        c_seq = _dense(xn, P.T, matmul_dtype)  # [T, B, m] (ONE hoisted MXU GEMM!)
+        # Strict fp32 Precision.HIGHEST for `c_seq = xn @ P.T` prevents bf16 cancellation in
+        # `||xn||^2 - 2 <c_t, y> + y^T G_P y` at wide profiles (`d = 1536..1920`).
+        c_seq = jnp.matmul(xn.astype(jnp.float32), P.T, precision=fp32_prec)  # [T, B, m]
         xn_sq_seq = jnp.sum(xn.astype(jnp.float32) ** 2, axis=-1)  # [T, B]
 
         c_h_seq = jax.nn.silu(_dense(xn, params["router_w1"], matmul_dtype) + params["router_b1"])

@@ -81,7 +81,7 @@ def audit_comparator_tables(frozen_edge_params: int = 92_988_448, frozen_edge_st
     all_byte_parity_ok = True
     confirmation_band_ok = True
 
-    for profile in ("pilot_d256", "discovery_45m", "confirmation_135m"):
+    for profile in ("pilot_d256", "discovery_45m", "confirmation_135m", "scale_700m", "scale_1b"):
         specs = build_wave_a_comparator_specs(profile, representation_mode="frozen_codec_edge", match_params_to_anchor=True)
         anchor = specs["slwm_v3_routed"]
         anchor_p = count_tree_params(jax.eval_shape(lambda k: init_slwm_v3_params(k, anchor), jax.random.PRNGKey(0)))

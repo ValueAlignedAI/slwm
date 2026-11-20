@@ -59,7 +59,13 @@ def _build_code_tar(repo_root: Path) -> bytes:
             data = fp.read_bytes()
             ti = tarfile.TarInfo(name=rel)
             ti.size = len(data)
+            ti.mode = 0o644
             tf.addfile(ti, io.BytesIO(data))
+        for init_rel in ("models/__init__.py", "data/__init__.py", "evals/__init__.py", "scripts/__init__.py", "scripts/train/__init__.py"):
+            ti = tarfile.TarInfo(name=init_rel)
+            ti.size = 0
+            ti.mode = 0o644
+            tf.addfile(ti, io.BytesIO(b""))
     return buf.getvalue()
 
 
@@ -72,8 +78,11 @@ def main() -> None:
     ap.add_argument("--steps", type=int, default=2000)
     ap.add_argument("--seq-len", type=int, default=512)
     ap.add_argument("--batch-size", type=int, default=32)
-    ap.add_argument("--base-lr", type=float, default=3e-3)
+    ap.add_argument("--grad-accum", type=int, default=1)
+    ap.add_argument("--base-lr", type=float, default=2e-3)
     ap.add_argument("--local-shard-dir", type=Path, required=True, help="Directory with pre-encoded `.npz` shards to upload.")
+    ap.add_argument("--include-test-shards", action="store_true", help="Upload sealed `*_test*.npz` shards & enable `--eval-sealed-test`.")
+    ap.add_argument("--download-ckpts", action="store_true", help="Download trained `.pkl` checkpoints before teardown.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
     ap.add_argument("--max-spend-cu", type=float, default=60.0)
@@ -161,8 +170,14 @@ def main() -> None:
         if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
             raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
-        # Upload all pre-encoded `.npz` shards preserving relative subdirectory structure
+        # Upload ONLY active pre-encoded `.npz` shards (strictly excluding sealed `*_test*.npz` unless `--include-test-shards`!)
         shard_files = sorted(args.local_shard_dir.rglob("*.npz"))
+        if not args.include_test_shards:
+            shard_files = [p for p in shard_files if "_test" not in p.name]
+        # Avoid uploading redundant 24m text shard if full train_v1 is present
+        has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
+        if has_full_tc:
+            shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
         if not shard_files:
             raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
         for sf in shard_files:
@@ -176,14 +191,13 @@ def main() -> None:
 
         arms = [a.strip() for a in args.arms.split(",") if a.strip()]
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
+        tripped = False
 
         for arm in arms:
             for seed in seeds:
-                # Fresh kernel before each arm to keep HBM and Host RAM clean while preserving XLA disk cache!
-                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                time.sleep(6.0)
                 use_wy = (arm == "single_bank_gated_deltanet_wy")
                 bb_name = "single_bank_gated_deltanet" if use_wy else arm
+                tag = f"{args.profile}_{arm}_s{seed}"
                 argv = [
                     "scripts/train/v3_any2any_trainer.py",
                     "--profile", args.profile,
@@ -193,18 +207,22 @@ def main() -> None:
                     "--steps", str(args.steps),
                     "--seq-len", str(args.seq_len),
                     "--batch-size", str(args.batch_size),
+                    "--grad-accum", str(args.grad_accum),
                     "--base-lr", str(args.base_lr),
                     "--seed", str(seed),
                     "--out-dir", "/content/out",
                 ]
                 if use_wy:
                     argv.append("--use-wy-chunking")
+                if args.include_test_shards:
+                    argv.append("--eval-sealed-test")
 
+                wy_flag = ", '--use-wy-chunking'" if use_wy else ""
                 wave_b_block = ""
                 if args.run_wave_b:
                     ckpt_rem = f"/content/out/{args.profile}_{bb_name}_s{seed}_ckpt.pkl"
                     wave_b_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--steps', '400', '--seed', '{seed + 1000}', '--out-dir', '/content/out']\n"
+                        f"sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '400', '--seed', '{seed + 1000}', '--out-dir', '/content/out'{wy_flag}]\n"
                         "from scripts.train import v3_wave_b_policy_gate\n"
                         "v3_wave_b_policy_gate.main()\n"
                     )
@@ -213,7 +231,7 @@ def main() -> None:
                 if args.run_wave_c:
                     ckpt_rem = f"/content/out/{args.profile}_{bb_name}_s{seed}_ckpt.pkl"
                     wave_c_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--steps', '250', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out']\n"
+                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '250', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out'{wy_flag}]\n"
                         "from scripts.train import v3_wave_c_decoders\n"
                         "v3_wave_c_decoders.main()\n"
                     )
@@ -232,30 +250,48 @@ def main() -> None:
                     + wave_c_block
                     + "print('ARM_RUN_OK', flush=True)\n"
                 )
-                rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                    session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
-                    log_prefix=f"arm_{arm}_s{seed}",
-                    bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                    t_alloc_start=t_alloc, phase_timeout_s=7200, exec_timeout_s=6600,
-                )
+                rc, out, err, tripped = 1, "", "", False
+                for attempt in range(1, 3):
+                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                    time.sleep(6.0)
+                    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                        session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
+                        log_prefix=f"arm_{arm}_s{seed}_try{attempt}",
+                        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                        t_alloc_start=t_alloc, phase_timeout_s=7200, exec_timeout_s=6600,
+                    )
+                    if rc == 0 or tripped:
+                        break
+                    if ("Connection was lost" in err) or ("Connection was lost" in out) or ("WebSocket" in err):
+                        print(f"[WAVE_LAUNCH] WebSocket drop on {tag} (attempt {attempt}/2); restarting kernel & retrying...", flush=True)
+                        time.sleep(10.0)
+                        continue
+                    break
+
                 print(out[-2000:], flush=True)
                 if err.strip():
                     print(err[-800:], flush=True)
                 # Download receipt JSONs & deterministic inference_showcase manifests immediately after each arm!
                 rec_fn = f"{args.profile}_{bb_name}_s{seed}_receipt.json"
-                out_rec = args.out_dir / f"{args.profile}_{arm}_s{seed}_receipt.json"
+                out_rec = args.out_dir / f"{tag}_receipt.json"
                 run_colab("download", "-s", session_name, f"/content/out/{rec_fn}", str(out_rec), cfg_path=cfg_path, timeout=120)
                 (args.out_dir / "inference_showcase").mkdir(parents=True, exist_ok=True)
                 for sh_tag in ("clotho_dev", "msrvtt_dev", "wikitext103_validation"):
                     rem_sc = f"/content/out/inference_showcase/showcase_manifest_dev_{args.profile}_{bb_name}_s{seed}_{sh_tag}.json"
-                    loc_sc = args.out_dir / "inference_showcase" / f"showcase_manifest_dev_{args.profile}_{arm}_s{seed}_{sh_tag}.json"
+                    loc_sc = args.out_dir / "inference_showcase" / f"showcase_manifest_dev_{tag}_{sh_tag}.json"
                     run_colab("download", "-s", session_name, rem_sc, str(loc_sc), cfg_path=cfg_path, timeout=60)
                 if args.run_wave_b:
-                    wb_fn = f"wave_b_policy_gate_{args.profile}_{bb_name}_receipt.json"
-                    run_colab("download", "-s", session_name, f"/content/out/{wb_fn}", str(args.out_dir / f"wave_b_{arm}_s{seed}_receipt.json"), cfg_path=cfg_path, timeout=120)
+                    wb_fn = f"wave_b_policy_gate_{tag}_receipt.json"
+                    run_colab("download", "-s", session_name, f"/content/out/{wb_fn}", str(args.out_dir / f"wave_b_{tag}_receipt.json"), cfg_path=cfg_path, timeout=120)
+                    run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_b_{tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_b_{tag}.json"), cfg_path=cfg_path, timeout=60)
                 if args.run_wave_c:
-                    wc_fn = f"wave_c_decoders_{args.profile}_{bb_name}_receipt.json"
-                    run_colab("download", "-s", session_name, f"/content/out/{wc_fn}", str(args.out_dir / f"wave_c_{arm}_s{seed}_receipt.json"), cfg_path=cfg_path, timeout=120)
+                    wc_fn = f"wave_c_decoders_{tag}_receipt.json"
+                    run_colab("download", "-s", session_name, f"/content/out/{wc_fn}", str(args.out_dir / f"wave_c_{tag}_receipt.json"), cfg_path=cfg_path, timeout=120)
+                    for sh_tag in ("clotho_dev", "msrvtt_dev"):
+                        run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json"), cfg_path=cfg_path, timeout=60)
+                if args.download_ckpts:
+                    ckpt_rem = f"/content/out/{args.profile}_{bb_name}_s{seed}_ckpt.pkl"
+                    run_colab("download", "-s", session_name, ckpt_rem, str(args.out_dir / f"{tag}_ckpt.pkl"), cfg_path=cfg_path, timeout=600)
                 if tripped:
                     print("[WAVE_LAUNCH] Budget watchdog tripped; halting cleanly.", flush=True)
                     break

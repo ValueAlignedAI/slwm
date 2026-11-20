@@ -37,7 +37,7 @@ from models.v3.any2any_heads import (
     compute_any2any_multimodal_loss,
     predict_any2any_heads,
 )
-from models.v3.core import init_core_state
+from models.v3.core import init_core_state, step_core
 from models.v3.fast_core import scan_core_fast
 from models.v3.objectives import apply_decoupled_probe, init_decoupled_probe_params
 from models.v3.spec import SLWMv3Spec
@@ -48,7 +48,7 @@ def evaluate_lambada_openai(
     spec: SLWMv3Spec,
     shard_path: Path,
     *,
-    max_passages: int = 1024,
+    max_passages: int | None = None,
     seq_len: int = 512,
     batch_size: int = 16,
     matmul_dtype: jnp.dtype = jnp.bfloat16,
@@ -62,7 +62,7 @@ def evaluate_lambada_openai(
     n_tot = sh.n_ticks
     rst = np.nonzero(d["reset_mask"])[0]
     ends = np.append(rst[1:], n_tot)
-    n_ep = min(max_passages, len(rst))
+    n_ep = len(rst) if max_passages is None else min(int(max_passages), len(rst))
 
     @jax.jit
     def _fwd_logits(ap, batch):
@@ -259,6 +259,227 @@ def evaluate_code_solution_bpb(
     }
 
 
+def _build_episode_aligned_batch(
+    sh: LoadedSparseShard,
+    ep_slices: list[tuple[int, int]],
+    spec: SLWMv3Spec,
+    seq_len: int,
+) -> dict[str, np.ndarray]:
+    """Pack complete episode prefixes starting cleanly at `reset_mask` into `[seq_len, B, ...]`."""
+    d = sh.data
+    b_sz = len(ep_slices)
+    mod = np.full((seq_len, b_sz), 2, dtype=np.int32)
+    dt = np.zeros((seq_len, b_sz), dtype=np.float32)
+    vld = np.zeros((seq_len, b_sz), dtype=np.float32)
+    rel = np.ones((seq_len, b_sz), dtype=np.float32)
+    rst = np.zeros((seq_len, b_sz), dtype=bool)
+    rst[0, :] = True
+    sp = np.zeros((seq_len, b_sz), dtype=np.int32)
+    tb = np.full((seq_len, b_sz), 256, dtype=np.int32)
+    ha = np.zeros((seq_len, b_sz), dtype=np.float32)
+    vid = np.zeros((seq_len, b_sz, spec.video_patch_dim), dtype=np.float32)
+    aud = np.zeros((seq_len, b_sz, spec.audio_codebooks), dtype=np.int32)
+    prop = np.zeros((seq_len, b_sz, spec.proprio_dim), dtype=np.float32)
+    act = np.zeros((seq_len, b_sz, spec.action_dim), dtype=np.float32)
+
+    for bi, (s, e) in enumerate(ep_slices):
+        L = min(seq_len, e - s)
+        idx = np.arange(s, s + L, dtype=np.int64)
+        mod[:L, bi] = d["modality_id"][idx].astype(np.int32)
+        dt[:L, bi] = d["dt_s"][idx].astype(np.float32)
+        vld[:L, bi] = d["valid_mask"][idx].astype(np.float32)
+        rel[:L, bi] = d["reliability"][idx].astype(np.float32)
+        sp[:L, bi] = d["spatial_pos"][idx].astype(np.int32)
+        tb[:L, bi] = d["text_byte"][idx].astype(np.int32)
+        ha[:L, bi] = d["has_true_action"][idx].astype(np.float32)
+        vi = d["video_idx"][idx]
+        vm = vi >= 0
+        if np.any(vm) and d["video_feat"].shape[0] > 0:
+            vid[:L, bi][vm] = d["video_feat"][vi[vm]].astype(np.float32)
+        ai = d["audio_idx"][idx]
+        am = ai >= 0
+        if np.any(am) and d["audio_codes"].shape[0] > 0:
+            aud[:L, bi][am] = d["audio_codes"][ai[am]].astype(np.int32)
+        pi = d["act_idx"][idx]
+        pm = pi >= 0
+        if np.any(pm) and d["proprio_feat"].shape[0] > 0:
+            prop[:L, bi][pm] = d["proprio_feat"][pi[pm]].astype(np.float32)
+            act[:L, bi][pm] = d["action_feat"][pi[pm]].astype(np.float32)
+
+    return {
+        "modality_id": mod,
+        "dt_s": dt,
+        "valid_mask": vld,
+        "target_valid_mask": vld.copy(),
+        "reliability": rel,
+        "reset_mask": rst,
+        "spatial_pos": sp,
+        "text_byte": tb,
+        "has_true_action": ha,
+        "video_feat": vid,
+        "audio_codes": aud,
+        "proprio_feat": prop,
+        "action_feat": act,
+        "probe_feat": np.zeros((seq_len, b_sz, spec.probe_dim), dtype=np.float32),
+    }
+
+
+def evaluate_cross_modal_condition_shuffle(
+    all_params: dict[str, Any],
+    spec: SLWMv3Spec,
+    shard_path: Path,
+    *,
+    source_mod: int,
+    target_mod: int,
+    seq_len: int = 768,
+    batch_size: int = 8,
+    max_episodes: int = 64,
+    matmul_dtype: jnp.dtype = jnp.bfloat16,
+    use_wy_chunking: bool = False,
+    seed: int = 8801,
+) -> dict[str, Any]:
+    """Zero-padding-free episode-aligned AGENTS.md §13.2 Causal Conditioning Proof.
+
+    Swaps ONLY real `source_mod` payloads (including `spatial_pos` for video) from a distinct donor
+    episode into each recipient episode's `source_mod` ticks while holding ALL recipient target
+    tokens, timestamps, masks, and target-history strictly fixed — mathematically guaranteeing
+    `causal_shuffle_gain == 0.0` for any source-blind model!
+    """
+    del seed
+    if not shard_path.is_file():
+        return {"skipped": f"missing {shard_path}"}
+    sh = LoadedSparseShard.load(shard_path)
+    d = sh.data
+    n_tot = sh.n_ticks
+    rst = np.nonzero(d["reset_mask"])[0]
+    if len(rst) == 0 or rst[0] != 0:
+        rst = np.insert(rst, 0, 0)
+    ends = np.append(rst[1:], n_tot)
+
+    # Filter to episodes where BOTH source_mod and target_mod exist inside `eval_len` and source precedes target!
+    eval_len = int(seq_len)
+    valid_eps: list[tuple[int, int]] = []
+    for s, e in zip(rst, ends):
+        s_i, e_i = int(s), int(e)
+        # If episode is longer than eval_len, align window so both source tail and target head fit!
+        if e_i - s_i > eval_len:
+            m_full = d["modality_id"][s_i:e_i]
+            t_pos = np.where(m_full == target_mod)[0]
+            s_pos = np.where(m_full == source_mod)[0]
+            if len(t_pos) < 4 or len(s_pos) < 4:
+                continue
+            # Anchor window ending after target_mod starts, keeping preceding source_mod!
+            first_t = int(t_pos[0])
+            if first_t >= eval_len - 16:
+                win_s = max(0, first_t - (eval_len * 3 // 4))
+                s_i = s_i + win_s
+                e_i = min(e_i, s_i + eval_len)
+            else:
+                e_i = s_i + eval_len
+        m_ep = d["modality_id"][s_i:e_i]
+        s_pos = np.where(m_ep == source_mod)[0]
+        t_pos = np.where(m_ep == target_mod)[0]
+        if len(s_pos) >= 4 and len(t_pos) >= 4 and int(s_pos[0]) < int(t_pos[-1]):
+            valid_eps.append((s_i, e_i))
+        if len(valid_eps) >= max_episodes:
+            break
+
+    if len(valid_eps) < 2:
+        return {"shard": shard_path.name, "n_evaluated_episodes": 0, "causal_conditioning_verified": False}
+
+    @jax.jit
+    def _eval_per_item(ap, batch_in, batch_target):
+        b = batch_in["valid_mask"].shape[1]
+        z, _, _ = scan_core_fast(
+            ap["core"],
+            init_core_state(spec, b),
+            batch_in,
+            spec,
+            remat_layers=False,
+            matmul_dtype=matmul_dtype,
+            use_wy_chunking=use_wy_chunking,
+        )
+        preds = predict_any2any_heads(ap["heads"], z[:-1], spec, matmul_dtype=matmul_dtype)
+        # Strictly evaluate against UNMODIFIED `batch_target`!
+        vld_pair = batch_target["valid_mask"][:-1] * batch_target["valid_mask"][1:]
+        m_tgt = vld_pair * (batch_target["modality_id"][1:] == target_mod).astype(jnp.float32)  # [T-1, B]
+        if target_mod == 2:
+            y = jnp.clip(batch_target["text_byte"][1:].astype(jnp.int32), 0, spec.text_vocab_size - 1)
+            per_tok = optax.softmax_cross_entropy_with_integer_labels(preds["text_logits"], y)
+        elif target_mod == 1:
+            k_aud = preds["audio_logits"].shape[2]
+            y = jnp.clip(batch_target["audio_codes"][1:, :, :k_aud].astype(jnp.int32), 0, spec.audio_vocab_size - 1)
+            per_tok = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(preds["audio_logits"], y), axis=-1)
+        elif target_mod == 0:
+            diff = preds["video_pred"] - batch_target["video_feat"][1:].astype(jnp.float32)
+            ab = jnp.abs(diff)
+            per_tok = jnp.mean(jnp.where(ab <= 1.0, 0.5 * diff * diff, ab - 0.5), axis=-1)
+        else:
+            diff = preds["action_pred"][..., spec.action_dim :] - batch_target["proprio_feat"][1:].astype(jnp.float32)
+            ab = jnp.abs(diff)
+            per_tok = jnp.mean(jnp.where(ab <= 1.0, 0.5 * diff * diff, ab - 0.5), axis=-1)
+        ep_loss = jnp.sum(per_tok * m_tgt, axis=0) / jnp.maximum(jnp.sum(m_tgt, axis=0), 1.0)
+        ep_cnt = jnp.sum(m_tgt, axis=0)
+        return ep_loss, ep_cnt
+
+    paired_ep_losses: list[float] = []
+    shuf_ep_losses: list[float] = []
+    bsz = max(2, int(batch_size))
+    for st in range(0, len(valid_eps), bsz):
+        chunk = valid_eps[st : st + bsz]
+        if len(chunk) < 2:
+            break
+        b_pair_np = _build_episode_aligned_batch(sh, chunk, spec, eval_len)
+        b_shuf_np = {k: v.copy() for k, v in b_pair_np.items()}
+        cur_b = len(chunk)
+        # Swap REAL source-modality stream from donor `(bi + 1) % cur_b` into recipient `bi`'s source ticks (zero padding!)
+        for bi in range(cur_b):
+            donor = (bi + 1) % cur_b
+            rec_idx = np.where((b_pair_np["modality_id"][:, bi] == source_mod) & (b_pair_np["valid_mask"][:, bi] > 0.5))[0]
+            don_idx = np.where((b_pair_np["modality_id"][:, donor] == source_mod) & (b_pair_np["valid_mask"][:, donor] > 0.5))[0]
+            if len(rec_idx) == 0 or len(don_idx) == 0:
+                continue
+            mapped = don_idx[np.arange(len(rec_idx)) % len(don_idx)]
+            if source_mod == 0:
+                b_shuf_np["video_feat"][rec_idx, bi] = b_pair_np["video_feat"][mapped, donor]
+                b_shuf_np["spatial_pos"][rec_idx, bi] = b_pair_np["spatial_pos"][mapped, donor]
+            elif source_mod == 1:
+                b_shuf_np["audio_codes"][rec_idx, bi] = b_pair_np["audio_codes"][mapped, donor]
+            elif source_mod == 2:
+                b_shuf_np["text_byte"][rec_idx, bi] = b_pair_np["text_byte"][mapped, donor]
+
+        b_pair = {k: jnp.asarray(v) for k, v in b_pair_np.items()}
+        b_shuf = {k: jnp.asarray(v) for k, v in b_shuf_np.items()}
+        lp, cp = _eval_per_item(all_params, b_pair, b_pair)
+        ls, _ = _eval_per_item(all_params, b_shuf, b_pair)
+        lp_np, ls_np, cp_np = np.asarray(lp, dtype=np.float64), np.asarray(ls, dtype=np.float64), np.asarray(cp, dtype=np.float64)
+        for bi in range(cur_b):
+            if cp_np[bi] >= 1.0:
+                paired_ep_losses.append(float(lp_np[bi]))
+                shuf_ep_losses.append(float(ls_np[bi]))
+
+    if not paired_ep_losses:
+        return {"shard": shard_path.name, "n_evaluated_episodes": 0, "causal_conditioning_verified": False}
+    deltas = np.asarray(shuf_ep_losses) - np.asarray(paired_ep_losses)
+    mean_d = float(np.mean(deltas))
+    se_d = float(np.std(deltas, ddof=1) / math.sqrt(len(deltas))) if len(deltas) > 1 else 0.0
+    key_map = {0: "video_patch_huber", 1: "audio_rvq_ce_nat", 2: "text_ce_nat", 3: "proprio_huber"}
+    return {
+        "shard": shard_path.name,
+        "source_mod": int(source_mod),
+        "target_mod": int(target_mod),
+        "metric": key_map[target_mod],
+        "n_evaluated_episodes": int(len(deltas)),
+        "paired_loss": round(float(np.mean(paired_ep_losses)), 5),
+        "shuffled_source_loss": round(float(np.mean(shuf_ep_losses)), 5),
+        "causal_shuffle_gain": round(mean_d, 5),
+        "causal_shuffle_gain_se": round(se_d, 5),
+        "causal_shuffle_ci95_low": round(mean_d - 1.96 * se_d, 5),
+        "frac_episodes_improved": round(float(np.mean(deltas > 0.0)), 4),
+        "causal_conditioning_verified": bool(mean_d > 0.005 and (mean_d - 1.96 * se_d) > 0.0),
+    }
+
+
 def evaluate_robotics_action_intervention(
     all_params: dict[str, Any],
     spec: SLWMv3Spec,
@@ -266,61 +487,115 @@ def evaluate_robotics_action_intervention(
     *,
     seq_len: int = 512,
     batch_size: int = 8,
-    n_batches: int = 8,
+    max_episodes: int = 32,
     matmul_dtype: jnp.dtype = jnp.bfloat16,
     use_wy_chunking: bool = False,
     seed: int = 8901,
 ) -> dict[str, Any]:
-    """AGENTS.md §13.2 Action-Intervention Proof: permuting `action_feat` must degrade future proprio/video prediction!"""
+    """Zero-False-Positive AGENTS.md §13.2 Action-Intervention Proof.
+
+    Intervenes ONLY on INPUT `action_feat` at real `modality_id == 3` ticks using real physical motor
+    commands from a distinct donor episode, and scores predicted **next proprioception (`action_pred[..., 14:]`)**
+    and **next visual frame (`video_pred`)** strictly against the **UNMODIFIED PAIRED targets**!
+    Mathematically guarantees `gain == 0.0` for any action-blind model!
+    """
+    del seed
     if not shard_path.is_file():
         return {"skipped": f"missing {shard_path}"}
     sh = LoadedSparseShard.load(shard_path)
-    rng = np.random.default_rng(seed)
+    d = sh.data
+    n_tot = sh.n_ticks
+    rst = np.nonzero(d["reset_mask"])[0]
+    if len(rst) == 0 or rst[0] != 0:
+        rst = np.insert(rst, 0, 0)
+    ends = np.append(rst[1:], n_tot)
+    ep_slices = []
+    for s, e in zip(rst, ends):
+        s_i, e_i = int(s), int(e)
+        if np.sum((d["modality_id"][s_i : min(e_i, s_i + seq_len)] == 3) & (d["has_true_action"][s_i : min(e_i, s_i + seq_len)] > 0)) >= 4:
+            ep_slices.append((s_i, e_i))
+        if len(ep_slices) >= max_episodes:
+            break
+    if len(ep_slices) < 2:
+        return {"shard": shard_path.name, "n_evaluated_episodes": 0, "causal_action_conditioning_verified": False}
 
     @jax.jit
-    def _eval(ap, batch):
-        b = batch["valid_mask"].shape[1]
+    def _eval_targets(ap, batch_in, batch_target):
+        b = batch_in["valid_mask"].shape[1]
         z, _, _ = scan_core_fast(
             ap["core"],
             init_core_state(spec, b),
-            batch,
+            batch_in,
             spec,
             remat_layers=False,
             matmul_dtype=matmul_dtype,
             use_wy_chunking=use_wy_chunking,
         )
-        _, m = compute_any2any_multimodal_loss(ap["heads"], z, batch, spec, matmul_dtype=matmul_dtype)
-        return m
+        preds = predict_any2any_heads(ap["heads"], z[:-1], spec, matmul_dtype=matmul_dtype)
+        vld_pair = batch_target["valid_mask"][:-1] * batch_target["valid_mask"][1:]
+        # Score ONLY next proprioception (dims `spec.action_dim:`) against UNMODIFIED paired `proprio_feat[1:]`!
+        m_prop = vld_pair * (batch_target["modality_id"][1:] == 3).astype(jnp.float32) * (batch_target["has_true_action"][1:] > 0.5)
+        p_diff = preds["action_pred"][..., spec.action_dim :] - batch_target["proprio_feat"][1:].astype(jnp.float32)
+        p_abs = jnp.abs(p_diff)
+        p_hub = jnp.mean(jnp.where(p_abs <= 1.0, 0.5 * p_diff * p_diff, p_abs - 0.5), axis=-1)
+        ep_prop_loss = jnp.sum(p_hub * m_prop, axis=0) / jnp.maximum(jnp.sum(m_prop, axis=0), 1.0)
+        ep_prop_cnt = jnp.sum(m_prop, axis=0)
 
-    p_act, s_act, p_vid, s_vid = [], [], [], []
-    for _ in range(n_batches):
-        b_np = sh.sample_batch(rng, batch_size=batch_size, seq_len=seq_len, drop_modality_prob=0.0)
-        b_pair = {k: jnp.asarray(v) for k, v in b_np.items()}
-        b_int_np = {k: v.copy() for k, v in b_np.items()}
-        # Counterfactual action intervention: roll executed `action_feat` across batch while keeping initial proprio/video!
-        b_int_np["action_feat"] = np.roll(b_int_np["action_feat"], shift=1, axis=1)
+        # Score next visual frame against UNMODIFIED paired `video_feat[1:]`!
+        m_vid = vld_pair * (batch_target["modality_id"][1:] == 0).astype(jnp.float32)
+        v_diff = preds["video_pred"] - batch_target["video_feat"][1:].astype(jnp.float32)
+        v_abs = jnp.abs(v_diff)
+        v_hub = jnp.mean(jnp.where(v_abs <= 1.0, 0.5 * v_diff * v_diff, v_abs - 0.5), axis=-1)
+        ep_vid_loss = jnp.sum(v_hub * m_vid, axis=0) / jnp.maximum(jnp.sum(m_vid, axis=0), 1.0)
+        ep_vid_cnt = jnp.sum(m_vid, axis=0)
+        return ep_prop_loss, ep_prop_cnt, ep_vid_loss, ep_vid_cnt
+
+    p_prop, s_prop, p_vid, s_vid = [], [], [], []
+    bsz = max(2, int(batch_size))
+    for st in range(0, len(ep_slices), bsz):
+        chunk = ep_slices[st : st + bsz]
+        if len(chunk) < 2:
+            break
+        b_pair_np = _build_episode_aligned_batch(sh, chunk, spec, seq_len)
+        b_int_np = {k: v.copy() for k, v in b_pair_np.items()}
+        cur_b = len(chunk)
+        for bi in range(cur_b):
+            donor = (bi + 1) % cur_b
+            rec_a = np.where((b_pair_np["modality_id"][:, bi] == 3) & (b_pair_np["has_true_action"][:, bi] > 0.5))[0]
+            don_a = np.where((b_pair_np["modality_id"][:, donor] == 3) & (b_pair_np["has_true_action"][:, donor] > 0.5))[0]
+            if len(rec_a) > 0 and len(don_a) > 0:
+                mapped = don_a[np.arange(len(rec_a)) % len(don_a)]
+                b_int_np["action_feat"][rec_a, bi] = b_pair_np["action_feat"][mapped, donor]
+
+        b_pair = {k: jnp.asarray(v) for k, v in b_pair_np.items()}
         b_int = {k: jnp.asarray(v) for k, v in b_int_np.items()}
+        pp, pc, vp, vc = _eval_targets(all_params, b_pair, b_pair)
+        pi, _, vi, _ = _eval_targets(all_params, b_int, b_pair)
+        for bi in range(cur_b):
+            if float(pc[bi]) >= 1.0:
+                p_prop.append(float(pp[bi]))
+                s_prop.append(float(pi[bi]))
+            if float(vc[bi]) >= 1.0:
+                p_vid.append(float(vp[bi]))
+                s_vid.append(float(vi[bi]))
 
-        mp = _eval(all_params, b_pair)
-        mi = _eval(all_params, b_int)
-        if float(mp["n_action_targets"]) > 0:
-            p_act.append(float(mp["action_proprio_huber"]))
-            s_act.append(float(mi["action_proprio_huber"]))
-        if float(mp["n_video_targets"]) > 0:
-            p_vid.append(float(mp["video_patch_huber"]))
-            s_vid.append(float(mi["video_patch_huber"]))
-
-    act_gain = (float(np.mean(s_act)) - float(np.mean(p_act))) if p_act else 0.0
-    vid_gain = (float(np.mean(s_vid)) - float(np.mean(p_vid))) if p_vid else 0.0
+    prop_deltas = np.asarray(s_prop) - np.asarray(p_prop) if p_prop else np.zeros((0,))
+    vid_deltas = np.asarray(s_vid) - np.asarray(p_vid) if p_vid else np.zeros((0,))
+    prop_gain = float(np.mean(prop_deltas)) if len(prop_deltas) else 0.0
+    vid_gain = float(np.mean(vid_deltas)) if len(vid_deltas) else 0.0
+    prop_se = float(np.std(prop_deltas, ddof=1) / math.sqrt(len(prop_deltas))) if len(prop_deltas) > 1 else 0.0
     return {
         "shard": shard_path.name,
-        "paired_action_proprio_huber": round(float(np.mean(p_act)), 5) if p_act else None,
-        "intervened_action_proprio_huber": round(float(np.mean(s_act)), 5) if s_act else None,
-        "action_intervention_proprio_gain": round(act_gain, 5),
-        "paired_video_huber": round(float(np.mean(p_vid)), 5) if p_vid else None,
-        "intervened_video_huber": round(float(np.mean(s_vid)), 5) if s_vid else None,
+        "n_evaluated_episodes": int(len(p_prop)),
+        "paired_next_proprio_huber": round(float(np.mean(p_prop)), 5) if p_prop else None,
+        "intervened_next_proprio_huber": round(float(np.mean(s_prop)), 5) if s_prop else None,
+        "action_intervention_proprio_gain": round(prop_gain, 5),
+        "action_intervention_proprio_se": round(prop_se, 5),
+        "paired_next_video_huber": round(float(np.mean(p_vid)), 5) if p_vid else None,
+        "intervened_next_video_huber": round(float(np.mean(s_vid)), 5) if s_vid else None,
         "action_intervention_video_gain": round(vid_gain, 5),
-        "causal_action_conditioning_verified": bool(act_gain > 1e-4 or vid_gain > 1e-4),
+        "targets_strictly_held_fixed": True,
+        "causal_action_conditioning_verified": bool(prop_gain > 1e-4 and (prop_gain - 1.96 * prop_se) > 0.0),
     }
 
 
@@ -342,6 +617,10 @@ def evaluate_real_speech_overwrite_frozen_core(
 
     tr_d = np.load(train_npz, allow_pickle=False)
     ev_d = np.load(eval_npz, allow_pickle=False)
+    tr_ca = tr_d["audio_codes_a"] if "audio_codes_a" in tr_d.files else tr_d["codes_a"]
+    tr_cb = tr_d["audio_codes_b"] if "audio_codes_b" in tr_d.files else tr_d["codes_b"]
+    ev_ca = ev_d["audio_codes_a"] if "audio_codes_a" in ev_d.files else ev_d["codes_a"]
+    ev_cb = ev_d["audio_codes_b"] if "audio_codes_b" in ev_d.files else ev_d["codes_b"]
     vocab_size = int(max(np.max(tr_d["y_a"]), np.max(tr_d["y_b"]), np.max(ev_d["y_a"]), np.max(ev_d["y_b"]))) + 1
 
     @jax.jit
@@ -372,21 +651,26 @@ def evaluate_real_speech_overwrite_frozen_core(
             assume_all_valid=True,
             use_wy_chunking=use_wy_chunking,
         )
-        return jax.lax.stop_gradient(z[-1]), float(jnp.mean(d_m["mean_nowrite"]))
+        # Return pure JAX arrays (NEVER call Python `float()` inside `@jax.jit`!)
+        return jax.lax.stop_gradient(z[-1]), jnp.mean(d_m["mean_nowrite"])
 
-    def _run_extract(codes_nt32: np.ndarray) -> np.ndarray:
+    def _run_extract(codes_nt32: np.ndarray) -> tuple[np.ndarray, float]:
         n_ep, t_len, _ = codes_nt32.shape
         zs = []
+        nws = []
         for s in range(0, n_ep, eval_micro_bsz):
             e = min(s + eval_micro_bsz, n_ep)
             # Transpose [N, T, 32] -> [T, B, 32]
             c_tb = jnp.asarray(np.transpose(codes_nt32[s:e], (1, 0, 2)), dtype=jnp.int32)
             dt_tb = jnp.full((t_len, e - s), 0.08, dtype=jnp.float32)  # 12.5 Hz Mimi = 0.08 s/tick
-            zb, _ = _extract_final_z(core_params, c_tb, dt_tb)
+            zb, nw = _extract_final_z(core_params, c_tb, dt_tb)
             zs.append(np.asarray(zb, dtype=np.float32))
-        return np.concatenate(zs, axis=0)
+            nws.append(float(nw))
+        return np.concatenate(zs, axis=0), float(np.mean(nws)) if nws else 0.0
 
-    z_tr = jnp.asarray(np.concatenate([_run_extract(tr_d["codes_a"]), _run_extract(tr_d["codes_b"])], axis=0))
+    z_tr_a, _ = _run_extract(tr_ca)
+    z_tr_b, _ = _run_extract(tr_cb)
+    z_tr = jnp.asarray(np.concatenate([z_tr_a, z_tr_b], axis=0))
     y_tr = jnp.asarray(np.concatenate([tr_d["y_a"], tr_d["y_b"]], axis=0), dtype=jnp.int32)
 
     probe_p = init_decoupled_probe_params(jax.random.PRNGKey(seed), spec.d_model, out_dim=2 * vocab_size, hidden_dim=128)
@@ -409,24 +693,57 @@ def evaluate_real_speech_overwrite_frozen_core(
     for _ in range(probe_steps):
         probe_p, opt_p, _ = _pstep(probe_p, opt_p)
 
-    za = jnp.asarray(_run_extract(ev_d["codes_a"]))
-    zb = jnp.asarray(_run_extract(ev_d["codes_b"]))
+    za_np, nw_a = _run_extract(ev_ca)
+    zb_np, nw_b = _run_extract(ev_cb)
+    za = jnp.asarray(za_np)
+    zb = jnp.asarray(zb_np)
     pa = np.asarray(jnp.argmax(apply_decoupled_probe(probe_p, za).reshape(-1, 2, vocab_size), axis=-1))
     pb = np.asarray(jnp.argmax(apply_decoupled_probe(probe_p, zb).reshape(-1, 2, vocab_size), axis=-1))
     ya, yb = np.asarray(ev_d["y_a"]), np.asarray(ev_d["y_b"])
-    ua = np.asarray(ev_d["upd_attr"])
-    idx = np.arange(len(ya))
-    upd_ok = (pa[idx, ua] == ya[idx, ua]) & (pb[idx, ua] == yb[idx, ua])
-    pres_ok = (pa[idx, 1 - ua] == ya[idx, 1 - ua]) & (pb[idx, 1 - ua] == yb[idx, 1 - ua])
-    ab_joint = upd_ok & pres_ok
+    ua = np.asarray(ev_d["update_which"] if "update_which" in ev_d.files else ev_d["upd_attr"], dtype=np.int32)
+    is_catch = (
+        np.asarray(ev_d["is_catch"], dtype=bool)
+        if "is_catch" in ev_d.files
+        else (ua < 0)
+    )
+    ow_mask = (~is_catch) & (ua >= 0) & (ua <= 1)
+    c_mask = ~ow_mask
+
+    # Overwrite episodes (`update_which in {0, 1}`): counterfactual flip on updated attr + preserve other attr!
+    ow_idx = np.nonzero(ow_mask)[0]
+    ow_ua = ua[ow_idx]
+    upd_ok_ow = (pa[ow_idx, ow_ua] == ya[ow_idx, ow_ua]) & (pb[ow_idx, ow_ua] == yb[ow_idx, ow_ua]) if len(ow_idx) else np.zeros((0,), dtype=bool)
+    pres_ok_ow = (pa[ow_idx, 1 - ow_ua] == ya[ow_idx, 1 - ow_ua]) & (pb[ow_idx, 1 - ow_ua] == yb[ow_idx, 1 - ow_ua]) if len(ow_idx) else np.zeros((0,), dtype=bool)
+    ab_joint_ow = upd_ok_ow & pres_ok_ow
+
+    # Catch trials (`update_which == -1`, zero correction): BOTH attributes must match initial state on A & B!
+    c_idx = np.nonzero(c_mask)[0]
+    catch_ok = (
+        (pa[c_idx, 0] == ya[c_idx, 0])
+        & (pa[c_idx, 1] == ya[c_idx, 1])
+        & (pb[c_idx, 0] == yb[c_idx, 0])
+        & (pb[c_idx, 1] == yb[c_idx, 1])
+    ) if len(c_idx) else np.zeros((0,), dtype=bool)
+
+    overall_vec = np.zeros((len(ya),), dtype=np.int32)
+    overall_vec[ow_idx] = ab_joint_ow.astype(np.int32)
+    overall_vec[c_idx] = catch_ok.astype(np.int32)
+
+    n_spks = int(len({str(x) for x in ev_d["primary_speaker_id"].tolist()})) if "primary_speaker_id" in ev_d.files else None
     return {
         "eval_shard": eval_npz.name,
         "n_pairs": int(len(ya)),
-        "seq_len_ticks_12p5hz": int(ev_d["codes_a"].shape[1]),
-        "counterfactual_ab_flip_and_preserve": round(float(np.mean(ab_joint)), 4),
-        "updated_attr_ab_flip_acc": round(float(np.mean(upd_ok)), 4),
-        "preserved_attr_ab_acc": round(float(np.mean(pres_ok)), 4),
-        "episode_ab_joint_vector": [int(x) for x in ab_joint],
+        "n_overwrite_pairs": int(len(ow_idx)),
+        "n_catch_pairs": int(len(c_idx)),
+        "n_unique_primary_speakers": n_spks,
+        "seq_len_ticks_12p5hz": int(ev_ca.shape[1]),
+        "counterfactual_ab_flip_and_preserve": round(float(np.mean(ab_joint_ow)), 4) if len(ab_joint_ow) else 0.0,
+        "updated_attr_ab_flip_acc": round(float(np.mean(upd_ok_ow)), 4) if len(upd_ok_ow) else 0.0,
+        "preserved_attr_ab_acc": round(float(np.mean(pres_ok_ow)), 4) if len(pres_ok_ow) else 0.0,
+        "catch_dual_preserve_acc": round(float(np.mean(catch_ok)), 4) if len(catch_ok) else 0.0,
+        "overall_joint_acc": round(float(np.mean(overall_vec)), 4),
+        "mean_nowrite_on_eval": round(0.5 * (nw_a + nw_b), 4),
+        "episode_overall_joint_vector": [int(x) for x in overall_vec],
     }
 
 
@@ -497,7 +814,7 @@ def generate_cross_modal_text_showcase(
 
     @jax.jit
     def _fwd_one(ap, batch):
-        z, _, dm = scan_core_fast(
+        z, st_end, dm = scan_core_fast(
             ap["core"],
             init_core_state(spec, 1),
             batch,
@@ -507,7 +824,36 @@ def generate_cross_modal_text_showcase(
             use_wy_chunking=use_wy_chunking,
         )
         logits = predict_any2any_heads(ap["heads"], z, spec, matmul_dtype=matmul_dtype)["text_logits"]
-        return logits[:, 0, :], float(jnp.mean(dm["mean_nowrite"]))
+        # Return pure JAX arrays (NEVER call Python `float()` inside `@jax.jit`!)
+        return logits[:, 0, :], st_end, jnp.mean(dm["mean_nowrite"])
+
+    @jax.jit
+    def _free_run_32(ap, st_prefix, start_byte):
+        """Strict free-running O(1) autoregressive greedy rollout (`32` bytes) on frozen `step_core`!"""
+        def _gen_step(carry, _):
+            st_c, cur_b = carry
+            pkt = {
+                "modality_id": jnp.full((1,), 2, dtype=jnp.int32),
+                "dt_s": jnp.full((1,), 0.02, dtype=jnp.float32),
+                "valid_mask": jnp.ones((1,), dtype=jnp.float32),
+                "reliability": jnp.ones((1,), dtype=jnp.float32),
+                "reset_mask": jnp.zeros((1,), dtype=jnp.bool_),
+                "spatial_pos": jnp.zeros((1,), dtype=jnp.int32),
+                "text_byte": cur_b.reshape((1,)),
+                "has_true_action": jnp.zeros((1,), dtype=jnp.float32),
+                "video_feat": jnp.zeros((1, spec.video_patch_dim), dtype=jnp.float32),
+                "audio_codes": jnp.zeros((1, spec.audio_codebooks), dtype=jnp.int32),
+                "proprio_feat": jnp.zeros((1, spec.proprio_dim), dtype=jnp.float32),
+                "action_feat": jnp.zeros((1, spec.action_dim), dtype=jnp.float32),
+                "probe_feat": jnp.zeros((1, spec.probe_dim), dtype=jnp.float32),
+            }
+            z_t, st_next, _ = step_core(ap["core"], st_c, pkt, spec)
+            lg = predict_any2any_heads(ap["heads"], z_t[None, :, :], spec, matmul_dtype=matmul_dtype)["text_logits"][0, 0]
+            nxt = jnp.argmax(lg).astype(jnp.int32)
+            return (st_next, nxt), nxt
+
+        _, gen_bytes = jax.lax.scan(_gen_step, (st_prefix, start_byte.astype(jnp.int32)), None, length=32)
+        return gen_bytes
 
     ep_records: list[dict[str, Any]] = []
     for ei in range(n_ep):
@@ -516,7 +862,6 @@ def generate_cross_modal_text_showcase(
         if L < 12:
             continue
         idx = np.arange(s, s + L, dtype=np.int64)[:, None]
-        # Pad to fixed `seq_len` so JAX compiles ONCE across all episodes!
         pad_n = seq_len - L
         def _pad(arr, val=0):
             if pad_n == 0:
@@ -526,7 +871,7 @@ def generate_cross_modal_text_showcase(
         mod = _pad(d["modality_id"][idx].astype(np.int32), 2)
         dt = _pad(d["dt_s"][idx].astype(np.float32), 0.0)
         vld = np.zeros((seq_len, 1), dtype=np.float32)
-        vld[:L, 0] = d["valid_mask"][idx, 0].astype(np.float32)
+        vld[:L, 0] = d["valid_mask"][idx[:, 0]].astype(np.float32)
         rel = _pad(d["reliability"][idx].astype(np.float32), 1.0)
         rst_a = np.zeros((seq_len, 1), dtype=bool)
         rst_a[0, 0] = True
@@ -558,7 +903,8 @@ def generate_cross_modal_text_showcase(
             "action_feat": jnp.zeros((seq_len, 1, spec.action_dim), dtype=jnp.float32),
             "probe_feat": jnp.zeros((seq_len, 1, spec.probe_dim), dtype=jnp.float32),
         }
-        logits, mean_nw = _fwd_one(all_params, batch)
+        logits, _, mean_nw_arr = _fwd_one(all_params, batch)
+        mean_nw = float(mean_nw_arr)
         logits_np = np.asarray(logits[:L], dtype=np.float32)
         mod_1d = mod[:L, 0]
         tb_1d = tb[:L, 0]
@@ -571,17 +917,30 @@ def generate_cross_modal_text_showcase(
         logp = pl - ml - np.log(np.sum(np.exp(pl - ml), axis=-1, keepdims=True))
         bpb = float(np.mean(-logp[np.arange(len(yb)), yb])) / math.log(2.0)
         pred_b = np.argmax(pl, axis=-1)
+
+        # Free-running greedy continuation from prefix up to first 16 text bytes (keeps source audio/video intact!)
+        p_cut = int(txt_pos[min(15, len(txt_pos) - 1)])
+        vld_pref = np.zeros((seq_len, 1), dtype=np.float32)
+        vld_pref[:p_cut, 0] = vld[:p_cut, 0]
+        dt_pref = dt.copy()
+        dt_pref[p_cut:, 0] = 0.0
+        pref_batch = {**batch, "valid_mask": jnp.asarray(vld_pref), "dt_s": jnp.asarray(dt_pref)}
+        _, st_pref, _ = _fwd_one(all_params, pref_batch)
+        gen_bytes = np.asarray(_free_run_32(all_params, st_pref, jnp.asarray(int(tb_1d[p_cut]), dtype=jnp.int32)))
+
         ep_records.append(
             {
                 "episode_id": f"{shard_path.stem}_ep{ei:04d}",
                 "observed_modalities": sorted({int(x) for x in mod_1d}),
                 "channel_provenance": {
                     "input_context": "observed",
-                    "next_byte_readout": "predicted_diagnostic_forced",
+                    "free_running_generation": "predicted_autoregressive_frozen_core",
+                    "teacher_forced_readout": "predicted_diagnostic_forced",
                 },
                 "text_bpb": round(bpb, 4),
-                "mean_nowrite": round(float(mean_nw), 4),
+                "mean_nowrite": round(mean_nw, 4),
                 "ground_truth_text_preview": decode_utf8_bytes(yb)[:160],
+                "free_running_32b_continuation": decode_utf8_bytes(gen_bytes),
                 "top1_next_byte_preview": decode_utf8_bytes(pred_b)[:160],
             }
         )

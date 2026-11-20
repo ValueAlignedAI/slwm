@@ -308,21 +308,36 @@ class LoadedSparseShard:
             prop_feat[pm] = d["proprio_feat"][act_idx[pm]].astype(np.float32)
             act_feat[pm] = d["action_feat"][act_idx[pm]].astype(np.float32)
 
-        # Optional per-sample modality dropout for true any-to-any robustness (keeps valid_mask=0 on dropped inputs
-        # while preserving target supervision on the complete target stream!)
-        input_vld = vld.copy()
+        # Optional per-sample modality dropout for true any-to-any robustness:
+        # Masks the dropped modality's input payload AND sets `reliability = 0.0` (training epistemic
+        # sensor-outage suppression naturally!) and `target_valid_mask = 0.0` on the dropped source
+        # modality while keeping `valid_mask = 1.0` so surviving target modalities are predicted cleanly
+        # from non-zero residual streams AND `apply_ring_gqa_seq` stays 100% on the fast dense MXU path!
+        targ_vld = vld.copy()
         if drop_modality_prob > 0.0:
             for b in range(batch_size):
                 present_mods = np.unique(mod[:, b])
                 if len(present_mods) >= 2 and rng.random() < drop_modality_prob:
                     drop_m = int(rng.choice(present_mods))
-                    input_vld[mod[:, b] == drop_m, b] = 0.0
+                    dm = mod[:, b] == drop_m
+                    rel[dm, b] = 0.0
+                    targ_vld[dm, b] = 0.0
+                    if drop_m == 0:
+                        vid_feat[dm, b, :] = 0.0
+                    elif drop_m == 1:
+                        aud_codes[dm, b, :] = 0
+                    elif drop_m == 2:
+                        tb[dm, b] = BYTE_PAD
+                    elif drop_m == 3:
+                        prop_feat[dm, b, :] = 0.0
+                        act_feat[dm, b, :] = 0.0
+                        ha[dm, b] = 0.0
 
         return {
             "modality_id": mod,
             "dt_s": dt,
-            "valid_mask": input_vld,
-            "target_valid_mask": vld,
+            "valid_mask": vld,
+            "target_valid_mask": targ_vld,
             "reliability": rel,
             "reset_mask": rst,
             "spatial_pos": sp,

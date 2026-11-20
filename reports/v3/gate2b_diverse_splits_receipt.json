@@ -1,118 +1,452 @@
 {
-  "timestamp_utc": "2026-11-20T09:26:44.205776+00:00",
+  "timestamp_utc": "2026-11-20T12:33:43.681100+00:00",
+  "shard_dir": "/mnt/slwm-data/SLWM/v3_preencoded",
   "corpora": {
     "text_code": {
-      "train_24m_docs": 8665,
-      "dev_docs": 3240,
-      "train_dev_overlap": 0,
-      "train_wt103_val_overlap": 0,
-      "train_wt103_test_overlap": 0,
-      "zero_overlap": true
+      "eval_shards": {
+        "text_code_dev_v1.npz": {
+          "n_episodes": 3240,
+          "n_unique_hashes": 3240
+        },
+        "wikitext103_validation.npz": {
+          "n_episodes": 280,
+          "n_unique_hashes": 280
+        },
+        "wikitext103_test.npz": {
+          "n_episodes": 316,
+          "n_unique_hashes": 316
+        },
+        "lambada_openai_test.npz": {
+          "n_episodes": 5153,
+          "n_unique_hashes": 5151
+        },
+        "humaneval_test.npz": {
+          "n_episodes": 164,
+          "n_unique_hashes": 164
+        },
+        "mbpp_sanitized_test.npz": {
+          "n_episodes": 257,
+          "n_unique_hashes": 257
+        }
+      },
+      "text_code_train_24m_balanced.npz": {
+        "size_mib": 549.415,
+        "n_episodes": 8665,
+        "n_unique_doc_hashes": 8665,
+        "exact_doc_overlaps_vs_eval": {
+          "text_code_dev_v1.npz": 0,
+          "wikitext103_validation.npz": 0,
+          "wikitext103_test.npz": 0,
+          "lambada_openai_test.npz": 0,
+          "humaneval_test.npz": 0,
+          "mbpp_sanitized_test.npz": 0
+        },
+        "humaneval_mbpp_solution_64b_substring_hits": {
+          "n_64b_probe_hits": 0,
+          "n_probes_checked": 357
+        },
+        "lambada_64b_substring_hits": {
+          "n_64b_probe_hits": 0,
+          "n_probes_checked": 500
+        },
+        "zero_exact_doc_overlap": true
+      },
+      "text_code_train_v1.npz": {
+        "size_mib": 4119.979,
+        "n_episodes": 64882,
+        "n_unique_doc_hashes": 64882,
+        "exact_doc_overlaps_vs_eval": {
+          "text_code_dev_v1.npz": 0,
+          "wikitext103_validation.npz": 0,
+          "wikitext103_test.npz": 0,
+          "lambada_openai_test.npz": 0,
+          "humaneval_test.npz": 0,
+          "mbpp_sanitized_test.npz": 0
+        },
+        "humaneval_mbpp_solution_64b_substring_hits": {
+          "n_64b_probe_hits": 0,
+          "n_probes_checked": 357
+        },
+        "lambada_64b_substring_hits": {
+          "n_64b_probe_hits": 0,
+          "n_probes_checked": 500
+        },
+        "zero_exact_doc_overlap": true
+      },
+      "wikitext103_val_vs_test_overlap": 0,
+      "zero_overlap_pass": true
+    },
+    "clotho": {
+      "splits": {
+        "train": {
+          "shard": "clotho_train.npz",
+          "size_mib": 118.841,
+          "n_ticks": 2308614,
+          "n_episodes": 3839,
+          "domain_tick_counts": {
+            "clotho": 2308614
+          },
+          "domain_vid_counts": {
+            "clotho": 0
+          },
+          "domain_act_counts": {
+            "clotho": 0
+          }
+        },
+        "dev": {
+          "shard": "clotho_dev.npz",
+          "size_mib": 32.243,
+          "n_ticks": 626634,
+          "n_episodes": 1045,
+          "domain_tick_counts": {
+            "clotho": 626634
+          },
+          "domain_vid_counts": {
+            "clotho": 0
+          },
+          "domain_act_counts": {
+            "clotho": 0
+          }
+        },
+        "test": {
+          "shard": "clotho_test.npz",
+          "size_mib": 32.567,
+          "n_ticks": 633557,
+          "n_episodes": 1045,
+          "domain_tick_counts": {
+            "clotho": 633557
+          },
+          "domain_vid_counts": {
+            "clotho": 0
+          },
+          "domain_act_counts": {
+            "clotho": 0
+          }
+        }
+      },
+      "overlaps": {
+        "audio_train_dev": 0,
+        "audio_train_test": 0,
+        "audio_dev_test": 0,
+        "caption_train_dev": 0,
+        "caption_train_test": 0,
+        "caption_dev_test": 0
+      },
+      "zero_overlap_pass": true
     },
     "esc50": {
-      "train_f14": 1600,
-      "test_f5": 400,
-      "overlap": 0,
-      "zero_overlap": true
+      "splits": {
+        "train_f14": {
+          "shard": "esc50_train_f14.npz",
+          "size_mib": 9.124,
+          "n_ticks": 129664,
+          "n_episodes": 1600,
+          "domain_tick_counts": {
+            "esc50": 129664
+          },
+          "domain_vid_counts": {
+            "esc50": 0
+          },
+          "domain_act_counts": {
+            "esc50": 0
+          }
+        },
+        "test_f5": {
+          "shard": "esc50_test_f5.npz",
+          "size_mib": 2.284,
+          "n_ticks": 32416,
+          "n_episodes": 400,
+          "domain_tick_counts": {
+            "esc50": 32416
+          },
+          "domain_vid_counts": {
+            "esc50": 0
+          },
+          "domain_act_counts": {
+            "esc50": 0
+          }
+        }
+      },
+      "audio_overlap_train_test": 0,
+      "zero_overlap_pass": true
+    },
+    "librispeech": {
+      "splits": {
+        "dev_clean": {
+          "shard": "librispeech_dev_clean.npz",
+          "size_mib": 54.365,
+          "n_ticks": 1075168,
+          "n_episodes": 5406,
+          "domain_tick_counts": {
+            "librispeech": 1075168
+          },
+          "domain_vid_counts": {
+            "librispeech": 0
+          },
+          "domain_act_counts": {
+            "librispeech": 0
+          }
+        },
+        "test_clean": {
+          "shard": "librispeech_test_clean.npz",
+          "size_mib": 54.145,
+          "n_ticks": 1062156,
+          "n_episodes": 5240,
+          "domain_tick_counts": {
+            "librispeech": 1062156
+          },
+          "domain_vid_counts": {
+            "librispeech": 0
+          },
+          "domain_act_counts": {
+            "librispeech": 0
+          }
+        }
+      },
+      "overlaps": {
+        "audio_dev_test": 0,
+        "shared_short_english_transcripts_disjoint_speakers": 20
+      },
+      "zero_overlap_pass": true
     },
     "msrvtt": {
-      "train_video_ids": 8100,
-      "dev_video_ids": 900,
-      "test_video_ids": 1000,
-      "overlap": 0,
-      "zero_overlap": true
+      "splits": {
+        "train": {
+          "shard": "msrvtt_train.npz",
+          "size_mib": 682.859,
+          "n_ticks": 650400,
+          "n_episodes": 600,
+          "domain_tick_counts": {
+            "msrvtt": 650400
+          },
+          "domain_vid_counts": {
+            "msrvtt": 342000
+          },
+          "domain_act_counts": {
+            "msrvtt": 0
+          }
+        },
+        "dev": {
+          "shard": "msrvtt_dev.npz",
+          "size_mib": 227.622,
+          "n_ticks": 216800,
+          "n_episodes": 200,
+          "domain_tick_counts": {
+            "msrvtt": 216800
+          },
+          "domain_vid_counts": {
+            "msrvtt": 114000
+          },
+          "domain_act_counts": {
+            "msrvtt": 0
+          }
+        },
+        "test": {
+          "shard": "msrvtt_test.npz",
+          "size_mib": 225.5,
+          "n_ticks": 124087,
+          "n_episodes": 200,
+          "domain_tick_counts": {
+            "msrvtt": 124087
+          },
+          "domain_vid_counts": {
+            "msrvtt": 114000
+          },
+          "domain_act_counts": {
+            "msrvtt": 0
+          }
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "video_train_test": 0,
+        "video_dev_test": 0,
+        "nonsilent_audio_train_dev": 0,
+        "nonsilent_audio_train_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "n_multi_video_silent_fallback_audio_hashes": 0
+      },
+      "zero_overlap_pass": true
     },
     "vggsound": {
-      "train_yt_ids": 132056,
-      "dev_yt_ids": 14856,
-      "test_yt_ids": 14898,
-      "overlap_tr_dv": 0,
-      "overlap_tr_te": 0,
-      "zero_overlap": true
+      "splits": {
+        "train": {
+          "shard": "vggsound_train.npz",
+          "size_mib": 679.929,
+          "n_ticks": 402336,
+          "n_episodes": 600,
+          "domain_tick_counts": {
+            "vggsound": 402336
+          },
+          "domain_vid_counts": {
+            "vggsound": 342000
+          },
+          "domain_act_counts": {
+            "vggsound": 0
+          }
+        },
+        "dev": {
+          "shard": "vggsound_dev.npz",
+          "size_mib": 226.65,
+          "n_ticks": 134309,
+          "n_episodes": 200,
+          "domain_tick_counts": {
+            "vggsound": 134309
+          },
+          "domain_vid_counts": {
+            "vggsound": 114000
+          },
+          "domain_act_counts": {
+            "vggsound": 0
+          }
+        },
+        "test": {
+          "shard": "vggsound_test.npz",
+          "size_mib": 225.603,
+          "n_ticks": 133524,
+          "n_episodes": 200,
+          "domain_tick_counts": {
+            "vggsound": 133524
+          },
+          "domain_vid_counts": {
+            "vggsound": 113475
+          },
+          "domain_act_counts": {
+            "vggsound": 0
+          }
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "video_train_test": 0,
+        "video_dev_test": 0,
+        "nonsilent_audio_train_dev": 0,
+        "nonsilent_audio_train_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "n_multi_video_silent_fallback_audio_hashes": 1
+      },
+      "zero_overlap_pass": true
+    },
+    "robotics": {
+      "splits": {
+        "train": {
+          "shard": "robotics_train.npz",
+          "size_mib": 100.133,
+          "n_ticks": 78109,
+          "n_episodes": 168,
+          "domain_tick_counts": {
+            "lerobot_pusht": 54493,
+            "lerobot_aloha_sim": 21800,
+            "lerobot_libero": 1816
+          },
+          "domain_vid_counts": {
+            "lerobot_pusht": 37050,
+            "lerobot_aloha_sim": 12600,
+            "lerobot_libero": 0
+          },
+          "domain_act_counts": {
+            "lerobot_pusht": 14323,
+            "lerobot_aloha_sim": 8000,
+            "lerobot_libero": 1600
+          }
+        },
+        "dev": {
+          "shard": "robotics_dev.npz",
+          "size_mib": 12.614,
+          "n_ticks": 10143,
+          "n_episodes": 21,
+          "domain_tick_counts": {
+            "lerobot_pusht": 7191,
+            "lerobot_aloha_sim": 2725,
+            "lerobot_libero": 227
+          },
+          "domain_vid_counts": {
+            "lerobot_pusht": 4665,
+            "lerobot_aloha_sim": 1575,
+            "lerobot_libero": 0
+          },
+          "domain_act_counts": {
+            "lerobot_pusht": 2136,
+            "lerobot_aloha_sim": 1000,
+            "lerobot_libero": 200
+          }
+        },
+        "test": {
+          "shard": "robotics_test.npz",
+          "size_mib": 12.689,
+          "n_ticks": 10009,
+          "n_episodes": 21,
+          "domain_tick_counts": {
+            "lerobot_pusht": 7057,
+            "lerobot_aloha_sim": 2725,
+            "lerobot_libero": 227
+          },
+          "domain_vid_counts": {
+            "lerobot_pusht": 4710,
+            "lerobot_aloha_sim": 1575,
+            "lerobot_libero": 0
+          },
+          "domain_act_counts": {
+            "lerobot_pusht": 1957,
+            "lerobot_aloha_sim": 1000,
+            "lerobot_libero": 200
+          }
+        }
+      },
+      "overlaps": {
+        "traj_train_dev": 0,
+        "traj_train_test": 0,
+        "traj_dev_test": 0,
+        "video_train_dev": 0,
+        "video_train_test": 0,
+        "video_dev_test": 0
+      },
+      "zero_overlap_pass": true
+    },
+    "real_speech_overwrite": {
+      "splits": {
+        "train": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz",
+          "size_mib": 31.49,
+          "n_pairs": 160,
+          "seq_len_ticks": 2088,
+          "n_catch_pairs": 34,
+          "n_overwrite_pairs": 126,
+          "n_unique_primary_speakers": 146,
+          "schema_keys_verified": true,
+          "gqa_suffix_757_mismatch_frac": 0.0
+        },
+        "dev": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_dev_L12_Weq64_additive.npz",
+          "size_mib": 12.42,
+          "n_pairs": 64,
+          "seq_len_ticks": 2088,
+          "n_catch_pairs": 26,
+          "n_overwrite_pairs": 38,
+          "n_unique_primary_speakers": 51,
+          "schema_keys_verified": true,
+          "gqa_suffix_757_mismatch_frac": 0.0
+        },
+        "test": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_test_L12_Weq64_additive.npz",
+          "size_mib": 12.059,
+          "n_pairs": 64,
+          "seq_len_ticks": 2088,
+          "n_catch_pairs": 16,
+          "n_overwrite_pairs": 48,
+          "n_unique_primary_speakers": 53,
+          "schema_keys_verified": true,
+          "gqa_suffix_757_mismatch_frac": 0.0
+        }
+      },
+      "speaker_overlap_train_dev": 0,
+      "speaker_overlap_train_test": 0,
+      "speaker_overlap_dev_test": 0,
+      "all_schema_ok": true,
+      "all_zero_gqa_suffix_leak": true,
+      "zero_overlap_pass": true
     }
   },
-  "preencoded_shards": {
-    "audio_text/clotho_dev.npz": {
-      "size_mib": 32.24
-    },
-    "audio_text/clotho_test.npz": {
-      "size_mib": 32.57
-    },
-    "audio_text/clotho_train.npz": {
-      "size_mib": 118.84
-    },
-    "audio_text/esc50_test_f5.npz": {
-      "size_mib": 2.28
-    },
-    "audio_text/esc50_train_f14.npz": {
-      "size_mib": 9.12
-    },
-    "audio_text/librispeech_dev_clean.npz": {
-      "size_mib": 54.36
-    },
-    "audio_text/librispeech_test_clean.npz": {
-      "size_mib": 54.15
-    },
-    "av/msrvtt_dev.npz": {
-      "size_mib": 227.62
-    },
-    "av/msrvtt_test.npz": {
-      "size_mib": 225.5
-    },
-    "av/msrvtt_train.npz": {
-      "size_mib": 682.86
-    },
-    "av/vggsound_dev.npz": {
-      "size_mib": 226.65
-    },
-    "av/vggsound_test.npz": {
-      "size_mib": 225.6
-    },
-    "av/vggsound_train.npz": {
-      "size_mib": 679.93
-    },
-    "real_speech_overwrite/real_speech_overwrite_dev_L12_Weq64_additive.npz": {
-      "size_mib": 12.42
-    },
-    "real_speech_overwrite/real_speech_overwrite_test_L12_Weq64_additive.npz": {
-      "size_mib": 12.06
-    },
-    "real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz": {
-      "size_mib": 31.49
-    },
-    "robotics/robotics_dev.npz": {
-      "size_mib": 12.61
-    },
-    "robotics/robotics_test.npz": {
-      "size_mib": 12.69
-    },
-    "robotics/robotics_train.npz": {
-      "size_mib": 100.13
-    },
-    "text_code/humaneval_test.npz": {
-      "size_mib": 2.39
-    },
-    "text_code/lambada_openai_test.npz": {
-      "size_mib": 38.89
-    },
-    "text_code/mbpp_sanitized_test.npz": {
-      "size_mib": 1.48
-    },
-    "text_code/text_code_dev_v1.npz": {
-      "size_mib": 206.12
-    },
-    "text_code/text_code_train_24m_balanced.npz": {
-      "size_mib": 549.41
-    },
-    "text_code/text_code_train_v1.npz": {
-      "size_mib": 4119.98
-    },
-    "text_code/wikitext103_test.npz": {
-      "size_mib": 29.56
-    },
-    "text_code/wikitext103_validation.npz": {
-      "size_mib": 26.26
-    }
-  },
-  "all_diverse_corpora_zero_overlap": true
+  "all_diverse_corpora_zero_overlap": true,
+  "audited_shard_count": 28
 }
