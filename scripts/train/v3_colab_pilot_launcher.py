@@ -237,6 +237,20 @@ def verify_gates_1_to_3_passed(repo_root: Path) -> dict[str, Any]:
 
 
 _STDERR_FAILURE_MARKERS = ("error", "failed", "warning", "credential", "auth", "traceback", "unavailable", "exception")
+_BENIGN_ADC_REFRESH_LINES = (
+    "failed to obtain valid adc credentials.",
+    "trying to refresh adc credentials",
+)
+
+
+def _strip_benign_adc_lines(text: str) -> str:
+    """Remove benign `google-colab-cli` hourly ADC token-refresh messages before error screening."""
+    kept: list[str] = []
+    for ln in (text or "").splitlines():
+        if ln.strip().lower() in _BENIGN_ADC_REFRESH_LINES:
+            continue
+        kept.append(ln)
+    return "\n".join(kept).strip()
 
 
 def query_active_sessions(cfg_path: Path, *, runner=run_colab) -> list[str] | None:
@@ -247,10 +261,11 @@ def query_active_sessions(cfg_path: Path, *, runner=run_colab) -> list[str] | No
         return None
     if res.returncode != 0:
         return None
-    stderr_l = (res.stderr or "").strip().lower()
+    stderr_clean = _strip_benign_adc_lines(res.stderr or "")
+    stderr_l = stderr_clean.lower()
     if any(m in stderr_l for m in _STDERR_FAILURE_MARKERS):
         return None
-    stdout_txt = (res.stdout or "").strip()
+    stdout_txt = _strip_benign_adc_lines(res.stdout or "")
     if not stdout_txt:
         return None  # Empty stdout is NEVER a valid inventory!
     stdout_l = stdout_txt.lower()
@@ -288,32 +303,100 @@ def _colab_cli_python() -> Path | None:
     return fallback if fallback.is_file() else None
 
 
-def _adopt_single_unnamed_v6e1(session_name: str, cfg_path: Path) -> bool:
-    """If `colab new` timed out right after server provisioned ONE V6E1 TPU, adopt it into `cfg_path`."""
+def _adopt_single_unnamed_assignment(session_name: str, cfg_path: Path, *, accel: str = "tpu_v6e1") -> bool:
+    """If `colab new` timed out right after server provisioned ONE matching runtime, adopt it into `cfg_path`."""
     py = _colab_cli_python()
     if py is None:
         return False
+    target_map = {
+        "tpu_v6e1": ("V6E1", "TPU"),
+        "a100": ("A100", "GPU"),
+        "h100": ("H100", "GPU"),
+    }
+    want_acc, want_var = target_map.get(accel, ("V6E1", "TPU"))
     code = (
         "import sys; from colab_cli.auth import AuthProvider; from colab_cli.common import state; "
         "from colab_cli.state import SessionState\n"
         "state.config_path = sys.argv[1]; state.auth_provider = AuthProvider.ADC\n"
         "asg = state.client.list_assignments()\n"
-        "v6 = [a for a in asg if a.accelerator.value == 'V6E1' and a.variant.name == 'TPU']\n"
-        "if len(asg) != 1 or len(v6) != 1: sys.exit(2)\n"
-        "a = v6[0]\n"
+        "want_acc, want_var = sys.argv[3], sys.argv[4]\n"
+        "matched = [a for a in asg if a.accelerator.value == want_acc and a.variant.name == want_var]\n"
+        "if len(asg) != 1 or len(matched) != 1: sys.exit(2)\n"
+        "a = matched[0]\n"
         "s = SessionState(name=sys.argv[2], token=a.runtime_proxy_info.token, url=a.runtime_proxy_info.url, "
-        "endpoint=a.endpoint, token_expires_at=a.runtime_proxy_info.expires_at(), variant=a.variant.name, "
+        "endpoint=a.endpoint, token_expires_at=a.runtime_proxy_info.expires_at(), variant=a.variant.value, "
         "accelerator=a.accelerator.value, machine_shape=a.machine_shape.name)\n"
         "state.store.add(s); print('ADOPTED', s.name, s.endpoint)\n"
     )
     try:
-        res = subprocess.run([str(py), "-c", code, str(cfg_path), session_name], env=_colab_env(), text=True, capture_output=True, timeout=60, check=False)
+        res = subprocess.run(
+            [str(py), "-c", code, str(cfg_path), session_name, want_acc, want_var],
+            env=_colab_env(), text=True, capture_output=True, timeout=60, check=False,
+        )
         if res.returncode == 0 and "ADOPTED" in res.stdout:
-            print(f"[PILOT] {res.stdout.strip()}", flush=True)
+            print(f"[ALLOC] {res.stdout.strip()}", flush=True)
             return True
+        if res.stderr.strip():
+            print(f"[ALLOC WARN] Orphan adopt rc={res.returncode}: {res.stderr.strip()[:240]}", flush=True)
     except Exception as exc:
-        print(f"[PILOT WARN] Orphan V6E1 adopt failed: {exc}", flush=True)
+        print(f"[ALLOC WARN] Orphan adopt failed: {exc}", flush=True)
     return False
+
+
+def _adopt_single_unnamed_v6e1(session_name: str, cfg_path: Path) -> bool:
+    """Backwards-compatible alias for adopting a single orphaned V6E1 TPU assignment."""
+    return _adopt_single_unnamed_assignment(session_name, cfg_path, accel="tpu_v6e1")
+
+
+def allocate_colab_session_safe(
+    session_name: str,
+    accel: str,
+    cfg_path: Path,
+    *,
+    max_attempts: int = 4,
+    sleep_s: float = 15.0,
+) -> None:
+    """Safely allocate ONE Colab runtime with ADC-refresh immunity, orphan adoption, and zero multi-orphan leaks."""
+    # Pre-clean any stray unnamed assignments before starting so we never stack multiple billable runtimes
+    pre = query_active_sessions(cfg_path) or []
+    if any("[?]" in ln for ln in pre):
+        print(f"[ALLOC WARN] Pre-existing unnamed assignment(s) detected: {pre}; unassigning before new alloc.", flush=True)
+        _unassign_unnamed_assignments(cfg_path)
+        time.sleep(3.0)
+
+    last_err = ""
+    for attempt in range(1, max_attempts + 1):
+        print(f"[ALLOC attempt {attempt}/{max_attempts}] Requesting {accel} session '{session_name}'...", flush=True)
+        try:
+            if accel == "tpu_v6e1":
+                res = run_colab("new", "-s", session_name, "--tpu", "V6E1", cfg_path=cfg_path, timeout=420)
+            elif accel == "a100":
+                res = run_colab("new", "-s", session_name, "--gpu", "A100", "--high-mem", cfg_path=cfg_path, timeout=360)
+            else:
+                res = run_colab("new", "-s", session_name, "--gpu", "H100", cfg_path=cfg_path, timeout=360)
+            if res.returncode == 0:
+                print(res.stdout.strip(), flush=True)
+                return
+            last_err = (res.stderr or res.stdout)[-400:]
+            print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] rc={res.returncode}: {last_err.strip()}", flush=True)
+        except Exception as e:
+            last_err = str(e)
+            print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] {type(e).__name__}: {e}", flush=True)
+
+        active = query_active_sessions(cfg_path) or []
+        if any(f"[{session_name}]" in ln for ln in active):
+            print(f"[ALLOC] Session '{session_name}' already active on server after retry check.", flush=True)
+            return
+        if any("[?]" in ln for ln in active):
+            if _adopt_single_unnamed_assignment(session_name, cfg_path, accel=accel):
+                return
+            # NEVER leave an un-adopted orphan running across retries!
+            print(f"[ALLOC WARN] Could not adopt unnamed assignment(s) {active}; unassigning before retry.", flush=True)
+            _unassign_unnamed_assignments(cfg_path)
+        if attempt < max_attempts:
+            time.sleep(sleep_s)
+
+    raise RuntimeError(f"Failed to allocate {accel} session '{session_name}' after {max_attempts} attempts: {last_err}")
 
 
 def _unassign_unnamed_assignments(cfg_path: Path) -> None:

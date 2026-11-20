@@ -30,9 +30,9 @@ if str(_REPO_ROOT) not in sys.path:
 
 from scripts.train.v3_colab_pilot_launcher import (
     PILOT_BUNDLE_FILES,
-    _adopt_single_unnamed_v6e1,
     _run_remote_kernel_python_with_watchdog,
-    query_active_sessions,
+    _unassign_unnamed_assignments,
+    allocate_colab_session_safe,
     query_balance,
     run_colab,
     verified_stop_session,
@@ -86,40 +86,7 @@ def main() -> None:
     live_rate_cu_hr = 0.0
 
     try:
-        assigned_ok = False
-        last_err = ""
-        for attempt in range(1, 5):
-            try:
-                if args.accel == "tpu_v6e1":
-                    print(f"[HW_BENCH] Creating Google TPU V6E1 session '{session_name}' (attempt {attempt}/4)...", flush=True)
-                    res = run_colab("new", "-s", session_name, "--tpu", "V6E1", cfg_path=cfg_path, timeout=360)
-                elif args.accel == "a100":
-                    print(f"[HW_BENCH] Creating NVIDIA A100 High-RAM session '{session_name}' (attempt {attempt}/4)...", flush=True)
-                    res = run_colab("new", "-s", session_name, "--gpu", "A100", "--high-mem", cfg_path=cfg_path, timeout=360)
-                else:
-                    print(f"[HW_BENCH] Creating NVIDIA H100 session '{session_name}' (attempt {attempt}/4)...", flush=True)
-                    res = run_colab("new", "-s", session_name, "--gpu", "H100", cfg_path=cfg_path, timeout=360)
-                if res.returncode == 0:
-                    print(res.stdout.strip(), flush=True)
-                    assigned_ok = True
-                    break
-                last_err = (res.stderr or res.stdout)[-400:]
-                print(f"[HW_BENCH WARN] assign attempt {attempt}/4 rc={res.returncode}: {last_err.splitlines()[-1] if last_err.strip() else ''}", flush=True)
-            except Exception as e:
-                last_err = str(e)
-                print(f"[HW_BENCH WARN] assign attempt {attempt}/4 exception: {e}", flush=True)
-            active_chk = query_active_sessions(cfg_path) or []
-            if any(f"[{session_name}]" in ln for ln in active_chk):
-                assigned_ok = True
-                break
-            if args.accel == "tpu_v6e1" and any("[?]" in ln for ln in active_chk):
-                if _adopt_single_unnamed_v6e1(session_name, cfg_path):
-                    assigned_ok = True
-                    break
-            if attempt < 4:
-                time.sleep(15.0)
-        if not assigned_ok:
-            raise RuntimeError(f"Failed to create {args.accel} session after 4 attempts: {last_err}")
+        allocate_colab_session_safe(session_name, args.accel, cfg_path, max_attempts=4, sleep_s=15.0)
         created = True
         t_alloc = time.monotonic()  # Start elapsed-time budget clock ONLY once session is actually allocated!
 
@@ -237,19 +204,22 @@ def main() -> None:
     finally:
         if created:
             ok = verified_stop_session(session_name, cfg_path)
-            bal_end, rate_end = query_balance(cfg_path)
-            summary = {
-                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-                "accel": args.accel,
-                "session_name": session_name,
-                "teardown_verified_removed": ok,
-                "balance_start_cu": bal_start,
-                "balance_end_cu": bal_end,
-                "spend_cu": round(max(0.0, bal_start - bal_end), 3),
-                "rate_after_stop_cu_hr": rate_end,
-            }
-            (args.out_dir / f"hw_bench_{args.accel}_teardown.json").write_text(json.dumps(summary, indent=2) + "\n")
-            print(json.dumps(summary, indent=2), flush=True)
+        else:
+            _unassign_unnamed_assignments(cfg_path)
+            ok = True
+        bal_end, rate_end = query_balance(cfg_path)
+        summary = {
+            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+            "accel": args.accel,
+            "session_name": session_name,
+            "teardown_verified_removed": ok,
+            "balance_start_cu": bal_start,
+            "balance_end_cu": bal_end,
+            "spend_cu": round(max(0.0, bal_start - bal_end), 3),
+            "rate_after_stop_cu_hr": rate_end,
+        }
+        (args.out_dir / f"hw_bench_{args.accel}_teardown.json").write_text(json.dumps(summary, indent=2) + "\n")
+        print(json.dumps(summary, indent=2), flush=True)
 
 
 if __name__ == "__main__":
