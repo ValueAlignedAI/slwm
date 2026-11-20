@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -47,6 +48,91 @@ TRAIN_BUNDLE_FILES = tuple(
         )
     )
 )
+
+
+def _upload_file_chunked(
+    session_name: str,
+    local_path: Path,
+    remote_path: str,
+    *,
+    cfg_path: Path,
+    log_dir: Path,
+    bal_start: float,
+    max_spend_cu: float,
+    t_alloc: float,
+    chunk_bytes: int = 32 * 1024 * 1024,
+) -> None:
+    """Upload arbitrary-size files cleanly across Colab Jupyter `/api/contents` 50-80 MiB JSON body caps."""
+    sz = local_path.stat().st_size
+    if sz <= chunk_bytes:
+        last_err = ""
+        for attempt in range(1, 4):
+            up = run_colab("upload", "-s", session_name, str(local_path), remote_path, cfg_path=cfg_path, timeout=300)
+            if up.returncode == 0:
+                return
+            last_err = up.stderr or up.stdout
+            time.sleep(3.0 * attempt)
+        raise RuntimeError(f"Shard upload failed for {remote_path}: {last_err}")
+
+    # Stream file into <=32 MiB binary parts, upload each cleanly, then concatenate & verify SHA-256 remotely!
+    sha = hashlib.sha256()
+    part_paths_remote: list[str] = []
+    with local_path.open("rb") as fin:
+        idx = 0
+        while True:
+            buf = fin.read(chunk_bytes)
+            if not buf:
+                break
+            sha.update(buf)
+            rem_part = f"/content/_part_{idx:03d}.bin"
+            with tempfile.NamedTemporaryFile(suffix=".bin", delete=False) as tf:
+                tf.write(buf)
+                tmp_p = Path(tf.name)
+            try:
+                ok = False
+                last_err = ""
+                for attempt in range(1, 4):
+                    up = run_colab("upload", "-s", session_name, str(tmp_p), rem_part, cfg_path=cfg_path, timeout=300)
+                    if up.returncode == 0:
+                        ok = True
+                        break
+                    last_err = up.stderr or up.stdout
+                    time.sleep(4.0 * attempt)
+                if not ok:
+                    raise RuntimeError(f"Part {idx} upload failed for {remote_path}: {last_err}")
+            finally:
+                tmp_p.unlink(missing_ok=True)
+            part_paths_remote.append(rem_part)
+            idx += 1
+
+    expected_sha = sha.hexdigest()
+    asm_py = (
+        "import hashlib, os\n"
+        f"parts = {json.dumps(part_paths_remote)}\n"
+        f"dst = {json.dumps(remote_path)}\n"
+        "os.makedirs(os.path.dirname(dst), exist_ok=True)\n"
+        "h = hashlib.sha256()\n"
+        "tot = 0\n"
+        "with open(dst, 'wb') as fout:\n"
+        "    for pp in parts:\n"
+        "        with open(pp, 'rb') as fin:\n"
+        "            b = fin.read()\n"
+        "        fout.write(b)\n"
+        "        h.update(b)\n"
+        "        tot += len(b)\n"
+        "        os.remove(pp)\n"
+        f"assert tot == {sz}, f'size mismatch {{tot}} != {sz}'\n"
+        f"assert h.hexdigest() == {json.dumps(expected_sha)}, 'sha256 mismatch'\n"
+        "print('CHUNK_ASM_OK', dst, tot, flush=True)\n"
+    )
+    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+        session_name, asm_py, cfg_path=cfg_path, log_dir=log_dir,
+        log_prefix=f"asm_{local_path.stem}",
+        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
+        t_alloc_start=t_alloc, phase_timeout_s=300, exec_timeout_s=240,
+    )
+    if rc != 0 or tripped or "CHUNK_ASM_OK" not in out:
+        raise RuntimeError(f"Chunk assembly failed for {remote_path} rc={rc}: {err[-400:]}")
 
 
 def _build_code_tar(repo_root: Path) -> bytes:
@@ -185,9 +271,11 @@ def main() -> None:
             remote_p = f"/content/shards/{rel}"
             sz_mb = sf.stat().st_size / (1024.0**2)
             print(f"[WAVE_LAUNCH] Uploading shard {rel} ({sz_mb:.1f} MiB)...", flush=True)
-            up_s = run_colab("upload", "-s", session_name, str(sf), remote_p, cfg_path=cfg_path, timeout=900)
-            if up_s.returncode != 0:
-                raise RuntimeError(f"Shard upload failed for {rel}: {up_s.stderr or up_s.stdout}")
+            _upload_file_chunked(
+                session_name, sf, remote_p,
+                cfg_path=cfg_path, log_dir=log_dir,
+                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+            )
 
         arms = [a.strip() for a in args.arms.split(",") if a.strip()]
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
