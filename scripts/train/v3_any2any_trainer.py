@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import gc
 import json
 import math
 from pathlib import Path
@@ -244,8 +245,10 @@ def main() -> None:
     ap.add_argument("--multi-horizon-weight", type=float, default=0.15, help="Weight on multi-horizon latent predictive objective (k in {1, 8, 32}).")
     ap.add_argument("--eval-sealed-test", action="store_true", help="Unlock sealed `*_test*.npz` benchmarks (ONLY for frozen final eval!).")
     ap.add_argument("--seed", type=int, default=4201)
+    ap.add_argument("--tag", type=str, default="", help="Optional unique output tag (default: `<profile>_<backbone>_s<seed>`).")
     ap.add_argument("--out-dir", type=Path, required=True)
     args = ap.parse_args()
+    run_tag = args.tag.strip() or f"{args.profile}_{args.backbone}_s{args.seed}"
 
     if args.match_anchor and args.profile in ("pilot_d256", "discovery_45m", "confirmation_135m", "scale_700m", "scale_1b"):
         spec = build_wave_a_comparator_specs(
@@ -415,7 +418,7 @@ def main() -> None:
     # Keep full float32 precision for <= 150M models (and never truncate to float16 which underflows 1/m_d muP weights!).
     args.out_dir.mkdir(parents=True, exist_ok=True)
     import pickle
-    ckpt_path = args.out_dir / f"{args.profile}_{args.backbone}_s{args.seed}_ckpt.pkl"
+    ckpt_path = args.out_dir / f"{run_tag}_ckpt.pkl"
     save_dtype_2d = np.float32 if (n_core_p + n_head_p) < 250_000_000 else jnp.bfloat16
     np_params = jax.tree_util.tree_map(
         lambda x: np.asarray(x, dtype=np.float32) if (save_dtype_2d is np.float32 or x.ndim < 2) else jax.device_get(x.astype(jnp.bfloat16)),
@@ -424,6 +427,11 @@ def main() -> None:
     with ckpt_path.open("wb") as f:
         pickle.dump({"spec": spec, "params": np_params, "seed": int(args.seed)}, f, protocol=pickle.HIGHEST_PROTOCOL)
     print(f"[CKPT] Saved frozen checkpoint BEFORE evals: {ckpt_path} ({ckpt_path.stat().st_size / 1024**2:.1f} MiB)", flush=True)
+
+    # Free optimizer state (`2x` param HBM = ~9.2 GiB at 1B!) before reloading frozen params for evals!
+    del opt_state, all_params
+    gc.collect()
+    jax.clear_caches()
 
     # Reload exact saved checkpoint weights into fp32 for frozen evaluation (ensures eval == saved checkpoint!)
     all_params = jax.tree_util.tree_map(lambda x: jnp.asarray(x, dtype=jnp.float32), np_params)
@@ -593,26 +601,49 @@ def main() -> None:
     evals["inference_showcase"] = {
         "clotho_dev": _safe_eval("showcase_clotho", lambda: generate_cross_modal_text_showcase(
             all_params, spec, args.shard_dir / "audio_text/clotho_dev.npz",
-            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            out_dir=showcase_dir, split="dev", model_name=run_tag,
             seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
         "msrvtt_dev": _safe_eval("showcase_msrvtt", lambda: generate_cross_modal_text_showcase(
             all_params, spec, args.shard_dir / "av/msrvtt_dev.npz",
-            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            out_dir=showcase_dir, split="dev", model_name=run_tag,
             seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
         "wikitext103_val": _safe_eval("showcase_wt103", lambda: generate_cross_modal_text_showcase(
             all_params, spec, args.shard_dir / "text_code/wikitext103_validation.npz",
-            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            out_dir=showcase_dir, split="dev", model_name=run_tag,
             seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
     }
+    if args.eval_sealed_test:
+        evals["inference_showcase_sealed_test"] = {
+            "clotho_test": _safe_eval("showcase_clotho_test", lambda: generate_cross_modal_text_showcase(
+                all_params, spec, args.shard_dir / "audio_text/clotho_test.npz",
+                out_dir=showcase_dir, split="test", model_name=run_tag,
+                seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "msrvtt_test": _safe_eval("showcase_msrvtt_test", lambda: generate_cross_modal_text_showcase(
+                all_params, spec, args.shard_dir / "av/msrvtt_test.npz",
+                out_dir=showcase_dir, split="test", model_name=run_tag,
+                seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "wikitext103_test": _safe_eval("showcase_wt103_test", lambda: generate_cross_modal_text_showcase(
+                all_params, spec, args.shard_dir / "text_code/wikitext103_test.npz",
+                out_dir=showcase_dir, split="test", model_name=run_tag,
+                seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+        }
 
     receipt = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "tag": run_tag,
         "profile": args.profile,
         "backbone": args.backbone,
+        "representation_mode": args.representation_mode,
         "use_wy_chunking": bool(args.use_wy_chunking),
+        "surprise_chunk_size": int(spec.surprise_chunk_size),
+        "multi_horizon_weight": float(mh_weight),
+        "anchor_transition_prob": float(args.anchor_transition_prob),
         "eval_sealed_test_enabled": bool(args.eval_sealed_test),
         "seed": int(args.seed),
         "trainable_core_params": int(n_core_p),
@@ -626,7 +657,7 @@ def main() -> None:
         "train_curve": log_rows,
         "frozen_evaluations": evals,
     }
-    (args.out_dir / f"{args.profile}_{args.backbone}_s{args.seed}_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+    (args.out_dir / f"{run_tag}_receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(json.dumps(receipt, indent=2), flush=True)
 
 
