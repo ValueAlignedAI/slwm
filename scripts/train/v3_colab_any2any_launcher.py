@@ -43,6 +43,7 @@ TRAIN_BUNDLE_FILES = tuple(
             "evals/v3_sota_benchmarks.py",
             "scripts/train/v3_any2any_trainer.py",
             "scripts/train/v3_wave_b_policy_gate.py",
+            "scripts/train/v3_wave_c_decoders.py",
         )
     )
 )
@@ -74,6 +75,7 @@ def main() -> None:
     ap.add_argument("--base-lr", type=float, default=3e-3)
     ap.add_argument("--local-shard-dir", type=Path, required=True, help="Directory with pre-encoded `.npz` shards to upload.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
+    ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
     ap.add_argument("--max-spend-cu", type=float, default=60.0)
     ap.add_argument("--out-dir", type=Path, required=True)
     args = ap.parse_args()
@@ -207,6 +209,15 @@ def main() -> None:
                         "v3_wave_b_policy_gate.main()\n"
                     )
 
+                wave_c_block = ""
+                if args.run_wave_c:
+                    ckpt_rem = f"/content/out/{args.profile}_{bb_name}_s{seed}_ckpt.pkl"
+                    wave_c_block = (
+                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--steps', '250', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out']\n"
+                        "from scripts.train import v3_wave_c_decoders\n"
+                        "v3_wave_c_decoders.main()\n"
+                    )
+
                 run_py = (
                     "import os, sys\n"
                     'os.environ["JAX_COMPILATION_CACHE_DIR"] = "/content/xla"\n'
@@ -218,6 +229,7 @@ def main() -> None:
                     "from scripts.train import v3_any2any_trainer\n"
                     "v3_any2any_trainer.main()\n"
                     + wave_b_block
+                    + wave_c_block
                     + "print('ARM_RUN_OK', flush=True)\n"
                 )
                 rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
@@ -241,6 +253,9 @@ def main() -> None:
                 if args.run_wave_b:
                     wb_fn = f"wave_b_policy_gate_{args.profile}_{bb_name}_receipt.json"
                     run_colab("download", "-s", session_name, f"/content/out/{wb_fn}", str(args.out_dir / f"wave_b_{arm}_s{seed}_receipt.json"), cfg_path=cfg_path, timeout=120)
+                if args.run_wave_c:
+                    wc_fn = f"wave_c_decoders_{args.profile}_{bb_name}_receipt.json"
+                    run_colab("download", "-s", session_name, f"/content/out/{wc_fn}", str(args.out_dir / f"wave_c_{arm}_s{seed}_receipt.json"), cfg_path=cfg_path, timeout=120)
                 if tripped:
                     print("[WAVE_LAUNCH] Budget watchdog tripped; halting cleanly.", flush=True)
                     break
