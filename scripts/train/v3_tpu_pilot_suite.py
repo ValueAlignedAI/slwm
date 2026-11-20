@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 import time
 from typing import Any
@@ -116,6 +117,60 @@ def build_frozen_phase3_codebook(
     }
 
 
+def sample_phase3_episode_manifest(
+    vocab_size: int,
+    batch_size: int,
+    seed: int,
+) -> dict[str, np.ndarray]:
+    """Sample frozen per-episode ground-truth assignments independent of stream length or batch slicing.
+
+    Slicing `manifest[k][:n]` guarantees 100.0% (`n/n`) identical episodes, A/B targets, cue modalities,
+    and prefix arrival times when inserting extra delay for `ood_2x_delay` vs `clean`!
+    """
+    rng = np.random.default_rng(seed)
+    v_sz = int(vocab_size)
+    v0_init = rng.integers(0, v_sz, size=(batch_size,), dtype=np.int32)
+    v1_init = rng.integers(0, v_sz, size=(batch_size,), dtype=np.int32)
+    upd_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)
+    first_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)
+    q1_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)
+
+    val_old = np.where(upd_attr == 0, v0_init, v1_init)
+    val_pres = np.where(upd_attr == 0, v1_init, v0_init)
+    off_a = rng.integers(1, v_sz, size=(batch_size,), dtype=np.int32)
+    val_new_a = (val_old + off_a) % v_sz
+    off_b = rng.integers(1, v_sz - 1, size=(batch_size,), dtype=np.int32)
+    val_new_b = np.empty_like(val_new_a)
+    for b in range(batch_size):
+        cands = [x for x in range(v_sz) if x != int(val_old[b]) and x != int(val_new_a[b])]
+        val_new_b[b] = cands[int(off_b[b]) % len(cands)]
+
+    mod_init_0 = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
+    mod_init_1 = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
+    mod_corr = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
+    t_init_0 = rng.integers(1, 5, size=(batch_size,), dtype=np.int32)
+    t_init_1 = t_init_0 + rng.integers(4, 8, size=(batch_size,), dtype=np.int32)
+    t_corr_off = rng.integers(0, 6, size=(batch_size,), dtype=np.int32)
+    phase = rng.uniform(0.0, 2.0 * np.pi, size=(batch_size,)).astype(np.float32)
+    return {
+        "v0_init": v0_init,
+        "v1_init": v1_init,
+        "upd_attr": upd_attr,
+        "first_attr": first_attr,
+        "q1_attr": q1_attr,
+        "val_pres": val_pres,
+        "val_new_a": val_new_a,
+        "val_new_b": val_new_b,
+        "mod_init_0": mod_init_0,
+        "mod_init_1": mod_init_1,
+        "mod_corr": mod_corr,
+        "t_init_0": t_init_0,
+        "t_init_1": t_init_1,
+        "t_corr_off": t_corr_off,
+        "phase": phase,
+    }
+
+
 def generate_phase3_counterfactual_batch(
     spec: SLWMv3Spec,
     codebook: dict[str, np.ndarray],
@@ -125,6 +180,7 @@ def generate_phase3_counterfactual_batch(
     min_delay_after_corr: int = 768,
     stress_mode: str = "clean",
     seed: int = 4000,
+    manifest: dict[str, np.ndarray] | None = None,
 ) -> dict[str, Any]:
     """Generate paired counterfactual multimodal delayed-overwrite streams (`stream_a` & `stream_b`).
 
@@ -134,15 +190,15 @@ def generate_phase3_counterfactual_batch(
       2. **Genuine counterfactual A/B pairs:** `stream_a` and `stream_b` are BIT-EXACT identical on every tick
          EXCEPT the single correction tick `t_corr` (where `val_new_b != val_new_a != val_old`) and the post-query
          future sensory echo of the updated attribute!
-      3. **High-MI self-supervised predictive target (ZERO downstream labels):**
-         At `t_q1` and `t_q2` (strictly after `t_pre_echo = t_q1 - 1`), sensory query prompts arrive on `modality_id = 4`
-         and the environment emits observable future sensory echoes `val_echo[latest_val(attr)]` at `t_q + 1..t_q + 4`!
+      3. **Frozen paired manifests:** Passing a pre-sampled `manifest` guarantees 100% (`n/n`) identical episodes
+         and A/B targets across `clean`, `distractor`, `corrupt`, `hard_distractor`, `ood_burst`, and `ood_2x_delay`!
       4. **Zero probe leakage:** Downstream evaluation probes extract `Z[t_pre_echo]` STRICTLY BEFORE `t_q1`,
          before EITHER query echo has ever entered the stream!
-      5. **True multimodal cues:** Initial and correction facts arrive across `0:video`, `1:audio` (Mimi RVQ), and
-         `2:text` (ByT5 UTF-8 byte) via their real native edge adapters!
+      5. **Hard same-key/same-modality distractor stress (`hard_distractor`):** Injects low-reliability (`0.05`)
+         spurious cues on the EXACT target attributes `{0, 1}` and target modalities `{0, 1, 2}` so trivial
+         modality or dummy-attribute filters fail.
     """
-    rng = np.random.default_rng(seed)
+    rng = np.random.default_rng(seed + 7919)
     v_sz = int(codebook["vocab_size"])
     # Two distinct single-tick observable sensory echo rounds (`qa1` then `qa2 != qa1`), 9 ticks each:
     # 8 query-prompt ticks (`t_q .. t_q+7`, NO answer in inputs) followed by 1 REAL observable sensory
@@ -162,38 +218,27 @@ def generate_phase3_counterfactual_batch(
     t_pre_echo = t_q1 - 1  # Strict probe readout index (BEFORE t_q1 and BEFORE any query or echo!)
     t_corr_max = t_q1 - min_delay_after_corr
 
-    # Episode latent ground truth
-    v0_init = rng.integers(0, v_sz, size=(batch_size,), dtype=np.int32)
-    v1_init = rng.integers(0, v_sz, size=(batch_size,), dtype=np.int32)
-    upd_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)  # 0 or 1 updated
-    first_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)  # randomized arrival order!
-    q1_attr = rng.integers(0, 2, size=(batch_size,), dtype=np.int32)  # randomized query order!
+    mf = sample_phase3_episode_manifest(v_sz, batch_size, seed) if manifest is None else manifest
+    v0_init = mf["v0_init"][:batch_size].copy()
+    v1_init = mf["v1_init"][:batch_size].copy()
+    upd_attr = mf["upd_attr"][:batch_size].copy()
+    first_attr = mf["first_attr"][:batch_size].copy()
+    q1_attr = mf["q1_attr"][:batch_size].copy()
+    val_pres = mf["val_pres"][:batch_size].copy()
+    val_new_a = mf["val_new_a"][:batch_size].copy()
+    val_new_b = mf["val_new_b"][:batch_size].copy()
+    mod_init_0 = mf["mod_init_0"][:batch_size].copy()
+    mod_init_1 = mf["mod_init_1"][:batch_size].copy()
+    mod_corr = mf["mod_corr"][:batch_size].copy()
+    t_init_0 = mf["t_init_0"][:batch_size].copy()
+    t_init_1 = mf["t_init_1"][:batch_size].copy()
+    t_corr_off = mf["t_corr_off"][:batch_size].copy()
+    phase = mf["phase"][:batch_size][None, :]
 
-    # Guarantee val_new_a != val_old AND val_new_b != val_old AND val_new_b != val_new_a for 100% of episodes!
-    val_old = np.where(upd_attr == 0, v0_init, v1_init)
-    val_pres = np.where(upd_attr == 0, v1_init, v0_init)
-    off_a = rng.integers(1, v_sz, size=(batch_size,), dtype=np.int32)
-    val_new_a = (val_old + off_a) % v_sz
-    off_b = rng.integers(1, v_sz - 1, size=(batch_size,), dtype=np.int32)
-    # Pick distinct val_new_b from remaining V-2 values
-    val_new_b = np.empty_like(val_new_a)
-    for b in range(batch_size):
-        cands = [x for x in range(v_sz) if x != int(val_old[b]) and x != int(val_new_a[b])]
-        val_new_b[b] = cands[int(off_b[b]) % len(cands)]
-
-    # Cue modalities in {0:video, 1:audio, 2:text}
-    mod_init_0 = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
-    mod_init_1 = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
-    mod_corr = rng.integers(0, 3, size=(batch_size,), dtype=np.int32)
-
-    t_init_0 = rng.integers(1, 5, size=(batch_size,), dtype=np.int32)
-    t_init_1 = t_init_0 + rng.integers(4, 8, size=(batch_size,), dtype=np.int32)
-    # Place overwrite past local window W when possible, strictly <= t_corr_max
-    t_corr_lo = np.minimum(t_init_1 + max(4, min(spec.window_size + 2, t_corr_max - 15)), t_corr_max)
-    t_corr = np.array(
-        [int(rng.integers(int(t_corr_lo[b]), max(int(t_corr_lo[b]) + 1, int(t_corr_max) + 1))) for b in range(batch_size)],
-        dtype=np.int32,
-    )
+    # Place overwrite past local window W (`t_init_1 + W + 2 + offset`), independent of `t_len` so doubling `t_len`
+    # preserves BIT-EXACT identical prefix `[0..t_corr]` and purely inserts extra delay ticks after `t_corr`!
+    t_corr_base = t_init_1 + int(spec.window_size) + 2
+    t_corr = np.minimum(t_corr_base + t_corr_off, int(t_corr_max)).astype(np.int32)
 
     # Shared neutral background packet templates (identical across stream_a & stream_b!)
     base_mod_id = np.full((t_len, batch_size), 4, dtype=np.int32)
@@ -208,10 +253,7 @@ def generate_phase3_counterfactual_batch(
     base_prop = np.zeros((t_len, batch_size, spec.proprio_dim), dtype=np.float32)
     base_act = np.zeros((t_len, batch_size, spec.action_dim), dtype=np.float32)
     base_has_act = np.zeros((t_len, batch_size), dtype=np.float32)
-    # Gentle observable background oscillation on probe_feat (0.08 amp so the two 2.0-amp real sensory
-    # echoes naturally carry ~68% of uniform-weight Huber variance with ZERO special target masking!)
     t_grid = np.arange(t_len, dtype=np.float32)[:, None]
-    phase = rng.uniform(0.0, 2.0 * np.pi, size=(1, batch_size)).astype(np.float32)
     base_probe = np.zeros((t_len, batch_size, spec.probe_dim), dtype=np.float32)
     for d_i in range(spec.probe_dim):
         freq = 0.05 + 0.01 * (d_i % 4)
@@ -284,6 +326,27 @@ def generate_phase3_counterfactual_batch(
                 for bt_i in b_ticks:
                     base_mod_id[int(bt_i), b] = 4
                     base_probe[int(bt_i), b] = rng.normal(0.0, burst_sd, size=(spec.probe_dim,)).astype(np.float32)
+            elif stress_mode == "hard_distractor":
+                # Same-key (`attr in {0, 1}`), same-modality (`{0, 1, 2}`) low-reliability (`0.05`) false-overwrite
+                # distractors: trivial modality or dummy-attribute filters CANNOT discard these!
+                n_dist = min(12, max(2, (d_hi - d_lo) // 40))
+                d_ticks = rng.choice(np.arange(d_lo, d_hi), size=n_dist, replace=False)
+                for dt_i in d_ticks:
+                    d_mod = int(rng.integers(0, 3))
+                    d_attr = int(rng.integers(0, 2))
+                    d_val = int(rng.integers(0, v_sz))
+                    _inject_cue(
+                        base_mod_id, base_vid, base_aud_c, base_aud_cont, base_txt, base_probe,
+                        int(dt_i), b, d_mod, d_attr, d_val,
+                    )
+                    base_rel[int(dt_i), b] = 0.05
+            elif stress_mode == "ood_burst":
+                # Unseen OOD heavy sensory corruption bursts (1.5-RMS, NEVER seen during training!)
+                n_burst = min(24, max(4, (d_hi - d_lo) // 25))
+                b_ticks = rng.choice(np.arange(d_lo, d_hi), size=n_burst, replace=False)
+                for bt_i in b_ticks:
+                    base_mod_id[int(bt_i), b] = 4
+                    base_probe[int(bt_i), b] = rng.normal(0.0, 1.5, size=(spec.probe_dim,)).astype(np.float32)
 
         # Query prompts on `[t_q1 .. t_echo1 - 1]` and `[t_q2 .. t_echo2 - 1]` (8 ticks each; NO answer yet!)
         qa1 = int(q1_attr[b])
@@ -305,7 +368,12 @@ def generate_phase3_counterfactual_batch(
         txt = base_txt.copy()
         probe = base_probe.copy()
 
-        tvalid = np.ones((t_len, batch_size), dtype=np.float32)
+        # Supervise strictly on the TWO single-tick observable future sensory echoes (`t_echo1`, `t_echo2`),
+        # eliminating 99.8% background sine dilution while keeping `targs` 100% derived from `pkts["probe_feat"]`
+        # with ZERO label-only target injection and 0% delayed-value copy shortcut!
+        tvalid = np.zeros((t_len, batch_size), dtype=np.float32)
+        tvalid[t_echo1, :] = 1.0
+        tvalid[t_echo2, :] = 1.0
         y_attr_pair = np.zeros((batch_size, 2), dtype=np.int32)
 
         for b in range(batch_size):
@@ -405,6 +473,7 @@ def verify_phase3_counterfactual_oracle(
 
     def _decode_stream(pkts: dict[str, jax.Array]) -> np.ndarray:
         mod_id = np.asarray(pkts["modality_id"])[:t_pre]
+        rel = np.asarray(pkts["reliability"])[:t_pre]
         vid = np.asarray(pkts["video_feat"])[:t_pre]
         aud_c = np.asarray(pkts["audio_codes"])[:t_pre]
         txt = np.asarray(pkts["text_byte"])[:t_pre]
@@ -413,6 +482,8 @@ def verify_phase3_counterfactual_oracle(
         for b in range(b_sz):
             state = [-1, -1]
             for t in range(t_pre):
+                if float(rel[t, b]) < 0.5:
+                    continue
                 m = int(mod_id[t, b])
                 if m == 0:
                     a_id = int(np.argmax(codebook["vid_attr_base"] @ vid[t, b]))
@@ -516,11 +587,11 @@ def run_phase_profile(*, smoke_cpu: bool = False) -> dict[str, Any]:
         eval_prof_shape = ("pilot_d256", 4, 64)
     else:
         configs = (
-            ("pilot_d256_phase3_worst_train_B8_T896", "pilot_d256", 8, 896, 64, 10),
+            ("pilot_d256_phase3_worst_train_B16_T896", "pilot_d256", 16, 896, 64, 10),
             ("discovery_45m_T512", "discovery_45m", 4, 512, 64, 12),
             ("confirmation_135m_T256", "confirmation_135m", 2, 256, 64, 10),
         )
-        eval_prof_shape = ("pilot_d256", 16, 896)
+        eval_prof_shape = ("pilot_d256", 16, 1792)
 
     bf16_3d = _check_native_bf16_3d_conv_on_accelerator()
     out: dict[str, Any] = {
@@ -709,37 +780,49 @@ def combine_phase2_verdict(
     depth_completep: dict[str, Any],
     widths: tuple[int, ...],
     *,
+    joint_profile_mup: dict[str, Any] | None = None,
     max_regret_threshold: float = 0.015,
 ) -> tuple[float, dict[str, float], str]:
-    """Select `recommended_base_lr` and verify unrounded regret `<= max_regret_threshold` on BOTH width AND depth grids!"""
+    """Select `recommended_base_lr` and verify unrounded regret `<= max_regret_threshold` across width, depth, AND joint grids!"""
     base_w_key = f"d{widths[0]}"
     rec_lr_opt = width_mup["best_lr_by_scale"].get(base_w_key)
     rec_lr = float(rec_lr_opt) if rec_lr_opt is not None else 1e-3
     rec_k = f"lr_{rec_lr:.0e}"
 
-    depth_regret_at_rec: dict[str, float] = {}
-    depth_ok = True
-    for dk, opt_lr in depth_completep["best_lr_by_scale"].items():
-        if opt_lr is None or rec_k not in depth_completep["grid"][dk]:
-            depth_regret_at_rec[dk] = float("inf")
-            depth_ok = False
-        else:
-            r_rec = depth_completep["grid"][dk][rec_k]
-            r_opt = depth_completep["grid"][dk][f"lr_{opt_lr:.0e}"]
-            v_rec = float(r_rec.get("val_loss_end_exact", float("nan")))
-            v_opt = float(r_opt.get("val_loss_end_exact", float("nan")))
-            if bool(r_rec.get("all_finite", False)) and np.isfinite(v_rec) and np.isfinite(v_opt):
-                reg = v_rec - v_opt
-                depth_regret_at_rec[dk] = reg
-                if reg > max_regret_threshold:
-                    depth_ok = False
+    def _check_grid_at_rec(sub_grid: dict[str, Any], prefix: str = "") -> tuple[dict[str, float], bool]:
+        reg_map: dict[str, float] = {}
+        ok = True
+        for dk, opt_lr in sub_grid["best_lr_by_scale"].items():
+            out_k = f"{prefix}{dk}"
+            if opt_lr is None or rec_k not in sub_grid["grid"][dk]:
+                reg_map[out_k] = float("inf")
+                ok = False
             else:
-                depth_regret_at_rec[dk] = float("inf")
-                depth_ok = False
+                r_rec = sub_grid["grid"][dk][rec_k]
+                r_opt = sub_grid["grid"][dk][f"lr_{opt_lr:.0e}"]
+                v_rec = float(r_rec.get("val_loss_end_exact", float("nan")))
+                v_opt = float(r_opt.get("val_loss_end_exact", float("nan")))
+                if bool(r_rec.get("all_finite", False)) and np.isfinite(v_rec) and np.isfinite(v_opt):
+                    reg = v_rec - v_opt
+                    reg_map[out_k] = reg
+                    if reg > max_regret_threshold:
+                        ok = False
+                else:
+                    reg_map[out_k] = float("inf")
+                    ok = False
+        return reg_map, ok
 
-    if "inconclusive" in (width_mup["status"], depth_completep["status"]):
+    depth_regret_at_rec, depth_ok = _check_grid_at_rec(depth_completep)
+    statuses = [width_mup["status"], depth_completep["status"]]
+    joint_ok = True
+    if joint_profile_mup is not None:
+        j_reg, joint_ok = _check_grid_at_rec(joint_profile_mup, prefix="joint_")
+        depth_regret_at_rec.update(j_reg)
+        statuses.append(joint_profile_mup["status"])
+
+    if "inconclusive" in statuses:
         overall = "inconclusive"
-    elif width_mup["status"] == "pass" and depth_completep["status"] == "pass" and depth_ok:
+    elif all(s == "pass" for s in statuses) and depth_ok and joint_ok:
         overall = "pass"
     else:
         overall = "fail"
@@ -747,7 +830,7 @@ def combine_phase2_verdict(
 
 
 def run_phase_mup_check(*, smoke_cpu: bool = False, pilot_bundle_sha256: str | None = None) -> dict[str, Any]:
-    """Phase 2: Separate width (L=12, d in {256,512,768}) AND depth (d=256, L in {8,12,16}) 5-LR transfer check."""
+    """Phase 2: Width (L=12, d in {256,512,768}), Depth (d=256, L in {8,12,16}), AND Joint Production Geometry transfer check."""
     if smoke_cpu:
         widths = (128, 256)
         depths = (2, 4)
@@ -756,6 +839,10 @@ def run_phase_mup_check(*, smoke_cpu: bool = False, pilot_bundle_sha256: str | N
         base_prof = "tiny_unit"
         fixed_d = 128
         fixed_l = 4
+        joint_specs = {
+            "tiny_L2_d128": make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=128, n_layers_override=2),
+            "tiny_L4_d256": make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=256, n_layers_override=4),
+        }
     else:
         widths = (256, 512, 768)
         depths = (8, 12, 16)
@@ -764,6 +851,12 @@ def run_phase_mup_check(*, smoke_cpu: bool = False, pilot_bundle_sha256: str | N
         base_prof = "discovery_45m"
         fixed_d = 256
         fixed_l = 12
+        # Joint production-geometry check scaling width, depth, AND memory head-rank (dk=dv=32->64) simultaneously!
+        joint_specs = {
+            "pilot_d256_L12_dk32": make_slwm_v3_spec("pilot_d256", backbone_type="slwm_v3_routed"),
+            "discovery_d512_L12_dk32": make_slwm_v3_spec("discovery_45m", backbone_type="slwm_v3_routed"),
+            "confirmation_d768_L16_dk64": make_slwm_v3_spec("confirmation_135m", backbone_type="slwm_v3_routed"),
+        }
 
     width_specs = {
         f"d{d}": make_slwm_v3_spec(base_prof, backbone_type="slwm_v3_routed", d_model_override=d, n_layers_override=fixed_l)
@@ -783,8 +876,13 @@ def run_phase_mup_check(*, smoke_cpu: bool = False, pilot_bundle_sha256: str | N
     depth_completep = _evaluate_lr_transfer_grid(
         depth_specs, lrs, steps=steps, seq_len=seq_len, batch_size=bsz, val_batch_size=vbsz, use_mup_lr_scaling=True, seed=3202
     )
+    joint_profile_mup = _evaluate_lr_transfer_grid(
+        joint_specs, lrs, steps=steps, seq_len=seq_len, batch_size=bsz, val_batch_size=vbsz, use_mup_lr_scaling=True, seed=3203
+    )
 
-    chosen_lr, depth_regret_at_rec, overall_status = combine_phase2_verdict(width_mup, depth_completep, widths)
+    chosen_lr, depth_regret_at_rec, overall_status = combine_phase2_verdict(
+        width_mup, depth_completep, widths, joint_profile_mup=joint_profile_mup
+    )
     return {
         "device_kind": str(jax.devices()[0].device_kind),
         "smoke_cpu": bool(smoke_cpu),
@@ -795,6 +893,7 @@ def run_phase_mup_check(*, smoke_cpu: bool = False, pilot_bundle_sha256: str | N
         "width_mup": width_mup,
         "width_sp_control": width_sp,
         "depth_completep": depth_completep,
+        "joint_profile_mup": joint_profile_mup,
         "depth_regret_at_recommended_lr": depth_regret_at_rec,
         "recommended_base_lr": float(chosen_lr),
         "status": overall_status,
@@ -810,20 +909,25 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
     """Phase 3: Paired counterfactual A/B flip + preservation + stress ablation at `pilot_d256`."""
     if smoke_cpu:
         profile = "tiny_unit"
-        arms = ("slwm_v3_routed", "slwm_v3_no_routing", "explicit_bounded_kv", "sliding_window_gqa_eqbyte")
+        arms = ("slwm_v3_routed", "slwm_v3_forced_write", "single_bank_gated_deltanet", "sliding_window_gqa_eqbyte")
         vocab_sz = 4
         t_len, min_delay = 80, 34
+        ood_long_t, ood_long_delay, ood_long_bsz = 112, 68, 4
         n_train_batches, train_bsz, epochs = 2, 4, 1
+        probe_train_batches = 2
         dev_bsz, probe_steps, remat_chunk = 8, 12, 16
         eval_micro_bsz = 4
     else:
         profile = "pilot_d256"
         arms = (
             "slwm_v3_routed",
+            "slwm_v3_tied_tau",
+            "single_bank_spread_tau",
+            "single_bank_gated_deltanet",
             "slwm_v3_no_routing",
             "slwm_v3_no_nowrite",
+            "slwm_v3_forced_write",
             "slwm_v3_no_zerolag",
-            "single_bank_gated_deltanet",
             "diag_ssm",
             "explicit_bounded_kv",
             "sliding_window_gqa_eqparam",
@@ -832,8 +936,10 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
         vocab_sz = 8
         # T=896 (14 * 64 chunks), delay >= 768 > RF_eqbyte = 756 > RF_eqparam = 372!
         t_len, min_delay = 896, 768
-        n_train_batches, train_bsz, epochs = 32, 8, 3  # 256 train episodes x 3 epochs
-        dev_bsz, probe_steps, remat_chunk = 128, 120, 64
+        ood_long_t, ood_long_delay, ood_long_bsz = 1792, 1536, 64
+        n_train_batches, train_bsz, epochs = 48, 16, 4  # 192 core steps x B=16 (balanced across 4 stress modes)
+        probe_train_batches = 18  # 18 x 16 x 2 = 576 train A+B views for frozen-core decoupled probe
+        dev_bsz, probe_steps, remat_chunk = 128, 150, 64
         eval_micro_bsz = 16
 
     matched_specs = build_wave_a_comparator_specs(profile, match_params_to_anchor=True)
@@ -841,7 +947,7 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
     anchor_params = count_tree_params(jax.eval_shape(lambda k: init_slwm_v3_params(k, anchor_spec), jax.random.PRNGKey(0)))
     codebook = build_frozen_phase3_codebook(anchor_spec, vocab_size=vocab_sz, codebook_seed=202601)
 
-    # Pre-build frozen-codebook train & dev batches and verify 100% analytic oracle FIRST!
+    # Pre-build frozen-codebook train & strictly paired dev batches (100% identical episode manifest across ALL conditions!)
     train_batches = [
         generate_phase3_counterfactual_batch(
             anchor_spec,
@@ -849,12 +955,14 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             batch_size=train_bsz,
             t_len=t_len,
             min_delay_after_corr=min_delay,
-            stress_mode=("clean", "distractor", "corrupt")[i % 3],
+            stress_mode=("clean", "distractor", "corrupt", "hard_distractor")[i % 4],
             seed=4000 + i,
         )
         for i in range(n_train_batches)
     ]
-    dev_batches = {
+    dev_manifest = sample_phase3_episode_manifest(vocab_sz, dev_bsz, seed=9901)
+    stress_modes_eval = ("clean", "distractor", "corrupt", "hard_distractor", "ood_burst", "ood_2x_delay")
+    dev_batches: dict[str, dict[str, Any]] = {
         sm: generate_phase3_counterfactual_batch(
             anchor_spec,
             codebook,
@@ -862,19 +970,38 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             t_len=t_len,
             min_delay_after_corr=min_delay,
             stress_mode=sm,
-            seed=9901,  # Identical episode draw across clean/distractor/corrupt for paired stress drops!
+            seed=9901,
+            manifest=dev_manifest,
         )
-        for sm in ("clean", "distractor", "corrupt")
+        for sm in ("clean", "distractor", "corrupt", "hard_distractor", "ood_burst")
     }
-    oracle_clean = verify_phase3_counterfactual_oracle(dev_batches["clean"], codebook, anchor_spec)
-    oracle_dist = verify_phase3_counterfactual_oracle(dev_batches["distractor"], codebook, anchor_spec)
-    oracle_corr = verify_phase3_counterfactual_oracle(dev_batches["corrupt"], codebook, anchor_spec)
-    if not (oracle_clean["oracle_pass"] and oracle_dist["oracle_pass"] and oracle_corr["oracle_pass"]):
-        raise RuntimeError(f"Phase 3 oracle check failed: {oracle_clean} / {oracle_dist} / {oracle_corr}")
+    dev_batches["ood_2x_delay"] = generate_phase3_counterfactual_batch(
+        anchor_spec,
+        codebook,
+        batch_size=ood_long_bsz,
+        t_len=ood_long_t,
+        min_delay_after_corr=ood_long_delay,
+        stress_mode="clean",
+        seed=9901,
+        manifest=dev_manifest,  # Exact 64/64 paired match against `clean[:64]` — purely inserts extra delay ticks!
+    )
+    # Verify exact 100% episode pairing between `clean[:ood_long_bsz]` and `ood_2x_delay`!
+    paired_ood_match = bool(
+        np.array_equal(np.asarray(dev_batches["clean"]["y_a"])[:ood_long_bsz], np.asarray(dev_batches["ood_2x_delay"]["y_a"]))
+        and np.array_equal(np.asarray(dev_batches["clean"]["y_b"])[:ood_long_bsz], np.asarray(dev_batches["ood_2x_delay"]["y_b"]))
+        and np.array_equal(np.asarray(dev_batches["clean"]["t_corr"])[:ood_long_bsz], np.asarray(dev_batches["ood_2x_delay"]["t_corr"]))
+    )
+    if not paired_ood_match:
+        raise RuntimeError("Phase 3 manifest error: clean[:ood_long_bsz] and ood_2x_delay are NOT identically paired!")
+
+    oracles = {sm: verify_phase3_counterfactual_oracle(dev_batches[sm], codebook, anchor_spec) for sm in stress_modes_eval}
+    if not all(o["oracle_pass"] for o in oracles.values()):
+        raise RuntimeError(f"Phase 3 oracle check failed: {oracles}")
 
     t_pre_echo = int(dev_batches["clean"]["t_pre_echo"])
     arm_results: dict[str, Any] = {}
     for arm in arms:
+        t_arm_0 = time.perf_counter()
         spec = matched_specs[arm]
         params = init_slwm_v3_params(jax.random.PRNGKey(3301), spec)
         n_p = count_tree_params(params)
@@ -902,24 +1029,31 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             upd = jax.tree_util.tree_map(lambda u: u * step_lr_arr.astype(u.dtype), unit_upd)
             return optax.apply_updates(p, upd), new_o, loss, m
 
-        @jax.jit
-        def _extract_pre_echo_z_micro(p, pkts_mb):
-            """Extract strictly pre-echo latent `Z[t_pre_echo]` on a bounded microbatch (ZERO future echo leak!)."""
-            b = pkts_mb["valid_mask"].shape[1]
-            pkts_pre = {k: v[: t_pre_echo + 1] for k, v in pkts_mb.items()}
-            z_seq, _, diags = scan_core(p, init_core_state(spec, b), pkts_pre, spec, remat_step=False)
-            return jax.lax.stop_gradient(z_seq[t_pre_echo]), {k: jnp.mean(v) for k, v in diags.items() if k != "layer_rms"}
+        def _make_extract_micro(tp: int):
+            @jax.jit
+            def _extract_pre_echo_z_micro(p, pkts_mb):
+                """Extract strictly pre-echo latent `Z[tp]` on a bounded microbatch (ZERO future echo leak!)."""
+                b = pkts_mb["valid_mask"].shape[1]
+                pkts_pre = {k: v[: tp + 1] for k, v in pkts_mb.items()}
+                z_seq, _, diags = scan_core(p, init_core_state(spec, b), pkts_pre, spec, remat_step=False)
+                return jax.lax.stop_gradient(z_seq[tp]), {k: jnp.mean(v) for k, v in diags.items() if k != "layer_rms"}
 
-        def extract_pre_echo_z(p, pkts):
+            return _extract_pre_echo_z_micro
+
+        extract_micro_std = _make_extract_micro(t_pre_echo)
+        extract_micro_long = _make_extract_micro(int(dev_batches["ood_2x_delay"]["t_pre_echo"]))
+
+        def extract_pre_echo_z(p, pkts, *, use_long: bool = False):
             """Chunk large dev batches (`B=128`) into profiled `eval_micro_bsz` (`B=16`) slices so peak HBM stays bounded."""
+            fn = extract_micro_long if use_long else extract_micro_std
             b_tot = int(pkts["valid_mask"].shape[1])
             if b_tot <= eval_micro_bsz:
-                return _extract_pre_echo_z_micro(p, pkts)
+                return fn(p, pkts)
             z_parts, diag_parts = [], []
             for start in range(0, b_tot, eval_micro_bsz):
                 end = min(start + eval_micro_bsz, b_tot)
                 mb = {k: v[:, start:end] for k, v in pkts.items()}
-                zm, dm = _extract_pre_echo_z_micro(p, mb)
+                zm, dm = fn(p, mb)
                 z_parts.append(zm)
                 diag_parts.append(dm)
             mean_diags = {k: jnp.mean(jnp.stack([d[k] for d in diag_parts])) for k in diag_parts[0]}
@@ -955,7 +1089,7 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
 
         # 2. Strictly frozen-core decoupled probe training on pre-echo `Z[t_pre_echo]` (both A and B train views)
         z_tr_list, y_tr_list = [], []
-        for tb in train_batches:
+        for tb in train_batches[:probe_train_batches]:
             za, _ = extract_pre_echo_z(params, tb["pkts_a"])
             zb, _ = extract_pre_echo_z(params, tb["pkts_b"])
             z_tr_list.extend([za, zb])
@@ -967,13 +1101,15 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             probe_p, opt_probe, pl_val = probe_step(probe_p, opt_probe, z_tr, y_tr)
             probe_losses.append(float(pl_val))
 
-        # 3. Evaluate BOTH `stream_a` AND counterfactual `stream_b` flip + preservation + modality breakdown + strict finiteness!
+        # 3. Evaluate BOTH `stream_a` AND counterfactual `stream_b` flip + preservation + OOD stress + modality breakdown!
         stress_scores: dict[str, dict[str, Any]] = {}
+        clean_ab_vec: np.ndarray | None = None
         eval_tensors_finite = bool(jnp.all(jnp.isfinite(z_tr)))
-        for sm in ("clean", "distractor", "corrupt"):
+        for sm in stress_modes_eval:
             db = dev_batches[sm]
-            za, diag_a = extract_pre_echo_z(params, db["pkts_a"])
-            zb, diag_b = extract_pre_echo_z(params, db["pkts_b"])
+            is_long = sm == "ood_2x_delay"
+            za, diag_a = extract_pre_echo_z(params, db["pkts_a"], use_long=is_long)
+            zb, diag_b = extract_pre_echo_z(params, db["pkts_b"], use_long=is_long)
             logits_a = apply_decoupled_probe(probe_p, za).reshape(-1, 2, vocab_sz)
             logits_b = apply_decoupled_probe(probe_p, zb).reshape(-1, 2, vocab_sz)
             eval_tensors_finite = (
@@ -1000,6 +1136,8 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             ok_a = upd_ok_a & pres_ok_a
             ok_b = upd_ok_b & pres_ok_b
             ab_joint = ok_a & ok_b
+            if sm == "clean":
+                clean_ab_vec = ab_joint
             by_mod: dict[str, float] = {}
             for m_idx, m_name in ((0, "video"), (1, "audio"), (2, "text")):
                 sel = mc == m_idx
@@ -1016,6 +1154,8 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
                 "mean_eff_write_eta": round(float(diag_a["mean_eff_write_eta"]), 5),
                 "mean_eff_decay": round(float(diag_a["mean_eff_decay"]), 5),
                 "mean_state_delta_norm": round(float(diag_a["mean_state_delta_norm"]), 5),
+                "mean_mem_frob_norm": round(float(diag_a["mean_mem_frob_norm"]), 5),
+                "max_mem_frob_norm": round(float(diag_a["max_mem_frob_norm"]), 5),
             }
 
         def _all_numeric_finite(obj: Any) -> bool:
@@ -1028,8 +1168,12 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             return True
 
         c_ab = stress_scores["clean"]["counterfactual_ab_flip_and_preserve"]
+        c_ab_paired_ood = float(np.mean(clean_ab_vec[:ood_long_bsz])) if clean_ab_vec is not None else c_ab
         d_ab = stress_scores["distractor"]["counterfactual_ab_flip_and_preserve"]
         k_ab = stress_scores["corrupt"]["counterfactual_ab_flip_and_preserve"]
+        hd_ab = stress_scores["hard_distractor"]["counterfactual_ab_flip_and_preserve"]
+        ob_ab = stress_scores["ood_burst"]["counterfactual_ab_flip_and_preserve"]
+        ol_ab = stress_scores["ood_2x_delay"]["counterfactual_ab_flip_and_preserve"]
         arm_finite = bool(
             all(np.isfinite(x) for x in core_losses)
             and all(np.isfinite(x) for x in probe_losses)
@@ -1047,22 +1191,59 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             "probe_loss_end": round(probe_losses[-1], 6),
             "arm_all_finite": arm_finite,
             "stress_metrics": stress_scores,
+            "clean_paired_subset_ab": round(c_ab_paired_ood, 4),
             "distractor_drop_pp": round((c_ab - d_ab) * 100.0, 2),
             "corrupt_drop_pp": round((c_ab - k_ab) * 100.0, 2),
+            "hard_distractor_drop_pp": round((c_ab - hd_ab) * 100.0, 2),
+            "ood_burst_drop_pp": round((c_ab - ob_ab) * 100.0, 2),
+            "ood_2x_delay_paired_drop_pp": round((c_ab_paired_ood - ol_ab) * 100.0, 2),
+            "arm_wall_sec": round(time.perf_counter() - t_arm_0, 1),
         }
+        print(
+            f"[PHASE3] {arm}: cln={c_ab:.3f} dst={d_ab:.3f} crr={k_ab:.3f} hDst={hd_ab:.3f} "
+            f"oodB={ob_ab:.3f} ood2x={ol_ab:.3f} coreL={core_losses[-1]:.4f} ({arm_results[arm]['arm_wall_sec']}s)",
+            flush=True,
+        )
 
     all_arms_finite = all(bool(r["arm_all_finite"]) for r in arm_results.values())
+    routed_clean_ab = float(
+        arm_results["slwm_v3_routed"]["stress_metrics"]["clean"]["counterfactual_ab_flip_and_preserve"]
+    )
+    routed_ood_2x_ab = float(
+        arm_results["slwm_v3_routed"]["stress_metrics"]["ood_2x_delay"]["counterfactual_ab_flip_and_preserve"]
+    )
+    blind_eqbyte_ab = (
+        float(arm_results["sliding_window_gqa_eqbyte"]["stress_metrics"]["clean"]["counterfactual_ab_flip_and_preserve"])
+        if "sliding_window_gqa_eqbyte" in arm_results
+        else 0.0
+    )
+    # Strict non-trivial gate: `slwm_v3_routed` ITSELF must learn (>= 0.50 clean, >= 0.40 OOD 2x delay, >= +0.40 over blind GQA)!
+    non_trivial_signal = (
+        True
+        if smoke_cpu
+        else bool(
+            routed_clean_ab >= 0.50
+            and routed_ood_2x_ab >= 0.40
+            and blind_eqbyte_ab <= 0.10
+            and (routed_clean_ab - blind_eqbyte_ab) >= 0.40
+        )
+    )
     return {
         "profile": profile,
         "t_len": int(t_len),
         "min_delay_after_corr": int(min_delay),
         "t_pre_echo": int(t_pre_echo),
         "vocab_size": int(vocab_sz),
+        "exact_paired_ood_manifest_verified": paired_ood_match,
         "chance_joint_ab_flip_baseline": round(1.0 / float(vocab_sz * (vocab_sz - 1) * vocab_sz), 6),
-        "oracle_verification": {"clean": oracle_clean, "distractor": oracle_dist, "corrupt": oracle_corr},
+        "oracle_verification": oracles,
         "arms": arm_results,
         "all_arms_finite": all_arms_finite,
-        "status": "pass" if all_arms_finite else "fail",
+        "routed_clean_ab": round(routed_clean_ab, 4),
+        "routed_ood_2x_delay_ab": round(routed_ood_2x_ab, 4),
+        "blind_window_eqbyte_clean_ab": round(blind_eqbyte_ab, 4),
+        "non_trivial_learning_verified": non_trivial_signal,
+        "status": "pass" if (all_arms_finite and non_trivial_signal) else "fail",
     }
 
 
@@ -1134,9 +1315,55 @@ def run_phase_long_stream(base_lr: float = 1e-3, *, smoke_cpu: bool = False) -> 
                 "effective_rank_pr": round(float(effective_rank_participation_ratio(z_seq)), 5),
                 "mean_key_norm": round(float(jnp.mean(diags["mean_key_norm"])), 6),
                 "mean_nowrite": round(float(jnp.mean(diags["mean_nowrite"])), 4),
+                "mean_mem_frob_norm_prenorm": round(float(jnp.mean(diags["mean_mem_frob_norm"])), 5),
+                "max_mem_frob_norm_prenorm": round(float(jnp.max(diags["max_mem_frob_norm"])), 5),
                 "final_state_bytes": int(state_bytes),
                 "wall_sec": round(dt_s, 3),
             }
+
+        # Dedicated pre-`o_norm_w` zero-time (`dt_s = 0.0`) conflicting-key & state-perturbation audit!
+        t_stress = 64 if smoke_cpu else 512
+        rng_z = np.random.default_rng(s * 1000 + 77)
+        pat_a = rng_z.normal(0.0, 1.0, size=(1, spec.probe_dim)).astype(np.float32)
+        pat_b = -pat_a + 0.25 * rng_z.normal(0.0, 1.0, size=(1, spec.probe_dim)).astype(np.float32)
+        conf_probe = np.where((np.arange(t_stress) % 2)[:, None, None] == 0, pat_a[None, :, :], pat_b[None, :, :])
+        pkts_zdt = {
+            "modality_id": jnp.full((t_stress, 1), 4, dtype=jnp.int32),
+            "dt_s": jnp.zeros((t_stress, 1), dtype=jnp.float32),  # Zero-time stream (`alpha == 1.0`)!
+            "valid_mask": jnp.ones((t_stress, 1), dtype=jnp.float32),
+            "reliability": jnp.ones((t_stress, 1), dtype=jnp.float32),
+            "probe_feat": jnp.asarray(conf_probe, dtype=jnp.float32),
+        }
+        st_base = init_core_state(spec, 1)
+        st_pert = init_core_state(spec, 1)
+        init_pert_sq = 0.0
+        for li in range(spec.n_layers):
+            if "mem" in st_pert[li]:
+                noise_m = jax.random.normal(jax.random.PRNGKey(s + li + 99), st_pert[li]["mem"]["M"].shape) * 1e-4
+                st_pert[li]["mem"]["M"] = st_pert[li]["mem"]["M"] + noise_m
+                init_pert_sq += float(jnp.sum(noise_m * noise_m))
+        scan_zdt = jax.jit(lambda p, st, pk: scan_core(p, st, pk, spec))
+        z_zdt, st_zdt_end, d_zdt = scan_zdt(trained_params, st_base, pkts_zdt)
+        _, st_pert_end, _ = scan_zdt(trained_params, st_pert, pkts_zdt)
+        end_pert_sq = sum(
+            float(jnp.sum((st_pert_end[li]["mem"]["M"] - st_zdt_end[li]["mem"]["M"]) ** 2))
+            for li in range(spec.n_layers)
+            if "mem" in st_zdt_end[li]
+        )
+        pert_ratio = math.sqrt(end_pert_sq) / max(math.sqrt(init_pert_sq), 1e-12)
+        zdt_finite = bool(jnp.all(jnp.isfinite(z_zdt))) and all(
+            bool(jnp.all(jnp.isfinite(x))) for x in jax.tree_util.tree_leaves(st_zdt_end)
+        )
+        all_ok = all_ok and zdt_finite and np.isfinite(pert_ratio)
+        h_audit["zero_dt_conflicting_keys_perturbation"] = {
+            "t_len": int(t_stress),
+            "all_finite": zdt_finite,
+            "mean_mem_frob_norm_prenorm": round(float(jnp.mean(d_zdt["mean_mem_frob_norm"])), 5),
+            "max_mem_frob_norm_prenorm": round(float(jnp.max(d_zdt["max_mem_frob_norm"])), 5),
+            "init_pert_frob": round(math.sqrt(init_pert_sq), 6),
+            "end_pert_frob": round(math.sqrt(end_pert_sq), 6),
+            "perturbation_ratio_end_over_init": round(pert_ratio, 5),
+        }
         trained_horizon_audits[f"s{s}"] = h_audit
 
     return {

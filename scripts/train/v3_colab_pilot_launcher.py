@@ -915,7 +915,7 @@ print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BA
                 prior_spent_cu=prior_spent_cu,
                 max_spend_cu=args.max_spend_cu,
                 t_alloc_start=t_alloc_start,
-                phase_timeout_s=2400,
+                phase_timeout_s=(4500 if ph == "dev_ablation" else 2400),
                 exec_timeout_s=1800,
             )
             print(out, flush=True)

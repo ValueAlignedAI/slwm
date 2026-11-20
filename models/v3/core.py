@@ -38,7 +38,7 @@ from models.v3.memory import (
     step_matrix_memory,
     step_ring_gqa,
 )
-from models.v3.spec import SLWMv3Spec
+from models.v3.spec import MATRIX_MEMORY_BACKBONES, SLWMv3Spec
 
 Array = jax.Array
 PyTree = dict[str, Any]
@@ -194,13 +194,7 @@ def init_layer_params(key: Array, spec: SLWMv3Spec) -> PyTree:
         "attn": init_ring_gqa_params(k_attn, spec),
         "ffn": init_ffn_params(k_ffn, spec),
     }
-    if spec.backbone_type in (
-        "slwm_v3_routed",
-        "slwm_v3_no_routing",
-        "slwm_v3_no_nowrite",
-        "slwm_v3_no_zerolag",
-        "single_bank_gated_deltanet",
-    ):
+    if spec.backbone_type in MATRIX_MEMORY_BACKBONES:
         layer["mem"] = init_matrix_memory_params(k_mem, spec)
     elif spec.backbone_type == "diag_ssm":
         layer["ssm"] = init_diag_ssm_params(k_mem, spec)
@@ -215,13 +209,7 @@ def init_layer_params(key: Array, spec: SLWMv3Spec) -> PyTree:
 
 def init_layer_state(spec: SLWMv3Spec, batch_size: int) -> PyTree:
     st: PyTree = {"attn": init_ring_gqa_state(spec, batch_size)}
-    if spec.backbone_type in (
-        "slwm_v3_routed",
-        "slwm_v3_no_routing",
-        "slwm_v3_no_nowrite",
-        "slwm_v3_no_zerolag",
-        "single_bank_gated_deltanet",
-    ):
+    if spec.backbone_type in MATRIX_MEMORY_BACKBONES:
         st["mem"] = init_matrix_memory_state(spec, batch_size)
     elif spec.backbone_type == "diag_ssm":
         st["ssm"] = init_diag_ssm_state(spec, batch_size)
@@ -312,6 +300,8 @@ def step_core(
     eta_list: list[Array] = []
     decay_list: list[Array] = []
     delta_norm_list: list[Array] = []
+    frob_norm_list: list[Array] = []
+    frob_max_list: list[Array] = []
     mem_rms_list: list[Array] = []
     prior_err_list: list[Array] = []
     key_norm_list: list[Array] = []
@@ -325,13 +315,7 @@ def step_core(
         attn_out, ns["attn"] = step_ring_gqa(lp["attn"], ls["attn"], h, valid_mask, spec)
         h = h + alpha_l * attn_out
 
-        if spec.backbone_type in (
-            "slwm_v3_routed",
-            "slwm_v3_no_routing",
-            "slwm_v3_no_nowrite",
-            "slwm_v3_no_zerolag",
-            "single_bank_gated_deltanet",
-        ):
+        if spec.backbone_type in MATRIX_MEMORY_BACKBONES:
             mem_out, ns["mem"], m_diag = step_matrix_memory(
                 lp["mem"], ls["mem"], h, mod_id, dt_s, valid_mask, reliability, spec, step_idx_t=ls["attn"]["step_idx"]
             )
@@ -340,6 +324,8 @@ def step_core(
             eta_list.append(m_diag["eff_write_eta"])
             decay_list.append(m_diag["eff_decay"])
             delta_norm_list.append(m_diag["state_delta_norm"])
+            frob_norm_list.append(m_diag["mem_frob_norm"])
+            frob_max_list.append(m_diag["mem_frob_norm_max"])
             mem_rms_list.append(m_diag["mem_out_rms"])
             prior_err_list.append(m_diag["prior_error"])
             key_norm_list.append(m_diag["key_norm"])
@@ -375,6 +361,12 @@ def step_core(
         "mean_eff_decay": jnp.mean(jnp.stack(decay_list, axis=0), axis=0) if decay_list else jnp.ones((b,), dtype=jnp.float32),
         "mean_state_delta_norm": jnp.mean(jnp.stack(delta_norm_list, axis=0), axis=0)
         if delta_norm_list
+        else jnp.zeros((b,), dtype=jnp.float32),
+        "mean_mem_frob_norm": jnp.mean(jnp.stack(frob_norm_list, axis=0), axis=0)
+        if frob_norm_list
+        else jnp.zeros((b,), dtype=jnp.float32),
+        "max_mem_frob_norm": jnp.max(jnp.stack(frob_max_list, axis=0), axis=0)
+        if frob_max_list
         else jnp.zeros((b,), dtype=jnp.float32),
         "mean_mem_out_rms": jnp.mean(jnp.stack(mem_rms_list, axis=0), axis=0)
         if mem_rms_list
@@ -477,18 +469,24 @@ def _key_str(k: Any) -> str:
 
 
 def build_mup_lr_multipliers(params: PyTree, spec: SLWMv3Spec) -> PyTree:
-    """Build exact per-leaf base-shape muP AdamW LR multiplier tree (`1.0` on EVERY leaf at `d == d_base`).
+    """Build exact per-leaf base-shape muP AdamW LR multiplier tree (`1.0` on EVERY leaf at base geometry).
 
-    - `"input"`, `"fixed_hidden"`, `"scalar"`, or 1D leaves: `1.0`
+    - `"input"`, `"scalar"`, or 1D leaves: `1.0`
+    - `"fixed_hidden"` (`mem.w_o`, `mem.w_prior_proj`, `kv.w_o`): `spec.mem_base_dim / fan_in`
+      (exact `1.0` at `pilot_d256`/`discovery_45m` `fan_in=128`, `0.5` at `confirmation_135m` `fan_in=256`,
+      `0.25` at `700M–1B` `fan_in=512` — preserving O(1) coordinate updates when head rank scales!)
     - `"hidden"` and `"readout"` 2D width-scaling matrices: `1.0 / spec.width_mult` (`d_base / d_model`)
     """
     inv_m_d = 1.0 / max(float(spec.width_mult), 1e-6)
+    base_mem_d = max(float(spec.mem_base_dim), 1.0)
 
     def _mult_for_leaf(path: tuple[Any, ...], arr: Array) -> float:
         parts = tuple(_key_str(k) for k in path)
         role = classify_param_mup_role(parts)
-        if role in ("input", "fixed_hidden", "scalar") or arr.ndim < 2:
+        if role in ("input", "scalar") or arr.ndim < 2:
             return 1.0
+        if role == "fixed_hidden":
+            return base_mem_d / max(float(arr.shape[0]), 1.0)
         return inv_m_d
 
     return jax.tree_util.tree_map_with_path(_mult_for_leaf, params)

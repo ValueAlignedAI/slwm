@@ -25,12 +25,18 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import Any
 
-BACKBONE_TYPES = (
+MATRIX_MEMORY_BACKBONES = (
     "slwm_v3_routed",
+    "slwm_v3_tied_tau",
     "slwm_v3_no_routing",
     "slwm_v3_no_nowrite",
+    "slwm_v3_forced_write",
     "slwm_v3_no_zerolag",
+    "single_bank_spread_tau",
     "single_bank_gated_deltanet",
+)
+
+BACKBONE_TYPES = MATRIX_MEMORY_BACKBONES + (
     "sliding_window_gqa",
     "diag_ssm",
     "explicit_bounded_kv",
@@ -68,12 +74,13 @@ class SLWMv3Spec:
     n_kv_heads: int = 2
     attn_head_dim: int = 64
 
-    # Content-routed multi-timescale matrix memory (or faithful single-bank Gated DeltaNet)
+    # Head-routed multi-timescale matrix memory (or faithful single-bank Gated DeltaNet at identical rank & bytes)
     n_banks: int = 4
-    n_mem_heads: int = 4
-    mem_key_dim: int = 16
-    mem_val_dim: int = 16
-    init_timescales_s: tuple[float, ...] = (0.25, 2.0, 16.0, 128.0)
+    n_mem_heads: int = 1  # Heads per timescale bank (total heads H_tot = n_banks * n_mem_heads = 4)
+    mem_key_dim: int = 32
+    mem_val_dim: int = 32
+    mem_base_dim: int = 128  # Base memory readout fan_in (4 * 32) for exact muP fan_in scaling at confirmation/1B
+    init_timescales_s: tuple[float, ...] = (1.0, 8.0, 64.0, 512.0)
 
     # Multi-head differentiable explicit bounded LRU/overwrite KV controller
     explicit_kv_heads: int = 4
@@ -89,6 +96,7 @@ class SLWMv3Spec:
     use_zero_lag_residual: bool = True
     tie_bank_timescales: bool = False
     use_surprise_router: bool = True  # False for faithful single-bank Gated DeltaNet!
+    force_write_floor: float = 0.0  # >0.0 for preregistered forced-write control (eta >= floor on valid ticks)
 
     # Edge packet interface dimensions (identical across ALL compared backbones!)
     n_modalities: int = 5  # 0:video, 1:audio, 2:text_byte, 3:proprio_action, 4:signal_probe
@@ -159,13 +167,7 @@ def compute_core_streaming_state_bytes(spec: SLWMv3Spec, batch_size: int = 1) ->
     ring_kv_per_layer = 2 * spec.window_size * spec.n_kv_heads * spec.attn_head_dim * kv_elem_bytes
     book_per_layer = spec.window_size * 1 + 4
 
-    if spec.backbone_type in (
-        "slwm_v3_routed",
-        "slwm_v3_no_routing",
-        "slwm_v3_no_nowrite",
-        "slwm_v3_no_zerolag",
-        "single_bank_gated_deltanet",
-    ):
+    if spec.backbone_type in MATRIX_MEMORY_BACKBONES:
         mem_per_layer = spec.n_banks * spec.n_mem_heads * spec.mem_val_dim * spec.mem_key_dim * mem_elem_bytes
     elif spec.backbone_type == "sliding_window_gqa":
         mem_per_layer = 0
@@ -227,10 +229,10 @@ def make_slwm_v3_spec(
             n_kv_heads=2,
             attn_head_dim=32,
             n_banks=4,
-            n_mem_heads=4,
-            mem_key_dim=16,
-            mem_val_dim=16,
-            init_timescales_s=(0.25, 2.0, 16.0, 128.0),
+            n_mem_heads=1,
+            mem_key_dim=32,
+            mem_val_dim=32,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
             explicit_kv_heads=4,
             explicit_kv_slots=16,
             explicit_kv_dim=32,
@@ -251,10 +253,10 @@ def make_slwm_v3_spec(
             n_kv_heads=2,
             attn_head_dim=64,
             n_banks=4,
-            n_mem_heads=4,
-            mem_key_dim=16,
-            mem_val_dim=16,
-            init_timescales_s=(0.25, 2.0, 16.0, 128.0),
+            n_mem_heads=1,
+            mem_key_dim=32,
+            mem_val_dim=32,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
             explicit_kv_heads=4,
             explicit_kv_slots=16,
             explicit_kv_dim=32,
@@ -275,10 +277,10 @@ def make_slwm_v3_spec(
             n_kv_heads=2,
             attn_head_dim=64,
             n_banks=4,
-            n_mem_heads=4,
-            mem_key_dim=16,
-            mem_val_dim=16,
-            init_timescales_s=(0.25, 2.0, 16.0, 128.0),
+            n_mem_heads=1,
+            mem_key_dim=32,
+            mem_val_dim=32,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
             explicit_kv_heads=4,
             explicit_kv_slots=16,
             explicit_kv_dim=32,
@@ -300,10 +302,10 @@ def make_slwm_v3_spec(
             n_kv_heads=4,
             attn_head_dim=64,
             n_banks=4,
-            n_mem_heads=4,
-            mem_key_dim=32,
-            mem_val_dim=32,
-            init_timescales_s=(0.25, 2.0, 16.0, 128.0),
+            n_mem_heads=1,
+            mem_key_dim=64,
+            mem_val_dim=64,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
             explicit_kv_heads=4,
             explicit_kv_slots=32,
             explicit_kv_dim=64,
@@ -323,27 +325,45 @@ def make_slwm_v3_spec(
         base = replace(base, n_layers=int(n_layers_override))
 
     # Apply orthogonal single-factor toggle defaults
-    if backbone_type == "slwm_v3_no_routing":
-        # Strict single-factor isolation of bank write routing: hold physical timescales `tau_b`,
-        # bank decay gates `g_b`, and learned read routing `read_w` FIXED identically to `slwm_v3_routed`,
-        # and ablate ONLY content-routed bank write allocation (`r_b = broadcast(write_prob)` in [0, 1])!
+    if backbone_type == "slwm_v3_tied_tau":
+        # 2x2 factorial cell: IDENTICAL surprise router + no-write + FFN width as `slwm_v3_routed`,
+        # changing ONLY timescale prior from spread `(1, 8, 64, 512)s` to tied `64s`!
+        base = replace(base, tie_bank_timescales=True, init_timescales_s=(64.0,) * base.n_banks)
+    elif backbone_type == "slwm_v3_no_routing":
+        # Strict single-factor isolation of content-to-timescale bank routing: holds physical timescales `tau_b`,
+        # bank decay gates `g_b`, per-head (dk, dv) rank, and aggregate write/no-write mass IDENTICAL to `slwm_v3_routed`,
+        # replacing ONLY per-bank content routing with uniform bank-averaged write allocation!
         base = replace(base, use_learned_routing=False, tie_bank_timescales=False)
     elif backbone_type == "slwm_v3_no_nowrite":
         base = replace(base, use_nowrite_option=False)
+    elif backbone_type == "slwm_v3_forced_write":
+        # Preregistered forced-write control: identical surprise router & timescales to `slwm_v3_routed`,
+        # floor-clamping write rate `eta >= 0.5` on every valid tick (prohibits write abstention)!
+        base = replace(base, use_nowrite_option=False, force_write_floor=0.5)
     elif backbone_type == "slwm_v3_no_zerolag":
         base = replace(base, use_zero_lag_residual=False)
-    elif backbone_type == "single_bank_gated_deltanet":
-        # Faithful B=1 Gated DeltaNet: double (d_k, d_v) -> EXACT 4x state per bank = EXACT equal matrix bytes!
-        # NO surprise/no-write router MLP!
+    elif backbone_type == "single_bank_spread_tau":
+        # 2x2 factorial cell: IDENTICAL linear DeltaNet `w_beta` controller as `single_bank_gated_deltanet`,
+        # changing ONLY timescale prior from tied `64s` to spread `(1, 8, 64, 512)s`!
         base = replace(
             base,
-            n_banks=1,
-            mem_key_dim=base.mem_key_dim * 2,
-            mem_val_dim=base.mem_val_dim * 2,
-            init_timescales_s=(4.0,),
             use_learned_routing=False,
             use_nowrite_option=False,
             use_surprise_router=False,
+            tie_bank_timescales=False,
+        )
+    elif backbone_type == "single_bank_gated_deltanet":
+        # Faithful B=1 Gated DeltaNet with IDENTICAL total heads (H_tot = 4), IDENTICAL per-head rank (dk, dv),
+        # and IDENTICAL matrix state bytes as `slwm_v3_routed` — single shared timescale (64s), NO surprise/no-write router!
+        base = replace(
+            base,
+            n_banks=1,
+            n_mem_heads=base.n_banks * base.n_mem_heads,
+            init_timescales_s=(64.0,),
+            use_learned_routing=False,
+            use_nowrite_option=False,
+            use_surprise_router=False,
+            tie_bank_timescales=True,
         )
     return base
 
@@ -411,14 +431,23 @@ def build_wave_a_comparator_specs(
 
     raw_specs: dict[str, SLWMv3Spec] = {
         "slwm_v3_routed": anchor,
+        "slwm_v3_tied_tau": make_slwm_v3_spec(
+            profile, backbone_type="slwm_v3_tied_tau", representation_mode=representation_mode, d_model_override=d_model_override
+        ),
         "slwm_v3_no_routing": make_slwm_v3_spec(
             profile, backbone_type="slwm_v3_no_routing", representation_mode=representation_mode, d_model_override=d_model_override
         ),
         "slwm_v3_no_nowrite": make_slwm_v3_spec(
             profile, backbone_type="slwm_v3_no_nowrite", representation_mode=representation_mode, d_model_override=d_model_override
         ),
+        "slwm_v3_forced_write": make_slwm_v3_spec(
+            profile, backbone_type="slwm_v3_forced_write", representation_mode=representation_mode, d_model_override=d_model_override
+        ),
         "slwm_v3_no_zerolag": make_slwm_v3_spec(
             profile, backbone_type="slwm_v3_no_zerolag", representation_mode=representation_mode, d_model_override=d_model_override
+        ),
+        "single_bank_spread_tau": make_slwm_v3_spec(
+            profile, backbone_type="single_bank_spread_tau", representation_mode=representation_mode, d_model_override=d_model_override
         ),
         "single_bank_gated_deltanet": make_slwm_v3_spec(
             profile, backbone_type="single_bank_gated_deltanet", representation_mode=representation_mode, d_model_override=d_model_override
@@ -456,10 +485,17 @@ def build_wave_a_comparator_specs(
         return raw_specs
 
     # Match trainable parameter count within <= 1% for every structural comparator
-    # (Keep single-factor ablations `slwm_v3_no_*` at exact identical FFN width so ONLY the ablated mechanism changes!)
+    # (Keep single-factor ablations `slwm_v3_*` at exact identical FFN width so ONLY the ablated mechanism changes!)
     matched: dict[str, SLWMv3Spec] = {}
     for k, sp in raw_specs.items():
-        if k in ("slwm_v3_routed", "slwm_v3_no_routing", "slwm_v3_no_nowrite", "slwm_v3_no_zerolag"):
+        if k in (
+            "slwm_v3_routed",
+            "slwm_v3_tied_tau",
+            "slwm_v3_no_routing",
+            "slwm_v3_no_nowrite",
+            "slwm_v3_forced_write",
+            "slwm_v3_no_zerolag",
+        ):
             matched[k] = sp
         else:
             matched[k] = _match_params_via_ffn_dim(sp, anchor_params)

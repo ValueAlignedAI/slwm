@@ -432,19 +432,22 @@ def build_gate2_split_and_exclusion_ledger(data_root: Path) -> dict[str, Any]:
     )
 
     # ------------------------------------------------------------------
-    # 10. Collision-free Real-Speech-Overwrite schedules exceeding BOTH W_eq AND Mimi 79.68s RF!
+    # 10. Collision-free Real-Speech-Overwrite schedules exceeding ADDITIVE `GQA RF + Mimi 81.6s RF`!
     # ------------------------------------------------------------------
-    # Discovery: exceeds sliding_window_gqa_eqbyte (L=12, W_eq=64 -> RF=756) AND Mimi 8-layer RF (1,000 ticks = 80s > 79.68s)!
+    # Additive RF rule: along raw_audio -> Mimi(1020 ticks = 81.6s) -> GQA(L*(W-1)) -> output,
+    # receptive fields ADD, so `delay > L*(W-1) + 1020` guarantees bit-identical A/B codec packets
+    # across the ENTIRE accessible GQA suffix `[t_q - L*(W-1), t_q]`!
+    # Discovery: L=12, W_eq=64 -> GQA RF=756 + Mimi RF=1020 = 1,776 ticks (142.08s)
     sched_disc = build_interleaved_speech_overwrite_schedule(
-        n_episodes=1200, comparator_layers=12, comparator_window=64, min_delay_ticks_override=1008, catch_trial_prob=0.25, seed=32001
+        n_episodes=1200, comparator_layers=12, comparator_window=64, codec_rf_ticks=1020, catch_trial_prob=0.25, seed=32001
     )
-    # Confirmation eqparam + Mimi RF: L=16, W=64 -> RF=1,008 ticks (80.64s > 79.68s Mimi RF)
+    # Confirmation eqparam: L=16, W=64 -> GQA RF=1,008 + Mimi RF=1020 = 2,028 ticks (162.24s)
     sched_conf_eqp = build_interleaved_speech_overwrite_schedule(
-        n_episodes=1200, comparator_layers=16, comparator_window=64, min_delay_ticks_override=1008, catch_trial_prob=0.25, seed=32002
+        n_episodes=1200, comparator_layers=16, comparator_window=64, codec_rf_ticks=1020, catch_trial_prob=0.25, seed=32002
     )
-    # Confirmation eqbyte: L=16, W_eq=128 -> RF=2,032 ticks (162.56s > 79.68s Mimi RF)
+    # Confirmation eqbyte: L=16, W_eq=128 -> GQA RF=2,032 + Mimi RF=1020 = 3,052 ticks (244.16s)
     sched_conf_eqb = build_interleaved_speech_overwrite_schedule(
-        n_episodes=1200, comparator_layers=16, comparator_window=128, catch_trial_prob=0.25, seed=32003
+        n_episodes=1200, comparator_layers=16, comparator_window=128, codec_rf_ticks=1020, catch_trial_prob=0.25, seed=32003
     )
 
     # ------------------------------------------------------------------
@@ -490,6 +493,9 @@ def build_gate2_split_and_exclusion_ledger(data_root: Path) -> dict[str, Any]:
             and sched_disc["zero_speech_collisions_verified"]
             and sched_conf_eqp["zero_speech_collisions_verified"]
             and sched_conf_eqb["zero_speech_collisions_verified"]
+            and sched_disc["strictly_exceeds_additive_codec_plus_gqa_rf"]
+            and sched_conf_eqp["strictly_exceeds_additive_codec_plus_gqa_rf"]
+            and sched_conf_eqb["strictly_exceeds_additive_codec_plus_gqa_rf"]
         ),
     }
 

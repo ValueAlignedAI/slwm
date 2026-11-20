@@ -44,6 +44,7 @@ import numpy as np
 import optax
 import pytest
 
+from data.v3_data_contract import build_interleaved_speech_overwrite_schedule
 from models.v3.core import (
     build_mup_lr_multipliers,
     build_weight_decay_mask,
@@ -59,6 +60,7 @@ from models.v3.memory import (
     init_explicit_kv_state,
     init_matrix_memory_params,
     init_matrix_memory_state,
+    safe_l2_normalize,
     step_explicit_kv,
     step_matrix_memory,
 )
@@ -89,6 +91,7 @@ from scripts.train.v3_tpu_pilot_suite import (
     evaluate_lr_transfer_verdict,
     generate_phase3_counterfactual_batch,
     is_tpu_v6e_device_kind,
+    sample_phase3_episode_manifest,
     validate_reusable_mup_receipt,
     verify_phase3_counterfactual_oracle,
 )
@@ -337,22 +340,24 @@ def test_orthogonal_ablations_and_faithful_single_bank_contracts() -> None:
     _, _, d_nw = scan_core(p_nw, init_core_state(spec_nw, 2), pkts, spec_nw)
     assert float(jnp.max(jnp.abs(d_nw["mean_nowrite"]))) == 0.0
 
-    # 2. `-LearnedRouting`: holds timescales `tau_b`, decay gates `g_b`, read routing `w_read_gate`, AND the
-    #    `(nb + 1)`-logit no-write calculation IDENTICAL to `slwm_v3_routed` (0.20 no-write, 0.80 write mass at init),
-    #    replacing ONLY content bank selection with content-independent round-robin!
+    # 2. `-LearnedRouting`: holds timescales `tau_b`, decay gates `g_b`, full-rank `(dk, dv)`, `o_norm_w`,
+    #    parameter count (+0.000%), `r_nowrite`, and aggregate write mass IDENTICAL to `slwm_v3_routed`,
+    #    replacing ONLY per-bank content routing with uniform bank-averaged write allocation!
     spec_rt = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed")
     spec_nr = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_no_routing")
     p_rt = init_slwm_v3_params(jax.random.PRNGKey(53), spec_rt)
     p_nr = init_slwm_v3_params(jax.random.PRNGKey(53), spec_nr)
     assert count_tree_params(p_rt) == count_tree_params(p_nr)
     assert p_nr["layers"][0]["mem"]["log_tau"].shape == (spec_nr.n_banks,)
-    assert "w_read_gate" in p_nr["layers"][0]["mem"]
+    # Zero dead `w_beta`/`beta_bias` when `use_surprise_router=True`!
+    assert "w_beta" not in p_rt["layers"][0]["mem"] and "beta_bias" not in p_rt["layers"][0]["mem"]
+    assert "router_skip" in p_rt["layers"][0]["mem"] and "o_norm_w" in p_rt["layers"][0]["mem"]
     mem_p_rt = init_matrix_memory_params(jax.random.PRNGKey(53), spec_rt)
     mem_p_nr = init_matrix_memory_params(jax.random.PRNGKey(53), spec_nr)
     mem_st_rt = init_matrix_memory_state(spec_rt, batch_size=2)
     mem_st_nr = init_matrix_memory_state(spec_nr, batch_size=2)
     x_step = jax.random.normal(jax.random.PRNGKey(530), (2, spec_nr.d_model))
-    # Verify BIT-EXACT identical `r_nowrite` and aggregate `sum_b r_b == 1 - r_nowrite` across BOTH arms at step 0!
+    # Verify BIT-EXACT identical `r_nowrite` and aggregate `mean_b(r_banks)` across BOTH arms at step 0!
     _, _, md_rt0 = step_matrix_memory(
         mem_p_rt, mem_st_rt, x_step, jnp.zeros((2,), dtype=jnp.int32), jnp.full((2,), 0.1), jnp.ones((2,)), jnp.ones((2,)), spec_rt, step_idx_t=jnp.zeros((2,), dtype=jnp.int32)
     )
@@ -360,41 +365,36 @@ def test_orthogonal_ablations_and_faithful_single_bank_contracts() -> None:
         mem_p_nr, mem_st_nr, x_step, jnp.zeros((2,), dtype=jnp.int32), jnp.full((2,), 0.1), jnp.ones((2,)), jnp.ones((2,)), spec_nr, step_idx_t=jnp.zeros((2,), dtype=jnp.int32)
     )
     assert np.allclose(np.asarray(md_rt0["r_nowrite"]), np.asarray(md_nr0["r_nowrite"]), atol=1e-6)
-    assert np.allclose(np.asarray(md_rt0["r_banks"]).sum(axis=-1), np.asarray(md_nr0["r_banks"]).sum(axis=-1), atol=1e-6)
-    assert 0.75 < float(np.asarray(md_nr0["r_banks"]).sum(axis=-1).mean()) < 0.85
+    assert np.allclose(np.asarray(md_rt0["r_banks"]).mean(axis=-1), np.asarray(md_nr0["r_banks"]).mean(axis=-1), atol=1e-6)
+    # `-LearnedRouting` has ZERO bank-to-bank specialization (`max - min == 0`), whereas routed arm differentiates banks!
+    rb_rt0 = np.asarray(md_rt0["r_banks"])
+    rb_nr0 = np.asarray(md_nr0["r_banks"])
+    assert float(np.max(rb_nr0.max(axis=-1) - rb_nr0.min(axis=-1))) < 1e-6
+    assert float(np.max(rb_rt0.max(axis=-1) - rb_rt0.min(axis=-1))) > 1e-3
 
-    # Verify deterministic content-independent round-robin bank selection + full [0, 1] single-bank ceiling
-    mem_p_nr["router_b2"] = jnp.array([4.0, 4.0, 4.0, 4.0, -4.0], dtype=jnp.float32)
-    selected_banks = []
-    for step_i in range(spec_nr.n_banks):
-        _, mem_st_nr, md = step_matrix_memory(
-            mem_p_nr,
-            mem_st_nr,
-            x_step,
-            jnp.zeros((2,), dtype=jnp.int32),
-            jnp.full((2,), 0.1),
-            jnp.ones((2,)),
-            jnp.ones((2,)),
-            spec_nr,
-            step_idx_t=jnp.full((2,), step_i, dtype=jnp.int32),
-        )
-        rb = np.asarray(md["r_banks"])
-        rnw = np.asarray(md["r_nowrite"])
-        assert np.allclose(rb.sum(axis=-1), 1.0 - rnw, atol=1e-5)
-        assert np.allclose(rb.max(axis=-1), 1.0 - rnw, atol=1e-5)
-        assert float(rb.max()) > 0.99
-        selected_banks.append(int(np.argmax(rb[0])))
-    assert selected_banks == list(range(spec_nr.n_banks))
+    # Verify full [0, 1] single-bank overwrite ceiling when router selects one bank decisively!
+    h_tot = spec_rt.n_banks * spec_rt.n_mem_heads
+    b2_sel = np.concatenate([np.array([-10.0, -10.0, -10.0, 10.0], dtype=np.float32), np.full((spec_rt.n_banks,), -10.0, dtype=np.float32)])
+    assert b2_sel.shape == (h_tot + spec_rt.n_banks,)
+    mem_p_rt["router_b2"] = jnp.asarray(b2_sel)
+    _, _, md_hi = step_matrix_memory(
+        mem_p_rt, mem_st_rt, x_step, jnp.zeros((2,), dtype=jnp.int32), jnp.full((2,), 0.1), jnp.ones((2,)), jnp.ones((2,)), spec_rt
+    )
+    rb_hi = np.asarray(md_hi["r_banks"])
+    assert float(rb_hi[:, 3].min()) > 0.99 and float(rb_hi[:, :3].max()) < 0.01
 
     # 3. `-ZeroLagResidual`: omits zero-lag bypass parameters
     spec_zl = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_no_zerolag")
     p_zl = init_slwm_v3_params(jax.random.PRNGKey(54), spec_zl)
     assert "zero_lag_proj" not in p_zl and "gate_z0" not in p_zl
 
-    # 4. Faithful `single_bank_gated_deltanet`: NO surprise router MLP or `w_prior_proj`!
+    # 4. Faithful `single_bank_gated_deltanet`: identical total heads & rank `(dk, dv)`, NO surprise router MLP or `w_prior_proj`!
     spec_sb = make_slwm_v3_spec("tiny_unit", backbone_type="single_bank_gated_deltanet")
     p_sb = init_slwm_v3_params(jax.random.PRNGKey(55), spec_sb)
-    assert "router_w1" not in p_sb["layers"][0]["mem"] and "w_prior_proj" not in p_sb["layers"][0]["mem"]
+    assert "router_w1" not in p_sb["layers"][0]["mem"] and "router_skip" not in p_sb["layers"][0]["mem"]
+    assert "w_prior_proj" not in p_sb["layers"][0]["mem"] and "w_beta" in p_sb["layers"][0]["mem"]
+    assert spec_sb.mem_key_dim == spec_rt.mem_key_dim and spec_sb.mem_val_dim == spec_rt.mem_val_dim
+    assert spec_sb.n_banks * spec_sb.n_mem_heads == spec_rt.n_banks * spec_rt.n_mem_heads
 
 
 def test_explicit_bounded_kv_multistep_eviction_gradients_and_true_lru_read_refresh() -> None:
@@ -517,7 +517,15 @@ def test_comparator_param_byte_parity_zero_dead_edge_and_balanced_modality_rms()
                 assert lo_m <= n_p <= hi_m, f"Confirmation {name} params={n_p:,} outside [124M, 150M]"
 
             b_cmp = compute_core_streaming_state_bytes(sp, batch_size=1)
-            if name in ("slwm_v3_no_routing", "slwm_v3_no_nowrite", "slwm_v3_no_zerolag", "single_bank_gated_deltanet"):
+            if name in (
+                "slwm_v3_tied_tau",
+                "slwm_v3_no_routing",
+                "slwm_v3_no_nowrite",
+                "slwm_v3_forced_write",
+                "slwm_v3_no_zerolag",
+                "single_bank_spread_tau",
+                "single_bank_gated_deltanet",
+            ):
                 assert b_cmp["memory_state_bytes"] == anchor_b["memory_state_bytes"]
             elif name != "sliding_window_gqa_eqparam":
                 b_err = abs(b_cmp["total_core_state_bytes"] - anchor_b["total_core_state_bytes"]) / float(anchor_b["total_core_state_bytes"])
@@ -558,13 +566,18 @@ def test_exact_base_shape_mup_masked_wd_and_production_adamw_width_invariance() 
     wd_m = build_weight_decay_mask(p_r)
     assert not wd_m["layers"][0]["mem"]["log_tau"]
     assert not wd_m["layers"][0]["mem"]["g_bias"]
-    assert not wd_m["layers"][0]["mem"]["beta_bias"]
+    assert not wd_m["layers"][0]["mem"]["o_norm_w"]
     assert not wd_m["layers"][0]["mem"]["router_b1"]
     assert not wd_m["layers"][0]["mem"]["router_b2"]
+    assert wd_m["layers"][0]["mem"]["router_skip"]
     assert not wd_m["layers"][0]["attn"]["norm_w"]
     assert not wd_m["layers"][0]["attn"]["rel_pos_bias"]
     assert not wd_m["gate_z0"]
     assert wd_m["layers"][0]["ffn"]["w_gate"] and wd_m["layers"][0]["ffn"]["w_down"]
+
+    sp_sb_wd = make_slwm_v3_spec("tiny_unit", backbone_type="single_bank_gated_deltanet")
+    wd_sb = build_weight_decay_mask(init_slwm_v3_params(jax.random.PRNGKey(81), sp_sb_wd))
+    assert not wd_sb["layers"][0]["mem"]["beta_bias"] and not wd_sb["layers"][0]["mem"]["o_norm_w"]
 
     sp_kv = make_slwm_v3_spec("tiny_unit", backbone_type="explicit_bounded_kv")
     wd_kv = build_weight_decay_mask(init_slwm_v3_params(jax.random.PRNGKey(82), sp_kv))
@@ -577,7 +590,7 @@ def test_exact_base_shape_mup_masked_wd_and_production_adamw_width_invariance() 
     # 3. Real production masked `optax` AdamW 3-width (`128, 256, 512`) coordinate invariance vs SP!
     widths = (128, 256, 512)
     pkts, targs, tvalid = make_synthetic_multimodal_batch(sp_r, seq_len=24, batch_size=4, seed=808)
-    z_rms_init, dz_mup, dz_sp = [], [], []
+    z_rms_init, dz_mup, dz_sp, loss_mup, loss_sp = [], [], [], [], []
     for d in widths:
         sp = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=d)
         p0 = init_slwm_v3_params(jax.random.PRNGKey(77), sp)
@@ -585,7 +598,7 @@ def test_exact_base_shape_mup_masked_wd_and_production_adamw_width_invariance() 
         z0, _, _ = scan_core(p0, st0, pkts, sp)
         z_rms_init.append(float(jnp.sqrt(jnp.mean(z0 * z0))))
 
-        for use_mup, dest in ((True, dz_mup), (False, dz_sp)):
+        for use_mup, dest_dz, dest_loss in ((True, dz_mup, loss_mup), (False, dz_sp, loss_sp)):
             tx = build_optimizer(p0, sp, base_lr=1e-3, weight_decay=0.01, use_mup_lr_scaling=use_mup)
             o_st = tx.init(p0)
             p_cur = p0
@@ -597,24 +610,30 @@ def test_exact_base_shape_mup_masked_wd_and_production_adamw_width_invariance() 
                 assert all(bool(jnp.all(jnp.isfinite(g))) for g in jax.tree_util.tree_leaves(grads))
                 upd, o_st = tx.update(grads, o_st, p_cur)
                 p_cur = optax.apply_updates(p_cur, upd)
+            end_l, _ = masked_multi_horizon_predictive_loss(p_cur, st0, pkts, targs, tvalid, sp)
             z_end, _, _ = scan_core(p_cur, st0, pkts, sp)
-            dest.append(float(jnp.sqrt(jnp.mean((z_end - z0) ** 2))))
+            dest_dz.append(float(jnp.sqrt(jnp.mean((z_end - z0) ** 2))))
+            dest_loss.append(float(end_l))
 
     assert min(dz_mup) > 1e-4
     init_ratio = max(z_rms_init) / max(min(z_rms_init), 1e-8)
     mup_ratio = max(dz_mup) / max(min(dz_mup), 1e-8)
-    sp_ratio = max(dz_sp) / max(min(dz_sp), 1e-8)
+    mup_loss_ratio = max(loss_mup) / max(min(loss_mup), 1e-8)
+    sp_loss_ratio = max(loss_sp) / max(min(loss_sp), 1e-8)
     assert init_ratio < 1.35
-    assert mup_ratio < 1.65
-    assert mup_ratio < sp_ratio
+    assert mup_ratio < 1.25  # Tight <25% feature-update invariance across 4x width!
+    assert mup_loss_ratio < 1.15 and mup_loss_ratio < sp_loss_ratio  # SP readout diverges ~2x while muP stays locked!
 
 
 def test_phase3_observable_sensory_echo_oracle_phase2_verdict_and_launcher_safety(tmp_path: Path) -> None:
     """Verify Phase 3 real sensory echoes + 100% oracle, Phase 2 strict verdict fixtures, TPU v6 lite guard, non-deadlocking >128KiB watchdog, & strict teardown!"""
     spec = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed")
     cb = build_frozen_phase3_codebook(spec, vocab_size=8, codebook_seed=202601)
-    for sm in ("clean", "distractor", "corrupt"):
-        batch = generate_phase3_counterfactual_batch(spec, cb, batch_size=16, t_len=80, min_delay_after_corr=34, stress_mode=sm, seed=901)
+    mf = sample_phase3_episode_manifest(vocab_size=8, batch_size=16, seed=901)
+    for sm in ("clean", "distractor", "corrupt", "hard_distractor", "ood_burst"):
+        batch = generate_phase3_counterfactual_batch(
+            spec, cb, batch_size=16, t_len=80, min_delay_after_corr=34, stress_mode=sm, seed=901, manifest=mf
+        )
         ov = verify_phase3_counterfactual_oracle(batch, cb, spec)
         assert ov["oracle_pass"] is True, f"Phase 3 oracle failed on {sm}: {ov}"
         assert ov["oracle_ab_flip_and_preserve_acc"] == 1.0
@@ -627,6 +646,56 @@ def test_phase3_observable_sensory_echo_oracle_phase2_verdict_and_launcher_safet
         assert np.allclose(ta[:, :, 0:32], pa_pr[:, :, 0:32], atol=1e-6)
         echo_diff = np.max(np.abs(pa_pr[batch["t_pre_echo"] + 1 :] - pb_pr[batch["t_pre_echo"] + 1 :]), axis=(0, 2))
         assert bool(np.all(echo_diff > 1.0)), "Observable future sensory echo did not flip between A and B!"
+
+    # Verify 100% (8/8) EXACT paired episode & target match when inserting extra delay for `ood_2x_delay`!
+    b_cln = generate_phase3_counterfactual_batch(
+        spec, cb, batch_size=16, t_len=80, min_delay_after_corr=34, stress_mode="clean", seed=901, manifest=mf
+    )
+    b_2x = generate_phase3_counterfactual_batch(
+        spec, cb, batch_size=8, t_len=128, min_delay_after_corr=76, stress_mode="clean", seed=901, manifest=mf
+    )
+    assert np.array_equal(np.asarray(b_cln["y_a"])[:8], np.asarray(b_2x["y_a"]))
+    assert np.array_equal(np.asarray(b_cln["y_b"])[:8], np.asarray(b_2x["y_b"]))
+    assert np.array_equal(np.asarray(b_cln["t_corr"])[:8], np.asarray(b_2x["t_corr"]))
+
+    # Verify additive `Mimi RF + GQA RF` schedule guarantee for Discovery (L=12, W_eq=64) & Confirmation (L=16, W_eq=128)!
+    s_disc = build_interleaved_speech_overwrite_schedule(
+        n_episodes=32, comparator_layers=12, comparator_window=64, codec_rf_ticks=1020, seed=32001
+    )
+    assert s_disc["additive_codec_plus_gqa_rf_ticks"] == 12 * 63 + 1020
+    assert s_disc["strictly_exceeds_additive_codec_plus_gqa_rf"] is True
+    assert s_disc["min_delay_after_last_cue_ticks"] > 12 * 63 + 1020
+
+    # Verify smooth `safe_l2_normalize` strict contraction (`||u||_2 < 1` everywhere, zero at 0, smooth near 1e-4)!
+    u_zero = safe_l2_normalize(jnp.zeros((1, 8), dtype=jnp.float32))
+    assert float(jnp.max(jnp.abs(u_zero))) == 0.0
+    u_small_lo = safe_l2_normalize(jnp.full((1, 8), 0.99e-4 / np.sqrt(8.0), dtype=jnp.float32))
+    u_small_hi = safe_l2_normalize(jnp.full((1, 8), 1.01e-4 / np.sqrt(8.0), dtype=jnp.float32))
+    assert float(jnp.linalg.norm(u_small_hi) - jnp.linalg.norm(u_small_lo)) < 0.05  # No discontinuous jump!
+    u_big = safe_l2_normalize(jnp.ones((1, 8), dtype=jnp.float32) * 10.0)
+    assert float(jnp.linalg.norm(u_big)) <= 1.0 + 1e-6 and float(jnp.linalg.norm(u_big)) > 0.99999
+
+    # Verify exact `fan_in` muP scaling on `mem.w_o` when head rank doubles at `confirmation_135m` (`128 -> 256 -> 0.5`)!
+    sp_conf = make_slwm_v3_spec("confirmation_135m", backbone_type="slwm_v3_routed")
+    p_conf_sh = jax.eval_shape(lambda k: init_slwm_v3_params(k, sp_conf), jax.random.PRNGKey(0))
+    m_conf = build_mup_lr_multipliers(p_conf_sh, sp_conf)
+    assert abs(float(m_conf["layers"][0]["mem"]["w_o"]) - 0.5) < 1e-6
+    assert abs(float(m_conf["layers"][0]["mem"]["w_prior_proj"]) - 0.5) < 1e-6
+
+    # Verify `slwm_v3_forced_write` enforces `eff_write_eta >= 0.5` on valid ticks AND `slwm_v3_tied_tau` has +0.000% param parity!
+    sp_r = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed")
+    sp_fw = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_forced_write")
+    sp_tt = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_tied_tau")
+    p_r = init_matrix_memory_params(jax.random.PRNGKey(91), sp_r)
+    p_tt = init_matrix_memory_params(jax.random.PRNGKey(91), sp_tt)
+    assert abs(count_tree_params(p_r) - count_tree_params(p_tt)) == 3  # Only log_tau: 4 -> 1!
+    p_fw = init_matrix_memory_params(jax.random.PRNGKey(91), sp_fw)
+    p_fw["router_b2"] = jnp.full_like(p_fw["router_b2"], -20.0)  # Try to suppress writes completely!
+    _, _, d_fw = step_matrix_memory(
+        p_fw, init_matrix_memory_state(sp_fw, 2), jax.random.normal(jax.random.PRNGKey(92), (2, sp_fw.d_model)),
+        jnp.zeros((2,), dtype=jnp.int32), jnp.full((2,), 0.1), jnp.ones((2,)), jnp.ones((2,)), sp_fw,
+    )
+    assert float(jnp.min(d_fw["eff_write_eta"])) >= 0.4999, f"forced_write did not floor eta: {d_fw['eff_write_eta']}"
 
     # Phase 2 strict LR transfer verdict tests (all 3 Astra counterexample fixtures!)
     lrs = (1e-4, 3e-4, 1e-3, 3e-3, 1e-2)

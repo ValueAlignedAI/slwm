@@ -41,6 +41,7 @@ SCALAR_LEAF_NAMES = frozenset(
     {
         "norm",
         "norm_w",
+        "o_norm_w",
         "bias",
         "log_tau",
         "log_a",
@@ -71,13 +72,11 @@ def rms_norm(x: Array, weight: Array, eps: float = 1e-6) -> Array:
     return (xf * inv_rms).astype(x.dtype) * weight.astype(x.dtype)
 
 
-def safe_l2_normalize(x: Array, eps: float = 1e-8) -> Array:
-    """Strict float32 L2 unit-norm using JAX double-`where` so Jacobian at `x = 0` is `1.0 * I` (never `1000 * I`)."""
+def safe_l2_normalize(x: Array, eps: float = 1e-6) -> Array:
+    """Smooth C^infty float32 L2 contraction (`||u||_2 < 1` everywhere, exact `0` at `x = 0`, zero step jump)."""
     xf = x.astype(jnp.float32)
     sq = jnp.sum(xf * xf, axis=-1, keepdims=True)
-    active = sq > eps
-    safe_sq = jnp.where(active, sq, 1.0)
-    return jnp.where(active, xf * jax.lax.rsqrt(safe_sq), xf)
+    return xf * jax.lax.rsqrt(sq + eps)
 
 
 def init_mup_weight(
@@ -235,63 +234,75 @@ def step_ring_gqa(
 
 
 def init_matrix_memory_params(key: Array, spec: SLWMv3Spec) -> PyTree:
-    """Initialize parameters for Content-Routed Multi-Timescale Matrix Memory or faithful Gated DeltaNet.
+    """Initialize Head-Routed Multi-Timescale Selective Matrix Memory or faithful Single-Bank Gated DeltaNet.
 
-    Omits dead parameters cleanly:
-      - `-LearnedRouting`: holds `tau_b`, `g_b`, `w_read_gate`, AND the `(nb + 1)`-logit no-write head identical
-        to `slwm_v3_routed`, changing ONLY bank selection to content-independent round-robin!
-      - `single_bank_gated_deltanet` (`use_surprise_router=False`): omits surprise router MLP & `w_prior_proj`.
+    Each timescale bank `b in 0..n_banks-1` owns `n_mem_heads` dedicated full-rank `(dk, dv)` heads
+    (`h_tot = n_banks * n_mem_heads`) with independent `(q, k, v)` projections, bounded per-head output
+    RMSNorm (`o_norm_w`, zero weight decay), and concatenated multi-timescale readout.
+    Omits dead parameters strictly:
+      - `use_surprise_router=True` (`slwm_v3_*`): allocates surprise router (`router_skip` + 2-layer SiLU MLP,
+        `w_prior_proj`, `mod_emb`), omitting unused `w_beta`/`beta_bias`.
+      - `use_surprise_router=False` (`single_bank_gated_deltanet`): allocates linear `w_beta`/`beta_bias`
+        and identical `(h_tot, dk, dv)` + `o_norm_w`, omitting surprise router & `w_prior_proj`.
     """
-    keys = jax.random.split(key, 12)
+    keys = jax.random.split(key, 14)
     d = spec.d_model
     m_d = spec.width_mult
     nb = spec.n_banks
     nh = spec.n_mem_heads
+    h_tot = nb * nh
     dk = spec.mem_key_dim
     dv = spec.mem_val_dim
     mod_d = 16
-    # Scale fixed-fan-in projections `w_o` and `w_prior_proj` by 1 / sqrt(nh * dv / 64) for stable RMS across d_v
-    out_std = spec.init_std / math.sqrt(max(float(nh * dv) / 64.0, 1.0))
+    out_std = 0.25 / math.sqrt(float(h_tot * dv))
 
-    if spec.tie_bank_timescales:
-        mid_tau = float(math.exp(sum(math.log(t) for t in spec.init_timescales_s) / nb))
-        log_tau_init = jnp.asarray([math.log(mid_tau)], dtype=jnp.float32)  # Single shared timescale!
-        n_g_banks = 1  # Shared decay gate across banks!
+    if spec.tie_bank_timescales or nb == 1:
+        mid_tau = float(math.exp(sum(math.log(t) for t in spec.init_timescales_s) / len(spec.init_timescales_s)))
+        log_tau_init = jnp.asarray([math.log(mid_tau)], dtype=jnp.float32)
     else:
         log_tau_init = jnp.asarray([math.log(t) for t in spec.init_timescales_s], dtype=jnp.float32)
-        n_g_banks = nb
 
     params: PyTree = {
         "norm_w": jnp.ones((d,), dtype=jnp.float32),
-        "w_q": init_mup_weight(keys[1], (d, nh * dk), role="hidden", width_mult=m_d, base_std=spec.init_std),
-        "w_k": init_mup_weight(keys[2], (d, nh * dk), role="hidden", width_mult=m_d, base_std=spec.init_std),
-        "w_v": init_mup_weight(keys[3], (d, nh * dv), role="hidden", width_mult=m_d, base_std=spec.init_std),
-        "w_o": init_mup_weight(keys[4], (nh * dv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std),
-        "w_g": init_mup_weight(keys[5], (d, n_g_banks * nh), role="hidden", width_mult=m_d, base_std=spec.init_std),
-        "g_bias": jnp.full((n_g_banks, nh), -0.5, dtype=jnp.float32),
-        "w_beta": init_mup_weight(keys[6], (d, nh), role="hidden", width_mult=m_d, base_std=spec.init_std),
-        "beta_bias": jnp.full((nh,), 0.5, dtype=jnp.float32),
+        "w_q": init_mup_weight(keys[1], (d, h_tot * dk), role="hidden", width_mult=m_d, base_std=spec.init_std),
+        "w_k": init_mup_weight(keys[2], (d, h_tot * dk), role="hidden", width_mult=m_d, base_std=spec.init_std),
+        "w_v": init_mup_weight(keys[3], (d, h_tot * dv), role="hidden", width_mult=m_d, base_std=1.0 / math.sqrt(float(spec.d_base))),
+        "w_o": init_mup_weight(keys[4], (h_tot * dv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std),
+        "o_norm_w": jnp.ones((h_tot, dv), dtype=jnp.float32),
+        # Always allocate 1 decay gate per total head `(nb, nh)` so 2x2 factorial cells match exact gate expressivity & param count!
+        "w_g": init_mup_weight(keys[5], (d, h_tot), role="hidden", width_mult=m_d, base_std=spec.init_std),
+        "g_bias": jnp.full((nb, nh), -1.5, dtype=jnp.float32),
         "log_tau": log_tau_init,
     }
 
-    if spec.use_surprise_router:
+    if not spec.use_surprise_router:
+        params["w_beta"] = init_mup_weight(keys[6], (d, h_tot), role="hidden", width_mult=m_d, base_std=spec.init_std)
+        params["beta_bias"] = jnp.full((h_tot,), 1.0, dtype=jnp.float32)
+    else:
         router_in = d + mod_d + 3  # [RMSNorm(x_t), mod_emb, log1p(dt_s), reliability, log1p(prior_err)]
-        router_hid = max(32, d // 4)  # Scales strictly proportionally with d across d in {128, 256, 512, 768}!
-        # Use IDENTICAL (nb + 1)-logit softmax parameterization in BOTH `slwm_v3_routed` and `slwm_v3_no_routing`
-        # so the no-write probability `r_nowrite` (0.20 at init) and total write budget `1 - r_nowrite` (0.80 at init)
-        # are BIT-EXACT identical across both arms, isolating ONLY bank selection!
-        n_router_out = nb + 1 if spec.use_nowrite_option else nb
+        router_in_base = spec.d_base + mod_d + 3
+        router_hid = max(32, d // 4)
+        router_hid_base = max(32, spec.d_base // 4)
+        # Per-head timescale routing logits `h_tot` + per-bank explicit no-write logits `nb` (when enabled)
+        n_router_out = h_tot + (nb if spec.use_nowrite_option else 0)
         params["mod_emb"] = init_mup_weight(keys[0], (spec.n_modalities, mod_d), role="input", width_mult=m_d, base_std=0.25)
-        params["w_prior_proj"] = init_mup_weight(keys[10], (nh * dv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std)
-        params["router_w1"] = init_mup_weight(keys[8], (router_in, router_hid), role="hidden", width_mult=m_d, base_std=spec.init_std)
+        params["w_prior_proj"] = init_mup_weight(keys[10], (h_tot * dv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std)
+        params["router_skip"] = init_mup_weight(
+            keys[11], (router_in, n_router_out), role="hidden", width_mult=m_d, base_std=0.5 / math.sqrt(float(router_in_base))
+        )
+        params["router_w1"] = init_mup_weight(
+            keys[8], (router_in, router_hid), role="hidden", width_mult=m_d, base_std=1.0 / math.sqrt(float(router_in_base))
+        )
         params["router_b1"] = jnp.zeros((router_hid,), dtype=jnp.float32)
-        params["router_w2"] = init_mup_weight(keys[9], (router_hid, n_router_out), role="hidden", width_mult=m_d, base_std=spec.init_std)
-        params["router_b2"] = jnp.zeros((n_router_out,), dtype=jnp.float32)
-        if nb > 1:
-            # Hold read routing fixed across `slwm_v3_routed` vs `slwm_v3_no_routing` for strict
-            # single-factor isolation of content-routed bank write allocation!
-            params["w_read_gate"] = init_mup_weight(keys[7], (d + mod_d + 1, nb), role="hidden", width_mult=m_d, base_std=spec.init_std)
-            params["read_gate_bias"] = jnp.zeros((nb,), dtype=jnp.float32)
+        params["router_w2"] = init_mup_weight(
+            keys[9], (router_hid, n_router_out), role="hidden", width_mult=m_d, base_std=0.25 / math.sqrt(float(router_hid_base))
+        )
+        b2_head = jnp.full((h_tot,), 0.8, dtype=jnp.float32)
+        if spec.use_nowrite_option:
+            b2_nw = jnp.full((nb,), -2.0, dtype=jnp.float32)  # Initial r_nowrite = sigmoid(-2.0) = 0.119
+            params["router_b2"] = jnp.concatenate([b2_head, b2_nw], axis=0)
+        else:
+            params["router_b2"] = b2_head
     return params
 
 
@@ -316,10 +327,12 @@ def step_matrix_memory(
     spec: SLWMv3Spec,
     step_idx_t: Array | None = None,
 ) -> tuple[Array, PyTree, dict[str, Array]]:
-    """Single strictly-causal Read-Before-Write step of Multi-Timescale Matrix Memory or Gated DeltaNet."""
+    """Single strictly-causal Read-Before-Write step of Head-Routed Multi-Timescale Matrix Memory or Gated DeltaNet."""
+    del step_idx_t
     b = x_t.shape[0]
     nb = spec.n_banks
     nh = spec.n_mem_heads
+    h_tot = nb * nh
     dk = spec.mem_key_dim
     dv = spec.mem_val_dim
 
@@ -327,98 +340,102 @@ def step_matrix_memory(
     dt_pos = jnp.maximum(dt_s_t.astype(jnp.float32), 0.0)
     log_dt = jnp.log1p(dt_pos)[:, None]
 
-    # 1. Physical decay (strictly tied across banks when `tie_bank_timescales=True`!)
+    # 1. Multi-timescale physical decay (or single shared timescale when `tie_bank_timescales` or `nb == 1`)
     M_prev = state["M"].astype(jnp.float32)
-    n_g_banks = 1 if spec.tie_bank_timescales else nb
-    g_raw = jnp.matmul(xn, params["w_g"]).reshape(b, n_g_banks, nh) + params["g_bias"][None, :, :]
+    g_raw = jnp.matmul(xn, params["w_g"]).reshape(b, nb, nh) + params["g_bias"][None, :, :]
     g = jax.nn.softplus(g_raw)
-    if spec.tie_bank_timescales:
-        g = jnp.broadcast_to(g, (b, nb, nh))
+    if spec.tie_bank_timescales or nb == 1:
         tau = jnp.broadcast_to(jnp.exp(jnp.clip(params["log_tau"], -4.0, 8.0)), (nb,))
     else:
         tau = jnp.exp(jnp.clip(params["log_tau"], -4.0, 8.0))
     decay = jnp.exp(-g * (dt_pos[:, None, None] / (tau[None, :, None] + 1e-6)))
     M_tilde = M_prev * decay[:, :, :, None, None]
 
-    q = safe_l2_normalize(jnp.matmul(xn, params["w_q"]).reshape(b, nh, dk))
-    k = safe_l2_normalize(jnp.matmul(xn, params["w_k"]).reshape(b, nh, dk))
-    v = jnp.matmul(xn, params["w_v"]).reshape(b, nh, dv).astype(jnp.float32)
-    beta = jax.nn.sigmoid(jnp.matmul(xn, params["w_beta"]) + params["beta_bias"][None, :])  # [B, nh]
+    # Independent full-rank (q, k, v) per (bank, head)
+    q = safe_l2_normalize(jnp.matmul(xn, params["w_q"]).reshape(b, nb, nh, dk))
+    k = safe_l2_normalize(jnp.matmul(xn, params["w_k"]).reshape(b, nb, nh, dk))
+    v = jnp.matmul(xn, params["w_v"]).reshape(b, nb, nh, dv).astype(jnp.float32)
+
+    def _soft_head_norm(y_bnhv: Array) -> Array:
+        # Bounded per-head RMSNorm (eps=1e-2): exact 0 at M=0, smooth Jacobian, O(1) readout once populated
+        y_flat = y_bnhv.reshape(b, h_tot, dv)
+        inv_r = jax.lax.rsqrt(jnp.mean(y_flat * y_flat, axis=-1, keepdims=True) + 1e-2)
+        return ((y_flat * inv_r) * params["o_norm_w"][None, :, :]).reshape(b, h_tot * dv)
+
+    valid_f = valid_mask_t.astype(jnp.float32)
+    fp32_prec = jax.lax.Precision.HIGHEST
 
     if not spec.use_surprise_router:
-        # Faithful Single-Bank Gated DeltaNet (NO surprise/no-write router MLP!)
-        read_w = jnp.full((b, nb), 1.0 / float(nb), dtype=jnp.float32)
-        r_banks = jnp.ones((b, nb), dtype=jnp.float32)
+        # Faithful Gated DeltaNet (identical h_tot, dk, dv, o_norm; NO surprise/no-write router!)
+        beta = jax.nn.sigmoid(jnp.matmul(xn, params["w_beta"]) + params["beta_bias"][None, :]).reshape(b, nb, nh)
+        eta = beta * valid_f[:, None, None]
+        r_banks_eff = jnp.mean(eta, axis=-1)
         r_nowrite = jnp.zeros((b,), dtype=jnp.float32)
         prior_err = jnp.zeros((b,), dtype=jnp.float32)
     else:
         mod_idx = jnp.clip(modality_id_t, 0, spec.n_modalities - 1)
         mod_e = params["mod_emb"][mod_idx]
 
-        # 2. READ-BEFORE-WRITE: compute causal prior readout & retrieval residual BEFORE writing!
-        prior_bank_y = jnp.einsum("bnhvk,bhk->bnhv", M_tilde, q)
-        if nb > 1:
-            read_in = jnp.concatenate([xn, mod_e, log_dt], axis=-1)
-            read_w = jax.nn.softmax(jnp.matmul(read_in, params["w_read_gate"]) + params["read_gate_bias"], axis=-1)
-        else:
-            read_w = jnp.full((b, nb), 1.0 / float(nb), dtype=jnp.float32)
-        prior_y = jnp.einsum("bn,bnhv->bhv", read_w, prior_bank_y).reshape(b, nh * dv)
+        # 2. READ-BEFORE-WRITE: strict fp32 causal prior readout & retrieval residual strictly BEFORE writing!
+        prior_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, q, precision=fp32_prec)
+        prior_y = _soft_head_norm(prior_y_bnhv)
         x_prior_hat = jnp.matmul(prior_y, params["w_prior_proj"])
         prior_err = jnp.sqrt(jnp.mean((xn - x_prior_hat) ** 2, axis=-1) + 1e-6)
 
-        # 3. Learned content router + optional explicit NO-WRITE channel
+        # 3. Direct-skip + 2-layer surprise-aware router + per-bank explicit NO-WRITE channel
         router_feat = jnp.concatenate(
             [xn, mod_e, log_dt, reliability_t[:, None].astype(jnp.float32), jnp.log1p(prior_err)[:, None]],
             axis=-1,
         )
         rh = jax.nn.silu(jnp.matmul(router_feat, params["router_w1"]) + params["router_b1"])
-        r_logits = jnp.matmul(rh, params["router_w2"]) + params["router_b2"]
+        r_logits = jnp.matmul(router_feat, params["router_skip"]) + jnp.matmul(rh, params["router_w2"]) + params["router_b2"]
 
-        r_probs = jax.nn.softmax(r_logits, axis=-1)
+        route_raw = jax.nn.sigmoid(r_logits[:, :h_tot].reshape(b, nb, nh))
         if spec.use_nowrite_option:
-            r_nowrite = r_probs[:, nb]
-            write_mass = 1.0 - r_nowrite  # Exact `sum(r_probs[:, :nb])` in BOTH routed and ablated arms!
+            r_nowrite_b = jax.nn.sigmoid(r_logits[:, h_tot:])  # [B, nb] per-bank explicit no-write!
+            keep_write_b = 1.0 - r_nowrite_b
+            r_nowrite = jnp.mean(r_nowrite_b, axis=-1)
         else:
+            keep_write_b = jnp.ones((b, nb), dtype=jnp.float32)
             r_nowrite = jnp.zeros((b,), dtype=jnp.float32)
-            write_mass = jnp.ones((b,), dtype=jnp.float32)
 
+        raw_eta = route_raw * keep_write_b[:, :, None]  # Strictly in (0, 1) -> exact spectral contraction!
+        if spec.force_write_floor > 0.0:
+            fl = float(spec.force_write_floor)
+            raw_eta = fl + (1.0 - fl) * raw_eta
         if spec.use_learned_routing:
-            r_banks = r_probs[:, :nb]
+            eta = raw_eta * valid_f[:, None, None]
         else:
-            # Strict single-factor `-LearnedRouting` ablation:
-            # Uses the EXACT SAME `(nb + 1)`-logit no-write calculation (`r_nowrite`, `write_mass = 1 - r_nowrite`)
-            # as `slwm_v3_routed`, replacing ONLY content-routed bank selection with content-independent round-robin!
-            rr_idx = (
-                jnp.mod(step_idx_t.astype(jnp.int32), nb)
-                if step_idx_t is not None
-                else jnp.zeros((b,), dtype=jnp.int32)
-            )
-            r_banks = jax.nn.one_hot(rr_idx, nb, dtype=jnp.float32) * write_mass[:, None]
+            # Strict single-factor `-LearnedRouting`: holds parameters (+0.000%), `tau_b`, `g_b`, `r_nowrite`,
+            # and aggregate write mass IDENTICAL to `slwm_v3_routed`, replacing ONLY per-bank content routing
+            # with uniform bank-averaged write allocation (zero content-to-timescale specialization)!
+            shared = jnp.mean(raw_eta, axis=1, keepdims=True)  # [B, 1, nh]
+            eta = jnp.broadcast_to(shared, (b, nb, nh)) * valid_f[:, None, None]
+        r_banks_eff = jnp.mean(eta, axis=-1)
 
-    # Missing packets perform BIT-EXACT ZERO CONTENT WRITE!
-    r_banks_eff = r_banks * valid_mask_t[:, None].astype(jnp.float32)
-
-    # 4. Normalized-key rank-1 delta overwrite in strict float32
-    retrieved_k = jnp.einsum("bnhvk,bhk->bnhv", M_tilde, k)
-    delta_v = v[:, None, :, :] - retrieved_k
-    eta = r_banks_eff[:, :, None] * beta[:, None, :]  # [B, nb, nh] in [0, 1]
-    dM = jnp.einsum("bnh,bnhv,bhk->bnhvk", eta, delta_v, k)
+    # 4. Normalized-key rank-1 delta overwrite in STRICT TPU-exact float32 (`eta in [0, 1]`, `||k||_2 < 1`)
+    retrieved_k = jnp.einsum("bnhvk,bnhk->bnhv", M_tilde, k, precision=fp32_prec)
+    delta_v = v - retrieved_k
+    dM = jnp.einsum("bnh,bnhv,bnhk->bnhvk", eta, delta_v, k, precision=fp32_prec)
     M_next = M_tilde + dM
 
-    # 5. Post-write readout using causal query q_t
-    post_bank_y = jnp.einsum("bnhvk,bhk->bnhv", M_next, q)
-    post_y = jnp.einsum("bn,bnhv->bhv", read_w, post_bank_y).reshape(b, nh * dv)
-    out = jnp.matmul(post_y, params["w_o"]) * valid_mask_t[:, None]
+    # 5. Concatenated full-strength post-write readout across all timescale heads (strict fp32 state read!)
+    post_y_bnhv = jnp.einsum("bnhvk,bnhk->bnhv", M_next, q, precision=fp32_prec)
+    post_y = _soft_head_norm(post_y_bnhv)
+    out = jnp.matmul(post_y, params["w_o"]) * valid_f[:, None]
 
+    mem_frob_per_head = jnp.sqrt(jnp.sum(M_next * M_next, axis=(3, 4)) + 1e-12)  # [B, nb, nh], pre-o_norm_w!
     diags = {
         "r_banks": r_banks_eff,
         "r_nowrite": r_nowrite,
         "eff_write_eta": jnp.mean(eta, axis=(1, 2)),
         "eff_decay": jnp.mean(decay, axis=(1, 2)),
         "state_delta_norm": jnp.sqrt(jnp.mean(dM * dM, axis=(1, 2, 3, 4)) + 1e-12),
+        "mem_frob_norm": jnp.mean(mem_frob_per_head, axis=(1, 2)),
+        "mem_frob_norm_max": jnp.max(mem_frob_per_head, axis=(1, 2)),
         "mem_out_rms": jnp.sqrt(jnp.mean(out * out, axis=-1) + 1e-12),
         "prior_error": prior_err,
-        "key_norm": jnp.sqrt(jnp.sum(k * k, axis=-1)),
+        "key_norm": jnp.sqrt(jnp.sum(k * k, axis=-1)).reshape(b, h_tot),
     }
     return out, {"M": M_next}, diags
 
@@ -563,12 +580,13 @@ def step_explicit_kv(
     kv_age = state["kv_age"].astype(jnp.float32) + age_inc[:, None, None]
     kv_valid = state["kv_valid"]  # bool[B, H, S]
 
-    # 1. Read-before-write cosine attention over valid entries
-    q_sim = jnp.einsum("bhd,bhsd->bhs", q, kv_keys) * 8.0
+    # 1. Read-before-write cosine attention over valid entries (strict TPU-exact fp32 state math!)
+    fp32_prec = jax.lax.Precision.HIGHEST
+    q_sim = jnp.einsum("bhd,bhsd->bhs", q, kv_keys, precision=fp32_prec) * 8.0
     has_any = jnp.any(kv_valid, axis=-1, keepdims=True)  # [B, H, 1]
     safe_valid = jnp.where(has_any, kv_valid, jnp.ones_like(kv_valid))
     q_w = jnp.where(has_any, jax.nn.softmax(jnp.where(safe_valid, q_sim, -1e9), axis=-1), 0.0)
-    prior_v = jnp.einsum("bhs,bhsd->bhd", q_w, kv_vals)
+    prior_v = jnp.einsum("bhs,bhsd->bhd", q_w, kv_vals, precision=fp32_prec)
     prior_err = jnp.sqrt(jnp.mean((v - prior_v) ** 2, axis=(1, 2)) + 1e-6)  # [B]
 
     # True LRU age refresh on attended read hits (strictly when packet is valid!)
@@ -584,7 +602,7 @@ def step_explicit_kv(
     write_prob = jax.nn.sigmoid(jnp.matmul(wh, params["router_w2"]) + params["router_b2"]) * valid_mask_t[:, None]  # [B, H]
 
     # 3. Differentiable content-match overwrite vs. clean LRU/empty-slot insertion!
-    k_sim = jnp.einsum("bhd,bhsd->bhs", k, kv_keys)  # [B, H, S]
+    k_sim = jnp.einsum("bhd,bhsd->bhs", k, kv_keys, precision=fp32_prec)  # [B, H, S]
     k_sim_valid = jnp.where(kv_valid, k_sim, -2.0)
     best_match_sim = jnp.max(k_sim_valid, axis=-1)  # [B, H]
     # Differentiable gate `p_match` cleanly passes gradients to BOTH `k_sim` AND `params["thresh"]`!
@@ -636,12 +654,12 @@ def step_explicit_kv(
     new_age = jnp.where(is_valid_pkt, new_age, kv_age)
     new_valid = jnp.where(is_valid_pkt, new_valid, kv_valid)
 
-    # 4. Post-write readout
-    post_sim = jnp.einsum("bhd,bhsd->bhs", q, new_keys) * 8.0
+    # 4. Post-write readout (strict TPU-exact fp32 state math!)
+    post_sim = jnp.einsum("bhd,bhsd->bhs", q, new_keys, precision=fp32_prec) * 8.0
     post_has_any = jnp.any(new_valid, axis=-1, keepdims=True)
     post_safe = jnp.where(post_has_any, new_valid, jnp.ones_like(new_valid))
     post_w = jnp.where(post_has_any, jax.nn.softmax(jnp.where(post_safe, post_sim, -1e9), axis=-1), 0.0)
-    post_v = jnp.einsum("bhs,bhsd->bhd", post_w, new_vals).reshape(b, h_e * dkv)
+    post_v = jnp.einsum("bhs,bhsd->bhd", post_w, new_vals, precision=fp32_prec).reshape(b, h_e * dkv)
     out = jnp.matmul(post_v, params["w_o"]) * valid_mask_t[:, None]
 
     new_state = {

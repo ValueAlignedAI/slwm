@@ -309,6 +309,7 @@ def build_interleaved_speech_overwrite_schedule(
     mimi_hz: float = 12.5,
     comparator_layers: int = 12,
     comparator_window: int = 32,
+    codec_rf_ticks: int = 1020,  # Mimi 8x249/25Hz = 996 ticks + 24-tick SEANet conv margin (81.6s)
     min_delay_ticks_override: int | None = None,
     catch_trial_prob: float = 0.25,
     min_event_gap_s: float = 1.15,
@@ -322,12 +323,14 @@ def build_interleaved_speech_overwrite_schedule(
       - Interleaves distractors across ALL 4 temporal segments (`pre`, `mid1`, `mid2`, `post`).
       - On `catch_trial_prob` (`25%`) `0`-correction catch episodes, places a same-domain distractor at
         `t_corr_s` (`catch_distractor_at_corr_s`) so catch & overwrite word-timing distributions are identical.
-      - Enforces `t_corr - t_first > comparator_window` ticks and
-        `delay_after_last_cue > max(L*(W-1), min_delay_ticks_override)` ticks.
+      - Enforces `t_corr - t_first > comparator_window` ticks and ADDITIVE codec + GQA eviction:
+        `delay_after_last_cue > max(L*(W-1) + codec_rf_ticks, min_delay_ticks_override)` ticks, ensuring
+        bit-identical counterfactual Mimi codec packets across the ENTIRE accessible GQA suffix `[t_q - L*(W-1), t_q]`!
     """
     rng = np.random.default_rng(seed)
     rf_ticks = comparator_layers * (comparator_window - 1)
-    req_delay_ticks = max(rf_ticks, int(min_delay_ticks_override or 0))
+    additive_rf_ticks = rf_ticks + int(codec_rf_ticks)
+    req_delay_ticks = max(additive_rf_ticks, int(min_delay_ticks_override or 0))
     w_sec = comparator_window / mimi_hz
     rf_sec = req_delay_ticks / mimi_hz
 
@@ -410,6 +413,7 @@ def build_interleaved_speech_overwrite_schedule(
         )
 
     non_catch = [e for e in episodes if not e["is_catch_no_overwrite"]]
+    min_delay_obs = min(e["delay_after_last_cue_ticks"] for e in episodes)
     return {
         "n_episodes": n_episodes,
         "total_duration_sec": total_sec,
@@ -417,13 +421,16 @@ def build_interleaved_speech_overwrite_schedule(
         "comparator_layers": comparator_layers,
         "comparator_window": comparator_window,
         "stacked_receptive_field_ticks": rf_ticks,
+        "codec_rf_ticks": int(codec_rf_ticks),
+        "additive_codec_plus_gqa_rf_ticks": int(additive_rf_ticks),
+        "strictly_exceeds_additive_codec_plus_gqa_rf": bool(min_delay_obs > additive_rf_ticks),
         "catch_trial_fraction": round(sum(1 for e in episodes if e["is_catch_no_overwrite"]) / n_episodes, 4),
         "frac_with_pre_init_distractors": round(sum(1 for e in episodes if len(e["pre_distractor_times_s"]) > 0) / n_episodes, 4),
         "frac_with_mid1_distractors": round(sum(1 for e in episodes if len(e["mid1_distractor_times_s"]) > 0) / n_episodes, 4),
         "frac_with_mid2_distractors": round(sum(1 for e in episodes if len(e["mid2_distractor_times_s"]) > 0) / n_episodes, 4),
         "min_inter_event_gap_s": round(min_observed_gap_s, 4),
         "zero_speech_collisions_verified": bool(min_observed_gap_s >= 1.05),
-        "min_delay_after_last_cue_ticks": min(e["delay_after_last_cue_ticks"] for e in episodes),
+        "min_delay_after_last_cue_ticks": min_delay_obs,
         "min_init_to_corr_ticks": min(e["init_to_corr_ticks"] for e in non_catch) if non_catch else 0,
         "episodes": episodes,
     }

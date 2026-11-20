@@ -24,6 +24,7 @@ Produces the verifiable Gate 3 JSON receipt (`reports/v3/gate3_architecture_and_
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace as dc_replace
 import hashlib
 import json
 from pathlib import Path
@@ -150,6 +151,8 @@ def _run_real_adamw_steps(
     loss_end = 0.0
     grad_finite = True
     grad_l2_step2 = 0.0
+    active_grad_leaf_frac_step2 = 0.0
+    active_grad_param_frac_step2 = 0.0
 
     for step_i in range(steps):
         (loss_m, _), grads_m = jax.value_and_grad(
@@ -164,6 +167,11 @@ def _run_real_adamw_steps(
             grad_finite = False
         if step_i == 1:
             grad_l2_step2 = float(jnp.sqrt(sum(jnp.sum(g * g) for g in leaves)))
+            n_active_leaves = sum(1 for g in leaves if float(jnp.max(jnp.abs(g))) > 0.0)
+            tot_params = sum(int(g.size) for g in leaves)
+            act_params = sum(int(jnp.sum(jnp.abs(g) > 0.0)) for g in leaves)
+            active_grad_leaf_frac_step2 = n_active_leaves / max(len(leaves), 1)
+            active_grad_param_frac_step2 = act_params / max(tot_params, 1)
         upd, opt_st = tx.update(grads_m, opt_st, params)
         params = optax.apply_updates(params, upd)
 
@@ -175,14 +183,17 @@ def _run_real_adamw_steps(
         "end_loss": round(loss_end, 5),
         "grad_finite": grad_finite,
         "step2_grad_l2": round(grad_l2_step2, 5),
+        "step2_active_grad_leaf_frac": round(active_grad_leaf_frac_step2, 4),
+        "step2_active_grad_param_frac": round(active_grad_param_frac_step2, 4),
         "mean_mem_out_rms": round(float(jnp.mean(d_end["mean_mem_out_rms"])), 5),
+        "mean_mem_frob_norm_prenorm": round(float(jnp.mean(d_end["mean_mem_frob_norm"])), 5),
         "mean_key_norm": round(float(jnp.mean(d_end["mean_key_norm"])), 6),
         "mean_nowrite": round(float(jnp.mean(d_end["mean_nowrite"])), 4),
     }
 
 
 def audit_mup_width_and_completep_depth() -> dict[str, Any]:
-    """Audit base-shape muP across 3 widths (L=4) AND CompleteP alpha=1.0 across 3 depths (d=128) with real AdamW."""
+    """Audit base-shape muP across 3 widths (L=4), 3 depths (d=128), AND joint width x depth x head-rank with real AdamW."""
     widths = (128, 256, 512)
     depths = (4, 6, 8)
     ref_spec = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=128)
@@ -207,17 +218,37 @@ def audit_mup_width_and_completep_depth() -> dict[str, Any]:
         sp = make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=128, n_layers_override=l_cnt)
         mup_d[f"L{l_cnt}"] = _run_real_adamw_steps(sp, pkts, targs, tvalid, steps=5, base_lr=1e-3, use_mup=True)
 
+    # Joint width x depth x head-rank scaling check (`dk=dv=32 -> 32 -> 64`, exercising exact `fan_in` muP on `w_o`!)
+    joint_geom: dict[str, Any] = {}
+    for label, d_j, l_j, dk_j in (
+        ("d128_L4_dk32", 128, 4, 32),
+        ("d256_L6_dk32", 256, 6, 32),
+        ("d512_L8_dk64", 512, 8, 64),
+    ):
+        sp_j = dc_replace(
+            make_slwm_v3_spec("tiny_unit", backbone_type="slwm_v3_routed", d_model_override=d_j, n_layers_override=l_j),
+            mem_key_dim=dk_j,
+            mem_val_dim=dk_j,
+        )
+        joint_geom[label] = _run_real_adamw_steps(sp_j, pkts, targs, tvalid, steps=5, base_lr=1e-3, use_mup=True)
+
     mup_dz_w = [mup_w[f"d{d}"]["end_delta_z_rms"] for d in widths]
     sp_dz_w = [sp_w[f"d{d}"]["end_delta_z_rms"] for d in widths]
+    mup_loss_w = [mup_w[f"d{d}"]["end_loss"] for d in widths]
+    sp_loss_w = [sp_w[f"d{d}"]["end_loss"] for d in widths]
     mup_init_w = [mup_w[f"d{d}"]["init_z_rms"] for d in widths]
     mup_dz_d = [mup_d[f"L{l}"]["end_delta_z_rms"] for l in depths]
+    mup_dz_j = [joint_geom[k]["end_delta_z_rms"] for k in joint_geom]
 
     w_mup_ratio = max(mup_dz_w) / max(min(mup_dz_w), 1e-8)
     w_sp_ratio = max(sp_dz_w) / max(min(sp_dz_w), 1e-8)
+    w_mup_loss_ratio = max(mup_loss_w) / max(min(mup_loss_w), 1e-8)
+    w_sp_loss_ratio = max(sp_loss_w) / max(min(sp_loss_w), 1e-8)
     d_completep_ratio = max(mup_dz_d) / max(min(mup_dz_d), 1e-8)
+    j_geom_ratio = max(mup_dz_j) / max(min(mup_dz_j), 1e-8)
     init_ratio = max(mup_init_w) / max(min(mup_init_w), 1e-8)
 
-    # Multi-step finite gradient check across ALL 8 Wave A backbones (with T=40 for explicit_bounded_kv eviction!)
+    # Multi-step finite gradient check across ALL Wave A backbones (with T=40 for explicit_bounded_kv eviction!)
     pkts_40, targs_40, tvalid_40 = make_synthetic_multimodal_batch(ref_spec, seq_len=40, batch_size=2, seed=3305)
     all_bb_grad_finite: dict[str, bool] = {}
     for bb in BACKBONE_TYPES:
@@ -235,13 +266,19 @@ def audit_mup_width_and_completep_depth() -> dict[str, Any]:
         "mup_by_width": mup_w,
         "sp_uniform_lr_by_width": sp_w,
         "completep_by_depth": mup_d,
+        "joint_width_depth_headrank_mup": joint_geom,
         "mup_init_z_rms_max_min_ratio": round(init_ratio, 4),
         "mup_step5_delta_z_max_min_ratio": round(w_mup_ratio, 4),
         "sp_step5_delta_z_max_min_ratio": round(w_sp_ratio, 4),
+        "mup_step5_loss_max_min_ratio": round(w_mup_loss_ratio, 4),
+        "sp_step5_loss_max_min_ratio": round(w_sp_loss_ratio, 4),
         "completep_depth_step5_delta_z_max_min_ratio": round(d_completep_ratio, 4),
+        "joint_width_depth_headrank_delta_z_max_min_ratio": round(j_geom_ratio, 4),
         "mup_nonzero_hidden_update": bool(min(mup_dz_w) > 1e-4),
-        "mup_strictly_more_width_stable_than_sp": bool(min(mup_dz_w) > 1e-4 and w_mup_ratio < w_sp_ratio),
-        "all_8_backbones_multistep_t40_grads_finite": all_bb_grad_finite,
+        "mup_strictly_more_width_stable_than_sp": bool(
+            min(mup_dz_w) > 1e-4 and w_mup_ratio < 1.25 and w_mup_loss_ratio < 1.15 and w_mup_loss_ratio < w_sp_loss_ratio
+        ),
+        "all_backbones_multistep_t40_grads_finite": all_bb_grad_finite,
     }
 
 
@@ -302,8 +339,10 @@ def main() -> None:
             and mup["mup_init_z_rms_max_min_ratio"] < 1.35
             and mup["mup_step5_delta_z_max_min_ratio"] < 1.65
             and mup["completep_depth_step5_delta_z_max_min_ratio"] < 1.85
-            and all(mup["all_8_backbones_multistep_t40_grads_finite"].values())
+            and mup["joint_width_depth_headrank_delta_z_max_min_ratio"] < 1.65
+            and all(mup["all_backbones_multistep_t40_grads_finite"].values())
             and all(r["grad_finite"] for r in mup["mup_by_width"].values())
+            and all(r["grad_finite"] for r in mup["joint_width_depth_headrank_mup"].values())
         ),
     }
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
