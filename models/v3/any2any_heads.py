@@ -20,6 +20,7 @@ prefix -> automatic `"readout"` role, `zero_init=True`, LR mult `1 / m_d`):
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 import jax
@@ -85,6 +86,32 @@ def _mm(x: Array, w: Array, matmul_dtype: jnp.dtype) -> Array:
     if matmul_dtype == jnp.float32:
         return jnp.matmul(x.astype(jnp.float32), w.astype(jnp.float32), precision=jax.lax.Precision.HIGHEST)
     return jnp.matmul(x.astype(matmul_dtype), w.astype(matmul_dtype)).astype(jnp.float32)
+
+
+def predict_any2any_heads(
+    heads_params: PyTree,
+    z_seq: Array,
+    spec: SLWMv3Spec,
+    *,
+    n_pred_audio_codebooks: int = 8,
+    matmul_dtype: jnp.dtype = jnp.bfloat16,
+) -> dict[str, Array]:
+    """Compute all 4 any-to-any readout predictions (`text_logits`, `audio_logits`, `video_pred`, `action_pred`)."""
+    t_len, b_sz, _ = z_seq.shape
+    k_aud = int(n_pred_audio_codebooks)
+    ht = heads_params["head_text"]
+    ha = heads_params["head_audio"]
+    hv = heads_params["head_video"]
+    hact = heads_params["head_action"]
+    return {
+        "text_logits": _mm(rms_norm(z_seq, ht["norm_w"]), ht["w"], matmul_dtype) + ht["bias"],
+        "audio_logits": _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype).reshape(
+            t_len, b_sz, k_aud, spec.audio_vocab_size
+        )
+        + ha["bias"][None, None, :, :],
+        "video_pred": _mm(rms_norm(z_seq, hv["norm_w"]), hv["w"], matmul_dtype) + hv["bias"],
+        "action_pred": _mm(rms_norm(z_seq, hact["norm_w"]), hact["w"], matmul_dtype) + hact["bias"],
+    }
 
 
 def compute_any2any_multimodal_loss(
@@ -205,15 +232,23 @@ def compute_any2any_multimodal_loss(
 
 
 def init_policy_commit_gate_params(key: Array, d_model: int, hidden_dim: int = 256) -> PyTree:
-    """Initialize standalone Wave B PolicyCommitGate operating strictly on `stop_gradient(Z_t)`."""
-    k1, k2 = jax.random.split(key, 2)
-    in_dim = d_model + 5  # [RMSNorm(Z_t), text_entropy, audio_entropy, prior_err, reliability, abstention_prior]
+    """Initialize standalone Wave B PolicyCommitGate operating strictly on `stop_gradient(Z_t)` with width-invariant epistemic branch."""
+    k1, k2, k3, k4, k5 = jax.random.split(key, 5)
+    n_ev = 5  # [text_entropy, audio_entropy, prior_err, reliability, abstention_prior]
+    ev_hid = 32
+    n_act = len(COMMIT_ACTIONS)
     return {
         "norm_w": jnp.ones((d_model,), dtype=jnp.float32),
-        "w1": init_mup_weight(k1, (in_dim, hidden_dim), role="hidden", width_mult=1.0, base_std=0.02),
+        # Content branch on `RMSNorm(Z_t)`
+        "w1": init_mup_weight(k1, (d_model, hidden_dim), role="hidden", width_mult=1.0, base_std=1.0 / math.sqrt(float(d_model))),
         "b1": jnp.zeros((hidden_dim,), dtype=jnp.float32),
-        "w2": init_mup_weight(k2, (hidden_dim, len(COMMIT_ACTIONS)), role="readout", width_mult=1.0, zero_init=True),
-        "b2": jnp.zeros((len(COMMIT_ACTIONS),), dtype=jnp.float32),
+        "w2": init_mup_weight(k2, (hidden_dim, n_act), role="readout", width_mult=1.0, zero_init=True),
+        # Width-invariant epistemic evidence branch (NEVER diluted O(1/d) as d -> 1920!)
+        "ev_skip": init_mup_weight(k3, (n_ev, n_act), role="input", width_mult=1.0, base_std=0.25 / math.sqrt(float(n_ev))),
+        "ev_w1": init_mup_weight(k4, (n_ev, ev_hid), role="input", width_mult=1.0, base_std=1.0 / math.sqrt(float(n_ev))),
+        "ev_b1": jnp.zeros((ev_hid,), dtype=jnp.float32),
+        "ev_w2": init_mup_weight(k5, (ev_hid, n_act), role="input", width_mult=1.0, base_std=0.25 / math.sqrt(float(ev_hid))),
+        "b2": jnp.zeros((n_act,), dtype=jnp.float32),
     }
 
 
@@ -232,8 +267,14 @@ def apply_policy_commit_gate(
       probs:  `[..., 5]` calibrated commitment probabilities
     """
     z_sg = jax.lax.stop_gradient(z_t)
+    ev_sg = jax.lax.stop_gradient(evidence_feats.astype(jnp.float32))
     zn = rms_norm(z_sg, gate_params["norm_w"])
-    feat = jnp.concatenate([zn, jax.lax.stop_gradient(evidence_feats.astype(jnp.float32))], axis=-1)
-    h = jax.nn.silu(jnp.matmul(feat, gate_params["w1"]) + gate_params["b1"])
-    logits = jnp.matmul(h, gate_params["w2"]) + gate_params["b2"]
+    hz = jax.nn.silu(jnp.matmul(zn, gate_params["w1"]) + gate_params["b1"])
+    hev = jax.nn.silu(jnp.matmul(ev_sg, gate_params["ev_w1"]) + gate_params["ev_b1"])
+    logits = (
+        jnp.matmul(hz, gate_params["w2"])
+        + jnp.matmul(ev_sg, gate_params["ev_skip"])
+        + jnp.matmul(hev, gate_params["ev_w2"])
+        + gate_params["b2"]
+    )
     return logits, jax.nn.softmax(logits, axis=-1)

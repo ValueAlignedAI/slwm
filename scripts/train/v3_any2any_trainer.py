@@ -32,6 +32,12 @@ import numpy as np
 import optax
 
 from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, LoadedSparseShard, decode_utf8_bytes
+from evals.v3_sota_benchmarks import (
+    evaluate_code_solution_bpb,
+    evaluate_lambada_openai,
+    evaluate_real_speech_overwrite_frozen_core,
+    evaluate_robotics_action_intervention,
+)
 from models.v3.any2any_heads import (
     compute_any2any_multimodal_loss,
     init_any2any_heads_params,
@@ -312,14 +318,17 @@ def main() -> None:
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
 
     # Auto-discover all available unified train shards under `--shard-dir`
+    tc_shard = args.shard_dir / "text_code/text_code_train_v1.npz"
+    if not tc_shard.is_file():
+        tc_shard = args.shard_dir / "text_code/text_code_train_24m_balanced.npz"
     train_candidates = [
-        ("text_code", args.shard_dir / "text_code/text_code_train_v1.npz", 0.35),
-        ("clotho", args.shard_dir / "audio_text/clotho_train.npz", 0.25),
-        ("esc50", args.shard_dir / "audio_text/esc50_train_f14.npz", 0.10),
-        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.15),
-        ("msrvtt", args.shard_dir / "av/msrvtt_train.npz", 0.15),
-        ("vggsound", args.shard_dir / "av/vggsound_train.npz", 0.15),
-        ("robotics", args.shard_dir / "robotics/robotics_train.npz", 0.15),
+        ("text_code", tc_shard, 0.30),
+        ("clotho", args.shard_dir / "audio_text/clotho_train.npz", 0.20),
+        ("esc50", args.shard_dir / "audio_text/esc50_train_f14.npz", 0.08),
+        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.14),
+        ("msrvtt", args.shard_dir / "av/msrvtt_train.npz", 0.14),
+        ("vggsound", args.shard_dir / "av/vggsound_train.npz", 0.14),
+        ("robotics", args.shard_dir / "robotics/robotics_train.npz", 0.14),
     ]
     mixture = MultiShardMixture(train_candidates)
     print(f"[TRAIN] Active domains: {[(n, sh.n_ticks, round(float(p), 3)) for (n, sh, _), p in zip(mixture.shards, mixture.probs)]}", flush=True)
@@ -378,7 +387,7 @@ def main() -> None:
             log_rows.append(row)
             print(f"[TRAIN step={step+1:5d}/{args.steps}] {row}", flush=True)
 
-    # Strictly frozen-weight evaluations (zero weight updates!)
+    # Strictly frozen-weight evaluations across ALL external SoTA benchmarks & causal proofs (zero weight updates!)
     evals: dict[str, Any] = {
         "text_code_dev": evaluate_text_sota_shard(
             all_params, spec, args.shard_dir / "text_code/text_code_dev_v1.npz",
@@ -386,10 +395,36 @@ def main() -> None:
         ),
         "wikitext103_val": evaluate_text_sota_shard(
             all_params, spec, args.shard_dir / "text_code/wikitext103_validation.npz",
-            seq_len=args.seq_len, batch_size=args.batch_size, max_windows=32, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            seq_len=args.seq_len, batch_size=args.batch_size, max_windows=64, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "wikitext103_test": evaluate_text_sota_shard(
+            all_params, spec, args.shard_dir / "text_code/wikitext103_test.npz",
+            seq_len=args.seq_len, batch_size=args.batch_size, max_windows=64, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "lambada_openai_test": evaluate_lambada_openai(
+            all_params, spec, args.shard_dir / "text_code/lambada_openai_test.npz",
+            max_passages=1024, seq_len=args.seq_len, batch_size=args.batch_size, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "humaneval_test_bpb": evaluate_code_solution_bpb(
+            all_params, spec, args.shard_dir / "text_code/humaneval_test.npz",
+            seq_len=args.seq_len, batch_size=args.batch_size, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "mbpp_sanitized_test_bpb": evaluate_code_solution_bpb(
+            all_params, spec, args.shard_dir / "text_code/mbpp_sanitized_test.npz",
+            seq_len=args.seq_len, batch_size=args.batch_size, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         ),
         "clotho_audio_to_text_shuffle": evaluate_cross_modal_condition_shuffle(
             all_params, spec, args.shard_dir / "audio_text/clotho_dev.npz",
+            source_mod=1, target_mod=2, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "librispeech_dev_clean_audio_to_text_shuffle": evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "audio_text/librispeech_dev_clean.npz",
+            source_mod=1, target_mod=2, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "esc50_test_f5_audio_to_text_shuffle": evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "audio_text/esc50_test_f5.npz",
             source_mod=1, target_mod=2, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
             matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         ),
@@ -398,9 +433,38 @@ def main() -> None:
             source_mod=0, target_mod=1, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
             matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         ),
+        "msrvtt_video_to_text_shuffle": evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "av/msrvtt_dev.npz",
+            source_mod=0, target_mod=2, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "vggsound_video_to_audio_shuffle": evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "av/vggsound_dev.npz",
+            source_mod=0, target_mod=1, seq_len=args.seq_len, batch_size=min(8, args.batch_size),
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "robotics_action_intervention": evaluate_robotics_action_intervention(
+            all_params, spec, args.shard_dir / "robotics/robotics_dev.npz",
+            seq_len=args.seq_len, batch_size=min(8, args.batch_size),
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "real_speech_overwrite_dev_additive_rf": evaluate_real_speech_overwrite_frozen_core(
+            all_params["core"],
+            spec,
+            args.shard_dir / "real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz",
+            args.shard_dir / "real_speech_overwrite/real_speech_overwrite_dev_L12_Weq64_additive.npz",
+            matmul_dtype=mm_dtype,
+            use_wy_chunking=args.use_wy_chunking,
+        ),
     }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    # Persist frozen checkpoint (numpy pytree) for Wave B PolicyCommitGate, Wave C Decoders & Showcase!
+    import pickle
+    ckpt_path = args.out_dir / f"{args.profile}_{args.backbone}_s{args.seed}_ckpt.pkl"
+    np_params = jax.tree_util.tree_map(lambda x: np.asarray(x, dtype=np.float16 if x.ndim >= 2 else np.float32), all_params)
+    with ckpt_path.open("wb") as f:
+        pickle.dump({"spec": spec, "params": np_params}, f, protocol=pickle.HIGHEST_PROTOCOL)
     receipt = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "profile": args.profile,
