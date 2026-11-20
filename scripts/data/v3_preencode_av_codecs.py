@@ -439,25 +439,50 @@ def encode_msrvtt(engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_
                 ordered.append(("train", vid, train_caps[vid][0]))
 
         counts = {"train": 0, "dev": 0, "test": 0}
+        limits = {
+            "train": int(max_clips),
+            "dev": min(250, max(50, int(max_clips) // 3)),
+            "test": min(250, max(50, int(max_clips) // 3)),
+        }
+        selected: list[tuple[str, str, str]] = []
+        sel_cnt = {"train": 0, "dev": 0, "test": 0}
+        for sp, vid, cap in ordered:
+            if sel_cnt[sp] < limits[sp]:
+                selected.append((sp, vid, cap))
+                sel_cnt[sp] += 1
+
+        from concurrent.futures import ThreadPoolExecutor
+
         with tempfile.TemporaryDirectory() as td:
-            for sp, vid, cap in ordered:
-                if counts[sp] >= max_clips:
-                    continue
-                tmp_mp4 = Path(td) / "clip.mp4"
-                tmp_mp4.write_bytes(zf.read(vid_members[vid]))
-                frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=10.0, fps=25)
-                if len(frames) < 5:
-                    continue
-                v_p = engine.encode_video_wan_patches(frames)
-                a_c = engine.encode_audio_mimi_32(wav) if wav.size >= 4800 else None
-                txt_first = (sp == "train") and ((counts[sp] % 2) == 1)
-                ep = build_interleaved_av_text_episode(
-                    video_patches=v_p, audio_codes=a_c, text_str=cap, text_first=txt_first
-                )
-                builders[sp].add_episode(domain_name="msrvtt", **ep)
-                counts[sp] += 1
-                if sum(counts.values()) % 200 == 0:
-                    print(f"[PREENCODE] MSR-VTT progress: {counts}", flush=True)
+            def _decode_one(item: tuple[int, str, str, bytes]):
+                idx_i, sp_i, cap_i, raw_b = item
+                p_mp4 = Path(td) / f"ms_{idx_i}.mp4"
+                p_mp4.write_bytes(raw_b)
+                fr, wv = _extract_mp4_frames_and_audio(p_mp4, max_sec=6.0, fps=25)
+                p_mp4.unlink(missing_ok=True)
+                return sp_i, cap_i, fr, wv
+
+            # Read raw bytes on main thread (ZipFile-safe), then decode 16 clips in parallel across 4 CPU ffmpeg workers!
+            for b0 in range(0, len(selected), 16):
+                chunk = [
+                    (b0 + j, selected[b0 + j][0], selected[b0 + j][2], zf.read(vid_members[selected[b0 + j][1]]))
+                    for j in range(min(16, len(selected) - b0))
+                ]
+                with ThreadPoolExecutor(max_workers=4) as ex:
+                    decoded = list(ex.map(_decode_one, chunk))
+                for sp, cap, frames, wav in decoded:
+                    if len(frames) < 5:
+                        continue
+                    v_p = engine.encode_video_wan_patches(frames)
+                    a_c = engine.encode_audio_mimi_32(wav) if wav.size >= 4800 else None
+                    txt_first = (sp == "train") and ((counts[sp] % 2) == 1)
+                    ep = build_interleaved_av_text_episode(
+                        video_patches=v_p, audio_codes=a_c, text_str=cap, text_first=txt_first
+                    )
+                    builders[sp].add_episode(domain_name="msrvtt", **ep)
+                    counts[sp] += 1
+                    if sum(counts.values()) % 100 == 0:
+                        print(f"[PREENCODE] MSR-VTT progress: {counts}", flush=True)
     return {sp: b.save(out_dir / f"msrvtt_{sp}.npz") for sp, b in builders.items()}
 
 
@@ -490,15 +515,22 @@ def encode_vggsound(
         "test": SparseShardBuilder("vggsound_test", "test"),
     }
     counts = {"train": 0, "dev": 0, "test": 0}
+    limits = {
+        "train": int(max_clips_per_split),
+        "dev": min(200, max(50, int(max_clips_per_split) // 3)),
+        "test": min(200, max(50, int(max_clips_per_split) // 3)),
+    }
     seen_yt_split: dict[str, str] = {}
     tars = sorted(vgg_dir.glob("vggsound_*.tar.gz"))
 
     with tempfile.TemporaryDirectory() as td:
         for tp in tars:
-            if all(counts[k] >= (max_clips_per_split if k == "train" else max(250, max_clips_per_split // 4)) for k in counts):
+            if all(counts[k] >= limits[k] for k in counts):
                 break
             with tarfile.open(tp, "r:gz") as tf:
                 for member in tf:
+                    if all(counts[k] >= limits[k] for k in counts):
+                        break
                     if not member.isfile() or not member.name.endswith(".mp4"):
                         continue
                     stem = Path(member.name).stem
@@ -516,15 +548,14 @@ def encode_vggsound(
                         else:
                             sp = "dev" if (sum(ord(c) for c in yt_id) % 10 == 0) else "train"
                             seen_yt_split[yt_id] = sp
-                    lim = max_clips_per_split if sp == "train" else max(250, max_clips_per_split // 4)
-                    if counts[sp] >= lim:
+                    if counts[sp] >= limits[sp]:
                         continue
                     f_obj = tf.extractfile(member)
                     if f_obj is None:
                         continue
                     tmp_mp4 = Path(td) / "clip.mp4"
                     tmp_mp4.write_bytes(f_obj.read())
-                    frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=10.0, fps=25)
+                    frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=6.0, fps=25)
                     if len(frames) < 5 or wav.size < 4800:
                         continue
                     v_p = engine.encode_video_wan_patches(frames)
@@ -536,7 +567,7 @@ def encode_vggsound(
                     )
                     builders[sp].add_episode(domain_name="vggsound", **ep)
                     counts[sp] += 1
-                    if sum(counts.values()) % 200 == 0:
+                    if sum(counts.values()) % 100 == 0:
                         print(f"[PREENCODE] VGGSound progress: {counts}", flush=True)
     return {sp: b.save(out_dir / f"vggsound_{sp}.npz") for sp, b in builders.items()}
 

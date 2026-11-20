@@ -229,10 +229,15 @@ def main() -> None:
                 print(out[-2000:], flush=True)
                 if err.strip():
                     print(err[-800:], flush=True)
-                # Download receipt JSONs immediately after each arm!
+                # Download receipt JSONs & deterministic inference_showcase manifests immediately after each arm!
                 rec_fn = f"{args.profile}_{bb_name}_s{seed}_receipt.json"
                 out_rec = args.out_dir / f"{args.profile}_{arm}_s{seed}_receipt.json"
                 run_colab("download", "-s", session_name, f"/content/out/{rec_fn}", str(out_rec), cfg_path=cfg_path, timeout=120)
+                (args.out_dir / "inference_showcase").mkdir(parents=True, exist_ok=True)
+                for sh_tag in ("clotho_dev", "msrvtt_dev", "wikitext103_validation"):
+                    rem_sc = f"/content/out/inference_showcase/showcase_manifest_dev_{args.profile}_{bb_name}_s{seed}_{sh_tag}.json"
+                    loc_sc = args.out_dir / "inference_showcase" / f"showcase_manifest_dev_{args.profile}_{arm}_s{seed}_{sh_tag}.json"
+                    run_colab("download", "-s", session_name, rem_sc, str(loc_sc), cfg_path=cfg_path, timeout=60)
                 if args.run_wave_b:
                     wb_fn = f"wave_b_policy_gate_{args.profile}_{bb_name}_receipt.json"
                     run_colab("download", "-s", session_name, f"/content/out/{wb_fn}", str(args.out_dir / f"wave_b_{arm}_s{seed}_receipt.json"), cfg_path=cfg_path, timeout=120)

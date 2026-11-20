@@ -37,6 +37,7 @@ from evals.v3_sota_benchmarks import (
     evaluate_lambada_openai,
     evaluate_real_speech_overwrite_frozen_core,
     evaluate_robotics_action_intervention,
+    generate_cross_modal_text_showcase,
 )
 from models.v3.any2any_heads import (
     compute_any2any_multimodal_loss,
@@ -459,6 +460,25 @@ def main() -> None:
     }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    # Deterministic uncurated `inference_showcase/` gallery (AGENTS.md §13.2: P05/P25/P50/P75/P95, frozen weights!)
+    showcase_dir = args.out_dir / "inference_showcase"
+    evals["inference_showcase"] = {
+        "clotho_dev": generate_cross_modal_text_showcase(
+            all_params, spec, args.shard_dir / "audio_text/clotho_dev.npz",
+            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "msrvtt_dev": generate_cross_modal_text_showcase(
+            all_params, spec, args.shard_dir / "av/msrvtt_dev.npz",
+            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+        "wikitext103_val": generate_cross_modal_text_showcase(
+            all_params, spec, args.shard_dir / "text_code/wikitext103_validation.npz",
+            out_dir=showcase_dir, split="dev", model_name=f"{args.profile}_{args.backbone}_s{args.seed}",
+            seq_len=args.seq_len, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        ),
+    }
     # Persist frozen checkpoint (numpy pytree) for Wave B PolicyCommitGate, Wave C Decoders & Showcase!
     import pickle
     ckpt_path = args.out_dir / f"{args.profile}_{args.backbone}_s{args.seed}_ckpt.pkl"

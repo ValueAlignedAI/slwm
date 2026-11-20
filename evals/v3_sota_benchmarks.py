@@ -470,3 +470,130 @@ def write_deterministic_inference_showcase(
     p = out_dir / f"showcase_manifest_{split}_{model_name}.json"
     p.write_text(json.dumps(manifest, indent=2) + "\n")
     return p
+
+
+def generate_cross_modal_text_showcase(
+    all_params: dict[str, Any],
+    spec: SLWMv3Spec,
+    shard_path: Path,
+    *,
+    out_dir: Path,
+    split: str,
+    model_name: str,
+    n_episodes: int = 32,
+    seq_len: int = 512,
+    matmul_dtype: jnp.dtype = jnp.bfloat16,
+    use_wy_chunking: bool = False,
+) -> dict[str, Any]:
+    """Generate AGENTS.md §13.2 uncurated P05/P25/P50/P75/P95 qualitative cross-modal caption/text completions."""
+    if not shard_path.is_file():
+        return {"skipped": f"missing {shard_path}"}
+    sh = LoadedSparseShard.load(shard_path)
+    d = sh.data
+    n_tot = sh.n_ticks
+    rst = np.nonzero(d["reset_mask"])[0]
+    ends = np.append(rst[1:], n_tot)
+    n_ep = min(n_episodes, len(rst))
+
+    @jax.jit
+    def _fwd_one(ap, batch):
+        z, _, dm = scan_core_fast(
+            ap["core"],
+            init_core_state(spec, 1),
+            batch,
+            spec,
+            remat_layers=False,
+            matmul_dtype=matmul_dtype,
+            use_wy_chunking=use_wy_chunking,
+        )
+        logits = predict_any2any_heads(ap["heads"], z, spec, matmul_dtype=matmul_dtype)["text_logits"]
+        return logits[:, 0, :], float(jnp.mean(dm["mean_nowrite"]))
+
+    ep_records: list[dict[str, Any]] = []
+    for ei in range(n_ep):
+        s, e = int(rst[ei]), int(ends[ei])
+        L = min(seq_len, e - s)
+        if L < 12:
+            continue
+        idx = np.arange(s, s + L, dtype=np.int64)[:, None]
+        # Pad to fixed `seq_len` so JAX compiles ONCE across all episodes!
+        pad_n = seq_len - L
+        def _pad(arr, val=0):
+            if pad_n == 0:
+                return arr
+            return np.concatenate([arr, np.full((pad_n,) + arr.shape[1:], val, dtype=arr.dtype)], axis=0)
+
+        mod = _pad(d["modality_id"][idx].astype(np.int32), 2)
+        dt = _pad(d["dt_s"][idx].astype(np.float32), 0.0)
+        vld = np.zeros((seq_len, 1), dtype=np.float32)
+        vld[:L, 0] = d["valid_mask"][idx, 0].astype(np.float32)
+        rel = _pad(d["reliability"][idx].astype(np.float32), 1.0)
+        rst_a = np.zeros((seq_len, 1), dtype=bool)
+        rst_a[0, 0] = True
+        sp = _pad(d["spatial_pos"][idx].astype(np.int32), 0)
+        tb = _pad(d["text_byte"][idx].astype(np.int32), 256)
+        v_idx = d["video_idx"][idx]
+        a_idx = d["audio_idx"][idx]
+        vid = np.zeros((seq_len, 1, spec.video_patch_dim), dtype=np.float32)
+        vm = v_idx >= 0
+        if np.any(vm) and len(d["video_feat"]) > 0:
+            vid[:L][vm] = d["video_feat"][v_idx[vm]].astype(np.float32)
+        aud = np.zeros((seq_len, 1, spec.audio_codebooks), dtype=np.int32)
+        am = a_idx >= 0
+        if np.any(am) and len(d["audio_codes"]) > 0:
+            aud[:L][am] = d["audio_codes"][a_idx[am]].astype(np.int32)
+
+        batch = {
+            "modality_id": jnp.asarray(mod),
+            "dt_s": jnp.asarray(dt),
+            "valid_mask": jnp.asarray(vld),
+            "reliability": jnp.asarray(rel),
+            "reset_mask": jnp.asarray(rst_a),
+            "spatial_pos": jnp.asarray(sp),
+            "text_byte": jnp.asarray(tb),
+            "has_true_action": jnp.zeros((seq_len, 1), dtype=jnp.float32),
+            "video_feat": jnp.asarray(vid),
+            "audio_codes": jnp.asarray(aud),
+            "proprio_feat": jnp.zeros((seq_len, 1, spec.proprio_dim), dtype=jnp.float32),
+            "action_feat": jnp.zeros((seq_len, 1, spec.action_dim), dtype=jnp.float32),
+            "probe_feat": jnp.zeros((seq_len, 1, spec.probe_dim), dtype=jnp.float32),
+        }
+        logits, mean_nw = _fwd_one(all_params, batch)
+        logits_np = np.asarray(logits[:L], dtype=np.float32)
+        mod_1d = mod[:L, 0]
+        tb_1d = tb[:L, 0]
+        txt_pos = np.where((mod_1d == 2) & (np.arange(L) > 0))[0]
+        if len(txt_pos) < 4:
+            continue
+        pl = logits_np[txt_pos - 1]
+        yb = tb_1d[txt_pos]
+        ml = np.max(pl, axis=-1, keepdims=True)
+        logp = pl - ml - np.log(np.sum(np.exp(pl - ml), axis=-1, keepdims=True))
+        bpb = float(np.mean(-logp[np.arange(len(yb)), yb])) / math.log(2.0)
+        pred_b = np.argmax(pl, axis=-1)
+        ep_records.append(
+            {
+                "episode_id": f"{shard_path.stem}_ep{ei:04d}",
+                "observed_modalities": sorted({int(x) for x in mod_1d}),
+                "channel_provenance": {
+                    "input_context": "observed",
+                    "next_byte_readout": "predicted_diagnostic_forced",
+                },
+                "text_bpb": round(bpb, 4),
+                "mean_nowrite": round(float(mean_nw), 4),
+                "ground_truth_text_preview": decode_utf8_bytes(yb)[:160],
+                "top1_next_byte_preview": decode_utf8_bytes(pred_b)[:160],
+            }
+        )
+
+    if not ep_records:
+        return {"skipped": f"no valid text episodes in {shard_path.name}"}
+    manifest_p = write_deterministic_inference_showcase(
+        out_dir,
+        split=split,
+        model_name=f"{model_name}_{shard_path.stem}",
+        episodes=ep_records,
+        metric_key="text_bpb",
+        higher_is_better=False,
+    )
+    return {"manifest_path": str(manifest_p), "n_ranked_episodes": len(ep_records)}
