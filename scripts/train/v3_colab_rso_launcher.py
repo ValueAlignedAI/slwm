@@ -63,6 +63,10 @@ def main() -> None:
     ap.add_argument("--shard-tag", type=str, default="L12_Weq64_additive")
     ap.add_argument("--local-rso-dir", type=Path, required=True)
     ap.add_argument("--steps", type=int, default=450)
+    ap.add_argument("--phase-a-steps", type=int, default=250)
+    ap.add_argument("--aux-mimi-weight", type=float, default=0.0)
+    ap.add_argument("--use-clipbank", action="store_true", help="Upload & train dynamically from train-speaker SpeechCommands Mimi clipbank (zero suffix memorization!).")
+    ap.add_argument("--resume", action="store_true", help="Skip arms/seeds whose receipt JSON already exists in `--out-dir`.")
     ap.add_argument("--batch-size", type=int, default=4)
     ap.add_argument("--grad-accum", type=int, default=2)
     ap.add_argument("--base-lr", type=float, default=1e-3)
@@ -123,6 +127,11 @@ def main() -> None:
 
         splits = ["train", "dev"] + (["test"] if args.include_test_shards else [])
         shard_files = [args.local_rso_dir / f"real_speech_overwrite_{sp}_{args.shard_tag}.npz" for sp in splits]
+        if args.use_clipbank:
+            cb_path = args.local_rso_dir / "rso_train_clipbank_mimi32.npz"
+            if not cb_path.is_file():
+                raise FileNotFoundError(f"Missing RSO clipbank: {cb_path}")
+            shard_files.append(cb_path)
         _upload_shards_batch_chunked(
             session_name, shard_files, args.local_rso_dir,
             cfg_path=cfg_path, log_dir=log_dir,
@@ -139,6 +148,9 @@ def main() -> None:
                 sc = 16 if "_c16" in arm else (32 if "_c32" in arm else 1)
                 bb = arm.replace("_wy", "").replace("_c16", "").replace("_c32", "")
                 tag = f"{args.profile}_{arm}_s{seed}"
+                if args.resume and (args.out_dir / f"rso_{tag}_receipt.json").is_file():
+                    print(f"[RSO_LAUNCH RESUME] Skipping completed {tag}.", flush=True)
+                    continue
                 argv = [
                     "scripts/train/v3_rso_benchmark_runner.py",
                     "--profile", args.profile,
@@ -147,6 +159,8 @@ def main() -> None:
                     "--rso-dir", "/content/shards",
                     "--shard-tag", args.shard_tag,
                     "--steps", str(args.steps),
+                    "--phase-a-steps", str(args.phase_a_steps),
+                    "--aux-mimi-weight", str(args.aux_mimi_weight),
                     "--batch-size", str(args.batch_size),
                     "--grad-accum", str(args.grad_accum),
                     "--base-lr", str(args.base_lr),
@@ -154,6 +168,8 @@ def main() -> None:
                     "--tag", tag,
                     "--out-dir", "/content/out",
                 ]
+                if args.use_clipbank:
+                    argv.extend(["--train-clipbank", "/content/shards/rso_train_clipbank_mimi32.npz"])
                 if use_wy:
                     argv.append("--use-wy-chunking")
                 if args.include_test_shards:

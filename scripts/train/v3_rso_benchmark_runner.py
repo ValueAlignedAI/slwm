@@ -110,6 +110,116 @@ def _build_rso_optimizer(all_params: dict[str, Any], spec, weight_decay: float =
     )
 
 
+class DynamicRealSpeechClipbank:
+    """Zero-memorization dynamic real-speech stream synthesizer strictly from `train`-split SpeechCommands Mimi clips."""
+
+    def __init__(self, npz_path: Path) -> None:
+        z = np.load(npz_path, allow_pickle=False)
+        self.dir_codes = np.asarray(z["dir_codes"], dtype=np.int32)  # [4, M, 25, 32]
+        self.dig_codes = np.asarray(z["dig_codes"], dtype=np.int32)  # [4, M, 25, 32]
+        self.dist_codes = np.asarray(z["dist_codes"], dtype=np.int32)  # [K, 25, 32]
+        self.bg_codes = np.asarray(z["bg_codes"], dtype=np.int32)  # [B, 125, 32]
+        self.clip_len = int(self.dir_codes.shape[2])
+        self.bg_len = int(self.bg_codes.shape[1])
+
+    def sample_batch(
+        self,
+        rng: np.random.Generator,
+        *,
+        batch_size: int,
+        seq_len: int,
+        catch_prob: float = 0.25,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Return `(codes [T, B, 32], y_running [T, B, 2], loss_w [T, B])` with infinite unique distractor suffixes."""
+        c_len = self.clip_len
+        codes = np.zeros((seq_len, batch_size, 32), dtype=np.int32)
+        y_run = np.zeros((seq_len, batch_size, 2), dtype=np.int32)
+        lw = np.zeros((seq_len, batch_size), dtype=np.float32)
+
+        for b in range(batch_size):
+            # 1. Tile random pure train-background beds across [0, T)
+            pos = 0
+            while pos < seq_len:
+                bg = self.bg_codes[int(rng.integers(0, len(self.bg_codes)))]
+                off = int(rng.integers(0, max(1, self.bg_len - 25)))
+                seg = bg[off:]
+                take = min(seq_len - pos, len(seg))
+                codes[pos : pos + take, b] = seg[:take]
+                pos += take
+
+            d_init = int(rng.integers(0, 4))
+            n_init = int(rng.integers(0, 4))
+            order = int(rng.integers(0, 2))
+            is_catch = bool(rng.random() < catch_prob)
+
+            # 2. Place initial Direction + Digit spoken words with random jitter
+            t1 = int(rng.integers(8, min(32, max(9, seq_len // 10))))
+            t2 = t1 + c_len + int(rng.integers(4, 24))
+            if t2 + c_len + 40 >= seq_len:
+                t1 = 4
+                t2 = t1 + c_len + 4
+
+            c_dir = self.dir_codes[d_init, int(rng.integers(0, self.dir_codes.shape[1]))]
+            c_dig = self.dig_codes[n_init, int(rng.integers(0, self.dig_codes.shape[1]))]
+            if order == 0:
+                codes[t1 : t1 + c_len, b] = c_dir
+                codes[t2 : t2 + c_len, b] = c_dig
+            else:
+                codes[t1 : t1 + c_len, b] = c_dig
+                codes[t2 : t2 + c_len, b] = c_dir
+
+            # 3. Place optional selective overwrite (or matched-energy catch distractor)
+            max_corr = min(seq_len - c_len - 16, max(t2 + c_len + 36, min(420, seq_len // 3)))
+            min_corr = min(max_corr - 1, t2 + c_len + 12)
+            t_corr = int(rng.integers(min_corr, max_corr + 1))
+
+            d_fin, n_fin = d_init, n_init
+            if is_catch:
+                codes[t_corr : t_corr + c_len, b] = self.dist_codes[int(rng.integers(0, len(self.dist_codes)))]
+            else:
+                uw = int(rng.integers(0, 2))
+                old_v = d_init if uw == 0 else n_init
+                new_v = (old_v + int(rng.integers(1, 4))) % 4
+                if uw == 0:
+                    d_fin = new_v
+                    codes[t_corr : t_corr + c_len, b] = self.dir_codes[new_v, int(rng.integers(0, self.dir_codes.shape[1]))]
+                else:
+                    n_fin = new_v
+                    codes[t_corr : t_corr + c_len, b] = self.dig_codes[new_v, int(rng.integers(0, self.dig_codes.shape[1]))]
+
+            # 4. Fill ALL non-overlapping gaps (mid + long post suffix!) with fresh random matched-energy distractors
+            occupied = [(t1, t1 + c_len), (t2, t2 + c_len), (t_corr, t_corr + c_len)]
+            cur = 2
+            while cur + c_len < seq_len - 4:
+                step_gap = int(rng.integers(c_len + 6, c_len + 34))
+                if not any(not (cur + c_len + 2 <= s or cur >= e + 2) for s, e in occupied):
+                    codes[cur : cur + c_len, b] = self.dist_codes[int(rng.integers(0, len(self.dist_codes)))]
+                cur += step_gap
+
+            # 5. Strictly causal running-state targets & probe mask (IDENTICAL across all compared backbones!)
+            y_run[:, b, 0] = d_init
+            y_run[:, b, 1] = n_init
+            y_run[t_corr + c_len :, b, 0] = d_fin
+            y_run[t_corr + c_len :, b, 1] = n_fin
+
+            # Probe 1: right after initial pair (teaches spoken word recognition!)
+            p1_s = min(seq_len - 1, t2 + c_len)
+            p1_e = min(t_corr, p1_s + 8)
+            if p1_e > p1_s:
+                lw[p1_s:p1_e, b] = 0.5 / float(p1_e - p1_s)
+            # Probe 2: right after overwrite/catch (teaches selective overwrite & preservation!)
+            p2_s = min(seq_len - 1, t_corr + c_len)
+            p2_e = min(seq_len, p2_s + 8)
+            if p2_e > p2_s:
+                lw[p2_s:p2_e, b] = 1.0 / float(p2_e - p2_s)
+            # Probe 3: final tail post-distractors (forces long-horizon survival > 756/2032 ticks!)
+            p3_s = max(p2_e, seq_len - 32)
+            if seq_len > p3_s:
+                lw[p3_s:seq_len, b] = 3.0 / float(seq_len - p3_s)
+
+        return codes, y_run, lw
+
+
 def evaluate_rso_split(
     all_params: dict[str, Any],
     spec,
@@ -117,6 +227,7 @@ def evaluate_rso_split(
     *,
     vocab_size: int = 4,
     eval_bsz: int = 8,
+    eval_tick: int | None = None,
     matmul_dtype: jnp.dtype = jnp.bfloat16,
     use_wy_chunking: bool = False,
 ) -> dict[str, Any]:
@@ -124,6 +235,9 @@ def evaluate_rso_split(
     d = np.load(npz_path, allow_pickle=False)
     ca = d["audio_codes_a"]
     cb = d["audio_codes_b"]
+    if eval_tick is not None and eval_tick < ca.shape[1]:
+        ca = ca[:, :eval_tick, :]
+        cb = cb[:, :eval_tick, :]
     ya = np.asarray(d["y_a"], dtype=np.int32)
     yb = np.asarray(d["y_b"], dtype=np.int32)
     ua = np.asarray(d["update_which"], dtype=np.int32)
@@ -227,6 +341,9 @@ def main() -> None:
     ap.add_argument("--rso-dir", type=Path, required=True)
     ap.add_argument("--shard-tag", type=str, default="L12_Weq64_additive")
     ap.add_argument("--steps", type=int, default=450)
+    ap.add_argument("--phase-a-steps", type=int, default=250, help="Short-horizon word+overwrite grounding steps when `--train-clipbank` is set.")
+    ap.add_argument("--phase-a-len", type=int, default=256, help="Short-horizon sequence length for Phase A grounding.")
+    ap.add_argument("--train-clipbank", type=Path, default=None, help="Optional train-speaker Mimi clipbank for zero-memorization dynamic synthesis.")
     ap.add_argument("--batch-size", type=int, default=4)
     ap.add_argument("--grad-accum", type=int, default=2)
     ap.add_argument("--base-lr", type=float, default=1e-3)
@@ -251,7 +368,10 @@ def main() -> None:
     tr_codes = np.concatenate([tr_d["audio_codes_a"], tr_d["audio_codes_b"]], axis=0)  # [2*N, T, 32]
     tr_y = np.concatenate([tr_d["y_a"], tr_d["y_b"]], axis=0).astype(np.int32)  # [2*N, 2]
     n_tr = len(tr_codes)
+    target_seq_len = int(tr_codes.shape[1])
     vocab_size = int(np.max(tr_y)) + 1
+    clipbank = DynamicRealSpeechClipbank(args.train_clipbank) if (args.train_clipbank and args.train_clipbank.is_file()) else None
+    aux_w = float(args.aux_mimi_weight)
 
     k_c, k_h = jax.random.split(jax.random.PRNGKey(args.seed), 2)
     all_params = {
@@ -264,7 +384,7 @@ def main() -> None:
     opt_st = tx_unit.init(all_params)
     grad_accum = max(1, int(args.grad_accum))
 
-    def _micro_loss(ap, codes_tb32, y_b2):
+    def _micro_loss_running(ap, codes_tb32, y_tb2, lw_tb):
         b_sz = codes_tb32.shape[1]
         pkts = _make_mimi_packets(codes_tb32, spec)
         z, _, dm = scan_core_fast(
@@ -277,24 +397,26 @@ def main() -> None:
             assume_all_valid=True,
             use_wy_chunking=args.use_wy_chunking,
         )
-        # 1. Primary causal final-state attribute classification (strictly from final 8 ticks post-distractor!)
         hs = ap["heads"]["head_state"]
-        z_tail = rms_norm(z[-8:], hs["norm_w"])  # [8, B, D]
-        lg = (jnp.matmul(z_tail, hs["w"]) + hs["bias"]).reshape(8, b_sz, 2, vocab_size)
-        ce0 = optax.softmax_cross_entropy_with_integer_labels(lg[:, :, 0, :], y_b2[None, :, 0]).mean()
-        ce1 = optax.softmax_cross_entropy_with_integer_labels(lg[:, :, 1, :], y_b2[None, :, 1]).mean()
-        state_loss = 0.5 * (ce0 + ce1)
-
-        # 2. Auxiliary self-supervised next-packet Mimi RVQ-0..1 prediction (subsampled stride 8 for low HBM!)
-        hm = ap["heads"]["head_mimi_aux"]
-        z_sub = rms_norm(z[:-1:8], hm["norm_w"])
-        t_sub = codes_tb32[1::8, :, :2]
-        m_lg = (jnp.matmul(z_sub.astype(mm_dtype), hm["w"].astype(mm_dtype)).astype(jnp.float32)).reshape(
-            z_sub.shape[0], b_sz, 2, spec.audio_vocab_size
-        ) + hm["bias"][None, None, :, :]
-        aux_loss = optax.softmax_cross_entropy_with_integer_labels(m_lg, t_sub).mean()
-
-        tot = state_loss + float(args.aux_mimi_weight) * aux_loss
+        z_n = rms_norm(z, hs["norm_w"])  # [T, B, D]
+        lg = (jnp.matmul(z_n.astype(mm_dtype), hs["w"].astype(mm_dtype)).astype(jnp.float32) + hs["bias"]).reshape(
+            z.shape[0], b_sz, 2, vocab_size
+        )
+        ce0 = optax.softmax_cross_entropy_with_integer_labels(lg[:, :, 0, :], y_tb2[:, :, 0])
+        ce1 = optax.softmax_cross_entropy_with_integer_labels(lg[:, :, 1, :], y_tb2[:, :, 1])
+        ce_tb = 0.5 * (ce0 + ce1)
+        state_loss = jnp.sum(ce_tb * lw_tb) / jnp.maximum(jnp.sum(lw_tb), 1e-6)
+        if aux_w > 0.0:
+            hm = ap["heads"]["head_mimi_aux"]
+            z_sub = rms_norm(z[:-1:8], hm["norm_w"])
+            t_sub = codes_tb32[1::8, :, :2]
+            m_lg = (jnp.matmul(z_sub.astype(mm_dtype), hm["w"].astype(mm_dtype)).astype(jnp.float32)).reshape(
+                z_sub.shape[0], b_sz, 2, spec.audio_vocab_size
+            ) + hm["bias"][None, None, :, :]
+            aux_loss = optax.softmax_cross_entropy_with_integer_labels(m_lg, t_sub).mean()
+        else:
+            aux_loss = jnp.asarray(0.0, dtype=jnp.float32)
+        tot = state_loss + aux_w * aux_loss
         return tot, {
             "state_ce": state_loss,
             "aux_mimi_ce": aux_loss,
@@ -304,18 +426,18 @@ def main() -> None:
         }
 
     @jax.jit(donate_argnums=(0, 1))
-    def _step(ap, ost, mb_codes, mb_y, lr_arr):
+    def _step_running(ap, ost, mb_codes, mb_y, mb_lw, lr_arr):
         def _acc(carry, xs):
             ga, la, ma = carry
-            c_tb, y_b = xs
-            (lv, mv), gm = jax.value_and_grad(_micro_loss, has_aux=True)(ap, c_tb, y_b)
+            c_tb, y_tb, w_tb = xs
+            (lv, mv), gm = jax.value_and_grad(_micro_loss_running, has_aux=True)(ap, c_tb, y_tb, w_tb)
             ga = jax.tree_util.tree_map(lambda a, b: a + b, ga, gm)
             ma = jax.tree_util.tree_map(lambda a, b: a + b, ma, mv)
             return (ga, la + lv, ma), None
 
         g0 = jax.tree_util.tree_map(jnp.zeros_like, ap)
         m0 = {k: jnp.asarray(0.0, dtype=jnp.float32) for k in ("state_ce", "aux_mimi_ce", "mean_nowrite", "mean_eta", "max_frob")}
-        (gs, ls, ms), _ = jax.lax.scan(_acc, (g0, jnp.asarray(0.0, dtype=jnp.float32), m0), (mb_codes, mb_y))
+        (gs, ls, ms), _ = jax.lax.scan(_acc, (g0, jnp.asarray(0.0, dtype=jnp.float32), m0), (mb_codes, mb_y, mb_lw))
         inv = 1.0 / float(grad_accum)
         gm = jax.tree_util.tree_map(lambda x: x * inv, gs)
         mm = jax.tree_util.tree_map(lambda x: x * inv, ms)
@@ -326,36 +448,111 @@ def main() -> None:
     rng = np.random.default_rng(args.seed + 300)
     t0 = time.perf_counter()
     curve = []
-    for s in range(args.steps):
-        c_mbs, y_mbs = [], []
-        for _ in range(grad_accum):
-            idx = rng.integers(0, n_tr, size=(args.batch_size,))
-            c_mbs.append(np.transpose(tr_codes[idx], (1, 0, 2)).astype(np.int32))
-            y_mbs.append(tr_y[idx])
-        mb_c = jnp.asarray(np.stack(c_mbs, axis=0))
-        mb_y = jnp.asarray(np.stack(y_mbs, axis=0))
-        lr_v = jnp.asarray(args.base_lr * lr_schedule_mult(s, args.steps), dtype=jnp.float32)
-        all_params, opt_st, lv, met = _step(all_params, opt_st, mb_c, mb_y, lr_v)
-        if s == 0 or (s + 1) % max(1, args.steps // 15) == 0 or s == args.steps - 1:
-            lv.block_until_ready()
-            row = {
-                "step": s + 1,
-                "elapsed_s": round(time.perf_counter() - t0, 1),
-                "total_loss": round(float(lv), 4),
-                "state_ce": round(float(met["state_ce"]), 4),
-                "aux_mimi_ce": round(float(met["aux_mimi_ce"]), 4),
-                "mean_nowrite": round(float(met["mean_nowrite"]), 4),
-                "mean_eta": round(float(met["mean_eta"]), 4),
-                "max_frob": round(float(met["max_frob"]), 2),
-            }
-            curve.append(row)
-            print(f"[RSO step={s+1:4d}/{args.steps}] {row}", flush=True)
+    if clipbank is not None:
+        # Phase A: Short-horizon spoken-word + selective-overwrite grounding (identical for ALL comparators!)
+        pa_steps = max(0, int(args.phase_a_steps))
+        for s in range(pa_steps):
+            c_mbs, y_mbs, w_mbs = [], [], []
+            for _ in range(grad_accum):
+                c_tb, y_tb, w_tb = clipbank.sample_batch(rng, batch_size=args.batch_size, seq_len=int(args.phase_a_len))
+                c_mbs.append(c_tb)
+                y_mbs.append(y_tb)
+                w_mbs.append(w_tb)
+            lr_v = jnp.asarray(args.base_lr * lr_schedule_mult(s, max(pa_steps + args.steps, 1)), dtype=jnp.float32)
+            all_params, opt_st, lv, met = _step_running(
+                all_params, opt_st,
+                jnp.asarray(np.stack(c_mbs, axis=0)),
+                jnp.asarray(np.stack(y_mbs, axis=0)),
+                jnp.asarray(np.stack(w_mbs, axis=0)),
+                lr_v,
+            )
+            if s == 0 or (s + 1) % max(1, pa_steps // 5) == 0 or s == pa_steps - 1:
+                lv.block_until_ready()
+                row = {
+                    "phase": "A_short", "step": s + 1, "elapsed_s": round(time.perf_counter() - t0, 1),
+                    "total_loss": round(float(lv), 4), "state_ce": round(float(met["state_ce"]), 4),
+                    "mean_nowrite": round(float(met["mean_nowrite"]), 4), "mean_eta": round(float(met["mean_eta"]), 4),
+                    "max_frob": round(float(met["max_frob"]), 2),
+                }
+                curve.append(row)
+                print(f"[RSO-A step={s+1:4d}/{pa_steps}] {row}", flush=True)
+
+        # Phase B: Full additive-RF horizon (`T=2088` / `3425`) dynamic zero-memorization distractor survival!
+        for s in range(args.steps):
+            c_mbs, y_mbs, w_mbs = [], [], []
+            for _ in range(grad_accum):
+                c_tb, y_tb, w_tb = clipbank.sample_batch(rng, batch_size=args.batch_size, seq_len=target_seq_len)
+                c_mbs.append(c_tb)
+                y_mbs.append(y_tb)
+                w_mbs.append(w_tb)
+            lr_v = jnp.asarray(args.base_lr * lr_schedule_mult(pa_steps + s, max(pa_steps + args.steps, 1)), dtype=jnp.float32)
+            all_params, opt_st, lv, met = _step_running(
+                all_params, opt_st,
+                jnp.asarray(np.stack(c_mbs, axis=0)),
+                jnp.asarray(np.stack(y_mbs, axis=0)),
+                jnp.asarray(np.stack(w_mbs, axis=0)),
+                lr_v,
+            )
+            if s == 0 or (s + 1) % max(1, args.steps // 15) == 0 or s == args.steps - 1:
+                lv.block_until_ready()
+                row = {
+                    "phase": "B_long", "step": s + 1, "elapsed_s": round(time.perf_counter() - t0, 1),
+                    "total_loss": round(float(lv), 4), "state_ce": round(float(met["state_ce"]), 4),
+                    "mean_nowrite": round(float(met["mean_nowrite"]), 4), "mean_eta": round(float(met["mean_eta"]), 4),
+                    "max_frob": round(float(met["max_frob"]), 2),
+                }
+                curve.append(row)
+                print(f"[RSO-B step={s+1:4d}/{args.steps}] {row}", flush=True)
+    else:
+        for s in range(args.steps):
+            c_mbs, y_mbs, w_mbs = [], [], []
+            for _ in range(grad_accum):
+                idx = rng.integers(0, n_tr, size=(args.batch_size,))
+                c_tb = np.transpose(tr_codes[idx], (1, 0, 2)).astype(np.int32)
+                y_tb = np.broadcast_to(tr_y[idx][None, :, :], (target_seq_len, args.batch_size, 2)).copy()
+                w_tb = np.zeros((target_seq_len, args.batch_size), dtype=np.float32)
+                w_tb[-8:, :] = 1.0 / 8.0
+                c_mbs.append(c_tb)
+                y_mbs.append(y_tb)
+                w_mbs.append(w_tb)
+            lr_v = jnp.asarray(args.base_lr * lr_schedule_mult(s, args.steps), dtype=jnp.float32)
+            all_params, opt_st, lv, met = _step_running(
+                all_params, opt_st,
+                jnp.asarray(np.stack(c_mbs, axis=0)),
+                jnp.asarray(np.stack(y_mbs, axis=0)),
+                jnp.asarray(np.stack(w_mbs, axis=0)),
+                lr_v,
+            )
+            if s == 0 or (s + 1) % max(1, args.steps // 15) == 0 or s == args.steps - 1:
+                lv.block_until_ready()
+                row = {
+                    "step": s + 1, "elapsed_s": round(time.perf_counter() - t0, 1),
+                    "total_loss": round(float(lv), 4), "state_ce": round(float(met["state_ce"]), 4),
+                    "aux_mimi_ce": round(float(met["aux_mimi_ce"]), 4),
+                    "mean_nowrite": round(float(met["mean_nowrite"]), 4), "mean_eta": round(float(met["mean_eta"]), 4),
+                    "max_frob": round(float(met["max_frob"]), 2),
+                }
+                curve.append(row)
+                print(f"[RSO step={s+1:4d}/{args.steps}] {row}", flush=True)
 
     dev_eval = evaluate_rso_split(
         all_params, spec, dv_p, vocab_size=vocab_size, eval_bsz=8,
         matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
     )
-    evals: dict[str, Any] = {"dev": dev_eval}
+    short_tick = 320 if target_seq_len <= 2400 else 384
+    dev_short_diag = evaluate_rso_split(
+        all_params, spec, dv_p, vocab_size=vocab_size, eval_bsz=8, eval_tick=short_tick,
+        matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+    )
+    evals: dict[str, Any] = {
+        "dev": dev_eval,
+        "dev_short_horizon_inside_gqa_rf_diag": {
+            "eval_tick": short_tick,
+            "overwrite_ab_flip_and_preserve": dev_short_diag["overwrite_ab_flip_and_preserve"],
+            "overall_counterfactual_joint_acc": dev_short_diag["overall_counterfactual_joint_acc"],
+            "single_stream_a_joint_acc": dev_short_diag["single_stream_a_joint_acc"],
+        },
+    }
     if args.eval_sealed_test and te_p.is_file():
         evals["sealed_test"] = evaluate_rso_split(
             all_params, spec, te_p, vocab_size=vocab_size, eval_bsz=8,
