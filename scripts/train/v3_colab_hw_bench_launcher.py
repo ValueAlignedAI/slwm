@@ -154,6 +154,8 @@ def main() -> None:
             "print('BENCH_JSON_END', flush=True)\n"
         )
         for exec_try in range(1, 3):
+            run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+            time.sleep(5.0)
             rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
                 session_name,
                 run_py,
@@ -171,8 +173,7 @@ def main() -> None:
                 break
             if "Connection was lost." in err and exec_try < 2:
                 print(f"[HW_BENCH WARN] WebSocket dropped on attempt {exec_try}; restarting kernel & retrying...", flush=True)
-                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                time.sleep(8.0)
+                time.sleep(5.0)
             else:
                 break
         print(out, flush=True)

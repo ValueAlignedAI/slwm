@@ -550,12 +550,27 @@ def _run_subprocess_with_watchdog(
     hard_limit_cu = max(0.5, max_spend_cu - SHUTDOWN_RESERVE_CU)
     t_start = time.monotonic()
     t_last_poll = t_start
+    t_ws_dead_seen: float | None = None
     budget_tripped = False
 
     with stdout_path.open("w+", encoding="utf-8") as f_out, stderr_path.open("w+", encoding="utf-8") as f_err:
         proc = subprocess.Popen(cmd, env=env, stdout=f_out, stderr=f_err, text=True)
         while proc.poll() is None:
             now = time.monotonic()
+            # Guard against `google-colab-cli` non-daemon jupyter thread hanging forever after WebSocket disconnect!
+            try:
+                f_err.flush()
+                if stderr_path.stat().st_size > 0:
+                    err_tail = stderr_path.read_text(encoding="utf-8", errors="ignore")[-1200:]
+                    if "RuntimeError: Connection was lost." in err_tail:
+                        if t_ws_dead_seen is None:
+                            t_ws_dead_seen = now
+                        elif (now - t_ws_dead_seen) >= 12.0:
+                            print("[WATCHDOG] Detected zombie colab-cli exit after WebSocket disconnect; killing immediately.", flush=True)
+                            proc.kill()
+                            break
+            except Exception:
+                pass
             if (now - t_start) > phase_timeout_s:
                 proc.terminate()
                 try:

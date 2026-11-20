@@ -21,7 +21,10 @@ import argparse
 from dataclasses import replace
 import gc
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 import time
 from typing import Any
 
@@ -237,12 +240,34 @@ def benchmark_config(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Benchmark SLWM-v3 hoisted bf16 MXU core on TPU v6e-1 or NVIDIA H100.")
+    ap = argparse.ArgumentParser(description="Benchmark SLWM-v3 hoisted bf16 MXU core on TPU v6e-1 or NVIDIA A100/H100.")
     ap.add_argument("--suite", type=str, default="full", choices=("smoke_cpu", "mid", "wy_routed", "full"))
     ap.add_argument("--out-json", type=Path, required=True)
+    ap.add_argument("--single-case-json", type=str, default="", help="Internal isolated-worker payload for a single case.")
+    ap.add_argument("--isolate-subproc", action="store_true", help="Run each case in a clean subprocess to avoid XLA cache accumulation.")
     args = ap.parse_args()
 
-    dev = jax.devices()[0]
+    if args.single_case_json:
+        spec_d = json.loads(args.single_case_json)
+        dev_w = jax.devices()[0]
+        r = benchmark_config(
+            spec_d["profile"],
+            spec_d["backbone"],
+            batch_size=int(spec_d["batch_size"]),
+            seq_len=int(spec_d["seq_len"]),
+            use_wy_chunking=bool(spec_d["use_wy_chunking"]),
+            surprise_chunk_size=int(spec_d["surprise_chunk_size"]),
+            use_bf16_params_opt=bool(spec_d["use_bf16_params_opt"]),
+            n_warm_steps=int(spec_d["n_warm_steps"]),
+            n_stream_ticks=int(spec_d["n_stream_ticks"]),
+        )
+        r["_device_platform"] = str(dev_w.platform)
+        r["_device_kind"] = str(dev_w.device_kind)
+        r["_device_count"] = len(jax.devices())
+        args.out_json.parent.mkdir(parents=True, exist_ok=True)
+        args.out_json.write_text(json.dumps(r, indent=2) + "\n")
+        return
+
     if args.suite == "smoke_cpu":
         cases = [
             ("tiny_unit", "slwm_v3_routed", 2, 32, False, 1, False),
@@ -297,24 +322,46 @@ def main() -> None:
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     results = []
-    for prof, bb, bsz, tlen, wy, sc, bf16p in cases:
-        r = benchmark_config(
-            prof,
-            bb,
-            batch_size=bsz,
-            seq_len=tlen,
-            use_wy_chunking=wy,
-            surprise_chunk_size=sc,
-            use_bf16_params_opt=bf16p,
-            n_warm_steps=3 if args.suite == "smoke_cpu" else 8,
-            n_stream_ticks=8 if args.suite == "smoke_cpu" else 32,
-        )
+    use_iso = bool(args.isolate_subproc) or (args.suite != "smoke_cpu")
+    dev_plat, dev_kind, dev_cnt = "unknown", "unknown", 1
+    if not use_iso:
+        dev = jax.devices()[0]
+        dev_plat, dev_kind, dev_cnt = str(dev.platform), str(dev.device_kind), len(jax.devices())
+    child_env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[2])}
+    for idx_c, (prof, bb, bsz, tlen, wy, sc, bf16p) in enumerate(cases):
+        n_warm = 3 if args.suite == "smoke_cpu" else 8
+        n_st = 8 if args.suite == "smoke_cpu" else 32
+        if use_iso:
+            tmp_case = args.out_json.parent / f"_case_{idx_c:02d}.json"
+            payload = json.dumps({
+                "profile": prof, "backbone": bb, "batch_size": bsz, "seq_len": tlen,
+                "use_wy_chunking": wy, "surprise_chunk_size": sc, "use_bf16_params_opt": bf16p,
+                "n_warm_steps": n_warm, "n_stream_ticks": n_st,
+            })
+            cp = subprocess.run(
+                [sys.executable, __file__, "--suite", args.suite, "--out-json", str(tmp_case), "--single-case-json", payload],
+                env=child_env,
+                check=False,
+            )
+            if cp.returncode == 0 and tmp_case.is_file():
+                r = json.loads(tmp_case.read_text())
+                dev_plat = str(r.pop("_device_platform", dev_plat))
+                dev_kind = str(r.pop("_device_kind", dev_kind))
+                dev_cnt = int(r.pop("_device_count", dev_cnt))
+                tmp_case.unlink(missing_ok=True)
+            else:
+                r = {"profile": prof, "backbone": bb, "use_wy_chunking": wy, "surprise_chunk_size": sc, "status": "error", "error": f"worker_rc={cp.returncode}"}
+        else:
+            r = benchmark_config(
+                prof, bb, batch_size=bsz, seq_len=tlen, use_wy_chunking=wy, surprise_chunk_size=sc,
+                use_bf16_params_opt=bf16p, n_warm_steps=n_warm, n_stream_ticks=n_st,
+            )
         results.append(r)
         report = {
             "jax_version": jax.__version__,
-            "device_platform": str(dev.platform),
-            "device_kind": str(dev.device_kind),
-            "device_count": len(jax.devices()),
+            "device_platform": dev_plat,
+            "device_kind": dev_kind,
+            "device_count": dev_cnt,
             "suite": args.suite,
             "results": results,
         }
