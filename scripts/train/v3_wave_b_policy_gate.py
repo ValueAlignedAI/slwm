@@ -58,6 +58,49 @@ def _expected_calibration_error(conf: np.ndarray, correct: np.ndarray, n_bins: i
     return float(ece)
 
 
+def make_blind_unsupported_batch(
+    b_clean: dict[str, np.ndarray],
+    qp_per_b: np.ndarray,
+) -> dict[str, np.ndarray]:
+    """Construct zero-shortcut `blind_reliability_unsupported` batch via modality-matched modulo donor wrapping.
+
+    Holds `reliability == 1.0` identical to `b_clean` and NEVER injects `BYTE_PAD` or all-zero `audio_codes`
+    onto active source ticks `[0 : qp_b]`, swapping matching real payloads (plus `spatial_pos`) from distinct donors!
+    """
+    b_unsup = {k: v.copy() for k, v in b_clean.items()}
+    cur_b = b_clean["valid_mask"].shape[1]
+    b_unsup["reliability"][:] = 1.0
+    for b_i in range(cur_b):
+        qp = int(qp_per_b[b_i])
+        if qp <= 0:
+            continue
+        donor = (b_i + 1) % cur_b
+        for m_src in (0, 1, 2):
+            rec_idx = np.where((b_clean["modality_id"][:qp, b_i] == m_src) & (b_clean["valid_mask"][:qp, b_i] > 0.5))[0]
+            if len(rec_idx) == 0:
+                continue
+            don_idx = np.zeros((0,), dtype=np.int64)
+            chosen_don = donor
+            for off in range(1, cur_b):
+                cand = (b_i + off) % cur_b
+                ci = np.where((b_clean["modality_id"][:, cand] == m_src) & (b_clean["valid_mask"][:, cand] > 0.5))[0]
+                if len(ci) > 0:
+                    don_idx = ci
+                    chosen_don = cand
+                    break
+            if len(don_idx) == 0:
+                continue
+            mapped = don_idx[np.arange(len(rec_idx)) % len(don_idx)]
+            if m_src == 0:
+                b_unsup["video_feat"][rec_idx, b_i] = b_clean["video_feat"][mapped, chosen_don]
+                b_unsup["spatial_pos"][rec_idx, b_i] = b_clean["spatial_pos"][mapped, chosen_don]
+            elif m_src == 1:
+                b_unsup["audio_codes"][rec_idx, b_i] = b_clean["audio_codes"][mapped, chosen_don]
+            elif m_src == 2:
+                b_unsup["text_byte"][rec_idx, b_i] = b_clean["text_byte"][mapped, chosen_don]
+    return b_unsup
+
+
 def build_epistemic_commitment_dataset(
     all_params: dict[str, Any],
     spec: Any,
@@ -101,6 +144,8 @@ def build_epistemic_commitment_dataset(
         a_ent = jnp.mean(-jnp.sum(jnp.exp(a_logp) * a_logp, axis=-1), axis=-1) / jnp.log(float(spec.audio_vocab_size))
         t_top1 = jnp.argmax(preds["text_logits"], axis=-1)
         t_maxp = jnp.max(jnp.exp(t_logp), axis=-1)
+        a_top1_cb0 = jnp.argmax(preds["audio_logits"][:, :, 0, :], axis=-1)
+        v_pred = preds["video_pred"]
         return (
             jax.lax.stop_gradient(z),
             jax.lax.stop_gradient(t_ent),
@@ -108,6 +153,8 @@ def build_epistemic_commitment_dataset(
             jax.lax.stop_gradient(diags["mean_prior_error"]),
             jax.lax.stop_gradient(t_top1),
             jax.lax.stop_gradient(t_maxp),
+            jax.lax.stop_gradient(a_top1_cb0),
+            jax.lax.stop_gradient(v_pred),
         )
 
     rng = np.random.default_rng(seed)
@@ -122,17 +169,31 @@ def build_epistemic_commitment_dataset(
         if len(rst) == 0 or rst[0] != 0:
             rst = np.insert(rst, 0, 0)
         ends = np.append(rst[1:], sh.n_ticks)
-        ep_indices = rng.integers(0, len(rst), size=(batch_size,))
-        chunk_slices = [(int(rst[i]), int(ends[i])) for i in ep_indices]
+        cur_b = min(int(batch_size), len(rst))
+        if cur_b < 2:
+            continue
+        # Sample WITHOUT replacement so `donor != recipient` is strictly guaranteed!
+        ep_indices = rng.choice(len(rst), size=(cur_b,), replace=False)
+        chunk_slices: list[tuple[int, int]] = []
+        for i in ep_indices:
+            s_i, e_i = int(rst[i]), int(ends[i])
+            # Target-anchored windowing for long AV clips (e.g. MSR-VTT where text starts at tick ~645 > seq_len!)
+            if e_i - s_i > seq_len:
+                m_full = d["modality_id"][s_i:e_i]
+                t_pos = np.where(m_full == 2)[0]
+                if len(t_pos) >= 4 and int(t_pos[0]) >= seq_len - 32:
+                    win_s = max(0, int(t_pos[0]) - (seq_len * 3 // 4))
+                    s_i = s_i + win_s
+                    e_i = min(e_i, s_i + seq_len)
+                else:
+                    e_i = s_i + seq_len
+            chunk_slices.append((s_i, e_i))
         b_clean = _build_episode_aligned_batch(sh, chunk_slices, spec, seq_len)
 
         # Build UNSUPPORTED counterpart using per-episode boundary `q_pos_b` (handles short AND long episodes!):
-        # For multimodal episodes, anchor `q_pos_b` at the first text/target tick after source context;
-        # for unimodal episodes, anchor at half the actual valid episode length `L_b // 2`!
-        b_unsup = {k: v.copy() for k, v in b_clean.items()}
-        q_pos_per_b = np.zeros((batch_size,), dtype=np.int32)
-        eval_mask_tb = np.zeros((seq_len - 1, batch_size), dtype=bool)
-        for b_i in range(batch_size):
+        qp_per_b = np.zeros((cur_b,), dtype=np.int32)
+        eval_mask_tb = np.zeros((seq_len - 1, cur_b), dtype=bool)
+        for b_i in range(cur_b):
             vld_len = int(np.sum(b_clean["valid_mask"][:, b_i] > 0.5))
             if vld_len < 8:
                 continue
@@ -144,29 +205,26 @@ def build_epistemic_commitment_dataset(
             else:
                 qp = max(4, vld_len // 2)
             qp = min(qp, vld_len - 2)
-            q_pos_per_b[b_i] = qp
+            qp_per_b[b_i] = qp
             q_end = min(qp + 16, vld_len - 1)
             eval_mask_tb[qp:q_end, b_i] = True
 
-            donor = (b_i + 1) % batch_size
-            if regime == "blind_reliability_unsupported":
-                # ZERO SHORTCUT: keep `reliability == 1.0` IDENTICAL to `b_clean`!
-                # Swap prefix `[0 : qp]` from distinct donor episode while leaving query suffix unchanged!
-                b_unsup["video_feat"][:qp, b_i] = b_clean["video_feat"][:qp, donor]
-                b_unsup["audio_codes"][:qp, b_i] = b_clean["audio_codes"][:qp, donor]
-                b_unsup["text_byte"][:qp, b_i] = b_clean["text_byte"][:qp, donor]
-                b_unsup["reliability"][:, b_i] = 1.0
-                b_clean["reliability"][:, b_i] = 1.0
-            else:
-                # Explicit sensor-outage regime
-                b_unsup["reliability"][:qp, b_i] = 0.05
-                b_unsup["video_feat"][:qp, b_i] = 0.0
-                b_unsup["audio_codes"][:qp, b_i] = 0
-                b_unsup["text_byte"][:qp, b_i] = BYTE_PAD
+        if regime == "blind_reliability_unsupported":
+            b_clean["reliability"][:] = 1.0
+            b_unsup = make_blind_unsupported_batch(b_clean, qp_per_b)
+        else:
+            b_unsup = {k: v.copy() for k, v in b_clean.items()}
+            for b_i in range(cur_b):
+                qp = int(qp_per_b[b_i])
+                if qp > 0:
+                    b_unsup["reliability"][:qp, b_i] = 0.05
+                    b_unsup["video_feat"][:qp, b_i] = 0.0
+                    b_unsup["audio_codes"][:qp, b_i] = 0
+                    b_unsup["text_byte"][:qp, b_i] = BYTE_PAD
 
         for is_sup, b_np in ((1, b_clean), (0, b_unsup)):
             b_jax = {k: jnp.asarray(v) for k, v in b_np.items()}
-            z, t_ent, a_ent, p_err, t_top1, t_maxp = _extract(all_params, b_jax)
+            z, t_ent, a_ent, p_err, t_top1, t_maxp, a_top1_cb0, v_pred = _extract(all_params, b_jax)
             z_np = np.asarray(z[:-1], dtype=np.float32)
             te_np = np.asarray(t_ent[:-1], dtype=np.float32)
             ae_np = np.asarray(a_ent[:-1], dtype=np.float32)
@@ -180,7 +238,23 @@ def build_epistemic_commitment_dataset(
             next_mod = b_np["modality_id"][1:]
             next_tb = b_np["text_byte"][1:]
             pred_tb = np.asarray(t_top1[:-1], dtype=np.int32)
-            content_ok = np.where(next_mod == 2, (pred_tb == next_tb).astype(np.float32), (te_np < 0.65).astype(np.float32))
+            next_aud0 = b_np["audio_codes"][1:, :, 0]
+            pred_aud0 = np.asarray(a_top1_cb0[:-1], dtype=np.int32)
+            vp_np = np.asarray(v_pred[:-1], dtype=np.float32)
+            vt_np = b_np["video_feat"][1:].astype(np.float32)
+            v_cos = np.sum(vp_np * vt_np, axis=-1) / (
+                np.linalg.norm(vp_np, axis=-1) * np.linalg.norm(vt_np, axis=-1) + 1e-8
+            )
+            # Modality-matched content correctness (NEVER grade video/audio ticks with text entropy!)
+            content_ok = np.where(
+                next_mod == 2,
+                (pred_tb == next_tb).astype(np.float32),
+                np.where(
+                    next_mod == 1,
+                    (pred_aud0 == next_aud0).astype(np.float32),
+                    (v_cos > 0.5).astype(np.float32),
+                ),
+            )
 
             t2, bsz = next_mod.shape
             tgt_a = np.full((t2, bsz), abstain_idx, dtype=np.int32)
@@ -345,7 +419,8 @@ def main() -> None:
     )
 
     gate_p = init_policy_commit_gate_params(jax.random.PRNGKey(args.seed), spec.d_model, hidden_dim=256)
-    tx = optax.adamw(learning_rate=3e-3, weight_decay=1e-4)
+    gate_lr = 3e-3 / max(1.0, float(spec.width_mult))
+    tx = optax.adamw(learning_rate=gate_lr, weight_decay=1e-4)
     opt_st = tx.init(gate_p)
 
     @jax.jit

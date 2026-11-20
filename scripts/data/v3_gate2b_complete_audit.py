@@ -277,6 +277,8 @@ def main() -> None:
         overlaps = {ev_k: len(tr_h & ev_v[0]) for ev_k, ev_v in eval_tc_hashes.items()}
         if any(v > 0 for v in overlaps.values()):
             tc_pass = False
+        if code_contam["n_64b_probe_hits"] > 0 or la_contam["n_64b_probe_hits"] > 0:
+            tc_pass = False
         tc_audit[tr_fn] = {
             "size_mib": round(tr_p.stat().st_size / (1024.0**2), 3),
             "n_episodes": tr_ne,

@@ -50,6 +50,7 @@ from models.v3.spec import (
 from scripts.train.v3_wave_b_policy_gate import (
     build_epistemic_commitment_dataset,
     evaluate_policy_commit_gate,
+    make_blind_unsupported_batch,
 )
 
 
@@ -225,16 +226,78 @@ def test_all_seven_audit_fixes(tmp_path: Path) -> None:
     assert abs(shuf_res["causal_shuffle_gain"]) < 1e-6, f"Video-blind model got false positive: {shuf_res}"
     assert shuf_res["causal_conditioning_verified"] is False
 
-    # --- FIX #5: Wave B blind-reliability regime eliminates metadata threshold shortcut ---
+    # --- FIX #5 + BLOCKER B1: Variable-length Wave B blind-reliability zero-pad / zero-code check ---
+    # Build variable-length Clotho-like shard (lengths 20..90) + 700-tick MSR-VTT-like shard (text at tick 645!)
+    var_clotho = SparseShardBuilder("var_clotho_dev", "dev")
+    rng_v = np.random.default_rng(777)
+    for i, n_aud in enumerate((12, 48, 18, 60, 24, 52)):
+        txt = encode_utf8_bytes(f"VarLen episode {i}: rain tapping steadily on roof glass.")
+        n = n_aud + len(txt)
+        mod = np.concatenate([np.ones((n_aud,), dtype=np.uint8), np.full((len(txt),), 2, dtype=np.uint8)])
+        dt = np.full((n,), 0.04, dtype=np.float16)
+        tb = np.concatenate([np.full((n_aud,), 256, dtype=np.uint16), txt])
+        # Strictly positive non-zero audio codes `[1..2047]` so any injected zero-code bug is caught immediately!
+        ac = rng_v.integers(1, 2048, size=(n_aud, 32), dtype=np.uint16)
+        var_clotho.add_episode(modality_id=mod, dt_s=dt, domain_name="clotho", text_byte=tb, audio_codes=ac)
+    var_clotho_p = tmp_path / "audio_text/var_clotho_dev.npz"
+    var_clotho.save(var_clotho_p)
+    # Directly verify ZERO all-zero audio_codes and ZERO BYTE_PAD on active [:qp] ticks across variable lengths!
+    from evals.v3_sota_benchmarks import _build_episode_aligned_batch
+    sh_vc = LoadedSparseShard.load(var_clotho_p)
+    rst_vc = np.nonzero(sh_vc.data["reset_mask"])[0]
+    ends_vc = np.append(rst_vc[1:], sh_vc.n_ticks)
+    b_vc_clean = _build_episode_aligned_batch(sh_vc, [(int(rst_vc[i]), int(ends_vc[i])) for i in range(6)], spec, 128)
+    qp_vc = np.array([12, 48, 18, 60, 24, 52], dtype=np.int32)
+    b_vc_unsup = make_blind_unsupported_batch(b_vc_clean, qp_vc)
+    assert np.all(b_vc_unsup["reliability"] == 1.0)
+    for bi_vc in range(6):
+        qp_i = int(qp_vc[bi_vc])
+        aud_slice = b_vc_unsup["audio_codes"][:qp_i, bi_vc]
+        assert np.all(aud_slice > 0), f"Zero-code shortcut leaked into ep {bi_vc}!"
+        assert not np.array_equal(aud_slice, b_vc_clean["audio_codes"][:qp_i, bi_vc]), "Unsupported must differ from clean!"
+
     ev_blind = build_epistemic_commitment_dataset(
-        all_params, spec, [tmp_path / "audio_text/clotho_dev.npz"],
-        regime="blind_reliability_unsupported", seq_len=64, batch_size=4, n_batches=2, matmul_dtype=jnp.float32,
+        all_params, spec, [var_clotho_p],
+        regime="blind_reliability_unsupported", seq_len=128, batch_size=4, n_batches=2, matmul_dtype=jnp.float32,
     )
     assert np.allclose(ev_blind["ev"][:, 3], 1.0), "Blind-reliability regime MUST hold reliability==1.0 identically!"
     gate_p = init_policy_commit_gate_params(jax.random.PRNGKey(9), spec.d_model, hidden_dim=32)
     wb_eval = evaluate_policy_commit_gate(gate_p, ev_blind)
     assert wb_eval["reliability_only_threshold_baseline"]["unsupported_claim_rate"] == 1.0
     assert wb_eval["reliability_only_threshold_baseline"]["abstention_noop_rate"] == 0.0
+
+    # --- BLOCKER B2: 700-tick MSR-VTT-like video-then-text episode at `seq_len=512` (text starts at tick 645!) ---
+    long_av = SparseShardBuilder("long_msrvtt_dev", "dev")
+    for i in range(4):
+        n_vid, n_aud = 570, 75
+        txt = encode_utf8_bytes(f"Long MSR-VTT clip {i}: someone cooks pasta in a bright kitchen.")
+        n = n_vid + n_aud + len(txt)
+        mod = np.concatenate([
+            np.zeros((n_vid,), dtype=np.uint8),
+            np.ones((n_aud,), dtype=np.uint8),
+            np.full((len(txt),), 2, dtype=np.uint8),
+        ])
+        dt = np.full((n,), 0.04, dtype=np.float16)
+        tb = np.concatenate([np.full((n_vid + n_aud,), 256, dtype=np.uint16), txt])
+        vf = rng_v.standard_normal((n_vid, 1024)).astype(np.float16)
+        ac = rng_v.integers(1, 2048, size=(n_aud, 32), dtype=np.uint16)
+        sp_pos = np.concatenate([np.arange(n_vid, dtype=np.uint8) % 15, np.zeros((n_aud + len(txt),), dtype=np.uint8)])
+        long_av.add_episode(modality_id=mod, dt_s=dt, domain_name="msrvtt", text_byte=tb, spatial_pos=sp_pos, video_feat=vf, audio_codes=ac)
+    long_av_p = tmp_path / "av/long_msrvtt_dev.npz"
+    long_av.save(long_av_p)
+    sc_long = generate_cross_modal_text_showcase(
+        all_params, spec, long_av_p, out_dir=tmp_path / "sc_long", split="dev", model_name="tiny_long",
+        n_episodes=4, seq_len=512, matmul_dtype=jnp.float32,
+    )
+    assert sc_long.get("n_ranked_episodes", 0) == 4, f"700-tick MSR-VTT showcase skipped: {sc_long}"
+    sc_long_doc = json.loads(Path(sc_long["manifest_path"]).read_text())
+    assert "free_running_32b_continuation" in sc_long_doc["selected_quantiles"]["P50_median"]
+    # Also verify Wave B handles 700-tick MSR-VTT episodes at seq_len=256 and produces text targets!
+    ev_blind_long = build_epistemic_commitment_dataset(
+        all_params, spec, [long_av_p],
+        regime="blind_reliability_unsupported", seq_len=256, batch_size=4, n_batches=1, matmul_dtype=jnp.float32,
+    )
+    assert np.any(ev_blind_long["target_action"] == 0), "Target-anchored Wave B on 700-tick MSR-VTT MUST include SPEAK_TEXT targets!"
 
     # --- FIX #7a: `scale_700m` and `scale_1b` comparator ±1.0% param & <=5% byte parity ---
     for prof in ("scale_700m", "scale_1b"):

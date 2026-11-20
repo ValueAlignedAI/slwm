@@ -858,6 +858,14 @@ def generate_cross_modal_text_showcase(
     ep_records: list[dict[str, Any]] = []
     for ei in range(n_ep):
         s, e = int(rst[ei]), int(ends[ei])
+        # Target-anchored windowing for long AV episodes (e.g. MSR-VTT where caption starts at tick ~645 > seq_len!)
+        if e - s > seq_len:
+            m_full = d["modality_id"][s:e]
+            t_pos_all = np.where(m_full == 2)[0]
+            if len(t_pos_all) >= 4 and int(t_pos_all[0]) >= seq_len - 32:
+                win_s = max(0, int(t_pos_all[0]) - (seq_len * 3 // 4))
+                s = s + win_s
+                e = min(e, s + seq_len)
         L = min(seq_len, e - s)
         if L < 12:
             continue
