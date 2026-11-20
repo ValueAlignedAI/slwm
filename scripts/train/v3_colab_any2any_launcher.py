@@ -376,7 +376,7 @@ def main() -> None:
                             session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
                             log_prefix=f"arm_{arm}_s{seed}_try{attempt}",
                             bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                            t_alloc_start=t_alloc, phase_timeout_s=7200, exec_timeout_s=6600,
+                            t_alloc_start=t_alloc, phase_timeout_s=10800, exec_timeout_s=10200,
                         )
                     except TimeoutError as exc:
                         err = repr(exc)
