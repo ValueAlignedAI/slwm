@@ -494,11 +494,14 @@ def apply_matrix_memory_seq_fast(
     rst_b = reset_mask_seq.astype(jnp.bool_)
 
     g_raw = _dense(xn, params["w_g"], matmul_dtype).reshape(t_len, b_sz, nb, nh) + params["g_bias"][None, None, :, :]
-    g = jax.nn.softplus(g_raw)
+    g = jax.nn.sigmoid(g_raw)
     if spec.tie_bank_timescales or nb == 1:
-        tau = jnp.broadcast_to(jnp.exp(jnp.clip(params["log_tau"], -4.0, 8.0)), (nb,))
+        mid_log_tau = sum(math.log(t) for t in spec.init_timescales_s) / len(spec.init_timescales_s)
+        lt_base = jnp.asarray([mid_log_tau], dtype=jnp.float32)
+        tau = jnp.broadcast_to(jnp.exp(lt_base + 0.7 * jnp.tanh(params["log_tau"] - lt_base)), (nb,))
     else:
-        tau = jnp.exp(jnp.clip(params["log_tau"], -4.0, 8.0))
+        lt_base = jnp.asarray([math.log(t) for t in spec.init_timescales_s], dtype=jnp.float32)
+        tau = jnp.exp(lt_base + 0.7 * jnp.tanh(params["log_tau"] - lt_base))
     decay_seq = jnp.exp(-g * (dt_pos[:, :, None, None] / (tau[None, None, :, None] + 1e-6)))
 
     q_seq = safe_l2_normalize(_dense(xn, params["w_q"], matmul_dtype).reshape(t_len, b_sz, nb, nh, dk))

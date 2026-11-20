@@ -1086,6 +1086,9 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             return optax.apply_updates(pp, upd), new_o, loss
 
         # 1. Self-supervised predictive core training on observable sensory stream + future echoes (ZERO downstream labels!)
+        # For sparse 2-tick T=896 L=12 BPTT (`delay=768`), cap peak LR at `1e-3` (1/3 of dense T=64 Phase 2 `3e-3`)
+        # to stay inside the empirically verified 768-tick Delta-rule key-alignment stability basin (`Z_snr = 0.381` vs `0.002` at 3e-3).
+        core_peak_lr = float(base_lr) if smoke_cpu else min(float(base_lr), 1e-3)
         core_losses: list[float] = []
         last_m: dict[str, Any] = {}
         total_core_steps = epochs * len(train_batches)
@@ -1096,7 +1099,7 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
                 pkts = tb["pkts_b"] if use_b else tb["pkts_a"]
                 targs = tb["targs_b"] if use_b else tb["targs_a"]
                 tvalid = tb["tvalid_b"] if use_b else tb["tvalid_a"]
-                step_lr = jnp.asarray(base_lr * lr_schedule_mult(step_counter, total_core_steps), dtype=jnp.float32)
+                step_lr = jnp.asarray(core_peak_lr * lr_schedule_mult(step_counter, total_core_steps), dtype=jnp.float32)
                 params, opt_core, l_val, last_m = core_step(params, opt_core, pkts, targs, tvalid, step_lr)
                 step_counter += 1
                 core_losses.append(float(l_val))

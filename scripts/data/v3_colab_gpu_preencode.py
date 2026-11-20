@@ -47,12 +47,11 @@ def _build_tar(repo_root: Path) -> bytes:
     with tarfile.open(fileobj=buf, mode="w:gz") as tf:
         for rel in PREENCODE_BUNDLE_FILES:
             fp = repo_root / rel
-            if not fp.is_file():
-                # Create empty __init__.py in archive if absent
-                if rel.endswith("__init__.py"):
-                    data = b""
-                else:
-                    raise FileNotFoundError(fp)
+            if rel.endswith("__init__.py"):
+                # Keep namespace package lightweight (avoids pulling unrelated legacy `data.contract`)
+                data = b""
+            elif not fp.is_file():
+                raise FileNotFoundError(fp)
             else:
                 data = fp.read_bytes()
             ti = tarfile.TarInfo(name=rel)
