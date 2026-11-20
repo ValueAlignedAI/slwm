@@ -1,0 +1,191 @@
+{
+  "rso_dir": "reports/v3/wave_a_rso_45m",
+  "split": "dev",
+  "arms": {
+    "single_bank_gated_deltanet": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42500396,
+      "core_streaming_state_bytes_b1": 393648,
+      "mean_wall_sec": 81.0,
+      "overall_joint_mean": 0.0208,
+      "overall_joint_se": 0.0104,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.193,
+      "catch_preserve_mean": 0.0513,
+      "mean_nowrite": 0.0
+    },
+    "sliding_window_gqa_eqbyte": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42249920,
+      "core_streaming_state_bytes_b1": 394032,
+      "mean_wall_sec": 42.2,
+      "overall_joint_mean": 0.0365,
+      "overall_joint_se": 0.0104,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.2018,
+      "catch_preserve_mean": 0.0898,
+      "mean_nowrite": 0.0
+    },
+    "slwm_v3_no_routing": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42355808,
+      "core_streaming_state_bytes_b1": 393648,
+      "mean_wall_sec": 1316.7,
+      "overall_joint_mean": 0.0364,
+      "overall_joint_se": 0.0208,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.2631,
+      "catch_preserve_mean": 0.0898,
+      "mean_nowrite": 0.0221
+    },
+    "slwm_v3_routed": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42355808,
+      "core_streaming_state_bytes_b1": 393648,
+      "mean_wall_sec": 1304.4,
+      "overall_joint_mean": 0.0156,
+      "overall_joint_se": 0.0156,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.2193,
+      "catch_preserve_mean": 0.0385,
+      "mean_nowrite": 0.0335
+    },
+    "slwm_v3_routed_c16": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42355808,
+      "core_streaming_state_bytes_b1": 590496,
+      "mean_wall_sec": 274.1,
+      "overall_joint_mean": 0.0156,
+      "overall_joint_se": 0.0156,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.2281,
+      "catch_preserve_mean": 0.0385,
+      "mean_nowrite": 0.0334
+    },
+    "slwm_v3_routed_c32": {
+      "n_seeds": 3,
+      "seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "trainable_core_params": 42355808,
+      "core_streaming_state_bytes_b1": 590496,
+      "mean_wall_sec": 179.3,
+      "overall_joint_mean": 0.0156,
+      "overall_joint_se": 0.0156,
+      "overwrite_ab_mean": 0.0,
+      "overwrite_upd_mean": 0.0,
+      "overwrite_pres_mean": 0.2193,
+      "catch_preserve_mean": 0.0385,
+      "mean_nowrite": 0.0336
+    }
+  },
+  "paired_vs_slwm_v3_routed": {
+    "single_bank_gated_deltanet": {
+      "matched_seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "n_unique_speakers": 51,
+      "mean_delta_pp": -0.52,
+      "crossed_seed_speaker_ci95_pp": [
+        -4.41,
+        2.42
+      ],
+      "ci95_strictly_positive": false,
+      "beats_gate1_5pp_and_ci_pos": false
+    },
+    "sliding_window_gqa_eqbyte": {
+      "matched_seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "n_unique_speakers": 51,
+      "mean_delta_pp": -2.08,
+      "crossed_seed_speaker_ci95_pp": [
+        -5.88,
+        1.54
+      ],
+      "ci95_strictly_positive": false,
+      "beats_gate1_5pp_and_ci_pos": false
+    },
+    "slwm_v3_no_routing": {
+      "matched_seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "n_unique_speakers": 51,
+      "mean_delta_pp": -2.08,
+      "crossed_seed_speaker_ci95_pp": [
+        -5.08,
+        0.0
+      ],
+      "ci95_strictly_positive": false,
+      "beats_gate1_5pp_and_ci_pos": false
+    },
+    "slwm_v3_routed_c16": {
+      "matched_seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "n_unique_speakers": 51,
+      "mean_delta_pp": 0.0,
+      "crossed_seed_speaker_ci95_pp": [
+        0.0,
+        0.0
+      ],
+      "ci95_strictly_positive": false,
+      "beats_gate1_5pp_and_ci_pos": false
+    },
+    "slwm_v3_routed_c32": {
+      "matched_seeds": [
+        4201,
+        4202,
+        4203
+      ],
+      "n_unique_speakers": 51,
+      "mean_delta_pp": 0.0,
+      "crossed_seed_speaker_ci95_pp": [
+        0.0,
+        0.0
+      ],
+      "ci95_strictly_positive": false,
+      "beats_gate1_5pp_and_ci_pos": false
+    }
+  }
+}
