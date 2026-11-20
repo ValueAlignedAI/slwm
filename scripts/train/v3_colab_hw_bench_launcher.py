@@ -51,14 +51,20 @@ def _build_bench_tar_bytes(repo_root: Path) -> bytes:
             data = fp.read_bytes()
             ti = tarfile.TarInfo(name=rel)
             ti.size = len(data)
+            ti.mode = 0o644
             tf.addfile(ti, io.BytesIO(data))
+        for init_rel in ("models/__init__.py", "data/__init__.py", "evals/__init__.py", "scripts/__init__.py", "scripts/train/__init__.py"):
+            ti = tarfile.TarInfo(name=init_rel)
+            ti.size = 0
+            ti.mode = 0o644
+            tf.addfile(ti, io.BytesIO(b""))
     return buf.getvalue()
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Benchmark SLWM-v3 fast_core on TPU v6e-1 or NVIDIA H100.")
     ap.add_argument("--accel", type=str, required=True, choices=("tpu_v6e1", "h100", "a100"))
-    ap.add_argument("--suite", type=str, default="full", choices=("mid", "full"))
+    ap.add_argument("--suite", type=str, default="full", choices=("mid", "wy_routed", "full"))
     ap.add_argument("--max-spend-cu", type=float, default=12.0)
     ap.add_argument("--out-dir", type=Path, default=Path("reports/v3/hw_bench"))
     args = ap.parse_args()
@@ -224,7 +230,8 @@ def main() -> None:
             pps = float(row.get("warm_positions_per_sec") or 0.0)
             if pps > 0 and live_rate_cu_hr > 0:
                 row["cu_per_100m_positions"] = round((live_rate_cu_hr / 3600.0) * (1e8 / pps), 3)
-        out_path = args.out_dir / f"hw_bench_{args.accel}.json"
+        suffix = f"_{args.suite}" if args.suite == "wy_routed" else ""
+        out_path = args.out_dir / f"hw_bench_{args.accel}{suffix}.json"
         out_path.write_text(json.dumps(bench_json, indent=2) + "\n")
         print(f"[HW_BENCH] Saved -> {out_path}", flush=True)
     finally:

@@ -123,12 +123,17 @@ class MultiShardMixture:
         batch_size: int,
         seq_len: int,
         drop_modality_prob: float = 0.25,
+        anchor_transition_prob: float = 0.50,
     ) -> dict[str, jax.Array]:
         # Sample each batch item from a domain chosen according to mixture probabilities
         chosen = rng.choice(len(self.shards), size=(batch_size,), p=self.probs)
         rows = [
             self.shards[int(ci)][1].sample_batch(
-                rng, batch_size=1, seq_len=seq_len, drop_modality_prob=drop_modality_prob
+                rng,
+                batch_size=1,
+                seq_len=seq_len,
+                drop_modality_prob=drop_modality_prob,
+                anchor_transition_prob=anchor_transition_prob,
             )
             for ci in chosen
         ]
@@ -235,6 +240,8 @@ def main() -> None:
     ap.add_argument("--grad-accum", type=int, default=1)
     ap.add_argument("--base-lr", type=float, default=2e-3)
     ap.add_argument("--drop-modality-prob", type=float, default=0.25)
+    ap.add_argument("--anchor-transition-prob", type=float, default=0.50, help="Fraction of cross-modal windows anchored on source->target transition.")
+    ap.add_argument("--multi-horizon-weight", type=float, default=0.15, help="Weight on multi-horizon latent predictive objective (k in {1, 8, 32}).")
     ap.add_argument("--eval-sealed-test", action="store_true", help="Unlock sealed `*_test*.npz` benchmarks (ONLY for frozen final eval!).")
     ap.add_argument("--seed", type=int, default=4201)
     ap.add_argument("--out-dir", type=Path, required=True)
@@ -265,17 +272,20 @@ def main() -> None:
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
 
     # Auto-discover all available unified train shards under `--shard-dir`
+    # Balanced weights: 45% Text/Code (so byte-level LM & code converge strongly!), 15% LibriSpeech ASR,
+    # 10% Clotho, 10% MSR-VTT, 10% VGGSound, 7% Robotics, 3% ESC-50 (auto-renormalized over available shards!).
     tc_shard = args.shard_dir / "text_code/text_code_train_v1.npz"
     if not tc_shard.is_file():
         tc_shard = args.shard_dir / "text_code/text_code_train_24m_balanced.npz"
     train_candidates = [
-        ("text_code", tc_shard, 0.30),
-        ("clotho", args.shard_dir / "audio_text/clotho_train.npz", 0.18),
-        ("esc50", args.shard_dir / "audio_text/esc50_train_f14.npz", 0.08),
-        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.10),
-        ("msrvtt", args.shard_dir / "av/msrvtt_train.npz", 0.14),
-        ("vggsound", args.shard_dir / "av/vggsound_train.npz", 0.14),
-        ("robotics", args.shard_dir / "robotics/robotics_train.npz", 0.14),
+        ("text_code", tc_shard, 0.45),
+        ("librispeech_train", args.shard_dir / "audio_text/librispeech_train_clean_100.npz", 0.15),
+        ("clotho", args.shard_dir / "audio_text/clotho_train.npz", 0.10),
+        ("esc50", args.shard_dir / "audio_text/esc50_train_f14.npz", 0.03),
+        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.05),
+        ("msrvtt", args.shard_dir / "av/msrvtt_train.npz", 0.10),
+        ("vggsound", args.shard_dir / "av/vggsound_train.npz", 0.10),
+        ("robotics", args.shard_dir / "robotics/robotics_train.npz", 0.07),
     ]
     mixture = MultiShardMixture(train_candidates)
     print(f"[TRAIN] Active domains: {[(n, sh.n_ticks, round(float(p), 3)) for (n, sh, _), p in zip(mixture.shards, mixture.probs)]}", flush=True)
@@ -283,6 +293,8 @@ def main() -> None:
     tx_unit = build_combined_mup_optimizer(all_params, spec, weight_decay=0.01, grad_clip_norm=1.0)
     opt_state = tx_unit.init(all_params)
     grad_accum = max(1, int(args.grad_accum))
+
+    mh_weight = float(args.multi_horizon_weight)
 
     def _micro_loss(p, mb):
         b = mb["valid_mask"].shape[1]
@@ -298,6 +310,35 @@ def main() -> None:
             use_wy_chunking=args.use_wy_chunking,
         )
         loss, m = compute_any2any_multimodal_loss(p["heads"], z, mb, spec, matmul_dtype=mm_dtype)
+        # Registered SLWM Multi-Horizon Latent Predictive Objective (`k in {1, 8, 32}`):
+        # Forces long-range dynamics (> local attention window W=32) through multi-timescale matrix memory!
+        if mh_weight > 0.0:
+            from models.v3.core import predict_future_latents
+            from models.v3.fast_core import embed_packet_seq
+            t_l = z.shape[0]
+            ep_id = jnp.cumsum(mb["reset_mask"].astype(jnp.int32), axis=0)
+            x_targ_full = jax.lax.stop_gradient(embed_packet_seq(p["core"]["edge"], mb, spec, matmul_dtype=mm_dtype))
+            # Project target embedding cleanly to `target_feat_dim` (first 64 dims normalized -> zero extra params!)
+            y_lat = x_targ_full[..., : spec.target_feat_dim]
+            y_lat = y_lat / jnp.sqrt(jnp.mean(y_lat * y_lat, axis=-1, keepdims=True) + 1e-6)
+            preds_mh = predict_future_latents(p["core"], z, mb["action_feat"], mb["has_true_action"], spec)
+            mh_terms = []
+            for hi, h_step in enumerate((1, 8, 32)):
+                if h_step < t_l and hi < preds_mh.shape[2]:
+                    same_e = (ep_id[:-h_step] == ep_id[h_step:]).astype(jnp.float32)
+                    mv_h = mb["valid_mask"][:-h_step] * mb["target_valid_mask"][h_step:] * same_e
+                    diff = preds_mh[:-h_step, :, hi, :] - y_lat[h_step:]
+                    ad = jnp.abs(diff)
+                    hub = jnp.mean(jnp.where(ad <= 1.0, 0.5 * diff * diff, ad - 0.5), axis=-1)
+                    mh_terms.append(jnp.sum(hub * mv_h) / jnp.maximum(jnp.sum(mv_h), 1.0))
+            if mh_terms:
+                mh_loss = jnp.mean(jnp.stack(mh_terms, axis=0))
+                loss = loss + mh_weight * mh_loss
+                m["multi_horizon_huber"] = mh_loss
+            else:
+                m["multi_horizon_huber"] = jnp.asarray(0.0, dtype=jnp.float32)
+        else:
+            m["multi_horizon_huber"] = jnp.asarray(0.0, dtype=jnp.float32)
         m["mean_nowrite"] = jnp.mean(diags["mean_nowrite"])
         m["mean_eff_write_eta"] = jnp.mean(diags["mean_eff_write_eta"])
         m["max_mem_frob_norm"] = jnp.max(diags["max_mem_frob_norm"])
@@ -324,6 +365,7 @@ def main() -> None:
             "n_audio_targets": jnp.asarray(0.0, dtype=jnp.float32),
             "n_video_targets": jnp.asarray(0.0, dtype=jnp.float32),
             "n_action_targets": jnp.asarray(0.0, dtype=jnp.float32),
+            "multi_horizon_huber": jnp.asarray(0.0, dtype=jnp.float32),
             "mean_nowrite": jnp.asarray(0.0, dtype=jnp.float32),
             "mean_eff_write_eta": jnp.asarray(0.0, dtype=jnp.float32),
             "max_mem_frob_norm": jnp.asarray(0.0, dtype=jnp.float32),
@@ -342,7 +384,11 @@ def main() -> None:
     for step in range(args.steps):
         mbs = [
             mixture.sample_batch(
-                rng, batch_size=args.batch_size, seq_len=args.seq_len, drop_modality_prob=args.drop_modality_prob
+                rng,
+                batch_size=args.batch_size,
+                seq_len=args.seq_len,
+                drop_modality_prob=args.drop_modality_prob,
+                anchor_transition_prob=args.anchor_transition_prob,
             )
             for _ in range(grad_accum)
         ]

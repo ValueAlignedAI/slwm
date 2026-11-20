@@ -270,13 +270,39 @@ class LoadedSparseShard:
         batch_size: int,
         seq_len: int,
         drop_modality_prob: float = 0.0,
+        anchor_transition_prob: float = 0.0,
     ) -> dict[str, np.ndarray]:
-        """Sample `[T, B, ...]` packed multimodal batch with optional random modality dropout."""
+        """Sample `[T, B, ...]` packed multimodal batch with optional random modality dropout & transition anchoring."""
+        d = self.data
         max_start = max(1, self.n_ticks - seq_len - 1)
         starts = rng.integers(0, max_start, size=(batch_size,), dtype=np.int64)
-        idx = starts[None, :] + np.arange(seq_len, dtype=np.int64)[:, None]  # [T, B]
+        # Transition-anchored sampling: on cross-modal shards (e.g. MSR-VTT 570v+75a+60t > 512),
+        # explicitly align `anchor_transition_prob` of windows to span the `source -> text` boundary!
+        if anchor_transition_prob > 0.0:
+            if not hasattr(self, "_transition_starts"):
+                rst = np.nonzero(d["reset_mask"])[0]
+                if len(rst) == 0 or rst[0] != 0:
+                    rst = np.insert(rst, 0, 0)
+                ends = np.append(rst[1:], self.n_ticks)
+                t_starts = []
+                mod_all = d["modality_id"]
+                for s_i, e_i in zip(rst, ends):
+                    s_i, e_i = int(s_i), int(e_i)
+                    m_ep = mod_all[s_i:e_i]
+                    t_pos = np.where(m_ep == 2)[0]
+                    non_t = np.where(m_ep != 2)[0]
+                    if len(t_pos) >= 4 and len(non_t) >= 4 and int(t_pos[0]) > int(non_t[0]):
+                        # Place first text byte at ~75% of window so preceding video/audio + full caption BOTH fit!
+                        st_cand = max(s_i, s_i + int(t_pos[0]) - (seq_len * 3 // 4))
+                        st_cand = min(st_cand, max(0, self.n_ticks - seq_len - 1))
+                        t_starts.append(st_cand)
+                self._transition_starts = np.asarray(t_starts, dtype=np.int64)
+            if len(self._transition_starts) > 0:
+                for b in range(batch_size):
+                    if rng.random() < anchor_transition_prob:
+                        starts[b] = int(self._transition_starts[int(rng.integers(0, len(self._transition_starts)))])
 
-        d = self.data
+        idx = starts[None, :] + np.arange(seq_len, dtype=np.int64)[:, None]  # [T, B]
         mod = d["modality_id"][idx].astype(np.int32)
         dt = d["dt_s"][idx].astype(np.float32)
         vld = d["valid_mask"][idx].astype(np.float32)
