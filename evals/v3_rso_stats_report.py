@@ -103,12 +103,18 @@ def aggregate_rso_dir(rso_dir: Path, split: str = "dev") -> dict[str, Any]:
     for arm, seed_map in sorted(by_arm.items()):
         docs = [seed_map[s] for s in sorted(seed_map)]
         evs = [d["frozen_evaluations"][split] for d in docs]
+        sh_vals = [
+            float(d["frozen_evaluations"]["dev_short_horizon_inside_gqa_rf_diag"]["overall_counterfactual_joint_acc"])
+            for d in docs
+            if isinstance(d.get("frozen_evaluations", {}).get("dev_short_horizon_inside_gqa_rf_diag"), dict)
+        ]
         arms_summary[arm] = {
             "n_seeds": len(docs),
             "seeds": sorted(seed_map),
             "trainable_core_params": int(docs[0]["trainable_core_params"]),
             "core_streaming_state_bytes_b1": int(docs[0]["core_streaming_state_bytes_b1"]),
             "mean_wall_sec": round(_mean([float(d["wall_sec"]) for d in docs]), 1),
+            "short_horizon_inside_rf_mean": round(_mean(sh_vals), 4) if sh_vals else None,
             "overall_joint_mean": round(_mean([float(e["overall_counterfactual_joint_acc"]) for e in evs]), 4),
             "overall_joint_se": round(_se([float(e["overall_counterfactual_joint_acc"]) for e in evs]), 4),
             "overwrite_ab_mean": round(_mean([float(e["overwrite_ab_flip_and_preserve"]) for e in evs]), 4),
@@ -118,28 +124,32 @@ def aggregate_rso_dir(rso_dir: Path, split: str = "dev") -> dict[str, Any]:
             "mean_nowrite": round(_mean([float(e["mean_nowrite"]) for e in evs]), 4),
         }
 
+    anchor_arm = "slwm_v3_routed" if "slwm_v3_routed" in by_arm else ("slwm_v3_routed_c16" if "slwm_v3_routed_c16" in by_arm else "")
     paired: dict[str, Any] = {}
-    if "slwm_v3_routed" in by_arm:
-        anc = by_arm["slwm_v3_routed"]
+    if anchor_arm:
+        anc = by_arm[anchor_arm]
         for arm, sm in sorted(by_arm.items()):
-            if arm == "slwm_v3_routed":
+            if arm == anchor_arm:
                 continue
             paired[arm] = _crossed_seed_speaker_delta_ci95(anc, sm, split=split)
 
-    return {"rso_dir": str(rso_dir), "split": split, "arms": arms_summary, "paired_vs_slwm_v3_routed": paired}
+    return {"rso_dir": str(rso_dir), "split": split, "anchor_arm": anchor_arm, "arms": arms_summary, "paired_vs_anchor": paired}
 
 
 def render_md(agg: dict[str, Any]) -> str:
+    anchor_arm = agg.get("anchor_arm") or "slwm_v3_routed"
+    paired_map = agg.get("paired_vs_anchor") or agg.get("paired_vs_slwm_v3_routed") or {}
     lines = [
-        f"| Arm ({agg['split']}) | Seeds | Core Params | State (MiB) | Wall (s) | Overall Joint ↑ | Overwrite A/B ↑ | Upd Flip ↑ | Preserved ↑ | Catch Dual ↑ | vs `slwm_v3_routed` Δ (95% CI) |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        f"| Arm ({agg['split']}) | Seeds | Core Params | State (MiB) | Wall (s) | Inside-RF Diag ↑ | Overall Joint ↑ | Overwrite A/B ↑ | Upd Flip ↑ | Preserved ↑ | Catch Dual ↑ | vs `{anchor_arm}` Δ (95% CI) |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for arm, d in agg["arms"].items():
         mib = d["core_streaming_state_bytes_b1"] / (1024.0**2)
-        if arm == "slwm_v3_routed":
+        sh = f"{d['short_horizon_inside_rf_mean']:.4f}" if d.get("short_horizon_inside_rf_mean") is not None else "—"
+        if arm == anchor_arm:
             delta_s = "anchor"
         else:
-            p = agg["paired_vs_slwm_v3_routed"].get(arm) or {}
+            p = paired_map.get(arm) or {}
             if p.get("mean_delta_pp") is not None:
                 lo, hi = p["crossed_seed_speaker_ci95_pp"]
                 delta_s = f"{p['mean_delta_pp']:+.1f} pp [{lo:+.1f}, {hi:+.1f}]"
@@ -147,7 +157,7 @@ def render_md(agg: dict[str, Any]) -> str:
                 delta_s = "—"
         lines.append(
             f"| `{arm}` | {d['n_seeds']} | {d['trainable_core_params']:,} | {mib:.3f} | {d['mean_wall_sec']:.0f} "
-            f"| {d['overall_joint_mean']:.4f} ± {d['overall_joint_se']:.4f} | {d['overwrite_ab_mean']:.4f} "
+            f"| {sh} | {d['overall_joint_mean']:.4f} ± {d['overall_joint_se']:.4f} | {d['overwrite_ab_mean']:.4f} "
             f"| {d['overwrite_upd_mean']:.4f} | {d['overwrite_pres_mean']:.4f} | {d['catch_preserve_mean']:.4f} | {delta_s} |"
         )
     return "\n".join(lines) + "\n"
