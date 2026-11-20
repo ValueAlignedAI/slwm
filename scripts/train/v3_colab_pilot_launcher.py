@@ -672,7 +672,8 @@ def validate_phase_prerequisites(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Launch hard-capped <= 45 CU SLWM-v3 pilot on Google TPU v6e-1 (Rev 4).")
+    ap = argparse.ArgumentParser(description="Launch hard-capped <= 45 CU SLWM-v3 pilot on Google TPU v6e-1 or NVIDIA H100/A100 (Rev 4).")
+    ap.add_argument("--accel", type=str, default="tpu_v6e1", choices=("tpu_v6e1", "a100", "h100"))
     ap.add_argument("--session-name", type=str, default="slwm_v3_pilot_v6e1")
     ap.add_argument("--max-spend-cu", type=float, default=45.0)
     ap.add_argument("--phases", type=str, default="profile,mup_check,dev_ablation,long_stream")
@@ -766,13 +767,17 @@ def main() -> None:
             if assigned_ok:
                 break
             print(
-                f"[PILOT] Creating named Google TPU v6e-1 session {args.session_name!r} (attempt {assign_try}/4)...",
+                f"[PILOT] Creating named {args.accel} session {args.session_name!r} (attempt {assign_try}/4)...",
                 flush=True,
             )
             try:
-                assign_res = run_colab(
-                    "--logtostderr", "new", "-s", args.session_name, "--tpu", "v6e1", cfg_path=cfg_path, timeout=420
-                )
+                if args.accel == "tpu_v6e1":
+                    assign_cmd = ("--logtostderr", "new", "-s", args.session_name, "--tpu", "v6e1")
+                elif args.accel == "a100":
+                    assign_cmd = ("--logtostderr", "new", "-s", args.session_name, "--gpu", "A100", "--high-mem")
+                else:
+                    assign_cmd = ("--logtostderr", "new", "-s", args.session_name, "--gpu", "H100")
+                assign_res = run_colab(*assign_cmd, cfg_path=cfg_path, timeout=420)
                 if assign_res.stdout.strip():
                     print(assign_res.stdout.strip(), flush=True)
                 if assign_res.returncode == 0:
@@ -813,7 +818,8 @@ def main() -> None:
         finally:
             tmp_path.unlink(missing_ok=True)
 
-        prep_py = """
+        expected_bk = "tpu" if args.accel == "tpu_v6e1" else "gpu"
+        prep_py = f"""
 import os, pathlib, subprocess, sys, tarfile
 for d in ("/content/slwm_v3", "/content/slwm_v3_out", "/content/slwm_v3_xla"):
     pathlib.Path(d).mkdir(parents=True, exist_ok=True)
@@ -828,8 +834,8 @@ os.environ["JAX_COMPILATION_CACHE_DIR"] = "/content/slwm_v3_xla"
 os.environ["JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS"] = "1"
 import jax
 b = jax.default_backend()
-assert b == "tpu", f"Expected TPU backend in Colab kernel, got {b!r}"
-devs = [(d.device_kind, (d.memory_stats() or {}).get("bytes_limit", 0)) for d in jax.devices()]
+assert b == "{expected_bk}", f"Expected {expected_bk} backend in Colab kernel, got {{b!r}}"
+devs = [(d.device_kind, (d.memory_stats() or {{}}).get("bytes_limit", 0)) for d in jax.devices()]
 print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BACKEND:", b, "DEVS:", devs, flush=True)
 """
         rc, out, err, _ = _run_remote_kernel_python_with_watchdog(
@@ -892,10 +898,11 @@ print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BA
                 ph,
                 "--bundle-sha256",
                 bundle_sha,
-                "--require-tpu-v6e",
                 "--out-dir",
                 "/content/slwm_v3_out",
             ]
+            if args.accel == "tpu_v6e1":
+                argv_list.append("--require-tpu-v6e")
             if ph in ("dev_ablation", "long_stream"):
                 argv_list.extend(["--base-lr", str(chosen_lr)])
 
