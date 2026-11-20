@@ -56,17 +56,55 @@ def _nested_get(d: dict[str, Any], path: tuple[str, ...]) -> float | None:
 
 
 PRIMARY_METRIC_PATHS: dict[str, tuple[tuple[str, ...], str]] = {
+    # Dev / Validation Core & Multimodal Suite
     "wt103_val_bpb": (("frozen_evaluations", "wikitext103_val", "bits_per_byte"), "lower"),
+    "wt103_val_ppl": (("frozen_evaluations", "wikitext103_val", "approx_word_perplexity"), "lower"),
     "text_code_dev_bpb": (("frozen_evaluations", "text_code_dev", "bits_per_byte"), "lower"),
+    "esc50_dev_top1": (("frozen_evaluations", "esc50_dev_50class_probe", "top1_acc"), "higher"),
+    "librispeech_dev_wer": (("frozen_evaluations", "librispeech_dev_clean_wer", "wer"), "lower"),
     "clotho_a2t_gain": (("frozen_evaluations", "clotho_dev_audio_to_text_shuffle", "causal_shuffle_gain"), "higher"),
     "librispeech_a2t_gain": (("frozen_evaluations", "librispeech_dev_clean_audio_to_text_shuffle", "causal_shuffle_gain"), "higher"),
     "msrvtt_v2t_gain": (("frozen_evaluations", "msrvtt_dev_video_to_text_shuffle", "causal_shuffle_gain"), "higher"),
     "vggsound_v2a_gain": (("frozen_evaluations", "vggsound_dev_video_to_audio_shuffle", "causal_shuffle_gain"), "higher"),
     "vggsound_a2v_gain": (("frozen_evaluations", "vggsound_dev_audio_to_video_shuffle", "causal_shuffle_gain"), "higher"),
+    "robotics_video_huber": (("frozen_evaluations", "robotics_dev_action_intervention", "real_next_video_huber"), "lower"),
     "robotics_act_gain": (("frozen_evaluations", "robotics_dev_action_intervention", "action_intervention_proprio_gain"), "higher"),
     "rso_dev_ab_joint": (("frozen_evaluations", "real_speech_overwrite_dev_additive_rf", "counterfactual_ab_flip_and_preserve"), "higher"),
     "rso_dev_overall": (("frozen_evaluations", "real_speech_overwrite_dev_additive_rf", "overall_joint_acc"), "higher"),
+    # Sealed-Test Official External SoTA Suite (populated ONLY when `--eval-sealed-test` was enabled)
+    "test_wt103_bpb": (("frozen_evaluations", "sealed_test", "wikitext103_test", "bits_per_byte"), "lower"),
+    "test_wt103_ppl": (("frozen_evaluations", "sealed_test", "wikitext103_test", "approx_word_perplexity"), "lower"),
+    "test_lambada_acc": (("frozen_evaluations", "sealed_test", "lambada_openai_test_full", "final_word_exact_acc"), "higher"),
+    "test_lambada_ppl": (("frozen_evaluations", "sealed_test", "lambada_openai_test_full", "final_word_ppl"), "lower"),
+    "test_humaneval_bpb": (("frozen_evaluations", "sealed_test", "humaneval_test_bpb", "solution_bits_per_byte"), "lower"),
+    "test_humaneval_pass1": (("frozen_evaluations", "sealed_test", "humaneval_executed_pass_at_1", "pass_at_1"), "higher"),
+    "test_mbpp_bpb": (("frozen_evaluations", "sealed_test", "mbpp_sanitized_test_bpb", "solution_bits_per_byte"), "lower"),
+    "test_mbpp_pass1": (("frozen_evaluations", "sealed_test", "mbpp_executed_pass_at_1", "pass_at_1"), "higher"),
+    "test_esc50_top1": (("frozen_evaluations", "sealed_test", "esc50_test_f5_50class_probe", "top1_acc"), "higher"),
+    "test_esc50_top5": (("frozen_evaluations", "sealed_test", "esc50_test_f5_50class_probe", "top5_acc"), "higher"),
+    "test_librispeech_wer": (("frozen_evaluations", "sealed_test", "librispeech_test_clean_wer", "wer"), "lower"),
+    "test_clotho_a2t_gain": (("frozen_evaluations", "sealed_test", "clotho_test_audio_to_text_shuffle", "causal_shuffle_gain"), "higher"),
+    "test_msrvtt_v2t_gain": (("frozen_evaluations", "sealed_test", "msrvtt_test_video_to_text_shuffle", "causal_shuffle_gain"), "higher"),
+    "test_vggsound_v2a_gain": (("frozen_evaluations", "sealed_test", "vggsound_test_video_to_audio_shuffle", "causal_shuffle_gain"), "higher"),
+    "test_robotics_video_huber": (("frozen_evaluations", "sealed_test", "robotics_test_action_intervention", "real_next_video_huber"), "lower"),
+    "test_robotics_act_gain": (("frozen_evaluations", "sealed_test", "robotics_test_action_intervention", "action_intervention_proprio_gain"), "higher"),
+    "test_rso_ab_joint": (("frozen_evaluations", "sealed_test", "real_speech_overwrite_test_additive_rf", "counterfactual_ab_flip_and_preserve"), "higher"),
 }
+
+
+def _arm_key_from_doc(doc: dict[str, Any]) -> str:
+    bb = str(doc["backbone"])
+    sc = int(doc.get("surprise_chunk_size", 1))
+    if sc > 1:
+        arm = f"{bb}_c{sc}"
+    elif doc.get("use_wy_chunking"):
+        arm = f"{bb}_wy"
+    else:
+        arm = bb
+    rep = str(doc.get("representation_mode", "frozen_codec_edge"))
+    if rep and rep != "frozen_codec_edge":
+        arm = f"{arm}_{rep}"
+    return arm
 
 
 def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
@@ -78,8 +116,7 @@ def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
     by_arm: dict[str, list[dict[str, Any]]] = {}
     for fp in wave_a_files:
         doc = json.loads(fp.read_text())
-        arm = f"{doc['backbone']}_wy" if doc.get("use_wy_chunking") else str(doc["backbone"])
-        by_arm.setdefault(arm, []).append(doc)
+        by_arm.setdefault(_arm_key_from_doc(doc), []).append(doc)
 
     # Also attach matching Wave B & Wave C receipts per (arm, seed)
     wave_b_by_arm: dict[str, list[dict[str, Any]]] = {}
@@ -163,24 +200,46 @@ def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
 
 
 def render_scientific_markdown_table(agg: dict[str, Any]) -> str:
-    """Render clean `AGENTS.md §13.1`-compliant Markdown table (ALL metrics including regressions, zero ops noise)."""
-    lines = [
-        "| Arm | Seeds | Core Params | State (MiB) | WT-103 Val BPB ↓ | Clotho A→T Gain ↑ | MSR-VTT V→T Gain ↑ | VGGSound V→A Gain ↑ | Robotics Act Gain ↑ | RSO Overwrite Joint ↑ |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
-    ]
-    def _fmt(arm_d: dict[str, Any], key: str) -> str:
+    """Render clean `AGENTS.md §13.1`-compliant Markdown tables (ALL metrics including regressions, zero ops noise)."""
+    def _fmt(arm_d: dict[str, Any], key: str, digits: int = 4) -> str:
         m = arm_d["metrics"].get(key)
         if not m:
             return "—"
-        return f"{m['mean']:.4f}" if arm_d["n_seeds"] == 1 else f"{m['mean']:.4f} ± {m['se']:.4f}"
+        return f"{m['mean']:.{digits}f}" if arm_d["n_seeds"] == 1 else f"{m['mean']:.{digits}f} ± {m['se']:.{digits}f}"
 
+    lines = [
+        "### Validation / Dev Suite",
+        "",
+        "| Arm | Seeds | Core Params | State (MiB) | WT-103 Val BPB ↓ | ESC-50 Top-1 ↑ | Clotho A→T ↑ | MSR-VTT V→T ↑ | VGGSound V→A ↑ | Robotics Vid ↓ | Robotics Act ↑ |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
     for arm, d in agg["arms"].items():
         mib = d["core_streaming_state_bytes_b1"] / (1024.0**2)
         lines.append(
             f"| `{arm}` | {d['n_seeds']} | {d['trainable_core_params']:,} | {mib:.3f} "
-            f"| {_fmt(d, 'wt103_val_bpb')} | {_fmt(d, 'clotho_a2t_gain')} | {_fmt(d, 'msrvtt_v2t_gain')} "
-            f"| {_fmt(d, 'vggsound_v2a_gain')} | {_fmt(d, 'robotics_act_gain')} | {_fmt(d, 'rso_dev_ab_joint')} |"
+            f"| {_fmt(d, 'wt103_val_bpb')} | {_fmt(d, 'esc50_dev_top1')} | {_fmt(d, 'clotho_a2t_gain')} "
+            f"| {_fmt(d, 'msrvtt_v2t_gain')} | {_fmt(d, 'vggsound_v2a_gain')} "
+            f"| {_fmt(d, 'robotics_video_huber')} | {_fmt(d, 'robotics_act_gain')} |"
         )
+
+    has_test = any("test_wt103_bpb" in d["metrics"] for d in agg["arms"].values())
+    if has_test:
+        lines.extend([
+            "",
+            "### Sealed-Test Official External SoTA Suite",
+            "",
+            "| Arm | Seeds | WT-103 Test BPB ↓ | LAMBADA Acc ↑ | HumanEval BPB ↓ / pass@1 ↑ | MBPP BPB ↓ / pass@1 ↑ | ESC-50 Fold-5 Top-1 ↑ | LibriSpeech WER ↓ | Clotho A→T ↑ | MSR-VTT V→T ↑ | VGGSound V→A ↑ | Robotics Vid ↓ |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        ])
+        for arm, d in agg["arms"].items():
+            he_s = f"{_fmt(d, 'test_humaneval_bpb', 3)} / {_fmt(d, 'test_humaneval_pass1', 3)}"
+            mb_s = f"{_fmt(d, 'test_mbpp_bpb', 3)} / {_fmt(d, 'test_mbpp_pass1', 3)}"
+            lines.append(
+                f"| `{arm}` | {d['n_seeds']} | {_fmt(d, 'test_wt103_bpb')} | {_fmt(d, 'test_lambada_acc')} "
+                f"| {he_s} | {mb_s} | {_fmt(d, 'test_esc50_top1')} | {_fmt(d, 'test_librispeech_wer')} "
+                f"| {_fmt(d, 'test_clotho_a2t_gain')} | {_fmt(d, 'test_msrvtt_v2t_gain')} "
+                f"| {_fmt(d, 'test_vggsound_v2a_gain')} | {_fmt(d, 'test_robotics_video_huber')} |"
+            )
     return "\n".join(lines) + "\n"
 
 
