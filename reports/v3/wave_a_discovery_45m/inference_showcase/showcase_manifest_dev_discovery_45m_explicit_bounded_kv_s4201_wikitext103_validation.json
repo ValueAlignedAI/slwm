@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T15:54:50.896458+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_explicit_bounded_kv_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.8887,
+      "mean_nowrite": 0.5557,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "ing and a a a a strain a steeear",
+      "top1_next_byte_preview": "rso b puwgn laaii  a a d aner nll  tinera Aashiorc arneiaonthnng aavttnaataao r  a aoateang temue a ah tenttomrei t t mece ac  tocsl t tou ear  tovsl  t t d t t",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.7104,
+      "mean_nowrite": 0.5286,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "a starnd a a star a stard a stra",
+      "top1_next_byte_preview": "rCia  bim    an ahe ah eoaleon  a and aal anl r teow  r aevee toieecgah e aewddan ahe ttcpeund ng tne  t tai iw a d aortacg en   a aeaieroioe y a A   uru   tomr",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0014",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.4905,
+      "mean_nowrite": 0.5422,
+      "ground_truth_text_preview": "hough varying from rates as high as 165 % to as low as 0 @.@ 2 % . In the 1970 census the population decreased , then slightly increased by 1980 , after which t",
+      "free_running_32b_continuation": "own a water a star a the star a ",
+      "top1_next_byte_preview": "ranrh te e n  aoow aoie  an aashta  a0 0t.th t  tiw t  t0t  .a     An the t0  0torter ahe tenlret on tiats t   t the  ttoght y tn oeste  ty t0000t tnt r thilh t",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.3821,
+      "mean_nowrite": 0.5416,
+      "ground_truth_text_preview": "nter . Rush Foundation Hospital and the related Rush Health Systems operate a Specialty Hospital of Meridian , which offers long @-@ term care for non @-@ perma",
+      "free_running_32b_continuation": "e wat a the rear a the starge an",
+      "top1_next_byte_preview": "reonot Aeseitamreet on taweenel tnd the seaoi   aeih aaacl eao tea  afer nerantoertnl i aaueenel af aaainenlca ahilh au  rs aowd a   ahrvotor  tometomea   aerso",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.2322,
+      "mean_nowrite": 0.5288,
+      "ground_truth_text_preview": "ea , only missing from the section east of Crete , and along only the north @-@ west coast of the Black Sea . The northernmost populations are found in the Norw",
+      "free_running_32b_continuation": "g a someone the some the some th",
+      "top1_next_byte_preview": "rn l mn e aan  ng aoew the toatinn tn   tf tooairt a d t owg tf y the towe et - tin haomre tf the tuact aoalt Ahe sowe er  en  teflretinn  tne torrd tn the tawe",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

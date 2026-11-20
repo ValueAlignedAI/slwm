@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T14:29:13.203099+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_slwm_v3_routed_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.1644,
+      "mean_nowrite": 0.1081,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and Context Context Context Co",
+      "top1_next_byte_preview": "r mia tebdeylaine  a and Cne a eerrCine S Sesh i d Crrt aontaine arckecaitoel r  a aoitming trwls a ahcsishaonls  a anposi all aolld o ao t all aaeld  a and t c",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.9011,
+      "mean_nowrite": 0.1118,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " = '............................",
+      "top1_next_byte_preview": "rC 'ewenks &emea ks ( 0 I awankr cemearks a aeown as the snropean aeca  r af tompun iecaeer a an a seecifs of toas r aica ar aoom the snry rn tmtantaa Ppean a w",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0014",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7093,
+      "mean_nowrite": 0.1026,
+      "ground_truth_text_preview": "hough varying from rates as high as 165 % to as low as 0 @.@ 2 % . In the 1970 census the population decreased , then slightly increased by 1980 , after which t",
+      "free_running_32b_continuation": "om the station and then the wate",
+      "top1_next_byte_preview": "rawsh tariing aoom teih  an tegh pn t9  a ah t stew an t a   T 2 a Tn the s99 sconter ahe srwulation oesiease  t ahe  tooghtly an leased ay t990 a anter taich i",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4426,
+      "mean_nowrite": 0.1073,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional station and the station is",
+      "top1_next_byte_preview": "rrre trom thaiitional sisimatioe tnei ah txhnimeaphicadnd thaaut aaterials a arytographi a aoefti a and cana pfher corl  af t eia Thessomlection onlo tntrude  t",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2534,
+      "mean_nowrite": 0.109,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "n Anti-Companies and Communities",
+      "top1_next_byte_preview": "rCaaccin  arlt Cn ice ahth tns pnternor aewe antetely tn tiiwdenand tirsinSanklestn a so tot sarkh  an t piry sara oxpmple of the srpe of talt anfici ataecture ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

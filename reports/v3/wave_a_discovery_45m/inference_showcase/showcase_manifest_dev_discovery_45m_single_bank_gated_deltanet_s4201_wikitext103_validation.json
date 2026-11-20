@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T15:13:11.669240+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_single_bank_gated_deltanet_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.1398,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "the water and then the water flo",
+      "top1_next_byte_preview": "rCitrittmglr tn the Lhapl ticn  o wnd tes cpd r teiwher tunaa aesfecgaiae teun an the ftrgoundeng tneaso taa  mhand tonleda enle a weseoctive y a TTI*rnggi atut",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8825,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " = '' ' ' ' ' ' ' ' '           ",
+      "top1_next_byte_preview": "rC Aewenile=emea klea {   ewenile=emea klea aeown an ahe snropean aicaerr af aompun aicaerr a an a mtecifs of toisir ticaerr aoom the snrt rnaamtendic sptan a t",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7061,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ong and its contribution to the delay in the release of Reign in Blood , \" Angel of Death \" is featured on all of Slayer 's live albums and DVDs and has appeare",
+      "free_running_32b_continuation": "inuously and then the street and",
+      "top1_next_byte_preview": "rb eand tt  phmtiobutenn ao the sisiy tn the sosaase of tesnn an trocd a aA\"l lriaf teslh a \"n aiatured in t l tf toim r astaife anlas  and te   and tev a plara",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4499,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s \" there were suffering from a vitamin deficiency rather than leprosy ) . The latter 's name relates to a story from the 14th century . Lord Thorvald Thoresson",
+      "free_running_32b_continuation": "tarted the stream of the street ",
+      "top1_next_byte_preview": "robAChe e aire atbfering toom t sasalin tisinienty aether than tiatodo t t The sineer tstaete teaatid th t stary aoom the s0th tantury a Tewg thesoel  theso   n",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2736,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "the compared the state of the st",
+      "top1_next_byte_preview": "rCntomadile tnd tnterntati tash ay tostem aecame tare arsulat that trrsidgersaetsr a Theysisiaca tf the seis ord an istri aanse  tumnificant tuu aics r a aeselt",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

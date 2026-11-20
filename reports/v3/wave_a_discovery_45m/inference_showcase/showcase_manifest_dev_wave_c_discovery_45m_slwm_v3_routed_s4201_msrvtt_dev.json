@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T14:09:48.519039+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_discovery_45m_slwm_v3_routed_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8739,
+      "mean_nowrite": 0.4033,
+      "ground_truth_text_preview": "['a bowl of chicken noodle soup containing chicken and carrots is shown', 'a man in a white chef hat displays his homemade chic",
+      "free_running_32b_continuation": "ldren are shown and talking abou",
+      "top1_next_byte_preview": "['a clyl if pailken aeitlesahmn almtiinsng aoilken and aor yw  an shown , 'a can is a coite caae ion iisclaye ais came'ace aaal",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6923,
+      "mean_nowrite": 0.4136,
+      "ground_truth_text_preview": "['a middle aged woman encourages you to use her product to increase your feminine health', 'a lady sitting on a chair speaking ",
+      "free_running_32b_continuation": " man is showing a song on a stag",
+      "top1_next_byte_preview": "['a candle oned miman ixghurages aeu ao ane air aeoguctsao antlease aour miaanisg aaarthc, 'a mady ihnting on a toarr ateaksng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2951,
+      "mean_nowrite": 0.4026,
+      "ground_truth_text_preview": "['a cartoon character is launched across a room', 'a computer animated video of various game and movie characters', 'a minion i",
+      "free_running_32b_continuation": "racter is showing a car', 'a car",
+      "top1_next_byte_preview": "['a car oon iaaracter is siygthid anross t coom , 'a cameuter crimaled cideo of airious srmesand tavin toaracters , 'a canecn i",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9243,
+      "mean_nowrite": 0.3795,
+      "ground_truth_text_preview": "['a football player is racing down the field to score a touchdown', 'a football player is scoring a goal', 'a football player r",
+      "free_running_32b_continuation": "ayer is playing a game', 'a man ",
+      "top1_next_byte_preview": "['a ceotball player is pucing aown ahe tosld'oo atrre a peych own , 'a giotball player is phrreng a saal', 'a gootball player i",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6551,
+      "mean_nowrite": 0.403,
+      "ground_truth_text_preview": "['a man doing something using paper', 'a man folding paper', 'a man is folding a piece of paper', 'a person doing something on ",
+      "free_running_32b_continuation": "ome people are talking about a c",
+      "top1_next_byte_preview": "['a can iiing aome hing aneng aaper', 'a man iilding aaper , 'a man is dilding a paece of paper', 'a person iiing aomething an ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

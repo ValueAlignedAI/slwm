@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T14:30:19.670932+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_discovery_45m_slwm_v3_routed_c16_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9135,
+      "mean_nowrite": 0.4395,
+      "ground_truth_text_preview": "['a man surfs through a tube shaped wave then smashes his board', 'there are many people enjoy surfing on the beach water', 'th",
+      "free_running_32b_continuation": "o another man and a man shows a ",
+      "top1_next_byte_preview": "['a can ihrra aoaough a sare shode  aitesshe  aharh s ais sedrd', 'ahe e ire tak  teople aagoyiahrrang an the saauh'ahter', 'ah",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0014",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6903,
+      "mean_nowrite": 0.4575,
+      "ground_truth_text_preview": "['a car crashes and guys play beer pong', 'a car driving through an open field kicking up dirt', 'a car flipping over', 'a car ",
+      "free_running_32b_continuation": " a car and a car is driving a ca",
+      "top1_next_byte_preview": "['a car iaech s a d aiys alaysaaaf sllg , 'a gartioiving aheough a  alen algld'artksng ap aise', 'a cartiiip ing aner , 'a cart",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3139,
+      "mean_nowrite": 0.4012,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "and a man is showing a man showi",
+      "top1_next_byte_preview": "['a can ioipbr arin a sadyyr , 'a man iosing a cau an erview , 'a man is sxgering a coom ao aat anterview'd', 'a merson is dein",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0432,
+      "mean_nowrite": 0.4479,
+      "ground_truth_text_preview": "['a football player is racing down the field to score a touchdown', 'a football player is scoring a goal', 'a football player r",
+      "free_running_32b_continuation": "ayer is shown and showing a song",
+      "top1_next_byte_preview": "['a meotball player is suding aown ahe sorld'oo ahrresa saychdown , 'a peotball player is shrreng a sall', 'a pootball player p",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7628,
+      "mean_nowrite": 0.4615,
+      "ground_truth_text_preview": "['a man doing something using paper', 'a man folding paper', 'a man is folding a piece of paper', 'a person doing something on ",
+      "free_running_32b_continuation": "ome match on a man is showing a ",
+      "top1_next_byte_preview": "['a can iring aome hing aping aaper', 'a man iilding aaper', 'a man is pilding a paece of paper', 'a merson iring aome hing an ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T16:00:32.660637+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_sliding_window_gqa_eqbyte_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.229,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e Carefully Carefully Carious Ca",
+      "top1_next_byte_preview": "r e i autesiraire  a and aueyhollrraane C Tegheind aark aomtrine aaekeoaaoo l r  a aoitming tapl  a ahnsis aonls  a ancusedycl polld t aomteacl sollds a and t s",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.0596,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": "ter = 'align = ''\n              ",
+      "top1_next_byte_preview": "rC Ceuencme=emeetya = '   ewenime=emea ym = aeown an the snrope n oica rpnof aonpun oioa rr t an a stecifs of toas r tioaerpytoom the sncy r atmrand a srcan a t",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8595,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ong and its contribution to the delay in the release of Reign in Blood , \" Angel of Death \" is featured on all of Slayer 's live albums and DVDs and has appeare",
+      "free_running_32b_continuation": "inuously and then the static sta",
+      "top1_next_byte_preview": "rb  a d tss contiobuteon ao the sisiy on the sesaase tf tesniiSn taocd S aA\"  lr af tisth SA\"n tiature  tn t lotf toansrstto\"itert los  a d te   or  tas a prar ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5866,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ame to the scene but was unable to get near enough to rescue the crew because of the sea conditions . At the request of Alec Webster , Coastguard Station Office",
+      "free_running_32b_continuation": "rate the state of the state of t",
+      "top1_next_byte_preview": "r eria the strneroet tis tpdnle th tet toer antugh th testrr the soea tecouse tf the strrtontution  o T  the sesuist of t txtoaa ier a thnstaregy toateon onfece",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4055,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ea , only missing from the section east of Crete , and along only the north @-@ west coast of the Black Sea . The northernmost populations are found in the Norw",
+      "free_running_32b_continuation": "g a stream of the static passeng",
+      "top1_next_byte_preview": "rnrc aney aansiog aoom the satoion oncy tf toeariC and t lng tn y the setth tp paiit tonctetf the saock att t.The setth r oont orsulation  one tornd tn the sent",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

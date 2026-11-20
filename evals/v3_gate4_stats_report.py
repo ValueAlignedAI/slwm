@@ -14,20 +14,32 @@ import argparse
 import json
 import math
 from pathlib import Path
+import random
 from typing import Any
 
-import numpy as np
+
+def _mean(vals: list[float]) -> float:
+    return sum(vals) / max(len(vals), 1)
 
 
-def _bootstrap_ci95(vals: np.ndarray, *, n_boot: int = 2000, seed: int = 2026) -> tuple[float, float]:
-    if len(vals) == 0:
+def _se(vals: list[float]) -> float:
+    if len(vals) <= 1:
+        return 0.0
+    m = _mean(vals)
+    var = sum((x - m) ** 2 for x in vals) / (len(vals) - 1)
+    return math.sqrt(var / len(vals))
+
+
+def _bootstrap_ci95(vals: list[float], *, n_boot: int = 2000, seed: int = 2026) -> tuple[float, float]:
+    n = len(vals)
+    if n == 0:
         return (float("nan"), float("nan"))
-    if len(vals) == 1:
-        return (float(vals[0]), float(vals[0]))
-    rng = np.random.default_rng(seed)
-    idx = rng.integers(0, len(vals), size=(n_boot, len(vals)))
-    means = np.mean(vals[idx], axis=1)
-    lo, hi = np.percentile(means, [2.5, 97.5])
+    if n == 1:
+        return (round(float(vals[0]), 4), round(float(vals[0]), 4))
+    rng = random.Random(seed)
+    means = sorted(_mean([vals[rng.randrange(n)] for _ in range(n)]) for _ in range(n_boot))
+    lo = means[int(0.025 * (n_boot - 1))]
+    hi = means[int(0.975 * (n_boot - 1))]
     return (round(float(lo), 4), round(float(hi), 4))
 
 
@@ -97,11 +109,10 @@ def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
         for m_name, (m_path, direction) in PRIMARY_METRIC_PATHS.items():
             vals = [v for r in docs_sorted if (v := _nested_get(r, m_path)) is not None]
             if vals:
-                arr = np.asarray(vals, dtype=np.float64)
-                ci_lo, ci_hi = _bootstrap_ci95(arr)
+                ci_lo, ci_hi = _bootstrap_ci95(vals)
                 arm_row["metrics"][m_name] = {
-                    "mean": round(float(np.mean(arr)), 5),
-                    "se": round(float(np.std(arr, ddof=1) / math.sqrt(len(arr))), 5) if len(arr) > 1 else 0.0,
+                    "mean": round(_mean(vals), 5),
+                    "se": round(_se(vals), 5),
                     "ci95": [ci_lo, ci_hi],
                     "direction": direction,
                 }
@@ -112,7 +123,7 @@ def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
         ]
         ep_vecs = [v for v in ep_vecs if isinstance(v, list) and len(v) > 0]
         if ep_vecs:
-            flat_ep = np.concatenate([np.asarray(v, dtype=np.float64) for v in ep_vecs])
+            flat_ep = [float(x) for vec in ep_vecs for x in vec]
             arm_row["rso_episode_pooled_ci95"] = list(_bootstrap_ci95(flat_ep))
         summary_arms[arm] = arm_row
 
@@ -135,11 +146,10 @@ def aggregate_wave_directory(wave_dir: Path) -> dict[str, Any]:
                         # Positive = `slwm_v3_routed` is BETTER than comparator; Negative = REGRESSION!
                         ds.append((vc - va) if direction == "lower" else (va - vc))
                 if ds:
-                    arr = np.asarray(ds, dtype=np.float64)
                     deltas_map[m_name] = {
-                        "paired_advantage_of_slwm_v3_routed": round(float(np.mean(arr)), 5),
-                        "is_regression": bool(float(np.mean(arr)) < 0.0),
-                        "ci95": list(_bootstrap_ci95(arr)),
+                        "paired_advantage_of_slwm_v3_routed": round(_mean(ds), 5),
+                        "is_regression": bool(_mean(ds) < 0.0),
+                        "ci95": list(_bootstrap_ci95(ds)),
                     }
             paired_vs_anchor[arm] = {"matched_seeds": common, "deltas": deltas_map}
 

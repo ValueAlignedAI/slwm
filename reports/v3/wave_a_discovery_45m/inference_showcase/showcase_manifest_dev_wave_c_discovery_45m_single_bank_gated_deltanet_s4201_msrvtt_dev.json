@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T15:14:04.102678+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_discovery_45m_single_bank_gated_deltanet_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9735,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a girl asks a man and woman if they ve seen her hamster', 'a girl asks her parents if they have seen her hamster while they t",
+      "free_running_32b_continuation": " dog showing a car and a car dri",
+      "top1_next_byte_preview": "['a cirl in s a dan ind aoman an aae  dircha  aar aaimeer', 'a mirl in e aer dertnts an ahe  dave ahvn aar aanm er'ahile ahe  d",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6239,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a middle aged woman encourages you to use her product to increase your feminine health', 'a lady sitting on a chair speaking ",
+      "free_running_32b_continuation": " a car is passing by a car', 'a ",
+      "top1_next_byte_preview": "['a cand e ane  aiman axgourages aou co ane tor aroductsto antrease aour pimanisg'aorrth , 'a midy ihnting an a caair wheeking ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.31,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "a car and a car and a car drives",
+      "top1_next_byte_preview": "['a man ioipbi aiin a saryyd , 'a man iasing a cak as erview , 'a man is dxtertng a ceom oo art an erview'd , 'a merson is dein",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0163,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a car being driven', 'a car driving a course', 'a car driving on a race track', 'a car goes racing down the road', 'a car is ",
+      "free_running_32b_continuation": "emonstrating a car and a car dri",
+      "top1_next_byte_preview": "['a car ieing peevis , 'a cartiriving a camnse , 'a cartdriving an a coce crack , 'a cartiies oeceng aown ahe raad', 'a cartds ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7329,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man doing something using paper', 'a man folding paper', 'a man is folding a piece of paper', 'a person doing something on ",
+      "free_running_32b_continuation": "ome discusses a car and showing ",
+      "top1_next_byte_preview": "['a man iiing aome hing iping aeper', 'a man iildsng aaper', 'a man is pilding a piece of paper', 'a person iring pomething in ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

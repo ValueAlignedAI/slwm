@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T14:08:34.351978+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_slwm_v3_routed_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7872,
+      "mean_nowrite": 0.406,
+      "ground_truth_text_preview": "['a girl asks a man and woman if they ve seen her hamster', 'a girl asks her parents if they have seen her hamster while they t",
+      "free_running_32b_continuation": " game in a game is playing a gam",
+      "top1_next_byte_preview": "['a mirl insi a gan ind aoman an aae  aihshe  ter hai  er , 'a mirl in i aer hertnts an ahe  aave ahem ter aan  er ahile ahey a",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6129,
+      "mean_nowrite": 0.4097,
+      "ground_truth_text_preview": "['a fun game of race on the tracks', 'a game from mario party is being shown', 'a gameplay footage video of mario kart is shown",
+      "free_running_32b_continuation": " a man is playing a video game',",
+      "top1_next_byte_preview": "['a menciume if aece in ahe srack' , 'a mrme iiom aonkarierti ss peing shown', 'a mrmeplay footage oideo gf senkauiimtsss shown",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2598,
+      "mean_nowrite": 0.4026,
+      "ground_truth_text_preview": "['a cartoon character is launched across a room', 'a computer animated video of various game and movie characters', 'a minion i",
+      "free_running_32b_continuation": "racter is showing him a car', 'a",
+      "top1_next_byte_preview": "['a mar oon iharacter is siygthid anross t coom', 'a cameuter crimaled cideo gf airious crmesind tavie toaracters', 'a canecn i",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9156,
+      "mean_nowrite": 0.4065,
+      "ground_truth_text_preview": "['a car being driven', 'a car driving a course', 'a car driving on a race track', 'a car goes racing down the road', 'a car is ",
+      "free_running_32b_continuation": "river driving a car', 'a cartoon",
+      "top1_next_byte_preview": "['a gar ieing sriver , 'a car driving d camnte , 'a cartdriving dn a doce drack', 'a cartdias decing down ahe coad', 'a cartds ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6246,
+      "mean_nowrite": 0.4016,
+      "ground_truth_text_preview": "['a guy telling something', 'a man is talking about something in a road', 'a man is talking into the camera', 'a man is talking",
+      "free_running_32b_continuation": " about a book and then the car i",
+      "top1_next_byte_preview": "['a miy ialling ahme hing , 'a gan is salking about aomething'an a cood', 'a man is talking an o ahe mamera', 'a man is talking",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

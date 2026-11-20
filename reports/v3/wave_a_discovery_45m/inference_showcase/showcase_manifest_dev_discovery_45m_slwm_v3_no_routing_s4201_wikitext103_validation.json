@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T14:56:31.448825+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_slwm_v3_no_routing_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.0971,
+      "mean_nowrite": 0.0341,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and Characteristic Control Con",
+      "top1_next_byte_preview": "r e o aebdnoraire  a and Cnenaniirraine a Aosh isd aarkiaontrins arekicaaooefer  a aoetming aapls a ahadis aonls  a anposidall colld o aomtwall collds a and c p",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8682,
+      "mean_nowrite": 0.0304,
+      "ground_truth_text_preview": " This was the favourite of John Tudor who wrote of the island in his Victorian memoirs and described the cave as : \n\n ... in fairyland , so exquisite is the col",
+      "free_running_32b_continuation": "ucet of the water is flowing and",
+      "top1_next_byte_preview": "rChes ias ahe wiuorr ty ff tuhn aarimsShe waite tf the snsand on tes cistiryan aaaordytand tesiribes the sore an t t\nA*...Cnttacr  ind a au txpuititidtn ahe son",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0007",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7317,
+      "mean_nowrite": 0.0352,
+      "ground_truth_text_preview": "s commented on his laziness and intelligence , and noted his transformation into a leader ; Anime News Network celebrated Shikamaru 's emergence as \" an unlikel",
+      "free_running_32b_continuation": "is continues the water and then ",
+      "top1_next_byte_preview": "roihniortad bn ais cinyng   and snterligence a and tot   aas coacspormation an e t caaser a t  ma iow  aewwork aollbratis ttape   y aAtaxprgence an ata  eniike ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4256,
+      "mean_nowrite": 0.0336,
+      "ground_truth_text_preview": "b , suggesting that the oral tradition may have some truth to it . \n\n In the 19th century the Crabbaberry fishing station in West Voe was opened and the island ",
+      "free_running_32b_continuation": "he station of the station and th",
+      "top1_next_byte_preview": "ryt wobaest ng ahet ahe sriniaoanitionaoan bave aome thach th tnsa ATI*n the c99h contury oha caefii i  y aonh ng tuateon an tabt aalraas anen d and the snsand ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2575,
+      "mean_nowrite": 0.0353,
+      "ground_truth_text_preview": "ea , only missing from the section east of Crete , and along only the north @-@ west coast of the Black Sea . The northernmost populations are found in the Norw",
+      "free_running_32b_continuation": "g and then some people talking i",
+      "top1_next_byte_preview": "rntw wney aanting arom the saaoion oncy of thiai C and t sng tf y the cermheoa pChit oontt of the caock atrra The cermhern ant oasularion  ane tornd tn the cart",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

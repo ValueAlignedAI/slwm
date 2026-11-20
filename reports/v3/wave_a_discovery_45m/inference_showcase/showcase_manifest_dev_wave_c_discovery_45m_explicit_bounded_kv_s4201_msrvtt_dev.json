@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T15:56:09.796854+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_discovery_45m_explicit_bounded_kv_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7846,
+      "mean_nowrite": 0.8672,
+      "ground_truth_text_preview": "['a middle aged woman encourages you to use her product to increase your feminine health', 'a lady sitting on a chair speaking ",
+      "free_running_32b_continuation": " a car a stalking a a stracking ",
+      "top1_next_byte_preview": "['a caneee i e  aiman angonn te  aounah ar  ao  aaow ne ah as oests aout aar ngng ae te e, 'a miri ihst ng an a aairn aherying ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5531,
+      "mean_nowrite": 0.8707,
+      "ground_truth_text_preview": "['a football player is racing down the field to score a touchdown', 'a football player is scoring a goal', 'a football player r",
+      "free_running_32b_continuation": "ay a a a a a a woman a a a a a a",
+      "top1_next_byte_preview": "s', caww otk aeay   as aenkng aown ahe aars  ah atrmt anth tk  uid, 'a morr an  aeayi  as ahhmtng a aaot , 'a momr ol  aeayi  a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3048,
+      "mean_nowrite": 0.8626,
+      "ground_truth_text_preview": "['a group of people dancing and singing for a music video', 'a guy dances spanish music', 'a man in sunglasses and a chain arou",
+      "free_running_32b_continuation": "rson a water a a a a talking a a",
+      "top1_next_byte_preview": "['a crewd an aerplerior eng a d ahng ng aoo a tar n aine  , 'a mii pon e  aher nt aasin , 'a man is ahrdiay    a d a shirnga eu",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9155,
+      "mean_nowrite": 0.8679,
+      "ground_truth_text_preview": "['a car being driven', 'a car driving a course', 'a car driving on a race track', 'a car goes racing down the road', 'a car is ",
+      "free_running_32b_continuation": "ooon the talking a a a the backg",
+      "top1_next_byte_preview": "['a car wa ng aoesis , 'a war aoening a aannt  , 'a mar iiedeng an a aenksahamki, 'a mar wiod aeykng aown ahe aowd , 'a mar ms ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7791,
+      "mean_nowrite": 0.8594,
+      "ground_truth_text_preview": "['a group of video game characters having a fight', 'a person is playing a video game', 'a scene in a video game', 'a video gam",
+      "free_running_32b_continuation": "de a car a shown a talking a a a",
+      "top1_next_byte_preview": "s'a crewd an aide  aay  aaor reir  aoreng a aarht , 'a merson as alaying a sideo aaye , 'a mhrrtrms a wideo aaye , 'a mideo aay",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

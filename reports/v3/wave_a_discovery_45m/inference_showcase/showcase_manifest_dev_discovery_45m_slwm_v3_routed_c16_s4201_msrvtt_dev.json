@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T14:29:09.504376+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_slwm_v3_routed_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8095,
+      "mean_nowrite": 0.4395,
+      "ground_truth_text_preview": "['a man surfs through a tube shaped wave then smashes his board', 'there are many people enjoy surfing on the beach water', 'th",
+      "free_running_32b_continuation": "o another man in a stage', 'a ma",
+      "top1_next_byte_preview": "['a man ihbra aoaough a sane shore  aitesshe  shalhid aig sedrd', 'ahe e ire tan  teople axgoyiaorrang an the saauh'ahter', 'th",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.659,
+      "mean_nowrite": 0.454,
+      "ground_truth_text_preview": "['a woman had made some sort of dough and is wrapping if prior to refrigeration', 'there is a woman covering a dish with plasti",
+      "free_running_32b_continuation": "an in a white show', 'a man is s",
+      "top1_next_byte_preview": "['a moman ias wane ohme ptmt of aoggh'a d an saippeng an aaonrito aealechrsteon', 'ahere is a woman iomersng a wofh ahth aeanti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.265,
+      "mean_nowrite": 0.4012,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "a speech and a man speaks to a s",
+      "top1_next_byte_preview": "['a man ioipbi aoin a sadyyr , 'a man iosing a dau an erview', 'a man is pxtering a coom ah aet anterview'r', 'a merson is pein",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0244,
+      "mean_nowrite": 0.4479,
+      "ground_truth_text_preview": "['a football player is racing down the field to score a touchdown', 'a football player is scoring a goal', 'a football player r",
+      "free_running_32b_continuation": "ayer is playing a game', 'a game",
+      "top1_next_byte_preview": "['a meotball player is puping aown ahe sorld'fh aorrest saychdown , 'a peotball player is phrreng a sall', 'a sootball player p",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7218,
+      "mean_nowrite": 0.4615,
+      "ground_truth_text_preview": "['a man doing something using paper', 'a man folding paper', 'a man is folding a piece of paper', 'a person doing something on ",
+      "free_running_32b_continuation": "ome people are talking about a c",
+      "top1_next_byte_preview": "['a can ieing aome hing iping aaper', 'a man iilding aaper', 'a man is pilding a paece of paper', 'a merson iring aome hing'in ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

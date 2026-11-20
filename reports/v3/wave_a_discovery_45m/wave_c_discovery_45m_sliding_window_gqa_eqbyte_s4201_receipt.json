@@ -1,0 +1,181 @@
+{
+  "timestamp_utc": "2026-11-20T16:01:20.289595+00:00",
+  "tag": "discovery_45m_sliding_window_gqa_eqbyte_s4201",
+  "spec_name": "discovery_45m_sliding_window_gqa_eqbyte",
+  "checkpoint": "/content/out/discovery_45m_sliding_window_gqa_eqbyte_s4201_ckpt.pkl",
+  "wave_c_decoder_params": 9083174,
+  "readout_mup_lr": 0.0015,
+  "max_core_grad_verified": 0.0,
+  "core_weights_strictly_frozen": true,
+  "train_curve": [
+    {
+      "step": 1,
+      "loss": 6.60028,
+      "text_bpb": 8.0444,
+      "audio_rvq_ce": 7.6246,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 25,
+      "loss": 3.80923,
+      "text_bpb": 1.7153,
+      "audio_rvq_ce": 6.4295,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 50,
+      "loss": 0.87017,
+      "text_bpb": 1.676,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.57861,
+      "action_huber": 0.0
+    },
+    {
+      "step": 75,
+      "loss": 2.4663,
+      "text_bpb": 1.0837,
+      "audio_rvq_ce": 6.183,
+      "video_huber": 0.46474,
+      "action_huber": 0.0
+    },
+    {
+      "step": 100,
+      "loss": 6.45304,
+      "text_bpb": 0.054,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.21839,
+      "action_huber": 19.10334
+    },
+    {
+      "step": 125,
+      "loss": 3.37384,
+      "text_bpb": 1.5763,
+      "audio_rvq_ce": 5.6551,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 150,
+      "loss": 0.79983,
+      "text_bpb": 1.5201,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.54602,
+      "action_huber": 0.0
+    },
+    {
+      "step": 175,
+      "loss": 2.27479,
+      "text_bpb": 0.8483,
+      "audio_rvq_ce": 5.7815,
+      "video_huber": 0.45484,
+      "action_huber": 0.0
+    },
+    {
+      "step": 200,
+      "loss": 5.95297,
+      "text_bpb": 0.0375,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.20175,
+      "action_huber": 17.63115
+    },
+    {
+      "step": 225,
+      "loss": 3.19126,
+      "text_bpb": 1.3914,
+      "audio_rvq_ce": 5.418,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 250,
+      "loss": 0.70941,
+      "text_bpb": 1.39,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.45535,
+      "action_huber": 0.0
+    }
+  ],
+  "causal_conditioning_proofs": {
+    "video_to_audio_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 6.28963,
+      "shuffled_source_loss": 6.30028,
+      "causal_shuffle_gain": 0.01064,
+      "causal_shuffle_gain_se": 0.01461,
+      "causal_shuffle_ci95_low": -0.01799,
+      "frac_episodes_improved": 0.5469,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.46371,
+      "shuffled_source_loss": 0.46335,
+      "causal_shuffle_gain": -0.00036,
+      "causal_shuffle_gain_se": 0.00127,
+      "causal_shuffle_ci95_low": -0.00285,
+      "frac_episodes_improved": 0.4688,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_text_clotho_dev": {
+      "shard": "clotho_dev.npz",
+      "source_mod": 1,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 1.0515,
+      "shuffled_source_loss": 1.05571,
+      "causal_shuffle_gain": 0.00421,
+      "causal_shuffle_gain_se": 0.00118,
+      "causal_shuffle_ci95_low": 0.0019,
+      "frac_episodes_improved": 0.6719,
+      "causal_conditioning_verified": false
+    },
+    "video_to_text_msrvtt_dev": {
+      "shard": "msrvtt_dev.npz",
+      "source_mod": 0,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 1.00746,
+      "shuffled_source_loss": 1.00609,
+      "causal_shuffle_gain": -0.00137,
+      "causal_shuffle_gain_se": 0.00137,
+      "causal_shuffle_ci95_low": -0.00404,
+      "frac_episodes_improved": 0.3906,
+      "causal_conditioning_verified": false
+    },
+    "action_intervention_robotics_dev": {
+      "shard": "robotics_dev.npz",
+      "n_evaluated_episodes": 21,
+      "paired_next_proprio_huber": 15.16946,
+      "intervened_next_proprio_huber": 18.18591,
+      "action_intervention_proprio_gain": 3.01645,
+      "action_intervention_proprio_se": 0.59151,
+      "paired_next_video_huber": 0.19045,
+      "intervened_next_video_huber": 0.2817,
+      "action_intervention_video_gain": 0.09126,
+      "targets_strictly_held_fixed": true,
+      "causal_action_conditioning_verified": true
+    }
+  },
+  "wave_c_showcases": {
+    "clotho_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_discovery_45m_sliding_window_gqa_eqbyte_s4201_clotho_dev.json",
+      "n_ranked_episodes": 32
+    },
+    "msrvtt_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_discovery_45m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev.json",
+      "n_ranked_episodes": 32
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T14:08:41.102169+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_slwm_v3_routed_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.1071,
+      "mean_nowrite": 0.1379,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e Software Software Software Sof",
+      "top1_next_byte_preview": "r e o aeodnirCine  a a d animinoor aine S Tesh idd aark aontains areten atoet r  a aoitming aall  a ahanin aanls  a ancasi all cinld a aomtwall aillds,a and t p",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8625,
+      "mean_nowrite": 0.1279,
+      "ground_truth_text_preview": " This was the favourite of John Tudor who wrote of the island in his Victorian memoirs and described the cave as : \n\n ... in fairyland , so exquisite is the col",
+      "free_running_32b_continuation": "ct of the water is a water flowi",
+      "top1_next_byte_preview": "rChes was ahe wicorriae of tuhn ahreu aaa waite an the wnsand os tis wistirya  aaabrd  and tesiribes the pore tn t t-I    Tnttocr  end i tomtxpuerenidtn ahe son",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6648,
+      "mean_nowrite": 0.1296,
+      "ground_truth_text_preview": "h was piloted by Headlam , in November . The following month , Headlam led the three Ansons on a six @-@ day journey back and forth over Central Australia . He ",
+      "free_running_32b_continuation": " the water of the water is flowi",
+      "top1_next_byte_preview": "raaet beeet d ay teal i  a at terelber o The Liulowing torehso teal a  aia the Lheee amawn  af t stg ts mtet toirney aysk tnd tormh afer tonteal Cmttralia C Te ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4546,
+      "mean_nowrite": 0.1365,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional stations and then starts t",
+      "top1_next_byte_preview": "rrve arom ahafitional siviratioe anei to tnhiigraphic and thacen taterials a arytographi a aoefti,a and tany cther corls af tntit Theyconlection orlo cncrude  a",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2557,
+      "mean_nowrite": 0.1368,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "the world of the contribution of",
+      "top1_next_byte_preview": "rC domobile t d tnterneati teshlay atstem (ecaue aare arlular ahan trrsedgersaetse a The pesiani if the cedl ood tn istri oorse  tumnificant tuusains d a aeselt",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

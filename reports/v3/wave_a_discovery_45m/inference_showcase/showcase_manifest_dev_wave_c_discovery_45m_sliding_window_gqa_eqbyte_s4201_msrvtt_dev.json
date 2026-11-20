@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T16:01:20.269262+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_discovery_45m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0474,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a girl asks a man and woman if they ve seen her hamster', 'a girl asks her parents if they have seen her hamster while they t",
+      "free_running_32b_continuation": " game in a car is playing a game",
+      "top1_next_byte_preview": "['a cirl in s a gan ind aoman as aae  airahen aar aanme r , 'a mirl in s aar aentnts an ahe  aave ahen aa  aanme r aiile ahe  a",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0014",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7877,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a car crashes and guys play beer pong', 'a car driving through an open field kicking up dirt', 'a car flipping over', 'a car ",
+      "free_running_32b_continuation": " a car in a car and a car drivin",
+      "top1_next_byte_preview": "['a cartioosh s a d ari  aaayiaa psaluge, 'a gartiriving aheough a  alen aogld ainksng ap aose , 'a mar ioopsing aner , 'a cart",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3216,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a basket ball player is laughing', 'a commentator is showing the height of a basketball backboard', 'a man describing a dunki",
+      "free_running_32b_continuation": " player in a car is playing a ga",
+      "top1_next_byte_preview": "['a ganket aask player in piyghing , 'a gampentatir gs phownng aoe moaght'of a casket'all pask aard', 'a man iiscribeng a corkn",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1227,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a car being driven', 'a car driving a course', 'a car driving on a race track', 'a car goes racing down the road', 'a car is ",
+      "free_running_32b_continuation": "ogs are describes a car', 'a gro",
+      "top1_next_byte_preview": "['a gartieing aoivis , 'a car iriving a campte', 'a car iriving an a code aaaik , 'a mar iiis aoceng aown ahe road', 'a mar is ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8351,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man doing something using paper', 'a man folding paper', 'a man is folding a piece of paper', 'a person doing something on ",
+      "free_running_32b_continuation": "ome and a dog another is singing",
+      "top1_next_byte_preview": "['a gan iring aome hing apeng aaner', 'a man iolding aaper , 'a man is polding a daece of paper', 'a merson iiing aome hing an ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

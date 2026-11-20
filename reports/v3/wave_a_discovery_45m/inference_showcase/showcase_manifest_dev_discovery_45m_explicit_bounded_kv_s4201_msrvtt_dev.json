@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T15:54:42.168002+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "discovery_45m_explicit_bounded_kv_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5937,
+      "mean_nowrite": 0.8665,
+      "ground_truth_text_preview": "['a man demonstrates how they cook meat and slice it', 'a man describes how he sets up a bbq', 'a man grilling and slicing up m",
+      "free_running_32b_continuation": " the stame a person a the sown a",
+      "top1_next_byte_preview": "['a man ioson   en r tow pae  aanneaatkea d ttonksas , 'a man iiroosne  aou ao aoaa ap a talu, 'a man iion  ng a d ahavkng ap a",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5036,
+      "mean_nowrite": 0.8724,
+      "ground_truth_text_preview": "['a bowl of chicken noodle soup containing chicken and carrots is shown', 'a man in a white chef hat displays his homemade chic",
+      "free_running_32b_continuation": "ld the start a a stalking a a th",
+      "top1_next_byte_preview": "['a mam emn aaolker towu e tomtlaanterngng aairh rta d tareen  an ahiw  , 'a man is a siilhraaorisor pivheay  aol towe en'rtail",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.294,
+      "mean_nowrite": 0.8626,
+      "ground_truth_text_preview": "['a group of people dancing and singing for a music video', 'a guy dances spanish music', 'a man in sunglasses and a chain arou",
+      "free_running_32b_continuation": "rson is a person a the soode a t",
+      "top1_next_byte_preview": "['a miiwp if aerplerior hng a d ahng ng aoo t sanin aine  , 'a mii pon e  iher ntiaasin , 'a man is ihpiiay    a d s pairnga eu",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9418,
+      "mean_nowrite": 0.8723,
+      "ground_truth_text_preview": "['there is a fish swimming under the sea', 'there is a man is talking about a event', 'there is a man is talking about a life e",
+      "free_running_32b_continuation": "rl a a stalking a a the a backgr",
+      "top1_next_byte_preview": "['aho   ws w warh ahalaang anior ahe star, 'aae   as a aan as ahlking a out a mxer  , 'ahe   as a san as thlking a out t magert",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7458,
+      "mean_nowrite": 0.8691,
+      "ground_truth_text_preview": "['a man is having a conversation in a room with no sound', 'a man is sitting down and talking to someone', 'a man is sitting in",
+      "free_running_32b_continuation": "ng a walking a a a person a star",
+      "top1_next_byte_preview": "['a man is poring a panter  n nn as a teuu ahth aowttmnd , 'a man is ain eng aown a d ahlking ah atmeone , 'a man is ihnaeng an",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

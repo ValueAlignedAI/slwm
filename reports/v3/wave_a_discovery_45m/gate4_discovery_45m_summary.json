@@ -1,0 +1,1080 @@
+{
+  "wave_dir": "reports/v3/wave_a_discovery_45m",
+  "arms": {
+    "explicit_bounded_kv": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42394736,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 397488,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 3.46708,
+          "se": 0.0,
+          "ci95": [
+            3.4671,
+            3.4671
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 3.18421,
+          "se": 0.0,
+          "ci95": [
+            3.1842,
+            3.1842
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00484,
+          "se": 0.0,
+          "ci95": [
+            0.0048,
+            0.0048
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": -0.00156,
+          "se": 0.0,
+          "ci95": [
+            -0.0016,
+            -0.0016
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": -0.00077,
+          "se": 0.0,
+          "ci95": [
+            -0.0008,
+            -0.0008
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": -0.00929,
+          "se": 0.0,
+          "ci95": [
+            -0.0093,
+            -0.0093
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 0.0002,
+          "se": 0.0,
+          "ci95": [
+            0.0002,
+            0.0002
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 8.77404,
+          "se": 0.0,
+          "ci95": [
+            8.774,
+            8.774
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "single_bank_gated_deltanet": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42500396,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 393648,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.67752,
+          "se": 0.0,
+          "ci95": [
+            2.6775,
+            2.6775
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 2.21243,
+          "se": 0.0,
+          "ci95": [
+            2.2124,
+            2.2124
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00433,
+          "se": 0.0,
+          "ci95": [
+            0.0043,
+            0.0043
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.00162,
+          "se": 0.0,
+          "ci95": [
+            0.0016,
+            0.0016
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": -0.00058,
+          "se": 0.0,
+          "ci95": [
+            -0.0006,
+            -0.0006
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": -0.00445,
+          "se": 0.0,
+          "ci95": [
+            -0.0044,
+            -0.0044
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 0.00039,
+          "se": 0.0,
+          "ci95": [
+            0.0004,
+            0.0004
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 9.20747,
+          "se": 0.0,
+          "ci95": [
+            9.2075,
+            9.2075
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0312,
+          "se": 0.0,
+          "ci95": [
+            0.0312,
+            0.0312
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0781
+      ]
+    },
+    "sliding_window_gqa_eqbyte": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42249920,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 394032,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.77747,
+          "se": 0.0,
+          "ci95": [
+            2.7775,
+            2.7775
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 2.30411,
+          "se": 0.0,
+          "ci95": [
+            2.3041,
+            2.3041
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00359,
+          "se": 0.0,
+          "ci95": [
+            0.0036,
+            0.0036
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.00518,
+          "se": 0.0,
+          "ci95": [
+            0.0052,
+            0.0052
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": -0.0009,
+          "se": 0.0,
+          "ci95": [
+            -0.0009,
+            -0.0009
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.00631,
+          "se": 0.0,
+          "ci95": [
+            0.0063,
+            0.0063
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": -0.00033,
+          "se": 0.0,
+          "ci95": [
+            -0.0003,
+            -0.0003
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 9.5444,
+          "se": 0.0,
+          "ci95": [
+            9.5444,
+            9.5444
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0312,
+          "se": 0.0,
+          "ci95": [
+            0.0312,
+            0.0312
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0781
+      ]
+    },
+    "slwm_v3_no_routing": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42355808,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 393648,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.64392,
+          "se": 0.0,
+          "ci95": [
+            2.6439,
+            2.6439
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 2.17426,
+          "se": 0.0,
+          "ci95": [
+            2.1743,
+            2.1743
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00174,
+          "se": 0.0,
+          "ci95": [
+            0.0017,
+            0.0017
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": -0.0044,
+          "se": 0.0,
+          "ci95": [
+            -0.0044,
+            -0.0044
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": 0.00081,
+          "se": 0.0,
+          "ci95": [
+            0.0008,
+            0.0008
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.00115,
+          "se": 0.0,
+          "ci95": [
+            0.0011,
+            0.0011
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": -2e-05,
+          "se": 0.0,
+          "ci95": [
+            -0.0,
+            -0.0
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 9.08736,
+          "se": 0.0,
+          "ci95": [
+            9.0874,
+            9.0874
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "slwm_v3_routed": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42355808,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 393648,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.6481,
+          "se": 0.0,
+          "ci95": [
+            2.6481,
+            2.6481
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 2.17856,
+          "se": 0.0,
+          "ci95": [
+            2.1786,
+            2.1786
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00457,
+          "se": 0.0,
+          "ci95": [
+            0.0046,
+            0.0046
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": -0.0042,
+          "se": 0.0,
+          "ci95": [
+            -0.0042,
+            -0.0042
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": 0.00139,
+          "se": 0.0,
+          "ci95": [
+            0.0014,
+            0.0014
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.00859,
+          "se": 0.0,
+          "ci95": [
+            0.0086,
+            0.0086
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 3e-05,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 9.1214,
+          "se": 0.0,
+          "ci95": [
+            9.1214,
+            9.1214
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0156,
+          "se": 0.0,
+          "ci95": [
+            0.0156,
+            0.0156
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0469
+      ]
+    },
+    "slwm_v3_routed_wy": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 42355808,
+      "trainable_head_params": 9083174,
+      "core_streaming_state_bytes_b1": 590496,
+      "total_positions_trained": 32768000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.66669,
+          "se": 0.0,
+          "ci95": [
+            2.6667,
+            2.6667
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 2.1917,
+          "se": 0.0,
+          "ci95": [
+            2.1917,
+            2.1917
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00389,
+          "se": 0.0,
+          "ci95": [
+            0.0039,
+            0.0039
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.01769,
+          "se": 0.0,
+          "ci95": [
+            0.0177,
+            0.0177
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": -0.00024,
+          "se": 0.0,
+          "ci95": [
+            -0.0002,
+            -0.0002
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.00477,
+          "se": 0.0,
+          "ci95": [
+            0.0048,
+            0.0048
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": -0.00079,
+          "se": 0.0,
+          "ci95": [
+            -0.0008,
+            -0.0008
+          ],
+          "direction": "higher"
+        },
+        "robotics_act_gain": {
+          "mean": 8.92378,
+          "se": 0.0,
+          "ci95": [
+            8.9238,
+            8.9238
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0312,
+          "se": 0.0,
+          "ci95": [
+            0.0312,
+            0.0312
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0781
+      ]
+    }
+  },
+  "paired_vs_slwm_v3_routed": {
+    "explicit_bounded_kv": {
+      "matched_seeds": [
+        4201
+      ],
+      "deltas": {
+        "wt103_val_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.81898,
+          "is_regression": false,
+          "ci95": [
+            0.819,
+            0.819
+          ]
+        },
+        "text_code_dev_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 1.00565,
+          "is_regression": false,
+          "ci95": [
+            1.0057,
+            1.0057
+          ]
+        },
+        "clotho_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00027,
+          "is_regression": true,
+          "ci95": [
+            -0.0003,
+            -0.0003
+          ]
+        },
+        "librispeech_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00264,
+          "is_regression": true,
+          "ci95": [
+            -0.0026,
+            -0.0026
+          ]
+        },
+        "msrvtt_v2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00216,
+          "is_regression": false,
+          "ci95": [
+            0.0022,
+            0.0022
+          ]
+        },
+        "vggsound_v2a_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.01788,
+          "is_regression": false,
+          "ci95": [
+            0.0179,
+            0.0179
+          ]
+        },
+        "vggsound_a2v_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00017,
+          "is_regression": true,
+          "ci95": [
+            -0.0002,
+            -0.0002
+          ]
+        },
+        "robotics_act_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.34736,
+          "is_regression": false,
+          "ci95": [
+            0.3474,
+            0.3474
+          ]
+        },
+        "rso_dev_ab_joint": {
+          "paired_advantage_of_slwm_v3_routed": 0.0,
+          "is_regression": false,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "rso_dev_overall": {
+          "paired_advantage_of_slwm_v3_routed": 0.0156,
+          "is_regression": false,
+          "ci95": [
+            0.0156,
+            0.0156
+          ]
+        }
+      }
+    },
+    "single_bank_gated_deltanet": {
+      "matched_seeds": [
+        4201
+      ],
+      "deltas": {
+        "wt103_val_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.02942,
+          "is_regression": false,
+          "ci95": [
+            0.0294,
+            0.0294
+          ]
+        },
+        "text_code_dev_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.03387,
+          "is_regression": false,
+          "ci95": [
+            0.0339,
+            0.0339
+          ]
+        },
+        "clotho_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00024,
+          "is_regression": false,
+          "ci95": [
+            0.0002,
+            0.0002
+          ]
+        },
+        "librispeech_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00582,
+          "is_regression": true,
+          "ci95": [
+            -0.0058,
+            -0.0058
+          ]
+        },
+        "msrvtt_v2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00197,
+          "is_regression": false,
+          "ci95": [
+            0.002,
+            0.002
+          ]
+        },
+        "vggsound_v2a_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.01304,
+          "is_regression": false,
+          "ci95": [
+            0.013,
+            0.013
+          ]
+        },
+        "vggsound_a2v_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00036,
+          "is_regression": true,
+          "ci95": [
+            -0.0004,
+            -0.0004
+          ]
+        },
+        "robotics_act_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.08607,
+          "is_regression": true,
+          "ci95": [
+            -0.0861,
+            -0.0861
+          ]
+        },
+        "rso_dev_ab_joint": {
+          "paired_advantage_of_slwm_v3_routed": 0.0,
+          "is_regression": false,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "rso_dev_overall": {
+          "paired_advantage_of_slwm_v3_routed": -0.0156,
+          "is_regression": true,
+          "ci95": [
+            -0.0156,
+            -0.0156
+          ]
+        }
+      }
+    },
+    "sliding_window_gqa_eqbyte": {
+      "matched_seeds": [
+        4201
+      ],
+      "deltas": {
+        "wt103_val_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.12937,
+          "is_regression": false,
+          "ci95": [
+            0.1294,
+            0.1294
+          ]
+        },
+        "text_code_dev_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.12555,
+          "is_regression": false,
+          "ci95": [
+            0.1256,
+            0.1256
+          ]
+        },
+        "clotho_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00098,
+          "is_regression": false,
+          "ci95": [
+            0.001,
+            0.001
+          ]
+        },
+        "librispeech_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.00938,
+          "is_regression": true,
+          "ci95": [
+            -0.0094,
+            -0.0094
+          ]
+        },
+        "msrvtt_v2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00229,
+          "is_regression": false,
+          "ci95": [
+            0.0023,
+            0.0023
+          ]
+        },
+        "vggsound_v2a_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00228,
+          "is_regression": false,
+          "ci95": [
+            0.0023,
+            0.0023
+          ]
+        },
+        "vggsound_a2v_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00036,
+          "is_regression": false,
+          "ci95": [
+            0.0004,
+            0.0004
+          ]
+        },
+        "robotics_act_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.423,
+          "is_regression": true,
+          "ci95": [
+            -0.423,
+            -0.423
+          ]
+        },
+        "rso_dev_ab_joint": {
+          "paired_advantage_of_slwm_v3_routed": 0.0,
+          "is_regression": false,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "rso_dev_overall": {
+          "paired_advantage_of_slwm_v3_routed": -0.0156,
+          "is_regression": true,
+          "ci95": [
+            -0.0156,
+            -0.0156
+          ]
+        }
+      }
+    },
+    "slwm_v3_no_routing": {
+      "matched_seeds": [
+        4201
+      ],
+      "deltas": {
+        "wt103_val_bpb": {
+          "paired_advantage_of_slwm_v3_routed": -0.00418,
+          "is_regression": true,
+          "ci95": [
+            -0.0042,
+            -0.0042
+          ]
+        },
+        "text_code_dev_bpb": {
+          "paired_advantage_of_slwm_v3_routed": -0.0043,
+          "is_regression": true,
+          "ci95": [
+            -0.0043,
+            -0.0043
+          ]
+        },
+        "clotho_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00283,
+          "is_regression": false,
+          "ci95": [
+            0.0028,
+            0.0028
+          ]
+        },
+        "librispeech_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.0002,
+          "is_regression": false,
+          "ci95": [
+            0.0002,
+            0.0002
+          ]
+        },
+        "msrvtt_v2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00058,
+          "is_regression": false,
+          "ci95": [
+            0.0006,
+            0.0006
+          ]
+        },
+        "vggsound_v2a_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00744,
+          "is_regression": false,
+          "ci95": [
+            0.0074,
+            0.0074
+          ]
+        },
+        "vggsound_a2v_gain": {
+          "paired_advantage_of_slwm_v3_routed": 5e-05,
+          "is_regression": false,
+          "ci95": [
+            0.0001,
+            0.0001
+          ]
+        },
+        "robotics_act_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.03404,
+          "is_regression": false,
+          "ci95": [
+            0.034,
+            0.034
+          ]
+        },
+        "rso_dev_ab_joint": {
+          "paired_advantage_of_slwm_v3_routed": 0.0,
+          "is_regression": false,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "rso_dev_overall": {
+          "paired_advantage_of_slwm_v3_routed": 0.0156,
+          "is_regression": false,
+          "ci95": [
+            0.0156,
+            0.0156
+          ]
+        }
+      }
+    },
+    "slwm_v3_routed_wy": {
+      "matched_seeds": [
+        4201
+      ],
+      "deltas": {
+        "wt103_val_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.01859,
+          "is_regression": false,
+          "ci95": [
+            0.0186,
+            0.0186
+          ]
+        },
+        "text_code_dev_bpb": {
+          "paired_advantage_of_slwm_v3_routed": 0.01314,
+          "is_regression": false,
+          "ci95": [
+            0.0131,
+            0.0131
+          ]
+        },
+        "clotho_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00068,
+          "is_regression": false,
+          "ci95": [
+            0.0007,
+            0.0007
+          ]
+        },
+        "librispeech_a2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": -0.02189,
+          "is_regression": true,
+          "ci95": [
+            -0.0219,
+            -0.0219
+          ]
+        },
+        "msrvtt_v2t_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00163,
+          "is_regression": false,
+          "ci95": [
+            0.0016,
+            0.0016
+          ]
+        },
+        "vggsound_v2a_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00382,
+          "is_regression": false,
+          "ci95": [
+            0.0038,
+            0.0038
+          ]
+        },
+        "vggsound_a2v_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.00082,
+          "is_regression": false,
+          "ci95": [
+            0.0008,
+            0.0008
+          ]
+        },
+        "robotics_act_gain": {
+          "paired_advantage_of_slwm_v3_routed": 0.19762,
+          "is_regression": false,
+          "ci95": [
+            0.1976,
+            0.1976
+          ]
+        },
+        "rso_dev_ab_joint": {
+          "paired_advantage_of_slwm_v3_routed": 0.0,
+          "is_regression": false,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "rso_dev_overall": {
+          "paired_advantage_of_slwm_v3_routed": -0.0156,
+          "is_regression": true,
+          "ci95": [
+            -0.0156,
+            -0.0156
+          ]
+        }
+      }
+    }
+  },
+  "wave_b_receipts_count": 6,
+  "wave_c_receipts_count": 6
+}
