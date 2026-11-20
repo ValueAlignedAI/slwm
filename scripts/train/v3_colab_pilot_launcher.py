@@ -54,6 +54,8 @@ PILOT_BUNDLE_FILES: tuple[str, ...] = (
     "models/v3/spec.py",
     "models/v3/memory.py",
     "models/v3/core.py",
+    "models/v3/fast_core.py",
+    "models/v3/any2any_heads.py",
     "models/v3/objectives.py",
     "data/v3_data_contract.py",
     "evals/v3_gate3_audit_receipt.py",
@@ -876,7 +878,13 @@ print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BA
             rk_res = run_colab("restart-kernel", "-s", args.session_name, cfg_path=cfg_path, timeout=120)
             if rk_res.returncode != 0:
                 print(f"[PILOT WARN] restart-kernel before {ph!r} returned rc={rk_res.returncode}: {rk_res.stderr or rk_res.stdout}", flush=True)
-            time.sleep(4.0)
+            time.sleep(6.0)
+            for ping_i in range(4):
+                ping = run_colab("exec", "-s", args.session_name, "-c", "print('KERNEL_READY')", "--timeout", "60", cfg_path=cfg_path, timeout=90)
+                if ping.returncode == 0 and "KERNEL_READY" in ping.stdout:
+                    break
+                print(f"[PILOT WARN] Post-restart kernel ping {ping_i + 1}/4 failed (rc={ping.returncode}); retrying in 8s...", flush=True)
+                time.sleep(8.0)
 
             argv_list = [
                 "scripts/train/v3_tpu_pilot_suite.py",

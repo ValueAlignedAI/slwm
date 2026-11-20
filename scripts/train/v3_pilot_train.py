@@ -283,6 +283,9 @@ def compile_pilot_steps(
         grad_clip_norm=grad_clip_norm,
     )
 
+    is_cpu = str(jax.devices()[0].platform).lower() == "cpu"
+    mm_dtype = jnp.float32 if is_cpu else jnp.bfloat16
+
     @jax.jit
     def eval_step(p, val_pkts, val_targs, val_valid):
         st0 = init_core_state(spec, val_batch_size)
@@ -295,6 +298,8 @@ def compile_pilot_steps(
             spec,
             remat_step=False,
             return_z_seq=True,
+            use_fast_core=True,
+            matmul_dtype=mm_dtype,
         )
         z_seq = metrics.pop("z_seq")
         pr = effective_rank_participation_ratio(z_seq)
@@ -313,6 +318,8 @@ def compile_pilot_steps(
                 spec,
                 remat_step=remat_step,
                 remat_chunk_size=remat_chunk_size,
+                use_fast_core=True,
+                matmul_dtype=mm_dtype,
             ),
             has_aux=True,
         )(p)

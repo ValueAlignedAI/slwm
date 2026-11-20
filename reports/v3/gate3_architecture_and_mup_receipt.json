@@ -1,7 +1,7 @@
 {
   "gate": "SLWM-v3 Gate 3 (Rev 4) \u2014 Exact Comparator Parity, Real-AdamW muP/CompleteP & Zero-Crutch Audit",
-  "models_v3_sha256": "98d1b7049fb402053f0e05cbda269249fe0ed3e5292b730d8d0812a8bb1a5782",
-  "pilot_bundle_sha256": "2bf92b8cbad52c19cfc9d210ab703e5d5a983ca23f04e11c7af273f146df88c5",
+  "models_v3_sha256": "c5332e931f7aafbdac136df5b48de8f4420dd01fe497b061b55680a5e381caf2",
+  "pilot_bundle_sha256": "e573258088237b01c1e7cea4d469314bd6bfb121ad375b423a9834f3e9b543fd",
   "comparators_dual_track": {
     "pilot_d256": {
       "slwm_v3_routed": {
@@ -844,7 +844,9 @@
   "static_zero_crutch_audit": {
     "files_scanned": [
       "__init__.py",
+      "any2any_heads.py",
       "core.py",
+      "fast_core.py",
       "memory.py",
       "objectives.py",
       "spec.py"

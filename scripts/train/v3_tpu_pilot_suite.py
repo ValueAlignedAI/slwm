@@ -35,6 +35,7 @@ import numpy as np
 import optax
 
 from models.v3.core import init_core_state, init_slwm_v3_params, scan_core
+from models.v3.fast_core import scan_core_fast
 from models.v3.objectives import (
     apply_decoupled_probe,
     init_decoupled_probe_params,
@@ -1015,13 +1016,24 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
         opt_core = tx_core_unit.init(params)
         opt_probe = tx_probe.init(probe_p)
 
+        mm_dtype = jnp.float32 if smoke_cpu else jnp.bfloat16
+
         @jax.jit(donate_argnums=(0, 1))
         def core_step(p, o_st, pkts, targs, tvalid, step_lr_arr):
             b = pkts["valid_mask"].shape[1]
             st0 = init_core_state(spec, b)
             (loss, m), g = jax.value_and_grad(
                 lambda pp: masked_multi_horizon_predictive_loss(
-                    pp, st0, pkts, targs, tvalid, spec, remat_step=True, remat_chunk_size=remat_chunk
+                    pp,
+                    st0,
+                    pkts,
+                    targs,
+                    tvalid,
+                    spec,
+                    remat_step=True,
+                    remat_chunk_size=remat_chunk,
+                    use_fast_core=True,
+                    matmul_dtype=mm_dtype,
                 ),
                 has_aux=True,
             )(p)
@@ -1035,7 +1047,9 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
                 """Extract strictly pre-echo latent `Z[tp]` on a bounded microbatch (ZERO future echo leak!)."""
                 b = pkts_mb["valid_mask"].shape[1]
                 pkts_pre = {k: v[: tp + 1] for k, v in pkts_mb.items()}
-                z_seq, _, diags = scan_core(p, init_core_state(spec, b), pkts_pre, spec, remat_step=False)
+                z_seq, _, diags = scan_core_fast(
+                    p, init_core_state(spec, b), pkts_pre, spec, remat_layers=False, matmul_dtype=mm_dtype, assume_all_valid=True
+                )
                 return jax.lax.stop_gradient(z_seq[tp]), {k: jnp.mean(v) for k, v in diags.items() if k != "layer_rms"}
 
             return _extract_pre_echo_z_micro
@@ -1287,6 +1301,7 @@ def run_phase_long_stream(base_lr: float = 1e-3, *, smoke_cpu: bool = False) -> 
 
         # Audit long-horizon stability on the ACTUAL TRAINED CHECKPOINT weights!
         h_audit: dict[str, Any] = {}
+        mm_dtype = jnp.float32 if smoke_cpu else jnp.bfloat16
         ref_state_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)["total_core_state_bytes"]
         for t_len in horizons:
             rng = np.random.default_rng(s * 100 + t_len)
@@ -1299,7 +1314,11 @@ def run_phase_long_stream(base_lr: float = 1e-3, *, smoke_cpu: bool = False) -> 
             }
             st0 = init_core_state(spec, 1)
             t0 = time.perf_counter()
-            z_seq, st_end, diags = jax.jit(lambda p, st, pk: scan_core(p, st, pk, spec))(trained_params, st0, pkts)
+            z_seq, st_end, diags = jax.jit(
+                lambda p, st, pk: scan_core_fast(
+                    p, st, pk, spec, remat_layers=False, matmul_dtype=mm_dtype, assume_all_valid=True
+                )
+            )(trained_params, st0, pkts)
             z_seq.block_until_ready()
             dt_s = time.perf_counter() - t0
             state_bytes = sum(int(x.size) * int(x.dtype.itemsize) for x in jax.tree_util.tree_leaves(st_end))
@@ -1342,7 +1361,11 @@ def run_phase_long_stream(base_lr: float = 1e-3, *, smoke_cpu: bool = False) -> 
                 noise_m = jax.random.normal(jax.random.PRNGKey(s + li + 99), st_pert[li]["mem"]["M"].shape) * 1e-4
                 st_pert[li]["mem"]["M"] = st_pert[li]["mem"]["M"] + noise_m
                 init_pert_sq += float(jnp.sum(noise_m * noise_m))
-        scan_zdt = jax.jit(lambda p, st, pk: scan_core(p, st, pk, spec))
+        scan_zdt = jax.jit(
+            lambda p, st, pk: scan_core_fast(
+                p, st, pk, spec, remat_layers=False, matmul_dtype=mm_dtype, assume_all_valid=True
+            )
+        )
         z_zdt, st_zdt_end, d_zdt = scan_zdt(trained_params, st_base, pkts_zdt)
         _, st_pert_end, _ = scan_zdt(trained_params, st_pert, pkts_zdt)
         end_pert_sq = sum(

@@ -21,6 +21,7 @@ import jax
 import jax.numpy as jnp
 
 from models.v3.core import predict_future_latents, scan_core
+from models.v3.fast_core import scan_core_fast
 from models.v3.memory import init_mup_weight
 from models.v3.spec import SLWMv3Spec
 
@@ -39,6 +40,9 @@ def masked_multi_horizon_predictive_loss(
     remat_step: bool = False,
     remat_chunk_size: int = 64,
     return_z_seq: bool = False,
+    use_fast_core: bool = False,
+    matmul_dtype: jnp.dtype = jnp.bfloat16,
+    use_wy_chunking: bool = False,
 ) -> tuple[Array, dict[str, Any]]:
     """Compute the single coherent Wave A masked multi-horizon frozen-target predictive loss.
 
@@ -52,14 +56,27 @@ def masked_multi_horizon_predictive_loss(
       step `t + h` valid, strictly `t + h < T`). Action conditioning uses ONLY action at step `t`
       when `has_true_action[t] == 1`.
     """
-    z_seq, final_state, seq_diags = scan_core(
-        core_params,
-        init_state,
-        packets_seq,
-        spec,
-        remat_step=remat_step,
-        remat_chunk_size=remat_chunk_size,
-    )
+    if use_fast_core:
+        z_seq, final_state, seq_diags = scan_core_fast(
+            core_params,
+            init_state,
+            packets_seq,
+            spec,
+            remat_layers=remat_step,
+            matmul_dtype=matmul_dtype,
+            gqa_chunk_size=remat_chunk_size,
+            use_wy_chunking=use_wy_chunking,
+            wy_chunk_size=remat_chunk_size,
+        )
+    else:
+        z_seq, final_state, seq_diags = scan_core(
+            core_params,
+            init_state,
+            packets_seq,
+            spec,
+            remat_step=remat_step,
+            remat_chunk_size=remat_chunk_size,
+        )
     t_len, b_sz, _ = z_seq.shape
     action_seq = packets_seq.get("action_feat", jnp.zeros((t_len, b_sz, spec.action_dim), dtype=jnp.float32))
     has_act_seq = packets_seq.get("has_true_action", jnp.zeros((t_len, b_sz), dtype=jnp.float32))

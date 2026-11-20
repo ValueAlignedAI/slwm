@@ -311,6 +311,56 @@ def make_slwm_v3_spec(
             explicit_kv_dim=64,
             ssm_state_dim=21,
         )
+    elif profile == "scale_700m":
+        base = SLWMv3Spec(
+            name=f"scale_700m_{backbone_type}",
+            backbone_type=backbone_type,
+            representation_mode=representation_mode,
+            d_model=1536,
+            d_base=256,
+            n_layers=24,
+            n_base_layers=12,
+            ffn_mult=2.6667,
+            window_size=64,
+            n_attn_heads=24,
+            n_kv_heads=4,
+            attn_head_dim=64,
+            n_banks=4,
+            n_mem_heads=2,
+            mem_key_dim=64,
+            mem_val_dim=64,
+            mem_base_dim=128,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
+            explicit_kv_heads=8,
+            explicit_kv_slots=32,
+            explicit_kv_dim=64,
+            ssm_state_dim=21,
+        )
+    elif profile == "scale_1b":
+        base = SLWMv3Spec(
+            name=f"scale_1b_{backbone_type}",
+            backbone_type=backbone_type,
+            representation_mode=representation_mode,
+            d_model=1920,
+            d_base=256,
+            n_layers=24,
+            n_base_layers=12,
+            ffn_mult=2.6667,
+            window_size=64,
+            n_attn_heads=30,
+            n_kv_heads=6,
+            attn_head_dim=64,
+            n_banks=4,
+            n_mem_heads=2,
+            mem_key_dim=64,
+            mem_val_dim=64,
+            mem_base_dim=128,
+            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
+            explicit_kv_heads=8,
+            explicit_kv_slots=32,
+            explicit_kv_dim=64,
+            ssm_state_dim=21,
+        )
     else:
         raise ValueError(f"Unknown profile={profile!r}")
 
