@@ -569,7 +569,18 @@ def test_exact_base_shape_mup_masked_wd_and_production_adamw_width_invariance() 
     assert not wd_m["layers"][0]["mem"]["o_norm_w"]
     assert not wd_m["layers"][0]["mem"]["router_b1"]
     assert not wd_m["layers"][0]["mem"]["router_b2"]
+    assert not wd_m["layers"][0]["mem"]["router_meta_b1"]
     assert wd_m["layers"][0]["mem"]["router_skip"]
+    assert wd_m["layers"][0]["mem"]["router_meta_skip"]
+    assert wd_m["layers"][0]["mem"]["router_meta_w1"]
+    assert wd_m["layers"][0]["mem"]["router_meta_w2"]
+    # Width-invariant epistemic router branch MUST keep `lr_mult == 1.0` even at 1B (`d=1920`)!
+    sp_1b = make_slwm_v3_spec("scale_1b", backbone_type="slwm_v3_routed")
+    p_1b_sh = jax.eval_shape(lambda k: init_slwm_v3_params(k, sp_1b), jax.random.PRNGKey(0))
+    m_1b = build_mup_lr_multipliers(p_1b_sh, sp_1b)
+    for k_meta in ("router_meta_skip", "router_meta_w1", "router_meta_b1", "router_meta_w2"):
+        assert float(m_1b["layers"][0]["mem"][k_meta]) == 1.0, f"1B {k_meta} lr_mult != 1.0!"
+    assert abs(float(m_1b["layers"][0]["mem"]["router_w1"]) - (256.0 / 1920.0)) < 1e-6
     assert not wd_m["layers"][0]["attn"]["norm_w"]
     assert not wd_m["layers"][0]["attn"]["rel_pos_bias"]
     assert not wd_m["gate_z0"]

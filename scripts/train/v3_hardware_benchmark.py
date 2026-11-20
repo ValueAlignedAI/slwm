@@ -185,6 +185,7 @@ def benchmark_config(
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
     n_params = count_tree_params(jax.eval_shape(lambda k: init_slwm_v3_params(k, spec), jax.random.PRNGKey(0)))
 
+    params = opt_st = pkts = targs = tvalid = st0 = st1 = _train_step = _online_tick = None
     try:
         params = init_slwm_v3_params(jax.random.PRNGKey(701), spec)
         if use_bf16_params_opt:
@@ -276,7 +277,9 @@ def benchmark_config(
             "error": f"{type(e).__name__}: {str(e)[:240]}",
         }
     finally:
+        params = opt_st = pkts = targs = tvalid = st0 = st1 = _train_step = _online_tick = None
         gc.collect()
+        jax.clear_caches()
     print(f"[BENCH] {profile} {backbone} wy={use_wy_chunking} B={batch_size} T={seq_len} -> {res.get('status')} pos/s={res.get('warm_positions_per_sec')} p95={res.get('stream_b1_p95_ms')}ms peakHBM={res.get('device_hbm_mib', {}).get('peak_bytes_in_use_mib')}", flush=True)
     return res
 
@@ -306,21 +309,26 @@ def main() -> None:
     else:
         cases = [
             ("discovery_45m", "slwm_v3_routed", 16, 512, False, False),
+            ("discovery_45m", "slwm_v3_routed", 64, 512, False, False),
             ("discovery_45m", "single_bank_gated_deltanet", 16, 512, False, False),
             ("discovery_45m", "single_bank_gated_deltanet", 16, 512, True, False),
             ("discovery_45m", "sliding_window_gqa", 16, 512, False, False),
             ("confirmation_135m", "slwm_v3_routed", 8, 512, False, False),
+            ("confirmation_135m", "slwm_v3_routed", 32, 512, False, False),
             ("confirmation_135m", "slwm_v3_routed", 4, 1024, False, False),
             ("confirmation_135m", "single_bank_gated_deltanet", 8, 512, True, False),
             ("confirmation_135m", "sliding_window_gqa", 8, 512, False, False),
             ("scale_700m", "slwm_v3_routed", 4, 512, False, False),
+            ("scale_700m", "slwm_v3_routed", 16, 512, False, True),
             ("scale_700m", "single_bank_gated_deltanet", 4, 512, True, False),
             ("scale_1b", "slwm_v3_routed", 2, 512, False, False),
-            ("scale_1b", "slwm_v3_routed", 2, 512, False, True),
+            ("scale_1b", "slwm_v3_routed", 8, 512, False, True),
         ]
 
-    results = [
-        benchmark_config(
+    args.out_json.parent.mkdir(parents=True, exist_ok=True)
+    results = []
+    for prof, bb, bsz, tlen, wy, bf16p in cases:
+        r = benchmark_config(
             prof,
             bb,
             batch_size=bsz,
@@ -330,18 +338,16 @@ def main() -> None:
             n_warm_steps=3 if args.suite == "smoke_cpu" else 8,
             n_stream_ticks=8 if args.suite == "smoke_cpu" else 32,
         )
-        for prof, bb, bsz, tlen, wy, bf16p in cases
-    ]
-    report = {
-        "jax_version": jax.__version__,
-        "device_platform": str(dev.platform),
-        "device_kind": str(dev.device_kind),
-        "device_count": len(jax.devices()),
-        "suite": args.suite,
-        "results": results,
-    }
-    args.out_json.parent.mkdir(parents=True, exist_ok=True)
-    args.out_json.write_text(json.dumps(report, indent=2) + "\n")
+        results.append(r)
+        report = {
+            "jax_version": jax.__version__,
+            "device_platform": str(dev.platform),
+            "device_kind": str(dev.device_kind),
+            "device_count": len(jax.devices()),
+            "suite": args.suite,
+            "results": results,
+        }
+        args.out_json.write_text(json.dumps(report, indent=2) + "\n")
     print(f"[BENCH] Saved -> {args.out_json}", flush=True)
 
 

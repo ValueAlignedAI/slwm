@@ -938,7 +938,7 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
         # T=896 (14 * 64 chunks), delay >= 768 > RF_eqbyte = 756 > RF_eqparam = 372!
         t_len, min_delay = 896, 768
         ood_long_t, ood_long_delay, ood_long_bsz = 1792, 1536, 64
-        n_train_batches, train_bsz, epochs = 48, 16, 4  # 192 core steps x B=16 (balanced across 4 stress modes)
+        n_train_batches, train_bsz, epochs = 48, 16, 12  # 576 core steps x B=16 (past T=896 retrieval grokking knee, balanced across 4 stress modes)
         probe_train_batches = 18  # 18 x 16 x 2 = 576 train A+B views for frozen-core decoupled probe
         dev_bsz, probe_steps, remat_chunk = 128, 150, 64
         eval_micro_bsz = 16
@@ -1218,6 +1218,10 @@ def run_phase_dev_ablation(base_lr: float = 1e-3, *, smoke_cpu: bool = False) ->
             f"oodB={ob_ab:.3f} ood2x={ol_ab:.3f} coreL={core_losses[-1]:.4f} ({arm_results[arm]['arm_wall_sec']}s)",
             flush=True,
         )
+        import gc
+        params = opt_core = probe_p = opt_probe = core_step = extract_micro_std = extract_micro_long = None
+        gc.collect()
+        jax.clear_caches()
 
     all_arms_finite = all(bool(r["arm_all_finite"]) for r in arm_results.values())
     routed_clean_ab = float(

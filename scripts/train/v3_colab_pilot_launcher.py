@@ -880,7 +880,7 @@ print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BA
                 print(f"[PILOT WARN] restart-kernel before {ph!r} returned rc={rk_res.returncode}: {rk_res.stderr or rk_res.stdout}", flush=True)
             time.sleep(6.0)
             for ping_i in range(4):
-                ping = run_colab("exec", "-s", args.session_name, "-c", "print('KERNEL_READY')", "--timeout", "60", cfg_path=cfg_path, timeout=90)
+                ping = run_colab("exec", "-s", args.session_name, "print('KERNEL_READY')", "--timeout", "60", cfg_path=cfg_path, timeout=90)
                 if ping.returncode == 0 and "KERNEL_READY" in ping.stdout:
                     break
                 print(f"[PILOT WARN] Post-restart kernel ping {ping_i + 1}/4 failed (rc={ping.returncode}); retrying in 8s...", flush=True)
@@ -913,19 +913,28 @@ print("KERNEL_TPU_OK", "JAX:", jax.__version__, "OPTAX:", optax.__version__, "BA
                 "v3_tpu_pilot_suite.main()\n"
                 'print("PHASE_EXEC_OK", flush=True)\n'
             )
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                args.session_name,
-                phase_py,
-                cfg_path=cfg_path,
-                log_dir=log_dir,
-                log_prefix=f"{idx:02d}_{ph}",
-                bal_start=bal_start,
-                prior_spent_cu=prior_spent_cu,
-                max_spend_cu=args.max_spend_cu,
-                t_alloc_start=t_alloc_start,
-                phase_timeout_s=(4500 if ph == "dev_ablation" else 2400),
-                exec_timeout_s=1800,
-            )
+            for ph_try in range(1, 3):
+                rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                    args.session_name,
+                    phase_py,
+                    cfg_path=cfg_path,
+                    log_dir=log_dir,
+                    log_prefix=f"{idx:02d}_{ph}" + ("" if ph_try == 1 else f"_retry{ph_try}"),
+                    bal_start=bal_start,
+                    prior_spent_cu=prior_spent_cu,
+                    max_spend_cu=args.max_spend_cu,
+                    t_alloc_start=t_alloc_start,
+                    phase_timeout_s=(6600 if ph == "dev_ablation" else 2400),
+                    exec_timeout_s=(6000 if ph == "dev_ablation" else 1800),
+                )
+                if (rc == 0 and "PHASE_EXEC_OK" in out) or tripped:
+                    break
+                if "Connection was lost." in err and ph_try < 2:
+                    print(f"[PILOT WARN] WebSocket dropped during phase {ph!r} (try {ph_try}); restarting kernel & retrying...", flush=True)
+                    run_colab("restart-kernel", "-s", args.session_name, cfg_path=cfg_path, timeout=90)
+                    time.sleep(8.0)
+                else:
+                    break
             print(out, flush=True)
             if err.strip():
                 print(err, flush=True)

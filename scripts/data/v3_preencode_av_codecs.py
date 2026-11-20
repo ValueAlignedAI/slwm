@@ -86,13 +86,16 @@ def _decode_audio_bytes_ffmpeg_24k(raw_bytes: bytes) -> np.ndarray:
     return np.frombuffer(p.stdout, dtype=np.float32).copy()
 
 
-def _extract_mp4_frames_and_audio(mp4_path: Path, *, max_sec: float = 12.0, fps: int = 25) -> tuple[np.ndarray, np.ndarray]:
-    """Extract `192x320` center-cropped (0% black bars) `25 fps` RGB uint8 frames + `24 kHz` mono float32 audio."""
+def _extract_mp4_frames_and_audio(
+    mp4_path: Path, *, max_sec: float = 12.0, fps: int = 25, start_sec: float | None = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """Extract `192x320` center-cropped (0% black bars) `fps` RGB uint8 frames + `24 kHz` mono float32 audio."""
     # Video: scale height/width preserving aspect ratio to cover 320x192, then exact center crop 320x192!
     vf = "scale=320:192:force_original_aspect_ratio=increase,crop=320:192"
+    seek_args = ["-ss", f"{float(start_sec):.4f}"] if start_sec is not None else []
     pv = subprocess.run(
         [
-            "ffmpeg", "-v", "error", "-i", str(mp4_path), "-t", str(max_sec),
+            "ffmpeg", "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
             "-vf", f"fps={fps},{vf}", "-pix_fmt", "rgb24", "-f", "rawvideo", "pipe:1",
         ],
         stdout=subprocess.PIPE,
@@ -108,7 +111,7 @@ def _extract_mp4_frames_and_audio(mp4_path: Path, *, max_sec: float = 12.0, fps:
 
     pa = subprocess.run(
         [
-            "ffmpeg", "-v", "error", "-i", str(mp4_path), "-t", str(max_sec),
+            "ffmpeg", "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
             "-vn", "-ac", "1", "-ar", "24000", "-f", "f32le", "pipe:1",
         ],
         stdout=subprocess.PIPE,
@@ -388,11 +391,323 @@ def encode_greatesthits(engine: CausalCodecEngine, data_root: Path, out_dir: Pat
     return {sp: b.save(out_dir / f"greatesthits_{sp}.npz") for sp, b in builders.items()}
 
 
+def encode_msrvtt(engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_clips: int = 100000) -> dict[str, Any]:
+    """Encode MSR-VTT (`MSRVTT_Videos.zip`) with strict official video-ID-disjoint train/dev/test splits."""
+    ms_dir = raw_root / "msrvtt"
+    zip_p = ms_dir / "MSRVTT_Videos.zip"
+    if not zip_p.is_file():
+        return {"skipped": f"missing {zip_p}"}
+    test_rows = json.loads((ms_dir / "msrvtt_test_1k.json").read_text())
+    train_rows = json.loads((ms_dir / "msrvtt_train_9k.json").read_text())
+
+    # Map video_id -> list of captions, guaranteeing ZERO overlap between test_1k and train_9k!
+    test_caps: dict[str, list[str]] = {}
+    for r in test_rows:
+        vid = str(r.get("video_id") or Path(str(r.get("video", ""))).stem)
+        test_caps.setdefault(vid, []).append(str(r.get("caption", "")).strip())
+    train_caps: dict[str, list[str]] = {}
+    for r in train_rows:
+        vid = str(r.get("video_id") or Path(str(r.get("video", ""))).stem)
+        if vid in test_caps:
+            continue
+        train_caps.setdefault(vid, []).append(str(r.get("caption", "")).strip())
+
+    assert len(set(train_caps) & set(test_caps)) == 0, "MSR-VTT train/test overlap!"
+    train_ids = sorted(train_caps)
+    n_dev = max(1, len(train_ids) // 10)
+    dev_set = set(train_ids[-n_dev:])
+    train_set = set(train_ids[:-n_dev])
+
+    builders = {
+        "train": SparseShardBuilder("msrvtt_train", "train"),
+        "dev": SparseShardBuilder("msrvtt_dev", "dev"),
+        "test": SparseShardBuilder("msrvtt_test", "test"),
+    }
+    import tempfile
+    with zipfile.ZipFile(zip_p, "r") as zf:
+        vid_members = {Path(n).stem: n for n in zf.namelist() if n.endswith(".mp4")}
+        # Process test + dev first (up to max_clips), then train up to max_clips
+        ordered: list[tuple[str, str, str]] = []
+        for vid in sorted(test_caps):
+            if vid in vid_members:
+                ordered.append(("test", vid, test_caps[vid][0]))
+        for vid in sorted(dev_set):
+            if vid in vid_members:
+                ordered.append(("dev", vid, train_caps[vid][0]))
+        for vid in sorted(train_set):
+            if vid in vid_members:
+                ordered.append(("train", vid, train_caps[vid][0]))
+
+        counts = {"train": 0, "dev": 0, "test": 0}
+        with tempfile.TemporaryDirectory() as td:
+            for sp, vid, cap in ordered:
+                if counts[sp] >= max_clips:
+                    continue
+                tmp_mp4 = Path(td) / "clip.mp4"
+                tmp_mp4.write_bytes(zf.read(vid_members[vid]))
+                frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=10.0, fps=25)
+                if len(frames) < 5:
+                    continue
+                v_p = engine.encode_video_wan_patches(frames)
+                a_c = engine.encode_audio_mimi_32(wav) if wav.size >= 4800 else None
+                txt_first = (sp == "train") and ((counts[sp] % 2) == 1)
+                ep = build_interleaved_av_text_episode(
+                    video_patches=v_p, audio_codes=a_c, text_str=cap, text_first=txt_first
+                )
+                builders[sp].add_episode(domain_name="msrvtt", **ep)
+                counts[sp] += 1
+                if sum(counts.values()) % 200 == 0:
+                    print(f"[PREENCODE] MSR-VTT progress: {counts}", flush=True)
+    return {sp: b.save(out_dir / f"msrvtt_{sp}.npz") for sp, b in builders.items()}
+
+
+def encode_vggsound(
+    engine: CausalCodecEngine, large_av_root: Path, out_dir: Path, max_clips_per_split: int = 2000
+) -> dict[str, Any]:
+    """Encode VGGSound (`vggsound_00..03.tar.gz`) using official YouTube-ID train/test splits."""
+    import csv
+    import tempfile
+
+    vgg_dir = large_av_root / "vggsound_subset"
+    csv_p = vgg_dir / "vggsound.csv"
+    if not csv_p.is_file():
+        return {"skipped": f"missing {csv_p}"}
+
+    # Official CSV format: youtube_id, start_s, label, split ('train' or 'test')
+    clip_meta: dict[str, tuple[str, str]] = {}
+    with csv_p.open("r", newline="") as f:
+        for row in csv.reader(f):
+            if len(row) < 4:
+                continue
+            yt_id, start_s, label, sp = row[0].strip(), row[1].strip(), row[2].strip(), row[3].strip()
+            stem = f"{yt_id}_{int(start_s):06d}"
+            clip_meta[stem] = (sp, label)
+            clip_meta[f"{yt_id}_{start_s}"] = (sp, label)
+
+    builders = {
+        "train": SparseShardBuilder("vggsound_train", "train"),
+        "dev": SparseShardBuilder("vggsound_dev", "dev"),
+        "test": SparseShardBuilder("vggsound_test", "test"),
+    }
+    counts = {"train": 0, "dev": 0, "test": 0}
+    seen_yt_split: dict[str, str] = {}
+    tars = sorted(vgg_dir.glob("vggsound_*.tar.gz"))
+
+    with tempfile.TemporaryDirectory() as td:
+        for tp in tars:
+            if all(counts[k] >= (max_clips_per_split if k == "train" else max(250, max_clips_per_split // 4)) for k in counts):
+                break
+            with tarfile.open(tp, "r:gz") as tf:
+                for member in tf:
+                    if not member.isfile() or not member.name.endswith(".mp4"):
+                        continue
+                    stem = Path(member.name).stem
+                    meta = clip_meta.get(stem)
+                    if meta is None:
+                        continue
+                    raw_sp, label = meta
+                    yt_id = stem[:11]
+                    if raw_sp == "test":
+                        sp = "test"
+                    else:
+                        # Deterministic YouTube-ID hash for dev vs train (zero YT-ID overlap!)
+                        if yt_id in seen_yt_split:
+                            sp = seen_yt_split[yt_id]
+                        else:
+                            sp = "dev" if (sum(ord(c) for c in yt_id) % 10 == 0) else "train"
+                            seen_yt_split[yt_id] = sp
+                    lim = max_clips_per_split if sp == "train" else max(250, max_clips_per_split // 4)
+                    if counts[sp] >= lim:
+                        continue
+                    f_obj = tf.extractfile(member)
+                    if f_obj is None:
+                        continue
+                    tmp_mp4 = Path(td) / "clip.mp4"
+                    tmp_mp4.write_bytes(f_obj.read())
+                    frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=10.0, fps=25)
+                    if len(frames) < 5 or wav.size < 4800:
+                        continue
+                    v_p = engine.encode_video_wan_patches(frames)
+                    a_c = engine.encode_audio_mimi_32(wav)
+                    if len(v_p) == 0 or len(a_c) == 0:
+                        continue
+                    ep = build_interleaved_av_text_episode(
+                        video_patches=v_p, audio_codes=a_c, text_str=f"sound: {label}", text_first=False
+                    )
+                    builders[sp].add_episode(domain_name="vggsound", **ep)
+                    counts[sp] += 1
+                    if sum(counts.values()) % 200 == 0:
+                        print(f"[PREENCODE] VGGSound progress: {counts}", flush=True)
+    return {sp: b.save(out_dir / f"vggsound_{sp}.npz") for sp, b in builders.items()}
+
+
+def _pad_vec(arr: np.ndarray, dim: int) -> np.ndarray:
+    a = np.asarray(arr, dtype=np.float32).reshape(-1)
+    out = np.zeros((dim,), dtype=np.float32)
+    n = min(dim, a.size)
+    out[:n] = a[:n]
+    return out
+
+
+def encode_robotics_lerobot(
+    engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_episodes_per_ds: int = 200
+) -> dict[str, Any]:
+    """Encode LeRobot (`aloha_sim`, `pusht`, `libero`) with episode-disjoint train/dev/test splits & Wan 2.1 video."""
+    builders = {
+        "train": SparseShardBuilder("robotics_train", "train"),
+        "dev": SparseShardBuilder("robotics_dev", "dev"),
+        "test": SparseShardBuilder("robotics_test", "test"),
+    }
+    ds_cfg = [
+        ("lerobot_aloha_sim", "observation.images.top", 25.0),
+        ("lerobot_pusht", "observation.image", 10.0),
+        ("lerobot_libero", "observation.images.image", 10.0),
+    ]
+    per_ds_counts: dict[str, dict[str, int]] = {}
+    for ds_name, vid_key, target_fps in ds_cfg:
+        ds_dir = raw_root / ds_name
+        if not ds_dir.is_dir():
+            continue
+        # Load task instructions if present
+        task_map: dict[int, str] = {}
+        tasks_pq = ds_dir / "meta/tasks.parquet"
+        if tasks_pq.is_file():
+            t_tbl = pq.read_table(tasks_pq).to_pydict()
+            t_col = next((c for c in t_tbl if "task" in c and c != "task_index"), None)
+            if t_col and "task_index" in t_tbl:
+                for ti, txt in zip(t_tbl["task_index"], t_tbl[t_col]):
+                    task_map[int(ti)] = str(txt)
+            elif t_col:
+                for idx, txt in enumerate(t_tbl[t_col]):
+                    task_map[idx] = str(txt)
+
+        # Read proprio & action episodes from parquet files
+        pqs = sorted(glob.glob(str(ds_dir / "data/**/*.parquet"), recursive=True))
+        ep_rows: dict[int, list[tuple[float, np.ndarray, np.ndarray, int]]] = {}
+        for fp in pqs:
+            tbl = pq.read_table(fp, columns=["episode_index", "timestamp", "observation.state", "action", "task_index"]).to_pydict()
+            for ep_i, ts, st, act, ti in zip(
+                tbl["episode_index"], tbl["timestamp"], tbl["observation.state"], tbl["action"], tbl["task_index"]
+            ):
+                ei = int(ep_i)
+                if ei >= max_episodes_per_ds:
+                    continue
+                ep_rows.setdefault(ei, []).append((float(ts), _pad_vec(st, 16), _pad_vec(act, 14), int(ti)))
+
+        # Read exact per-episode video chunk/file/timestamp mapping from LeRobot v3 `meta/episodes/**/*.parquet`!
+        ep_vid_meta: dict[int, tuple[Path, float, float]] = {}
+        ep_pqs = sorted(glob.glob(str(ds_dir / "meta/episodes/**/*.parquet"), recursive=True))
+        c_chunk = f"videos/{vid_key}/chunk_index"
+        c_file = f"videos/{vid_key}/file_index"
+        c_from = f"videos/{vid_key}/from_timestamp"
+        c_to = f"videos/{vid_key}/to_timestamp"
+        for ep_pq in ep_pqs:
+            et = pq.read_table(ep_pq)
+            if all(c in et.column_names for c in ("episode_index", c_chunk, c_file, c_from, c_to)):
+                d_et = et.select(["episode_index", c_chunk, c_file, c_from, c_to]).to_pydict()
+                for ei_v, ci_v, fi_v, fr_v, to_v in zip(
+                    d_et["episode_index"], d_et[c_chunk], d_et[c_file], d_et[c_from], d_et[c_to]
+                ):
+                    mp4_p = ds_dir / f"videos/{vid_key}/chunk-{int(ci_v):03d}/file-{int(fi_v):03d}.mp4"
+                    if mp4_p.is_file():
+                        ep_vid_meta[int(ei_v)] = (mp4_p, float(fr_v), float(to_v))
+
+        ep_ids = sorted(ep_rows)
+        n_ep = len(ep_ids)
+        n_te = max(1, n_ep // 10)
+        n_dv = max(1, n_ep // 10)
+        counts = {"train": 0, "dev": 0, "test": 0}
+        for rank, ei in enumerate(ep_ids):
+            sp = "test" if rank >= n_ep - n_te else ("dev" if rank >= n_ep - n_te - n_dv else "train")
+            rows = ep_rows[ei]
+            if len(rows) < 8:
+                continue
+            # Subsample high-fps ALOHA (50 fps) by 2x to 25 fps, cap at 200 steps (~8-20s)
+            stride = 2 if ds_name == "lerobot_aloha_sim" else 1
+            rows_sub = rows[::stride][:200]
+            task_txt = task_map.get(rows_sub[0][3], f"robot task {ds_name}")
+
+            # Extract exact time-sliced paired video frames for this episode!
+            v_patches = None
+            if ei in ep_vid_meta:
+                mp4_p, fr_s, to_s = ep_vid_meta[ei]
+                dur_s = min(10.0, max(0.5, to_s - fr_s))
+                frames, _ = _extract_mp4_frames_and_audio(mp4_p, max_sec=dur_s, fps=int(target_fps), start_sec=fr_s)
+                if len(frames) >= 5:
+                    v_patches = engine.encode_video_wan_patches(frames[: min(len(frames), 81)])
+
+            events: list[tuple[float, int, int, Any]] = []
+            # Prepend language instruction at t=0
+            tb = encode_utf8_bytes(task_txt, bos=BYTE_BOS, eos=BYTE_MOD_SEP, max_bytes=160)
+            for bi, b_val in enumerate(tb):
+                events.append((bi * 0.005, 0, 2, int(b_val)))
+            t_base = len(tb) * 0.005 + 0.02
+
+            t0_ep = rows_sub[0][0]
+            for ts, prop_v, act_v, _ in rows_sub:
+                events.append((t_base + max(0.0, ts - t0_ep), 15, 3, (prop_v, act_v)))
+
+            if v_patches is not None and len(v_patches) > 0:
+                n_g = len(v_patches)
+                w_ts = wan21_group_availability_timestamps(num_frames=1 + 4 * (n_g - 1), fps=target_fps)
+                for gi in range(min(n_g, len(w_ts))):
+                    av_t = t_base + w_ts[gi].availability_time_s
+                    for sp_i in range(15):
+                        events.append((av_t, sp_i, 0, (sp_i, v_patches[gi, sp_i])))
+
+            events.sort(key=lambda e: (e[0], e[1]))
+            n = len(events)
+            mod_id = np.empty((n,), dtype=np.uint8)
+            dt_s = np.empty((n,), dtype=np.float16)
+            sp_pos = np.zeros((n,), dtype=np.uint8)
+            text_b = np.full((n,), 256, dtype=np.uint16)
+            has_act = np.zeros((n,), dtype=np.uint8)
+            v_list, p_list, a_list = [], [], []
+            prev_t = events[0][0]
+            for idx, (av_t, _, m_id, payload) in enumerate(events):
+                mod_id[idx] = m_id
+                dt_s[idx] = np.float16(max(0.0, av_t - prev_t))
+                prev_t = av_t
+                if m_id == 0:
+                    sp_pos[idx] = payload[0]
+                    v_list.append(payload[1])
+                elif m_id == 2:
+                    text_b[idx] = payload
+                elif m_id == 3:
+                    has_act[idx] = 1
+                    p_list.append(payload[0])
+                    a_list.append(payload[1])
+            builders[sp].add_episode(
+                modality_id=mod_id,
+                dt_s=dt_s,
+                domain_name=ds_name,
+                text_byte=text_b,
+                spatial_pos=sp_pos,
+                video_feat=np.stack(v_list, axis=0) if v_list else None,
+                proprio_feat=np.stack(p_list, axis=0) if p_list else None,
+                action_feat=np.stack(a_list, axis=0) if a_list else None,
+                has_true_action=has_act,
+            )
+            counts[sp] += 1
+        per_ds_counts[ds_name] = counts
+        print(f"[PREENCODE] {ds_name}: {counts}", flush=True)
+
+    res = {sp: b.save(out_dir / f"robotics_{sp}.npz") for sp, b in builders.items()}
+    res["per_dataset_episodes"] = per_ds_counts
+    return res
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Causal Mimi 32-RVQ + Wan 2.1 VAE multimodal shard pre-encoder.")
-    ap.add_argument("--corpus", type=str, required=True, choices=("clotho", "esc50", "librispeech_evals", "greatesthits"))
+    ap.add_argument(
+        "--corpus",
+        type=str,
+        required=True,
+        choices=("clotho", "esc50", "librispeech_evals", "greatesthits", "msrvtt", "vggsound", "robotics_lerobot"),
+    )
     ap.add_argument("--raw-root", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_diverse_raw"))
     ap.add_argument("--data-root", type=Path, default=Path("/mnt/slwm-data/SLWM"))
+    ap.add_argument("--large-av-root", type=Path, default=Path("/mnt/slwm-checkpoints-a/SLWM/v3_large_av_raw"))
     ap.add_argument("--out-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded/av"))
     ap.add_argument("--device", type=str, default="auto")
     ap.add_argument("--max-clips", type=int, default=100000)
@@ -409,6 +724,12 @@ def main() -> None:
         res = encode_librispeech_evals(engine, args.raw_root, args.out_dir, max_clips=args.max_clips)
     elif args.corpus == "greatesthits":
         res = encode_greatesthits(engine, args.data_root, args.out_dir, max_clips=args.max_clips)
+    elif args.corpus == "msrvtt":
+        res = encode_msrvtt(engine, args.raw_root, args.out_dir, max_clips=args.max_clips)
+    elif args.corpus == "vggsound":
+        res = encode_vggsound(engine, args.large_av_root, args.out_dir, max_clips_per_split=args.max_clips)
+    elif args.corpus == "robotics_lerobot":
+        res = encode_robotics_lerobot(engine, args.raw_root, args.out_dir, max_episodes_per_ds=args.max_clips)
     else:
         raise ValueError(args.corpus)
 

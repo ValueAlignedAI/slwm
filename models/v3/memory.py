@@ -54,6 +54,7 @@ SCALAR_LEAF_NAMES = frozenset(
         "read_gate_bias",
         "router_b1",
         "router_b2",
+        "router_meta_b1",
         "dt_bias",
         "pred_head_bias",
     }
@@ -129,6 +130,7 @@ def classify_param_mup_role(path_parts: tuple[str, ...]) -> str:
         return "scalar"
     if any(
         p.startswith("edge_")
+        or p.startswith("router_meta_")
         or p in ("mod_emb", "pred_head_action_w", "pred_head_action_avail_emb")
         for p in path_parts
     ):
@@ -245,7 +247,7 @@ def init_matrix_memory_params(key: Array, spec: SLWMv3Spec) -> PyTree:
       - `use_surprise_router=False` (`single_bank_gated_deltanet`): allocates linear `w_beta`/`beta_bias`
         and identical `(h_tot, dk, dv)` + `o_norm_w`, omitting surprise router & `w_prior_proj`.
     """
-    keys = jax.random.split(key, 14)
+    keys = jax.random.split(key, 16)
     d = spec.d_model
     m_d = spec.width_mult
     nb = spec.n_banks
@@ -279,8 +281,13 @@ def init_matrix_memory_params(key: Array, spec: SLWMv3Spec) -> PyTree:
         params["w_beta"] = init_mup_weight(keys[6], (d, h_tot), role="hidden", width_mult=m_d, base_std=spec.init_std)
         params["beta_bias"] = jnp.full((h_tot,), 1.0, dtype=jnp.float32)
     else:
-        router_in = d + mod_d + 3  # [RMSNorm(x_t), mod_emb, log1p(dt_s), reliability, log1p(prior_err)]
-        router_in_base = spec.d_base + mod_d + 3
+        # Exact muP two-branch router:
+        #   1. Content branch on width-scaling `xn: [B, d]` (`role="hidden"`, `lr_mult = 1 / m_d`, 100% hoistable!)
+        #   2. Width-invariant epistemic/meta branch on fixed-dim `[mod_emb(16), log1p(dt_s), reliability, log1p(prior_err)]`
+        #      (`meta_in = 19`, `meta_hid = 32`, `role="input"`, `lr_mult = 1.0` at ALL widths `128 -> 1920` so
+        #      epistemic signals are NEVER diluted O(1/d) under `||xn|| = sqrt(d)`!)
+        meta_in = mod_d + 3
+        meta_hid = 32
         router_hid = max(32, d // 4)
         router_hid_base = max(32, spec.d_base // 4)
         # Per-head timescale routing logits `h_tot` + per-bank explicit no-write logits `nb` (when enabled)
@@ -288,14 +295,24 @@ def init_matrix_memory_params(key: Array, spec: SLWMv3Spec) -> PyTree:
         params["mod_emb"] = init_mup_weight(keys[0], (spec.n_modalities, mod_d), role="input", width_mult=m_d, base_std=0.25)
         params["w_prior_proj"] = init_mup_weight(keys[10], (h_tot * dv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std)
         params["router_skip"] = init_mup_weight(
-            keys[11], (router_in, n_router_out), role="hidden", width_mult=m_d, base_std=0.5 / math.sqrt(float(router_in_base))
+            keys[11], (d, n_router_out), role="hidden", width_mult=m_d, base_std=0.25 / math.sqrt(float(spec.d_base))
         )
         params["router_w1"] = init_mup_weight(
-            keys[8], (router_in, router_hid), role="hidden", width_mult=m_d, base_std=1.0 / math.sqrt(float(router_in_base))
+            keys[8], (d, router_hid), role="hidden", width_mult=m_d, base_std=1.0 / math.sqrt(float(spec.d_base))
         )
         params["router_b1"] = jnp.zeros((router_hid,), dtype=jnp.float32)
         params["router_w2"] = init_mup_weight(
             keys[9], (router_hid, n_router_out), role="hidden", width_mult=m_d, base_std=0.25 / math.sqrt(float(router_hid_base))
+        )
+        params["router_meta_skip"] = init_mup_weight(
+            keys[12], (meta_in, n_router_out), role="input", width_mult=m_d, base_std=0.25 / math.sqrt(float(meta_in))
+        )
+        params["router_meta_w1"] = init_mup_weight(
+            keys[13], (meta_in, meta_hid), role="input", width_mult=m_d, base_std=1.0 / math.sqrt(float(meta_in))
+        )
+        params["router_meta_b1"] = jnp.zeros((meta_hid,), dtype=jnp.float32)
+        params["router_meta_w2"] = init_mup_weight(
+            keys[14], (meta_hid, n_router_out), role="input", width_mult=m_d, base_std=0.25 / math.sqrt(float(meta_hid))
         )
         b2_head = jnp.full((h_tot,), 0.8, dtype=jnp.float32)
         if spec.use_nowrite_option:
@@ -382,13 +399,18 @@ def step_matrix_memory(
         x_prior_hat = jnp.matmul(prior_y, params["w_prior_proj"])
         prior_err = jnp.sqrt(jnp.mean((xn - x_prior_hat) ** 2, axis=-1) + 1e-6)
 
-        # 3. Direct-skip + 2-layer surprise-aware router + per-bank explicit NO-WRITE channel
-        router_feat = jnp.concatenate(
-            [xn, mod_e, log_dt, reliability_t[:, None].astype(jnp.float32), jnp.log1p(prior_err)[:, None]],
+        # 3. Exact muP two-branch router (content branch on `xn` + width-invariant epistemic/meta branch)
+        c_h = jax.nn.silu(jnp.matmul(xn, params["router_w1"]) + params["router_b1"])
+        content_logits = (
+            jnp.matmul(xn, params["router_skip"]) + jnp.matmul(c_h, params["router_w2"]) + params["router_b2"]
+        )
+        meta_feat = jnp.concatenate(
+            [mod_e, log_dt, reliability_t[:, None].astype(jnp.float32), jnp.log1p(prior_err)[:, None]],
             axis=-1,
         )
-        rh = jax.nn.silu(jnp.matmul(router_feat, params["router_w1"]) + params["router_b1"])
-        r_logits = jnp.matmul(router_feat, params["router_skip"]) + jnp.matmul(rh, params["router_w2"]) + params["router_b2"]
+        m_h = jax.nn.silu(jnp.matmul(meta_feat, params["router_meta_w1"]) + params["router_meta_b1"])
+        meta_logits = jnp.matmul(meta_feat, params["router_meta_skip"]) + jnp.matmul(m_h, params["router_meta_w2"])
+        r_logits = content_logits + meta_logits
 
         route_raw = jax.nn.sigmoid(r_logits[:, :h_tot].reshape(b, nb, nh))
         if spec.use_nowrite_option:
@@ -500,14 +522,16 @@ def step_diag_ssm(
 
 def init_explicit_kv_params(key: Array, spec: SLWMv3Spec) -> PyTree:
     """Initialize byte- & param-matched differentiable multi-head bounded LRU/overwrite KV controller."""
-    keys = jax.random.split(key, 10)
+    keys = jax.random.split(key, 14)
     d = spec.d_model
     h_e = spec.explicit_kv_heads
     dkv = spec.explicit_kv_dim
     m_d = spec.width_mult
     mod_d = 16
-    router_in = d + mod_d + 3
+    meta_in = mod_d + 3
+    meta_hid = 32
     router_hid = max(32, d // 4)
+    router_hid_base = max(32, spec.d_base // 4)
     out_std = spec.init_std / math.sqrt(max(float(h_e * dkv) / 64.0, 1.0))
 
     return {
@@ -517,10 +541,27 @@ def init_explicit_kv_params(key: Array, spec: SLWMv3Spec) -> PyTree:
         "w_k": init_mup_weight(keys[2], (d, h_e * dkv), role="hidden", width_mult=m_d, base_std=spec.init_std),
         "w_v": init_mup_weight(keys[3], (d, h_e * dkv), role="hidden", width_mult=m_d, base_std=spec.init_std),
         "w_o": init_mup_weight(keys[4], (h_e * dkv, d), role="fixed_hidden", width_mult=m_d, base_std=out_std),
-        # Matched 2-layer SiLU write-salience MLP (exact parity with SLWM-v3's salience MLP!)
-        "router_w1": init_mup_weight(keys[5], (router_in, router_hid), role="hidden", width_mult=m_d, base_std=spec.init_std),
+        # Exact muP two-branch write-salience router (100% parity with SLWM-v3's content + epistemic branches!)
+        "router_skip": init_mup_weight(
+            keys[5], (d, h_e), role="hidden", width_mult=m_d, base_std=0.25 / math.sqrt(float(spec.d_base))
+        ),
+        "router_w1": init_mup_weight(
+            keys[6], (d, router_hid), role="hidden", width_mult=m_d, base_std=1.0 / math.sqrt(float(spec.d_base))
+        ),
         "router_b1": jnp.zeros((router_hid,), dtype=jnp.float32),
-        "router_w2": init_mup_weight(keys[6], (router_hid, h_e), role="hidden", width_mult=m_d, base_std=spec.init_std),
+        "router_w2": init_mup_weight(
+            keys[7], (router_hid, h_e), role="hidden", width_mult=m_d, base_std=0.25 / math.sqrt(float(router_hid_base))
+        ),
+        "router_meta_skip": init_mup_weight(
+            keys[8], (meta_in, h_e), role="input", width_mult=m_d, base_std=0.25 / math.sqrt(float(meta_in))
+        ),
+        "router_meta_w1": init_mup_weight(
+            keys[9], (meta_in, meta_hid), role="input", width_mult=m_d, base_std=1.0 / math.sqrt(float(meta_in))
+        ),
+        "router_meta_b1": jnp.zeros((meta_hid,), dtype=jnp.float32),
+        "router_meta_w2": init_mup_weight(
+            keys[10], (meta_hid, h_e), role="input", width_mult=m_d, base_std=0.25 / math.sqrt(float(meta_hid))
+        ),
         "router_b2": jnp.full((h_e,), -0.5, dtype=jnp.float32),
         # Learnable differentiable content-match cosine threshold (per head)
         "thresh": jnp.full((h_e,), 0.70, dtype=jnp.float32),
@@ -593,13 +634,16 @@ def step_explicit_kv(
     read_hit = kv_valid & (q_w > 0.25) & (valid_mask_t[:, None, None] > 0.5)
     kv_age = jnp.where(read_hit, 0.0, kv_age)
 
-    # 2. Matched 2-layer SiLU write-salience MLP (per-head write probability in [0, 1])
-    w_feat = jnp.concatenate(
-        [xn, mod_e, jnp.log1p(dt_pos)[:, None], reliability_t[:, None], jnp.log1p(prior_err)[:, None]],
+    # 2. Exact muP two-branch write-salience router (per-head write probability in [0, 1])
+    c_h = jax.nn.silu(jnp.matmul(xn, params["router_w1"]) + params["router_b1"])
+    content_logits = jnp.matmul(xn, params["router_skip"]) + jnp.matmul(c_h, params["router_w2"]) + params["router_b2"]
+    meta_feat = jnp.concatenate(
+        [mod_e, jnp.log1p(dt_pos)[:, None], reliability_t[:, None].astype(jnp.float32), jnp.log1p(prior_err)[:, None]],
         axis=-1,
     )
-    wh = jax.nn.silu(jnp.matmul(w_feat, params["router_w1"]) + params["router_b1"])
-    write_prob = jax.nn.sigmoid(jnp.matmul(wh, params["router_w2"]) + params["router_b2"]) * valid_mask_t[:, None]  # [B, H]
+    m_h = jax.nn.silu(jnp.matmul(meta_feat, params["router_meta_w1"]) + params["router_meta_b1"])
+    meta_logits = jnp.matmul(meta_feat, params["router_meta_skip"]) + jnp.matmul(m_h, params["router_meta_w2"])
+    write_prob = jax.nn.sigmoid(content_logits + meta_logits) * valid_mask_t[:, None]  # [B, H]
 
     # 3. Differentiable content-match overwrite vs. clean LRU/empty-slot insertion!
     k_sim = jnp.einsum("bhd,bhsd->bhs", k, kv_keys, precision=fp32_prec)  # [B, H, S]
