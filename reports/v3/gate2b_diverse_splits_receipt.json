@@ -1,5 +1,5 @@
 {
-  "timestamp_utc": "2026-11-20T12:33:43.681100+00:00",
+  "timestamp_utc": "2026-11-20T16:45:41.504363+00:00",
   "shard_dir": "/mnt/slwm-data/SLWM/v3_preencoded",
   "corpora": {
     "text_code": {
@@ -201,11 +201,28 @@
           "domain_act_counts": {
             "librispeech": 0
           }
+        },
+        "train_clean_100": {
+          "shard": "librispeech_train_clean_100.npz",
+          "size_mib": 54.073,
+          "n_ticks": 1063705,
+          "n_episodes": 3000,
+          "domain_tick_counts": {
+            "librispeech": 1063705
+          },
+          "domain_vid_counts": {
+            "librispeech": 0
+          },
+          "domain_act_counts": {
+            "librispeech": 0
+          }
         }
       },
       "overlaps": {
         "audio_dev_test": 0,
-        "shared_short_english_transcripts_disjoint_speakers": 20
+        "shared_short_english_transcripts_disjoint_speakers": 20,
+        "audio_train_dev": 0,
+        "audio_train_test": 0
       },
       "zero_overlap_pass": true
     },
@@ -403,7 +420,8 @@
       },
       "zero_overlap_pass": true
     },
-    "real_speech_overwrite": {
+    "real_speech_overwrite_L12": {
+      "shard_tag": "L12_Weq64_additive",
       "splits": {
         "train": {
           "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_train_L12_Weq64_additive.npz",
@@ -445,8 +463,52 @@
       "all_schema_ok": true,
       "all_zero_gqa_suffix_leak": true,
       "zero_overlap_pass": true
+    },
+    "real_speech_overwrite_L16": {
+      "shard_tag": "L16_Weq128_additive",
+      "splits": {
+        "train": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_train_L16_Weq128_additive.npz",
+          "size_mib": 61.859,
+          "n_pairs": 192,
+          "seq_len_ticks": 3425,
+          "n_catch_pairs": 43,
+          "n_overwrite_pairs": 149,
+          "n_unique_primary_speakers": 177,
+          "schema_keys_verified": true,
+          "gqa_suffix_2033_mismatch_frac": 0.0
+        },
+        "dev": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_dev_L16_Weq128_additive.npz",
+          "size_mib": 30.48,
+          "n_pairs": 96,
+          "seq_len_ticks": 3425,
+          "n_catch_pairs": 32,
+          "n_overwrite_pairs": 64,
+          "n_unique_primary_speakers": 68,
+          "schema_keys_verified": true,
+          "gqa_suffix_2033_mismatch_frac": 0.0
+        },
+        "test": {
+          "path": "/mnt/slwm-data/SLWM/v3_preencoded/real_speech_overwrite/real_speech_overwrite_test_L16_Weq128_additive.npz",
+          "size_mib": 39.393,
+          "n_pairs": 128,
+          "seq_len_ticks": 3425,
+          "n_catch_pairs": 32,
+          "n_overwrite_pairs": 96,
+          "n_unique_primary_speakers": 84,
+          "schema_keys_verified": true,
+          "gqa_suffix_2033_mismatch_frac": 0.0
+        }
+      },
+      "speaker_overlap_train_dev": 0,
+      "speaker_overlap_train_test": 0,
+      "speaker_overlap_dev_test": 0,
+      "all_schema_ok": true,
+      "all_zero_gqa_suffix_leak": true,
+      "zero_overlap_pass": true
     }
   },
   "all_diverse_corpora_zero_overlap": true,
-  "audited_shard_count": 28
+  "audited_shard_count": 31
 }

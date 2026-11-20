@@ -182,16 +182,16 @@ def _collect_multimodal_hashes(shard_path: Path) -> dict[str, Any]:
     }
 
 
-def _audit_rso(rso_dir: Path) -> dict[str, Any]:
+def _audit_rso(rso_dir: Path, *, shard_tag: str = "L12_Weq64_additive", gqa_rf_plus1: int = 757) -> dict[str, Any]:
     splits = {}
     spk_sets: dict[str, set[str]] = {}
     all_schema_ok = True
     all_zero_suffix_leak = True
     required_keys = {"audio_codes_a", "audio_codes_b", "y_a", "y_b", "update_which", "is_catch", "primary_speaker_id"}
     for sp in ("train", "dev", "test"):
-        p = rso_dir / f"real_speech_overwrite_{sp}_L12_Weq64_additive.npz"
+        p = rso_dir / f"real_speech_overwrite_{sp}_{shard_tag}.npz"
         if not p.is_file():
-            return {"missing": str(p), "pass": False}
+            return {"missing": str(p), "zero_overlap_pass": False}
         z = np.load(p, allow_pickle=False)
         keys = set(z.files)
         has_keys = required_keys.issubset(keys)
@@ -200,8 +200,7 @@ def _audit_rso(rso_dir: Path) -> dict[str, Any]:
         spks = {str(x) for x in z["primary_speaker_id"].tolist()}
         spk_sets[sp] = spks
         ca, cb = z["audio_codes_a"], z["audio_codes_b"]
-        # Additive GQA RF = 12 * (64 - 1) = 756 ticks -> verify bit-exact 0.0 mismatch over last 757 ticks!
-        suf_mismatch = float(np.mean(ca[:, -757:, :] != cb[:, -757:, :]))
+        suf_mismatch = float(np.mean(ca[:, -gqa_rf_plus1:, :] != cb[:, -gqa_rf_plus1:, :]))
         if suf_mismatch > 0.0:
             all_zero_suffix_leak = False
         is_catch = np.asarray(z["is_catch"], dtype=bool)
@@ -214,12 +213,13 @@ def _audit_rso(rso_dir: Path) -> dict[str, Any]:
             "n_overwrite_pairs": int(np.sum(~is_catch)),
             "n_unique_primary_speakers": len(spks),
             "schema_keys_verified": has_keys,
-            "gqa_suffix_757_mismatch_frac": round(suf_mismatch, 6),
+            f"gqa_suffix_{gqa_rf_plus1}_mismatch_frac": round(suf_mismatch, 6),
         }
     ov_td = len(spk_sets["train"] & spk_sets["dev"])
     ov_tt = len(spk_sets["train"] & spk_sets["test"])
     ov_dt = len(spk_sets["dev"] & spk_sets["test"])
     return {
+        "shard_tag": shard_tag,
         "splits": splits,
         "speaker_overlap_train_dev": ov_td,
         "speaker_overlap_train_test": ov_tt,
@@ -326,19 +326,29 @@ def main() -> None:
         "zero_overlap_pass": es_ov == 0,
     }
 
+    ls_splits: dict[str, Any] = {}
     ls_dv = _collect_multimodal_hashes(at_dir / "librispeech_dev_clean.npz")
     ls_te = _collect_multimodal_hashes(at_dir / "librispeech_test_clean.npz")
+    ls_splits["dev_clean"] = {fk: fv for fk, fv in ls_dv.items() if not fk.endswith("_hashes")}
+    ls_splits["test_clean"] = {fk: fv for fk, fv in ls_te.items() if not fk.endswith("_hashes")}
     ls_ov = {
         "audio_dev_test": len(ls_dv["aud_hashes"] & ls_te["aud_hashes"]),
         "shared_short_english_transcripts_disjoint_speakers": len(ls_dv["txt_hashes"] & ls_te["txt_hashes"]),
     }
+    ls_tr_p = at_dir / "librispeech_train_clean_100.npz"
+    if ls_tr_p.is_file():
+        ls_tr = _collect_multimodal_hashes(ls_tr_p)
+        ls_splits["train_clean_100"] = {fk: fv for fk, fv in ls_tr.items() if not fk.endswith("_hashes")}
+        ls_ov["audio_train_dev"] = len(ls_tr["aud_hashes"] & ls_dv["aud_hashes"])
+        ls_ov["audio_train_test"] = len(ls_tr["aud_hashes"] & ls_te["aud_hashes"])
     report["corpora"]["librispeech"] = {
-        "splits": {
-            "dev_clean": {fk: fv for fk, fv in ls_dv.items() if not fk.endswith("_hashes")},
-            "test_clean": {fk: fv for fk, fv in ls_te.items() if not fk.endswith("_hashes")},
-        },
+        "splits": ls_splits,
         "overlaps": ls_ov,
-        "zero_overlap_pass": ls_ov["audio_dev_test"] == 0,
+        "zero_overlap_pass": (
+            ls_ov["audio_dev_test"] == 0
+            and ls_ov.get("audio_train_dev", 0) == 0
+            and ls_ov.get("audio_train_test", 0) == 0
+        ),
     }
 
     # 3. Synchronized Video + Audio + Text: MSR-VTT & VGGSound
@@ -397,12 +407,18 @@ def main() -> None:
         "zero_overlap_pass": all(v == 0 for v in rb_ov.values()),
     }
 
-    # 5. Additive-RF Real-Speech-Overwrite
-    report["corpora"]["real_speech_overwrite"] = _audit_rso(sdir / "real_speech_overwrite")
+    # 5. Additive-RF Real-Speech-Overwrite (`L=12 W_eq=64` Discovery + `L=16 W_eq=128` Confirmation)
+    report["corpora"]["real_speech_overwrite_L12"] = _audit_rso(
+        sdir / "real_speech_overwrite", shard_tag="L12_Weq64_additive", gqa_rf_plus1=757
+    )
+    if (sdir / "real_speech_overwrite/real_speech_overwrite_train_L16_Weq128_additive.npz").is_file():
+        report["corpora"]["real_speech_overwrite_L16"] = _audit_rso(
+            sdir / "real_speech_overwrite", shard_tag="L16_Weq128_additive", gqa_rf_plus1=2033
+        )
 
     all_pass = all(bool(v.get("zero_overlap_pass")) for v in report["corpora"].values())
     report["all_diverse_corpora_zero_overlap"] = all_pass
-    report["audited_shard_count"] = 28
+    report["audited_shard_count"] = sum(1 for _ in sdir.rglob("*.npz"))
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"all_diverse_corpora_zero_overlap": all_pass, "per_corpus": {k: v["zero_overlap_pass"] for k, v in report["corpora"].items()}}, indent=2), flush=True)
