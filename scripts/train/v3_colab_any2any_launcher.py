@@ -291,9 +291,11 @@ def main() -> None:
         if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
             raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
-        # Upload ONLY active pre-encoded `.npz` shards (strictly excluding sealed `*_test*.npz` unless `--include-test-shards`!)
+        # Upload ONLY active pre-encoded `.npz` shards (plus `*_exec.jsonl` test suites when `--include-test-shards`!)
         shard_files = sorted(args.local_shard_dir.rglob("*.npz"))
-        if not args.include_test_shards:
+        if args.include_test_shards:
+            shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
+        else:
             shard_files = [p for p in shard_files if "_test" not in p.name]
         # Avoid uploading redundant 24m text shard if full train_v1 is present
         has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)

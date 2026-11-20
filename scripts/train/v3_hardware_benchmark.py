@@ -39,6 +39,7 @@ from models.v3.core import (
 from models.v3.fast_core import scan_core_fast
 from models.v3.spec import (
     SLWMv3Spec,
+    build_wave_a_comparator_specs,
     compute_core_streaming_state_bytes,
     count_tree_params,
     make_slwm_v3_spec,
@@ -46,73 +47,21 @@ from models.v3.spec import (
 from scripts.train.v3_pilot_train import build_optimizer, make_synthetic_multimodal_batch
 
 
-def make_scale_spec(profile: str, backbone_type: str = "slwm_v3_routed") -> SLWMv3Spec:
-    if profile in ("tiny_unit", "pilot_d256", "discovery_45m", "confirmation_135m"):
-        return make_slwm_v3_spec(profile, backbone_type=backbone_type)
-    if profile == "scale_700m":
-        base = SLWMv3Spec(
-            name=f"scale_700m_{backbone_type}",
-            backbone_type=backbone_type,
-            representation_mode="frozen_codec_edge",
-            d_model=1536,
-            d_base=256,
-            n_layers=24,
-            n_base_layers=12,
-            ffn_mult=2.6667,
-            window_size=64,
-            n_attn_heads=24,
-            n_kv_heads=4,
-            attn_head_dim=64,
-            n_banks=4,
-            n_mem_heads=2,
-            mem_key_dim=64,
-            mem_val_dim=64,
-            mem_base_dim=128,
-            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
-            explicit_kv_heads=8,
-            explicit_kv_slots=32,
-            explicit_kv_dim=64,
-            ssm_state_dim=21,
-        )
-    elif profile == "scale_1b":
-        base = SLWMv3Spec(
-            name=f"scale_1b_{backbone_type}",
-            backbone_type=backbone_type,
-            representation_mode="frozen_codec_edge",
-            d_model=1920,
-            d_base=256,
-            n_layers=24,
-            n_base_layers=12,
-            ffn_mult=2.6667,
-            window_size=64,
-            n_attn_heads=30,
-            n_kv_heads=6,
-            attn_head_dim=64,
-            n_banks=4,
-            n_mem_heads=2,
-            mem_key_dim=64,
-            mem_val_dim=64,
-            mem_base_dim=128,
-            init_timescales_s=(1.0, 8.0, 64.0, 512.0),
-            explicit_kv_heads=8,
-            explicit_kv_slots=32,
-            explicit_kv_dim=64,
-            ssm_state_dim=21,
-        )
+def make_scale_spec(
+    profile: str,
+    backbone_type: str = "slwm_v3_routed",
+    *,
+    surprise_chunk_size: int = 1,
+    match_anchor: bool = True,
+) -> SLWMv3Spec:
+    if match_anchor and profile in ("pilot_d256", "discovery_45m", "confirmation_135m", "scale_700m", "scale_1b"):
+        specs = build_wave_a_comparator_specs(profile, match_params_to_anchor=True)
+        key = "sliding_window_gqa_eqbyte" if backbone_type == "sliding_window_gqa" else backbone_type
+        base = specs[key]
     else:
-        raise ValueError(f"Unknown scale profile={profile!r}")
-
-    if backbone_type == "single_bank_gated_deltanet":
-        base = replace(
-            base,
-            n_banks=1,
-            n_mem_heads=base.n_banks * base.n_mem_heads,
-            init_timescales_s=(64.0,),
-            use_learned_routing=False,
-            use_nowrite_option=False,
-            use_surprise_router=False,
-            tie_bank_timescales=True,
-        )
+        base = make_slwm_v3_spec(profile, backbone_type=backbone_type)
+    if surprise_chunk_size > 1 and base.use_surprise_router:
+        base = replace(base, surprise_chunk_size=int(surprise_chunk_size))
     return base
 
 
@@ -177,11 +126,12 @@ def benchmark_config(
     batch_size: int,
     seq_len: int,
     use_wy_chunking: bool = False,
+    surprise_chunk_size: int = 1,
     n_warm_steps: int = 8,
     n_stream_ticks: int = 32,
     use_bf16_params_opt: bool = False,
 ) -> dict[str, Any]:
-    spec = make_scale_spec(profile, backbone_type=backbone)
+    spec = make_scale_spec(profile, backbone_type=backbone, surprise_chunk_size=surprise_chunk_size, match_anchor=True)
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
     n_params = count_tree_params(jax.eval_shape(lambda k: init_slwm_v3_params(k, spec), jax.random.PRNGKey(0)))
 
@@ -247,6 +197,7 @@ def benchmark_config(
             "profile": profile,
             "backbone": backbone,
             "use_wy_chunking": bool(use_wy_chunking),
+            "surprise_chunk_size": int(surprise_chunk_size),
             "bf16_2d_params": bool(use_bf16_params_opt),
             "trainable_core_params": int(n_params),
             "core_state_mib_b1": round(st_bytes["total_core_state_bytes"] / (1024.0**2), 4),
@@ -268,6 +219,7 @@ def benchmark_config(
             "profile": profile,
             "backbone": backbone,
             "use_wy_chunking": bool(use_wy_chunking),
+            "surprise_chunk_size": int(surprise_chunk_size),
             "bf16_2d_params": bool(use_bf16_params_opt),
             "trainable_core_params": int(n_params),
             "core_state_mib_b1": round(st_bytes["total_core_state_bytes"] / (1024.0**2), 4),
@@ -286,54 +238,73 @@ def benchmark_config(
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Benchmark SLWM-v3 hoisted bf16 MXU core on TPU v6e-1 or NVIDIA H100.")
-    ap.add_argument("--suite", type=str, default="full", choices=("smoke_cpu", "mid", "full"))
+    ap.add_argument("--suite", type=str, default="full", choices=("smoke_cpu", "mid", "wy_routed", "full"))
     ap.add_argument("--out-json", type=Path, required=True)
     args = ap.parse_args()
 
     dev = jax.devices()[0]
     if args.suite == "smoke_cpu":
         cases = [
-            ("tiny_unit", "slwm_v3_routed", 2, 32, False, False),
-            ("tiny_unit", "single_bank_gated_deltanet", 2, 32, True, False),
+            ("tiny_unit", "slwm_v3_routed", 2, 32, False, 1, False),
+            ("tiny_unit", "slwm_v3_routed", 2, 32, True, 8, False),
+            ("tiny_unit", "single_bank_gated_deltanet", 2, 32, True, 1, False),
+        ]
+    elif args.suite == "wy_routed":
+        # Exact SAME-BACKBONE (`slwm_v3_routed`) fp32-master-weight speedup measurement (`C=1 vs C=16 vs C=32`)!
+        cases = [
+            ("discovery_45m", "slwm_v3_routed", 16, 512, False, 1, False),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, True, 16, False),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, True, 32, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, False, 1, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, True, 16, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, True, 32, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, False, 1, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, True, 16, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, True, 32, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, False, 1, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, True, 16, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, True, 32, False),
         ]
     elif args.suite == "mid":
         cases = [
-            ("discovery_45m", "slwm_v3_routed", 16, 512, False, False),
-            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, False, False),
-            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, True, False),
-            ("discovery_45m", "sliding_window_gqa", 16, 512, False, False),
-            ("confirmation_135m", "slwm_v3_routed", 8, 512, False, False),
-            ("confirmation_135m", "single_bank_gated_deltanet", 8, 512, True, False),
-            ("confirmation_135m", "sliding_window_gqa", 8, 512, False, False),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, False, 1, False),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, True, 16, False),
+            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, True, 1, False),
+            ("discovery_45m", "sliding_window_gqa", 16, 512, False, 1, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, False, 1, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, True, 16, False),
+            ("confirmation_135m", "single_bank_gated_deltanet", 8, 512, True, 1, False),
+            ("confirmation_135m", "sliding_window_gqa", 8, 512, False, 1, False),
         ]
     else:
         cases = [
-            ("discovery_45m", "slwm_v3_routed", 16, 512, False, False),
-            ("discovery_45m", "slwm_v3_routed", 64, 512, False, False),
-            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, False, False),
-            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, True, False),
-            ("discovery_45m", "sliding_window_gqa", 16, 512, False, False),
-            ("confirmation_135m", "slwm_v3_routed", 8, 512, False, False),
-            ("confirmation_135m", "slwm_v3_routed", 32, 512, False, False),
-            ("confirmation_135m", "slwm_v3_routed", 4, 1024, False, False),
-            ("confirmation_135m", "single_bank_gated_deltanet", 8, 512, True, False),
-            ("confirmation_135m", "sliding_window_gqa", 8, 512, False, False),
-            ("scale_700m", "slwm_v3_routed", 4, 512, False, False),
-            ("scale_700m", "slwm_v3_routed", 16, 512, False, True),
-            ("scale_700m", "single_bank_gated_deltanet", 4, 512, True, False),
-            ("scale_1b", "slwm_v3_routed", 2, 512, False, False),
-            ("scale_1b", "slwm_v3_routed", 8, 512, False, True),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, False, 1, False),
+            ("discovery_45m", "slwm_v3_routed", 16, 512, True, 16, False),
+            ("discovery_45m", "single_bank_gated_deltanet", 16, 512, True, 1, False),
+            ("discovery_45m", "sliding_window_gqa", 16, 512, False, 1, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, False, 1, False),
+            ("confirmation_135m", "slwm_v3_routed", 8, 512, True, 16, False),
+            ("confirmation_135m", "single_bank_gated_deltanet", 8, 512, True, 1, False),
+            ("confirmation_135m", "sliding_window_gqa", 8, 512, False, 1, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, False, 1, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, True, 16, False),
+            ("scale_700m", "slwm_v3_routed", 4, 512, True, 32, False),
+            ("scale_700m", "single_bank_gated_deltanet", 4, 512, True, 1, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, False, 1, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, True, 16, False),
+            ("scale_1b", "slwm_v3_routed", 2, 512, True, 32, False),
         ]
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     results = []
-    for prof, bb, bsz, tlen, wy, bf16p in cases:
+    for prof, bb, bsz, tlen, wy, sc, bf16p in cases:
         r = benchmark_config(
             prof,
             bb,
             batch_size=bsz,
             seq_len=tlen,
             use_wy_chunking=wy,
+            surprise_chunk_size=sc,
             use_bf16_params_opt=bf16p,
             n_warm_steps=3 if args.suite == "smoke_cpu" else 8,
             n_stream_ticks=8 if args.suite == "smoke_cpu" else 32,

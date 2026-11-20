@@ -33,6 +33,7 @@ import optax
 
 from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, LoadedSparseShard, decode_utf8_bytes
 from evals.v3_external_sota_suite import (
+    evaluate_code_execution_pass_at_1,
     evaluate_esc50_classification,
     evaluate_librispeech_wer,
 )
@@ -224,6 +225,7 @@ def main() -> None:
     ap.add_argument("--profile", type=str, default="discovery_45m")
     ap.add_argument("--backbone", type=str, default="slwm_v3_routed")
     ap.add_argument("--match-anchor", action="store_true", help="Match comparator params/bytes to slwm_v3_routed.")
+    ap.add_argument("--representation-mode", type=str, default="frozen_codec_edge", choices=("frozen_codec_edge", "scratch_edge"))
     ap.add_argument("--use-wy-chunking", action="store_true")
     ap.add_argument("--surprise-chunk-size", type=int, default=1, help="1=exact tick-by-tick; C>1=exact causal Chunk-Anchor Surprise WY.")
     ap.add_argument("--shard-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded"))
@@ -239,9 +241,13 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.match_anchor and args.profile in ("pilot_d256", "discovery_45m", "confirmation_135m", "scale_700m", "scale_1b"):
-        spec = build_wave_a_comparator_specs(args.profile, match_params_to_anchor=True)[args.backbone]
+        spec = build_wave_a_comparator_specs(
+            args.profile, representation_mode=args.representation_mode, match_params_to_anchor=True
+        )[args.backbone]
     else:
-        spec = make_slwm_v3_spec(args.profile, backbone_type=args.backbone)
+        spec = make_slwm_v3_spec(
+            args.profile, backbone_type=args.backbone, representation_mode=args.representation_mode
+        )
     if int(args.surprise_chunk_size) > 1 and spec.use_surprise_router:
         from dataclasses import replace as dc_replace
         spec = dc_replace(spec, surprise_chunk_size=int(args.surprise_chunk_size))
@@ -457,6 +463,11 @@ def main() -> None:
 
     # STRICT SEALED-TEST LOCK (AGENTS.md §12 Gate 2 & §13.2): ONLY unlocked when `--eval-sealed-test` is passed!
     if args.eval_sealed_test:
+        def _load_jsonl(p: Path) -> list[dict[str, str]]:
+            if not p.is_file():
+                return []
+            return [json.loads(ln) for ln in p.read_text().splitlines() if ln.strip()]
+
         evals["sealed_test"] = {
             "wikitext103_test": _safe_eval("wikitext103_test", lambda: evaluate_text_sota_shard(
                 all_params, spec, args.shard_dir / "text_code/wikitext103_test.npz",
@@ -470,9 +481,17 @@ def main() -> None:
                 all_params, spec, args.shard_dir / "text_code/humaneval_test.npz",
                 seq_len=args.seq_len, batch_size=args.batch_size, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
             )),
+            "humaneval_executed_pass_at_1": _safe_eval("humaneval_exec", lambda: evaluate_code_execution_pass_at_1(
+                all_params, spec, _load_jsonl(args.shard_dir / "text_code/humaneval_exec.jsonl"),
+                matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
             "mbpp_sanitized_test_bpb": _safe_eval("mbpp_test", lambda: evaluate_code_solution_bpb(
                 all_params, spec, args.shard_dir / "text_code/mbpp_sanitized_test.npz",
                 seq_len=args.seq_len, batch_size=args.batch_size, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "mbpp_executed_pass_at_1": _safe_eval("mbpp_exec", lambda: evaluate_code_execution_pass_at_1(
+                all_params, spec, _load_jsonl(args.shard_dir / "text_code/mbpp_exec.jsonl"),
+                matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
             )),
             "clotho_test_audio_to_text_shuffle": _safe_eval("clotho_test", lambda: evaluate_cross_modal_condition_shuffle(
                 all_params, spec, args.shard_dir / "audio_text/clotho_test.npz",
