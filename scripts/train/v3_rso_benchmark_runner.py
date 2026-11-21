@@ -49,7 +49,7 @@ from scripts.train.v3_pilot_train import lr_schedule_mult
 
 
 def _init_rso_heads(key: jax.Array, spec, vocab_size: int = 4) -> dict[str, Any]:
-    k1, k2 = jax.random.split(key, 2)
+    k1, k2, k3 = jax.random.split(key, 3)
     d = spec.d_model
     m_d = spec.width_mult
     return {
@@ -57,6 +57,11 @@ def _init_rso_heads(key: jax.Array, spec, vocab_size: int = 4) -> dict[str, Any]
             "norm_w": jnp.ones((d,), dtype=jnp.float32),
             "w": init_mup_weight(k1, (d, 2 * vocab_size), role="readout", width_mult=m_d, zero_init=True),
             "bias": jnp.zeros((2 * vocab_size,), dtype=jnp.float32),
+        },
+        "head_word_aux": {
+            "norm_w": jnp.ones((d,), dtype=jnp.float32),
+            "w": init_mup_weight(k3, (d, 2 * vocab_size + 1), role="readout", width_mult=m_d, zero_init=True),
+            "bias": jnp.zeros((2 * vocab_size + 1,), dtype=jnp.float32),
         },
         "head_mimi_aux": {
             "norm_w": jnp.ones((d,), dtype=jnp.float32),
@@ -122,6 +127,21 @@ class DynamicRealSpeechClipbank:
         self.clip_len = int(self.dir_codes.shape[2])
         self.bg_len = int(self.bg_codes.shape[1])
 
+    def sample_word_batch(self, rng: np.random.Generator, *, batch_size: int) -> tuple[np.ndarray, np.ndarray]:
+        """Sample 9-way single spoken-word clips (`0..3`: dir, `4..7`: dig, `8`: distractor) for Phase 0 grounding."""
+        codes = np.zeros((self.clip_len, batch_size, 32), dtype=np.int32)
+        labels = np.zeros((batch_size,), dtype=np.int32)
+        for b in range(batch_size):
+            cls = int(rng.integers(0, 9))
+            labels[b] = cls
+            if cls < 4:
+                codes[:, b] = self.dir_codes[cls, int(rng.integers(0, self.dir_codes.shape[1]))]
+            elif cls < 8:
+                codes[:, b] = self.dig_codes[cls - 4, int(rng.integers(0, self.dig_codes.shape[1]))]
+            else:
+                codes[:, b] = self.dist_codes[int(rng.integers(0, len(self.dist_codes)))]
+        return codes, labels
+
     def sample_batch(
         self,
         rng: np.random.Generator,
@@ -129,6 +149,7 @@ class DynamicRealSpeechClipbank:
         batch_size: int,
         seq_len: int,
         catch_prob: float = 0.25,
+        dense_running: bool = False,
     ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Return `(codes [T, B, 32], y_running [T, B, 2], loss_w [T, B])` with infinite unique distractor suffixes."""
         c_len = self.clip_len
@@ -205,17 +226,26 @@ class DynamicRealSpeechClipbank:
             # Probe 1: right after initial pair (teaches spoken word recognition!)
             p1_s = min(seq_len - 1, t2 + c_len)
             p1_e = min(t_corr, p1_s + 8)
-            if p1_e > p1_s:
-                lw[p1_s:p1_e, b] = 0.5 / float(p1_e - p1_s)
-            # Probe 2: right after overwrite/catch (teaches selective overwrite & preservation!)
-            p2_s = min(seq_len - 1, t_corr + c_len)
-            p2_e = min(seq_len, p2_s + 8)
-            if p2_e > p2_s:
-                lw[p2_s:p2_e, b] = 1.0 / float(p2_e - p2_s)
-            # Probe 3: final tail post-distractors (forces long-horizon survival > 756/2032 ticks!)
-            p3_s = max(p2_e, seq_len - 32)
-            if seq_len > p3_s:
-                lw[p3_s:seq_len, b] = 3.0 / float(seq_len - p3_s)
+            if dense_running:
+                # Dense causal running-state supervision across ALL valid ticks from `t2 + c_len` to `seq_len`
+                n_act = max(1, seq_len - p1_s)
+                lw[p1_s:seq_len, b] = 1.0 / float(n_act)
+                # Slightly emphasize post-overwrite region so selective overwrite converges fast
+                p2_s = min(seq_len - 1, t_corr + c_len)
+                if seq_len > p2_s:
+                    lw[p2_s:seq_len, b] += 1.0 / float(seq_len - p2_s)
+            else:
+                if p1_e > p1_s:
+                    lw[p1_s:p1_e, b] = 0.5 / float(p1_e - p1_s)
+                # Probe 2: right after overwrite/catch (teaches selective overwrite & preservation!)
+                p2_s = min(seq_len - 1, t_corr + c_len)
+                p2_e = min(seq_len, p2_s + 8)
+                if p2_e > p2_s:
+                    lw[p2_s:p2_e, b] = 1.0 / float(p2_e - p2_s)
+                # Probe 3: final tail post-distractors (forces long-horizon survival > 756/2032 ticks!)
+                p3_s = max(p2_e, seq_len - 32)
+                if seq_len > p3_s:
+                    lw[p3_s:seq_len, b] = 3.0 / float(seq_len - p3_s)
 
         return codes, y_run, lw
 
@@ -341,6 +371,7 @@ def main() -> None:
     ap.add_argument("--rso-dir", type=Path, required=True)
     ap.add_argument("--shard-tag", type=str, default="L12_Weq64_additive")
     ap.add_argument("--steps", type=int, default=450)
+    ap.add_argument("--phase-0-steps", type=int, default=150, help="25-tick spoken-word recognition grounding steps when `--train-clipbank` is set.")
     ap.add_argument("--phase-a-steps", type=int, default=250, help="Short-horizon word+overwrite grounding steps when `--train-clipbank` is set.")
     ap.add_argument("--phase-a-len", type=int, default=256, help="Short-horizon sequence length for Phase A grounding.")
     ap.add_argument("--train-clipbank", type=Path, default=None, help="Optional train-speaker Mimi clipbank for zero-memorization dynamic synthesis.")
@@ -445,16 +476,65 @@ def main() -> None:
         u = jax.tree_util.tree_map(lambda x: x * lr_arr.astype(x.dtype), u)
         return optax.apply_updates(ap, u), nost, ls * inv, mm
 
+    @jax.jit(donate_argnums=(0, 1))
+    def _step_word(ap, ost, c_tb, y_b, lr_arr):
+        def _wl(p):
+            b_sz = c_tb.shape[1]
+            z, _, dm = scan_core_fast(
+                p["core"],
+                init_core_state(spec, b_sz),
+                _make_mimi_packets(c_tb, spec),
+                spec,
+                remat_layers=True,
+                matmul_dtype=mm_dtype,
+                assume_all_valid=True,
+                use_wy_chunking=args.use_wy_chunking,
+            )
+            hw = p["heads"]["head_word_aux"]
+            z_tail = rms_norm(z[-6:], hw["norm_w"])
+            lg = jnp.matmul(z_tail.astype(mm_dtype), hw["w"].astype(mm_dtype)).astype(jnp.float32) + hw["bias"]
+            loss = optax.softmax_cross_entropy_with_integer_labels(lg, y_b[None, :]).mean()
+            acc = jnp.mean(jnp.argmax(lg[-1], axis=-1) == y_b)
+            return loss, {"word_acc": acc, "mean_nowrite": jnp.mean(dm["mean_nowrite"]), "mean_eta": jnp.mean(dm["mean_eff_write_eta"])}
+
+        (lv, mv), gm = jax.value_and_grad(_wl, has_aux=True)(ap)
+        u, nost = tx_unit.update(gm, ost, ap)
+        u = jax.tree_util.tree_map(lambda x: x * lr_arr.astype(x.dtype), u)
+        return optax.apply_updates(ap, u), nost, lv, mv
+
     rng = np.random.default_rng(args.seed + 300)
     t0 = time.perf_counter()
     curve = []
     if clipbank is not None:
-        # Phase A: Short-horizon spoken-word + selective-overwrite grounding (identical for ALL comparators!)
+        # Phase 0: 9-way real spoken-word grounding (`25` ticks = `2.0s`, B=64, identical for ALL comparators!)
+        p0_steps = max(0, int(args.phase_0_steps))
         pa_steps = max(0, int(args.phase_a_steps))
+        tot_steps = max(p0_steps + pa_steps + args.steps, 1)
+        p0_bsz = 64
+        pa_bsz = max(16, int(args.batch_size) * 2)
+        for s in range(p0_steps):
+            c_tb, y_b = clipbank.sample_word_batch(rng, batch_size=p0_bsz)
+            # Constant peak LR after 20-step warmup inside Phase 0 so Mimi RVQ embeddings converge cleanly to >85% word acc!
+            p0_mult = min(1.0, float(s + 1) / 20.0)
+            lr_v = jnp.asarray(args.base_lr * p0_mult, dtype=jnp.float32)
+            all_params, opt_st, lv, met = _step_word(all_params, opt_st, jnp.asarray(c_tb), jnp.asarray(y_b), lr_v)
+            if s == 0 or (s + 1) % max(1, p0_steps // 4) == 0 or s == p0_steps - 1:
+                lv.block_until_ready()
+                row = {
+                    "phase": "0_word", "step": s + 1, "elapsed_s": round(time.perf_counter() - t0, 1),
+                    "word_ce": round(float(lv), 4), "word_acc": round(float(met["word_acc"]), 4),
+                    "mean_nowrite": round(float(met["mean_nowrite"]), 4), "mean_eta": round(float(met["mean_eta"]), 4),
+                }
+                curve.append(row)
+                print(f"[RSO-0 step={s+1:4d}/{p0_steps}] {row}", flush=True)
+
+        # Phase A: Short-horizon dense causal spoken-word + selective-overwrite grounding (identical for ALL comparators!)
         for s in range(pa_steps):
             c_mbs, y_mbs, w_mbs = [], [], []
             for _ in range(grad_accum):
-                c_tb, y_tb, w_tb = clipbank.sample_batch(rng, batch_size=args.batch_size, seq_len=int(args.phase_a_len))
+                c_tb, y_tb, w_tb = clipbank.sample_batch(
+                    rng, batch_size=pa_bsz, seq_len=int(args.phase_a_len), dense_running=True
+                )
                 c_mbs.append(c_tb)
                 y_mbs.append(y_tb)
                 w_mbs.append(w_tb)

@@ -63,6 +63,7 @@ def main() -> None:
     ap.add_argument("--shard-tag", type=str, default="L12_Weq64_additive")
     ap.add_argument("--local-rso-dir", type=Path, required=True)
     ap.add_argument("--steps", type=int, default=450)
+    ap.add_argument("--phase-0-steps", type=int, default=200)
     ap.add_argument("--phase-a-steps", type=int, default=250)
     ap.add_argument("--aux-mimi-weight", type=float, default=0.0)
     ap.add_argument("--use-clipbank", action="store_true", help="Upload & train dynamically from train-speaker SpeechCommands Mimi clipbank (zero suffix memorization!).")
@@ -159,6 +160,7 @@ def main() -> None:
                     "--rso-dir", "/content/shards",
                     "--shard-tag", args.shard_tag,
                     "--steps", str(args.steps),
+                    "--phase-0-steps", str(args.phase_0_steps),
                     "--phase-a-steps", str(args.phase_a_steps),
                     "--aux-mimi-weight", str(args.aux_mimi_weight),
                     "--batch-size", str(args.batch_size),
