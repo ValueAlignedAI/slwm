@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T10:03:33.919664+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0012",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7514,
+      "mean_nowrite": 0.166,
+      "ground_truth_text_preview": " 65 metres ( 94 ft 0 in ) and a draught of 8 @.@ 93 metres ( 29 ft 4 in ) at deep load . They displaced 36 @,@ 500 long tons ( 37 @,@ 100 t ) at deep load , rou",
+      "free_running_32b_continuation": "metres) and 19 metres (199 metre",
+      "top1_next_byte_preview": "rC..mineos a11: mt)f mn t 1nd 1 meemght if t mm m(. metres (130 mt)( mn t an aicp bend o Ahe  aosclaye  t  mm m2.  ioag fi s o22  i) m200 mot.2n lesp bond o aeu",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5563,
+      "mean_nowrite": 0.158,
+      "ground_truth_text_preview": "ported very rough seas as the eye neared land . \n\n The powerful hurricane moved over or near several islands in the Bahamas . Winds on Spanish Wells and Harbour",
+      "free_running_32b_continuation": "hly and we may see every rate wi",
+      "top1_next_byte_preview": "rrstir bery feunhlnhctown the bneswexr s hind w TTI he rrrer ul semricane iaves iner tn coar teveral snsands an the sryata  a Thldo af taacish aassshand tardorr",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3385,
+      "mean_nowrite": 0.1722,
+      "ground_truth_text_preview": "s included in the set list of the group 's 3 December 2012 sold @-@ out show at New York City 's Madison Square Garden . One Direction delivered a performance o",
+      "free_running_32b_continuation": "ose words which can be used to s",
+      "top1_next_byte_preview": "raw  luded in tho fhctoigt of ihe praun ta f'paplmber 2014'Dtmdiym-@@ntpooou s  tow York Soty'Ssosardnon Ctuare Srtden'S.Sn  oasectoon oisivered t sarsermance o",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2221,
+      "mean_nowrite": 0.1661,
+      "ground_truth_text_preview": " = Robert Boulter = \n\n Robert Boulter is an English film , television and theatre actor . He had a guest @-@ starring role on the television series The Bill in ",
+      "free_running_32b_continuation": "r - A Computer System - A Comput",
+      "top1_next_byte_preview": "rC Cemort &axnder - 1\n  obert =oulter :s a  exglish lile i ahslpision and ree tee ircur i Torwas a srist fs-rTtrttyng tobl in the sexevision tttves ohe soll on ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0387,
+      "mean_nowrite": 0.1713,
+      "ground_truth_text_preview": "he old Olympia Inn , a gas station , and the second floor of a pharmaceutical building . Winds also tore the roof off an ice plant . A bridge leading to the bar",
+      "free_running_32b_continuation": " was a statement of the state of",
+      "top1_next_byte_preview": "re wndetudmpicna dot t srrtitation i and the otcond ooaor if t brosmaceutical seilding i Thtd  arso ah n the peot of et dane ciant a T puoege iiavsng to the src",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

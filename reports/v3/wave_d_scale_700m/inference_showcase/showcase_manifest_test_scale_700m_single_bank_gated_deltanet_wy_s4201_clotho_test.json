@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T15:42:39.093221+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0026",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7926,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Short and sporadic mixed with long continuous buzzing. A low, electric hum oscillates between two tones. a continuous musical note buzzes as it constantly chang",
+      "free_running_32b_continuation": "dic surface is filled to clean o",
+      "top1_next_byte_preview": "Aooet cnd hhlrtdic suxer fith aoug hrnvinuous eizzing  A lon  mcectroc sam if allatis aeiween aho mines. A mrntinuous sasic l hoiesiezzis an tt somttantly poing",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5104,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g in the background as a person ",
+      "top1_next_byte_preview": "Aater rs funning ioudly isd shen st suivns Tnf. Whe wasning oater ipodhtly fuars isd thackles town t deneven ptrface. W wmeady rtream of water febbles atftly an",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3744,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "ep and faded as the chicken is p",
+      "top1_next_byte_preview": "Aesh pitched sael  alay inlune iirlowed by a tatent of rolvnce.Aeiore f piep r crll aolli. Aigh pitched sell  aing  tollowed by a morent tf holence  feeore a mo",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1723,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "from the sky at the same time an",
+      "top1_next_byte_preview": "Aultiple slins fopeatedly ioapter asd toangstn t fotgom rishion. She cerson was luayeng aith ahe soin  on the r fands T serson ilaysng aith tiins in the r hands",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0022",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8127,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Water runs continuously from a faucet to a sink. Water pours from the faucet and into a metallic bucket. Water is pouring out of a faucet into a metal bucket. I",
+      "free_running_32b_continuation": "inuously in a stream and slows d",
+      "top1_next_byte_preview": "Aater funs flnsinuously aaom a faucet ih cnctnk. Water rours irom ahe faucet itd ssto a setal ic sasket. Water ps couring fut of a faucet into a metallbucket. W",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

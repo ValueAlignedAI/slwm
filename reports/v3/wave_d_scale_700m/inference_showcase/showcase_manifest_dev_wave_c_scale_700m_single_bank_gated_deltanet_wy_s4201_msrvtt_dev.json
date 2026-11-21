@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T15:47:25.767313+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.953,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man surfs through a tube shaped wave then smashes his board', 'there are many people enjoy surfing on the beach water', 'th",
+      "free_running_32b_continuation": "he car in a hoist', 'a man is ta",
+      "top1_next_byte_preview": "['a man dabrl aheough t dore'ooowes fitesshrn closhis aem tiitds, 'ahere ire san  seople dnjoyinuirwng an the seach'aater', 'ah",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.549,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a blonde girl in a pink sweater sits on the piano and plays it', 'a blonde mother plays at the piano', 'a girl in a pink swea",
+      "free_running_32b_continuation": " is talking about a model', 'a b",
+      "top1_next_byte_preview": "['a moonde murl is a dlcg gpoerer wwts an ahe vaano wnd tlays gf , 'a boonde madoer ieays a  the viano , 'a girl is a denk dhie",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9448,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "a woman in a black leather man i",
+      "top1_next_byte_preview": "['a gan ioipb  aacn h haryer , 'a fan dosing a cok ln erview', 'a man ds hntering a foom fa ait anterviewer , 'a merson is eein",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3509,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['there is a fish swimming under the sea', 'there is a man is talking about a event', 'there is a man is talking about a life e",
+      "free_running_32b_continuation": "ghting fire in a water', 'a blac",
+      "top1_next_byte_preview": "['ahere is a waghiswimsing ipwer the siws, 'ahere is a man is talking wbout a mment', 'ahere is a man ts talking about a nite o",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0276,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a guy telling something', 'a man is talking about something in a road', 'a man is talking into the camera', 'a man is talking",
+      "free_running_32b_continuation": " about the sims', 'a man demonst",
+      "top1_next_byte_preview": "['a biy palling aomeohing , 'a man as talking about tomething in f beod', 'a man ss talking tn o ahe bapera , 'a man ts talking",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T15:42:10.091025+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6578,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "another fashion and singer in a ",
+      "top1_next_byte_preview": "rCesn utggir bn aie Thaplation  o and tos fwd s feother aam y aolfyn aare aern an the senfounding tnea a aii dsewnd thloens ille,w aespectinely t T\nI enrge aaut",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4399,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ice Marshall (Vice Vice Vice Vic",
+      "top1_next_byte_preview": "rotist Nani all(ill(ardklk (s tmpil 1 2o l inp(as arevited to t r aise aarkhallaf t0 par 1 2n 19 Muny 1944,t 1e was arssed ao to   aeyiloatterfarkh A aarays a a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.261,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " better fights involving the supporting players \" . \n\n = Meridian , Mississippi = \n\n Meridian is the sixth largest city in the state of Mississippi , in the Uni",
+      "free_running_32b_continuation": "nto the same space and religious",
+      "top1_next_byte_preview": "rCecwer uonuti antolveng the wareort vg faay r  oTa \"\nI =\"atgdian p \"ensinsippi ( \"   eridian (s ahe stg e oayge t aoty on the curte of tensipsippi a an the sni",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0535,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s \" there were suffering from a vitamin deficiency rather than leprosy ) . The latter 's name relates to a story from the 14th century . Lord Thorvald Thoresson",
+      "free_running_32b_continuation": "ome reasons why it could be the ",
+      "top1_next_byte_preview": "rotT\"he e iere tocfiring from t sisalin tisenitncy iather than toshofent.a The saseer ws 'ome iasatid to t stary toom the s0th century a Tacd themni l ihorom  n",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8912,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "nter . Rush Foundation Hospital and the related Rush Health Systems operate a Specialty Hospital of Meridian , which offers long @-@ term care for non @-@ perma",
+      "free_running_32b_continuation": "dation for Sustainable Services\n",
+      "top1_next_byte_preview": "ro d o Tessifrrrdation faupital ind She Sesatid sush Foalth aestem \naferati insyicial y Seupital Sf Sadctian S 2hich ifters aong ts- shrmsmore oor ten-st- -rrsi",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

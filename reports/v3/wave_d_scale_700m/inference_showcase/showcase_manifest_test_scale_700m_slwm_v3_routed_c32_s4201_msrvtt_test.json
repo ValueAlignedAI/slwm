@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T10:03:01.161841+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 4.7442,
+      "mean_nowrite": 0.5828,
+      "ground_truth_text_preview": "a cartoon that is blurryb on a tv screen of a fashion run way",
+      "free_running_32b_continuation": "being driven time to a few vehic",
+      "top1_next_byte_preview": "[rmar oon khat bs beosriirau a ci shreen'tr t viition vonwtits",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 4.2749,
+      "mean_nowrite": 0.5702,
+      "ground_truth_text_preview": "bill murray is covered in frosting",
+      "free_running_32b_continuation": "talking about a cast of a fant m",
+      "top1_next_byte_preview": "[arl sasmay,dn tomered in aront ng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.5207,
+      "mean_nowrite": 0.5773,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g played for a busy city', 'it w",
+      "top1_next_byte_preview": "[lmaopsion seing pnseoduced oo t wis tal gegdyng oimice'",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.9585,
+      "mean_nowrite": 0.5593,
+      "ground_truth_text_preview": "a man in a music video screams shut up a bunch of times",
+      "free_running_32b_continuation": "c video on a green field and a p",
+      "top1_next_byte_preview": "[oan os a busic video oieiami wcottan andisch of times.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5559,
+      "mean_nowrite": 0.568,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g in a video game', 'a man is fn",
+      "top1_next_byte_preview": "[naan ds thnging i d saanding nn fhe cood ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

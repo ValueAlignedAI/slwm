@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T15:43:40.691676+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0012",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6788,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " 65 metres ( 94 ft 0 in ) and a draught of 8 @.@ 93 metres ( 29 ft 4 in ) at deep load . They displaced 36 @,@ 500 long tons ( 37 @,@ 100 t ) at deep load , rou",
+      "free_running_32b_continuation": "metres) is a strong strange stra",
+      "top1_next_byte_preview": "rC. Cinhes a11  me)f fncf and ( fiimght sn t m  .D  metres (110 it i inc2 an tecp bicd ( (he  aesclaye  t  m4 42   moag li s (22  i  2220 mot 2n 2epp lond ( 2eu",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.521,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "other crane was intended on the starboard side , but it was never fitted . \n\n The ships had an air group of 11 each of Yokosuka D4Y dive bombers ( Allied report",
+      "free_running_32b_continuation": "lying on a summer after that had",
+      "top1_next_byte_preview": "rfher taizisoas ln ented tf ahe shrrslard lhle o but tt was aoaer box ed w TTI he stop  wad b  irr cloup of s0 pxrh pt tore  ku aa  iesiriyobsds a12leaas aecort",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3216,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": "s a pot on a street and stretch ",
+      "top1_next_byte_preview": "rfad Terta irayes oes porhon an the sosteotde of tlrraaoar the ponangaailti a Tl t01m 1.0mnpoavy mer oomered the sever a and t  t0 m 10 mineal atoels aecan torl",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1826,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the presence of a minister who w",
+      "top1_next_byte_preview": "rnbne the  s pv tis pestsy ah\" \"xer then te soarned tnfthe sasth of tis poutg rt poildra \"e sorned oo hhe ptrfering of huher  an tis pasmsy.an iead of heelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0281,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "he old Olympia Inn , a gas station , and the second floor of a pharmaceutical building . Winds also tore the roof off an ice plant . A bridge leading to the bar",
+      "free_running_32b_continuation": " was a strong point in the storm",
+      "top1_next_byte_preview": "re rpd mldmpicni soa 1 srr itrtion a and the otcond saawr if t saysmaceutical soilding a Thtd  arso ahon the soam of  a dane caane a T pioege iiavsng to the src",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

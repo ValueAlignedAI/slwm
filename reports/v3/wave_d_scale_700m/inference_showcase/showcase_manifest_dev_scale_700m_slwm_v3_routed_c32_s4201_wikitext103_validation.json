@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T10:01:45.734361+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6883,
+      "mean_nowrite": 0.1672,
+      "ground_truth_text_preview": "egon River . M @-@ 82 follows Fremont Street east to a junction with M @-@ 37 . The two highways merge and run concurrently over the river and into downtown on ",
+      "free_running_32b_continuation": " Marine Marine Marine Marine Mar",
+      "top1_next_byte_preview": "rvglisocer a .a(  @M..-orlowi 2oeeast Stauet -act eo t sodgtion tith taa  @2. f .he fro migh ays iaagedtnd men tonterrently tner the mever ond tn e tiunlown ar ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4387,
+      "mean_nowrite": 0.162,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ice Shallow Shallow Shallow Shal",
+      "top1_next_byte_preview": "robaet Cank allMillMaldhlk Ms tnril 1 2aal en aas arevited to t r aice iarshallar t0 mara1 2n t9 Muny 1,42,a 1e was arssed to ao   aerilSattorfarkh a warays a a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3283,
+      "mean_nowrite": 0.1636,
+      "ground_truth_text_preview": " better fights involving the supporting players \" . \n\n = Meridian , Mississippi = \n\n Meridian is the sixth largest city in the state of Mississippi , in the Uni",
+      "free_running_32b_continuation": "t was a fair revenge that she wa",
+      "top1_next_byte_preview": "rCufwer tiruti at olveng the rhbeert ng roansr  oTa\"T\nI =\"adgtian M Medsinsippi M \"   eridian (s ahe mtgte oayge t ooty on the strte of tedsissippi a at the sni",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0746,
+      "mean_nowrite": 0.1729,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ion to the edge of the bush and ",
+      "top1_next_byte_preview": "revseioom ahavition l bebiratioe bpts ah txhiilraphicaand seabal portrials u arynographi,a aoefts,a and sota other porks af trtia The ponlection orso includes t",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9107,
+      "mean_nowrite": 0.174,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "matter of course else is like a ",
+      "top1_next_byte_preview": "rCnthmabile mnd mnderneite ioshway itstemsIecome iore aowular ahan tertingerstetsw a The sesiine of the seilroad tntustry ionsed bugnificantliobsiics s a aesult",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T15:43:13.590452+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 4.7869,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "cartoon show for kids",
+      "free_running_32b_continuation": "r a man with reversing a black a",
+      "top1_next_byte_preview": "[orsoon ppoostrr aids ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.9798,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man talking about the two cars he test drove",
+      "free_running_32b_continuation": "bout the store in a building for",
+      "top1_next_byte_preview": "[gpan ialking about the sro pars ia i ltstiive ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0031",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.3857,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "someone giving demo for some game",
+      "free_running_32b_continuation": "a tutorial in a building', 'a ma",
+      "top1_next_byte_preview": "[ouerne wiving aemonfor aemetaame ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.9163,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "man in black shirt is holding a baby upside down and talking about universal studios",
+      "free_running_32b_continuation": "irt and two women with melodic t",
+      "top1_next_byte_preview": "[onyis alack tpirt as solding f blsy tn ice trgn t   trlking about mpiqersil iirdio''",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0806,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a man shooting other people in a corridor",
+      "free_running_32b_continuation": "is talking to a man about the st",
+      "top1_next_byte_preview": "[re e is a gan itioting iuher people an t touridor",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T10:02:20.381370+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0027",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.798,
+      "mean_nowrite": 0.1793,
+      "ground_truth_text_preview": "Someone opens a wrapper and chews the contents with a crunching sound. A radio searches for a signal through a lot of static as a bubbling drone appears. While ",
+      "free_running_32b_continuation": " door while someone eats squeaky",
+      "top1_next_byte_preview": "Aomeone ipens a doipper ind tlews ihenwrntatts ohth s lrench ng sound. A pitio ittrches for s lennal ooaough anbiu of wiatio.an i pozbleng coopesonprars  Aaile ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5208,
+      "mean_nowrite": 0.1964,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g in a factory at a factory is c",
+      "top1_next_byte_preview": "Aater is funning ioudly asd ihe  it iuavns tvf  Ahe wamning water ipodhtly fuars tnd thickles oown t  oneven sprface. W ltrady atream of water refbles alftly an",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3441,
+      "mean_nowrite": 0.1769,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "eps of a faint chain car with hi",
+      "top1_next_byte_preview": "Aesh sitched guels aiay a cine wollowed by a tanent of silvnce aefore c covp r mell iogls  Aigh pitched fells aing  followed by a mouent af silvnce  aelore f cr",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0019",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1466,
+      "mean_nowrite": 0.1613,
+      "ground_truth_text_preview": "A small crowd talks loudly in a dining room several different people have conversations in a large space. A small group of people speaking loudly in a dining ha",
+      "free_running_32b_continuation": "alks and cheers talking to each ",
+      "top1_next_byte_preview": "A ctall woowd oalks aoudly wn t rifing poom.aeveral tinferent ciople tavi aonversatinns an a rarge rpace. A gmall group of people apeak ng aoudly in a sising pa",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0005",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7492,
+      "mean_nowrite": 0.1679,
+      "ground_truth_text_preview": "A man speaks and a door opens and shuts repeatedly afterwards. A man talks followed by doors being opened and closed A man is talking, then a door opens and clo",
+      "free_running_32b_continuation": "d then slowly diminishes its man",
+      "top1_next_byte_preview": "A pan speaks and t voor ipens and thut  oepeatedly.anter ard.. A man ialks aollowed by aoors oeing opened and closed.r man is salking  then a moor ipens and clo",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
