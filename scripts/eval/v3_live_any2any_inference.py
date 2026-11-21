@@ -37,11 +37,8 @@ if str(_REPO_ROOT) not in sys.path:
 from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, BYTE_PAD, LoadedSparseShard, decode_utf8_bytes
 from models.v3.any2any_heads import (
     COMMIT_ACTIONS,
-    apply_action_proprio_head,
-    apply_audio_head,
     apply_policy_commit_gate,
-    apply_text_head,
-    apply_video_head,
+    predict_any2any_heads,
 )
 from models.v3.core import init_core_state, step_core
 
@@ -108,11 +105,13 @@ def stream_text_continuation(
     st = init_core_state(spec, 1)
     rng = np.random.default_rng(seed)
 
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+
     @jax.jit
     def _tick(p, s, pkt):
         z, ns, dm = step_core(p["core"], s, pkt, spec)
-        t_lg = apply_text_head(p["heads"]["head_text"], z[None, :, :], spec)[0, 0]
-        return z, ns, t_lg, dm["mean_nowrite"], dm["mean_prior_err"]
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return z, ns, preds["text_logits"][0, 0], dm["mean_nowrite"][0], dm["mean_prior_error"][0]
 
     prompt_bytes = list(prompt.encode("utf-8", errors="ignore"))
     last_lg = None
@@ -181,8 +180,8 @@ def _packet_from_shard(spec, d: dict[str, Any], gi: int, *, is_first: bool, acti
 _CODEC_CACHE: dict[str, Any] = {}
 
 
-def decode_mimi_codes_to_wav(codes_t32: np.ndarray, out_wav: Path, *, device: str = "auto") -> str:
-    """Decode causal `int32[T, 32]` Kyutai Mimi 32-RVQ codes -> playable 24 kHz `.wav`."""
+def decode_mimi_codes_to_wav(codes_tq: np.ndarray, out_wav: Path, *, device: str = "auto") -> str:
+    """Decode causal `int32[T, Q]` (`Q=8` or `Q=32`) Kyutai Mimi RVQ codes -> playable 24 kHz `.wav`."""
     try:
         import torch
         from scipy.io import wavfile
@@ -192,7 +191,7 @@ def decode_mimi_codes_to_wav(codes_t32: np.ndarray, out_wav: Path, *, device: st
             _CODEC_CACHE["mimi"] = MimiModel.from_pretrained("kyutai/mimi").to(dev).eval()
         mimi = _CODEC_CACHE["mimi"]
         with torch.inference_mode():
-            c_t = torch.from_numpy(np.clip(codes_t32, 0, 2047).T[None, :, :].astype(np.int64)).to(dev)  # [1, 32, T]
+            c_t = torch.from_numpy(np.clip(codes_tq, 0, 2047).T[None, :, :].astype(np.int64)).to(dev)  # [1, Q, T]
             wav = mimi.decode(c_t).audio_values[0, 0].float().cpu().numpy()
         out_wav.parent.mkdir(parents=True, exist_ok=True)
         wavfile.write(out_wav, 24000, np.clip(wav * 32767.0, -32768, 32767).astype(np.int16))
@@ -275,12 +274,13 @@ def stream_cross_modal_from_shard(
     tb_ep = d["text_byte"][s0:e0]
     sep_pos = np.where(tb_ep == BYTE_MOD_SEP)[0]
 
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+
     @jax.jit
     def _tick(p, s, pkt):
         z, ns, dm = step_core(p["core"], s, pkt, spec)
-        t_lg = apply_text_head(p["heads"]["head_text"], z[None, :, :], spec)[0, 0]
-        a_lg = apply_audio_head(p["heads"]["head_audio"], z[None, :, :], spec)[0, 0]  # [Q, V]
-        return z, ns, t_lg, a_lg, dm["mean_nowrite"]
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return z, ns, preds["text_logits"][0, 0], preds["audio_logits"][0, 0], dm["mean_nowrite"][0]
 
     if target_mode == "text":
         if len(sep_pos) > 0:
@@ -336,23 +336,26 @@ def stream_cross_modal_from_shard(
         gen_c: list[np.ndarray] = []
         for _ in range(max_new_steps):
             if last_a_l is None:
-                codes_32 = np.zeros((spec.audio_codebooks,), dtype=np.int32)
+                codes_k = np.zeros((k_aud,), dtype=np.int32)
             else:
-                codes_32 = np.asarray(jnp.argmax(last_a_l, axis=-1), dtype=np.int32)
-            gen_c.append(codes_32)
+                codes_k = np.asarray(jnp.argmax(last_a_l, axis=-1), dtype=np.int32)  # [k_aud]
+            gen_c.append(codes_k)
+            full_codes = np.zeros((spec.audio_codebooks,), dtype=np.int32)
+            full_codes[: len(codes_k)] = codes_k
             pkt = _empty_packet_b1(spec)
             pkt["modality_id"] = jnp.array([1], dtype=jnp.int32)
             pkt["dt_s"] = jnp.array([0.08], dtype=jnp.float32)
-            pkt["audio_codes"] = jnp.asarray(codes_32[None, :], dtype=jnp.int32)
+            pkt["audio_codes"] = jnp.asarray(full_codes[None, :], dtype=jnp.int32)
             _, st_l, _, last_a_l, nw = _tick(params, st_l, pkt)
             nws_l.append(float(nw))
         return np.stack(gen_c, axis=0), n_vid, float(np.mean(nws_l)) if nws_l else 0.0
 
     pred_codes, n_vid_ctx, mean_nw = _run_v2a(ep_i)
     cf_codes, _, _ = _run_v2a(cf_ep_i)
-    # Extract ground-truth Mimi audio codes from the target episode
+    # Extract ground-truth Mimi audio codes from the target episode (both matched K_rvq and full 32-RVQ!)
     gt_aud_idx = [int(d["audio_idx"][gi]) for gi in range(s0, e0) if int(d["modality_id"][gi]) == 1 and int(d["audio_idx"][gi]) >= 0]
-    gt_codes = d["audio_codes"][gt_aud_idx[:max_new_steps]].astype(np.int32) if gt_aud_idx else np.zeros_like(pred_codes)
+    gt_codes_32 = d["audio_codes"][gt_aud_idx[:max_new_steps]].astype(np.int32) if gt_aud_idx else np.zeros((len(pred_codes), spec.audio_codebooks), dtype=np.int32)
+    gt_codes_k = gt_codes_32[:, :k_aud]
     gt_label = decode_utf8_bytes(tb_ep[int(sep_pos[0]) + 1 :]) if len(sep_pos) > 0 else ""
 
     # Causal conditioning diagnostic: do predicted RVQ codes change when conditioned on a DIFFERENT video?
@@ -361,16 +364,18 @@ def stream_cross_modal_from_shard(
     save_root = out_wav.parent if out_wav is not None else out_dir
     if save_root is not None:
         save_root.mkdir(parents=True, exist_ok=True)
-        pred_wav_p = out_wav if out_wav is not None else (save_root / f"video2audio_ep{ep_i:04d}_pred.wav")
-        gt_wav_p = save_root / f"video2audio_ep{ep_i:04d}_gt.wav"
-        cf_wav_p = save_root / f"video2audio_ep{ep_i:04d}_shuffled_video_cf.wav"
+        pred_wav_p = out_wav if out_wav is not None else (save_root / f"video2audio_ep{ep_i:04d}_pred_{k_aud}rvq.wav")
+        gt_k_wav_p = save_root / f"video2audio_ep{ep_i:04d}_gt_{k_aud}rvq.wav"
+        gt_32_wav_p = save_root / f"video2audio_ep{ep_i:04d}_gt_32rvq.wav"
+        cf_wav_p = save_root / f"video2audio_ep{ep_i:04d}_shuffled_video_cf_{k_aud}rvq.wav"
         np.savez_compressed(
             save_root / f"video2audio_ep{ep_i:04d}_mimi_codes.npz",
-            gt_codes=gt_codes, pred_codes=pred_codes, cf_codes=cf_codes,
+            gt_codes_32=gt_codes_32, gt_codes_k=gt_codes_k, pred_codes=pred_codes, cf_codes=cf_codes,
         )
-        rendered["gt_wav"] = decode_mimi_codes_to_wav(gt_codes, gt_wav_p)
-        rendered["pred_wav"] = decode_mimi_codes_to_wav(pred_codes, pred_wav_p)
-        rendered["shuffled_video_cf_wav"] = decode_mimi_codes_to_wav(cf_codes, cf_wav_p)
+        rendered["gt_32rvq_wav"] = decode_mimi_codes_to_wav(gt_codes_32, gt_32_wav_p)
+        rendered[f"gt_{k_aud}rvq_wav"] = decode_mimi_codes_to_wav(gt_codes_k, gt_k_wav_p)
+        rendered[f"pred_{k_aud}rvq_wav"] = decode_mimi_codes_to_wav(pred_codes, pred_wav_p)
+        rendered[f"shuffled_video_cf_{k_aud}rvq_wav"] = decode_mimi_codes_to_wav(cf_codes, cf_wav_p)
 
     return {
         "mode": f"video2audio ({shard_path.name})",
@@ -418,12 +423,13 @@ def stream_video_generation_from_shard(
     if n_groups_total < 2:
         return {"error": f"Episode {ep_i} in {shard_path.name} has < 2 video groups ({len(vid_pos)} patches)."}
 
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+
     @jax.jit
     def _tick(p, s, pkt):
         z, ns, dm = step_core(p["core"], s, pkt, spec)
-        v_p = apply_video_head(p["heads"]["head_video"], z[None, :, :], spec)[0, 0]
-        ap_p = apply_action_proprio_head(p["heads"]["head_action"], z[None, :, :], spec)[0, 0]
-        return z, ns, v_p, ap_p, dm["mean_nowrite"]
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return z, ns, preds["video_pred"][0, 0], preds["action_pred"][0, 0], dm["mean_nowrite"][0]
 
     if mode == "audio2video":
         use_g = min(n_pred_groups, n_groups_total)
