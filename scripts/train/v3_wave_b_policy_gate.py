@@ -493,6 +493,17 @@ def main() -> None:
     }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    gate_ckpt_p = args.out_dir / f"wave_b_{tag}_ckpt.pkl"
+    with gate_ckpt_p.open("wb") as f:
+        pickle.dump(
+            {
+                "tag": tag,
+                "commit_actions": list(COMMIT_ACTIONS),
+                "gate_params": jax.tree_util.tree_map(lambda x: np.asarray(x, dtype=np.float32), gate_params),
+            },
+            f,
+            protocol=pickle.HIGHEST_PROTOCOL,
+        )
     out_p = args.out_dir / f"wave_b_policy_gate_{tag}_receipt.json"
     out_p.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps(report, indent=2), flush=True)

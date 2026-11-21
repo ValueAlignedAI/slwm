@@ -170,6 +170,98 @@ def _upload_shards_batch_chunked(
     raise RuntimeError(f"Batch shard assembly failed after 3 attempts: {last_err}")
 
 
+def _download_file_chunked_verified(
+    session_name: str,
+    remote_path: str,
+    local_path: Path,
+    *,
+    cfg_path: Path,
+    log_dir: Path,
+    bal_start: float,
+    max_spend_cu: float,
+    t_alloc: float,
+    chunk_bytes: int = 32 * 1024 * 1024,
+) -> bool:
+    """Safely download large checkpoints (`600 MiB - 2.5 GiB`) in `<= 32 MiB` parts with SHA-256 verification."""
+    split_py = (
+        f"import hashlib, json, os\n"
+        f"src = {remote_path!r}\n"
+        "if not os.path.isfile(src):\n"
+        "    print('DL_MISSING', flush=True)\n"
+        "else:\n"
+        "    sz = os.path.getsize(src)\n"
+        "    h = hashlib.sha256()\n"
+        "    parts = []\n"
+        "    idx = 0\n"
+        f"    cbytes = {chunk_bytes}\n"
+        "    with open(src, 'rb') as f:\n"
+        "        while True:\n"
+        "            b = f.read(cbytes)\n"
+        "            if not b:\n"
+        "                break\n"
+        "            h.update(b)\n"
+        "            pp = f'/tmp/_dl_part_{idx:04d}.bin'\n"
+        "            with open(pp, 'wb') as fout:\n"
+        "                fout.write(b)\n"
+        "            parts.append(pp)\n"
+        "            idx += 1\n"
+        "    print('DL_META_BEGIN' + json.dumps({'size': sz, 'sha256': h.hexdigest(), 'parts': parts}) + 'DL_META_END', flush=True)\n"
+    )
+    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+        session_name, split_py, cfg_path=cfg_path, log_dir=log_dir,
+        log_prefix=f"dl_split_{local_path.stem}",
+        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
+        t_alloc_start=t_alloc, phase_timeout_s=300, exec_timeout_s=240,
+    )
+    if rc != 0 or tripped or "DL_META_BEGIN" not in out:
+        print(f"[CKPT_DL WARN] Could not prepare {remote_path}: {out[-200:]} {err[-200:]}", flush=True)
+        return False
+    meta = json.loads(out.split("DL_META_BEGIN", 1)[1].split("DL_META_END", 1)[0])
+    parts: list[str] = meta["parts"]
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_local = local_path.with_suffix(local_path.suffix + ".part")
+    h_loc = hashlib.sha256()
+    tot = 0
+    print(f"[CKPT_DL] Downloading {Path(remote_path).name} ({meta['size'] / 1024**2:.1f} MiB in {len(parts)} parts) -> {local_path}...", flush=True)
+    with tmp_local.open("wb") as fout:
+        for i, rem_p in enumerate(parts):
+            p_loc = local_path.parent / f"._{local_path.name}.p{i:04d}"
+            ok_p = False
+            for att in range(1, 4):
+                res = run_colab("download", "-s", session_name, rem_p, str(p_loc), cfg_path=cfg_path, timeout=300)
+                if res.returncode == 0 and p_loc.is_file():
+                    ok_p = True
+                    break
+                time.sleep(5.0 * att)
+            if not ok_p:
+                print(f"[CKPT_DL WARN] Part {i+1}/{len(parts)} failed for {remote_path}", flush=True)
+                p_loc.unlink(missing_ok=True)
+                tmp_local.unlink(missing_ok=True)
+                return False
+            raw = p_loc.read_bytes()
+            fout.write(raw)
+            h_loc.update(raw)
+            tot += len(raw)
+            p_loc.unlink(missing_ok=True)
+    if tot != int(meta["size"]) or h_loc.hexdigest() != str(meta["sha256"]):
+        print(f"[CKPT_DL WARN] Integrity mismatch on {local_path}: {tot} vs {meta['size']}", flush=True)
+        tmp_local.unlink(missing_ok=True)
+        return False
+    tmp_local.replace(local_path)
+    # Clean up remote temp parts + remote ckpt to keep `/content` disk lean
+    clean_py = (
+        "import glob, os\n"
+        "for p in glob.glob('/tmp/_dl_part_*.bin'):\n"
+        "    try: os.remove(p)\n"
+        "    except OSError: pass\n"
+        f"try: os.remove({remote_path!r})\n"
+        "except OSError: pass\n"
+    )
+    run_colab("exec", "-s", session_name, "-c", clean_py, cfg_path=cfg_path, timeout=60)
+    print(f"[CKPT_DL OK] Verified SHA-256 ({h_loc.hexdigest()[:16]}...) -> {local_path}", flush=True)
+    return True
+
+
 def _build_code_tar(repo_root: Path) -> bytes:
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w:gz") as tf:
@@ -207,7 +299,8 @@ def main() -> None:
     ap.add_argument("--multi-horizon-weight", type=float, default=0.15)
     ap.add_argument("--local-shard-dir", type=Path, required=True, help="Directory with pre-encoded `.npz` shards to upload.")
     ap.add_argument("--include-test-shards", action="store_true", help="Upload sealed `*_test*.npz` shards & enable `--eval-sealed-test`.")
-    ap.add_argument("--download-ckpts", action="store_true", help="Download trained `.pkl` checkpoints before teardown.")
+    ap.add_argument("--download-ckpts", action="store_true", help="Download trained core+Wave B/C `.pkl` checkpoints with SHA-256 verification before cleanup.")
+    ap.add_argument("--ckpt-dir", type=Path, default=Path(".ops/checkpoints"), help="Local gitignored directory for downloaded `.pkl` checkpoints.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
     ap.add_argument("--resume", action="store_true", help="Skip arms/seeds whose complete receipt JSONs already exist in `--out-dir`.")
@@ -423,7 +516,24 @@ def main() -> None:
                     for sh_tag in ("clotho_dev", "msrvtt_dev"):
                         run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json"), cfg_path=cfg_path, timeout=60)
                 if args.download_ckpts:
-                    run_colab("download", "-s", session_name, ckpt_rem, str(args.out_dir / f"{tag}_ckpt.pkl"), cfg_path=cfg_path, timeout=600)
+                    ckpt_dst_dir = args.ckpt_dir / args.profile
+                    _download_file_chunked_verified(
+                        session_name, ckpt_rem, ckpt_dst_dir / f"{tag}_ckpt.pkl",
+                        cfg_path=cfg_path, log_dir=log_dir,
+                        bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                    )
+                    if args.run_wave_b:
+                        _download_file_chunked_verified(
+                            session_name, f"/content/out/wave_b_{tag}_ckpt.pkl", ckpt_dst_dir / f"wave_b_{tag}_ckpt.pkl",
+                            cfg_path=cfg_path, log_dir=log_dir,
+                            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                        )
+                    if args.run_wave_c:
+                        _download_file_chunked_verified(
+                            session_name, f"/content/out/wave_c_{tag}_ckpt.pkl", ckpt_dst_dir / f"wave_c_{tag}_ckpt.pkl",
+                            cfg_path=cfg_path, log_dir=log_dir,
+                            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                        )
                 if tripped:
                     print("[WAVE_LAUNCH] Budget watchdog tripped; halting cleanly.", flush=True)
                     break

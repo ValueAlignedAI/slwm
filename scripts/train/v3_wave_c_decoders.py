@@ -174,6 +174,17 @@ def main() -> None:
     }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    dec_ckpt_p = args.out_dir / f"wave_c_{tag}_ckpt.pkl"
+    with dec_ckpt_p.open("wb") as f:
+        pickle.dump(
+            {
+                "tag": tag,
+                "spec": spec,
+                "dec_params": jax.tree_util.tree_map(lambda x: np.asarray(x, dtype=np.float32), dec_params),
+            },
+            f,
+            protocol=pickle.HIGHEST_PROTOCOL,
+        )
     receipt = {
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "tag": tag,
