@@ -1,0 +1,181 @@
+{
+  "timestamp_utc": "2026-11-21T00:43:57.265314+00:00",
+  "tag": "confirmation_135m_single_bank_gated_deltanet_wy_s4201",
+  "spec_name": "confirmation_135m_single_bank_gated_deltanet",
+  "checkpoint": "/content/out/confirmation_135m_single_bank_gated_deltanet_wy_s4201_ckpt.pkl",
+  "wave_c_decoder_params": 13615910,
+  "readout_mup_lr": 0.001,
+  "max_core_grad_verified": 0.0,
+  "core_weights_strictly_frozen": true,
+  "train_curve": [
+    {
+      "step": 1,
+      "loss": 6.60028,
+      "text_bpb": 8.0444,
+      "audio_rvq_ce": 7.6246,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 25,
+      "loss": 3.92412,
+      "text_bpb": 1.3931,
+      "audio_rvq_ce": 6.8826,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 50,
+      "loss": 0.63959,
+      "text_bpb": 1.1988,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.44827,
+      "action_huber": 0.0
+    },
+    {
+      "step": 75,
+      "loss": 2.14058,
+      "text_bpb": 0.2887,
+      "audio_rvq_ce": 5.8628,
+      "video_huber": 0.35881,
+      "action_huber": 0.0
+    },
+    {
+      "step": 100,
+      "loss": 6.54425,
+      "text_bpb": 0.0535,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17892,
+      "action_huber": 19.41671
+    },
+    {
+      "step": 125,
+      "loss": 3.27818,
+      "text_bpb": 1.2538,
+      "audio_rvq_ce": 5.6873,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 150,
+      "loss": 0.52328,
+      "text_bpb": 0.9917,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.35918,
+      "action_huber": 0.0
+    },
+    {
+      "step": 175,
+      "loss": 1.86783,
+      "text_bpb": 0.0932,
+      "audio_rvq_ce": 5.2373,
+      "video_huber": 0.30155,
+      "action_huber": 0.0
+    },
+    {
+      "step": 200,
+      "loss": 6.25521,
+      "text_bpb": 0.0388,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.14239,
+      "action_huber": 18.59638
+    },
+    {
+      "step": 225,
+      "loss": 3.08079,
+      "text_bpb": 1.0549,
+      "audio_rvq_ce": 5.4304,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 250,
+      "loss": 0.47256,
+      "text_bpb": 0.9361,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.29629,
+      "action_huber": 0.0
+    }
+  ],
+  "causal_conditioning_proofs": {
+    "video_to_audio_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 6.23086,
+      "shuffled_source_loss": 6.23252,
+      "causal_shuffle_gain": 0.00166,
+      "causal_shuffle_gain_se": 0.01707,
+      "causal_shuffle_ci95_low": -0.03181,
+      "frac_episodes_improved": 0.5625,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.29158,
+      "shuffled_source_loss": 0.29196,
+      "causal_shuffle_gain": 0.00038,
+      "causal_shuffle_gain_se": 0.0004,
+      "causal_shuffle_ci95_low": -0.00041,
+      "frac_episodes_improved": 0.4688,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_text_clotho_dev": {
+      "shard": "clotho_dev.npz",
+      "source_mod": 1,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.83718,
+      "shuffled_source_loss": 0.84357,
+      "causal_shuffle_gain": 0.00639,
+      "causal_shuffle_gain_se": 0.00256,
+      "causal_shuffle_ci95_low": 0.00136,
+      "frac_episodes_improved": 0.6406,
+      "causal_conditioning_verified": true
+    },
+    "video_to_text_msrvtt_dev": {
+      "shard": "msrvtt_dev.npz",
+      "source_mod": 0,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 1.15435,
+      "shuffled_source_loss": 1.15745,
+      "causal_shuffle_gain": 0.0031,
+      "causal_shuffle_gain_se": 0.00866,
+      "causal_shuffle_ci95_low": -0.01387,
+      "frac_episodes_improved": 0.5625,
+      "causal_conditioning_verified": false
+    },
+    "action_intervention_robotics_dev": {
+      "shard": "robotics_dev.npz",
+      "n_evaluated_episodes": 21,
+      "paired_next_proprio_huber": 16.50189,
+      "intervened_next_proprio_huber": 18.67327,
+      "action_intervention_proprio_gain": 2.17138,
+      "action_intervention_proprio_se": 0.5513,
+      "paired_next_video_huber": 0.13742,
+      "intervened_next_video_huber": 0.20013,
+      "action_intervention_video_gain": 0.06271,
+      "targets_strictly_held_fixed": true,
+      "causal_action_conditioning_verified": true
+    }
+  },
+  "wave_c_showcases": {
+    "clotho_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_single_bank_gated_deltanet_wy_s4201_clotho_dev.json",
+      "n_ranked_episodes": 32
+    },
+    "msrvtt_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev.json",
+      "n_ranked_episodes": 32
+    }
+  }
+}

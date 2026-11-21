@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T01:32:21.148573+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7187,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "the story of the story of the st",
+      "top1_next_byte_preview": "rCerrithgcir tf tee Cecplition  o t d tos swd r ooakher tammy aosfin aare aern in the Utnfounding snea o aea edhhnd thmlens ille a weseectively o TTA rnrge ttur",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4429,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ice is a strong point of the str",
+      "top1_next_byte_preview": "roaict iarihalliirlaardeti in tlril 2 Te lein oas aroboted bo t r tice morshalltf t0 yar 2 Hn t9 Many 19,0 a te was arssed io to   aeredoartor arkh o wayarsna a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.275,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e street of the street of the st",
+      "top1_next_byte_preview": "red rshh bxcn thes infye w T A aCondo =eqainsd tssrosente of the pirld oor the piight  an t010 a wxplndeng tos peoe ie araning aome otakshan a penl ack o Te wen",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1398,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " better fights involving the supporting players \" . \n\n = Meridian , Mississippi = \n\n Meridian is the sixth largest city in the state of Mississippi , in the Uni",
+      "free_running_32b_continuation": "n the case of the case of the ca",
+      "top1_next_byte_preview": "rCu her toruti an olveng mhe stbport vg peac rs aAs\"\"\nI =\"atgtean a \"ensiosippi i \"   iridian  s ahe mtg h citgest poty on the siate of tississippi ( ancthe sni",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0038,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional parts of the projectile an",
+      "top1_next_byte_preview": "rrrg toom thafitional pisiratioe anti ao txhnographic and thagul aattrials t wrytography i aoeftsma and pana other porks of trt t The somlection onso ancludes a",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

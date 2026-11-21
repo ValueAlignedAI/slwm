@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T23:02:52.843607+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7389,
+      "mean_nowrite": 0.1225,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and State Control of the Unite",
+      "top1_next_byte_preview": "rne t aibnnoraane  a and tllya aa  (anesa (osh ind aark aontrins aretic staeler  a ahemming aair  a ahadis aonlts a ansrliball colld o aamtwall cield  a and s s",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.549,
+      "mean_nowrite": 0.1191,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ictory in the United States and ",
+      "top1_next_byte_preview": "rosirt aarchallaillMardhnh is 1mril 1 1o d in aas arovited bo t d tirt aarkhellaf t0 aar 1 Tn t9 hany 1918,a ae was arssed io toM  aarkboarter aoth t aarays a a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3414,
+      "mean_nowrite": 0.1227,
+      "ground_truth_text_preview": " Rabbit Creek in 1830 during the period of Indian Removal . After the treaty was ratified , European @-@ American settlers began to move into the area . \n\n Afte",
+      "free_running_32b_continuation": " the United States in 1964 and t",
+      "top1_next_byte_preview": "rCeibin aooak as t967 auring the 1rriod of tndian Aesatal ( Tnter the reaaty oas aeihnied i tnropean rm-mArerican rtrtlers aegan to bave in o the crta o A\nA ste",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1344,
+      "mean_nowrite": 0.1267,
+      "ground_truth_text_preview": "s \" there were suffering from a vitamin deficiency rather than leprosy ) . The latter 's name relates to a story from the 14th century . Lord Thorvald Thoresson",
+      "free_running_32b_continuation": "ome of the strong world of broth",
+      "top1_next_byte_preview": "rost\"he e were torfiring from t sesalin oiseniency oether than teatiuelc t The feteer cstsote oapeted to t strry ooom the s9th century a Taod aheme    iheme   n",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9554,
+      "mean_nowrite": 0.1289,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "consideration in the field of th",
+      "top1_next_byte_preview": "rCnthmabile and c derneete iesh-ay (tstems(ycome aore crwular than trrsidgersaetsr a The seviine of the siilwoad ss ustry aonsed btgnificant cousaist s t tesplt",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

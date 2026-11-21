@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T23:03:39.318997+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 4.4288,
+      "mean_nowrite": 0.3318,
+      "ground_truth_text_preview": "cartoon show for kids",
+      "free_running_32b_continuation": "r the cowbell', 'a group of peop",
+      "top1_next_byte_preview": "[orsorn gnowitor tins ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.5338,
+      "mean_nowrite": 0.3304,
+      "ground_truth_text_preview": "an oriental femal is dressed in a pink wig with girlish clothing and is carrying a stuffed animal",
+      "free_running_32b_continuation": "ale shooting', 'a man talking a",
+      "top1_next_byte_preview": "[ndifdgntatlclaaleis feisced in anrleg chteihth srrlsnl wiasheng snd ts iolriing s mirdf d dmdmal ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.1774,
+      "mean_nowrite": 0.3291,
+      "ground_truth_text_preview": "a child in pink watches a white bird in an open box",
+      "free_running_32b_continuation": "ing car the large car travels th",
+      "top1_next_byte_preview": "[nwhold ss aiakiaateh s anlaite sard cn a  ofen caw'",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8254,
+      "mean_nowrite": 0.3247,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g poured to reverse and pounds w",
+      "top1_next_byte_preview": "[ngrirs rn baing pnteodeced wo m gusital reldyng mivice ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0999,
+      "mean_nowrite": 0.3326,
+      "ground_truth_text_preview": "a group of people are walking a woman is talking about their culture",
+      "free_running_32b_continuation": "le speaking in the background ",
+      "top1_next_byte_preview": "[twroup if feople sre talking trdaman in walking tbout their lhsiures",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

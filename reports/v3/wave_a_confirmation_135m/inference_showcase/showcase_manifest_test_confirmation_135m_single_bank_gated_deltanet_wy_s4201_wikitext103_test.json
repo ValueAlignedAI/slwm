@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T00:41:05.267373+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0012",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.805,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " 65 metres ( 94 ft 0 in ) and a draught of 8 @.@ 93 metres ( 29 ft 4 in ) at deep load . They displaced 36 @,@ 500 long tons ( 37 @,@ 100 t ) at deep load , rou",
+      "free_running_32b_continuation": "million million million million ",
+      "top1_next_byte_preview": "rC. Bitaos a11: me)f fnc1 and t siiwghteif t fm\n@T  mitres o120 mt)f fn 1 on tivp teod o\nThe  aisclayed t  mm @2   moag di s o120 m  @20  mot an tivp tond o 2eu",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5885,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "other crane was intended on the starboard side , but it was never fitted . \n\n The ships had an air group of 11 each of Yokosuka D4Y dive bombers ( Allied report",
+      "free_running_32b_continuation": "considered a strange too a stron",
+      "top1_next_byte_preview": "rnher toesesois cn erded tnethe stattaard wtde o tut tt ias aover bontid a TTA he ctof  ias a  ecrptraup of t  mnrh of touk  sa aa  aesiriytbsds a12neaes tesort",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4003,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s included in the set list of the group 's 3 December 2012 sold @-@ out show at New York City 's Madison Square Garden . One Direction delivered a performance o",
+      "free_running_32b_continuation": "e state of the captain and the s",
+      "top1_next_byte_preview": "roa  rude  an the stctoakteof the creun aahs mapember 1 11 Ttndii@-@-utp-tou tn tow York Soty SAhSerenon Ctuare Srmden i Tu  oasectoon oi  veryd t sarsormence o",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0007",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2627,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ng laboured to a Western ear ( particularly when translating regulated verse , or l\u01dcshi ) , and accommodating the complex allusions contained particularly in th",
+      "free_running_32b_continuation": " more than a more terrible and t",
+      "top1_next_byte_preview": "ro iadorred ah t mestern Axrlt11articular)y ahen thanslateng tesilaris tarsist tr te)beepi a and t corpodateog the sonplexisnlerion  oomtrinid brrticilarly tn t",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0752,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "he old Olympia Inn , a gas station , and the second floor of a pharmaceutical building . Winds also tore the roof off an ice plant . A bridge leading to the bar",
+      "free_running_32b_continuation": "ndian is a popular computer that",
+      "top1_next_byte_preview": "re wpd mldmpicnindot a srmtitureon i and the staond siowd of t saosmaceutic l pailding o Thtd  arso hh n the peot of  tndane caant t T puidge iaaveng to the sls",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

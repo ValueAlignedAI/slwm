@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T00:39:56.944447+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6264,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['this is a video clip from the show what not to wear', 'a woman in pink is talking with a man', 'there are some fashion ladies",
+      "free_running_32b_continuation": "eo game commentating about an ev",
+      "top1_next_byte_preview": "['awes is a wideo gaip toom ahe wtow poit ioweoo foar , 'a foman is aucg ds palking aith s ban', 'ahere ire some pomtion cimyes",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4376,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a blonde girl in a pink sweater sits on the piano and plays it', 'a blonde mother plays at the piano', 'a girl in a pink swea",
+      "free_running_32b_continuation": " plays in a vitary wheels a woma",
+      "top1_next_byte_preview": "['a coand  mirl ps a wrn  thoater ohts in ahe waano'wnd trays wts, 'a boande gavier ilays w  ahe ciano', 'a brrl ps a wlag rhia",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7704,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a group of people dancing and singing for a music video', 'a guy dances spanish music', 'a man in sunglasses and a chain arou",
+      "free_running_32b_continuation": "ople s reactions being shown and",
+      "top1_next_byte_preview": "['a baoup of people sanceng'ind singing tor h dosic gideo', 'a gry ianci  aienish ousic , 'a man is apig ashes and snwuurrssneu",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0017",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2391,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a band preforms a song', 'a group of people talking about an attack', 'a host is talking about a texas attack', 'a man is tal",
+      "free_running_32b_continuation": "m is that is commentating', 'a b",
+      "top1_next_byte_preview": "['a mand ieeforms o song , 'a bioup of meople aalking about s namheck', 'a gort is talking tbout h caltccon ack', 'a han is tal",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9904,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['there is a woman is making a milk shake', 'there is a woman is making a shake', 'there is a woman is making a shake', 'there ",
+      "free_running_32b_continuation": "man talking about stop an explod",
+      "top1_next_byte_preview": "['ahere is m moman tn making a wadi shome', 'ahere is a moman ts waking a whokep, 'ahere is a woman is making a whakep, 'ahere ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

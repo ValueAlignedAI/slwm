@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T00:40:49.946674+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.6747,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a child in pink watches a white bird in an open box",
+      "free_running_32b_continuation": " down the ground watching severa",
+      "top1_next_byte_preview": "[nfaild ss arnt ditehis onpeite trrd ss t  ifen poa ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.1701,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "news reporters talk about a strange sight in part of san diego",
+      "free_running_32b_continuation": "and discussing the products desi",
+      "top1_next_byte_preview": "[ess reaorter  ahlkianout e ctoengerctdnt on fart of ypudorssrs",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7963,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "while other friends too try and hitting the basket another is eager to achieve his fourth successful basket in basketball",
+      "free_running_32b_continuation": "ght in the forest and discussing",
+      "top1_next_byte_preview": "[aite tfher piigsds oh  mha tnd tat ing ihemgaceet ondther pt rxser th bccieve tim rror e auihessiullmucketbfs tlsketball'",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6173,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "people are singing on the beach",
+      "free_running_32b_continuation": "ing and singing a paper game', '",
+      "top1_next_byte_preview": "[icple wre tanging av ahe taach'",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0017",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0553,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a girl and a man are talking to each other",
+      "free_running_32b_continuation": "n then a person speaks to a plan",
+      "top1_next_byte_preview": "[nsrrl ard s san tne palking ao aach other ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

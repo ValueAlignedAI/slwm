@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T01:33:14.530603+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6433,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "llowed in the traditions of specific aspects of his work : Bai Juyi 's concern for the poor , Lu You 's patriotism , and Mei Yaochen 's reflections on the quoti",
+      "free_running_32b_continuation": "ee to the cartake which i saw th",
+      "top1_next_byte_preview": "re n r an the sreiition  of toecieic tn ects of tis oork a 1osrSan  1spaomsepnesor the srpr s woxa u as arriiatism o a d tadsYonuhir ss cepeecteon  of the puate",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.522,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ng with the college all @-@ stars . \" \n\n Rifenburg landed a job at WJR radio in Detroit , but he left his sportscaster 's job to join the Detroit Lions . In the",
+      "free_running_32b_continuation": "ege which he had no longer with ",
+      "top1_next_byte_preview": "ro aith ahe souoege wnl tr -Ttatt t T\"+   egl  arg iisgsd tnsou on te  ietio as tecei l R \"ut ia woat tis ftett  apt r i pdob ao tobn the fetroit oann  a.'t the",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3717,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " \n\n The tenor of his work changed as he developed his style and adapted to his surroundings ( \" chameleon @-@ like \" according to Watson ) : his earliest works ",
+      "free_running_32b_continuation": " the content of the content of t",
+      "top1_next_byte_preview": "rC I ie cersr of tistcork ioange  tn ae wiceloped tis strle and h vptad to tis strrounding  aaas\"oanb   n c\" \"hicels)+ntouding to totebn S.a \"ts sxrlyert tark  ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2516,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Robert Boulter = \n\n Robert Boulter is an English film , television and theatre actor . He had a guest @-@ starring role on the television series The Bill in ",
+      "free_running_32b_continuation": "r\n * @param {string} to {string}",
+      "top1_next_byte_preview": "rC  euort aaond r\na R   obert aounter as a  exglish tole t ahxlmision ond tee tee irtir i Torwas a srest t  -Ttatting tobe of the selevision ottvas ohe togl on ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0469,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically and specifically in the",
+      "top1_next_byte_preview": "rChe ryet i ahecilatid bhet tantiictsairld bntvitably anese aytween tapaneand Sntteast ofe of tts sro potn cegelr a Th bhet tvt o te wonled tor the sapanese aat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

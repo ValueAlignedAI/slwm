@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T01:32:38.048982+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0002",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5289,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rake is pulled through a pile of leaves, twigs and gravel. Items being shaken inside of then poured out. Items shaken inside pan of then poured out. The obj",
+      "free_running_32b_continuation": "ling and the water flows and the",
+      "top1_next_byte_preview": "Ahe waie os bollid aorough a piee of wiafes  ahocs and teavel  Tt ms aeing pturen an ide af ahe  suprid ift  Tt ms ahaken an ide oop au lhe  pourid out. Ihe ptj",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0031",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.35,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "In an open space, someone runs steadily on a treadmill. Machinery buzzes and hums at a continuous clip. An industrial machine in a manufacturing plant is runnin",
+      "free_running_32b_continuation": "e and then starts and then start",
+      "top1_next_byte_preview": "At t  epen wpace  aomeone iens aoeadily an a saaecianl  Aanhinery rezzis a d sims an a consanuous soac  M  ondustrial machine rs oncecuaactureng maayt.an bunnin",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0010",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2625,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The man urinates for a long time into a toilet. The rain from the sky falling into a metal barrel. A man is peeing in a toilet for a long time. A metal bowl cat",
+      "free_running_32b_continuation": "s are being struck and then stop",
+      "top1_next_byte_preview": "Ahe wac isbnates arl a moug sime.an o a siwlet  The main iaom ahe tty aailsng onto a total raskol. T ran is rurpng dntt toilet aar a long time  T matal oaxl ior",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0019",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1199,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A small crowd talks loudly in a dining room several different people have conversations in a large space. A small group of people speaking loudly in a dining ha",
+      "free_running_32b_continuation": "ower is being played and a play ",
+      "top1_next_byte_preview": "A ctall boowd oolki aoudly an t risnng soom Aiteral tinferent saople aave tlnversitions an t corge ruace. A small croup of people apeak ng ioudly in a lining ra",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7938,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning and the rain is pouring d",
+      "top1_next_byte_preview": "Aanning water iunhes aonttantly an tirds cing and chirpi Rater ilows aonststently as birds shirp itftly in the background. Water frackles alom a barntain ond ci",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

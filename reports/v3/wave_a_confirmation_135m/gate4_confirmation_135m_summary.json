@@ -1,0 +1,893 @@
+{
+  "wave_dir": "reports/v3/wave_a_confirmation_135m",
+  "arms": {
+    "single_bank_gated_deltanet_wy": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 137554512,
+      "trainable_head_params": 13615910,
+      "core_streaming_state_bytes_b1": 2098240,
+      "total_positions_trained": 98304000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.33864,
+          "se": 0.0,
+          "ci95": [
+            2.3386,
+            2.3386
+          ],
+          "direction": "lower"
+        },
+        "wt103_val_ppl": {
+          "mean": 5638.907,
+          "se": 0.0,
+          "ci95": [
+            5638.907,
+            5638.907
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 1.85544,
+          "se": 0.0,
+          "ci95": [
+            1.8554,
+            1.8554
+          ],
+          "direction": "lower"
+        },
+        "esc50_dev_top1": {
+          "mean": 0.7,
+          "se": 0.0,
+          "ci95": [
+            0.7,
+            0.7
+          ],
+          "direction": "higher"
+        },
+        "librispeech_dev_wer": {
+          "mean": 1.9776,
+          "se": 0.0,
+          "ci95": [
+            1.9776,
+            1.9776
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00658,
+          "se": 0.0,
+          "ci95": [
+            0.0066,
+            0.0066
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.04489,
+          "se": 0.0,
+          "ci95": [
+            0.0449,
+            0.0449
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": 0.00422,
+          "se": 0.0,
+          "ci95": [
+            0.0042,
+            0.0042
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.04373,
+          "se": 0.0,
+          "ci95": [
+            0.0437,
+            0.0437
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 0.00023,
+          "se": 0.0,
+          "ci95": [
+            0.0002,
+            0.0002
+          ],
+          "direction": "higher"
+        },
+        "robotics_video_huber": {
+          "mean": 0.11473,
+          "se": 0.0,
+          "ci95": [
+            0.1147,
+            0.1147
+          ],
+          "direction": "lower"
+        },
+        "robotics_act_gain": {
+          "mean": 8.17239,
+          "se": 0.0,
+          "ci95": [
+            8.1724,
+            8.1724
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0104,
+          "se": 0.0,
+          "ci95": [
+            0.0104,
+            0.0104
+          ],
+          "direction": "higher"
+        },
+        "test_wt103_bpb": {
+          "mean": 2.37602,
+          "se": 0.0,
+          "ci95": [
+            2.376,
+            2.376
+          ],
+          "direction": "lower"
+        },
+        "test_wt103_ppl": {
+          "mean": 6362.663,
+          "se": 0.0,
+          "ci95": [
+            6362.663,
+            6362.663
+          ],
+          "direction": "lower"
+        },
+        "test_lambada_acc": {
+          "mean": 0.0033,
+          "se": 0.0,
+          "ci95": [
+            0.0033,
+            0.0033
+          ],
+          "direction": "higher"
+        },
+        "test_lambada_ppl": {
+          "mean": 216404.031,
+          "se": 0.0,
+          "ci95": [
+            216404.031,
+            216404.031
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_bpb": {
+          "mean": 1.63508,
+          "se": 0.0,
+          "ci95": [
+            1.6351,
+            1.6351
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_mbpp_bpb": {
+          "mean": 1.83317,
+          "se": 0.0,
+          "ci95": [
+            1.8332,
+            1.8332
+          ],
+          "direction": "lower"
+        },
+        "test_mbpp_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top1": {
+          "mean": 0.525,
+          "se": 0.0,
+          "ci95": [
+            0.525,
+            0.525
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top5": {
+          "mean": 0.8525,
+          "se": 0.0,
+          "ci95": [
+            0.8525,
+            0.8525
+          ],
+          "direction": "higher"
+        },
+        "test_librispeech_wer": {
+          "mean": 1.595,
+          "se": 0.0,
+          "ci95": [
+            1.595,
+            1.595
+          ],
+          "direction": "lower"
+        },
+        "test_clotho_a2t_gain": {
+          "mean": 0.0071,
+          "se": 0.0,
+          "ci95": [
+            0.0071,
+            0.0071
+          ],
+          "direction": "higher"
+        },
+        "test_msrvtt_v2t_gain": {
+          "mean": -0.00668,
+          "se": 0.0,
+          "ci95": [
+            -0.0067,
+            -0.0067
+          ],
+          "direction": "higher"
+        },
+        "test_vggsound_v2a_gain": {
+          "mean": -0.0338,
+          "se": 0.0,
+          "ci95": [
+            -0.0338,
+            -0.0338
+          ],
+          "direction": "higher"
+        },
+        "test_robotics_video_huber": {
+          "mean": 0.11954,
+          "se": 0.0,
+          "ci95": [
+            0.1195,
+            0.1195
+          ],
+          "direction": "lower"
+        },
+        "test_robotics_act_gain": {
+          "mean": 8.15599,
+          "se": 0.0,
+          "ci95": [
+            8.156,
+            8.156
+          ],
+          "direction": "higher"
+        },
+        "test_rso_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0312
+      ]
+    },
+    "sliding_window_gqa_eqbyte": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 137845184,
+      "trainable_head_params": 13615910,
+      "core_streaming_state_bytes_b1": 2099264,
+      "total_positions_trained": 98304000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.31332,
+          "se": 0.0,
+          "ci95": [
+            2.3133,
+            2.3133
+          ],
+          "direction": "lower"
+        },
+        "wt103_val_ppl": {
+          "mean": 5135.57,
+          "se": 0.0,
+          "ci95": [
+            5135.57,
+            5135.57
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 1.85984,
+          "se": 0.0,
+          "ci95": [
+            1.8598,
+            1.8598
+          ],
+          "direction": "lower"
+        },
+        "esc50_dev_top1": {
+          "mean": 0.705,
+          "se": 0.0,
+          "ci95": [
+            0.705,
+            0.705
+          ],
+          "direction": "higher"
+        },
+        "librispeech_dev_wer": {
+          "mean": 1.8793,
+          "se": 0.0,
+          "ci95": [
+            1.8793,
+            1.8793
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00525,
+          "se": 0.0,
+          "ci95": [
+            0.0053,
+            0.0053
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.08615,
+          "se": 0.0,
+          "ci95": [
+            0.0862,
+            0.0862
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": 0.00346,
+          "se": 0.0,
+          "ci95": [
+            0.0035,
+            0.0035
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.02519,
+          "se": 0.0,
+          "ci95": [
+            0.0252,
+            0.0252
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 0.00019,
+          "se": 0.0,
+          "ci95": [
+            0.0002,
+            0.0002
+          ],
+          "direction": "higher"
+        },
+        "robotics_video_huber": {
+          "mean": 0.12743,
+          "se": 0.0,
+          "ci95": [
+            0.1274,
+            0.1274
+          ],
+          "direction": "lower"
+        },
+        "robotics_act_gain": {
+          "mean": 8.28377,
+          "se": 0.0,
+          "ci95": [
+            8.2838,
+            8.2838
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_wt103_bpb": {
+          "mean": 2.33815,
+          "se": 0.0,
+          "ci95": [
+            2.3382,
+            2.3382
+          ],
+          "direction": "lower"
+        },
+        "test_wt103_ppl": {
+          "mean": 5533.646,
+          "se": 0.0,
+          "ci95": [
+            5533.646,
+            5533.646
+          ],
+          "direction": "lower"
+        },
+        "test_lambada_acc": {
+          "mean": 0.0184,
+          "se": 0.0,
+          "ci95": [
+            0.0184,
+            0.0184
+          ],
+          "direction": "higher"
+        },
+        "test_lambada_ppl": {
+          "mean": 56514.738,
+          "se": 0.0,
+          "ci95": [
+            56514.738,
+            56514.738
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_bpb": {
+          "mean": 1.56682,
+          "se": 0.0,
+          "ci95": [
+            1.5668,
+            1.5668
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_mbpp_bpb": {
+          "mean": 1.73094,
+          "se": 0.0,
+          "ci95": [
+            1.7309,
+            1.7309
+          ],
+          "direction": "lower"
+        },
+        "test_mbpp_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top1": {
+          "mean": 0.53,
+          "se": 0.0,
+          "ci95": [
+            0.53,
+            0.53
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top5": {
+          "mean": 0.83,
+          "se": 0.0,
+          "ci95": [
+            0.83,
+            0.83
+          ],
+          "direction": "higher"
+        },
+        "test_librispeech_wer": {
+          "mean": 1.5376,
+          "se": 0.0,
+          "ci95": [
+            1.5376,
+            1.5376
+          ],
+          "direction": "lower"
+        },
+        "test_clotho_a2t_gain": {
+          "mean": 0.00237,
+          "se": 0.0,
+          "ci95": [
+            0.0024,
+            0.0024
+          ],
+          "direction": "higher"
+        },
+        "test_msrvtt_v2t_gain": {
+          "mean": -0.00291,
+          "se": 0.0,
+          "ci95": [
+            -0.0029,
+            -0.0029
+          ],
+          "direction": "higher"
+        },
+        "test_vggsound_v2a_gain": {
+          "mean": -0.02858,
+          "se": 0.0,
+          "ci95": [
+            -0.0286,
+            -0.0286
+          ],
+          "direction": "higher"
+        },
+        "test_robotics_video_huber": {
+          "mean": 0.13083,
+          "se": 0.0,
+          "ci95": [
+            0.1308,
+            0.1308
+          ],
+          "direction": "lower"
+        },
+        "test_robotics_act_gain": {
+          "mean": 8.44755,
+          "se": 0.0,
+          "ci95": [
+            8.4475,
+            8.4475
+          ],
+          "direction": "higher"
+        },
+        "test_rso_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0
+      ]
+    },
+    "slwm_v3_routed_c16": {
+      "n_seeds": 1,
+      "seeds": [
+        4201
+      ],
+      "trainable_core_params": 137846080,
+      "trainable_head_params": 13615910,
+      "core_streaming_state_bytes_b1": 3147136,
+      "total_positions_trained": 98304000,
+      "metrics": {
+        "wt103_val_bpb": {
+          "mean": 2.3237,
+          "se": 0.0,
+          "ci95": [
+            2.3237,
+            2.3237
+          ],
+          "direction": "lower"
+        },
+        "wt103_val_ppl": {
+          "mean": 5336.308,
+          "se": 0.0,
+          "ci95": [
+            5336.308,
+            5336.308
+          ],
+          "direction": "lower"
+        },
+        "text_code_dev_bpb": {
+          "mean": 1.83979,
+          "se": 0.0,
+          "ci95": [
+            1.8398,
+            1.8398
+          ],
+          "direction": "lower"
+        },
+        "esc50_dev_top1": {
+          "mean": 0.725,
+          "se": 0.0,
+          "ci95": [
+            0.725,
+            0.725
+          ],
+          "direction": "higher"
+        },
+        "librispeech_dev_wer": {
+          "mean": 1.813,
+          "se": 0.0,
+          "ci95": [
+            1.813,
+            1.813
+          ],
+          "direction": "lower"
+        },
+        "clotho_a2t_gain": {
+          "mean": 0.00672,
+          "se": 0.0,
+          "ci95": [
+            0.0067,
+            0.0067
+          ],
+          "direction": "higher"
+        },
+        "librispeech_a2t_gain": {
+          "mean": 0.07824,
+          "se": 0.0,
+          "ci95": [
+            0.0782,
+            0.0782
+          ],
+          "direction": "higher"
+        },
+        "msrvtt_v2t_gain": {
+          "mean": 0.00691,
+          "se": 0.0,
+          "ci95": [
+            0.0069,
+            0.0069
+          ],
+          "direction": "higher"
+        },
+        "vggsound_v2a_gain": {
+          "mean": 0.03182,
+          "se": 0.0,
+          "ci95": [
+            0.0318,
+            0.0318
+          ],
+          "direction": "higher"
+        },
+        "vggsound_a2v_gain": {
+          "mean": 0.00038,
+          "se": 0.0,
+          "ci95": [
+            0.0004,
+            0.0004
+          ],
+          "direction": "higher"
+        },
+        "robotics_video_huber": {
+          "mean": 0.11387,
+          "se": 0.0,
+          "ci95": [
+            0.1139,
+            0.1139
+          ],
+          "direction": "lower"
+        },
+        "robotics_act_gain": {
+          "mean": 8.32776,
+          "se": 0.0,
+          "ci95": [
+            8.3278,
+            8.3278
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "rso_dev_overall": {
+          "mean": 0.0208,
+          "se": 0.0,
+          "ci95": [
+            0.0208,
+            0.0208
+          ],
+          "direction": "higher"
+        },
+        "test_wt103_bpb": {
+          "mean": 2.35747,
+          "se": 0.0,
+          "ci95": [
+            2.3575,
+            2.3575
+          ],
+          "direction": "lower"
+        },
+        "test_wt103_ppl": {
+          "mean": 5942.117,
+          "se": 0.0,
+          "ci95": [
+            5942.117,
+            5942.117
+          ],
+          "direction": "lower"
+        },
+        "test_lambada_acc": {
+          "mean": 0.0012,
+          "se": 0.0,
+          "ci95": [
+            0.0012,
+            0.0012
+          ],
+          "direction": "higher"
+        },
+        "test_lambada_ppl": {
+          "mean": 123987.821,
+          "se": 0.0,
+          "ci95": [
+            123987.821,
+            123987.821
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_bpb": {
+          "mean": 1.61576,
+          "se": 0.0,
+          "ci95": [
+            1.6158,
+            1.6158
+          ],
+          "direction": "lower"
+        },
+        "test_humaneval_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_mbpp_bpb": {
+          "mean": 1.86697,
+          "se": 0.0,
+          "ci95": [
+            1.867,
+            1.867
+          ],
+          "direction": "lower"
+        },
+        "test_mbpp_pass1": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top1": {
+          "mean": 0.56,
+          "se": 0.0,
+          "ci95": [
+            0.56,
+            0.56
+          ],
+          "direction": "higher"
+        },
+        "test_esc50_top5": {
+          "mean": 0.84,
+          "se": 0.0,
+          "ci95": [
+            0.84,
+            0.84
+          ],
+          "direction": "higher"
+        },
+        "test_librispeech_wer": {
+          "mean": 1.5772,
+          "se": 0.0,
+          "ci95": [
+            1.5772,
+            1.5772
+          ],
+          "direction": "lower"
+        },
+        "test_clotho_a2t_gain": {
+          "mean": 0.00508,
+          "se": 0.0,
+          "ci95": [
+            0.0051,
+            0.0051
+          ],
+          "direction": "higher"
+        },
+        "test_msrvtt_v2t_gain": {
+          "mean": -0.04306,
+          "se": 0.0,
+          "ci95": [
+            -0.0431,
+            -0.0431
+          ],
+          "direction": "higher"
+        },
+        "test_vggsound_v2a_gain": {
+          "mean": -0.00559,
+          "se": 0.0,
+          "ci95": [
+            -0.0056,
+            -0.0056
+          ],
+          "direction": "higher"
+        },
+        "test_robotics_video_huber": {
+          "mean": 0.11793,
+          "se": 0.0,
+          "ci95": [
+            0.1179,
+            0.1179
+          ],
+          "direction": "lower"
+        },
+        "test_robotics_act_gain": {
+          "mean": 8.37572,
+          "se": 0.0,
+          "ci95": [
+            8.3757,
+            8.3757
+          ],
+          "direction": "higher"
+        },
+        "test_rso_ab_joint": {
+          "mean": 0.0,
+          "se": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "direction": "higher"
+        }
+      },
+      "rso_episode_pooled_ci95": [
+        0.0,
+        0.0521
+      ]
+    }
+  },
+  "paired_vs_slwm_v3_routed": {},
+  "wave_b_receipts_count": 3,
+  "wave_c_receipts_count": 3
+}

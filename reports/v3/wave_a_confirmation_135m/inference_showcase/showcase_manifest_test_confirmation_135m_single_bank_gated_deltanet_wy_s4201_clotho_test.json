@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T00:40:29.052368+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0002",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5441,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rake is pulled through a pile of leaves, twigs and gravel. Items being shaken inside of then poured out. Items shaken inside pan of then poured out. The obj",
+      "free_running_32b_continuation": "ling at a steady pace and then t",
+      "top1_next_byte_preview": "Ahe waie is torlid ahrough t saee of weaves  thocs and peivel  Tt ms aeing ptaren an ide af ahe  saurid aft  Tt ms ahaken an ide aautaffthe  saurid aut  The puj",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4152,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of a storm with a storm with a s",
+      "top1_next_byte_preview": "Ahe weavy raar of a  endostrial mnr sontitioner andt ioom tearbanserdi A  industrial mirpmontitioner istssiferates aith a siavy eaod  Tand boking ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0029",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3247,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Birds chirp in the background as an animal hisses in the foreground. The background chirp of birds was interrupted by the loud hiss of another animal even neare",
+      "free_running_32b_continuation": "the woods and chirps and chirps ",
+      "top1_next_byte_preview": "Airds ahirp an the wackground as a  ennmal sots s wn the boreground. Ahe bickground cairpsan airds ael cn ermupted by the daud bogsiau t  ther bndmal icenttoarb",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0019",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1066,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A small crowd talks loudly in a dining room several different people have conversations in a large space. A small group of people speaking loudly in a dining ha",
+      "free_running_32b_continuation": "alks and a man talks and a man t",
+      "top1_next_byte_preview": "A mtall eaowd oalks aoudly an a sosing soom atveral tinferent siople tave aonversetions an t carge riece. A ppall paoup of people cpeak ng toudly an a cinnng ra",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0020",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7688,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Insects buzz loudly while birds chirp and sing. Birds chirp and sing while insects buzz loudly. Flying insects are buzzing and birds are singing in the backgrou",
+      "free_running_32b_continuation": "udly as the wind blows in the ba",
+      "top1_next_byte_preview": "An ects auzz aoudly ahile birds ahirp ind sing  Birds chirp and sing ahile an ects auzz aoudly  Booing ansects are buzzing and burds are cinging.an the backgrou",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

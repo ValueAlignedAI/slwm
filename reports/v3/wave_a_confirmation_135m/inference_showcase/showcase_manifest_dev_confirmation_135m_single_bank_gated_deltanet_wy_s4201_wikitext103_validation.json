@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-21T00:40:12.301941+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7493,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and the Constitution of the Co",
+      "top1_next_byte_preview": "rneaw aabnnenaane  a and tllmasaarriakes( Tesh andswart (ontiins aactic otoelers a ahetming arwrs a ahadis aonlss a ansoliball salld o at teall fislds a and t s",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5223,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " This was the favourite of John Tudor who wrote of the island in his Victorian memoirs and described the cave as : \n\n ... in fairyland , so exquisite is the col",
+      "free_running_32b_continuation": "scinating world of property and ",
+      "top1_next_byte_preview": "rCies ias ahe cisorrite of tahn Mhror Cao waote tu the fnland an tis sietorian aadbirs ond tesiribes ahe cope on a t\n1 ...In tacl  and o wt tipuisiteltt the con",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0029",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3562,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "he accusations in interviews , and have stated numerous times that they do not condone racism and are merely interested in the subject . \n\n In 2006 , the song \"",
+      "free_running_32b_continuation": "n the store of the complex compa",
+      "top1_next_byte_preview": "re wlcossbeons on ttdereiew  o tnd teve torred aombrous phmes ahet the  wi not woutum  teteam and tle tonely in erested in the samject o TTA n t019,t the ctu  w",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1648,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "b , suggesting that the oral tradition may have some truth to it . \n\n In the 19th century the Crabbaberry fishing station in West Voe was opened and the island ",
+      "free_running_32b_continuation": "he property of the state of the ",
+      "top1_next_byte_preview": "rua tacgesting thet the ptic coanition oay bave bhme shaeh ah tnsa TTA n thi c9th century,the coef esal i oolheng atatecn is testeailntas anered and the snland ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0065,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "exploring the world of community",
+      "top1_next_byte_preview": "rCnthmabile and e derneite tesh ay atstem:(ycame tore arpular toan trrsidgersaetsw a Theyrevaine of the ceilwoad is istry ionsed bignificant cou aiot s i aeselt",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

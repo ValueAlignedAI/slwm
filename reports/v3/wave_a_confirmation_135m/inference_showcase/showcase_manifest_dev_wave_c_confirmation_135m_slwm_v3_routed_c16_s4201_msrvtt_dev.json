@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-20T23:08:33.675334+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_slwm_v3_routed_c16_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7612,
+      "mean_nowrite": 0.3268,
+      "ground_truth_text_preview": "['a youtube channel about puppies and kittens there is an option to subscribe and the background is pink', 'there is a dog walk",
+      "free_running_32b_continuation": "racter talks about explaining so",
+      "top1_next_byte_preview": "['a counhbe slarteliasout aetpies and dicsins aoe e'is a  aneion ah iepstriberhnd ahenfeck round im dlck', 'ahere is a coc iitk",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.283,
+      "mean_nowrite": 0.329,
+      "ground_truth_text_preview": "['a man demonstrates how they cook meat and slice it', 'a man describes how he sets up a bbq', 'a man grilling and slicing up m",
+      "free_running_32b_continuation": "rates how to draw a picture of s",
+      "top1_next_byte_preview": "['a ban desonstrates how toe  aomk auat and ppade on', 'a man aimcribis aiw te tttt op a rrau, 'a man diapling ond diideng opso",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.949,
+      "mean_nowrite": 0.3228,
+      "ground_truth_text_preview": "['a song plays in the background as a boy is running in a race', 'a woman is running down a road in green', 'a woman and severa",
+      "free_running_32b_continuation": "a video games', 'a boy is playin",
+      "top1_next_byte_preview": "['a bpfg ilays an ahe pack round w  a wox hs punning an t fogt , 'a boman dn hanning aown a raad'tn ayeen , ', goman idd bieera",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3209,
+      "mean_nowrite": 0.3395,
+      "ground_truth_text_preview": "['a man is having a conversation in a room with no sound', 'a man is sitting down and talking to someone', 'a man is sitting in",
+      "free_running_32b_continuation": "ng a car hose that a room with a",
+      "top1_next_byte_preview": "['a wan is soving a canversation wn a voom'with ae rtmnds, 'a man is hhnting wown a   talking to aome ne , 'a man ws ttnting un",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9078,
+      "mean_nowrite": 0.3416,
+      "ground_truth_text_preview": "['a group of video game characters having a fight', 'a person is playing a video game', 'a scene in a video game', 'a video gam",
+      "free_running_32b_continuation": "deo game is being played', 'a gi",
+      "top1_next_byte_preview": "['a gioup of pideo game iharacters ioveng f derhti, 'a cerson is blaying a video game', 'a ppene fn a video game , 'a pideo gam",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

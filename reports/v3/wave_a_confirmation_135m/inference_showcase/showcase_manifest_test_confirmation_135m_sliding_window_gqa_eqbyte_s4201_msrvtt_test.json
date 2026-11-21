@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T01:32:59.032920+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.2765,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "goldfish chase each other around a blue tank to music",
+      "free_running_32b_continuation": " not been a golden burger on the",
+      "top1_next_byte_preview": "[rife rh woaie  xch other wneund tnbiae crlk ao hasic ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0014",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8668,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "it is the animation cartoon",
+      "free_running_32b_continuation": "ted by the animated book streams",
+      "top1_next_byte_preview": "[n is sre rismateon ool oon ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6262,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "someone is adding ingredients for a batter",
+      "free_running_32b_continuation": "ng the part of the part of the p",
+      "top1_next_byte_preview": "[oue ne is scdrng tn rediants aor a pughery",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1528,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "people are singing on the beach",
+      "free_running_32b_continuation": "ing on the railroad streets on a",
+      "top1_next_byte_preview": "[eople sre honging on the raach ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7219,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is giving a review on a vehicle",
+      "free_running_32b_continuation": " a song around at a movie game',",
+      "top1_next_byte_preview": "[nban ss soving a sopeew of a bihicle ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

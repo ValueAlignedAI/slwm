@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-20T23:03:58.750880+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0012",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.8127,
+      "mean_nowrite": 0.1135,
+      "ground_truth_text_preview": " 65 metres ( 94 ft 0 in ) and a draught of 8 @.@ 93 metres ( 29 ft 4 in ) at deep load . They displaced 36 @,@ 500 long tons ( 37 @,@ 100 t ) at deep load , rou",
+      "free_running_32b_continuation": "Metrics of Metrics and Strategie",
+      "top1_next_byte_preview": "rC..Mimhis a11  Me)) 0nc1 and 1 siawghteff t pmmmT  metris (120 mt)f mnct an ticp iicd t (he  aesclaye  t  mm d2   miag di s a220 m  @200 mof an ticp tond t 2eu",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6257,
+      "mean_nowrite": 0.1259,
+      "ground_truth_text_preview": "cking dive bombers from the second wave and one small bomb detonated on Turret No. 2 . Hy\u016bga was lightly damaged by near misses that rupture some hull plating i",
+      "free_running_32b_continuation": "d his father was a big burn with",
+      "top1_next_byte_preview": "rheld hoairreobld  wrom the maaond hhle bnd tn  ouall soablhieaw  e  bnethrkistaot T0b Tod\ufffdnenaas aikht y seraged ty towr tolsir ohet tentuoe to e oiml oraneng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0029",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.381,
+      "mean_nowrite": 0.126,
+      "ground_truth_text_preview": "The company suffered heavy casualties , including the company commander and Keiser 's aide who had accompanied the force . With the critical parts of Cloverleaf",
+      "free_running_32b_continuation": "ered from the surface of the sur",
+      "top1_next_byte_preview": "rhe sonpany itgfered firty aoreal yes a ancluding the sompany aampund d ond sannhn aCea r dtie has b ceuplnied the sirme o Thth the soesical arrt  of toiuer asd",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0002",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2709,
+      "mean_nowrite": 0.1257,
+      "ground_truth_text_preview": "estral hometown of the Du family . \n\n Du Fu 's mother died shortly after he was born , and he was partially raised by his aunt . He had an elder brother , who d",
+      "free_running_32b_continuation": "is the same whole blood stripped",
+      "top1_next_byte_preview": "rvtao ioiue hcn in the satiolily i TTI ertanCDesodher sast iaout y'anter tirsas aern o and he sas arrt clly aeised iy tis srtt a.He sad a  axeerlaiowher o hhi h",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0024",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.045,
+      "mean_nowrite": 0.1287,
+      "ground_truth_text_preview": "he old Olympia Inn , a gas station , and the second floor of a pharmaceutical building . Winds also tore the roof off an ice plant . A bridge leading to the bar",
+      "free_running_32b_continuation": " have a significant role in the ",
+      "top1_next_byte_preview": "re wpd tldmpic i  ot t srm shareon i and the stcond siawd if t saysmaceutical saslding i Thtdo wrso hh n tha siom of  t dane caane i T piogge iaadsng to the srs",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

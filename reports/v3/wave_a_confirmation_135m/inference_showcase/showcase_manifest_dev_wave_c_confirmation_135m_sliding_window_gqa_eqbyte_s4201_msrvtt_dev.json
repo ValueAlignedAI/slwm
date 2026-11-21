@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T01:35:41.338169+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4801,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a bowl of chicken noodle soup containing chicken and carrots is shown', 'a man in a white chef hat displays his homemade chic",
+      "free_running_32b_continuation": "ldren are reacting to the camera",
+      "top1_next_byte_preview": "['a coyl hf mhilken ,o dless nnsiaotain ng iuicken'snd thr yts dn dhown', 'a can is a rlite caif tai trsheays wis tawe ase iaic",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1049,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a fun game of race on the tracks', 'a game from mario party is being shown', 'a gameplay footage video of mario kart is shown",
+      "free_running_32b_continuation": " people are talking in someone d",
+      "top1_next_byte_preview": "['a cenndime if pece cf aoe daecks , 'a fame irom aantnuslck  gs teing phown', 'a game tay vrltage oideo of aenioufira cs bhown",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.637,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "a blonde movie', 'a man is playi",
+      "top1_next_byte_preview": "['a can ioipbe aoin t beryer , 'a man iosing a ceg an erviewe, 'a man is rxaering a joom wo alt pnterview'd , 'a merson is pain",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0017",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2476,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a band preforms a song', 'a group of people talking about an attack', 'a host is talking about a texas attack', 'a man is tal",
+      "free_running_32b_continuation": "msay that already have a green s",
+      "top1_next_byte_preview": "['a clnd ieoformsaa bong , 'a buoup of people salk ng about s  auhack', 'a gert is srlking about s faltmtft ack', 'a han ds tal",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8318,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a guy telling something', 'a man is talking about something in a road', 'a man is talking into the camera', 'a man is talking",
+      "free_running_32b_continuation": " about the extreme is the dish m",
+      "top1_next_byte_preview": "['a gry iallsng aomething , 'a gan is talking about something in f vood', 'a man ts talking an o ahe famera , 'a man ts talking",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

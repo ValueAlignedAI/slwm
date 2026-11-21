@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-21T01:32:05.688587+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6722,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a bowl of chicken noodle soup containing chicken and carrots is shown', 'a man in a white chef hat displays his homemade chic",
+      "free_running_32b_continuation": "ldren are reacting to the camera",
+      "top1_next_byte_preview": "['a coyl hf mhilken co dless nnsiaotain ng iuicken'snd thrsyts an phown', 'a can is a rlite caif tai trsceays wis tawe ase ihic",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1844,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a blonde girl in a pink sweater sits on the piano and plays it', 'a blonde mother plays at the piano', 'a girl in a pink swea",
+      "free_running_32b_continuation": " is talking from a rever in red ",
+      "top1_next_byte_preview": "['a coand  murl is a bang dhiater wits nn ahe canno tnd waays gn', 'a flonde gavoer ieays w  ahe paano , 'a mirl ps a sink thea",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7568,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a baseball player runs into a paded wall', 'a baseball player runs into a wall', 'a guy runs into a wall', 'a man hit a wall ",
+      "free_running_32b_continuation": "ayer is being displayed', 'a chi",
+      "top1_next_byte_preview": "['a conkball piayer iinn in o a goidr aiyl', 'a baseball player suns into a poll , 'a bry suns anto a vall , 'a gan bosssnbalk ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3254,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a car being driven', 'a car driving a course', 'a car driving on a race track', 'a car goes racing down the road', 'a car is ",
+      "free_running_32b_continuation": "ressed in a video game', 'a game",
+      "top1_next_byte_preview": "['a car ieing ereven , 'a car driveng d cannse , 'a car driving af a vowe whock', 'a car duas bapeng aown the raad', 'a clr ds ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.866,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "['a guy telling something', 'a man is talking about something in a road', 'a man is talking into the camera', 'a man is talking",
+      "free_running_32b_continuation": " about the exterior of the pool ",
+      "top1_next_byte_preview": "['a cuy tallsng aomething , 'a man is talking tbout something in f vaod', 'a man ts talking an o ahe famera', 'a man ts talking",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
