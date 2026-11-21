@@ -117,12 +117,20 @@ def main() -> None:
             "import jax\n"
             "print('RSO_PREP_OK', jax.__version__, [(d.platform, d.device_kind) for d in jax.devices()], flush=True)\n"
         )
-        rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-            session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix="00_prep",
-            bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-            t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
-        )
-        print(out, flush=True)
+        rc, out, err, tripped = 1, "", "", False
+        for p_try in range(1, 4):
+            if p_try > 1:
+                time.sleep(8.0)
+                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                time.sleep(4.0)
+            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
+                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
+            )
+            print(out, flush=True)
+            if rc == 0 and not tripped and "RSO_PREP_OK" in out:
+                break
         if rc != 0 or tripped or "RSO_PREP_OK" not in out:
             raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
