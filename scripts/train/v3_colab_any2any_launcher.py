@@ -299,7 +299,7 @@ def main() -> None:
     ap.add_argument("--multi-horizon-weight", type=float, default=0.15)
     ap.add_argument("--local-shard-dir", type=Path, required=True, help="Directory with pre-encoded `.npz` shards to upload.")
     ap.add_argument("--include-test-shards", action="store_true", help="Upload sealed `*_test*.npz` shards & enable `--eval-sealed-test`.")
-    ap.add_argument("--download-ckpts", action="store_true", help="Download trained core+Wave B/C `.pkl` checkpoints with SHA-256 verification before cleanup.")
+    ap.add_argument("--download-ckpts", action=argparse.BooleanOptionalAction, default=True, help="Download trained core+Wave B/C `.pkl` checkpoints with SHA-256 verification before cleanup (default: True).")
     ap.add_argument("--ckpt-dir", type=Path, default=Path(".ops/checkpoints"), help="Local gitignored directory for downloaded `.pkl` checkpoints.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
