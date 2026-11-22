@@ -581,9 +581,9 @@ def main() -> None:
     repo_root = Path(__file__).resolve().parents[2]
     cfg_path = repo_root / ".ops/colab-config.json"
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    log_dir = args.out_dir / "logs"
-    log_dir.mkdir(parents=True, exist_ok=True)
     session_name = args.session_name.strip() or f"slwm_v3_{args.profile}_{args.accel}_{int(time.time()) % 100000}"
+    log_dir = args.out_dir / "logs" / session_name
+    log_dir.mkdir(parents=True, exist_ok=True)
 
     bal_start, rate_start = query_balance(cfg_path)
     print(f"[WAVE_LAUNCH] profile={args.profile} accel={args.accel} start_bal={bal_start:.2f} CU rate={rate_start:.2f}", flush=True)
@@ -890,7 +890,7 @@ def main() -> None:
             "spend_cu": round(max(0.0, bal_start - bal_end), 3),
             "rate_after_stop_cu_hr": rate_end,
         }
-        (args.out_dir / "teardown_receipt.json").write_text(json.dumps(summary, indent=2) + "\n")
+        (args.out_dir / f"teardown_receipt_{session_name}.json").write_text(json.dumps(summary, indent=2) + "\n")
         print(json.dumps(summary, indent=2), flush=True)
 
 
