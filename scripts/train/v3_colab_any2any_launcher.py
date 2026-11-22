@@ -29,6 +29,7 @@ if str(_REPO_ROOT) not in sys.path:
 
 from scripts.train.v3_colab_pilot_launcher import (
     PILOT_BUNDLE_FILES,
+    _colab_config_lock,
     _run_remote_kernel_python_with_watchdog,
     _unassign_unnamed_assignments,
     allocate_colab_session_safe,
@@ -649,91 +650,96 @@ def main() -> None:
     t_alloc = time.monotonic()
 
     try:
-        active_now = query_active_sessions(cfg_path) or []
-        if any(f"[{session_name}]" in ln for ln in active_now):
-            print(f"[WAVE_LAUNCH REATTACH] Reusing live Colab session '{session_name}'!", flush=True)
-        else:
-            fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
-            actual_accel = allocate_colab_session_safe(
-                session_name, args.accel, cfg_path, max_attempts=max(6, (len(fb_list) + 1) * 3), sleep_s=10.0, fallback_accels=fb_list
+        # Serialize `allocate -> prep -> shard_upload` across parallel launchers via `colab-upload.lock`!
+        # Eliminates WAN uplink contention AND idle GPU billing while waiting: each instance uploads at full
+        # uplink speed (~9 min), immediately releases the lock to train in parallel, and wakes the next sibling!
+        upload_lock_path = cfg_path.with_name("colab-upload.lock")
+        with _colab_config_lock(upload_lock_path):
+            active_now = query_active_sessions(cfg_path) or []
+            if any(f"[{session_name}]" in ln for ln in active_now):
+                print(f"[WAVE_LAUNCH REATTACH] Reusing live Colab session '{session_name}'!", flush=True)
+            else:
+                fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
+                actual_accel = allocate_colab_session_safe(
+                    session_name, args.accel, cfg_path, max_attempts=max(6, (len(fb_list) + 1) * 3), sleep_s=10.0, fallback_accels=fb_list
+                )
+                print(f"[WAVE_LAUNCH] Allocated actual_accel={actual_accel} for session={session_name}", flush=True)
+            created = True
+            t_alloc = time.monotonic()
+
+            # Upload code bundle
+            with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tf_tmp:
+                tf_tmp.write(code_tar)
+                tmp_p = Path(tf_tmp.name)
+            try:
+                up = run_colab("upload", "-s", session_name, str(tmp_p), "/content/slwm_v3_code.tar.gz", cfg_path=cfg_path, timeout=180)
+                if up.returncode != 0:
+                    raise RuntimeError(f"Code upload failed: {up.stderr or up.stdout}")
+            finally:
+                tmp_p.unlink(missing_ok=True)
+
+            # Prep remote workspace & install optax if missing
+            prep_py = (
+                "import os, subprocess, sys, tarfile\n"
+                "for d in ('/content/slwm_v3', '/content/shards/text_code', '/content/shards/audio_text', '/content/shards/av', '/content/shards/robotics', '/content/shards/real_speech_overwrite', '/content/out', '/content/xla'):\n"
+                "    os.makedirs(d, exist_ok=True)\n"
+                "with tarfile.open('/content/slwm_v3_code.tar.gz', 'r:gz') as tf:\n"
+                "    tf.extractall('/content/slwm_v3')\n"
+                "try:\n"
+                "    import optax\n"
+                "except Exception:\n"
+                "    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'optax'], check=True)\n"
+                "    import optax\n"
+                "import jax\n"
+                "print('WAVE_PREP_OK', jax.__version__, [(d.platform, d.device_kind) for d in jax.devices()], flush=True)\n"
             )
-            print(f"[WAVE_LAUNCH] Allocated actual_accel={actual_accel} for session={session_name}", flush=True)
-        created = True
-        t_alloc = time.monotonic()
+            rc, out, err, tripped = 1, "", "", False
+            for p_try in range(1, 4):
+                if p_try > 1:
+                    time.sleep(8.0)
+                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                    time.sleep(4.0)
+                rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                    session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
+                    bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                    t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
+                )
+                print(out, flush=True)
+                if rc == 0 and not tripped and "WAVE_PREP_OK" in out:
+                    break
+            if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
+                raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
-        # Upload code bundle
-        with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tf_tmp:
-            tf_tmp.write(code_tar)
-            tmp_p = Path(tf_tmp.name)
-        try:
-            up = run_colab("upload", "-s", session_name, str(tmp_p), "/content/slwm_v3_code.tar.gz", cfg_path=cfg_path, timeout=180)
-            if up.returncode != 0:
-                raise RuntimeError(f"Code upload failed: {up.stderr or up.stdout}")
-        finally:
-            tmp_p.unlink(missing_ok=True)
-
-        # Prep remote workspace & install optax if missing
-        prep_py = (
-            "import os, subprocess, sys, tarfile\n"
-            "for d in ('/content/slwm_v3', '/content/shards/text_code', '/content/shards/audio_text', '/content/shards/av', '/content/shards/robotics', '/content/shards/real_speech_overwrite', '/content/out', '/content/xla'):\n"
-            "    os.makedirs(d, exist_ok=True)\n"
-            "with tarfile.open('/content/slwm_v3_code.tar.gz', 'r:gz') as tf:\n"
-            "    tf.extractall('/content/slwm_v3')\n"
-            "try:\n"
-            "    import optax\n"
-            "except Exception:\n"
-            "    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'optax'], check=True)\n"
-            "    import optax\n"
-            "import jax\n"
-            "print('WAVE_PREP_OK', jax.__version__, [(d.platform, d.device_kind) for d in jax.devices()], flush=True)\n"
-        )
-        rc, out, err, tripped = 1, "", "", False
-        for p_try in range(1, 4):
-            if p_try > 1:
-                time.sleep(8.0)
-                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                time.sleep(4.0)
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
-                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
-            )
-            print(out, flush=True)
-            if rc == 0 and not tripped and "WAVE_PREP_OK" in out:
-                break
-        if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
-            raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
-
-        # Upload ONLY active pre-encoded `.npz` shards (plus `*_exec.jsonl` test suites when `--include-test-shards`!)
-        shard_files = sorted(args.local_shard_dir.rglob("*.npz"))
-        if args.include_test_shards:
-            shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
-        else:
-            shard_files = [p for p in shard_files if "_test" not in p.name]
-        # Avoid uploading redundant 24m text shard, smaller libri100 shard when libri360 exists, or RSO clipbank!
-        has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
-        if has_full_tc:
-            shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
-        has_libri360 = any(p.name == "librispeech_train_clean_360.npz" for p in shard_files)
-        if has_libri360:
-            shard_files = [p for p in shard_files if p.name != "librispeech_train_clean_100.npz"]
-        shard_files = [p for p in shard_files if not p.name.startswith("rso_train_clipbank_")]
-        if not shard_files:
-            raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
-        _upload_shards_batch_chunked(
-            session_name, shard_files, args.local_shard_dir,
-            cfg_path=cfg_path, log_dir=log_dir,
-            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
-        )
-        remote_init_ckpt = None
-        if args.init_ckpt_local is not None and args.init_ckpt_local.is_file():
-            print(f"[WAVE_LAUNCH] Uploading continuation checkpoint {args.init_ckpt_local}...", flush=True)
+            # Upload ONLY active pre-encoded `.npz` shards (plus `*_exec.jsonl` test suites when `--include-test-shards`!)
+            shard_files = sorted(args.local_shard_dir.rglob("*.npz"))
+            if args.include_test_shards:
+                shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
+            else:
+                shard_files = [p for p in shard_files if "_test" not in p.name]
+            # Avoid uploading redundant 24m text shard, smaller libri100 shard when libri360 exists, or RSO clipbank!
+            has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
+            if has_full_tc:
+                shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
+            has_libri360 = any(p.name == "librispeech_train_clean_360.npz" for p in shard_files)
+            if has_libri360:
+                shard_files = [p for p in shard_files if p.name != "librispeech_train_clean_100.npz"]
+            shard_files = [p for p in shard_files if not p.name.startswith("rso_train_clipbank_")]
+            if not shard_files:
+                raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
             _upload_shards_batch_chunked(
-                session_name, [args.init_ckpt_local], args.init_ckpt_local.parent,
+                session_name, shard_files, args.local_shard_dir,
                 cfg_path=cfg_path, log_dir=log_dir,
                 bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
             )
-            remote_init_ckpt = f"/content/shards/{args.init_ckpt_local.name}"
+            remote_init_ckpt = None
+            if args.init_ckpt_local is not None and args.init_ckpt_local.is_file():
+                print(f"[WAVE_LAUNCH] Uploading continuation checkpoint {args.init_ckpt_local}...", flush=True)
+                _upload_shards_batch_chunked(
+                    session_name, [args.init_ckpt_local], args.init_ckpt_local.parent,
+                    cfg_path=cfg_path, log_dir=log_dir,
+                    bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                )
+                remote_init_ckpt = f"/content/shards/{args.init_ckpt_local.name}"
 
         arms = [a.strip() for a in args.arms.split(",") if a.strip()]
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
