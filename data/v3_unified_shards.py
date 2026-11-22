@@ -119,6 +119,7 @@ class SparseShardBuilder:
 
         self._vid_rows: list[np.ndarray] = []
         self._aud_rows: list[np.ndarray] = []
+        self._aud_cont_rows: list[np.ndarray] = []
         self._prop_rows: list[np.ndarray] = []
         self._act_rows: list[np.ndarray] = []
         self._n_vid = 0
@@ -147,6 +148,7 @@ class SparseShardBuilder:
         video_feat: np.ndarray | None = None,
         video_tick_mask: np.ndarray | None = None,
         audio_codes: np.ndarray | None = None,
+        audio_cont: np.ndarray | None = None,
         audio_tick_mask: np.ndarray | None = None,
         proprio_feat: np.ndarray | None = None,
         action_feat: np.ndarray | None = None,
@@ -179,13 +181,20 @@ class SparseShardBuilder:
             self._n_vid += nv
 
         a_idx = np.full((n,), -1, dtype=np.int32)
-        if audio_codes is not None and len(audio_codes) > 0:
+        if (audio_codes is not None and len(audio_codes) > 0) or (audio_cont is not None and len(audio_cont) > 0):
             am = (mod == 1) if audio_tick_mask is None else np.asarray(audio_tick_mask, dtype=bool)
             na = int(np.sum(am))
-            if na != len(audio_codes):
-                raise ValueError(f"audio_codes len {len(audio_codes)} != audio ticks {na}")
+            if audio_codes is not None and len(audio_codes) > 0:
+                if na != len(audio_codes):
+                    raise ValueError(f"audio_codes len {len(audio_codes)} != audio ticks {na}")
+                self._aud_rows.append(np.asarray(audio_codes, dtype=np.uint16))
+            else:
+                self._aud_rows.append(np.zeros((na, 32), dtype=np.uint16))
+            if audio_cont is not None and len(audio_cont) > 0:
+                if na != len(audio_cont):
+                    raise ValueError(f"audio_cont len {len(audio_cont)} != audio ticks {na}")
+                self._aud_cont_rows.append(np.asarray(audio_cont, dtype=np.float16))
             a_idx[am] = np.arange(self._n_aud, self._n_aud + na, dtype=np.int32)
-            self._aud_rows.append(np.asarray(audio_codes, dtype=np.uint16))
             self._n_aud += na
 
         p_idx = np.full((n,), -1, dtype=np.int32)
@@ -235,7 +244,9 @@ class SparseShardBuilder:
             "proprio_feat": np.concatenate(self._prop_rows) if self._prop_rows else np.zeros((0, 16), dtype=np.float16),
             "action_feat": np.concatenate(self._act_rows) if self._act_rows else np.zeros((0, 14), dtype=np.float16),
         }
-        np.savez(out_path, **arrays)
+        if self._aud_cont_rows:
+            arrays["audio_cont"] = np.concatenate(self._aud_cont_rows)
+        np.savez_compressed(out_path, **arrays)
         sz = out_path.stat().st_size
         return {
             "shard_name": self.shard_name,
@@ -262,6 +273,17 @@ class LoadedSparseShard:
         z = np.load(path, allow_pickle=False)
         d = {k: z[k] for k in z.files}
         return cls(data=d, n_ticks=int(d["modality_id"].shape[0]))
+
+    @property
+    def episode_slices(self) -> list[tuple[int, int]]:
+        """Return `(start, end)` tick intervals for every episode delineated by `reset_mask`."""
+        if not hasattr(self, "_episode_slices_cache"):
+            rst = np.nonzero(self.data["reset_mask"])[0]
+            if len(rst) == 0 or int(rst[0]) != 0:
+                rst = np.insert(rst, 0, 0)
+            ends = np.append(rst[1:], self.n_ticks)
+            self._episode_slices_cache = [(int(s), int(e)) for s, e in zip(rst, ends) if int(e) > int(s)]
+        return self._episode_slices_cache
 
     def sample_batch(
         self,
@@ -322,9 +344,12 @@ class LoadedSparseShard:
 
         aud_idx = d["audio_idx"][idx]
         aud_codes = np.zeros((seq_len, batch_size, 32), dtype=np.int32)
+        aud_cont = np.zeros((seq_len, batch_size, 64), dtype=np.float32)
         am = aud_idx >= 0
         if np.any(am) and d["audio_codes"].shape[0] > 0:
             aud_codes[am] = d["audio_codes"][aud_idx[am]].astype(np.int32)
+        if np.any(am) and "audio_cont" in d and d["audio_cont"].shape[0] > 0:
+            aud_cont[am] = d["audio_cont"][aud_idx[am]].astype(np.float32)
 
         act_idx = d["act_idx"][idx]
         prop_feat = np.zeros((seq_len, batch_size, 16), dtype=np.float32)
@@ -352,6 +377,7 @@ class LoadedSparseShard:
                         vid_feat[dm, b, :] = 0.0
                     elif drop_m == 1:
                         aud_codes[dm, b, :] = 0
+                        aud_cont[dm, b, :] = 0.0
                     elif drop_m == 2:
                         tb[dm, b] = BYTE_PAD
                     elif drop_m == 3:
@@ -371,6 +397,7 @@ class LoadedSparseShard:
             "has_true_action": ha,
             "video_feat": vid_feat,
             "audio_codes": aud_codes,
+            "audio_cont": aud_cont,
             "proprio_feat": prop_feat,
             "action_feat": act_feat,
             "probe_feat": np.zeros((seq_len, batch_size, 32), dtype=np.float32),
