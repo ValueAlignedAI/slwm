@@ -327,6 +327,7 @@ def _adopt_single_unnamed_assignment(session_name: str, cfg_path: Path, *, accel
         "tpu_v6e1": ("V6E1", "TPU"),
         "tpu_v5e1": ("V5E1", "TPU"),
         "a100": ("A100", "GPU"),
+        "a100_std": ("A100", "GPU"),
         "h100": ("H100", "GPU"),
         "g4": ("G4", "GPU"),
         "l4": ("L4", "GPU"),
@@ -396,6 +397,8 @@ def allocate_colab_session_safe(
                     res = run_colab("new", "-s", session_name, "--tpu", "V5E1", cfg_path=cfg_path, timeout=420)
                 elif cur_acc == "a100":
                     res = run_colab("new", "-s", session_name, "--gpu", "A100", "--high-mem", cfg_path=cfg_path, timeout=360)
+                elif cur_acc == "a100_std":
+                    res = run_colab("new", "-s", session_name, "--gpu", "A100", cfg_path=cfg_path, timeout=360)
                 elif cur_acc == "l4":
                     res = run_colab("new", "-s", session_name, "--gpu", "L4", "--high-mem", cfg_path=cfg_path, timeout=360)
                 elif cur_acc == "g4":

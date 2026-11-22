@@ -543,7 +543,7 @@ def _build_code_tar(repo_root: Path) -> bytes:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Launch Wave A-D SLWM-v3 real-corpus training & SoTA eval on Colab.")
-    ap.add_argument("--accel", type=str, default="tpu_v6e1", choices=("tpu_v6e1", "tpu_v5e1", "h100", "a100", "g4", "l4"))
+    ap.add_argument("--accel", type=str, default="tpu_v6e1", choices=("tpu_v6e1", "tpu_v5e1", "h100", "a100", "a100_std", "g4", "l4"))
     ap.add_argument("--fallback-accels", type=str, default="", help="Optional comma-separated failover accelerators if primary pool returns Service Unavailable (e.g. a100,h100,g4).")
     ap.add_argument("--session-name", type=str, default="", help="Optional unique Colab session name (required when launching parallel instances!).")
     ap.add_argument("--profile", type=str, default="discovery_45m")
@@ -595,7 +595,7 @@ def main() -> None:
     try:
         fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
         actual_accel = allocate_colab_session_safe(
-            session_name, args.accel, cfg_path, max_attempts=max(4, len(fb_list) * 2 + 2), sleep_s=10.0, fallback_accels=fb_list
+            session_name, args.accel, cfg_path, max_attempts=max(6, (len(fb_list) + 1) * 3), sleep_s=10.0, fallback_accels=fb_list
         )
         print(f"[WAVE_LAUNCH] Allocated actual_accel={actual_accel} for session={session_name}", flush=True)
         created = True
