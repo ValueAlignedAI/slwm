@@ -79,7 +79,7 @@ def _run_detached_remote_script_with_polling(
     max_spend_cu: float,
     t_alloc_start: float,
     poll_interval_s: float = 45.0,
-    max_wall_s: float = 39600.0,
+    max_wall_s: float = 72000.0,
 ) -> tuple[int, str, bool]:
     """Run a long GPU script completely detached from the Colab WebSocket and poll via short 3s heartbeats!
 
@@ -840,7 +840,7 @@ def main() -> None:
                 rc, out, tripped = _run_detached_remote_script_with_polling(
                     session_name, run_py, tag=tag, cfg_path=cfg_path, log_dir=log_dir,
                     bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
-                    poll_interval_s=45.0, max_wall_s=39600.0,
+                    poll_interval_s=45.0, max_wall_s=72000.0,
                 )
                 print(f"[WAVE_LAUNCH] Finished {tag} rc={rc} tripped={tripped}", flush=True)
                 print(out[-2000:], flush=True)
