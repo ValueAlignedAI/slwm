@@ -150,7 +150,7 @@ for repo_id, dst in (
 ):
     print('[DL]', repo_id, flush=True)
     if 'libero' in repo_id:
-        snapshot_download(repo_id, repo_type='dataset', local_dir=dst, allow_patterns=['meta/*', 'meta/**/*', 'data/chunk-000/file-0[0-2][0-9].parquet', 'videos/observation.images.image/chunk-000/file-0[0-2][0-9].mp4'])
+        snapshot_download(repo_id, repo_type='dataset', local_dir=dst, allow_patterns=['meta/*', 'meta/**/*', 'data/chunk-000/file-[0-1][0-9][0-9].parquet', 'videos/observation.images.image/chunk-000/file-*.mp4'])
     else:
         snapshot_download(repo_id, repo_type='dataset', local_dir=dst)
 sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'robotics_lerobot', '--raw-root', '/content/raw', '--out-dir', '/content/out_rob', '--device', 'cuda', '--max-clips', '{args.max_lerobot_eps}']

@@ -423,12 +423,23 @@ def _download_file_chunked_verified(
         "            idx += 1\n"
         "    print('DL_META_BEGIN' + json.dumps({'size': sz, 'sha256': h.hexdigest(), 'parts': parts}) + 'DL_META_END', flush=True)\n"
     )
-    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-        session_name, split_py, cfg_path=cfg_path, log_dir=log_dir,
-        log_prefix=f"dl_split_{local_path.stem}",
-        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
-        t_alloc_start=t_alloc, phase_timeout_s=300, exec_timeout_s=240,
-    )
+    rc, out, err, tripped = 1, "", "", False
+    for sp_try in range(1, 5):
+        if sp_try > 1:
+            print(f"[CKPT_DL] Retrying remote split {sp_try}/4 for {remote_path}...", flush=True)
+            try:
+                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+            except Exception:
+                pass
+            time.sleep(5.0)
+        rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+            session_name, split_py, cfg_path=cfg_path, log_dir=log_dir,
+            log_prefix=f"dl_split_{local_path.stem}_try{sp_try}",
+            bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
+            t_alloc_start=t_alloc, phase_timeout_s=360, exec_timeout_s=240,
+        )
+        if rc == 0 and (not tripped) and ("DL_META_BEGIN" in out or "DL_MISSING" in out):
+            break
     if rc != 0 or tripped or "DL_META_BEGIN" not in out:
         print(f"[CKPT_DL WARN] Could not prepare {remote_path}: {out[-200:]} {err[-200:]}", flush=True)
         return False
