@@ -124,10 +124,10 @@ class MultiShardMixture:
             raise FileNotFoundError(f"No valid sparse shards found in: {shard_paths}")
 
         if sampling_mode == "temp_sqrt":
-            # UniLM/mT5 square-root size-aware balancing (`w_i ∝ N_i^0.5 * base_prior_i^0.5`) + hard max-epoch cap!
-            # Prevents tiny shards (e.g., 78k robotics or 402k VGGSound) from looping 24x-88x and overfitting!
+            # Size-aware temperature balancing (`w_i ∝ N_i^0.35 * base_prior_i`) + hard max-epoch water-filling cap!
+            # Gives multimodal domains full up-to-`max_epochs_per_domain` exposure without tiny shards looping 24x-88x!
             raw_w = np.array(
-                [math.sqrt(max(1.0, float(sh.n_ticks))) * math.sqrt(max(1e-4, w)) for _, sh, w in self.shards],
+                [(max(1.0, float(sh.n_ticks)) ** 0.35) * max(1e-4, w) for _, sh, w in self.shards],
                 dtype=np.float64,
             )
             probs = raw_w / np.sum(raw_w)
