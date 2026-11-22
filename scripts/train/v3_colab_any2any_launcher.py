@@ -66,6 +66,197 @@ def _exec_short_py(session_name: str, code: str, *, cfg_path: Path, timeout: int
         tf_p.unlink(missing_ok=True)
 
 
+def _run_detached_remote_script_with_polling(
+    session_name: str,
+    script_body: str,
+    *,
+    tag: str,
+    cfg_path: Path,
+    log_dir: Path,
+    bal_start: float,
+    max_spend_cu: float,
+    t_alloc_start: float,
+    poll_interval_s: float = 45.0,
+    max_wall_s: float = 39600.0,
+) -> tuple[int, str, bool]:
+    """Run a long GPU script completely detached from the Colab WebSocket and poll via short 3s heartbeats!
+
+    Eliminates 90-120 min WebSocket timeouts AND idle-VM reclaims: if a single poll hits a transient
+    network glitch, the remote GPU process keeps training uninterrupted and polling resumes on the next tick.
+    """
+    rem_script = f"/content/out/_run_{tag}.py"
+    rem_log = f"/content/out/_run_{tag}.log"
+    rem_rc = f"/content/out/_run_{tag}.rc"
+    rem_pid = f"/content/out/_run_{tag}.pid"
+    loc_log = log_dir / f"detached_{tag}.log"
+
+    # Wrap script so exit code is always written atomically to `rem_rc`
+    wrapped = (
+        "import os, sys, traceback\n"
+        f"rc_path = {rem_rc!r}\n"
+        "rc = 0\n"
+        "try:\n"
+        + "\n".join("    " + ln for ln in script_body.splitlines())
+        + "\nexcept SystemExit as e:\n"
+        "    rc = int(e.code) if isinstance(e.code, int) else (0 if e.code is None else 1)\n"
+        "except BaseException:\n"
+        "    traceback.print_exc()\n"
+        "    rc = 1\n"
+        "finally:\n"
+        "    with open(rc_path, 'w') as _f:\n"
+        "        _f.write(str(rc))\n"
+        "    sys.stdout.flush(); sys.stderr.flush()\n"
+    )
+    tf = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+    tf.write(wrapped)
+    tf.close()
+    tf_p = Path(tf.name)
+    try:
+        up = run_colab("upload", "-s", session_name, str(tf_p), rem_script, cfg_path=cfg_path, timeout=120)
+        if up.returncode != 0:
+            raise RuntimeError(f"Failed uploading detached script {rem_script}: {up.stderr or up.stdout}")
+    finally:
+        tf_p.unlink(missing_ok=True)
+
+    # Launch completely detached (`start_new_session=True`, clean GPU memory) in a 3-second kernel call!
+    launch_py = (
+        "import os, subprocess, sys\n"
+        f"for p in ({rem_rc!r}, {rem_log!r}, {rem_pid!r}):\n"
+        "    if os.path.exists(p): os.remove(p)\n"
+        "env = dict(os.environ)\n"
+        "env['PYTHONUNBUFFERED'] = '1'\n"
+        "env['JAX_COMPILATION_CACHE_DIR'] = '/content/xla'\n"
+        "env['JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS'] = '1'\n"
+        f"lf = open({rem_log!r}, 'wb')\n"
+        f"p = subprocess.Popen([sys.executable, {rem_script!r}], stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env, cwd='/content/slwm_v3')\n"
+        f"with open({rem_pid!r}, 'w') as pf: pf.write(str(p.pid))\n"
+        "print('DETACHED_LAUNCH_OK', p.pid, flush=True)\n"
+    )
+    l_res = _exec_short_py(session_name, launch_py, cfg_path=cfg_path, timeout=90)
+    if l_res.returncode != 0 or "DETACHED_LAUNCH_OK" not in l_res.stdout:
+        raise RuntimeError(f"Detached launch failed for {tag}: {l_res.stderr or l_res.stdout}")
+    print(f"[DETACHED] {l_res.stdout.strip()} (polling every {int(poll_interval_s)}s)", flush=True)
+
+    offset = 0
+    full_tail = ""
+    t0 = time.monotonic()
+    consec_errs = 0
+    poll_n = 0
+    tripped = False
+    loc_log.write_text("", encoding="utf-8")
+
+    while True:
+        time.sleep(poll_interval_s)
+        poll_n += 1
+        poll_py = (
+            "import json, os\n"
+            f"lp, rp, pp = {rem_log!r}, {rem_rc!r}, {rem_pid!r}\n"
+            f"off = {offset}\n"
+            "chunk = ''\n"
+            "new_off = off\n"
+            "if os.path.isfile(lp):\n"
+            "    with open(lp, 'rb') as f:\n"
+            "        f.seek(off)\n"
+            "        b = f.read(65536)\n"
+            "        new_off = off + len(b)\n"
+            "        chunk = b.decode('utf-8', errors='replace')\n"
+            "rc_val = None\n"
+            "if os.path.isfile(rp):\n"
+            "    try: rc_val = int(open(rp).read().strip())\n"
+            "    except Exception: rc_val = 1\n"
+            "alive = False\n"
+            "if os.path.isfile(pp):\n"
+            "    try:\n"
+            "        pid = int(open(pp).read().strip())\n"
+            "        os.kill(pid, 0)\n"
+            "        alive = True\n"
+            "    except Exception:\n"
+            "        alive = False\n"
+            "print('POLL_JSON_BEGIN' + json.dumps({'off': new_off, 'rc': rc_val, 'alive': alive, 'chunk': chunk}) + 'POLL_JSON_END', flush=True)\n"
+        )
+        try:
+            pr = _exec_short_py(session_name, poll_py, cfg_path=cfg_path, timeout=90)
+        except Exception as exc:
+            consec_errs += 1
+            print(f"[DETACHED POLL WARN {consec_errs}/12] {exc!r}", flush=True)
+            if consec_errs >= 12:
+                return 125, full_tail, False
+            continue
+
+        if pr.returncode == 0 and "POLL_JSON_BEGIN" in pr.stdout:
+            consec_errs = 0
+            try:
+                raw_j = pr.stdout.split("POLL_JSON_BEGIN", 1)[1].split("POLL_JSON_END", 1)[0]
+                st = json.loads(raw_j)
+                offset = int(st["off"])
+                chunk = str(st["chunk"])
+                if chunk:
+                    with loc_log.open("a", encoding="utf-8") as lf_loc:
+                        lf_loc.write(chunk)
+                    full_tail = (full_tail + chunk)[-16000:]
+                    for ln in chunk.splitlines():
+                        if any(k in ln for k in ("[TRAIN", "[CKPT", "[WAVE_", "[INIT_CKPT", "ARM_RUN_OK", "Error", "Traceback")):
+                            print(ln, flush=True)
+                if st["rc"] is not None:
+                    return int(st["rc"]), full_tail, False
+                if not st["alive"] and poll_n >= 2:
+                    print(f"[DETACHED WARN] Remote PID exited without rc file for {tag}.", flush=True)
+                    return 1, full_tail, False
+            except Exception as exc:
+                print(f"[DETACHED PARSE WARN] {exc!r}", flush=True)
+        else:
+            consec_errs += 1
+            msg = (pr.stderr or pr.stdout).strip()[-200:]
+            print(f"[DETACHED POLL WARN {consec_errs}/12] rc={pr.returncode} {msg}", flush=True)
+            if "not found" in msg.lower():
+                return 126, full_tail, False
+            if consec_errs >= 12:
+                return 125, full_tail, False
+
+        # Budget watchdog check every 4 polls (~3 minutes)
+        if poll_n % 4 == 0:
+            try:
+                bal_now, rate_now = query_balance(cfg_path)
+                spent = max(0.0, bal_start - bal_now)
+                proj = spent + (rate_now * (poll_interval_s * 4.0) / 3600.0)
+                hard_stop = max(0.5, max_spend_cu - 3.0)
+                print(f"[WATCHDOG] spent={spent:.2f} CU, rate={rate_now:.2f} CU/hr, proj={proj:.2f} / hard_stop={hard_stop:.2f} CU (elapsed={(time.monotonic()-t0)/60:.1f}m)", flush=True)
+                if proj >= hard_stop:
+                    tripped = True
+                    return 124, full_tail, True
+            except Exception:
+                pass
+        if (time.monotonic() - t0) >= max_wall_s:
+            print(f"[DETACHED WARN] Max wall time {max_wall_s:.0f}s exceeded for {tag}.", flush=True)
+            return 124, full_tail, False
+
+
+def _mirror_path_to_fedora(local_path: Path, *, fedora_host: str, fedora_dir: str, profile: str) -> None:
+    """Best-effort permanent archive mirror of downloaded checkpoints/media to Fedora LAN storage."""
+    if not fedora_host or not fedora_dir or not local_path.exists():
+        return
+    rem_dir = f"{fedora_dir.rstrip('/')}/{profile}"
+    try:
+        mk = subprocess.run(
+            ["ssh", "-o", "ConnectTimeout=5", "-o", "BatchMode=yes", fedora_host, f"mkdir -p {rem_dir}"],
+            capture_output=True, text=True, timeout=15, check=False,
+        )
+        if mk.returncode != 0:
+            print(f"[FEDORA MIRROR SKIP] Host {fedora_host} unreachable ({mk.stderr.strip()[:120]})", flush=True)
+            return
+        cmd = ["scp", "-o", "ConnectTimeout=10", "-o", "BatchMode=yes"]
+        if local_path.is_dir():
+            cmd.append("-r")
+        cmd.extend([str(local_path), f"{fedora_host}:{rem_dir}/"])
+        cp = subprocess.run(cmd, capture_output=True, text=True, timeout=600, check=False)
+        if cp.returncode == 0:
+            print(f"[FEDORA MIRROR OK] {local_path.name} -> {fedora_host}:{rem_dir}/", flush=True)
+        else:
+            print(f"[FEDORA MIRROR WARN] scp failed for {local_path.name}: {cp.stderr.strip()[:160]}", flush=True)
+    except Exception as exc:
+        print(f"[FEDORA MIRROR WARN] {exc!r}", flush=True)
+
+
 def _upload_shards_batch_chunked(
     session_name: str,
     shard_files: list[Path],
@@ -210,7 +401,7 @@ def _download_file_chunked_verified(
         "            if not b:\n"
         "                break\n"
         "            h.update(b)\n"
-        "            pp = f'/tmp/_dl_part_{idx:04d}.bin'\n"
+        "            pp = f'/content/_dl_part_{idx:04d}.bin'\n"
         "            with open(pp, 'wb') as fout:\n"
         "                fout.write(b)\n"
         "            parts.append(pp)\n"
@@ -256,6 +447,8 @@ def _download_file_chunked_verified(
             h_loc.update(raw)
             tot += len(raw)
             p_loc.unlink(missing_ok=True)
+            if (i + 1) % 10 == 0:
+                _exec_short_py(session_name, "print('DL_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=60)
     if tot != int(meta["size"]) or h_loc.hexdigest() != str(meta["sha256"]):
         print(f"[CKPT_DL WARN] Integrity mismatch on {local_path}: {tot} vs {meta['size']}", flush=True)
         tmp_local.unlink(missing_ok=True)
@@ -264,7 +457,7 @@ def _download_file_chunked_verified(
     # Clean up remote temp parts + remote ckpt to keep `/content` disk lean
     clean_py = (
         "import glob, os\n"
-        "for p in glob.glob('/tmp/_dl_part_*.bin'):\n"
+        "for p in glob.glob('/content/_dl_part_*.bin'):\n"
         "    try: os.remove(p)\n"
         "    except OSError: pass\n"
         f"try: os.remove({remote_path!r})\n"
@@ -310,6 +503,10 @@ def main() -> None:
     ap.add_argument("--arms", type=str, default="slwm_v3_routed,single_bank_gated_deltanet,sliding_window_gqa_eqbyte")
     ap.add_argument("--seeds", type=str, default="4201")
     ap.add_argument("--steps", type=int, default=2000)
+    ap.add_argument("--start-step", type=int, default=0, help="Global start step for multi-leg cosine continuation.")
+    ap.add_argument("--total-steps", type=int, default=0, help="Global total steps for cosine schedule (0 => start_step + steps).")
+    ap.add_argument("--init-ckpt-local", type=Path, default=None, help="Optional local `.pkl` checkpoint to upload & resume from.")
+    ap.add_argument("--tag-suffix", type=str, default="", help="Optional suffix appended to run tag (e.g. `_leg2` or `_300m`).")
     ap.add_argument("--seq-len", type=int, default=512)
     ap.add_argument("--batch-size", type=int, default=32)
     ap.add_argument("--grad-accum", type=int, default=1)
@@ -321,9 +518,12 @@ def main() -> None:
     ap.add_argument("--include-test-shards", action="store_true", help="Upload sealed `*_test*.npz` shards & enable `--eval-sealed-test`.")
     ap.add_argument("--download-ckpts", action=argparse.BooleanOptionalAction, default=True, help="Download trained core+Wave B/C `.pkl` checkpoints with SHA-256 verification before cleanup (default: True).")
     ap.add_argument("--ckpt-dir", type=Path, default=Path(".ops/checkpoints"), help="Local gitignored directory for downloaded `.pkl` checkpoints.")
+    ap.add_argument("--mirror-fedora-host", type=str, default="db@192.168.1.200", help="SSH host for automatic checkpoint archival (empty to disable).")
+    ap.add_argument("--mirror-fedora-dir", type=str, default="/mnt/slwm-data/SLWM/v3_checkpoints", help="Remote directory on Fedora for permanent checkpoint storage.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
-    ap.add_argument("--render-media-gallery", action="store_true", help="Also render real `.wav` audio & `.png`/`.gif` video any-to-any media gallery on the Colab GPU before teardown.")
+    ap.add_argument("--wave-c-steps", type=int, default=1200, help="Frozen-core Wave C multimodal decoder steps (default: 1200).")
+    ap.add_argument("--render-media-gallery", action="store_true", help="Also render real `.wav` audio & `.png`/`.gif`/`.mp4` video any-to-any media gallery on the Colab GPU before teardown.")
     ap.add_argument("--resume", action="store_true", help="Skip arms/seeds whose complete receipt JSONs already exist in `--out-dir`.")
     ap.add_argument("--max-spend-cu", type=float, default=60.0)
     ap.add_argument("--out-dir", type=Path, required=True)
@@ -411,6 +611,15 @@ def main() -> None:
             cfg_path=cfg_path, log_dir=log_dir,
             bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
         )
+        remote_init_ckpt = None
+        if args.init_ckpt_local is not None and args.init_ckpt_local.is_file():
+            print(f"[WAVE_LAUNCH] Uploading continuation checkpoint {args.init_ckpt_local}...", flush=True)
+            _upload_shards_batch_chunked(
+                session_name, [args.init_ckpt_local], args.init_ckpt_local.parent,
+                cfg_path=cfg_path, log_dir=log_dir,
+                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+            )
+            remote_init_ckpt = f"/content/shards/{args.init_ckpt_local.name}"
 
         arms = [a.strip() for a in args.arms.split(",") if a.strip()]
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
@@ -422,7 +631,7 @@ def main() -> None:
                 surprise_c = 16 if "_c16" in arm else (32 if "_c32" in arm else 1)
                 bb_name = arm.replace("_wy", "").replace("_c16", "").replace("_c32", "")
                 rep_sfx = "" if args.representation_mode == "frozen_codec_edge" else f"_{args.representation_mode}"
-                tag = f"{args.profile}_{arm}{rep_sfx}_s{seed}"
+                tag = f"{args.profile}_{arm}{rep_sfx}_s{seed}{args.tag_suffix}"
                 out_rec = args.out_dir / f"{tag}_receipt.json"
                 if args.resume and out_rec.is_file():
                     wb_ok = (not args.run_wave_b) or (args.out_dir / f"wave_b_{tag}_receipt.json").is_file()
@@ -438,6 +647,8 @@ def main() -> None:
                     "--match-anchor",
                     "--shard-dir", "/content/shards",
                     "--steps", str(args.steps),
+                    "--start-step", str(args.start_step),
+                    "--total-steps", str(args.total_steps),
                     "--seq-len", str(args.seq_len),
                     "--batch-size", str(args.batch_size),
                     "--grad-accum", str(args.grad_accum),
@@ -449,6 +660,8 @@ def main() -> None:
                     "--tag", tag,
                     "--out-dir", "/content/out",
                 ]
+                if remote_init_ckpt is not None:
+                    argv.extend(["--init-ckpt", remote_init_ckpt])
                 if surprise_c > 1:
                     argv.extend(["--surprise-chunk-size", str(surprise_c)])
                 if use_wy:
@@ -461,7 +674,7 @@ def main() -> None:
                 wave_b_block = ""
                 if args.run_wave_b:
                     wave_b_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '400', '--seed', '{seed + 1000}', '--out-dir', '/content/out'{wy_flag}]\n"
+                        f"sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '600', '--seed', '{seed + 1000}', '--out-dir', '/content/out'{wy_flag}]\n"
                         "from scripts.train import v3_wave_b_policy_gate\n"
                         "v3_wave_b_policy_gate.main()\n"
                     )
@@ -469,7 +682,7 @@ def main() -> None:
                 wave_c_block = ""
                 if args.run_wave_c:
                     wave_c_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '250', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out'{wy_flag}]\n"
+                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '{int(args.wave_c_steps)}', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out'{wy_flag}]\n"
                         "from scripts.train import v3_wave_c_decoders\n"
                         "v3_wave_c_decoders.main()\n"
                     )
@@ -493,31 +706,17 @@ def main() -> None:
                     + cleanup_ckpt_block
                     + "print('ARM_RUN_OK', flush=True)\n"
                 )
-                rc, out, err, tripped = 1, "", "", False
-                for attempt in range(1, 3):
-                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                    time.sleep(6.0)
-                    try:
-                        rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                            session_name, run_py, cfg_path=cfg_path, log_dir=log_dir,
-                            log_prefix=f"arm_{arm}_s{seed}_try{attempt}",
-                            bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                            t_alloc_start=t_alloc, phase_timeout_s=25200, exec_timeout_s=24000,
-                        )
-                    except TimeoutError as exc:
-                        err = repr(exc)
-                        rc = 124
-                    if rc == 0 or tripped:
-                        break
-                    if ("Connection was lost" in err) or ("Connection was lost" in out) or ("WebSocket" in err):
-                        print(f"[WAVE_LAUNCH] WebSocket drop on {tag} (attempt {attempt}/2); restarting kernel & retrying...", flush=True)
-                        time.sleep(10.0)
-                        continue
-                    break
-
+                # Restart kernel cleanly to guarantee 100% free GPU HBM, then run COMPLETELY DETACHED with 45s polling!
+                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                time.sleep(5.0)
+                rc, out, tripped = _run_detached_remote_script_with_polling(
+                    session_name, run_py, tag=tag, cfg_path=cfg_path, log_dir=log_dir,
+                    bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
+                    poll_interval_s=45.0, max_wall_s=39600.0,
+                )
+                print(f"[WAVE_LAUNCH] Finished {tag} rc={rc} tripped={tripped}", flush=True)
                 print(out[-2000:], flush=True)
-                if err.strip():
-                    print(err[-800:], flush=True)
+
                 # Download receipt JSONs & deterministic inference_showcase manifests immediately after each arm!
                 rec_fn = f"{tag}_receipt.json"
                 run_colab("download", "-s", session_name, f"/content/out/{rec_fn}", str(out_rec), cfg_path=cfg_path, timeout=120)
@@ -541,10 +740,7 @@ def main() -> None:
                     for sh_tag in ("clotho_dev", "msrvtt_dev"):
                         run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json"), cfg_path=cfg_path, timeout=60)
                 if args.render_media_gallery and rc == 0 and not tripped:
-                    # Render real `.wav` audio (Mimi) + `.png`/`.gif` video (Wan 2.1 VAE) in a fresh subprocess with
-                    # `XLA_PYTHON_CLIENT_PREALLOCATE=false` so JAX and PyTorch share GPU VRAM cleanly!
-                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                    time.sleep(5.0)
+                    # Render real `.wav` audio (Mimi) + `.png`/`.gif`/`.mp4` video (Wan 2.1 VAE) detached with shared GPU VRAM!
                     wb_arg = f", '--wave-b-ckpt', '/content/out/wave_b_{tag}_ckpt.pkl'" if args.run_wave_b else ""
                     wc_arg = f", '--wave-c-ckpt', '/content/out/wave_c_{tag}_ckpt.pkl'" if args.run_wave_c else ""
                     media_py = (
@@ -564,15 +760,12 @@ def main() -> None:
                         "        tf.add(out_m, arcname='.')\n"
                         "    print('MEDIA_TAR_BYTES', os.path.getsize(tar_p), flush=True)\n"
                     )
-                    m_rc, m_out, m_err, _ = _run_remote_kernel_python_with_watchdog(
-                        session_name, media_py, cfg_path=cfg_path, log_dir=log_dir,
-                        log_prefix=f"media_gallery_{tag}",
-                        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                        t_alloc_start=t_alloc, phase_timeout_s=900, exec_timeout_s=840,
+                    m_rc, m_out, _ = _run_detached_remote_script_with_polling(
+                        session_name, media_py, tag=f"media_{tag}", cfg_path=cfg_path, log_dir=log_dir,
+                        bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
+                        poll_interval_s=20.0, max_wall_s=1200.0,
                     )
                     print(m_out[-1200:], flush=True)
-                    if m_err.strip():
-                        print(m_err[-400:], flush=True)
                     loc_tar = args.out_dir / f"live_media_showcase_{tag}.tar.gz"
                     dl_m = run_colab(
                         "download", "-s", session_name, f"/content/out/live_media_showcase_{tag}.tar.gz",
@@ -585,26 +778,33 @@ def main() -> None:
                             tf.extractall(dst_m)
                         loc_tar.unlink(missing_ok=True)
                         print(f"[MEDIA_GALLERY OK] Extracted real audio/video gallery -> {dst_m}", flush=True)
+                        _mirror_path_to_fedora(dst_m, fedora_host=args.mirror_fedora_host, fedora_dir=args.mirror_fedora_dir, profile=args.profile)
 
                 if args.download_ckpts:
                     ckpt_dst_dir = args.ckpt_dir / args.profile
-                    _download_file_chunked_verified(
-                        session_name, ckpt_rem, ckpt_dst_dir / f"{tag}_ckpt.pkl",
+                    p_core = ckpt_dst_dir / f"{tag}_ckpt.pkl"
+                    if _download_file_chunked_verified(
+                        session_name, ckpt_rem, p_core,
                         cfg_path=cfg_path, log_dir=log_dir,
                         bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
-                    )
+                    ):
+                        _mirror_path_to_fedora(p_core, fedora_host=args.mirror_fedora_host, fedora_dir=args.mirror_fedora_dir, profile=args.profile)
                     if args.run_wave_b:
-                        _download_file_chunked_verified(
-                            session_name, f"/content/out/wave_b_{tag}_ckpt.pkl", ckpt_dst_dir / f"wave_b_{tag}_ckpt.pkl",
+                        p_wb = ckpt_dst_dir / f"wave_b_{tag}_ckpt.pkl"
+                        if _download_file_chunked_verified(
+                            session_name, f"/content/out/wave_b_{tag}_ckpt.pkl", p_wb,
                             cfg_path=cfg_path, log_dir=log_dir,
                             bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
-                        )
+                        ):
+                            _mirror_path_to_fedora(p_wb, fedora_host=args.mirror_fedora_host, fedora_dir=args.mirror_fedora_dir, profile=args.profile)
                     if args.run_wave_c:
-                        _download_file_chunked_verified(
-                            session_name, f"/content/out/wave_c_{tag}_ckpt.pkl", ckpt_dst_dir / f"wave_c_{tag}_ckpt.pkl",
+                        p_wc = ckpt_dst_dir / f"wave_c_{tag}_ckpt.pkl"
+                        if _download_file_chunked_verified(
+                            session_name, f"/content/out/wave_c_{tag}_ckpt.pkl", p_wc,
                             cfg_path=cfg_path, log_dir=log_dir,
                             bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
-                        )
+                        ):
+                            _mirror_path_to_fedora(p_wc, fedora_host=args.mirror_fedora_host, fedora_dir=args.mirror_fedora_dir, profile=args.profile)
                 if tripped:
                     print("[WAVE_LAUNCH] Budget watchdog tripped; halting cleanly.", flush=True)
                     break

@@ -224,21 +224,95 @@ def decode_wan_patches_to_rgb(patches_tg_15_1024: np.ndarray, *, device: str = "
         return None
 
 
+def _sample_rvq_codes(
+    logits_kv: np.ndarray, *, temperature: float = 0.80, top_p: float = 0.90, rng: np.random.Generator
+) -> np.ndarray:
+    """Nucleus (`top_p`) + temperature sampling across `K` Kyutai Mimi RVQ codebooks (avoids greedy RVQ buzz!)."""
+    k_aud, vocab = logits_kv.shape
+    out = np.zeros((k_aud,), dtype=np.int32)
+    for q in range(k_aud):
+        lg = logits_kv[q].astype(np.float64)
+        if temperature <= 1e-4:
+            out[q] = int(np.argmax(lg))
+            continue
+        lg = (lg - np.max(lg)) / max(temperature, 1e-4)
+        p = np.exp(lg)
+        p /= np.sum(p)
+        if 0.0 < top_p < 1.0:
+            order = np.argsort(-p)
+            cs = np.cumsum(p[order])
+            cut = int(np.searchsorted(cs, top_p)) + 1
+            keep = order[: max(1, cut)]
+            pk = p[keep]
+            pk /= np.sum(pk)
+            out[q] = int(rng.choice(keep, p=pk))
+        else:
+            out[q] = int(rng.choice(vocab, p=p))
+    return out
+
+
+def _rgb_psnr(a_u8: np.ndarray, b_u8: np.ndarray) -> float:
+    diff = a_u8.astype(np.float64) - b_u8.astype(np.float64)
+    mse = float(np.mean(diff * diff))
+    if mse <= 1e-9:
+        return 60.0
+    return float(10.0 * np.log10((255.0 * 255.0) / mse))
+
+
 def _save_side_by_side_png_and_gif(
-    panel_seqs: list[np.ndarray], out_png: Path, out_gif: Path, *, fps: float = 6.0
+    panel_seqs: list[np.ndarray],
+    out_png: Path,
+    out_gif: Path,
+    *,
+    headers: list[str] | None = None,
+    fps: float = 6.0,
 ) -> dict[str, str]:
-    """Save synchronized horizontal RGB comparison strip (`.png` + animated `.gif`)."""
+    """Save labeled horizontal RGB comparison strip (`.png` + animated `.gif` + playable `.mp4` via ffmpeg)."""
     out: dict[str, str] = {}
     try:
-        from PIL import Image
+        import subprocess
+        import tempfile
+        from PIL import Image, ImageDraw
+
         n_f = min(len(s) for s in panel_seqs)
-        strips = [np.concatenate([s[f] for s in panel_seqs], axis=1) for f in range(n_f)]
+        banner_h = 22 if headers else 0
+        strips: list[np.ndarray] = []
+        for f in range(n_f):
+            row = np.concatenate([s[f] for s in panel_seqs], axis=1)
+            if banner_h > 0 and headers:
+                canvas = np.zeros((row.shape[0] + banner_h, row.shape[1], 3), dtype=np.uint8)
+                canvas[banner_h:] = row
+                img = Image.fromarray(canvas)
+                draw = ImageDraw.Draw(img)
+                pw = panel_seqs[0].shape[2]
+                for pi, title in enumerate(headers):
+                    draw.text((pi * pw + 6, 4), title[:44], fill=(240, 240, 240))
+                strips.append(np.asarray(img, dtype=np.uint8))
+            else:
+                strips.append(row)
         out_png.parent.mkdir(parents=True, exist_ok=True)
         Image.fromarray(strips[-1]).save(out_png)
         out["side_by_side_png"] = str(out_png)
         imgs = [Image.fromarray(fr) for fr in strips]
         imgs[0].save(out_gif, save_all=True, append_images=imgs[1:], duration=int(1000 / max(fps, 1.0)), loop=0)
         out["side_by_side_gif"] = str(out_gif)
+
+        # Also render playable H.264 `.mp4` if `ffmpeg` is installed!
+        mp4_p = out_gif.with_suffix(".mp4")
+        with tempfile.TemporaryDirectory() as td:
+            for fi, im in enumerate(imgs):
+                im.save(Path(td) / f"f_{fi:04d}.png")
+            r = subprocess.run(
+                [
+                    "ffmpeg", "-y", "-v", "error", "-framerate", str(max(2, int(round(fps)))),
+                    "-i", f"{td}/f_%04d.png", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", str(mp4_p),
+                ],
+                capture_output=True,
+                check=False,
+            )
+            if r.returncode == 0 and mp4_p.is_file():
+                out["side_by_side_mp4"] = str(mp4_p)
     except Exception as exc:
         out["render_error"] = repr(exc)
     return out
@@ -319,9 +393,12 @@ def stream_cross_modal_from_shard(
         }
 
     # `target_mode == "audio"` (`video2audio`): strictly blind to audio during video conditioning!
-    def _run_v2a(src_ep_idx: int) -> tuple[np.ndarray, int, float]:
+    aud_temp = temperature if temperature > 1e-4 else 0.80
+
+    def _run_v2a(src_ep_idx: int, sample_seed: int) -> tuple[np.ndarray, int, float]:
         ss, ee = sh.episode_slices[src_ep_idx]
         st_l = init_core_state(spec, 1)
+        rng_a = np.random.default_rng(sample_seed)
         last_a_l = None
         nws_l: list[float] = []
         n_vid = 0
@@ -338,7 +415,7 @@ def stream_cross_modal_from_shard(
             if last_a_l is None:
                 codes_k = np.zeros((k_aud,), dtype=np.int32)
             else:
-                codes_k = np.asarray(jnp.argmax(last_a_l, axis=-1), dtype=np.int32)  # [k_aud]
+                codes_k = _sample_rvq_codes(np.asarray(last_a_l), temperature=aud_temp, top_p=0.90, rng=rng_a)
             gen_c.append(codes_k)
             full_codes = np.zeros((spec.audio_codebooks,), dtype=np.int32)
             full_codes[: len(codes_k)] = codes_k
@@ -350,8 +427,9 @@ def stream_cross_modal_from_shard(
             nws_l.append(float(nw))
         return np.stack(gen_c, axis=0), n_vid, float(np.mean(nws_l)) if nws_l else 0.0
 
-    pred_codes, n_vid_ctx, mean_nw = _run_v2a(ep_i)
-    cf_codes, _, _ = _run_v2a(cf_ep_i)
+    # Use identical RNG seed for paired vs shuffled-video so ANY code difference is purely causal video conditioning!
+    pred_codes, n_vid_ctx, mean_nw = _run_v2a(ep_i, seed + ep_i)
+    cf_codes, _, _ = _run_v2a(cf_ep_i, seed + ep_i)
     # Extract ground-truth Mimi audio codes from the target episode (both matched K_rvq and full 32-RVQ!)
     gt_aud_idx = [int(d["audio_idx"][gi]) for gi in range(s0, e0) if int(d["modality_id"][gi]) == 1 and int(d["audio_idx"][gi]) >= 0]
     gt_codes_32 = d["audio_codes"][gt_aud_idx[:max_new_steps]].astype(np.int32) if gt_aud_idx else np.zeros((len(pred_codes), spec.audio_codebooks), dtype=np.int32)
@@ -529,6 +607,7 @@ def stream_video_generation_from_shard(
     cf_l2 = float(np.sqrt(np.mean((pred_patches - cf_patches) ** 2)))
 
     rendered: dict[str, Any] = {}
+    rgb_metrics: dict[str, float] = {}
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
         np.savez_compressed(
@@ -539,15 +618,24 @@ def stream_video_generation_from_shard(
         pr_rgb = decode_wan_patches_to_rgb(pred_patches)
         cf_rgb = decode_wan_patches_to_rgb(cf_patches)
         if gt_rgb is not None and pr_rgb is not None and cf_rgb is not None:
+            rgb_metrics["pred_vs_gt_psnr_db"] = round(_rgb_psnr(pr_rgb, gt_rgb), 2)
+            rgb_metrics["cf_vs_gt_psnr_db"] = round(_rgb_psnr(cf_rgb, gt_rgb), 2)
+            rgb_metrics["pred_vs_cf_psnr_db"] = round(_rgb_psnr(pr_rgb, cf_rgb), 2)
+            panel_hdrs = [
+                "OBSERVED GROUND TRUTH",
+                f"SLWM-v3 {mode.upper()} PRED",
+                "SHUFFLED AUDIO CF" if mode == "audio2video" else "INVERTED ACTION CF",
+            ]
             rendered.update(
                 _save_side_by_side_png_and_gif(
                     [gt_rgb, pr_rgb, cf_rgb],
                     out_dir / f"{mode}_ep{ep_i:04d}_gt_vs_pred_vs_cf.png",
                     out_dir / f"{mode}_ep{ep_i:04d}_gt_vs_pred_vs_cf.gif",
+                    headers=panel_hdrs,
                 )
             )
             rendered["decoded_frames_shape"] = list(pr_rgb.shape)
-            rendered["panel_order"] = ["Ground Truth (observed)", "SLWM-v3 Free-Running Pred", cf_label]
+            rendered["panel_order"] = panel_hdrs
         else:
             rendered["side_by_side_png"] = "latents_saved_decode_requires_diffusers_wan_vae"
 
@@ -559,6 +647,7 @@ def stream_video_generation_from_shard(
         "latent_huber_loss": round(huber, 5),
         "latent_cosine_sim": round(cos, 4),
         "counterfactual_latent_rmse": round(cf_l2, 5),
+        "rgb_metrics": rgb_metrics,
         "mean_nowrite": round(mean_nw, 4),
         "epistemic_labels": {
             "left_panel": "observed_ground_truth",

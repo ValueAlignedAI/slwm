@@ -35,6 +35,7 @@ import optax
 from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, LoadedSparseShard, decode_utf8_bytes
 from evals.v3_external_sota_suite import (
     evaluate_code_execution_pass_at_1,
+    evaluate_cross_modal_caption_quality,
     evaluate_esc50_classification,
     evaluate_librispeech_wer,
 )
@@ -236,6 +237,9 @@ def main() -> None:
     ap.add_argument("--surprise-chunk-size", type=int, default=1, help="1=exact tick-by-tick; C>1=exact causal Chunk-Anchor Surprise WY.")
     ap.add_argument("--shard-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded"))
     ap.add_argument("--steps", type=int, default=2000)
+    ap.add_argument("--start-step", type=int, default=0, help="Global start step for multi-leg cosine continuation.")
+    ap.add_argument("--total-steps", type=int, default=0, help="Global total steps for cosine schedule (0 => start_step + steps).")
+    ap.add_argument("--init-ckpt", type=Path, default=None, help="Optional checkpoint `.pkl` to continue training from.")
     ap.add_argument("--seq-len", type=int, default=512)
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--grad-accum", type=int, default=1)
@@ -266,10 +270,17 @@ def main() -> None:
     mm_dtype = jnp.float32 if is_cpu else jnp.bfloat16
 
     k_core, k_head = jax.random.split(jax.random.PRNGKey(args.seed), 2)
-    all_params = {
-        "core": init_slwm_v3_params(k_core, spec),
-        "heads": init_any2any_heads_params(k_head, spec),
-    }
+    if args.init_ckpt is not None and args.init_ckpt.is_file():
+        import pickle as _pkl_init
+        with args.init_ckpt.open("rb") as f_init:
+            init_obj = _pkl_init.load(f_init)
+        all_params = jax.tree_util.tree_map(lambda x: jnp.asarray(x, dtype=jnp.float32), init_obj["params"])
+        print(f"[INIT_CKPT] Loaded continuation weights from {args.init_ckpt} (start_step={args.start_step})", flush=True)
+    else:
+        all_params = {
+            "core": init_slwm_v3_params(k_core, spec),
+            "heads": init_any2any_heads_params(k_head, spec),
+        }
     n_core_p = count_tree_params(all_params["core"])
     n_head_p = count_tree_params(all_params["heads"])
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
@@ -381,10 +392,13 @@ def main() -> None:
         upd = jax.tree_util.tree_map(lambda u: u * lr_arr.astype(u.dtype), unit_upd)
         return optax.apply_updates(ap, upd), new_o, l_sum * inv_ga, m_mean
 
-    rng = np.random.default_rng(args.seed + 100)
+    rng = np.random.default_rng(args.seed + 100 + int(args.start_step))
     t_start = time.perf_counter()
     log_rows: list[dict[str, Any]] = []
-    for step in range(args.steps):
+    global_total_steps = int(args.total_steps) if int(args.total_steps) > 0 else (int(args.start_step) + int(args.steps))
+    is_resumed_leg = (args.init_ckpt is not None and args.init_ckpt.is_file() and int(args.start_step) > 0)
+    for local_step in range(args.steps):
+        g_step = int(args.start_step) + local_step
         mbs = [
             mixture.sample_batch(
                 rng,
@@ -396,12 +410,15 @@ def main() -> None:
             for _ in range(grad_accum)
         ]
         stacked_mbs = jax.tree_util.tree_map(lambda *xs: jnp.stack(xs, axis=0), *mbs)
-        step_lr = jnp.asarray(args.base_lr * lr_schedule_mult(step, args.steps), dtype=jnp.float32)
+        lr_m = lr_schedule_mult(g_step, global_total_steps)
+        if is_resumed_leg and local_step < 200:
+            lr_m *= float(local_step + 1) / 200.0
+        step_lr = jnp.asarray(args.base_lr * lr_m, dtype=jnp.float32)
         all_params, opt_state, lv, metrics = _train_step_accum(all_params, opt_state, stacked_mbs, step_lr)
-        if step == 0 or (step + 1) % max(1, args.steps // 20) == 0 or step == args.steps - 1:
+        if local_step == 0 or (local_step + 1) % max(1, args.steps // 20) == 0 or local_step == args.steps - 1:
             lv.block_until_ready()
             row = {
-                "step": step + 1,
+                "step": g_step + 1,
                 "elapsed_s": round(time.perf_counter() - t_start, 1),
                 "total_loss": round(float(lv), 5),
                 "text_bpb": round(float(metrics["text_bpb"]), 4),
@@ -412,7 +429,7 @@ def main() -> None:
                 "max_mem_frob": round(float(metrics["max_mem_frob_norm"]), 3),
             }
             log_rows.append(row)
-            print(f"[TRAIN step={step+1:5d}/{args.steps}] {row}", flush=True)
+            print(f"[TRAIN step={g_step+1:5d}/{global_total_steps}] {row}", flush=True)
 
     # CRITICAL FIX: Persist frozen checkpoint IMMEDIATELY after training BEFORE running evals!
     # Keep full float32 precision for <= 150M models (and never truncate to float16 which underflows 1/m_d muP weights!).
@@ -513,6 +530,14 @@ def main() -> None:
             all_params, spec, args.shard_dir / "audio_text/librispeech_dev_clean.npz",
             max_utterances=64, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
+        "clotho_dev_caption_quality": _safe_eval("clotho_dev_cap", lambda: evaluate_cross_modal_caption_quality(
+            all_params, spec, args.shard_dir / "audio_text/clotho_dev.npz",
+            max_episodes=32, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )),
+        "msrvtt_dev_caption_quality": _safe_eval("msrvtt_dev_cap", lambda: evaluate_cross_modal_caption_quality(
+            all_params, spec, args.shard_dir / "av/msrvtt_dev.npz",
+            max_episodes=32, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )),
     }
 
     # STRICT SEALED-TEST LOCK (AGENTS.md §12 Gate 2 & §13.2): ONLY unlocked when `--eval-sealed-test` is passed!
@@ -586,6 +611,14 @@ def main() -> None:
                 all_params, spec, args.shard_dir / "audio_text/librispeech_test_clean.npz",
                 max_utterances=128, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
             )),
+            "clotho_test_caption_quality": _safe_eval("clotho_test_cap", lambda: evaluate_cross_modal_caption_quality(
+                all_params, spec, args.shard_dir / "audio_text/clotho_test.npz",
+                max_episodes=48, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "msrvtt_test_caption_quality": _safe_eval("msrvtt_test_cap", lambda: evaluate_cross_modal_caption_quality(
+                all_params, spec, args.shard_dir / "av/msrvtt_test.npz",
+                max_episodes=48, matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
             "real_speech_overwrite_test_additive_rf": _safe_eval("rso_test", lambda: evaluate_real_speech_overwrite_frozen_core(
                 all_params["core"],
                 spec,
@@ -650,8 +683,11 @@ def main() -> None:
         "trainable_head_params": int(n_head_p),
         "core_streaming_state_bytes_b1": int(st_bytes["total_core_state_bytes"]),
         "grad_accum": int(grad_accum),
+        "start_step": int(args.start_step),
+        "steps_this_leg": int(args.steps),
+        "global_total_steps": int(global_total_steps),
         "effective_batch_size": int(args.batch_size * grad_accum),
-        "total_positions_trained": int(args.steps * args.batch_size * grad_accum * args.seq_len),
+        "total_positions_trained": int((int(args.start_step) + int(args.steps)) * args.batch_size * grad_accum * args.seq_len),
         "base_lr": float(args.base_lr),
         "wall_sec": round(time.perf_counter() - t_start, 2),
         "train_curve": log_rows,

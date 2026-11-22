@@ -310,11 +310,59 @@ def evaluate_esc50_classification(
             outs.append(np.asarray(_extract_z(core_params, c_tb), dtype=np.float32))
         return np.concatenate(outs, axis=0)
 
-    z_tr = jnp.asarray(_run_all(tr_codes))
-    z_ev = jnp.asarray(_run_all(ev_codes))
+    z_tr_np = _run_all(tr_codes)
+    z_ev_np = _run_all(ev_codes)
+    y_tr_np = np.asarray([c2i[c] for c in tr_lbls], dtype=np.int32)
 
+    # 1. Width-invariant standardized + L2-normalized closed-form 4-fold train-CV Ridge Linear Probe
+    # (Fixes d/N overfitting across d=512 -> 768 -> 1536 -> 1920 with ZERO test-fold leakage!)
+    mu = z_tr_np.mean(axis=0, keepdims=True)
+    sd = z_tr_np.std(axis=0, keepdims=True) + 1e-5
+    x_tr_s = (z_tr_np - mu) / sd
+    x_ev_s = (z_ev_np - mu) / sd
+    x_tr_n = x_tr_s / (np.linalg.norm(x_tr_s, axis=-1, keepdims=True) + 1e-6)
+    x_ev_n = x_ev_s / (np.linalg.norm(x_ev_s, axis=-1, keepdims=True) + 1e-6)
+
+    def _fit_ridge(X_fit: np.ndarray, y_fit: np.ndarray, lam: float) -> np.ndarray:
+        n_f, d_f = X_fit.shape
+        Y = np.zeros((n_f, n_cls), dtype=np.float32)
+        Y[np.arange(n_f), y_fit] = 1.0
+        # Dual solve when d > n (O(n^3) fast & exact for d=1536/1920!), primal otherwise
+        if d_f > n_f:
+            K = X_fit @ X_fit.T + float(lam) * np.eye(n_f, dtype=np.float32)
+            alpha = np.linalg.solve(K, Y)
+            return X_fit.T @ alpha
+        A = X_fit.T @ X_fit + float(lam) * np.eye(d_f, dtype=np.float32)
+        return np.linalg.solve(A, X_fit.T @ Y)
+
+    n_tr_all = len(y_tr_np)
+    cv_folds = np.arange(n_tr_all) % 4
+    best_lam = 1.0
+    best_cv = -1.0
+    for lam in (0.01, 0.1, 1.0, 10.0, 100.0, 1000.0):
+        cv_hits = 0
+        for f_id in range(4):
+            val_m = cv_folds == f_id
+            W_f = _fit_ridge(x_tr_n[~val_m], y_tr_np[~val_m], lam)
+            preds_f = np.argmax(x_tr_n[val_m] @ W_f, axis=-1)
+            cv_hits += int(np.sum(preds_f == y_tr_np[val_m]))
+        cv_acc = cv_hits / max(n_tr_all, 1)
+        if cv_acc > best_cv:
+            best_cv = cv_acc
+            best_lam = lam
+
+    W_full = _fit_ridge(x_tr_n, y_tr_np, best_lam)
+    logits_lin = x_ev_n @ W_full
+    top1_lin = float(np.mean(np.argmax(logits_lin, axis=-1) == y_ev))
+    top5_lin_idx = np.argsort(-logits_lin, axis=-1)[:, : min(5, n_cls)]
+    top5_lin = float(np.mean([y_ev[i] in top5_lin_idx[i] for i in range(len(y_ev))]))
+
+    # 2. Width-scaled standardized MLP Probe (lr scaled by 1/sqrt(d/512) + stronger L2 decay)
+    z_tr = jnp.asarray(x_tr_n)
+    z_ev = jnp.asarray(x_ev_n)
+    probe_lr = 3e-3 / math.sqrt(max(1.0, float(spec.d_model) / 512.0))
     probe_p = init_decoupled_probe_params(jax.random.PRNGKey(seed), spec.d_model, out_dim=n_cls, hidden_dim=256)
-    tx_p = optax.adamw(3e-3, weight_decay=1e-3)
+    tx_p = optax.adamw(probe_lr, weight_decay=2e-2)
     opt_p = tx_p.init(probe_p)
 
     @jax.jit
@@ -331,16 +379,22 @@ def evaluate_esc50_classification(
         probe_p, opt_p, _ = _pstep(probe_p, opt_p)
 
     logits_ev = np.asarray(apply_decoupled_probe(probe_p, z_ev), dtype=np.float32)
-    top1 = float(np.mean(np.argmax(logits_ev, axis=-1) == y_ev))
-    top5_idx = np.argsort(-logits_ev, axis=-1)[:, : min(5, n_cls)]
-    top5 = float(np.mean([y_ev[i] in top5_idx[i] for i in range(len(y_ev))]))
+    top1_mlp = float(np.mean(np.argmax(logits_ev, axis=-1) == y_ev))
+    top5_mlp_idx = np.argsort(-logits_ev, axis=-1)[:, : min(5, n_cls)]
+    top5_mlp = float(np.mean([y_ev[i] in top5_mlp_idx[i] for i in range(len(y_ev))]))
     return {
         "eval_mode": mode,
         "n_classes": int(n_cls),
         "n_train_clips": int(len(tr_lbls)),
         "n_eval_clips": int(len(ev_lbls)),
-        "top1_accuracy": round(top1, 4),
-        "top5_accuracy": round(top5, 4),
+        "top1_accuracy": round(top1_lin, 4),
+        "top5_accuracy": round(top5_lin, 4),
+        "top1_linear_cv": round(top1_lin, 4),
+        "top5_linear_cv": round(top5_lin, 4),
+        "top1_mlp_std": round(top1_mlp, 4),
+        "top5_mlp_std": round(top5_mlp, 4),
+        "best_ridge_lambda": float(best_lam),
+        "train_4fold_cv_acc": round(float(best_cv), 4),
         "chance_baseline": round(1.0 / max(n_cls, 1), 4),
     }
 
@@ -433,4 +487,153 @@ def evaluate_code_execution_pass_at_1(
         "syntax_valid_rate": round(n_syntax_ok / max(n, 1), 4),
         "executed_pass_at_1": round(n_pass / max(n, 1), 4),
         "n_passed": int(n_pass),
+    }
+
+
+def _lcs_len(a: list[str], b: list[str]) -> int:
+    m, n = len(a), len(b)
+    if m == 0 or n == 0:
+        return 0
+    prev = [0] * (n + 1)
+    curr = [0] * (n + 1)
+    for i in range(1, m + 1):
+        ai = a[i - 1]
+        for j in range(1, n + 1):
+            curr[j] = prev[j - 1] + 1 if ai == b[j - 1] else (prev[j] if prev[j] >= curr[j - 1] else curr[j - 1])
+        prev, curr = curr, [0] * (n + 1)
+    return prev[n]
+
+
+def evaluate_cross_modal_caption_quality(
+    all_params: dict[str, Any],
+    spec: SLWMv3Spec,
+    shard_path: Path,
+    *,
+    max_episodes: int = 48,
+    max_ctx_ticks: int = 384,
+    max_gen_bytes: int = 112,
+    matmul_dtype: jnp.dtype = jnp.bfloat16,
+    use_wy_chunking: bool = False,
+) -> dict[str, Any]:
+    """Evaluate free-running Audio->Text / Video->Text caption quality (Token F1, ROUGE-L, & shuffled-context divergence)."""
+    if not shard_path.is_file():
+        return {"skipped": f"missing {shard_path}"}
+    sh = LoadedSparseShard.load(shard_path)
+    d = sh.data
+    n_eps = min(int(max_episodes), len(sh.episode_slices))
+
+    @jax.jit
+    def _encode_ctx(ap, batch):
+        _, st_end, _ = scan_core_fast(
+            ap["core"],
+            init_core_state(spec, 1),
+            batch,
+            spec,
+            remat_layers=False,
+            matmul_dtype=matmul_dtype,
+            use_wy_chunking=use_wy_chunking,
+        )
+        return st_end
+
+    decode_fn = _make_free_run_decoder(spec, max_gen_bytes=max_gen_bytes, matmul_dtype=matmul_dtype)
+
+    def _build_ctx_batch(s0: int, ctx_len: int) -> dict[str, jax.Array]:
+        L = min(max_ctx_ticks, max(1, ctx_len))
+        sl = slice(s0, s0 + L)
+        m_pad = np.full((max_ctx_ticks, 1), 2, dtype=np.int32)
+        m_pad[:L, 0] = d["modality_id"][sl]
+        dt_pad = np.zeros((max_ctx_ticks, 1), dtype=np.float32)
+        dt_pad[:L, 0] = d["dt_s"][sl]
+        vld = np.zeros((max_ctx_ticks, 1), dtype=np.float32)
+        vld[:L, 0] = 1.0
+        rel = np.ones((max_ctx_ticks, 1), dtype=np.float32)
+        rel[:L, 0] = d["reliability"][sl]
+        rst = np.zeros((max_ctx_ticks, 1), dtype=bool)
+        rst[0, 0] = True
+        sp = np.zeros((max_ctx_ticks, 1), dtype=np.int32)
+        sp[:L, 0] = d["spatial_pos"][sl]
+        tb = np.full((max_ctx_ticks, 1), 256, dtype=np.int32)
+        tb[:L, 0] = d["text_byte"][sl]
+        vf = np.zeros((max_ctx_ticks, 1, spec.video_patch_dim), dtype=np.float32)
+        vi = d["video_idx"][sl]
+        vm = vi >= 0
+        if np.any(vm) and len(d["video_feat"]) > 0:
+            vf[:L, 0][vm] = d["video_feat"][vi[vm]].astype(np.float32)
+        ac = np.zeros((max_ctx_ticks, 1, spec.audio_codebooks), dtype=np.int32)
+        ai = d["audio_idx"][sl]
+        am = ai >= 0
+        if np.any(am) and len(d["audio_codes"]) > 0:
+            ac[:L, 0][am] = d["audio_codes"][ai[am]].astype(np.int32)
+        return {
+            "modality_id": jnp.asarray(m_pad),
+            "dt_s": jnp.asarray(dt_pad),
+            "valid_mask": jnp.asarray(vld),
+            "reliability": jnp.asarray(rel),
+            "reset_mask": jnp.asarray(rst),
+            "spatial_pos": jnp.asarray(sp),
+            "text_byte": jnp.asarray(tb),
+            "has_true_action": jnp.zeros((max_ctx_ticks, 1), dtype=jnp.float32),
+            "video_feat": jnp.asarray(vf),
+            "audio_codes": jnp.asarray(ac),
+            "proprio_feat": jnp.zeros((max_ctx_ticks, 1, spec.proprio_dim), dtype=jnp.float32),
+            "action_feat": jnp.zeros((max_ctx_ticks, 1, spec.action_dim), dtype=jnp.float32),
+            "probe_feat": jnp.zeros((max_ctx_ticks, 1, spec.probe_dim), dtype=jnp.float32),
+        }
+
+    f1s: list[float] = []
+    rougels: list[float] = []
+    hyps: list[str] = []
+    refs: list[str] = []
+    for ei in range(n_eps):
+        s0, e0 = sh.episode_slices[ei]
+        tb_ep = d["text_byte"][s0:e0]
+        sep = np.where(tb_ep == BYTE_MOD_SEP)[0]
+        if len(sep) == 0 or int(sep[0]) < 8:
+            continue
+        ctx_len = int(sep[0])
+        ref_str = _normalize_asr_text(decode_utf8_bytes(tb_ep[ctx_len + 1 :]))
+        if not ref_str:
+            continue
+        st_pref = _encode_ctx(all_params, _build_ctx_batch(s0, ctx_len))
+        gen_b = np.asarray(decode_fn(all_params, st_pref, jnp.asarray(int(BYTE_MOD_SEP), dtype=jnp.int32)))
+        eos_hits = np.where(gen_b == BYTE_EOS)[0]
+        if len(eos_hits) > 0:
+            gen_b = gen_b[: int(eos_hits[0])]
+        hyp_str = _normalize_asr_text(decode_utf8_bytes(gen_b))
+        rw = ref_str.split()
+        hw = hyp_str.split()
+        if rw and hw:
+            r_set, h_set = set(rw), set(hw)
+            ov = len(r_set & h_set)
+            f1 = (2.0 * ov) / (len(r_set) + len(h_set))
+            lcs = _lcs_len(rw, hw)
+            rl = (2.0 * lcs) / (len(rw) + len(hw))
+        else:
+            f1, rl = 0.0, 0.0
+        f1s.append(f1)
+        rougels.append(rl)
+        hyps.append(hyp_str)
+        refs.append(ref_str)
+
+    # Shuffled-reference F1 baseline: does the model score higher against its OWN clip's caption than a shifted clip?
+    shuf_f1s: list[float] = []
+    n_ok = len(hyps)
+    for i in range(n_ok):
+        hw = hyps[i].split()
+        rw_cf = refs[(i + max(1, n_ok // 3)) % n_ok].split()
+        if hw and rw_cf:
+            ov = len(set(hw) & set(rw_cf))
+            shuf_f1s.append((2.0 * ov) / (len(set(hw)) + len(set(rw_cf))))
+        else:
+            shuf_f1s.append(0.0)
+    unique_hyps = len(set(h for h in hyps if h))
+    return {
+        "shard": shard_path.name,
+        "evaluated_episodes": int(n_ok),
+        "token_f1": round(float(np.mean(f1s)) if f1s else 0.0, 4),
+        "rouge_l_f1": round(float(np.mean(rougels)) if rougels else 0.0, 4),
+        "shuffled_ref_token_f1": round(float(np.mean(shuf_f1s)) if shuf_f1s else 0.0, 4),
+        "causal_caption_f1_margin": round((float(np.mean(f1s)) - float(np.mean(shuf_f1s))) if f1s else 0.0, 4),
+        "unique_caption_ratio": round(unique_hyps / max(n_ok, 1), 4),
+        "sample_captions": [{"ref": refs[i][:120], "hyp": hyps[i][:120]} for i in range(min(4, n_ok))],
     }
