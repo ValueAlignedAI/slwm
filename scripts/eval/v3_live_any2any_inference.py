@@ -660,37 +660,312 @@ def stream_video_generation_from_shard(
     }
 
 
-def run_full_any2any_media_gallery(
-    bundle: dict[str, Any], shard_dir: Path, out_dir: Path, *, episodes: list[int] = [0, 1]
+def stream_text_to_audio(
+    bundle: dict[str, Any],
+    prompt: str,
+    *,
+    max_new_steps: int = 40,
+    temperature: float = 0.80,
+    seed: int = 42,
+    out_dir: Path | None = None,
+    tag: str = "prompt0",
 ) -> dict[str, Any]:
-    """Render a complete 6-direction any-to-any media gallery (text, real `.wav` audio, real `.png`/`.gif` video)."""
+    """True Text -> Audio (`24 kHz .wav`) free-running generation via frozen `step_core` + Kyutai Mimi."""
+    spec, params = bundle["spec"], bundle["params"]
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+
+    @jax.jit
+    def _tick(p, s, pkt):
+        z, ns, dm = step_core(p["core"], s, pkt, spec)
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return ns, preds["audio_logits"][0, 0], dm["mean_nowrite"][0]
+
+    st = init_core_state(spec, 1)
+    rng = np.random.default_rng(seed)
+    p_bytes = list(prompt.encode("utf-8", errors="ignore")) + [BYTE_MOD_SEP]
+    last_a = None
+    nws: list[float] = []
+    for i, b_val in enumerate(p_bytes):
+        pkt = _empty_packet_b1(spec)
+        pkt["modality_id"] = jnp.array([2], dtype=jnp.int32)
+        pkt["text_byte"] = jnp.array([b_val], dtype=jnp.int32)
+        pkt["reset_mask"] = jnp.array([i == 0], dtype=jnp.bool_)
+        st, last_a, nw = _tick(params, st, pkt)
+        nws.append(float(nw))
+
+    gen_c: list[np.ndarray] = []
+    for _ in range(max_new_steps):
+        codes_k = _sample_rvq_codes(np.asarray(last_a), temperature=max(temperature, 0.75), top_p=0.90, rng=rng)
+        gen_c.append(codes_k)
+        full_c = np.zeros((spec.audio_codebooks,), dtype=np.int32)
+        full_c[: len(codes_k)] = codes_k
+        pkt = _empty_packet_b1(spec)
+        pkt["modality_id"] = jnp.array([1], dtype=jnp.int32)
+        pkt["dt_s"] = jnp.array([0.08], dtype=jnp.float32)
+        pkt["audio_codes"] = jnp.asarray(full_c[None, :], dtype=jnp.int32)
+        st, last_a, nw = _tick(params, st, pkt)
+        nws.append(float(nw))
+    codes_arr = np.stack(gen_c, axis=0)
+    rendered: dict[str, str] = {}
+    if out_dir is not None:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(out_dir / f"text2audio_{tag}_mimi_codes.npz", pred_codes=codes_arr)
+        rendered["pred_wav"] = decode_mimi_codes_to_wav(codes_arr, out_dir / f"text2audio_{tag}_pred_{k_aud}rvq.wav")
+    return {
+        "mode": "text2audio",
+        "prompt": prompt,
+        "generated_duration_sec": round(len(codes_arr) / 12.5, 2),
+        "mean_nowrite": round(float(np.mean(nws)) if nws else 0.0, 4),
+        "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+        "artifacts": rendered,
+    }
+
+
+def stream_text_to_video(
+    bundle: dict[str, Any],
+    prompt: str,
+    *,
+    n_pred_groups: int = 3,
+    out_dir: Path | None = None,
+    tag: str = "prompt0",
+) -> dict[str, Any]:
+    """True Text -> Video (`192x320` RGB `.mp4`/`.gif`/`.png`) free-running generation via frozen `step_core` + Wan 2.1 VAE."""
+    spec, params = bundle["spec"], bundle["params"]
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+
+    @jax.jit
+    def _tick(p, s, pkt):
+        z, ns, dm = step_core(p["core"], s, pkt, spec)
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return ns, preds["video_pred"][0, 0], dm["mean_nowrite"][0]
+
+    st = init_core_state(spec, 1)
+    p_bytes = list(prompt.encode("utf-8", errors="ignore")) + [BYTE_MOD_SEP]
+    last_v = None
+    nws: list[float] = []
+    for i, b_val in enumerate(p_bytes):
+        pkt = _empty_packet_b1(spec)
+        pkt["modality_id"] = jnp.array([2], dtype=jnp.int32)
+        pkt["text_byte"] = jnp.array([b_val], dtype=jnp.int32)
+        pkt["reset_mask"] = jnp.array([i == 0], dtype=jnp.bool_)
+        st, last_v, nw = _tick(params, st, pkt)
+        nws.append(float(nw))
+
+    pred_p = np.zeros((n_pred_groups, 15, spec.video_patch_dim), dtype=np.float32)
+    for g in range(n_pred_groups):
+        for p_idx in range(15):
+            pv = np.asarray(last_v, dtype=np.float32) if last_v is not None else np.zeros((spec.video_patch_dim,), dtype=np.float32)
+            pred_p[g, p_idx] = pv
+            pkt = _empty_packet_b1(spec)
+            pkt["modality_id"] = jnp.array([0], dtype=jnp.int32)
+            pkt["dt_s"] = jnp.array([0.0 if p_idx > 0 else 0.16], dtype=jnp.float32)
+            pkt["spatial_pos"] = jnp.array([p_idx], dtype=jnp.int32)
+            pkt["video_feat"] = jnp.asarray(pv[None, :], dtype=jnp.float32)
+            st, last_v, nw = _tick(params, st, pkt)
+            nws.append(float(nw))
+
+    rendered: dict[str, Any] = {}
+    if out_dir is not None:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(out_dir / f"text2video_{tag}_latents.npz", pred_patches=pred_p)
+        pr_rgb = decode_wan_patches_to_rgb(pred_p)
+        if pr_rgb is not None:
+            rendered.update(
+                _save_side_by_side_png_and_gif(
+                    [pr_rgb],
+                    out_dir / f"text2video_{tag}_pred.png",
+                    out_dir / f"text2video_{tag}_pred.gif",
+                    headers=[f"TEXT2VIDEO: {prompt[:30]}"],
+                )
+            )
+            rendered["decoded_frames_shape"] = list(pr_rgb.shape)
+    return {
+        "mode": "text2video",
+        "prompt": prompt,
+        "predicted_video_groups": int(n_pred_groups),
+        "mean_nowrite": round(float(np.mean(nws)) if nws else 0.0, 4),
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "artifacts": rendered,
+    }
+
+
+def stream_audio_continuation_from_shard(
+    bundle: dict[str, Any],
+    shard_path: Path,
+    *,
+    episode_idx: int = 0,
+    ctx_ticks: int = 25,
+    gen_ticks: int = 32,
+    temperature: float = 0.80,
+    seed: int = 42,
+    out_dir: Path | None = None,
+) -> dict[str, Any]:
+    """True Audio -> Audio (`24 kHz .wav`) continuation: observe `ctx_ticks` (`2.0s`), autoregressively continue `gen_ticks` (`2.56s`)."""
+    spec, params = bundle["spec"], bundle["params"]
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+    sh = LoadedSparseShard.load(shard_path)
+    ep_i = episode_idx % len(sh.episode_slices)
+    s0, e0 = sh.episode_slices[ep_i]
+    d = sh.data
+    aud_gis = [gi for gi in range(s0, e0) if int(d["modality_id"][gi]) == 1 and int(d["audio_idx"][gi]) >= 0]
+    if len(aud_gis) < ctx_ticks + 8:
+        return {"error": f"Episode {ep_i} has only {len(aud_gis)} audio ticks."}
+
+    @jax.jit
+    def _tick(p, s, pkt):
+        z, ns, dm = step_core(p["core"], s, pkt, spec)
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return ns, preds["audio_logits"][0, 0], dm["mean_nowrite"][0]
+
+    st = init_core_state(spec, 1)
+    rng = np.random.default_rng(seed + ep_i)
+    last_a = None
+    nws: list[float] = []
+    ctx_codes_k = []
+    for idx_i, gi in enumerate(aud_gis[:ctx_ticks]):
+        ai = int(d["audio_idx"][gi])
+        ctx_codes_k.append(d["audio_codes"][ai, :k_aud].astype(np.int32))
+        st, last_a, nw = _tick(params, st, _packet_from_shard(spec, d, gi, is_first=(idx_i == 0)))
+        nws.append(float(nw))
+
+    gen_c: list[np.ndarray] = []
+    for _ in range(gen_ticks):
+        codes_k = _sample_rvq_codes(np.asarray(last_a), temperature=max(temperature, 0.75), top_p=0.90, rng=rng)
+        gen_c.append(codes_k)
+        full_c = np.zeros((spec.audio_codebooks,), dtype=np.int32)
+        full_c[: len(codes_k)] = codes_k
+        pkt = _empty_packet_b1(spec)
+        pkt["modality_id"] = jnp.array([1], dtype=jnp.int32)
+        pkt["dt_s"] = jnp.array([0.08], dtype=jnp.float32)
+        pkt["audio_codes"] = jnp.asarray(full_c[None, :], dtype=jnp.int32)
+        st, last_a, nw = _tick(params, st, pkt)
+        nws.append(float(nw))
+
+    gt_all_k = np.stack([d["audio_codes"][int(d["audio_idx"][gi]), :k_aud].astype(np.int32) for gi in aud_gis[: ctx_ticks + gen_ticks]], axis=0)
+    pred_full_k = np.concatenate([np.stack(ctx_codes_k, axis=0), np.stack(gen_c, axis=0)], axis=0)
+    rendered: dict[str, str] = {}
+    if out_dir is not None:
+        out_dir.mkdir(parents=True, exist_ok=True)
+        rendered["gt_full_wav"] = decode_mimi_codes_to_wav(gt_all_k, out_dir / f"audio2audio_ep{ep_i:04d}_gt_{k_aud}rvq.wav")
+        rendered["pred_continuation_wav"] = decode_mimi_codes_to_wav(pred_full_k, out_dir / f"audio2audio_ep{ep_i:04d}_pred_cont_{k_aud}rvq.wav")
+    return {
+        "mode": f"audio2audio ({shard_path.name})",
+        "episode_idx": int(ep_i),
+        "observed_prefix_sec": round(ctx_ticks / 12.5, 2),
+        "generated_continuation_sec": round(gen_ticks / 12.5, 2),
+        "mean_nowrite": round(float(np.mean(nws)) if nws else 0.0, 4),
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "artifacts": rendered,
+    }
+
+
+def stream_video_to_action_from_shard(
+    bundle: dict[str, Any],
+    shard_path: Path,
+    *,
+    episode_idx: int = 0,
+    max_steps: int = 24,
+) -> dict[str, Any]:
+    """True Video+Instruction -> Motor Action prediction (strictly blind to ground-truth motor actions!)."""
+    spec, params = bundle["spec"], bundle["params"]
+    k_aud = int(params["heads"]["head_audio"]["bias"].shape[0])
+    sh = LoadedSparseShard.load(shard_path)
+    ep_i = episode_idx % len(sh.episode_slices)
+    s0, e0 = sh.episode_slices[ep_i]
+    d = sh.data
+
+    @jax.jit
+    def _tick(p, s, pkt):
+        z, ns, dm = step_core(p["core"], s, pkt, spec)
+        preds = predict_any2any_heads(p["heads"], z[None, :, :], spec, n_pred_audio_codebooks=k_aud, matmul_dtype=jnp.float32)
+        return ns, preds["action_pred"][0, 0], dm["mean_nowrite"][0]
+
+    st = init_core_state(spec, 1)
+    last_ap = None
+    gt_acts, pr_acts, nws = [], [], []
+    zero_act = np.zeros((spec.action_dim,), dtype=np.float32)
+    for rel in range(e0 - s0):
+        gi = s0 + rel
+        m_id = int(d["modality_id"][gi])
+        if m_id == 3 and int(d["act_idx"][gi]) >= 0 and int(d["has_true_action"][gi]) > 0:
+            if last_ap is not None:
+                gt_acts.append(d["action_feat"][int(d["act_idx"][gi])].astype(np.float32))
+                pr_acts.append(np.asarray(last_ap[: spec.action_dim], dtype=np.float32))
+                if len(gt_acts) >= max_steps:
+                    break
+            # Feed proprioception ONLY with zeroed action & has_true_action=0 (blind to GT action!)
+            pkt = _packet_from_shard(spec, d, gi, is_first=(rel == 0), action_override=zero_act)
+            pkt["has_true_action"] = jnp.array([0.0], dtype=jnp.float32)
+        else:
+            pkt = _packet_from_shard(spec, d, gi, is_first=(rel == 0))
+        st, last_ap, nw = _tick(params, st, pkt)
+        nws.append(float(nw))
+
+    if not gt_acts:
+        return {"error": f"No motor actions found in episode {ep_i}."}
+    g_arr, p_arr = np.stack(gt_acts), np.stack(pr_acts)
+    diff = p_arr - g_arr
+    ad = np.abs(diff)
+    huber = float(np.mean(np.where(ad <= 1.0, 0.5 * diff * diff, ad - 0.5)))
+    cos = float(np.sum(p_arr * g_arr) / (np.linalg.norm(p_arr) * np.linalg.norm(g_arr) + 1e-8))
+    return {
+        "mode": f"video2action ({shard_path.name})",
+        "episode_idx": int(ep_i),
+        "predicted_action_steps": int(len(gt_acts)),
+        "action_huber_loss": round(huber, 5),
+        "action_l1_error": round(float(np.mean(ad)), 5),
+        "action_cosine_sim": round(cos, 4),
+        "mean_nowrite": round(float(np.mean(nws)) if nws else 0.0, 4),
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions",
+    }
+
+
+def run_full_any2any_media_gallery(
+    bundle: dict[str, Any],
+    shard_dir: Path,
+    out_dir: Path,
+    *,
+    episodes: list[int] = [0, 1],
+    non_text_only: bool = False,
+) -> dict[str, Any]:
+    """Render a complete non-text (and optional text) any-to-any media gallery (`.wav`, `.mp4`, `.gif`, `.png`, motor actions)."""
     out_dir.mkdir(parents=True, exist_ok=True)
     gallery: dict[str, Any] = {
         "frozen_weights_only": True,
-        "text2text": [],
-        "audio2text": [],
-        "video2text": [],
+        "non_text_only": bool(non_text_only),
         "video2audio_wav": [],
-        "audio2video_png_gif": [],
-        "action2video_png_gif": [],
+        "audio2video_mp4_gif_png": [],
+        "action2video_mp4_gif_png": [],
+        "audio2audio_wav": [],
+        "text2audio_wav": [],
+        "text2video_mp4_gif_png": [],
+        "video2action_motor": [],
     }
-    for pr in [
-        "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
-        "The European Space Agency announced that the new telescope ",
-    ]:
-        gallery["text2text"].append(stream_text_continuation(bundle, pr, max_new_bytes=120, temperature=0.0))
+    if not non_text_only:
+        gallery["text2text"] = []
+        gallery["audio2text"] = []
+        gallery["video2text"] = []
+        for pr in [
+            "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+            "The European Space Agency announced that the new telescope ",
+        ]:
+            gallery["text2text"].append(stream_text_continuation(bundle, pr, max_new_bytes=120, temperature=0.0))
 
     clotho = shard_dir / "audio_text/clotho_test.npz"
     if not clotho.is_file():
         clotho = shard_dir / "audio_text/clotho_dev.npz"
     if clotho.is_file():
         for ep in episodes:
-            gallery["audio2text"].append(stream_cross_modal_from_shard(bundle, clotho, episode_idx=ep, target_mode="text", max_new_steps=96))
+            if not non_text_only:
+                gallery["audio2text"].append(stream_cross_modal_from_shard(bundle, clotho, episode_idx=ep, target_mode="text", max_new_steps=96))
+            gallery["audio2audio_wav"].append(
+                stream_audio_continuation_from_shard(bundle, clotho, episode_idx=ep, out_dir=out_dir / "audio")
+            )
 
     msrvtt = shard_dir / "av/msrvtt_test.npz"
     if not msrvtt.is_file():
         msrvtt = shard_dir / "av/msrvtt_dev.npz"
-    if msrvtt.is_file():
+    if msrvtt.is_file() and not non_text_only:
         for ep in episodes:
             gallery["video2text"].append(stream_cross_modal_from_shard(bundle, msrvtt, episode_idx=ep, target_mode="text", max_new_steps=96))
 
@@ -702,7 +977,7 @@ def run_full_any2any_media_gallery(
             gallery["video2audio_wav"].append(
                 stream_cross_modal_from_shard(bundle, vgg, episode_idx=ep, target_mode="audio", max_new_steps=32, out_dir=out_dir / "audio")
             )
-            gallery["audio2video_png_gif"].append(
+            gallery["audio2video_mp4_gif_png"].append(
                 stream_video_generation_from_shard(bundle, vgg, episode_idx=ep, mode="audio2video", n_pred_groups=3, out_dir=out_dir / "video")
             )
 
@@ -711,9 +986,15 @@ def run_full_any2any_media_gallery(
         rob = shard_dir / "robotics/robotics_dev.npz"
     if rob.is_file():
         for ep in episodes:
-            gallery["action2video_png_gif"].append(
+            gallery["action2video_mp4_gif_png"].append(
                 stream_video_generation_from_shard(bundle, rob, episode_idx=ep, mode="action2video", n_pred_groups=3, out_dir=out_dir / "video")
             )
+            gallery["video2action_motor"].append(stream_video_to_action_from_shard(bundle, rob, episode_idx=ep))
+
+    for ti, pr_a in enumerate(["sound: water rushing in a stream", "sound: dog barking loudly"]):
+        gallery["text2audio_wav"].append(stream_text_to_audio(bundle, pr_a, out_dir=out_dir / "audio", tag=f"p{ti}"))
+    for ti, pr_v in enumerate(["a car driving down a road", "pick up the object on the table"]):
+        gallery["text2video_mp4_gif_png"].append(stream_text_to_video(bundle, pr_v, out_dir=out_dir / "video", tag=f"p{ti}"))
 
     manifest_p = out_dir / "media_gallery_manifest.json"
     manifest_p.write_text(json.dumps(gallery, indent=2), encoding="utf-8")
@@ -728,12 +1009,17 @@ def main() -> None:
     ap.add_argument(
         "--mode",
         type=str,
-        default="text2text",
-        choices=("text2text", "audio2text", "video2text", "video2audio", "audio2video", "action2video", "full_gallery"),
+        default="non_text_gallery",
+        choices=(
+            "text2text", "audio2text", "video2text",
+            "video2audio", "audio2video", "action2video",
+            "audio2audio", "text2audio", "text2video", "video2action",
+            "non_text_gallery", "full_gallery",
+        ),
     )
-    ap.add_argument("--prompt", type=str, default="def fibonacci(n):\n    ")
+    ap.add_argument("--prompt", type=str, default="sound: water rushing in a stream")
     ap.add_argument("--shard", type=Path, default=None, help="Pre-encoded shard `.npz` for cross-modal modes.")
-    ap.add_argument("--shard-dir", type=Path, default=Path("/tmp/slwm_v3_confirmation_shards"), help="Shard root for `--mode full_gallery`.")
+    ap.add_argument("--shard-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded"), help="Shard root for gallery modes.")
     ap.add_argument("--episode-idx", type=int, default=0)
     ap.add_argument("--max-new-steps", type=int, default=128)
     ap.add_argument("--temperature", type=float, default=0.0)
@@ -743,12 +1029,28 @@ def main() -> None:
     args = ap.parse_args()
 
     bundle = load_frozen_bundle(args.ckpt, wave_b_ckpt=args.wave_b_ckpt, wave_c_ckpt=args.wave_c_ckpt)
-    if args.mode == "full_gallery":
-        res = run_full_any2any_media_gallery(bundle, args.shard_dir, args.out_dir, episodes=[args.episode_idx, args.episode_idx + 1])
+    if args.mode in ("full_gallery", "non_text_gallery"):
+        res = run_full_any2any_media_gallery(
+            bundle, args.shard_dir, args.out_dir,
+            episodes=[args.episode_idx, args.episode_idx + 1],
+            non_text_only=(args.mode == "non_text_gallery"),
+        )
     elif args.mode == "text2text":
         res = stream_text_continuation(
             bundle, args.prompt, max_new_bytes=args.max_new_steps, temperature=args.temperature, seed=args.seed
         )
+    elif args.mode == "text2audio":
+        res = stream_text_to_audio(bundle, args.prompt, max_new_steps=min(64, args.max_new_steps), temperature=args.temperature, seed=args.seed, out_dir=args.out_dir / "audio")
+    elif args.mode == "text2video":
+        res = stream_text_to_video(bundle, args.prompt, out_dir=args.out_dir / "video")
+    elif args.mode == "audio2audio":
+        if args.shard is None:
+            raise ValueError("--shard is required for mode=audio2audio")
+        res = stream_audio_continuation_from_shard(bundle, args.shard, episode_idx=args.episode_idx, temperature=args.temperature, seed=args.seed, out_dir=args.out_dir / "audio")
+    elif args.mode == "video2action":
+        if args.shard is None:
+            raise ValueError("--shard is required for mode=video2action")
+        res = stream_video_to_action_from_shard(bundle, args.shard, episode_idx=args.episode_idx)
     elif args.mode in ("audio2video", "action2video"):
         if args.shard is None:
             raise ValueError(f"--shard is required for mode={args.mode}")
