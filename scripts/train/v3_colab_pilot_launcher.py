@@ -24,6 +24,8 @@ Operational guardrails (verified against installed `colab` CLI 0.8.0):
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
+import fcntl
 import hashlib
 import io
 import json
@@ -303,8 +305,21 @@ def _colab_cli_python() -> Path | None:
     return fallback if fallback.is_file() else None
 
 
+@contextmanager
+def _colab_config_lock(cfg_path: Path):
+    """Process-level exclusive lock around `colab-config.json` mutations (`new`/`stop`) for safe parallel instances."""
+    lock_p = cfg_path.with_suffix(".lock")
+    lock_p.parent.mkdir(parents=True, exist_ok=True)
+    with lock_p.open("a+") as lf:
+        fcntl.flock(lf.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lf.fileno(), fcntl.LOCK_UN)
+
+
 def _adopt_single_unnamed_assignment(session_name: str, cfg_path: Path, *, accel: str = "tpu_v6e1") -> bool:
-    """If `colab new` timed out right after server provisioned ONE matching runtime, adopt it into `cfg_path`."""
+    """If `colab new` timed out right after server provisioned ONE matching orphan runtime, adopt it into `cfg_path`."""
     py = _colab_cli_python()
     if py is None:
         return False
@@ -312,17 +327,19 @@ def _adopt_single_unnamed_assignment(session_name: str, cfg_path: Path, *, accel
         "tpu_v6e1": ("V6E1", "TPU"),
         "a100": ("A100", "GPU"),
         "h100": ("H100", "GPU"),
+        "l4": ("L4", "GPU"),
     }
     want_acc, want_var = target_map.get(accel, ("V6E1", "TPU"))
     code = (
         "import sys; from colab_cli.auth import AuthProvider; from colab_cli.common import state; "
         "from colab_cli.state import SessionState\n"
         "state.config_path = sys.argv[1]; state.auth_provider = AuthProvider.ADC\n"
+        "known = {s.endpoint for s in state.store.list().values()}\n"
         "asg = state.client.list_assignments()\n"
         "want_acc, want_var = sys.argv[3], sys.argv[4]\n"
-        "matched = [a for a in asg if a.accelerator.value == want_acc and a.variant.name == want_var]\n"
-        "if len(asg) != 1 or len(matched) != 1: sys.exit(2)\n"
-        "a = matched[0]\n"
+        "orphans = [a for a in asg if a.endpoint not in known and a.accelerator.value == want_acc and a.variant.name == want_var]\n"
+        "if len(orphans) != 1: sys.exit(2)\n"
+        "a = orphans[0]\n"
         "s = SessionState(name=sys.argv[2], token=a.runtime_proxy_info.token, url=a.runtime_proxy_info.url, "
         "endpoint=a.endpoint, token_expires_at=a.runtime_proxy_info.expires_at(), variant=a.variant.value, "
         "accelerator=a.accelerator.value, machine_shape=a.machine_shape.name)\n"
@@ -356,47 +373,48 @@ def allocate_colab_session_safe(
     max_attempts: int = 4,
     sleep_s: float = 15.0,
 ) -> None:
-    """Safely allocate ONE Colab runtime with ADC-refresh immunity, orphan adoption, and zero multi-orphan leaks."""
-    # Pre-clean any stray unnamed assignments before starting so we never stack multiple billable runtimes
-    pre = query_active_sessions(cfg_path) or []
-    if any("[?]" in ln for ln in pre):
-        print(f"[ALLOC WARN] Pre-existing unnamed assignment(s) detected: {pre}; unassigning before new alloc.", flush=True)
-        _unassign_unnamed_assignments(cfg_path)
-        time.sleep(3.0)
-
-    last_err = ""
-    for attempt in range(1, max_attempts + 1):
-        print(f"[ALLOC attempt {attempt}/{max_attempts}] Requesting {accel} session '{session_name}'...", flush=True)
-        try:
-            if accel == "tpu_v6e1":
-                res = run_colab("new", "-s", session_name, "--tpu", "V6E1", cfg_path=cfg_path, timeout=420)
-            elif accel == "a100":
-                res = run_colab("new", "-s", session_name, "--gpu", "A100", "--high-mem", cfg_path=cfg_path, timeout=360)
-            else:
-                res = run_colab("new", "-s", session_name, "--gpu", "H100", cfg_path=cfg_path, timeout=360)
-            if res.returncode == 0:
-                print(res.stdout.strip(), flush=True)
-                return
-            last_err = (res.stderr or res.stdout)[-400:]
-            print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] rc={res.returncode}: {last_err.strip()}", flush=True)
-        except Exception as e:
-            last_err = str(e)
-            print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] {type(e).__name__}: {e}", flush=True)
-
-        active = query_active_sessions(cfg_path) or []
-        if any(f"[{session_name}]" in ln for ln in active):
-            print(f"[ALLOC] Session '{session_name}' already active on server after retry check.", flush=True)
-            return
-        if any("[?]" in ln for ln in active):
-            if _adopt_single_unnamed_assignment(session_name, cfg_path, accel=accel):
-                return
-            # NEVER leave an un-adopted orphan running across retries!
-            print(f"[ALLOC WARN] Could not adopt unnamed assignment(s) {active}; unassigning before retry.", flush=True)
+    """Safely allocate ONE Colab runtime (serialized via file lock so parallel instances never race or clobber)."""
+    with _colab_config_lock(cfg_path):
+        pre = query_active_sessions(cfg_path) or []
+        if any("[?]" in ln for ln in pre):
+            print(f"[ALLOC WARN] Pre-existing unnamed assignment(s) detected: {pre}; unassigning before new alloc.", flush=True)
             _unassign_unnamed_assignments(cfg_path)
-        if attempt < max_attempts:
-            time.sleep(sleep_s)
+            time.sleep(3.0)
 
-    raise RuntimeError(f"Failed to allocate {accel} session '{session_name}' after {max_attempts} attempts: {last_err}")
+        last_err = ""
+        for attempt in range(1, max_attempts + 1):
+            print(f"[ALLOC attempt {attempt}/{max_attempts}] Requesting {accel} session '{session_name}'...", flush=True)
+            try:
+                if accel == "tpu_v6e1":
+                    res = run_colab("new", "-s", session_name, "--tpu", "V6E1", cfg_path=cfg_path, timeout=420)
+                elif accel == "a100":
+                    res = run_colab("new", "-s", session_name, "--gpu", "A100", "--high-mem", cfg_path=cfg_path, timeout=360)
+                elif accel == "l4":
+                    res = run_colab("new", "-s", session_name, "--gpu", "L4", "--high-mem", cfg_path=cfg_path, timeout=360)
+                else:
+                    res = run_colab("new", "-s", session_name, "--gpu", "H100", cfg_path=cfg_path, timeout=360)
+                if res.returncode == 0:
+                    print(res.stdout.strip(), flush=True)
+                    return
+                last_err = (res.stderr or res.stdout)[-400:]
+                print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] rc={res.returncode}: {last_err.strip()}", flush=True)
+            except Exception as e:
+                last_err = str(e)
+                print(f"[ALLOC attempt {attempt}/{max_attempts} WARN] {type(e).__name__}: {e}", flush=True)
+
+            active = query_active_sessions(cfg_path) or []
+            if any(f"[{session_name}]" in ln for ln in active):
+                print(f"[ALLOC] Session '{session_name}' already active on server after retry check.", flush=True)
+                return
+            if any("[?]" in ln for ln in active):
+                if _adopt_single_unnamed_assignment(session_name, cfg_path, accel=accel):
+                    return
+                print(f"[ALLOC WARN] Could not adopt unnamed assignment(s) {active}; unassigning before retry.", flush=True)
+                _unassign_unnamed_assignments(cfg_path)
+            if attempt < max_attempts:
+                time.sleep(sleep_s)
+
+        raise RuntimeError(f"Failed to allocate {accel} session '{session_name}' after {max_attempts} attempts: {last_err}")
 
 
 def _unassign_unnamed_assignments(cfg_path: Path) -> None:
@@ -422,40 +440,44 @@ def _unassign_unnamed_assignments(cfg_path: Path) -> None:
 
 
 def verified_stop_session(session_name: str, cfg_path: Path, *, runner=run_colab, sleep_s: float = 3.0) -> bool:
-    """Stop named Colab session and strictly verify disappearance via BOTH `stop rc==0` AND recognized `sessions` inventory.
+    """Stop named Colab session under file lock (safe with concurrent sibling sessions!) and verify disappearance."""
+    lock_ctx = _colab_config_lock(cfg_path) if (runner is run_colab) else None
+    if lock_ctx is not None:
+        lock_ctx.__enter__()
+    try:
+        for attempt in range(1, 4):
+            stop_ok = False
+            try:
+                stop_res = runner("stop", "-s", session_name, cfg_path=cfg_path, timeout=120)
+                stop_txt = (stop_res.stdout or stop_res.stderr or "").strip()
+                stop_ok = stop_res.returncode == 0
+                print(f"[TEARDOWN attempt {attempt}] stop rc={stop_res.returncode}: {stop_txt}", flush=True)
+            except Exception as exc:
+                print(f"[TEARDOWN attempt {attempt}] stop raised {type(exc).__name__}: {exc}", flush=True)
 
-    Catches `TimeoutExpired`/exceptions inside the retry loop; NEVER certifies teardown on failed stop or empty inventory!
-    """
-    for attempt in range(1, 4):
-        stop_ok = False
-        try:
-            stop_res = runner("stop", "-s", session_name, cfg_path=cfg_path, timeout=120)
-            stop_txt = (stop_res.stdout or stop_res.stderr or "").strip()
-            stop_ok = stop_res.returncode == 0
-            print(f"[TEARDOWN attempt {attempt}] stop rc={stop_res.returncode}: {stop_txt}", flush=True)
-        except Exception as exc:
-            print(f"[TEARDOWN attempt {attempt}] stop raised {type(exc).__name__}: {exc}", flush=True)
-
-        if sleep_s > 0.0:
-            time.sleep(sleep_s)
-
-        active = query_active_sessions(cfg_path, runner=runner)
-        if active is None:
-            print(f"[TEARDOWN attempt {attempt}] `colab sessions` failed or returned unrecognized output.", flush=True)
-            continue
-        if (runner is run_colab) and any(ln.startswith("[?]") or " [?]" in ln for ln in active):
-            _unassign_unnamed_assignments(cfg_path)
             if sleep_s > 0.0:
                 time.sleep(sleep_s)
+
             active = query_active_sessions(cfg_path, runner=runner)
             if active is None:
+                print(f"[TEARDOWN attempt {attempt}] `colab sessions` failed or returned unrecognized output.", flush=True)
                 continue
-        if stop_ok and (not _session_lines_contain_target_or_unnamed(active, session_name)):
-            print(f"[TEARDOWN] Verified stop rc=0 AND session {session_name!r} / `[?]` absent from server.", flush=True)
-            return True
-        print(f"[TEARDOWN attempt {attempt}] stop_ok={stop_ok}, active={active}", flush=True)
-    print(f"[TEARDOWN CRITICAL] Session {session_name!r} or unnamed `[?]` could NOT be verified stopped!", flush=True)
-    return False
+            if (runner is run_colab) and any(ln.startswith("[?]") or " [?]" in ln for ln in active):
+                _unassign_unnamed_assignments(cfg_path)
+                if sleep_s > 0.0:
+                    time.sleep(sleep_s)
+                active = query_active_sessions(cfg_path, runner=runner)
+                if active is None:
+                    continue
+            if stop_ok and (not _session_lines_contain_target_or_unnamed(active, session_name)):
+                print(f"[TEARDOWN] Verified stop rc=0 AND session {session_name!r} / `[?]` absent from server.", flush=True)
+                return True
+            print(f"[TEARDOWN attempt {attempt}] stop_ok={stop_ok}, active={active}", flush=True)
+        print(f"[TEARDOWN CRITICAL] Session {session_name!r} or unnamed `[?]` could NOT be verified stopped!", flush=True)
+        return False
+    finally:
+        if lock_ctx is not None:
+            lock_ctx.__exit__(None, None, None)
 
 
 def projected_spend_exceeds_reserve(

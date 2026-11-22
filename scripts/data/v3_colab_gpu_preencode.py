@@ -30,6 +30,7 @@ from scripts.train.v3_colab_any2any_launcher import (
 )
 from scripts.train.v3_colab_pilot_launcher import (
     _run_remote_kernel_python_with_watchdog,
+    allocate_colab_session_safe,
     query_active_sessions,
     query_balance,
     run_colab,
@@ -67,6 +68,7 @@ def _build_tar(repo_root: Path) -> bytes:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Pre-encode MSR-VTT, VGGSound, and LeRobot on Colab GPU.")
     ap.add_argument("--accel", type=str, default="a100", choices=("h100", "a100", "l4"))
+    ap.add_argument("--session-name", type=str, default="", help="Optional unique Colab session name for parallel runs.")
     ap.add_argument("--corpora", type=str, default="msrvtt,vggsound")
     ap.add_argument("--max-msrvtt", type=int, default=3000)
     ap.add_argument("--max-vggsound", type=int, default=3000)
@@ -82,38 +84,16 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     log_dir = args.out_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    session_name = f"slwm_v3_preencode_{args.accel}"
+    session_name = args.session_name.strip() or f"slwm_v3_preencode_{args.accel}_{int(time.time()) % 100000}"
 
     bal_start, rate_start = query_balance(cfg_path)
-    print(f"[PREENCODE_GPU] accel={args.accel} start_balance={bal_start:.2f} CU rate={rate_start:.2f}", flush=True)
+    print(f"[PREENCODE_GPU] accel={args.accel} session={session_name} start_balance={bal_start:.2f} CU rate={rate_start:.2f}", flush=True)
     tar_bytes = _build_tar(repo_root)
     created = False
     t_alloc = time.monotonic()
 
     try:
-        gpu_flag = {"h100": "H100", "a100": "A100", "l4": "L4"}[args.accel]
-        assigned_ok = False
-        last_err = ""
-        for attempt in range(1, 5):
-            cmd = ["new", "-s", session_name, "--gpu", gpu_flag]
-            if args.accel in ("a100", "l4"):
-                cmd.append("--high-mem")
-            print(f"[PREENCODE_GPU] Allocating {gpu_flag} session '{session_name}' (attempt {attempt}/4)...", flush=True)
-            res = run_colab(*cmd, cfg_path=cfg_path, timeout=360)
-            if res.returncode == 0:
-                print(res.stdout.strip(), flush=True)
-                assigned_ok = True
-                break
-            last_err = (res.stderr or res.stdout)[-400:]
-            print(f"[PREENCODE_GPU WARN] attempt {attempt}/4 rc={res.returncode}: {last_err}", flush=True)
-            active = query_active_sessions(cfg_path) or []
-            if any(f"[{session_name}]" in ln for ln in active):
-                assigned_ok = True
-                break
-            if attempt < 4:
-                time.sleep(15.0)
-        if not assigned_ok:
-            raise RuntimeError(f"Failed to allocate {gpu_flag}: {last_err}")
+        allocate_colab_session_safe(session_name, args.accel, cfg_path, max_attempts=4, sleep_s=15.0)
         created = True
         t_alloc = time.monotonic()
 

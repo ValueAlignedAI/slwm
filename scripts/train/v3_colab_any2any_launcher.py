@@ -520,7 +520,8 @@ def _build_code_tar(repo_root: Path) -> bytes:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Launch Wave A-D SLWM-v3 real-corpus training & SoTA eval on Colab.")
-    ap.add_argument("--accel", type=str, default="tpu_v6e1", choices=("tpu_v6e1", "h100", "a100"))
+    ap.add_argument("--accel", type=str, default="tpu_v6e1", choices=("tpu_v6e1", "h100", "a100", "l4"))
+    ap.add_argument("--session-name", type=str, default="", help="Optional unique Colab session name (required when launching parallel instances!).")
     ap.add_argument("--profile", type=str, default="discovery_45m")
     ap.add_argument("--representation-mode", type=str, default="frozen_codec_edge", choices=("frozen_codec_edge", "scratch_edge"))
     ap.add_argument("--arms", type=str, default="slwm_v3_routed,single_bank_gated_deltanet,sliding_window_gqa_eqbyte")
@@ -559,7 +560,7 @@ def main() -> None:
     args.out_dir.mkdir(parents=True, exist_ok=True)
     log_dir = args.out_dir / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    session_name = f"slwm_v3_wave_{args.profile}_{args.accel}"
+    session_name = args.session_name.strip() or f"slwm_v3_{args.profile}_{args.accel}_{int(time.time()) % 100000}"
 
     bal_start, rate_start = query_balance(cfg_path)
     print(f"[WAVE_LAUNCH] profile={args.profile} accel={args.accel} start_bal={bal_start:.2f} CU rate={rate_start:.2f}", flush=True)
@@ -849,7 +850,6 @@ def main() -> None:
         if created:
             ok = verified_stop_session(session_name, cfg_path)
         else:
-            _unassign_unnamed_assignments(cfg_path)
             ok = True
         try:
             bal_end, rate_end = query_balance(cfg_path)
