@@ -139,8 +139,8 @@ def main() -> None:
     receipt["shards"]["esc50_train_f14"] = sb_tr.save(args.out_dir / "esc50_train_f14.npz")
     receipt["shards"]["esc50_test_f5"] = sb_te.save(args.out_dir / "esc50_test_f5.npz")
 
-    # 2. Clotho (official train / dev / test)
-    for split_nm, out_split in (("train", "train"), ("validation", "dev"), ("test", "test")):
+    # 2. Clotho (official train / valid->dev / test)
+    for split_nm, out_split in (("train", "train"), ("valid", "dev"), ("test", "test")):
         cpqs = sorted(glob.glob(str(args.raw_root / f"clotho/data/{split_nm}/*.parquet")))
         if not cpqs:
             continue
