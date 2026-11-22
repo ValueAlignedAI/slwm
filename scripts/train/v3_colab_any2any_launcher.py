@@ -16,6 +16,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -47,6 +48,7 @@ TRAIN_BUNDLE_FILES = tuple(
             "scripts/train/v3_any2any_trainer.py",
             "scripts/train/v3_wave_b_policy_gate.py",
             "scripts/train/v3_wave_c_decoders.py",
+            "scripts/eval/v3_live_any2any_inference.py",
         )
     )
 )
@@ -62,23 +64,26 @@ def _upload_shards_batch_chunked(
     bal_start: float,
     max_spend_cu: float,
     t_alloc: float,
-    chunk_bytes: int = 32 * 1024 * 1024,
+    chunk_bytes: int = 16 * 1024 * 1024,
 ) -> None:
-    """Stateless 2-stream HTTPS PUT upload of all shards in <=32 MiB parts + ONE retried SHA-256 assembly call.
+    """Stateless 2-stream HTTPS PUT upload of all shards in <=16 MiB parts + ONE retried SHA-256 assembly call.
 
     Completely immune to WebSocket drops during upload (zero WebSocket traffic while uploading parts!)
-    and handles arbitrary shard sizes (`100 MiB .. 4.1 GiB`) cleanly across Jupyter `/api/contents` caps.
+    and retries transient HTTPS timeouts/glitches cleanly across arbitrary shard sizes (`100 MiB .. 4.1 GiB`).
     """
     assembly_plan: list[dict[str, Any]] = []
 
     def _put_one(local_tmp: Path, rem_p: str) -> None:
         last_err = ""
-        for attempt in range(1, 5):
-            up = run_colab("upload", "-s", session_name, str(local_tmp), rem_p, cfg_path=cfg_path, timeout=300)
-            if up.returncode == 0:
-                return
-            last_err = up.stderr or up.stdout
-            time.sleep(3.0 * attempt)
+        for attempt in range(1, 6):
+            try:
+                up = run_colab("upload", "-s", session_name, str(local_tmp), rem_p, cfg_path=cfg_path, timeout=480)
+                if up.returncode == 0:
+                    return
+                last_err = up.stderr or up.stdout
+            except subprocess.TimeoutExpired as exc:
+                last_err = f"TimeoutExpired({exc.timeout}s)"
+            time.sleep(4.0 * attempt)
         raise RuntimeError(f"Upload failed for {rem_p}: {last_err}")
 
     for sf_idx, sf in enumerate(shard_files):
@@ -227,11 +232,14 @@ def _download_file_chunked_verified(
         for i, rem_p in enumerate(parts):
             p_loc = local_path.parent / f"._{local_path.name}.p{i:04d}"
             ok_p = False
-            for att in range(1, 4):
-                res = run_colab("download", "-s", session_name, rem_p, str(p_loc), cfg_path=cfg_path, timeout=300)
-                if res.returncode == 0 and p_loc.is_file():
-                    ok_p = True
-                    break
+            for att in range(1, 5):
+                try:
+                    res = run_colab("download", "-s", session_name, rem_p, str(p_loc), cfg_path=cfg_path, timeout=480)
+                    if res.returncode == 0 and p_loc.is_file():
+                        ok_p = True
+                        break
+                except subprocess.TimeoutExpired:
+                    pass
                 time.sleep(5.0 * att)
             if not ok_p:
                 print(f"[CKPT_DL WARN] Part {i+1}/{len(parts)} failed for {remote_path}", flush=True)
@@ -274,7 +282,14 @@ def _build_code_tar(repo_root: Path) -> bytes:
             ti.size = len(data)
             ti.mode = 0o644
             tf.addfile(ti, io.BytesIO(data))
-        for init_rel in ("models/__init__.py", "data/__init__.py", "evals/__init__.py", "scripts/__init__.py", "scripts/train/__init__.py"):
+        for init_rel in (
+            "models/__init__.py",
+            "data/__init__.py",
+            "evals/__init__.py",
+            "scripts/__init__.py",
+            "scripts/train/__init__.py",
+            "scripts/eval/__init__.py",
+        ):
             ti = tarfile.TarInfo(name=init_rel)
             ti.size = 0
             ti.mode = 0o644
@@ -303,6 +318,7 @@ def main() -> None:
     ap.add_argument("--ckpt-dir", type=Path, default=Path(".ops/checkpoints"), help="Local gitignored directory for downloaded `.pkl` checkpoints.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
+    ap.add_argument("--render-media-gallery", action="store_true", help="Also render real `.wav` audio & `.png`/`.gif` video any-to-any media gallery on the Colab GPU before teardown.")
     ap.add_argument("--resume", action="store_true", help="Skip arms/seeds whose complete receipt JSONs already exist in `--out-dir`.")
     ap.add_argument("--max-spend-cu", type=float, default=60.0)
     ap.add_argument("--out-dir", type=Path, required=True)
@@ -449,7 +465,7 @@ def main() -> None:
                         "v3_wave_c_decoders.main()\n"
                     )
 
-                cleanup_ckpt_block = "" if args.download_ckpts else (
+                cleanup_ckpt_block = "" if (args.download_ckpts or args.render_media_gallery) else (
                     f"if os.path.exists('{ckpt_rem}'): os.remove('{ckpt_rem}')\n"
                 )
 
@@ -515,6 +531,52 @@ def main() -> None:
                     run_colab("download", "-s", session_name, f"/content/out/{wc_fn}", str(args.out_dir / f"wave_c_{tag}_receipt.json"), cfg_path=cfg_path, timeout=120)
                     for sh_tag in ("clotho_dev", "msrvtt_dev"):
                         run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json"), cfg_path=cfg_path, timeout=60)
+                if args.render_media_gallery and rc == 0 and not tripped:
+                    # Render real `.wav` audio (Mimi) + `.png`/`.gif` video (Wan 2.1 VAE) in a fresh subprocess with
+                    # `XLA_PYTHON_CLIENT_PREALLOCATE=false` so JAX and PyTorch share GPU VRAM cleanly!
+                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                    time.sleep(5.0)
+                    wb_arg = f", '--wave-b-ckpt', '/content/out/wave_b_{tag}_ckpt.pkl'" if args.run_wave_b else ""
+                    wc_arg = f", '--wave-c-ckpt', '/content/out/wave_c_{tag}_ckpt.pkl'" if args.run_wave_c else ""
+                    media_py = (
+                        "import os, subprocess, sys, tarfile\n"
+                        "env = dict(os.environ)\n"
+                        "env['XLA_PYTHON_CLIENT_PREALLOCATE'] = 'false'\n"
+                        "env['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.45'\n"
+                        "env['PYTHONPATH'] = '/content/slwm_v3'\n"
+                        "subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'diffusers', 'transformers', 'accelerate', 'scipy', 'pillow'], check=False)\n"
+                        f"out_m = '/content/out/live_media_showcase_{tag}'\n"
+                        f"cmd = [sys.executable, '/content/slwm_v3/scripts/eval/v3_live_any2any_inference.py', '--ckpt', '{ckpt_rem}'{wb_arg}{wc_arg}, '--mode', 'full_gallery', '--shard-dir', '/content/shards', '--out-dir', out_m]\n"
+                        "r = subprocess.run(cmd, env=env, cwd='/content/slwm_v3')\n"
+                        "print('MEDIA_GALLERY_RC', r.returncode, flush=True)\n"
+                        f"tar_p = '/content/out/live_media_showcase_{tag}.tar.gz'\n"
+                        "if os.path.isdir(out_m):\n"
+                        "    with tarfile.open(tar_p, 'w:gz') as tf:\n"
+                        "        tf.add(out_m, arcname='.')\n"
+                        "    print('MEDIA_TAR_BYTES', os.path.getsize(tar_p), flush=True)\n"
+                    )
+                    m_rc, m_out, m_err, _ = _run_remote_kernel_python_with_watchdog(
+                        session_name, media_py, cfg_path=cfg_path, log_dir=log_dir,
+                        log_prefix=f"media_gallery_{tag}",
+                        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                        t_alloc_start=t_alloc, phase_timeout_s=900, exec_timeout_s=840,
+                    )
+                    print(m_out[-1200:], flush=True)
+                    if m_err.strip():
+                        print(m_err[-400:], flush=True)
+                    loc_tar = args.out_dir / f"live_media_showcase_{tag}.tar.gz"
+                    dl_m = run_colab(
+                        "download", "-s", session_name, f"/content/out/live_media_showcase_{tag}.tar.gz",
+                        str(loc_tar), cfg_path=cfg_path, timeout=240,
+                    )
+                    if dl_m.returncode == 0 and loc_tar.is_file():
+                        dst_m = args.out_dir / f"live_media_showcase_{tag}"
+                        dst_m.mkdir(parents=True, exist_ok=True)
+                        with tarfile.open(loc_tar, "r:gz") as tf:
+                            tf.extractall(dst_m)
+                        loc_tar.unlink(missing_ok=True)
+                        print(f"[MEDIA_GALLERY OK] Extracted real audio/video gallery -> {dst_m}", flush=True)
+
                 if args.download_ckpts:
                     ckpt_dst_dir = args.ckpt_dir / args.profile
                     _download_file_chunked_verified(
@@ -545,7 +607,11 @@ def main() -> None:
         else:
             _unassign_unnamed_assignments(cfg_path)
             ok = True
-        bal_end, rate_end = query_balance(cfg_path)
+        try:
+            bal_end, rate_end = query_balance(cfg_path)
+        except Exception as exc:
+            print(f"[TEARDOWN WARN] query_balance failed during cleanup: {exc!r}", flush=True)
+            bal_end, rate_end = bal_start, -1.0
         summary = {
             "timestamp_utc": datetime.now(timezone.utc).isoformat(),
             "profile": args.profile,
