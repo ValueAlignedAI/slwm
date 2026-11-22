@@ -132,9 +132,21 @@ def _run_detached_remote_script_with_polling(
         f"with open({rem_pid!r}, 'w') as pf: pf.write(str(p.pid))\n"
         "print('DETACHED_LAUNCH_OK', p.pid, flush=True)\n"
     )
-    l_res = _exec_short_py(session_name, launch_py, cfg_path=cfg_path, timeout=90)
-    if l_res.returncode != 0 or "DETACHED_LAUNCH_OK" not in l_res.stdout:
-        raise RuntimeError(f"Detached launch failed for {tag}: {l_res.stderr or l_res.stdout}")
+    l_res = None
+    last_l_err = ""
+    for l_try in range(1, 4):
+        try:
+            l_res = _exec_short_py(session_name, launch_py, cfg_path=cfg_path, timeout=90)
+            if l_res.returncode == 0 and "DETACHED_LAUNCH_OK" in l_res.stdout:
+                break
+            last_l_err = (l_res.stderr or l_res.stdout)[-300:]
+        except subprocess.TimeoutExpired:
+            last_l_err = "TimeoutExpired(90s)"
+        print(f"[DETACHED LAUNCH WARN {l_try}/3] {last_l_err}", flush=True)
+        run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+        time.sleep(5.0)
+    if l_res is None or l_res.returncode != 0 or "DETACHED_LAUNCH_OK" not in l_res.stdout:
+        raise RuntimeError(f"Detached launch failed for {tag}: {last_l_err}")
     print(f"[DETACHED] {l_res.stdout.strip()} (polling every {int(poll_interval_s)}s)", flush=True)
 
     offset = 0
