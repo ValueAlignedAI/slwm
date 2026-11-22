@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:47:05.073761+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0002",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5719,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rake is pulled through a pile of leaves, twigs and gravel. Items being shaken inside of then poured out. Items shaken inside pan of then poured out. The obj",
+      "free_running_32b_continuation": "led across a hard surface and co",
+      "top1_next_byte_preview": "Ahe foie is rolled ahrough a lule of daaves  chics and seadel. Wn ms aeing cturen antide af ahe  auurid iut  Sn ms rtare  bn ide aon rf ahe  maured iut  Whe dpj",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2991,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "ep while someone bounces a high ",
+      "top1_next_byte_preview": "Aegh pitched aiel  aoay w whne irrlowed by t catent of cilence.Sefore t tosp r blilstalls. Aegh ritched tell  oing  followed by a metentaof aixence  aeiore f bo",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0014",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.13,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A person puts a key into the ignition of a car and starts it. Someone putting a key in a car ignition and starting the engine. Clicking sounds are following by ",
+      "free_running_32b_continuation": " container of liquid in a contai",
+      "top1_next_byte_preview": "A berson ilt  a ciy onto ahe dcnition af a lln wfd dtarts tt. Aomeone iutsing t ciybtntt cer tnnityon and ttarting the eagine  Aoocking aounds ane corloweng wy ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6792,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "in a barrel or document with a b",
+      "top1_next_byte_preview": "Aeltiple canns iepeatedly foattersisd plong in t sotgom mashion. She cerson ial ruaying aith the clnns an the r sand. T person iuaysng with ahins in the r tand.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0020",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.262,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Insects buzz loudly while birds chirp and sing. Birds chirp and sing while insects buzz loudly. Flying insects are buzzing and birds are singing in the backgrou",
+      "free_running_32b_continuation": "udly and faster as the faint buz",
+      "top1_next_byte_preview": "An icts auzz ioudly ahile pirds chirp ind cong  Mirds chirp ind cing niile pnsects buzz ioudly  Briing pn ects wne fuzzing ind nirds are cinging in the backgrou",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

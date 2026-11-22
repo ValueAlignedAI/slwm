@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:13:42.783216+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0028",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7846,
+      "mean_nowrite": 0.1095,
+      "ground_truth_text_preview": "The vibrations of wings on a swarm of bees is causing a sound of buzzing. The vibrations of wings of a swarm of bees is causing a sound which is like buzzing. A",
+      "free_running_32b_continuation": "of a large train screech is also",
+      "top1_next_byte_preview": "Ahe eedration  of aands au a muilm of aeep an auusing t lonnd.tfftezzing. Ahe bibratinn  of aatds au anhiarm of dees an aulsing i fonnd.wiilh is meke tezzing. A",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0029",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5002,
+      "mean_nowrite": 0.0892,
+      "ground_truth_text_preview": "Birds chirp in the background as an animal hisses in the foreground. The background chirp of birds was interrupted by the loud hiss of another animal even neare",
+      "free_running_32b_continuation": "the background as a wooded area.",
+      "top1_next_byte_preview": "Airds ahirp an the background as a  eiimal cotses wn the boreground. Ahe bickground oairpsbu airds aht cn ermupted ay ahe racd hussiof t  ther bndmalsynentuoarb",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0792,
+      "mean_nowrite": 0.1142,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usted static and gets louder as ",
+      "top1_next_byte_preview": "A boeice ws scuusted siile muchinery ioirl in the background. A lonynr iochineris running cn ahe boreground  Aixr in rlwl ng au ahter fn the risn bf phe boat rs",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0019",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9077,
+      "mean_nowrite": 0.0755,
+      "ground_truth_text_preview": "A small crowd talks loudly in a dining room several different people have conversations in a large space. A small group of people speaking loudly in a dining ha",
+      "free_running_32b_continuation": "alks and pops as a train station",
+      "top1_next_byte_preview": "A cqall bhowd oalks aoudly an a ciseng poom Aoveral tifferent perple tave conversations an t darge rpoce. M lmall hroup of people aeeak ng woudly an a tiseng pa",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0020",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1878,
+      "mean_nowrite": 0.1469,
+      "ground_truth_text_preview": "Insects buzz loudly while birds chirp and sing. Birds chirp and sing while insects buzz loudly. Flying insects are buzzing and birds are singing in the backgrou",
+      "free_running_32b_continuation": "udly and crickets chirp in the b",
+      "top1_next_byte_preview": "An icts muzz aoudly ahile wirds ahirp ind cing  Birds ahirp osd cing iiile ansects auzz ioudly. Moiing in ects are muzzing ard airds are cinging in the backgrou",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

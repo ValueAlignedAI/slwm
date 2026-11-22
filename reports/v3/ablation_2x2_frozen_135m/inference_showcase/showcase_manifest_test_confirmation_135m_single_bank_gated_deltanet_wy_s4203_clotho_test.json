@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T17:16:15.631645+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4203_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.782,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of the machine operates and whis",
+      "top1_next_byte_preview": "Ahe eulvy macd of t  entustrial mrr monsitioner tstt tuom aearba fert. T  andustrial enrpmlntitioner isdt rveratis ahth s seavy saod  Tand bakeng ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0003",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2221,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Keys jingle as they open a small drawer. Various items are being rummaged through, including the jangling of some keys. items being rummaged through and moved, ",
+      "free_running_32b_continuation": "time goes on, then jopping it ge",
+      "top1_next_byte_preview": "Anys aingli an tiey jpen andeall louwer  Perious snems dre peing penpened iheough  attluding ahe socgleng of aomeoiiys  Anems jeing pasbaged ahrough a d poved  ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0018",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0786,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Low humming coming from a vent while someone is moving objects about on a desk. Something makes a light hum in the background as something else makes a slight r",
+      "free_running_32b_continuation": "es and gets louder as time goes ",
+      "top1_next_byte_preview": "Aow momming ooneng trom a gerd aaile tomeone is aoting tnjects inout.sn t hist. Lomeohing haces a hoght bimmos the dockground as iomeohing mlse iokes a qoightlt",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0001",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8078,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A person is walking through leaves and occasionally stepping on a small branch or a stick. A person is occasionally stepping on a small branch or a stick while ",
+      "free_running_32b_continuation": "king on a hard surface while bir",
+      "top1_next_byte_preview": "A berson is balking ohrough feaves wnd sccasionally coapsing tn t wholl aeokch.An sgflrck. A plrson is wpcasionally sprpping tn t fuall rrikch.on fgfteck.tiile ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.225,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "uns down a sink and draining the",
+      "top1_next_byte_preview": "Aamning water iunhes donttantly on tirds clng and chirp  Bater ilows ionststently an airds chirp iiftly in the background. Water fhickles drom a bauntain and bi",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

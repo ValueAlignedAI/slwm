@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:31:44.101786+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4203_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0026",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6733,
+      "mean_nowrite": 0.0706,
+      "ground_truth_text_preview": "Short and sporadic mixed with long continuous buzzing. A low, electric hum oscillates between two tones. a continuous musical note buzzes as it constantly chang",
+      "free_running_32b_continuation": "dically increasing in speed whil",
+      "top1_next_byte_preview": "Aeoet bnd eheotdicatul d woth totg thnsinuouslnezzing  A sou  pgectroc summofcualates aufween eho ei es. A lonsinuous rosic l eotestetzis an at sonttantly.Rling",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2696,
+      "mean_nowrite": 0.115,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "ep in the wall and some rain and",
+      "top1_next_byte_preview": "Aegh pitched wiel  alay insrre oellowed by a catent of ttgence.aefore t copp   ielloiolls  Aigh pitched weels ring  tollowed by a tetent rf ttlence, wepore b bo",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0592,
+      "mean_nowrite": 0.0893,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g and the drain also a storm in ",
+      "top1_next_byte_preview": "Aater rs sunning aoudly ind ihen it suivns auf  Whe wunning water ilodhtly fulrs asd bhickles down t  endven surface. W ttrady rtream of water gobbles atftly an",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0031",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8288,
+      "mean_nowrite": 0.1279,
+      "ground_truth_text_preview": "In an open space, someone runs steadily on a treadmill. Machinery buzzes and hums at a continuous clip. An industrial machine in a manufacturing plant is runnin",
+      "free_running_32b_continuation": "e with a squeaky pattern of the ",
+      "top1_next_byte_preview": "An t  open space  tomeone sens aoeadily in a traedm.ll  Aachinery iuzzes ard pims sr s sonsinuous vlic, S  endustrial fachine issanvoc factoring piant fs fennin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0022",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1662,
+      "mean_nowrite": 0.1193,
+      "ground_truth_text_preview": "Water runs continuously from a faucet to a sink. Water pours from the faucet and into a metallic bucket. Water is pouring out of a faucet into a metal bucket. I",
+      "free_running_32b_continuation": "inuously as time goes on. The fa",
+      "top1_next_byte_preview": "Aater iuns fonsinuously arom a saucet bo d spnk. Sater iouri irom ahe faucet asd tnto a setal ic cacket. Rater fs doureng fnt af a fiucet anto a petal cicket. W",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
