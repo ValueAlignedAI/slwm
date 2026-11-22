@@ -54,6 +54,18 @@ TRAIN_BUNDLE_FILES = tuple(
 )
 
 
+def _exec_short_py(session_name: str, code: str, *, cfg_path: Path, timeout: int = 180) -> subprocess.CompletedProcess:
+    """Execute a short Python snippet on a Colab session via temporary `-f` file (since `colab exec` uses `-f`, not `-c`)."""
+    tf = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+    tf.write(code)
+    tf.close()
+    tf_p = Path(tf.name)
+    try:
+        return run_colab("exec", "-s", session_name, "-f", str(tf_p), "--timeout", str(timeout), cfg_path=cfg_path, timeout=timeout + 30)
+    finally:
+        tf_p.unlink(missing_ok=True)
+
+
 def _upload_shards_batch_chunked(
     session_name: str,
     shard_files: list[Path],
@@ -109,7 +121,7 @@ def _upload_shards_batch_chunked(
         last_err = ""
         for attempt in range(1, 4):
             try:
-                res = run_colab("exec", "-s", session_name, "-c", asm_py, cfg_path=cfg_path, timeout=180)
+                res = _exec_short_py(session_name, asm_py, cfg_path=cfg_path, timeout=180)
                 if res.returncode == 0 and "SHARD_ASM_OK" in res.stdout:
                     return
                 last_err = (res.stderr or res.stdout)[-300:]
@@ -129,7 +141,7 @@ def _upload_shards_batch_chunked(
         if sz <= chunk_bytes:
             _put_one(sf, remote_p)
             if time.monotonic() - last_hb >= 180.0:
-                run_colab("exec", "-s", session_name, "-c", "print('UPLOAD_HB_OK')", cfg_path=cfg_path, timeout=60)
+                _exec_short_py(session_name, "print('UPLOAD_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=60)
                 last_hb = time.monotonic()
             continue
 
@@ -258,7 +270,7 @@ def _download_file_chunked_verified(
         f"try: os.remove({remote_path!r})\n"
         "except OSError: pass\n"
     )
-    run_colab("exec", "-s", session_name, "-c", clean_py, cfg_path=cfg_path, timeout=60)
+    _exec_short_py(session_name, clean_py, cfg_path=cfg_path, timeout=60)
     print(f"[CKPT_DL OK] Verified SHA-256 ({h_loc.hexdigest()[:16]}...) -> {local_path}", flush=True)
     return True
 
