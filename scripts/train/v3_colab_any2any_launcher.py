@@ -32,6 +32,7 @@ from scripts.train.v3_colab_pilot_launcher import (
     _run_remote_kernel_python_with_watchdog,
     _unassign_unnamed_assignments,
     allocate_colab_session_safe,
+    query_active_sessions,
     query_balance,
     run_colab,
     verified_stop_session,
@@ -90,64 +91,98 @@ def _run_detached_remote_script_with_polling(
     rem_pid = f"/content/out/_run_{tag}.pid"
     loc_log = log_dir / f"detached_{tag}.log"
 
-    # Wrap script so exit code is always written atomically to `rem_rc`
-    wrapped = (
-        "import os, sys, traceback\n"
-        f"rc_path = {rem_rc!r}\n"
-        "rc = 0\n"
-        "try:\n"
-        + "\n".join("    " + ln for ln in script_body.splitlines())
-        + "\nexcept SystemExit as e:\n"
-        "    rc = int(e.code) if isinstance(e.code, int) else (0 if e.code is None else 1)\n"
-        "except BaseException:\n"
-        "    traceback.print_exc()\n"
-        "    rc = 1\n"
-        "finally:\n"
-        "    with open(rc_path, 'w') as _f:\n"
-        "        _f.write(str(rc))\n"
-        "    sys.stdout.flush(); sys.stderr.flush()\n"
+    # First check if this exact `tag` is ALREADY running (or already finished cleanly!) on a reused live session!
+    chk_py = (
+        "import json, os\n"
+        f"rp, pp = {rem_rc!r}, {rem_pid!r}\n"
+        "rc_v = None\n"
+        "if os.path.isfile(rp):\n"
+        "    try: rc_v = int(open(rp).read().strip())\n"
+        "    except Exception: rc_v = 1\n"
+        "alive = False; pid_v = None\n"
+        "if os.path.isfile(pp):\n"
+        "    try:\n"
+        "        pid_v = int(open(pp).read().strip())\n"
+        "        os.kill(pid_v, 0); alive = True\n"
+        "    except Exception: alive = False\n"
+        "print('REATTACH_CHK' + json.dumps({'alive': alive, 'pid': pid_v, 'rc': rc_v}) + 'REATTACH_END', flush=True)\n"
     )
-    tf = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
-    tf.write(wrapped)
-    tf.close()
-    tf_p = Path(tf.name)
+    reattached = False
     try:
-        up = run_colab("upload", "-s", session_name, str(tf_p), rem_script, cfg_path=cfg_path, timeout=120)
-        if up.returncode != 0:
-            raise RuntimeError(f"Failed uploading detached script {rem_script}: {up.stderr or up.stdout}")
-    finally:
-        tf_p.unlink(missing_ok=True)
+        cr = _exec_short_py(session_name, chk_py, cfg_path=cfg_path, timeout=60)
+        if cr.returncode == 0 and "REATTACH_CHK" in cr.stdout:
+            cj = json.loads(cr.stdout.split("REATTACH_CHK", 1)[1].split("REATTACH_END", 1)[0])
+            if cj.get("alive") or cj.get("rc") == 0:
+                reattached = True
+                print(f"[DETACHED REATTACH] Found existing {tag} on live VM (alive={cj.get('alive')}, pid={cj.get('pid')}, rc={cj.get('rc')}); resuming poll!", flush=True)
+    except Exception:
+        pass
 
-    # Launch completely detached (`start_new_session=True`, clean GPU memory) in a 3-second kernel call!
-    launch_py = (
-        "import os, subprocess, sys\n"
-        f"for p in ({rem_rc!r}, {rem_log!r}, {rem_pid!r}):\n"
-        "    if os.path.exists(p): os.remove(p)\n"
-        "env = dict(os.environ)\n"
-        "env['PYTHONUNBUFFERED'] = '1'\n"
-        "env['JAX_COMPILATION_CACHE_DIR'] = '/content/xla'\n"
-        "env['JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS'] = '1'\n"
-        f"lf = open({rem_log!r}, 'wb')\n"
-        f"p = subprocess.Popen([sys.executable, {rem_script!r}], stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env, cwd='/content/slwm_v3')\n"
-        f"with open({rem_pid!r}, 'w') as pf: pf.write(str(p.pid))\n"
-        "print('DETACHED_LAUNCH_OK', p.pid, flush=True)\n"
-    )
-    l_res = None
-    last_l_err = ""
-    for l_try in range(1, 4):
+    if not reattached:
+        # Restart kernel cleanly to guarantee 100% free GPU HBM before fresh launch
         try:
-            l_res = _exec_short_py(session_name, launch_py, cfg_path=cfg_path, timeout=90)
-            if l_res.returncode == 0 and "DETACHED_LAUNCH_OK" in l_res.stdout:
-                break
-            last_l_err = (l_res.stderr or l_res.stdout)[-300:]
-        except subprocess.TimeoutExpired:
-            last_l_err = "TimeoutExpired(90s)"
-        print(f"[DETACHED LAUNCH WARN {l_try}/3] {last_l_err}", flush=True)
-        run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-        time.sleep(5.0)
-    if l_res is None or l_res.returncode != 0 or "DETACHED_LAUNCH_OK" not in l_res.stdout:
-        raise RuntimeError(f"Detached launch failed for {tag}: {last_l_err}")
-    print(f"[DETACHED] {l_res.stdout.strip()} (polling every {int(poll_interval_s)}s)", flush=True)
+            run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+            time.sleep(5.0)
+        except Exception:
+            pass
+        # Wrap script so exit code is always written atomically to `rem_rc`
+        wrapped = (
+            "import os, sys, traceback\n"
+            f"rc_path = {rem_rc!r}\n"
+            "rc = 0\n"
+            "try:\n"
+            + "\n".join("    " + ln for ln in script_body.splitlines())
+            + "\nexcept SystemExit as e:\n"
+            "    rc = int(e.code) if isinstance(e.code, int) else (0 if e.code is None else 1)\n"
+            "except BaseException:\n"
+            "    traceback.print_exc()\n"
+            "    rc = 1\n"
+            "finally:\n"
+            "    with open(rc_path, 'w') as _f:\n"
+            "        _f.write(str(rc))\n"
+            "    sys.stdout.flush(); sys.stderr.flush()\n"
+        )
+        tf = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+        tf.write(wrapped)
+        tf.close()
+        tf_p = Path(tf.name)
+        try:
+            up = run_colab("upload", "-s", session_name, str(tf_p), rem_script, cfg_path=cfg_path, timeout=120)
+            if up.returncode != 0:
+                raise RuntimeError(f"Failed uploading detached script {rem_script}: {up.stderr or up.stdout}")
+        finally:
+            tf_p.unlink(missing_ok=True)
+
+        # Launch completely detached (`start_new_session=True`, clean GPU memory) in a 3-second kernel call!
+        launch_py = (
+            "import os, subprocess, sys\n"
+            f"for p in ({rem_rc!r}, {rem_log!r}, {rem_pid!r}):\n"
+            "    if os.path.exists(p): os.remove(p)\n"
+            "env = dict(os.environ)\n"
+            "env['PYTHONUNBUFFERED'] = '1'\n"
+            "env['JAX_COMPILATION_CACHE_DIR'] = '/content/xla'\n"
+            "env['JAX_PERSISTENT_CACHE_MIN_COMPILE_TIME_SECS'] = '1'\n"
+            f"lf = open({rem_log!r}, 'wb')\n"
+            f"p = subprocess.Popen([sys.executable, {rem_script!r}], stdout=lf, stderr=subprocess.STDOUT, start_new_session=True, env=env, cwd='/content/slwm_v3')\n"
+            f"with open({rem_pid!r}, 'w') as pf: pf.write(str(p.pid))\n"
+            "print('DETACHED_LAUNCH_OK', p.pid, flush=True)\n"
+        )
+        l_res = None
+        last_l_err = ""
+        for l_try in range(1, 4):
+            try:
+                l_res = _exec_short_py(session_name, launch_py, cfg_path=cfg_path, timeout=90)
+                if l_res.returncode == 0 and "DETACHED_LAUNCH_OK" in l_res.stdout:
+                    break
+                last_l_err = (l_res.stderr or l_res.stdout)[-300:]
+            except subprocess.TimeoutExpired:
+                last_l_err = "TimeoutExpired(90s)"
+            print(f"[DETACHED LAUNCH WARN {l_try}/3] {last_l_err}", flush=True)
+            run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+            time.sleep(5.0)
+        if l_res is None or l_res.returncode != 0 or "DETACHED_LAUNCH_OK" not in l_res.stdout:
+            raise RuntimeError(f"Detached launch failed for {tag}: {last_l_err}")
+        print(f"[DETACHED] {l_res.stdout.strip()} (polling every {int(poll_interval_s)}s)", flush=True)
 
     offset = 0
     full_tail = ""
@@ -334,12 +369,33 @@ def _upload_shards_batch_chunked(
             time.sleep(4.0)
         raise RuntimeError(f"Shard assembly failed for {item['dst']}: {last_err}")
 
+    # Query existing remote shard sizes once so reattached sessions skip already-uploaded shards!
+    remote_sizes: dict[str, int] = {}
+    try:
+        ls_py = (
+            "import json, os\n"
+            "res = {}\n"
+            "for r, _, fs in os.walk('/content/shards'):\n"
+            "    for fn in fs:\n"
+            "        fp = os.path.join(r, fn)\n"
+            "        res[fp] = os.path.getsize(fp)\n"
+            "print('REM_SHARDS' + json.dumps(res) + 'REM_END', flush=True)\n"
+        )
+        lr = _exec_short_py(session_name, ls_py, cfg_path=cfg_path, timeout=60)
+        if lr.returncode == 0 and "REM_SHARDS" in lr.stdout:
+            remote_sizes = json.loads(lr.stdout.split("REM_SHARDS", 1)[1].split("REM_END", 1)[0])
+    except Exception:
+        pass
+
     last_hb = time.monotonic()
     for sf_idx, sf in enumerate(shard_files):
         rel = sf.relative_to(local_root).as_posix()
         remote_p = f"/content/shards/{rel}"
         sz = sf.stat().st_size
         sz_mb = sz / (1024.0**2)
+        if remote_sizes.get(remote_p) == sz:
+            print(f"[WAVE_LAUNCH] Shard {sf_idx+1}/{len(shard_files)} already present ({sz_mb:.1f} MiB): {rel}", flush=True)
+            continue
         print(f"[WAVE_LAUNCH] Uploading shard {sf_idx+1}/{len(shard_files)}: {rel} ({sz_mb:.1f} MiB)...", flush=True)
         if sz <= chunk_bytes:
             _put_one(sf, remote_p)
@@ -593,11 +649,15 @@ def main() -> None:
     t_alloc = time.monotonic()
 
     try:
-        fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
-        actual_accel = allocate_colab_session_safe(
-            session_name, args.accel, cfg_path, max_attempts=max(6, (len(fb_list) + 1) * 3), sleep_s=10.0, fallback_accels=fb_list
-        )
-        print(f"[WAVE_LAUNCH] Allocated actual_accel={actual_accel} for session={session_name}", flush=True)
+        active_now = query_active_sessions(cfg_path) or []
+        if any(f"[{session_name}]" in ln for ln in active_now):
+            print(f"[WAVE_LAUNCH REATTACH] Reusing live Colab session '{session_name}'!", flush=True)
+        else:
+            fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
+            actual_accel = allocate_colab_session_safe(
+                session_name, args.accel, cfg_path, max_attempts=max(6, (len(fb_list) + 1) * 3), sleep_s=10.0, fallback_accels=fb_list
+            )
+            print(f"[WAVE_LAUNCH] Allocated actual_accel={actual_accel} for session={session_name}", flush=True)
         created = True
         t_alloc = time.monotonic()
 
@@ -770,9 +830,7 @@ def main() -> None:
                     + cleanup_ckpt_block
                     + "print('ARM_RUN_OK', flush=True)\n"
                 )
-                # Restart kernel cleanly to guarantee 100% free GPU HBM, then run COMPLETELY DETACHED with 45s polling!
-                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                time.sleep(5.0)
+                # Run COMPLETELY DETACHED with 45s polling (auto-reattaches if already running on reused live VM!)
                 rc, out, tripped = _run_detached_remote_script_with_polling(
                     session_name, run_py, tag=tag, cfg_path=cfg_path, log_dir=log_dir,
                     bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
