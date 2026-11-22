@@ -376,7 +376,9 @@ def encode_librispeech_evals(engine: CausalCodecEngine, raw_root: Path, out_dir:
     return res
 
 
-def encode_greatesthits(engine: CausalCodecEngine, data_root: Path, out_dir: Path, max_clips: int = 100000) -> dict[str, Any]:
+def encode_greatesthits(
+    engine: CausalCodecEngine, data_root: Path, out_dir: Path, max_clips: int = 100000, *, max_sec: float = 5.0
+) -> dict[str, Any]:
     """Encode GreatestHits (`vis-data-256.zip`) strictly following Gate 2 recording-date splits!"""
     gh_zip = data_root / "g5" / "sources" / "vis-data-256.zip"
     if not gh_zip.is_file():
@@ -399,7 +401,7 @@ def encode_greatesthits(engine: CausalCodecEngine, data_root: Path, out_dir: Pat
                 sp = date_to_split[Path(name).name[:10]]
                 tmp_mp4 = Path(td) / "clip.mp4"
                 tmp_mp4.write_bytes(zf.read(name))
-                frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=10.0, fps=25)
+                frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=float(max_sec), fps=25)
                 if len(frames) < 5 or wav.size < 4800:
                     continue
                 v_p = engine.encode_video_wan_patches(frames)
@@ -412,7 +414,13 @@ def encode_greatesthits(engine: CausalCodecEngine, data_root: Path, out_dir: Pat
 
 
 def encode_msrvtt(
-    engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_clips: int = 100000, *, train_only: bool = False
+    engine: CausalCodecEngine,
+    raw_root: Path,
+    out_dir: Path,
+    max_clips: int = 100000,
+    *,
+    train_only: bool = False,
+    max_sec: float = 4.5,
 ) -> dict[str, Any]:
     """Encode MSR-VTT (`MSRVTT_Videos.zip`) with strict official video-ID-disjoint train/dev/test splits."""
     ms_dir = raw_root / "msrvtt"
@@ -480,7 +488,7 @@ def encode_msrvtt(
                 idx_i, sp_i, cap_i, raw_b = item
                 p_mp4 = Path(td) / f"ms_{idx_i}.mp4"
                 p_mp4.write_bytes(raw_b)
-                fr, wv = _extract_mp4_frames_and_audio(p_mp4, max_sec=6.0, fps=25)
+                fr, wv = _extract_mp4_frames_and_audio(p_mp4, max_sec=float(max_sec), fps=25)
                 p_mp4.unlink(missing_ok=True)
                 return sp_i, cap_i, fr, wv
 
@@ -516,6 +524,7 @@ def encode_vggsound(
     max_clips_per_split: int = 2000,
     *,
     train_only: bool = False,
+    max_sec: float = 4.5,
 ) -> dict[str, Any]:
     """Encode VGGSound (`vggsound_00..03.tar.gz`) using official YouTube-ID train/test splits."""
     import csv
@@ -583,7 +592,7 @@ def encode_vggsound(
                         continue
                     tmp_mp4 = Path(td) / "clip.mp4"
                     tmp_mp4.write_bytes(f_obj.read())
-                    frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=6.0, fps=25)
+                    frames, wav = _extract_mp4_frames_and_audio(tmp_mp4, max_sec=float(max_sec), fps=25)
                     if len(frames) < 5 or wav.size < 4800:
                         continue
                     v_p = engine.encode_video_wan_patches(frames)
@@ -773,6 +782,7 @@ def main() -> None:
     ap.add_argument("--out-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded/av"))
     ap.add_argument("--device", type=str, default="auto")
     ap.add_argument("--max-clips", type=int, default=100000)
+    ap.add_argument("--max-sec", type=float, default=4.5, help="Max clip duration (s) for AV video+audio corpora.")
     ap.add_argument("--train-only", action="store_true", help="Only encode & save train split (keeps existing sealed dev/test bit-identical).")
     args = ap.parse_args()
 
@@ -786,11 +796,11 @@ def main() -> None:
     elif args.corpus == "librispeech_evals":
         res = encode_librispeech_evals(engine, args.raw_root, args.out_dir, max_clips=args.max_clips)
     elif args.corpus == "greatesthits":
-        res = encode_greatesthits(engine, args.data_root, args.out_dir, max_clips=args.max_clips)
+        res = encode_greatesthits(engine, args.data_root, args.out_dir, max_clips=args.max_clips, max_sec=args.max_sec)
     elif args.corpus == "msrvtt":
-        res = encode_msrvtt(engine, args.raw_root, args.out_dir, max_clips=args.max_clips, train_only=args.train_only)
+        res = encode_msrvtt(engine, args.raw_root, args.out_dir, max_clips=args.max_clips, train_only=args.train_only, max_sec=args.max_sec)
     elif args.corpus == "vggsound":
-        res = encode_vggsound(engine, args.large_av_root, args.out_dir, max_clips_per_split=args.max_clips, train_only=args.train_only)
+        res = encode_vggsound(engine, args.large_av_root, args.out_dir, max_clips_per_split=args.max_clips, train_only=args.train_only, max_sec=args.max_sec)
     elif args.corpus == "robotics_lerobot":
         res = encode_robotics_lerobot(engine, args.raw_root, args.out_dir, max_episodes_per_ds=args.max_clips)
     else:
