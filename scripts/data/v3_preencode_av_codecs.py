@@ -347,9 +347,9 @@ def encode_librispeech_evals(engine: CausalCodecEngine, raw_root: Path, out_dir:
     """Encode official LibriSpeech dev-clean & test-clean (speaker-disjoint from train-clean-360)."""
     res: dict[str, Any] = {}
     for sub, split_nm in (("validation", "dev_clean"), ("test", "test_clean")):
-        pqs = sorted(glob.glob(str(raw_root / f"librispeech_clean_evals/**/{sub}*/**/*.parquet"), recursive=True))
+        pqs = sorted(glob.glob(str(raw_root / f"librispeech_clean_evals/clean/{sub}/*.parquet")))
         if not pqs:
-            pqs = sorted(glob.glob(str(raw_root / f"librispeech_clean_evals/clean/{sub}/*.parquet")))
+            pqs = sorted(glob.glob(str(raw_root / f"librispeech_clean_evals/**/{sub}*/**/*.parquet"), recursive=True))
         if not pqs:
             continue
         sb = SparseShardBuilder(f"librispeech_{split_nm}", split_nm)
@@ -430,17 +430,23 @@ def encode_msrvtt(
     test_rows = json.loads((ms_dir / "msrvtt_test_1k.json").read_text())
     train_rows = json.loads((ms_dir / "msrvtt_train_9k.json").read_text())
 
-    # Map video_id -> list of captions, guaranteeing ZERO overlap between test_1k and train_9k!
+    # Map video_id -> list of clean string captions, guaranteeing ZERO overlap between test_1k and train_9k!
+    def _clean_caps(raw_c: Any) -> list[str]:
+        if isinstance(raw_c, list):
+            return [str(x).strip() for x in raw_c if str(x).strip()]
+        s = str(raw_c or "").strip()
+        return [s] if s else []
+
     test_caps: dict[str, list[str]] = {}
     for r in test_rows:
         vid = str(r.get("video_id") or Path(str(r.get("video", ""))).stem)
-        test_caps.setdefault(vid, []).append(str(r.get("caption", "")).strip())
+        test_caps.setdefault(vid, []).extend(_clean_caps(r.get("caption", "")))
     train_caps: dict[str, list[str]] = {}
     for r in train_rows:
         vid = str(r.get("video_id") or Path(str(r.get("video", ""))).stem)
         if vid in test_caps:
             continue
-        train_caps.setdefault(vid, []).append(str(r.get("caption", "")).strip())
+        train_caps.setdefault(vid, []).extend(_clean_caps(r.get("caption", "")))
 
     assert len(set(train_caps) & set(test_caps)) == 0, "MSR-VTT train/test overlap!"
     train_ids = sorted(train_caps)
