@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T17:11:56.930232+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_scratch_edge_s4203_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0030",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3679,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "At least two cats meowing while someone is walking around and a male voice at the end. A cat starts meowing and then another cat joins in then a man starts",
+      "free_running_32b_continuation": "rs driving by, its engine and lo",
+      "top1_next_byte_preview": "s  aaavh tho myr  ieowsng iaile iomeone is balking tnound ind t dene coice.As the end. A par iparts aanwing and ahen i  ther par maine in the  b dan sparts",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0003",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3045,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Keys jingle as they open a small drawer. Various items are being rummaged through, including the jangling of some keys. items being rummaged through and moved, ",
+      "free_running_32b_continuation": "the wind blows and sharply as ve",
+      "top1_next_byte_preview": "seys aingli an the  wper d deall jouwer  Parious stems are ceing pufmeged aorough  ptdruding ahe dicgleng of tomettiys  Tnems aeing pusmaned iorough a   saved  ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9858,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usted and then it is again. A tr",
+      "top1_next_byte_preview": "s bovice is rljusted aiile penhinery noirs in the background. A dluyer iakhinesis ounning cn ahe boreground  Aaarsdn apwl ng au ahter an the voun on ahe moat.is",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0001",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7469,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A person is walking through leaves and occasionally stepping on a small branch or a stick. A person is occasionally stepping on a small branch or a stick while ",
+      "free_running_32b_continuation": "king on leaves while birds are c",
+      "top1_next_byte_preview": "s berson ws palking ohrough aeaves wnd gtcasionally gpepsing on r guall prench.sf m mtrck. A person is sucustonally fwepping on r suall srench.fn s mtrck.fhile ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2405,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "uns in the shower while people s",
+      "top1_next_byte_preview": "sanning water iunhes ionttantly on iirds sing ind chirp. Water flows nonststently in iirds ahirp ioftly.in the background. Water fhickles orom a rauntain wsd si",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

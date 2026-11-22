@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:11:55.655588+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_scratch_edge_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0028",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.9203,
+      "mean_nowrite": 0.0828,
+      "ground_truth_text_preview": "The vibrations of wings on a swarm of bees is causing a sound of buzzing. The vibrations of wings of a swarm of bees is causing a sound which is like buzzing. A",
+      "free_running_32b_continuation": "of a gas is in opened and closed",
+      "top1_next_byte_preview": "she rodratinn  of aands au a fuiym of ruhs bn bolseng i rpund tf aezzing  She wibratinn  of ainds au a syiym of wehs bn holsing hlspund.hiilh is hoke aezzing. A",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3897,
+      "mean_nowrite": 0.0799,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "ep whisels are starting to move ",
+      "top1_next_byte_preview": "seth aitched wiel  clay cslune eillowed by r ladent af sinence.aefore t colp aiOeal ro ls. Aightaitched tell  cing  tollowed by a lete t,af cigence, tefore s co",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2415,
+      "mean_nowrite": 0.0782,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g out of a faucet, and the hose ",
+      "top1_next_byte_preview": "sater fs running ooudly and ihen st iuivns tuf  Whe wumning pater fhodhtly fuars ibd thickles town t  upeven rtrface. T ttrady btream of water cebbles alftly an",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7908,
+      "mean_nowrite": 0.0852,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "or water drips into a pot to mim",
+      "top1_next_byte_preview": "saltiple gonns oapeatedly ioicter und loang an t detdom rarhion. Mhe leoson sal llaying aith ahe manns on their hands T pirson ilaying aith ahins in their fand ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0007",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1738,
+      "mean_nowrite": 0.0821,
+      "ground_truth_text_preview": "The rain is coming down harder and harder and getting louder. Multiple people speak as ocean waves crash on the shore. The wind is blowing and ocean waves are c",
+      "free_running_32b_continuation": "ing down on the roof and falling",
+      "top1_next_byte_preview": "she ruin is foming down oard r and iiid r isd wrtsing louder. Taftiple bhople cpeak ws incan waves arash in the shore. The mand bs blowing vnd ccean waves cre c",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

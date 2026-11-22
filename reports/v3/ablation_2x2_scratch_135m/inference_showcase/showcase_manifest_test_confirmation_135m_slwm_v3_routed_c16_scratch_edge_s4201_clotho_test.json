@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T15:54:34.489195+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_scratch_edge_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0026",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7105,
+      "mean_nowrite": 0.0952,
+      "ground_truth_text_preview": "Short and sporadic mixed with long continuous buzzing. A low, electric hum oscillates between two tones. a continuous musical note buzzes as it constantly chang",
+      "free_running_32b_continuation": "dic humming of water is pouring ",
+      "top1_next_byte_preview": "Ahewt rnd wcroadic hul s with siwg shnsinuous wuzzing  Tnsot  hnectrocisummif uaaates befween shi hi es. A honsinuous mafic l pote tuzzes tn it ionttantly mhing",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2435,
+      "mean_nowrite": 0.0985,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "noise static is being played in ",
+      "top1_next_byte_preview": "A haud acueaki nrack es bruvelling ty ahkking airan  Traffic iassing ty an a uet road isd sish petched sefp ng nnd heople talking.i shr eith a rtund ng tnorm ir",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0010",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9734,
+      "mean_nowrite": 0.0935,
+      "ground_truth_text_preview": "The man urinates for a long time into a toilet. The rain from the sky falling into a metal barrel. A man is peeing in a toilet for a long time. A metal bowl cat",
+      "free_running_32b_continuation": "s of the children laugh and talk",
+      "top1_next_byte_preview": "Ahe eac ssgnales orr t woug thme,ante a peilet. Ahe main iaom the sky ailling on o m metal burrel. T san ss sordng unta soilet wrr a song sine. A matal gexl ilt",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0014",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8237,
+      "mean_nowrite": 0.0963,
+      "ground_truth_text_preview": "A person puts a key into the ignition of a car and starts it. Someone putting a key in a car ignition and starting the engine. Clicking sounds are following by ",
+      "free_running_32b_continuation": " container on a table tower and ",
+      "top1_next_byte_preview": "A herson iots m cny tn o aheicnnition af a car.and tparts tt  Aomeone putting i cey intt sor Annition and starting she engine  Saicking aounds are crlloweng by ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0007",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1504,
+      "mean_nowrite": 0.0971,
+      "ground_truth_text_preview": "The rain is coming down harder and harder and getting louder. Multiple people speak as ocean waves crash on the shore. The wind is blowing and ocean waves are c",
+      "free_running_32b_continuation": "ing down heavily while steadily ",
+      "top1_next_byte_preview": "Ahe eain is foming down herd r asd haid r asd putsing houder  Taftiple ceople cpeakios atcan waves crash an the siore. The rand is blowing and sccan waves sre c",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

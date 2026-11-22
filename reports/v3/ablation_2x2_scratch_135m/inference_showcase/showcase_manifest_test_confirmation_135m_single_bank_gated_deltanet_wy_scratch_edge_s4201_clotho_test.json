@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:43:01.066577+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_scratch_edge_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0023",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.455,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The pencil starts across the paper in short rapid strokes then followed by wide sweeping movements. A pencil drags across paper at first in short, rapid strokes",
+      "free_running_32b_continuation": "ts up and drills hit the same ti",
+      "top1_next_byte_preview": "she eirdil icarts utcoss the slver hn thowt penid steines ahen raldowed by cane rcieping.toresents. F perdil irigg a ross taper an dorst sn short  tetid spaakes",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0003",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1221,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Keys jingle as they open a small drawer. Various items are being rummaged through, including the jangling of some keys. items being rummaged through and moved, ",
+      "free_running_32b_continuation": "a power rumbles through the into",
+      "top1_next_byte_preview": "snts aingle an ahe  apen andqall coiwer. Ierious btems are oeing pabbbted aorough  dttruding the dacgleng sf sometkiys. Ctems aeing pabbbne  aorough a d savem  ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0029",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9545,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Birds chirp in the background as an animal hisses in the foreground. The background chirp of birds was interrupted by the loud hiss of another animal even neare",
+      "free_running_32b_continuation": "the background as water flows ag",
+      "top1_next_byte_preview": "serds chirp in the background as w  oiimal gosses an the doreground. Bhe bickground oaarpsbu airds ahttan ormupted by ahe aaud bugsiof s  ther snimal hnentooarb",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8041,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usted and makes a loud struck an",
+      "top1_next_byte_preview": "s posice ws rcjusted aiite aochine y ihirs an the background. A mrmyer iakhine is wunning wn the boreground  Aaxrsin rpwling of piter rn ihe rarnsbn the bott is",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0007",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1798,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rain is coming down harder and harder and getting louder. Multiple people speak as ocean waves crash on the shore. The wind is blowing and ocean waves are c",
+      "free_running_32b_continuation": "ing down hard and is hitting the",
+      "top1_next_byte_preview": "she eain is homing down hard r and iird r isd sutsing couder. Taltiple baople ateak an atean waves rrash on the store. Whe rand is blowing and accan waves are c",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

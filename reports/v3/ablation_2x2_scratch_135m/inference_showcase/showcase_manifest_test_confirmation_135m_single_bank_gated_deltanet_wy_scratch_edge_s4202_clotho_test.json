@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T16:58:35.668839+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_scratch_edge_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0002",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6081,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rake is pulled through a pile of leaves, twigs and gravel. Items being shaken inside of then poured out. Items shaken inside pan of then poured out. The obj",
+      "free_running_32b_continuation": "ling up and being dumped several",
+      "top1_next_byte_preview": "she euie os botlid aoeough a puee of weaves  shics and lrabel. Wt ms aeing phaken an ide af ahe  auured oft  Pt ms ahaken attide aontwf whe  cowred out  Lhe pcj",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0017",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3388,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Rhythmic shaking of rice shaker being moved around. The rhythmic shaking of the shaker created a percussive sound. Some small food that is being moved around. T",
+      "free_running_32b_continuation": "g water from a rhythmic fashion.",
+      "top1_next_byte_preview": "saythmic soekeng wu aane fhakin aefng moved anound  She vhythmic oeeking of ahe mkorin oleatu  wnmersussioe iound  Tomeoccall beot ihat is being coved around  S",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0010",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1782,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The man urinates for a long time into a toilet. The rain from the sky falling into a metal barrel. A man is peeing in a toilet for a long time. A metal bowl cat",
+      "free_running_32b_continuation": "s the paper to make rhythm on a ",
+      "top1_next_byte_preview": "she eac cringtes tor a wowg tine wnto a philet. Ahe puin caom the mky wallsng on o a metal pusnel. T mec is toecng wnta pailet bir a powg phme. A matal blwl oln",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0011",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9518,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Several geese are honking back and forth at one another. Ducks quacking louder as they get increasingly excited. several geese honk back and forth at each other",
+      "free_running_32b_continuation": "re spinning around and more inte",
+      "top1_next_byte_preview": "soveral cunse are sonking iack and forth.in ene another. Cicks auacking aoudlr an they wet qntreasing y qncited  Soveral cinse aonkiiyck and forth fs each other",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1995,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "uns from the porch onto a pool o",
+      "top1_next_byte_preview": "sanning water wunhes fonsiantly on tards sing.ind whirp  Tater ilowi ionsistently in birds shirp ioftly in the background. Water bhickles drom t bauntain isd bi",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
