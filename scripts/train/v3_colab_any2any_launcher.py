@@ -66,12 +66,11 @@ def _upload_shards_batch_chunked(
     t_alloc: float,
     chunk_bytes: int = 16 * 1024 * 1024,
 ) -> None:
-    """Stateless 2-stream HTTPS PUT upload of all shards in <=16 MiB parts + ONE retried SHA-256 assembly call.
+    """Stateless 4-stream HTTPS PUT upload of shards in <=16 MiB parts with per-shard SHA-256 assembly + heartbeats.
 
-    Completely immune to WebSocket drops during upload (zero WebSocket traffic while uploading parts!)
-    and retries transient HTTPS timeouts/glitches cleanly across arbitrary shard sizes (`100 MiB .. 4.1 GiB`).
+    Assembles and removes temporary `_part_*` files right after each large shard (sending a live kernel
+    heartbeat every ~1-2 min so Colab's idle-kernel watchdog NEVER reclaims the VM during slow Wi-Fi uploads!).
     """
-    assembly_plan: list[dict[str, Any]] = []
 
     def _put_one(local_tmp: Path, rem_p: str) -> None:
         last_err = ""
@@ -86,6 +85,41 @@ def _upload_shards_batch_chunked(
             time.sleep(4.0 * attempt)
         raise RuntimeError(f"Upload failed for {rem_p}: {last_err}")
 
+    def _assemble_one(item: dict[str, Any]) -> None:
+        asm_py = (
+            "import hashlib, os\n"
+            f"item = {json.dumps(item)}\n"
+            "dst = item['dst']\n"
+            "os.makedirs(os.path.dirname(dst), exist_ok=True)\n"
+            "if not (os.path.isfile(dst) and os.path.getsize(dst) == item['size']):\n"
+            "    h = hashlib.sha256()\n"
+            "    tot = 0\n"
+            "    with open(dst, 'wb') as fout:\n"
+            "        for pp in item['parts']:\n"
+            "            with open(pp, 'rb') as fin:\n"
+            "                b = fin.read()\n"
+            "            fout.write(b)\n"
+            "            h.update(b)\n"
+            "            tot += len(b)\n"
+            "            os.remove(pp)\n"
+            "    assert tot == item['size'], f'size mismatch on {dst}: {tot} != {item[\"size\"]}'\n"
+            "    assert h.hexdigest() == item['sha256'], f'sha256 mismatch on {dst}'\n"
+            "print('SHARD_ASM_OK', dst, item['size'], flush=True)\n"
+        )
+        last_err = ""
+        for attempt in range(1, 4):
+            try:
+                res = run_colab("exec", "-s", session_name, "-c", asm_py, cfg_path=cfg_path, timeout=180)
+                if res.returncode == 0 and "SHARD_ASM_OK" in res.stdout:
+                    return
+                last_err = (res.stderr or res.stdout)[-300:]
+            except subprocess.TimeoutExpired:
+                last_err = "TimeoutExpired(180s)"
+            run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+            time.sleep(4.0)
+        raise RuntimeError(f"Shard assembly failed for {item['dst']}: {last_err}")
+
+    last_hb = time.monotonic()
     for sf_idx, sf in enumerate(shard_files):
         rel = sf.relative_to(local_root).as_posix()
         remote_p = f"/content/shards/{rel}"
@@ -94,9 +128,12 @@ def _upload_shards_batch_chunked(
         print(f"[WAVE_LAUNCH] Uploading shard {sf_idx+1}/{len(shard_files)}: {rel} ({sz_mb:.1f} MiB)...", flush=True)
         if sz <= chunk_bytes:
             _put_one(sf, remote_p)
+            if time.monotonic() - last_hb >= 180.0:
+                run_colab("exec", "-s", session_name, "-c", "print('UPLOAD_HB_OK')", cfg_path=cfg_path, timeout=60)
+                last_hb = time.monotonic()
             continue
 
-        # Split locally into <=32 MiB parts and upload 2 parts concurrently via stateless HTTPS PUT
+        # Split locally into <=16 MiB parts and upload 4 parts concurrently via stateless HTTPS PUT
         sha = hashlib.sha256()
         part_jobs: list[tuple[Path, str]] = []
         with sf.open("rb") as fin:
@@ -112,14 +149,14 @@ def _upload_shards_batch_chunked(
                 part_jobs.append((Path(tf.name), f"/content/_part_s{sf_idx:02d}_{p_idx:03d}.bin"))
                 p_idx += 1
         try:
-            with ThreadPoolExecutor(max_workers=2) as pool:
+            with ThreadPoolExecutor(max_workers=4) as pool:
                 futs = [pool.submit(_put_one, lp, rp) for lp, rp in part_jobs]
                 for f in futs:
                     f.result()
         finally:
             for lp, _ in part_jobs:
                 lp.unlink(missing_ok=True)
-        assembly_plan.append(
+        _assemble_one(
             {
                 "dst": remote_p,
                 "size": int(sz),
@@ -127,52 +164,8 @@ def _upload_shards_batch_chunked(
                 "parts": [rp for _, rp in part_jobs],
             }
         )
-
-    if not assembly_plan:
-        return
-
-    asm_py = (
-        "import hashlib, os\n"
-        f"plan = {json.dumps(assembly_plan)}\n"
-        "for item in plan:\n"
-        "    dst = item['dst']\n"
-        "    os.makedirs(os.path.dirname(dst), exist_ok=True)\n"
-        "    if os.path.isfile(dst) and os.path.getsize(dst) == item['size']:\n"
-        "        continue\n"
-        "    h = hashlib.sha256()\n"
-        "    tot = 0\n"
-        "    with open(dst, 'wb') as fout:\n"
-        "        for pp in item['parts']:\n"
-        "            with open(pp, 'rb') as fin:\n"
-        "                b = fin.read()\n"
-        "            fout.write(b)\n"
-        "            h.update(b)\n"
-        "            tot += len(b)\n"
-        "            os.remove(pp)\n"
-        "    assert tot == item['size'], f'size mismatch on {dst}: {tot} != {item[\"size\"]}'\n"
-        "    assert h.hexdigest() == item['sha256'], f'sha256 mismatch on {dst}'\n"
-        "print('ALL_SHARDS_ASM_OK', len(plan), flush=True)\n"
-    )
-    last_err = ""
-    for attempt in range(1, 4):
-        run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-        time.sleep(5.0)
-        try:
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                session_name, asm_py, cfg_path=cfg_path, log_dir=log_dir,
-                log_prefix=f"asm_all_try{attempt}",
-                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=max_spend_cu,
-                t_alloc_start=t_alloc, phase_timeout_s=180, exec_timeout_s=150,
-            )
-            if rc == 0 and not tripped and "ALL_SHARDS_ASM_OK" in out:
-                print(out.strip(), flush=True)
-                return
-            last_err = f"rc={rc} err={err[-400:]}"
-        except Exception as exc:
-            last_err = repr(exc)
-        print(f"[WAVE_LAUNCH] Shard assembly attempt {attempt}/3 retry after: {last_err}", flush=True)
-        time.sleep(8.0)
-    raise RuntimeError(f"Batch shard assembly failed after 3 attempts: {last_err}")
+        last_hb = time.monotonic()
+    print(f"ALL_SHARDS_ASM_OK {len(shard_files)}", flush=True)
 
 
 def _download_file_chunked_verified(
@@ -391,10 +384,14 @@ def main() -> None:
             shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
         else:
             shard_files = [p for p in shard_files if "_test" not in p.name]
-        # Avoid uploading redundant 24m text shard if full train_v1 is present
+        # Avoid uploading redundant/unused shards in `v3_any2any_trainer` (saves ~111 MiB!)
         has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
         if has_full_tc:
             shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
+        shard_files = [
+            p for p in shard_files
+            if not p.name.startswith("real_speech_overwrite_train_") and not p.name.startswith("rso_train_clipbank_")
+        ]
         if not shard_files:
             raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
         _upload_shards_batch_chunked(
