@@ -656,8 +656,9 @@ def main() -> None:
         upload_lock_path = cfg_path.with_name("colab-upload.lock")
         with _colab_config_lock(upload_lock_path):
             active_now = query_active_sessions(cfg_path) or []
-            if any(f"[{session_name}]" in ln for ln in active_now):
-                print(f"[WAVE_LAUNCH REATTACH] Reusing live Colab session '{session_name}'!", flush=True)
+            is_reattach = any(f"[{session_name}]" in ln for ln in active_now)
+            if is_reattach:
+                print(f"[WAVE_LAUNCH REATTACH] Reusing live Colab session '{session_name}' (skipping GPU-touching prep_py)!", flush=True)
             else:
                 fb_list = [a.strip() for a in args.fallback_accels.split(",") if a.strip()]
                 actual_accel = allocate_colab_session_safe(
@@ -667,48 +668,49 @@ def main() -> None:
             created = True
             t_alloc = time.monotonic()
 
-            # Upload code bundle
-            with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tf_tmp:
-                tf_tmp.write(code_tar)
-                tmp_p = Path(tf_tmp.name)
-            try:
-                up = run_colab("upload", "-s", session_name, str(tmp_p), "/content/slwm_v3_code.tar.gz", cfg_path=cfg_path, timeout=180)
-                if up.returncode != 0:
-                    raise RuntimeError(f"Code upload failed: {up.stderr or up.stdout}")
-            finally:
-                tmp_p.unlink(missing_ok=True)
+            if not is_reattach:
+                # Upload code bundle
+                with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tf_tmp:
+                    tf_tmp.write(code_tar)
+                    tmp_p = Path(tf_tmp.name)
+                try:
+                    up = run_colab("upload", "-s", session_name, str(tmp_p), "/content/slwm_v3_code.tar.gz", cfg_path=cfg_path, timeout=180)
+                    if up.returncode != 0:
+                        raise RuntimeError(f"Code upload failed: {up.stderr or up.stdout}")
+                finally:
+                    tmp_p.unlink(missing_ok=True)
 
-            # Prep remote workspace & install optax if missing
-            prep_py = (
-                "import os, subprocess, sys, tarfile\n"
-                "for d in ('/content/slwm_v3', '/content/shards/text_code', '/content/shards/audio_text', '/content/shards/av', '/content/shards/robotics', '/content/shards/real_speech_overwrite', '/content/out', '/content/xla'):\n"
-                "    os.makedirs(d, exist_ok=True)\n"
-                "with tarfile.open('/content/slwm_v3_code.tar.gz', 'r:gz') as tf:\n"
-                "    tf.extractall('/content/slwm_v3')\n"
-                "try:\n"
-                "    import optax\n"
-                "except Exception:\n"
-                "    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'optax'], check=True)\n"
-                "    import optax\n"
-                "import jax\n"
-                "print('WAVE_PREP_OK', jax.__version__, [(d.platform, d.device_kind) for d in jax.devices()], flush=True)\n"
-            )
-            rc, out, err, tripped = 1, "", "", False
-            for p_try in range(1, 4):
-                if p_try > 1:
-                    time.sleep(8.0)
-                    run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
-                    time.sleep(4.0)
-                rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                    session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
-                    bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                    t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
+                # Prep remote workspace & install optax if missing
+                prep_py = (
+                    "import os, subprocess, sys, tarfile\n"
+                    "for d in ('/content/slwm_v3', '/content/shards/text_code', '/content/shards/audio_text', '/content/shards/av', '/content/shards/robotics', '/content/shards/real_speech_overwrite', '/content/out', '/content/xla'):\n"
+                    "    os.makedirs(d, exist_ok=True)\n"
+                    "with tarfile.open('/content/slwm_v3_code.tar.gz', 'r:gz') as tf:\n"
+                    "    tf.extractall('/content/slwm_v3')\n"
+                    "try:\n"
+                    "    import optax\n"
+                    "except Exception:\n"
+                    "    subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'optax'], check=True)\n"
+                    "    import optax\n"
+                    "import jax\n"
+                    "print('WAVE_PREP_OK', jax.__version__, [(d.platform, d.device_kind) for d in jax.devices()], flush=True)\n"
                 )
-                print(out, flush=True)
-                if rc == 0 and not tripped and "WAVE_PREP_OK" in out:
-                    break
-            if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
-                raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
+                rc, out, err, tripped = 1, "", "", False
+                for p_try in range(1, 4):
+                    if p_try > 1:
+                        time.sleep(8.0)
+                        run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                        time.sleep(4.0)
+                    rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                        session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
+                        bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                        t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
+                    )
+                    print(out, flush=True)
+                    if rc == 0 and not tripped and "WAVE_PREP_OK" in out:
+                        break
+                if rc != 0 or tripped or "WAVE_PREP_OK" not in out:
+                    raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
             # Upload ONLY active pre-encoded `.npz` shards (plus `*_exec.jsonl` test suites when `--include-test-shards`!)
             shard_files = sorted(args.local_shard_dir.rglob("*.npz"))
