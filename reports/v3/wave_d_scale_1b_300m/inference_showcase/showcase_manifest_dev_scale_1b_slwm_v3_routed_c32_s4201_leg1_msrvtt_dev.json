@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T14:34:37.260565+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_leg1_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.0418,
+      "mean_nowrite": 0.5555,
+      "ground_truth_text_preview": "['a man surfs through a tube shaped wave then smashes his board', 'there are many people enjoy surfing on the beach water', 'th",
+      "free_running_32b_continuation": "hrough a store car passing by', ",
+      "top1_next_byte_preview": "['a can itpei ahrough a sor  otoled iilesohr  aholhis aes fidtd , 'ahere ire seny wiople snjoiitorfing ov the boach'civcr', 'th",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5377,
+      "mean_nowrite": 0.5298,
+      "ground_truth_text_preview": "['a woman had made some sort of dough and is wrapping if prior to refrigeration', 'there is a woman covering a dish with plasti",
+      "free_running_32b_continuation": "akes a speech occurs', 'a man an",
+      "top1_next_byte_preview": "['a comen iav aake aome dumt of diigh wnd cs taippeng'an teenr to culueeerateon', 'ahere is a woman tamering a sish iith aaanti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0949,
+      "mean_nowrite": 0.5471,
+      "ground_truth_text_preview": "['a man climbs down a ladder', 'a man having a job interview', 'a man is entering a room to get interviewed', 'a person is bein",
+      "free_running_32b_continuation": "a monstry talking about differen",
+      "top1_next_byte_preview": "['a lan ioipbs aewn a mamyer , 'a lan coveng a coi in erview', 'a man is bxqering a jeom wh plrtantorviewed , 'a merson ds bein",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5249,
+      "mean_nowrite": 0.5445,
+      "ground_truth_text_preview": "['there is a fish swimming under the sea', 'there is a man is talking about a event', 'there is a man is talking about a life e",
+      "free_running_32b_continuation": "re crackling in the bowl', 'a fo",
+      "top1_next_byte_preview": "['ahe e is a worhiioimming ipder the btas, 'ahere is a wan is talking wbout a rnent', 'there is a wan is talking wbout a waqe r",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1363,
+      "mean_nowrite": 0.5036,
+      "ground_truth_text_preview": "['a guy telling something', 'a man is talking about something in a road', 'a man is talking into the camera', 'a man is talking",
+      "free_running_32b_continuation": " a video game in a building', 'a",
+      "top1_next_byte_preview": "['a muy tallsng aomething , 'a man is talking about aumething hn fnfeom', 'a man ts talking an o ahe bamera', 'a man ts talking",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -332,7 +332,10 @@ def _upload_shards_batch_chunked(
         if sz <= chunk_bytes:
             _put_one(sf, remote_p)
             if time.monotonic() - last_hb >= 180.0:
-                _exec_short_py(session_name, "print('UPLOAD_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=60)
+                try:
+                    _exec_short_py(session_name, "print('UPLOAD_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=60)
+                except Exception:
+                    pass
                 last_hb = time.monotonic()
             continue
 
@@ -423,32 +426,49 @@ def _download_file_chunked_verified(
     tmp_local = local_path.with_suffix(local_path.suffix + ".part")
     h_loc = hashlib.sha256()
     tot = 0
-    print(f"[CKPT_DL] Downloading {Path(remote_path).name} ({meta['size'] / 1024**2:.1f} MiB in {len(parts)} parts) -> {local_path}...", flush=True)
-    with tmp_local.open("wb") as fout:
-        for i, rem_p in enumerate(parts):
-            p_loc = local_path.parent / f"._{local_path.name}.p{i:04d}"
-            ok_p = False
-            for att in range(1, 5):
-                try:
-                    res = run_colab("download", "-s", session_name, rem_p, str(p_loc), cfg_path=cfg_path, timeout=480)
-                    if res.returncode == 0 and p_loc.is_file():
-                        ok_p = True
-                        break
-                except subprocess.TimeoutExpired:
-                    pass
-                time.sleep(5.0 * att)
-            if not ok_p:
-                print(f"[CKPT_DL WARN] Part {i+1}/{len(parts)} failed for {remote_path}", flush=True)
+    print(f"[CKPT_DL] Downloading {Path(remote_path).name} ({meta['size'] / 1024**2:.1f} MiB in {len(parts)} parts, 4 streams) -> {local_path}...", flush=True)
+
+    def _dl_one(i_part: int, rem_p: str) -> Path:
+        p_loc = local_path.parent / f"._{local_path.name}.p{i_part:04d}"
+        for att in range(1, 6):
+            try:
+                res = run_colab("download", "-s", session_name, rem_p, str(p_loc), cfg_path=cfg_path, timeout=480)
+                if res.returncode == 0 and p_loc.is_file():
+                    return p_loc
+            except subprocess.TimeoutExpired:
+                pass
+            time.sleep(4.0 * att)
+        raise RuntimeError(f"Part {i_part+1}/{len(parts)} failed for {remote_path}")
+
+    part_paths: list[Path | None] = [None] * len(parts)
+    try:
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            futs = {pool.submit(_dl_one, i, rp): i for i, rp in enumerate(parts)}
+            done_cnt = 0
+            for fut in futs:
+                idx = futs[fut]
+                part_paths[idx] = fut.result()
+                done_cnt += 1
+                if done_cnt % 16 == 0:
+                    try:
+                        _exec_short_py(session_name, "print('DL_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=45)
+                    except Exception:
+                        pass
+        with tmp_local.open("wb") as fout:
+            for p_loc in part_paths:
+                assert p_loc is not None
+                raw = p_loc.read_bytes()
+                fout.write(raw)
+                h_loc.update(raw)
+                tot += len(raw)
                 p_loc.unlink(missing_ok=True)
-                tmp_local.unlink(missing_ok=True)
-                return False
-            raw = p_loc.read_bytes()
-            fout.write(raw)
-            h_loc.update(raw)
-            tot += len(raw)
-            p_loc.unlink(missing_ok=True)
-            if (i + 1) % 10 == 0:
-                _exec_short_py(session_name, "print('DL_HB_OK', flush=True)\n", cfg_path=cfg_path, timeout=60)
+    except Exception as exc:
+        print(f"[CKPT_DL WARN] Download aborted for {remote_path}: {exc!r}", flush=True)
+        for p_loc in part_paths:
+            if p_loc is not None:
+                p_loc.unlink(missing_ok=True)
+        tmp_local.unlink(missing_ok=True)
+        return False
     if tot != int(meta["size"]) or h_loc.hexdigest() != str(meta["sha256"]):
         print(f"[CKPT_DL WARN] Integrity mismatch on {local_path}: {tot} vs {meta['size']}", flush=True)
         tmp_local.unlink(missing_ok=True)
@@ -463,7 +483,10 @@ def _download_file_chunked_verified(
         f"try: os.remove({remote_path!r})\n"
         "except OSError: pass\n"
     )
-    _exec_short_py(session_name, clean_py, cfg_path=cfg_path, timeout=60)
+    try:
+        _exec_short_py(session_name, clean_py, cfg_path=cfg_path, timeout=60)
+    except Exception:
+        pass
     print(f"[CKPT_DL OK] Verified SHA-256 ({h_loc.hexdigest()[:16]}...) -> {local_path}", flush=True)
     return True
 
@@ -596,14 +619,11 @@ def main() -> None:
             shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
         else:
             shard_files = [p for p in shard_files if "_test" not in p.name]
-        # Avoid uploading redundant/unused shards in `v3_any2any_trainer` (saves ~111 MiB!)
+        # Avoid uploading redundant 24m text shard or RSO clipbank (keep RSO train shards so frozen-core RSO eval runs!)
         has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
         if has_full_tc:
             shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
-        shard_files = [
-            p for p in shard_files
-            if not p.name.startswith("real_speech_overwrite_train_") and not p.name.startswith("rso_train_clipbank_")
-        ]
+        shard_files = [p for p in shard_files if not p.name.startswith("rso_train_clipbank_")]
         if not shard_files:
             raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
         _upload_shards_batch_chunked(
@@ -674,17 +694,25 @@ def main() -> None:
                 wave_b_block = ""
                 if args.run_wave_b:
                     wave_b_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '600', '--seed', '{seed + 1000}', '--out-dir', '/content/out'{wy_flag}]\n"
-                        "from scripts.train import v3_wave_b_policy_gate\n"
-                        "v3_wave_b_policy_gate.main()\n"
+                        "try:\n"
+                        f"    sys.argv = ['scripts/train/v3_wave_b_policy_gate.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '600', '--seed', '{seed + 1000}', '--out-dir', '/content/out'{wy_flag}]\n"
+                        "    from scripts.train import v3_wave_b_policy_gate\n"
+                        "    v3_wave_b_policy_gate.main()\n"
+                        "except Exception as _wb_exc:\n"
+                        "    import traceback; traceback.print_exc()\n"
+                        "    print('WAVE_B_WARN', repr(_wb_exc), flush=True)\n"
                     )
 
                 wave_c_block = ""
                 if args.run_wave_c:
                     wave_c_block = (
-                        f"sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '{int(args.wave_c_steps)}', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out'{wy_flag}]\n"
-                        "from scripts.train import v3_wave_c_decoders\n"
-                        "v3_wave_c_decoders.main()\n"
+                        "try:\n"
+                        f"    sys.argv = ['scripts/train/v3_wave_c_decoders.py', '--ckpt', '{ckpt_rem}', '--shard-dir', '/content/shards', '--tag', '{tag}', '--steps', '{int(args.wave_c_steps)}', '--seq-len', '{args.seq_len}', '--batch-size', '{min(8, args.batch_size)}', '--seed', '{seed + 2000}', '--out-dir', '/content/out'{wy_flag}]\n"
+                        "    from scripts.train import v3_wave_c_decoders\n"
+                        "    v3_wave_c_decoders.main()\n"
+                        "except Exception as _wc_exc:\n"
+                        "    import traceback; traceback.print_exc()\n"
+                        "    print('WAVE_C_WARN', repr(_wc_exc), flush=True)\n"
                     )
 
                 cleanup_ckpt_block = "" if (args.download_ckpts or args.render_media_gallery) else (
@@ -739,10 +767,10 @@ def main() -> None:
                     run_colab("download", "-s", session_name, f"/content/out/{wc_fn}", str(args.out_dir / f"wave_c_{tag}_receipt.json"), cfg_path=cfg_path, timeout=120)
                     for sh_tag in ("clotho_dev", "msrvtt_dev"):
                         run_colab("download", "-s", session_name, f"/content/out/inference_showcase/showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json", str(args.out_dir / "inference_showcase" / f"showcase_manifest_dev_wave_c_{tag}_{sh_tag}.json"), cfg_path=cfg_path, timeout=60)
-                if args.render_media_gallery and rc == 0 and not tripped:
+                if args.render_media_gallery and out_rec.is_file() and not tripped:
                     # Render real `.wav` audio (Mimi) + `.png`/`.gif`/`.mp4` video (Wan 2.1 VAE) detached with shared GPU VRAM!
-                    wb_arg = f", '--wave-b-ckpt', '/content/out/wave_b_{tag}_ckpt.pkl'" if args.run_wave_b else ""
-                    wc_arg = f", '--wave-c-ckpt', '/content/out/wave_c_{tag}_ckpt.pkl'" if args.run_wave_c else ""
+                    wb_arg = f", '--wave-b-ckpt', '/content/out/wave_b_{tag}_ckpt.pkl'" if (args.run_wave_b and (args.out_dir / f"wave_b_{tag}_receipt.json").is_file()) else ""
+                    wc_arg = f", '--wave-c-ckpt', '/content/out/wave_c_{tag}_ckpt.pkl'" if (args.run_wave_c and (args.out_dir / f"wave_c_{tag}_receipt.json").is_file()) else ""
                     media_py = (
                         "import os, subprocess, sys, tarfile\n"
                         "env = dict(os.environ)\n"

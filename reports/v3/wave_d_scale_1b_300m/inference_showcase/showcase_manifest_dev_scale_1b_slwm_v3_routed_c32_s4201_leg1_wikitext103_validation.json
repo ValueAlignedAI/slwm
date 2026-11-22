@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-22T14:35:11.761243+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_leg1_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6776,
+      "mean_nowrite": 0.1738,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e Professor Professor Professor ",
+      "top1_next_byte_preview": "rnenb tebga raane  a and tnlye aa  aakesP .ash ind (rrk aontains arvtic atoelers a ahefming ioils a ahanis aonlts a ansone all oolld t au t all pield  a and s s",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0007",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.4456,
+      "mean_nowrite": 0.1752,
+      "ground_truth_text_preview": "s commented on his laziness and intelligence , and noted his transformation into a leader ; Anime News Network celebrated Shikamaru 's emergence as \" an unlikel",
+      "free_running_32b_continuation": "is day and treachery patries and",
+      "top1_next_byte_preview": "roihuportad tn tis danylgs  and wnterlegente o wnd tet d tis srunsiormation tn o t saadir o aldma aawslaewwork aonebrates taepa    saahlxprgency on at\"  aniikel",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2982,
+      "mean_nowrite": 0.1756,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e monochord and the monochord sa",
+      "top1_next_byte_preview": "red r ohwtdcl thes inayd t .TI aCoroe Pefainsd a srosente of the firld oor ahe feoght  on t017 a asplndeng tos sele iy traning aoce otakshan a sunl ock o Te hel",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.113,
+      "mean_nowrite": 0.1764,
+      "ground_truth_text_preview": "b , suggesting that the oral tradition may have some truth to it . \n\n In the 19th century the Crabbaberry fishing station in West Voe was opened and the island ",
+      "free_running_32b_continuation": "he international compound of the",
+      "top1_next_byte_preview": "rub 1ocaestiog thet the pnil aeanition iay bave aome ohash th tnsi .TI n thi f9th century,ahe paezienbt a Colh ng atatesn,is tasteAiltaas anened ind the cnland ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8825,
+      "mean_nowrite": 0.1761,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "author depicted it to a small po",
+      "top1_next_byte_preview": "rCnshnatile iud anterneite aesh ay (ystems(elome aore irpular toan trrsidgersaetsw a .he Hevaane of the peilroad tntustry aolses bognificant rob iens s a aesult",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

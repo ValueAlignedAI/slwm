@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-22T14:37:05.607901+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_leg1_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.6854,
+      "mean_nowrite": 0.1708,
+      "ground_truth_text_preview": "llowed in the traditions of specific aspects of his work : Bai Juyi 's concern for the poor , Lu You 's patriotism , and Mei Yaochen 's reflections on the quoti",
+      "free_running_32b_continuation": "ees july fast and looked down at",
+      "top1_next_byte_preview": "rean r tn the frenition  af toiaieic ln ects of tis lerk a teclaun naapaontepnsaor the prsr s aacaou aaearriood ct a and tad ao uh   aa sepeection  on the fueta",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.5279,
+      "mean_nowrite": 0.1689,
+      "ground_truth_text_preview": "other crane was intended on the starboard side , but it was never fitted . \n\n The ships had an air group of 11 each of Yokosuka D4Y dive bombers ( Allied report",
+      "free_running_32b_continuation": "a possession the ground and a ha",
+      "top1_next_byte_preview": "rnher poizi aas anterted tn the ptattlnrd bhne b wut tt was oover son en o TTA he ftop  wad b  edr froup of s0 snrh yf tou k sa aa  aesirierbere wa1deeed tearrt",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0008",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3687,
+      "mean_nowrite": 0.1739,
+      "ground_truth_text_preview": "ported that Simon Cowell , the group 's manager , had challenged prominent songwriters to compete for space on One Direction 's second album . Falk said , \" It ",
+      "free_running_32b_continuation": "ndal Company and Company Company",
+      "top1_next_byte_preview": "rrster ihet bampndSam rl w ahe Croun oCison gem i wav toanlenged toofinent stugseiters ao soneate wrr toece an tct aasectoon oCosacond tnlum a..oml oaid t aTs  ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1847,
+      "mean_nowrite": 0.1695,
+      "ground_truth_text_preview": " = Robert Boulter = \n\n Robert Boulter is an English film , television and theatre actor . He had a guest @-@ starring role on the television series The Bill in ",
+      "free_running_32b_continuation": "r Boulter Boulter Boulter Boulte",
+      "top1_next_byte_preview": "rC=\"elort Cabndir B T\nI ebert Boulter Bs a  exglish aolm i ahcevision ibd tee tee Brtir i .e ias a sriss og  (tatting aobe if the selevision sttves ohe roll on ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0567,
+      "mean_nowrite": 0.1739,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the latter blank hours the c",
+      "top1_next_byte_preview": "r yries ah btiveund thknoaand teviroy the fn and teM ondv  on thet toty w .l aart of thes pension t the rerth Aarean wniv  aeuld bonst bor the ttrply oane  to t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

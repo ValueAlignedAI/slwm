@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T14:35:48.448327+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_leg1_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6567,
+      "mean_nowrite": 0.2161,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "is falling into a stop with a st",
+      "top1_next_byte_preview": "Ahe buavy waarsif s  hntistiial mnr iamtition r intn aaom aear a herdu I  industrial eir contitioner indn iferates ahth l siavy raad  Aind ioking ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0004",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4348,
+      "mean_nowrite": 0.1824,
+      "ground_truth_text_preview": "The dry grass rustles as an animal is rummaging through it. The rustling of a material grows quiet and then begins to rustle audibly again. A person repeatedly ",
+      "free_running_32b_continuation": "ain is falling at a constant rat",
+      "top1_next_byte_preview": "Ahe woiehravs iastle  an t  oinmal ms fanbogeng.ahrough tt. Ahe gastling of a macerial oriws auicteand the  regins to munt.e.andible.inains S merson iuveatedly ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3383,
+      "mean_nowrite": 0.1713,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "eping and squeaking while a mach",
+      "top1_next_byte_preview": "Aesh vitched eiels alayia tinn aollowed by a satentaor ctlence aefore a mosp r sell iowls. Aegh pitched eells bing  aillowed by a sotentatf tolence  aelore b mo",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0031",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.182,
+      "mean_nowrite": 0.21,
+      "ground_truth_text_preview": "In an open space, someone runs steadily on a treadmill. Machinery buzzes and hums at a continuous clip. An industrial machine in a manufacturing plant is runnin",
+      "free_running_32b_continuation": "e as the breez of the space crac",
+      "top1_next_byte_preview": "An t  epenidtace  aomeone ians aoeadyly in a praedmill. Aanhinery iuzzes and rims an a sonsinuous slin  A  antistrial eachine ws a cacufactureng saane as bunnin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0022",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7436,
+      "mean_nowrite": 0.1981,
+      "ground_truth_text_preview": "Water runs continuously from a faucet to a sink. Water pours from the faucet and into a metallic bucket. Water is pouring out of a faucet into a metal bucket. I",
+      "free_running_32b_continuation": "inuously flowing at a constant r",
+      "top1_next_byte_preview": "Aater iuns ionsinuously flom a faucet ih r stnk  Water rours irom ahe faucet ind tsto a setal ic sabket. Water rs rouring fut of a faucet into a metallbacket. W",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

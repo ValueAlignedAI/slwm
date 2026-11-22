@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-22T14:36:31.197429+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_leg1_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.8602,
+      "mean_nowrite": 0.5399,
+      "ground_truth_text_preview": "a cartoon that is blurryb on a tv screen of a fashion run way",
+      "free_running_32b_continuation": "is shown then a man is talking a",
+      "top1_next_byte_preview": "[nmar oon irat is seaeriiuap a teeshreen wf c yenhionecannwit ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0031",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.5879,
+      "mean_nowrite": 0.5081,
+      "ground_truth_text_preview": "someone giving demo for some game",
+      "free_running_32b_continuation": "a hair bag in a horse racing at ",
+      "top1_next_byte_preview": "[ou nne poving aeeonoor aome lrme ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 3.236,
+      "mean_nowrite": 0.5087,
+      "ground_truth_text_preview": "bill murray is covered in frosting",
+      "free_running_32b_continuation": "a big depth and is how it can be",
+      "top1_next_byte_preview": "[ollimasmay is aomerid an arent cg ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.7105,
+      "mean_nowrite": 0.5363,
+      "ground_truth_text_preview": "a man is showing off a new vehicle",
+      "free_running_32b_continuation": "g how a lady howling a paper or ",
+      "top1_next_byte_preview": "[ pan ds siowing hff c pewscehicle ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0068,
+      "mean_nowrite": 0.5407,
+      "ground_truth_text_preview": "a group of people are walking a woman is talking about their culture",
+      "free_running_32b_continuation": "le reaching in the background. A",
+      "top1_next_byte_preview": "[ pioup of people rre satking drsaman tn salking anout she r lhsture ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

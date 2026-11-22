@@ -499,7 +499,7 @@ def main() -> None:
             {
                 "tag": tag,
                 "commit_actions": list(COMMIT_ACTIONS),
-                "gate_params": jax.tree_util.tree_map(lambda x: np.asarray(x, dtype=np.float32), gate_params),
+                "gate_params": jax.tree_util.tree_map(lambda x: np.asarray(x, dtype=np.float32), gate_p),
             },
             f,
             protocol=pickle.HIGHEST_PROTOCOL,
