@@ -180,13 +180,24 @@ def _packet_from_shard(spec, d: dict[str, Any], gi: int, *, is_first: bool, acti
 _CODEC_CACHE: dict[str, Any] = {}
 
 
+def _resolve_torch_device(device: str = "auto") -> str:
+    import torch
+    if device != "auto":
+        return device
+    if torch.cuda.is_available():
+        return "cuda"
+    if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
 def decode_mimi_codes_to_wav(codes_tq: np.ndarray, out_wav: Path, *, device: str = "auto") -> str:
     """Decode causal `int32[T, Q]` (`Q=8` or `Q=32`) Kyutai Mimi RVQ codes -> playable 24 kHz `.wav`."""
     try:
         import torch
         from scipy.io import wavfile
         from transformers import MimiModel
-        dev = ("cuda" if torch.cuda.is_available() else "cpu") if device == "auto" else device
+        dev = _resolve_torch_device(device)
         if "mimi" not in _CODEC_CACHE:
             _CODEC_CACHE["mimi"] = MimiModel.from_pretrained("kyutai/mimi").to(dev).eval()
         mimi = _CODEC_CACHE["mimi"]
@@ -205,7 +216,8 @@ def decode_wan_patches_to_rgb(patches_tg_15_1024: np.ndarray, *, device: str = "
     try:
         import torch
         from diffusers import AutoencoderKLWan
-        dev = ("cuda" if torch.cuda.is_available() else "cpu") if device == "auto" else device
+        dev = _resolve_torch_device(device)
+        # Use bf16 on CUDA; fp32 on Apple Silicon MPS/CPU for maximum Conv3d numerical fidelity
         dtype = torch.bfloat16 if dev == "cuda" else torch.float32
         if "wan_vae" not in _CODEC_CACHE:
             _CODEC_CACHE["wan_vae"] = AutoencoderKLWan.from_pretrained(
@@ -297,24 +309,33 @@ def _save_side_by_side_png_and_gif(
         imgs[0].save(out_gif, save_all=True, append_images=imgs[1:], duration=int(1000 / max(fps, 1.0)), loop=0)
         out["side_by_side_gif"] = str(out_gif)
 
-        # Also render playable `.mp4` trying available H.264 / MPEG-4 codecs (`libx264` on Colab, `libopenh264`/`mpeg4` on Fedora)!
+        # Also render playable `.mp4` trying system/Homebrew ffmpeg or imageio-ffmpeg!
+        import shutil
+        ffmpeg_bin = shutil.which("ffmpeg") or ("/opt/homebrew/bin/ffmpeg" if Path("/opt/homebrew/bin/ffmpeg").is_file() else None)
+        if ffmpeg_bin is None:
+            try:
+                import imageio_ffmpeg
+                ffmpeg_bin = imageio_ffmpeg.get_ffmpeg_exe()
+            except Exception:
+                ffmpeg_bin = None
         mp4_p = out_gif.with_suffix(".mp4")
-        with tempfile.TemporaryDirectory() as td:
-            for fi, im in enumerate(imgs):
-                im.save(Path(td) / f"f_{fi:04d}.png")
-            for vcodec in ("libx264", "libopenh264", "mpeg4"):
-                r = subprocess.run(
-                    [
-                        "ffmpeg", "-y", "-v", "error", "-framerate", str(max(2, int(round(fps)))),
-                        "-i", f"{td}/f_%04d.png", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
-                        "-c:v", vcodec, "-pix_fmt", "yuv420p", str(mp4_p),
-                    ],
-                    capture_output=True,
-                    check=False,
-                )
-                if r.returncode == 0 and mp4_p.is_file() and mp4_p.stat().st_size > 0:
-                    out["side_by_side_mp4"] = str(mp4_p)
-                    break
+        if ffmpeg_bin is not None:
+            with tempfile.TemporaryDirectory() as td:
+                for fi, im in enumerate(imgs):
+                    im.save(Path(td) / f"f_{fi:04d}.png")
+                for vcodec in ("libx264", "libopenh264", "mpeg4"):
+                    r = subprocess.run(
+                        [
+                            ffmpeg_bin, "-y", "-v", "error", "-framerate", str(max(2, int(round(fps)))),
+                            "-i", f"{td}/f_%04d.png", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+                            "-c:v", vcodec, "-pix_fmt", "yuv420p", str(mp4_p),
+                        ],
+                        capture_output=True,
+                        check=False,
+                    )
+                    if r.returncode == 0 and mp4_p.is_file() and mp4_p.stat().st_size > 0:
+                        out["side_by_side_mp4"] = str(mp4_p)
+                        break
     except Exception as exc:
         out["render_error"] = repr(exc)
     return out
