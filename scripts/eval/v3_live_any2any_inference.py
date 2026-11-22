@@ -297,22 +297,24 @@ def _save_side_by_side_png_and_gif(
         imgs[0].save(out_gif, save_all=True, append_images=imgs[1:], duration=int(1000 / max(fps, 1.0)), loop=0)
         out["side_by_side_gif"] = str(out_gif)
 
-        # Also render playable H.264 `.mp4` if `ffmpeg` is installed!
+        # Also render playable `.mp4` trying available H.264 / MPEG-4 codecs (`libx264` on Colab, `libopenh264`/`mpeg4` on Fedora)!
         mp4_p = out_gif.with_suffix(".mp4")
         with tempfile.TemporaryDirectory() as td:
             for fi, im in enumerate(imgs):
                 im.save(Path(td) / f"f_{fi:04d}.png")
-            r = subprocess.run(
-                [
-                    "ffmpeg", "-y", "-v", "error", "-framerate", str(max(2, int(round(fps)))),
-                    "-i", f"{td}/f_%04d.png", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
-                    "-c:v", "libx264", "-pix_fmt", "yuv420p", str(mp4_p),
-                ],
-                capture_output=True,
-                check=False,
-            )
-            if r.returncode == 0 and mp4_p.is_file():
-                out["side_by_side_mp4"] = str(mp4_p)
+            for vcodec in ("libx264", "libopenh264", "mpeg4"):
+                r = subprocess.run(
+                    [
+                        "ffmpeg", "-y", "-v", "error", "-framerate", str(max(2, int(round(fps)))),
+                        "-i", f"{td}/f_%04d.png", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+                        "-c:v", vcodec, "-pix_fmt", "yuv420p", str(mp4_p),
+                    ],
+                    capture_output=True,
+                    check=False,
+                )
+                if r.returncode == 0 and mp4_p.is_file() and mp4_p.stat().st_size > 0:
+                    out["side_by_side_mp4"] = str(mp4_p)
+                    break
     except Exception as exc:
         out["render_error"] = repr(exc)
     return out

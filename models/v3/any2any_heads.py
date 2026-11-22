@@ -54,19 +54,31 @@ def init_any2any_heads_params(
     m_d = spec.width_mult
     k_aud = int(n_pred_audio_codebooks)
 
+    head_audio = (
+        {
+            "norm_w": jnp.ones((d,), dtype=jnp.float32),
+            "w": init_mup_weight(
+                keys[1], (d, k_aud * spec.audio_vocab_size), role="readout", width_mult=m_d, zero_init=True
+            ),
+            "bias": jnp.zeros((k_aud, spec.audio_vocab_size), dtype=jnp.float32),
+        }
+        if spec.representation_mode == "frozen_codec_edge"
+        else {
+            "norm_w": jnp.ones((d,), dtype=jnp.float32),
+            "w": init_mup_weight(
+                keys[1], (d, spec.audio_cont_dim), role="readout", width_mult=m_d, zero_init=True
+            ),
+            "bias": jnp.zeros((spec.audio_cont_dim,), dtype=jnp.float32),
+        }
+    )
+
     return {
         "head_text": {
             "norm_w": jnp.ones((d,), dtype=jnp.float32),
             "w": init_mup_weight(keys[0], (d, spec.text_vocab_size), role="readout", width_mult=m_d, zero_init=True),
             "bias": jnp.zeros((spec.text_vocab_size,), dtype=jnp.float32),
         },
-        "head_audio": {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(
-                keys[1], (d, k_aud * spec.audio_vocab_size), role="readout", width_mult=m_d, zero_init=True
-            ),
-            "bias": jnp.zeros((k_aud, spec.audio_vocab_size), dtype=jnp.float32),
-        },
+        "head_audio": head_audio,
         "head_video": {
             "norm_w": jnp.ones((d,), dtype=jnp.float32),
             "w": init_mup_weight(keys[2], (d, spec.video_patch_dim), role="readout", width_mult=m_d, zero_init=True),
@@ -103,12 +115,17 @@ def predict_any2any_heads(
     ha = heads_params["head_audio"]
     hv = heads_params["head_video"]
     hact = heads_params["head_action"]
-    return {
-        "text_logits": _mm(rms_norm(z_seq, ht["norm_w"]), ht["w"], matmul_dtype) + ht["bias"],
-        "audio_logits": _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype).reshape(
+    aud_out = (
+        _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype).reshape(
             t_len, b_sz, k_aud, spec.audio_vocab_size
         )
-        + ha["bias"][None, None, :, :],
+        + ha["bias"][None, None, :, :]
+        if spec.representation_mode == "frozen_codec_edge"
+        else _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype) + ha["bias"]
+    )
+    return {
+        "text_logits": _mm(rms_norm(z_seq, ht["norm_w"]), ht["w"], matmul_dtype) + ht["bias"],
+        "audio_logits": aud_out,
         "video_pred": _mm(rms_norm(z_seq, hv["norm_w"]), hv["w"], matmul_dtype) + hv["bias"],
         "action_pred": _mm(rms_norm(z_seq, hact["norm_w"]), hact["w"], matmul_dtype) + hact["bias"],
     }
@@ -156,43 +173,51 @@ def compute_any2any_multimodal_loss(
     txt_loss = jnp.sum(txt_ce_per * m_txt) / jnp.maximum(txt_cnt, 1.0)
     txt_has = (txt_cnt > 0.5).astype(jnp.float32)
 
-    # 2. Audio Mimi RVQ-0..K-1 Cross-Entropy (modality_id == 1) — time-chunked (`C=64`) to cut peak HBM ~8x!
+    # 2. Audio Loss (modality_id == 1): Mimi RVQ-0..K-1 CE on `frozen_codec_edge` OR 64-bin Log-Mel Huber on `scratch_edge`!
     k_aud = int(n_pred_audio_codebooks)
     m_aud = targ_vld * (next_mod == 1).astype(jnp.float32)
     ha_p = heads_params["head_audio"]
-    aud_targets = jnp.clip(batch["audio_codes"][1:, :, :k_aud].astype(jnp.int32), 0, spec.audio_vocab_size - 1)
     aud_cnt = jnp.sum(m_aud)
     aud_has = (aud_cnt > 0.5).astype(jnp.float32)
 
-    def _chunked_audio_ce(_: None) -> Array:
-        tm1 = t_len - 1
-        c_sz = min(64, max(1, tm1))
-        rem = tm1 % c_sz
-        pad_n = (c_sz - rem) if rem != 0 else 0
-        n_ch = (tm1 + pad_n) // c_sz
-        if pad_n > 0:
-            zp = jnp.concatenate([z_src, jnp.zeros((pad_n, b_sz, z_src.shape[-1]), dtype=z_src.dtype)], axis=0)
-            tp = jnp.concatenate([aud_targets, jnp.zeros((pad_n, b_sz, k_aud), dtype=jnp.int32)], axis=0)
-            mp = jnp.concatenate([m_aud, jnp.zeros((pad_n, b_sz), dtype=jnp.float32)], axis=0)
-        else:
-            zp, tp, mp = z_src, aud_targets, m_aud
-        zc = zp.reshape(n_ch, c_sz, b_sz, z_src.shape[-1])
-        tc = tp.reshape(n_ch, c_sz, b_sz, k_aud)
-        mc = mp.reshape(n_ch, c_sz, b_sz)
+    if spec.representation_mode == "frozen_codec_edge":
+        aud_targets = jnp.clip(batch["audio_codes"][1:, :, :k_aud].astype(jnp.int32), 0, spec.audio_vocab_size - 1)
 
-        @jax.checkpoint
-        def _ce_chunk(acc: Array, xs: tuple[Array, Array, Array]) -> tuple[Array, None]:
-            z_i, t_i, m_i = xs
-            lg = _mm(rms_norm(z_i, ha_p["norm_w"]), ha_p["w"], matmul_dtype).reshape(
-                c_sz, b_sz, k_aud, spec.audio_vocab_size
-            ) + ha_p["bias"][None, None, :, :]
-            ce = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(lg, t_i), axis=-1)
-            return acc + jnp.sum(ce * m_i), None
+        def _chunked_audio_ce(_: None) -> Array:
+            tm1 = t_len - 1
+            c_sz = min(64, max(1, tm1))
+            rem = tm1 % c_sz
+            pad_n = (c_sz - rem) if rem != 0 else 0
+            n_ch = (tm1 + pad_n) // c_sz
+            if pad_n > 0:
+                zp = jnp.concatenate([z_src, jnp.zeros((pad_n, b_sz, z_src.shape[-1]), dtype=z_src.dtype)], axis=0)
+                tp = jnp.concatenate([aud_targets, jnp.zeros((pad_n, b_sz, k_aud), dtype=jnp.int32)], axis=0)
+                mp = jnp.concatenate([m_aud, jnp.zeros((pad_n, b_sz), dtype=jnp.float32)], axis=0)
+            else:
+                zp, tp, mp = z_src, aud_targets, m_aud
+            zc = zp.reshape(n_ch, c_sz, b_sz, z_src.shape[-1])
+            tc = tp.reshape(n_ch, c_sz, b_sz, k_aud)
+            mc = mp.reshape(n_ch, c_sz, b_sz)
 
-        tot_ce, _ = jax.lax.scan(_ce_chunk, jnp.asarray(0.0, dtype=jnp.float32), (zc, tc, mc))
-        return tot_ce / jnp.maximum(aud_cnt, 1.0)
+            @jax.checkpoint
+            def _ce_chunk(acc: Array, xs: tuple[Array, Array, Array]) -> tuple[Array, None]:
+                z_i, t_i, m_i = xs
+                lg = _mm(rms_norm(z_i, ha_p["norm_w"]), ha_p["w"], matmul_dtype).reshape(
+                    c_sz, b_sz, k_aud, spec.audio_vocab_size
+                ) + ha_p["bias"][None, None, :, :]
+                ce = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(lg, t_i), axis=-1)
+                return acc + jnp.sum(ce * m_i), None
 
-    aud_loss = jax.lax.cond(aud_cnt > 0.5, _chunked_audio_ce, lambda _: jnp.asarray(0.0, dtype=jnp.float32), None)
+            tot_ce, _ = jax.lax.scan(_ce_chunk, jnp.asarray(0.0, dtype=jnp.float32), (zc, tc, mc))
+            return tot_ce / jnp.maximum(aud_cnt, 1.0)
+
+        aud_loss = jax.lax.cond(aud_cnt > 0.5, _chunked_audio_ce, lambda _: jnp.asarray(0.0, dtype=jnp.float32), None)
+    else:
+        aud_pred = _mm(rms_norm(z_src, ha_p["norm_w"]), ha_p["w"], matmul_dtype) + ha_p["bias"]
+        aud_targ_c = jax.lax.stop_gradient(batch["audio_cont"][1:].astype(jnp.float32))
+        ad_c = jnp.abs(aud_pred - aud_targ_c)
+        a_hub = jnp.mean(jnp.where(ad_c <= 1.0, 0.5 * (aud_pred - aud_targ_c) ** 2, ad_c - 0.5), axis=-1)
+        aud_loss = jnp.sum(a_hub * m_aud) / jnp.maximum(aud_cnt, 1.0)
 
     # 3. Video Wan 2.1 Latent Patch Huber Loss (modality_id == 0)
     m_vid = targ_vld * (next_mod == 0).astype(jnp.float32)

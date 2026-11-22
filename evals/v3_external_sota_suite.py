@@ -233,15 +233,16 @@ def evaluate_esc50_classification(
     if not train_shard_path.is_file():
         return {"skipped": f"missing {train_shard_path}"}
 
-    def _load_audio_and_labels(p: Path) -> tuple[np.ndarray, list[str]]:
+    def _load_audio_and_labels(p: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:
         sh = LoadedSparseShard.load(p)
         d = sh.data
         rst = np.nonzero(d["reset_mask"])[0]
         if len(rst) == 0 or rst[0] != 0:
             rst = np.insert(rst, 0, 0)
         ends = np.append(rst[1:], sh.n_ticks)
-        codes_list, labels = [], []
-        max_len = 64  # ESC-50 clips are 5.0 s @ 12.5 Hz = ~63 Mimi ticks!
+        codes_list, cont_list, labels = [], [], []
+        has_cont = ("audio_cont" in d) and (d["audio_cont"].shape[0] > 0)
+        max_len = 64  # ESC-50 clips are 5.0 s @ 12.5 Hz = ~63 ticks!
         for s, e in zip(rst, ends):
             m_ep = d["modality_id"][int(s) : int(e)]
             ai = d["audio_idx"][int(s) : int(e)][m_ep == 1]
@@ -251,23 +252,30 @@ def evaluate_esc50_classification(
             if len(ai) < 8 or not lbl:
                 continue
             arr = np.zeros((max_len, spec.audio_codebooks), dtype=np.int32)
+            arr_c = np.zeros((max_len, spec.audio_cont_dim), dtype=np.float32)
             L = min(max_len, len(ai))
-            arr[:L] = d["audio_codes"][ai[:L]].astype(np.int32)
+            if d["audio_codes"].shape[0] > 0:
+                arr[:L] = d["audio_codes"][ai[:L]].astype(np.int32)
+            if has_cont:
+                arr_c[:L] = d["audio_cont"][ai[:L]].astype(np.float32)
             codes_list.append(arr)
+            cont_list.append(arr_c)
             labels.append(lbl)
-        return np.stack(codes_list, axis=0), labels
+        return np.stack(codes_list, axis=0), np.stack(cont_list, axis=0), labels
 
-    tr_codes, tr_lbls = _load_audio_and_labels(train_shard_path)
+    tr_codes, tr_cont, tr_lbls = _load_audio_and_labels(train_shard_path)
     if eval_shard_path is not None and eval_shard_path.is_file():
-        ev_codes, ev_lbls = _load_audio_and_labels(eval_shard_path)
+        ev_codes, ev_cont, ev_lbls = _load_audio_and_labels(eval_shard_path)
         mode = f"train_f14_to_{eval_shard_path.stem}"
     else:
         # Dev-safe deterministic 75/25 holdout strictly inside train_f14 (never touches test fold 5!)
         n = len(tr_lbls)
         ev_mask = (np.arange(n) % 4) == 3
         ev_codes = tr_codes[ev_mask]
+        ev_cont = tr_cont[ev_mask]
         ev_lbls = [tr_lbls[i] for i in range(n) if ev_mask[i]]
         tr_codes = tr_codes[~ev_mask]
+        tr_cont = tr_cont[~ev_mask]
         tr_lbls = [tr_lbls[i] for i in range(n) if not ev_mask[i]]
         mode = "internal_dev_holdout_from_train_f14"
 
@@ -278,7 +286,7 @@ def evaluate_esc50_classification(
     y_ev = np.asarray([c2i[c] for c in ev_lbls], dtype=np.int32)
 
     @jax.jit
-    def _extract_z(cp, ac_tb32):
+    def _extract_z(cp, ac_tb32, acont_tb64):
         t_l, b_s, _ = ac_tb32.shape
         pkts = {
             "modality_id": jnp.ones((t_l, b_s), dtype=jnp.int32),
@@ -291,6 +299,7 @@ def evaluate_esc50_classification(
             "has_true_action": jnp.zeros((t_l, b_s), dtype=jnp.float32),
             "video_feat": jnp.zeros((t_l, b_s, spec.video_patch_dim), dtype=jnp.float32),
             "audio_codes": ac_tb32,
+            "audio_cont": acont_tb64,
             "proprio_feat": jnp.zeros((t_l, b_s, spec.proprio_dim), dtype=jnp.float32),
             "action_feat": jnp.zeros((t_l, b_s, spec.action_dim), dtype=jnp.float32),
             "probe_feat": jnp.zeros((t_l, b_s, spec.probe_dim), dtype=jnp.float32),
@@ -302,16 +311,17 @@ def evaluate_esc50_classification(
         # Mean-pool frozen temporal audio representation across clip
         return jax.lax.stop_gradient(jnp.mean(z, axis=0))
 
-    def _run_all(codes_nt32: np.ndarray) -> np.ndarray:
+    def _run_all(codes_nt32: np.ndarray, cont_nt64: np.ndarray) -> np.ndarray:
         outs = []
         for s in range(0, len(codes_nt32), eval_micro_bsz):
             e = min(s + eval_micro_bsz, len(codes_nt32))
             c_tb = jnp.asarray(np.transpose(codes_nt32[s:e], (1, 0, 2)), dtype=jnp.int32)
-            outs.append(np.asarray(_extract_z(core_params, c_tb), dtype=np.float32))
+            ac_tb = jnp.asarray(np.transpose(cont_nt64[s:e], (1, 0, 2)), dtype=jnp.float32)
+            outs.append(np.asarray(_extract_z(core_params, c_tb, ac_tb), dtype=np.float32))
         return np.concatenate(outs, axis=0)
 
-    z_tr_np = _run_all(tr_codes)
-    z_ev_np = _run_all(ev_codes)
+    z_tr_np = _run_all(tr_codes, tr_cont)
+    z_ev_np = _run_all(ev_codes, ev_cont)
     y_tr_np = np.asarray([c2i[c] for c in tr_lbls], dtype=np.int32)
 
     # 1. Width-invariant standardized + L2-normalized closed-form 4-fold train-CV Ridge Linear Probe

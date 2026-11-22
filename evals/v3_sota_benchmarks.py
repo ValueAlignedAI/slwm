@@ -279,6 +279,7 @@ def _build_episode_aligned_batch(
     ha = np.zeros((seq_len, b_sz), dtype=np.float32)
     vid = np.zeros((seq_len, b_sz, spec.video_patch_dim), dtype=np.float32)
     aud = np.zeros((seq_len, b_sz, spec.audio_codebooks), dtype=np.int32)
+    aud_c = np.zeros((seq_len, b_sz, spec.audio_cont_dim), dtype=np.float32)
     prop = np.zeros((seq_len, b_sz, spec.proprio_dim), dtype=np.float32)
     act = np.zeros((seq_len, b_sz, spec.action_dim), dtype=np.float32)
 
@@ -300,6 +301,8 @@ def _build_episode_aligned_batch(
         am = ai >= 0
         if np.any(am) and d["audio_codes"].shape[0] > 0:
             aud[:L, bi][am] = d["audio_codes"][ai[am]].astype(np.int32)
+        if np.any(am) and "audio_cont" in d and d["audio_cont"].shape[0] > 0:
+            aud_c[:L, bi][am] = d["audio_cont"][ai[am]].astype(np.float32)
         pi = d["act_idx"][idx]
         pm = pi >= 0
         if np.any(pm) and d["proprio_feat"].shape[0] > 0:
@@ -318,6 +321,7 @@ def _build_episode_aligned_batch(
         "has_true_action": ha,
         "video_feat": vid,
         "audio_codes": aud,
+        "audio_cont": aud_c,
         "proprio_feat": prop,
         "action_feat": act,
         "probe_feat": np.zeros((seq_len, b_sz, spec.probe_dim), dtype=np.float32),
@@ -445,6 +449,7 @@ def evaluate_cross_modal_condition_shuffle(
                 b_shuf_np["spatial_pos"][rec_idx, bi] = b_pair_np["spatial_pos"][mapped, donor]
             elif source_mod == 1:
                 b_shuf_np["audio_codes"][rec_idx, bi] = b_pair_np["audio_codes"][mapped, donor]
+                b_shuf_np["audio_cont"][rec_idx, bi] = b_pair_np["audio_cont"][mapped, donor]
             elif source_mod == 2:
                 b_shuf_np["text_byte"][rec_idx, bi] = b_pair_np["text_byte"][mapped, donor]
 
