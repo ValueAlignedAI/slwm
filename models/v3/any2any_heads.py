@@ -42,11 +42,76 @@ COMMIT_ACTIONS = (
 )
 
 
+def _init_head_block(
+    key: Array, d: int, out_shape: tuple[int, ...], m_d: float, *, use_swiglu_mlp: bool = False
+) -> PyTree:
+    out_flat = 1
+    for s in out_shape:
+        out_flat *= int(s)
+    k1, k2, k3, k4 = jax.random.split(key, 4)
+    blk: PyTree = {
+        "norm_w": jnp.ones((d,), dtype=jnp.float32),
+        "w": init_mup_weight(k1, (d, out_flat), role="readout", width_mult=m_d, zero_init=True),
+        "bias": jnp.zeros(out_shape, dtype=jnp.float32),
+    }
+    if use_swiglu_mlp:
+        h_dec = min(2048, max(512, 2 * d))
+        blk["w_g"] = init_mup_weight(k2, (d, h_dec), role="hidden", width_mult=m_d, base_std=0.5 / math.sqrt(float(d)))
+        blk["w_u"] = init_mup_weight(k3, (d, h_dec), role="hidden", width_mult=m_d, base_std=0.5 / math.sqrt(float(d)))
+        blk["w_d"] = init_mup_weight(k4, (h_dec, out_flat), role="readout", width_mult=m_d, zero_init=True)
+    return blk
+
+
+def _apply_head_block(blk: PyTree, z: Array, matmul_dtype: jnp.dtype) -> Array:
+    zn = rms_norm(z, blk["norm_w"])
+    out = _mm(zn, blk["w"], matmul_dtype)
+    if "w_g" in blk:
+        hid = jax.nn.silu(_mm(zn, blk["w_g"], matmul_dtype)) * _mm(zn, blk["w_u"], matmul_dtype)
+        out = out + _mm(hid, blk["w_d"], matmul_dtype)
+    return out
+
+
+def init_video_spatial_refiner_params(key: Array, patch_dim: int = 1024, bottleneck: int = 256) -> PyTree:
+    """Strictly causal intra-frame `3x5` spatial patch refiner (`dt_s == 0` across all 15 patches of one frame group).
+
+    Removes `3x5` Wan 2.1 patch tile seams with ZERO future temporal lookahead (operates strictly inside one frame group).
+    Zero-initialized output projection starts strictly at identity.
+    """
+    k1, k2, k3 = jax.random.split(key, 3)
+    return {
+        "norm_w": jnp.ones((patch_dim,), dtype=jnp.float32),
+        "w_down": init_mup_weight(k1, (patch_dim, bottleneck), role="input", width_mult=1.0, base_std=0.5 / math.sqrt(float(patch_dim))),
+        "conv_k": init_mup_weight(k2, (3, 3, bottleneck, bottleneck), role="hidden", width_mult=1.0, base_std=0.35 / math.sqrt(9.0 * float(bottleneck))),
+        "conv_b": jnp.zeros((bottleneck,), dtype=jnp.float32),
+        "w_up": init_mup_weight(k3, (bottleneck, patch_dim), role="readout", width_mult=1.0, zero_init=True),
+    }
+
+
+def apply_video_spatial_refiner(ref_params: PyTree, patches_n_15_d: Array, matmul_dtype: jnp.dtype = jnp.bfloat16) -> Array:
+    """Refine `[N, 15, 1024]` intra-frame Wan 2.1 patches across their `3x5` spatial grid (zero temporal lookahead)."""
+    n_g = patches_n_15_d.shape[0]
+    d_p = patches_n_15_d.shape[-1]
+    x_norm = rms_norm(patches_n_15_d.astype(jnp.float32), ref_params["norm_w"])
+    h = _mm(x_norm, ref_params["w_down"], matmul_dtype).reshape(n_g, 3, 5, -1)  # [N, H=3, W=5, C]
+    # 2D spatial 3x3 convolution strictly within each frame group (`SAME` zero padding, NHWC)
+    h_conv = jax.lax.conv_general_dilated(
+        h.astype(jnp.float32),
+        ref_params["conv_k"].astype(jnp.float32),
+        window_strides=(1, 1),
+        padding="SAME",
+        dimension_numbers=("NHWC", "HWIO", "NHWC"),
+    ) + ref_params["conv_b"][None, None, None, :]
+    h_act = jax.nn.silu(h_conv).reshape(n_g, 15, -1)
+    delta = _mm(h_act, ref_params["w_up"], matmul_dtype).reshape(n_g, 15, d_p)
+    return patches_n_15_d + delta
+
+
 def init_any2any_heads_params(
     key: Array,
     spec: SLWMv3Spec,
     *,
     n_pred_audio_codebooks: int = 8,
+    use_swiglu_mlp: bool = False,
 ) -> PyTree:
     """Initialize all 4 unified any-to-any readout heads under exact base-shape muP (`zero_init=True`)."""
     keys = jax.random.split(key, 8)
@@ -55,43 +120,20 @@ def init_any2any_heads_params(
     k_aud = int(n_pred_audio_codebooks)
 
     head_audio = (
-        {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(
-                keys[1], (d, k_aud * spec.audio_vocab_size), role="readout", width_mult=m_d, zero_init=True
-            ),
-            "bias": jnp.zeros((k_aud, spec.audio_vocab_size), dtype=jnp.float32),
-        }
+        _init_head_block(keys[1], d, (k_aud, spec.audio_vocab_size), m_d, use_swiglu_mlp=use_swiglu_mlp)
         if spec.representation_mode == "frozen_codec_edge"
-        else {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(
-                keys[1], (d, spec.audio_cont_dim), role="readout", width_mult=m_d, zero_init=True
-            ),
-            "bias": jnp.zeros((spec.audio_cont_dim,), dtype=jnp.float32),
-        }
+        else _init_head_block(keys[1], d, (spec.audio_cont_dim,), m_d, use_swiglu_mlp=use_swiglu_mlp)
     )
 
-    return {
-        "head_text": {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(keys[0], (d, spec.text_vocab_size), role="readout", width_mult=m_d, zero_init=True),
-            "bias": jnp.zeros((spec.text_vocab_size,), dtype=jnp.float32),
-        },
+    out: PyTree = {
+        "head_text": _init_head_block(keys[0], d, (spec.text_vocab_size,), m_d, use_swiglu_mlp=use_swiglu_mlp),
         "head_audio": head_audio,
-        "head_video": {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(keys[2], (d, spec.video_patch_dim), role="readout", width_mult=m_d, zero_init=True),
-            "bias": jnp.zeros((spec.video_patch_dim,), dtype=jnp.float32),
-        },
-        "head_action": {
-            "norm_w": jnp.ones((d,), dtype=jnp.float32),
-            "w": init_mup_weight(
-                keys[3], (d, spec.action_dim + spec.proprio_dim), role="readout", width_mult=m_d, zero_init=True
-            ),
-            "bias": jnp.zeros((spec.action_dim + spec.proprio_dim,), dtype=jnp.float32),
-        },
+        "head_video": _init_head_block(keys[2], d, (spec.video_patch_dim,), m_d, use_swiglu_mlp=use_swiglu_mlp),
+        "head_action": _init_head_block(keys[3], d, (spec.action_dim + spec.proprio_dim,), m_d, use_swiglu_mlp=use_swiglu_mlp),
     }
+    if use_swiglu_mlp:
+        out["video_spatial_refiner"] = init_video_spatial_refiner_params(keys[4], patch_dim=spec.video_patch_dim)
+    return out
 
 
 def _mm(x: Array, w: Array, matmul_dtype: jnp.dtype) -> Array:
@@ -116,18 +158,16 @@ def predict_any2any_heads(
     hv = heads_params["head_video"]
     hact = heads_params["head_action"]
     aud_out = (
-        _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype).reshape(
-            t_len, b_sz, k_aud, spec.audio_vocab_size
-        )
+        _apply_head_block(ha, z_seq, matmul_dtype).reshape(t_len, b_sz, k_aud, spec.audio_vocab_size)
         + ha["bias"][None, None, :, :]
         if spec.representation_mode == "frozen_codec_edge"
-        else _mm(rms_norm(z_seq, ha["norm_w"]), ha["w"], matmul_dtype) + ha["bias"]
+        else _apply_head_block(ha, z_seq, matmul_dtype) + ha["bias"]
     )
     return {
-        "text_logits": _mm(rms_norm(z_seq, ht["norm_w"]), ht["w"], matmul_dtype) + ht["bias"],
+        "text_logits": _apply_head_block(ht, z_seq, matmul_dtype) + ht["bias"],
         "audio_logits": aud_out,
-        "video_pred": _mm(rms_norm(z_seq, hv["norm_w"]), hv["w"], matmul_dtype) + hv["bias"],
-        "action_pred": _mm(rms_norm(z_seq, hact["norm_w"]), hact["w"], matmul_dtype) + hact["bias"],
+        "video_pred": _apply_head_block(hv, z_seq, matmul_dtype) + hv["bias"],
+        "action_pred": _apply_head_block(hact, z_seq, matmul_dtype) + hact["bias"],
     }
 
 
@@ -166,7 +206,7 @@ def compute_any2any_multimodal_loss(
     # 1. Text / Code Next-Byte Cross-Entropy (modality_id == 2)
     m_txt = targ_vld * (next_mod == 2).astype(jnp.float32)
     ht = heads_params["head_text"]
-    txt_logits = _mm(rms_norm(z_src, ht["norm_w"]), ht["w"], matmul_dtype) + ht["bias"]
+    txt_logits = _apply_head_block(ht, z_src, matmul_dtype) + ht["bias"]
     txt_targets = jnp.clip(batch["text_byte"][1:].astype(jnp.int32), 0, spec.text_vocab_size - 1)
     txt_ce_per = optax.softmax_cross_entropy_with_integer_labels(txt_logits, txt_targets)
     txt_cnt = jnp.sum(m_txt)
@@ -202,7 +242,7 @@ def compute_any2any_multimodal_loss(
             @jax.checkpoint
             def _ce_chunk(acc: Array, xs: tuple[Array, Array, Array]) -> tuple[Array, None]:
                 z_i, t_i, m_i = xs
-                lg = _mm(rms_norm(z_i, ha_p["norm_w"]), ha_p["w"], matmul_dtype).reshape(
+                lg = _apply_head_block(ha_p, z_i, matmul_dtype).reshape(
                     c_sz, b_sz, k_aud, spec.audio_vocab_size
                 ) + ha_p["bias"][None, None, :, :]
                 ce = jnp.mean(optax.softmax_cross_entropy_with_integer_labels(lg, t_i), axis=-1)
@@ -213,16 +253,16 @@ def compute_any2any_multimodal_loss(
 
         aud_loss = jax.lax.cond(aud_cnt > 0.5, _chunked_audio_ce, lambda _: jnp.asarray(0.0, dtype=jnp.float32), None)
     else:
-        aud_pred = _mm(rms_norm(z_src, ha_p["norm_w"]), ha_p["w"], matmul_dtype) + ha_p["bias"]
+        aud_pred = _apply_head_block(ha_p, z_src, matmul_dtype) + ha_p["bias"]
         aud_targ_c = jax.lax.stop_gradient(batch["audio_cont"][1:].astype(jnp.float32))
         ad_c = jnp.abs(aud_pred - aud_targ_c)
         a_hub = jnp.mean(jnp.where(ad_c <= 1.0, 0.5 * (aud_pred - aud_targ_c) ** 2, ad_c - 0.5), axis=-1)
         aud_loss = jnp.sum(a_hub * m_aud) / jnp.maximum(aud_cnt, 1.0)
 
-    # 3. Video Wan 2.1 Latent Patch Huber Loss (modality_id == 0)
+    # 3. Video Wan 2.1 Latent Patch Huber Loss (modality_id == 0) + optional strictly-causal intra-frame 3x5 spatial refiner!
     m_vid = targ_vld * (next_mod == 0).astype(jnp.float32)
     hv = heads_params["head_video"]
-    vid_pred = _mm(rms_norm(z_src, hv["norm_w"]), hv["w"], matmul_dtype) + hv["bias"]
+    vid_pred = _apply_head_block(hv, z_src, matmul_dtype) + hv["bias"]
     vid_targ = jax.lax.stop_gradient(batch["video_feat"][1:].astype(jnp.float32))
     v_diff = vid_pred - vid_targ
     v_abs = jnp.abs(v_diff)
@@ -231,10 +271,51 @@ def compute_any2any_multimodal_loss(
     vid_loss = jnp.sum(v_huber * m_vid) / jnp.maximum(vid_cnt, 1.0)
     vid_has = (vid_cnt > 0.5).astype(jnp.float32)
 
+    # Strictly causal intra-frame 3x5 spatial refiner loss when `video_spatial_refiner` is present (Wave C!):
+    # Finds EVERY complete contiguous 15-patch frame group (`spatial_pos == 0..14` within the same episode,
+    # regardless of interleaved audio/action tick alignment!) and refines them jointly with
+    # `Huber + 0.15 * spatial_gradient_Huber` (eliminates 3x5 tile seams with ZERO future lookahead!).
+    if "video_spatial_refiner" in heads_params:
+        sp_next = batch["spatial_pos"][1:].astype(jnp.int32)  # [T-1, B]
+        ep_next = ep_id[1:]  # [T-1, B]
+        tm1 = t_len - 1
+        n_w = tm1 - 14
+        k_max = max(1, (tm1 // 15) * b_sz)
+        if n_w > 0:
+            offs = jnp.arange(15, dtype=jnp.int32)
+            sp_win = jnp.stack([sp_next[k : n_w + k] for k in range(15)], axis=-1)  # [n_w, B, 15]
+            mv_win = jnp.stack([m_vid[k : n_w + k] for k in range(15)], axis=-1)    # [n_w, B, 15]
+            ep_win = jnp.stack([ep_next[k : n_w + k] for k in range(15)], axis=-1)  # [n_w, B, 15]
+            is_grp_start = (
+                (jnp.min(mv_win, axis=-1) > 0.5)
+                & jnp.all(sp_win == offs[None, None, :], axis=-1)
+                & jnp.all(ep_win == ep_win[..., :1], axis=-1)
+            )  # [n_w, B]
+            n_found = jnp.sum(is_grp_start)
+            t_starts, b_starts = jnp.nonzero(is_grp_start, size=k_max, fill_value=0)
+            fm = (jnp.arange(k_max, dtype=jnp.int32) < n_found).astype(jnp.float32)
+            t_idx = t_starts[:, None] + offs[None, :]  # [k_max, 15]
+            b_idx = b_starts[:, None]                  # [k_max, 1]
+            vp_g = vid_pred[t_idx, b_idx]              # [k_max, 15, 1024]
+            vt_g = vid_targ[t_idx, b_idx]              # [k_max, 15, 1024]
+            vp_ref = apply_video_spatial_refiner(heads_params["video_spatial_refiner"], vp_g, matmul_dtype=matmul_dtype)
+            rd = vp_ref - vt_g
+            ra = jnp.abs(rd)
+            r_hub = jnp.mean(jnp.where(ra <= 1.0, 0.5 * rd * rd, ra - 0.5), axis=(1, 2))
+            # Spatial boundary continuity across the 3x5 grid (matches inter-patch vertical & horizontal differences!)
+            pr_35 = vp_ref.reshape(-1, 3, 5, spec.video_patch_dim)
+            gt_35 = vt_g.reshape(-1, 3, 5, spec.video_patch_dim)
+            dh = (pr_35[:, :, 1:, :] - pr_35[:, :, :-1, :]) - (gt_35[:, :, 1:, :] - gt_35[:, :, :-1, :])
+            dv = (pr_35[:, 1:, :, :] - pr_35[:, :-1, :, :]) - (gt_35[:, 1:, :, :] - gt_35[:, :-1, :, :])
+            g_loss = 0.5 * (jnp.mean(jnp.abs(dh), axis=(1, 2, 3)) + jnp.mean(jnp.abs(dv), axis=(1, 2, 3)))
+            fm_cnt = jnp.sum(fm)
+            ref_loss = jnp.sum((r_hub + 0.15 * g_loss) * fm) / jnp.maximum(fm_cnt, 1.0)
+            vid_loss = jnp.where(fm_cnt > 0.5, 0.5 * vid_loss + 0.5 * ref_loss, vid_loss)
+
     # 4. Continuous Action & Proprioception Huber Loss (modality_id == 3, masked by has_true_action)
     m_act = targ_vld * (next_mod == 3).astype(jnp.float32) * (batch["has_true_action"][1:].astype(jnp.float32) > 0.5)
     hact = heads_params["head_action"]
-    act_pred = _mm(rms_norm(z_src, hact["norm_w"]), hact["w"], matmul_dtype) + hact["bias"]
+    act_pred = _apply_head_block(hact, z_src, matmul_dtype) + hact["bias"]
     act_targ = jax.lax.stop_gradient(
         jnp.concatenate(
             [batch["action_feat"][1:].astype(jnp.float32), batch["proprio_feat"][1:].astype(jnp.float32)],

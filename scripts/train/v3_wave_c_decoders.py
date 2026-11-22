@@ -45,9 +45,10 @@ def main() -> None:
     ap.add_argument("--shard-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded"))
     ap.add_argument("--tag", type=str, default="", help="Optional unique receipt tag (e.g. profile_arm_s4201).")
     ap.add_argument("--use-wy-chunking", action="store_true")
-    ap.add_argument("--steps", type=int, default=400)
+    ap.add_argument("--steps", type=int, default=1500)
     ap.add_argument("--seq-len", type=int, default=512)
     ap.add_argument("--batch-size", type=int, default=8)
+    ap.add_argument("--use-swiglu-mlp", action=argparse.BooleanOptionalAction, default=True, help="Enable 2-layer SwiGLU decoders + causal 3x5 intra-frame video spatial refiner (default: True).")
     ap.add_argument("--seed", type=int, default=7101)
     ap.add_argument("--out-dir", type=Path, required=True)
     args = ap.parse_args()
@@ -58,11 +59,14 @@ def main() -> None:
     core_params = jax.tree_util.tree_map(lambda x: jnp.asarray(x, dtype=jnp.float32), ckpt["params"]["core"])
     mm_dtype = jnp.float32 if str(jax.devices()[0].platform).lower() == "cpu" else jnp.bfloat16
 
-    dec_params = init_any2any_heads_params(jax.random.PRNGKey(args.seed), spec)
+    dec_params = init_any2any_heads_params(
+        jax.random.PRNGKey(args.seed), spec, use_swiglu_mlp=bool(args.use_swiglu_mlp)
+    )
     n_dec_params = count_tree_params(dec_params)
 
     shard_paths = [
         ("clotho", args.shard_dir / "audio_text/clotho_train.npz"),
+        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz"),
         ("msrvtt", args.shard_dir / "av/msrvtt_train.npz"),
         ("vggsound", args.shard_dir / "av/vggsound_train.npz"),
         ("robotics", args.shard_dir / "robotics/robotics_train.npz"),
@@ -71,9 +75,20 @@ def main() -> None:
     if not shards:
         raise FileNotFoundError(f"No cross-modal train shards found in {args.shard_dir}")
 
-    # Exact muP readout LR scaling (`3e-3 / m_d`) so Wave C transfers cleanly across 42M -> 138M -> 703M -> 1.07B!
+    # Exact muP readout LR scaling (`3e-3 / m_d`) with warmup + cosine decay across 42M -> 138M -> 703M -> 1.07B!
     readout_lr = 3e-3 / max(1.0, float(spec.width_mult))
-    tx = optax.adamw(learning_rate=readout_lr, weight_decay=1e-4)
+    warmup_steps = max(1, min(100, args.steps // 10))
+    lr_sched = optax.warmup_cosine_decay_schedule(
+        init_value=readout_lr * 0.1,
+        peak_value=readout_lr,
+        warmup_steps=warmup_steps,
+        decay_steps=max(warmup_steps + 1, int(args.steps)),
+        end_value=readout_lr * 0.05,
+    )
+    tx = optax.chain(
+        optax.clip_by_global_norm(1.0),
+        optax.adamw(learning_rate=lr_sched, weight_decay=1e-4),
+    )
     opt_st = tx.init(dec_params)
 
     # Pass `cp` as explicit traced argument (NEVER capture 700M/1B weights as XLA closure constant!)
@@ -157,6 +172,17 @@ def main() -> None:
             matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         ),
     }
+    if (args.shard_dir / "av/greatesthits_dev.npz").is_file():
+        causal_checks["video_to_audio_greatesthits_dev"] = evaluate_cross_modal_condition_shuffle(
+            frozen_pair, spec, args.shard_dir / "av/greatesthits_dev.npz",
+            source_mod=0, target_mod=1, seq_len=eval_cm_seq, batch_size=eval_bsz,
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )
+        causal_checks["audio_to_video_greatesthits_dev"] = evaluate_cross_modal_condition_shuffle(
+            frozen_pair, spec, args.shard_dir / "av/greatesthits_dev.npz",
+            source_mod=1, target_mod=0, seq_len=eval_cm_seq, batch_size=eval_bsz,
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )
 
     tag = args.tag or spec.name
     showcase_dir = args.out_dir / "inference_showcase"
@@ -191,6 +217,8 @@ def main() -> None:
         "spec_name": spec.name,
         "checkpoint": str(args.ckpt),
         "wave_c_decoder_params": int(n_dec_params),
+        "use_swiglu_mlp": bool(args.use_swiglu_mlp),
+        "has_video_spatial_refiner": bool("video_spatial_refiner" in dec_params),
         "readout_mup_lr": round(readout_lr, 6),
         "max_core_grad_verified": float(max_core_grad),
         "core_weights_strictly_frozen": True,

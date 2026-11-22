@@ -24,6 +24,10 @@ _REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
+from scripts.train.v3_colab_any2any_launcher import (
+    _download_file_chunked_verified,
+    _run_detached_remote_script_with_polling,
+)
 from scripts.train.v3_colab_pilot_launcher import (
     _run_remote_kernel_python_with_watchdog,
     query_active_sessions,
@@ -63,10 +67,12 @@ def _build_tar(repo_root: Path) -> bytes:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Pre-encode MSR-VTT, VGGSound, and LeRobot on Colab GPU.")
     ap.add_argument("--accel", type=str, default="a100", choices=("h100", "a100", "l4"))
-    ap.add_argument("--corpora", type=str, default="robotics_lerobot,msrvtt,vggsound")
-    ap.add_argument("--max-msrvtt", type=int, default=1200)
-    ap.add_argument("--max-vggsound", type=int, default=1200)
-    ap.add_argument("--max-lerobot-eps", type=int, default=150)
+    ap.add_argument("--corpora", type=str, default="msrvtt,vggsound")
+    ap.add_argument("--max-msrvtt", type=int, default=3000)
+    ap.add_argument("--max-vggsound", type=int, default=3000)
+    ap.add_argument("--vggsound-shards", type=int, default=4, help="Number of Loie/VGGSound tar.gz shards (00..N-1) to pull.")
+    ap.add_argument("--train-only-av", action="store_true", help="Only encode/download train split for msrvtt & vggsound (preserves sealed dev/test bit-identically).")
+    ap.add_argument("--max-lerobot-eps", type=int, default=2000)
     ap.add_argument("--max-spend-cu", type=float, default=18.0)
     ap.add_argument("--out-dir", type=Path, default=Path("/tmp/slwm_v3_gpu_preencoded"))
     args = ap.parse_args()
@@ -123,7 +129,7 @@ def main() -> None:
 
         prep_py = (
             "import os, subprocess, sys, tarfile\n"
-            "for d in ('/content/slwm_v3', '/content/raw', '/content/large_av', '/content/out_av', '/content/out_rob'):\n"
+            "for d in ('/content/slwm_v3', '/content/raw', '/content/large_av', '/content/out', '/content/out_av', '/content/out_rob'):\n"
             "    os.makedirs(d, exist_ok=True)\n"
             "with tarfile.open('/content/preencode_bundle.tar.gz', 'r:gz') as tf:\n"
             "    tf.extractall('/content/slwm_v3')\n"
@@ -177,6 +183,7 @@ print('ROB_DONE', flush=True)
                         downloaded_files.append(fn)
 
         if "msrvtt" in corpora:
+            to_flag = ", '--train-only'" if args.train_only_av else ""
             ms_py = f"""
 import os, sys
 from huggingface_hub import snapshot_download
@@ -184,49 +191,72 @@ os.chdir('/content/slwm_v3')
 sys.path.insert(0, '/content/slwm_v3')
 print('[DL] MSR-VTT', flush=True)
 snapshot_download('friedrichor/MSR-VTT', repo_type='dataset', local_dir='/content/raw/msrvtt', allow_patterns=['MSRVTT_Videos.zip', 'msrvtt_train_9k.json', 'msrvtt_test_1k.json'])
-sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'msrvtt', '--raw-root', '/content/raw', '--out-dir', '/content/out_av', '--device', 'cuda', '--max-clips', '{args.max_msrvtt}']
+sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'msrvtt', '--raw-root', '/content/raw', '--out-dir', '/content/out_av', '--device', 'cuda', '--max-clips', '{args.max_msrvtt}'{to_flag}]
 from scripts.data import v3_preencode_av_codecs
 v3_preencode_av_codecs.main()
 print('MSRVTT_DONE', flush=True)
 """
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                session_name, ms_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix="02_msrvtt",
-                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                t_alloc_start=t_alloc, phase_timeout_s=2400, exec_timeout_s=2100,
+            rc, out, tripped = _run_detached_remote_script_with_polling(
+                session_name, ms_py, tag="preencode_msrvtt", cfg_path=cfg_path, log_dir=log_dir,
+                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
+                poll_interval_s=30.0, max_wall_s=5400.0,
             )
             print(out[-2000:], flush=True)
-            if "MSRVTT_DONE" in out:
-                for fn in ("msrvtt_train.npz", "msrvtt_dev.npz", "msrvtt_test.npz", "msrvtt_preencode_receipt.json"):
-                    dl = run_colab("download", "-s", session_name, f"/content/out_av/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=300)
-                    if dl.returncode == 0:
-                        downloaded_files.append(fn)
+            if "MSRVTT_DONE" in out and not tripped:
+                dl_list = ("msrvtt_train.npz", "msrvtt_preencode_receipt.json") if args.train_only_av else ("msrvtt_train.npz", "msrvtt_dev.npz", "msrvtt_test.npz", "msrvtt_preencode_receipt.json")
+                for fn in dl_list:
+                    if fn.endswith(".npz"):
+                        if _download_file_chunked_verified(
+                            session_name, f"/content/out_av/{fn}", args.out_dir / fn,
+                            cfg_path=cfg_path, log_dir=log_dir,
+                            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                        ):
+                            downloaded_files.append(fn)
+                    else:
+                        dl = run_colab("download", "-s", session_name, f"/content/out_av/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=120)
+                        if dl.returncode == 0:
+                            downloaded_files.append(fn)
 
         if "vggsound" in corpora:
+            to_flag = ", '--train-only'" if args.train_only_av else ""
+            shard_dl_lines = "\n".join(
+                f"hf_hub_download('Loie/VGGSound', 'vggsound_{i:02d}.tar.gz', repo_type='dataset', local_dir='/content/large_av/vggsound_subset')"
+                for i in range(max(1, int(args.vggsound_shards)))
+            )
             vgg_py = f"""
 import os, sys
 from huggingface_hub import hf_hub_download
 os.chdir('/content/slwm_v3')
 sys.path.insert(0, '/content/slwm_v3')
 os.makedirs('/content/large_av/vggsound_subset', exist_ok=True)
-print('[DL] VGGSound csv + shard 00', flush=True)
+print('[DL] VGGSound csv + shards 00..{max(1, int(args.vggsound_shards))-1:02d}', flush=True)
 hf_hub_download('Loie/VGGSound', 'vggsound.csv', repo_type='dataset', local_dir='/content/large_av/vggsound_subset')
-hf_hub_download('Loie/VGGSound', 'vggsound_00.tar.gz', repo_type='dataset', local_dir='/content/large_av/vggsound_subset')
-sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'vggsound', '--large-av-root', '/content/large_av', '--out-dir', '/content/out_av', '--device', 'cuda', '--max-clips', '{args.max_vggsound}']
+{shard_dl_lines}
+sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'vggsound', '--large-av-root', '/content/large_av', '--out-dir', '/content/out_av', '--device', 'cuda', '--max-clips', '{args.max_vggsound}'{to_flag}]
 from scripts.data import v3_preencode_av_codecs
 v3_preencode_av_codecs.main()
 print('VGG_DONE', flush=True)
 """
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                session_name, vgg_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix="03_vggsound",
-                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                t_alloc_start=t_alloc, phase_timeout_s=2400, exec_timeout_s=2100,
+            rc, out, tripped = _run_detached_remote_script_with_polling(
+                session_name, vgg_py, tag="preencode_vggsound", cfg_path=cfg_path, log_dir=log_dir,
+                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
+                poll_interval_s=30.0, max_wall_s=5400.0,
             )
             print(out[-2000:], flush=True)
-            if "VGG_DONE" in out:
-                for fn in ("vggsound_train.npz", "vggsound_dev.npz", "vggsound_test.npz", "vggsound_preencode_receipt.json"):
-                    dl = run_colab("download", "-s", session_name, f"/content/out_av/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=300)
-                    if dl.returncode == 0:
-                        downloaded_files.append(fn)
+            if "VGG_DONE" in out and not tripped:
+                dl_list = ("vggsound_train.npz", "vggsound_preencode_receipt.json") if args.train_only_av else ("vggsound_train.npz", "vggsound_dev.npz", "vggsound_test.npz", "vggsound_preencode_receipt.json")
+                for fn in dl_list:
+                    if fn.endswith(".npz"):
+                        if _download_file_chunked_verified(
+                            session_name, f"/content/out_av/{fn}", args.out_dir / fn,
+                            cfg_path=cfg_path, log_dir=log_dir,
+                            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                        ):
+                            downloaded_files.append(fn)
+                    else:
+                        dl = run_colab("download", "-s", session_name, f"/content/out_av/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=120)
+                        if dl.returncode == 0:
+                            downloaded_files.append(fn)
 
         print(f"[PREENCODE_GPU] Downloaded files: {downloaded_files}", flush=True)
     finally:

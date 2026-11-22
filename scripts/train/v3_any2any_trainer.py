@@ -104,9 +104,16 @@ def build_combined_mup_optimizer(
 
 
 class MultiShardMixture:
-    """Balanced multi-domain batch sampler over unified sparse `.npz` shards."""
+    """Balanced multi-domain batch sampler with optional temperature-smoothed size-aware epoch capping."""
 
-    def __init__(self, shard_paths: list[tuple[str, Path, float]]) -> None:
+    def __init__(
+        self,
+        shard_paths: list[tuple[str, Path, float]],
+        *,
+        sampling_mode: str = "temp_sqrt",
+        total_positions: int = 0,
+        max_epochs_per_domain: float = 4.0,
+    ) -> None:
         self.shards: list[tuple[str, LoadedSparseShard, float]] = []
         for name, p, w in shard_paths:
             if p.is_file():
@@ -115,8 +122,40 @@ class MultiShardMixture:
                     self.shards.append((name, sh, float(w)))
         if not self.shards:
             raise FileNotFoundError(f"No valid sparse shards found in: {shard_paths}")
-        tot_w = sum(w for _, _, w in self.shards)
-        self.probs = np.array([w / tot_w for _, _, w in self.shards], dtype=np.float64)
+
+        if sampling_mode == "temp_sqrt":
+            # UniLM/mT5 square-root size-aware balancing (`w_i ∝ N_i^0.5 * base_prior_i^0.5`) + hard max-epoch cap!
+            # Prevents tiny shards (e.g., 78k robotics or 402k VGGSound) from looping 24x-88x and overfitting!
+            raw_w = np.array(
+                [math.sqrt(max(1.0, float(sh.n_ticks))) * math.sqrt(max(1e-4, w)) for _, sh, w in self.shards],
+                dtype=np.float64,
+            )
+            probs = raw_w / np.sum(raw_w)
+            if total_positions > 0 and max_epochs_per_domain > 0.0:
+                ticks = np.array([float(sh.n_ticks) for _, sh, _ in self.shards], dtype=np.float64)
+                max_p = np.minimum(1.0, (float(max_epochs_per_domain) * ticks) / float(total_positions))
+                # Iterative water-filling redistribution of capped probability mass to uncapped large domains
+                if float(np.sum(max_p)) >= 1.0 - 1e-9:
+                    for _ in range(16):
+                        over = probs > max_p + 1e-12
+                        if not np.any(over):
+                            break
+                        excess = float(np.sum(probs[over] - max_p[over]))
+                        probs[over] = max_p[over]
+                        free = (~over) & (probs < max_p - 1e-12)
+                        if not np.any(free):
+                            break
+                        free_sum = float(np.sum(probs[free]))
+                        probs[free] += excess * (probs[free] / max(free_sum, 1e-12))
+                    probs = probs / np.sum(probs)
+            self.probs = probs
+        else:
+            tot_w = sum(w for _, _, w in self.shards)
+            self.probs = np.array([w / tot_w for _, _, w in self.shards], dtype=np.float64)
+        self.planned_epochs = {
+            name: round((float(p) * float(total_positions)) / max(1.0, float(sh.n_ticks)), 2) if total_positions > 0 else 0.0
+            for (name, sh, _), p in zip(self.shards, self.probs)
+        }
 
     def sample_batch(
         self,
@@ -247,6 +286,8 @@ def main() -> None:
     ap.add_argument("--drop-modality-prob", type=float, default=0.25)
     ap.add_argument("--anchor-transition-prob", type=float, default=0.50, help="Fraction of cross-modal windows anchored on source->target transition.")
     ap.add_argument("--multi-horizon-weight", type=float, default=0.15, help="Weight on multi-horizon latent predictive objective (k in {1, 8, 32}).")
+    ap.add_argument("--sampling-mode", type=str, default="temp_sqrt", choices=("temp_sqrt", "fixed"), help="Domain mixing: `temp_sqrt` enforces epoch caps (prevents small-shard memorization!).")
+    ap.add_argument("--max-epochs-per-domain", type=float, default=4.0, help="Max planned epochs per domain under `temp_sqrt` sampling (0 disables cap).")
     ap.add_argument("--eval-sealed-test", action="store_true", help="Unlock sealed `*_test*.npz` benchmarks (ONLY for frozen final eval!).")
     ap.add_argument("--seed", type=int, default=4201)
     ap.add_argument("--tag", type=str, default="", help="Optional unique output tag (default: `<profile>_<backbone>_s<seed>`).")
@@ -286,27 +327,40 @@ def main() -> None:
     st_bytes = compute_core_streaming_state_bytes(spec, batch_size=1)
 
     # Auto-discover all available unified train shards under `--shard-dir`
-    # Balanced weights: 45% Text/Code (so byte-level LM & code converge strongly!), 15% LibriSpeech ASR,
-    # 10% Clotho, 10% MSR-VTT, 10% VGGSound, 7% Robotics, 3% ESC-50 (auto-renormalized over available shards!).
+    # Prefer expanded v2 shards (`librispeech_train_clean_360.npz`, `text_code_train_v1.npz` 540M) when present!
     tc_shard = args.shard_dir / "text_code/text_code_train_v1.npz"
     if not tc_shard.is_file():
         tc_shard = args.shard_dir / "text_code/text_code_train_24m_balanced.npz"
+    ls_shard = args.shard_dir / "audio_text/librispeech_train_clean_360.npz"
+    if not ls_shard.is_file():
+        ls_shard = args.shard_dir / "audio_text/librispeech_train_clean_100.npz"
     train_candidates = [
         ("text_code", tc_shard, 0.45),
-        ("librispeech_train", args.shard_dir / "audio_text/librispeech_train_clean_100.npz", 0.15),
+        ("librispeech_train", ls_shard, 0.15),
         ("clotho", args.shard_dir / "audio_text/clotho_train.npz", 0.10),
         ("esc50", args.shard_dir / "audio_text/esc50_train_f14.npz", 0.03),
-        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.05),
+        ("greatesthits", args.shard_dir / "av/greatesthits_train.npz", 0.07),
         ("msrvtt", args.shard_dir / "av/msrvtt_train.npz", 0.10),
         ("vggsound", args.shard_dir / "av/vggsound_train.npz", 0.10),
         ("robotics", args.shard_dir / "robotics/robotics_train.npz", 0.07),
     ]
-    mixture = MultiShardMixture(train_candidates)
-    print(f"[TRAIN] Active domains: {[(n, sh.n_ticks, round(float(p), 3)) for (n, sh, _), p in zip(mixture.shards, mixture.probs)]}", flush=True)
+    grad_accum = max(1, int(args.grad_accum))
+    global_total_steps = int(args.total_steps) if int(args.total_steps) > 0 else (int(args.start_step) + int(args.steps))
+    planned_total_pos = global_total_steps * args.batch_size * grad_accum * args.seq_len
+    mixture = MultiShardMixture(
+        train_candidates,
+        sampling_mode=args.sampling_mode,
+        total_positions=planned_total_pos,
+        max_epochs_per_domain=float(args.max_epochs_per_domain),
+    )
+    print(
+        f"[TRAIN] Active domains ({args.sampling_mode}, max_ep={args.max_epochs_per_domain}): "
+        f"{[(n, sh.n_ticks, round(float(p), 3), f'{mixture.planned_epochs[n]}ep') for (n, sh, _), p in zip(mixture.shards, mixture.probs)]}",
+        flush=True,
+    )
 
     tx_unit = build_combined_mup_optimizer(all_params, spec, weight_decay=0.01, grad_clip_norm=1.0)
     opt_state = tx_unit.init(all_params)
-    grad_accum = max(1, int(args.grad_accum))
 
     mh_weight = float(args.multi_horizon_weight)
 
@@ -509,6 +563,16 @@ def main() -> None:
             source_mod=1, target_mod=0, seq_len=eval_cm_seq, batch_size=eval_bsz,
             matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
         )),
+        "greatesthits_dev_video_to_audio_shuffle": _safe_eval("greatesthits_dev_v2a", lambda: evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "av/greatesthits_dev.npz",
+            source_mod=0, target_mod=1, seq_len=eval_cm_seq, batch_size=eval_bsz,
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )),
+        "greatesthits_dev_audio_to_video_shuffle": _safe_eval("greatesthits_dev_a2v", lambda: evaluate_cross_modal_condition_shuffle(
+            all_params, spec, args.shard_dir / "av/greatesthits_dev.npz",
+            source_mod=1, target_mod=0, seq_len=eval_cm_seq, batch_size=eval_bsz,
+            matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+        )),
         "robotics_dev_action_intervention": _safe_eval("robotics_dev_act", lambda: evaluate_robotics_action_intervention(
             all_params, spec, args.shard_dir / "robotics/robotics_dev.npz",
             seq_len=args.seq_len, batch_size=eval_bsz,
@@ -594,6 +658,11 @@ def main() -> None:
             )),
             "vggsound_test_video_to_audio_shuffle": _safe_eval("vggsound_test_v2a", lambda: evaluate_cross_modal_condition_shuffle(
                 all_params, spec, args.shard_dir / "av/vggsound_test.npz",
+                source_mod=0, target_mod=1, seq_len=eval_cm_seq, batch_size=eval_bsz,
+                matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
+            )),
+            "greatesthits_test_video_to_audio_shuffle": _safe_eval("greatesthits_test_v2a", lambda: evaluate_cross_modal_condition_shuffle(
+                all_params, spec, args.shard_dir / "av/greatesthits_test.npz",
                 source_mod=0, target_mod=1, seq_len=eval_cm_seq, batch_size=eval_bsz,
                 matmul_dtype=mm_dtype, use_wy_chunking=args.use_wy_chunking,
             )),
@@ -686,6 +755,9 @@ def main() -> None:
         "start_step": int(args.start_step),
         "steps_this_leg": int(args.steps),
         "global_total_steps": int(global_total_steps),
+        "sampling_mode": str(args.sampling_mode),
+        "max_epochs_per_domain": float(args.max_epochs_per_domain),
+        "planned_epochs_per_domain": mixture.planned_epochs,
         "effective_batch_size": int(args.batch_size * grad_accum),
         "total_positions_trained": int((int(args.start_step) + int(args.steps)) * args.batch_size * grad_accum * args.seq_len),
         "base_lr": float(args.base_lr),

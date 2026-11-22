@@ -72,10 +72,22 @@ def _decode_wav_bytes_24k(raw_bytes: bytes) -> np.ndarray:
     return _resample_f32(wf, sr, 24000)
 
 
+def _ffmpeg_exe() -> str:
+    import shutil
+    fb = shutil.which("ffmpeg") or ("/opt/homebrew/bin/ffmpeg" if Path("/opt/homebrew/bin/ffmpeg").is_file() else None)
+    if fb is None:
+        try:
+            import imageio_ffmpeg
+            fb = imageio_ffmpeg.get_ffmpeg_exe()
+        except Exception:
+            fb = "ffmpeg"
+    return fb
+
+
 def _decode_audio_bytes_ffmpeg_24k(raw_bytes: bytes) -> np.ndarray:
     """Fallback decoder via ffmpeg for FLAC/MP3/OGG/MP4 byte streams -> 24 kHz mono float32."""
     p = subprocess.run(
-        ["ffmpeg", "-v", "error", "-i", "pipe:0", "-ac", "1", "-ar", "24000", "-f", "f32le", "pipe:1"],
+        [_ffmpeg_exe(), "-v", "error", "-i", "pipe:0", "-ac", "1", "-ar", "24000", "-f", "f32le", "pipe:1"],
         input=raw_bytes,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -93,9 +105,10 @@ def _extract_mp4_frames_and_audio(
     # Video: scale height/width preserving aspect ratio to cover 320x192, then exact center crop 320x192!
     vf = "scale=320:192:force_original_aspect_ratio=increase,crop=320:192"
     seek_args = ["-ss", f"{float(start_sec):.4f}"] if start_sec is not None else []
+    ff = _ffmpeg_exe()
     pv = subprocess.run(
         [
-            "ffmpeg", "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
+            ff, "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
             "-vf", f"fps={fps},{vf}", "-pix_fmt", "rgb24", "-f", "rawvideo", "pipe:1",
         ],
         stdout=subprocess.PIPE,
@@ -111,7 +124,7 @@ def _extract_mp4_frames_and_audio(
 
     pa = subprocess.run(
         [
-            "ffmpeg", "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
+            ff, "-v", "error", *seek_args, "-i", str(mp4_path), "-t", f"{float(max_sec):.4f}",
             "-vn", "-ac", "1", "-ar", "24000", "-f", "f32le", "pipe:1",
         ],
         stdout=subprocess.PIPE,
@@ -123,11 +136,16 @@ def _extract_mp4_frames_and_audio(
 
 
 class CausalCodecEngine:
-    """Lazy-loaded frozen causal `Kyutai Mimi 32-RVQ` + `Wan 2.1 Causal VAE` on CUDA `bf16` or CPU."""
+    """Lazy-loaded frozen causal `Kyutai Mimi 32-RVQ` + `Wan 2.1 Causal VAE` on CUDA `bf16`, Apple `mps`, or CPU."""
 
     def __init__(self, device: str = "auto") -> None:
         if device == "auto":
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+            if torch.cuda.is_available():
+                self.device = "cuda"
+            elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                self.device = "mps"
+            else:
+                self.device = "cpu"
         else:
             self.device = device
         self.mimi = None
@@ -388,10 +406,14 @@ def encode_greatesthits(engine: CausalCodecEngine, data_root: Path, out_dir: Pat
                 a_c = engine.encode_audio_mimi_32(wav)
                 ep = build_interleaved_av_text_episode(video_patches=v_p, audio_codes=a_c, text_str=None)
                 builders[sp].add_episode(domain_name="greatesthits", **ep)
+                if (ci + 1) % 50 == 0:
+                    print(f"[PREENCODE] GreatestHits {ci + 1}/{min(len(vids), max_clips)} clips", flush=True)
     return {sp: b.save(out_dir / f"greatesthits_{sp}.npz") for sp, b in builders.items()}
 
 
-def encode_msrvtt(engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_clips: int = 100000) -> dict[str, Any]:
+def encode_msrvtt(
+    engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_clips: int = 100000, *, train_only: bool = False
+) -> dict[str, Any]:
     """Encode MSR-VTT (`MSRVTT_Videos.zip`) with strict official video-ID-disjoint train/dev/test splits."""
     ms_dir = raw_root / "msrvtt"
     zip_p = ms_dir / "MSRVTT_Videos.zip"
@@ -441,8 +463,8 @@ def encode_msrvtt(engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_
         counts = {"train": 0, "dev": 0, "test": 0}
         limits = {
             "train": int(max_clips),
-            "dev": min(250, max(50, int(max_clips) // 3)),
-            "test": min(250, max(50, int(max_clips) // 3)),
+            "dev": 0 if train_only else min(250, max(50, int(max_clips) // 3)),
+            "test": 0 if train_only else min(250, max(50, int(max_clips) // 3)),
         }
         selected: list[tuple[str, str, str]] = []
         sel_cnt = {"train": 0, "dev": 0, "test": 0}
@@ -483,11 +505,17 @@ def encode_msrvtt(engine: CausalCodecEngine, raw_root: Path, out_dir: Path, max_
                     counts[sp] += 1
                     if sum(counts.values()) % 100 == 0:
                         print(f"[PREENCODE] MSR-VTT progress: {counts}", flush=True)
-    return {sp: b.save(out_dir / f"msrvtt_{sp}.npz") for sp, b in builders.items()}
+    save_splits = ("train",) if train_only else ("train", "dev", "test")
+    return {sp: builders[sp].save(out_dir / f"msrvtt_{sp}.npz") for sp in save_splits}
 
 
 def encode_vggsound(
-    engine: CausalCodecEngine, large_av_root: Path, out_dir: Path, max_clips_per_split: int = 2000
+    engine: CausalCodecEngine,
+    large_av_root: Path,
+    out_dir: Path,
+    max_clips_per_split: int = 2000,
+    *,
+    train_only: bool = False,
 ) -> dict[str, Any]:
     """Encode VGGSound (`vggsound_00..03.tar.gz`) using official YouTube-ID train/test splits."""
     import csv
@@ -517,8 +545,8 @@ def encode_vggsound(
     counts = {"train": 0, "dev": 0, "test": 0}
     limits = {
         "train": int(max_clips_per_split),
-        "dev": min(200, max(50, int(max_clips_per_split) // 3)),
-        "test": min(200, max(50, int(max_clips_per_split) // 3)),
+        "dev": 0 if train_only else min(200, max(50, int(max_clips_per_split) // 3)),
+        "test": 0 if train_only else min(200, max(50, int(max_clips_per_split) // 3)),
     }
     seen_yt_split: dict[str, str] = {}
     tars = sorted(vgg_dir.glob("vggsound_*.tar.gz"))
@@ -569,7 +597,8 @@ def encode_vggsound(
                     counts[sp] += 1
                     if sum(counts.values()) % 100 == 0:
                         print(f"[PREENCODE] VGGSound progress: {counts}", flush=True)
-    return {sp: b.save(out_dir / f"vggsound_{sp}.npz") for sp, b in builders.items()}
+    save_splits = ("train",) if train_only else ("train", "dev", "test")
+    return {sp: builders[sp].save(out_dir / f"vggsound_{sp}.npz") for sp in save_splits}
 
 
 def _pad_vec(arr: np.ndarray, dim: int) -> np.ndarray:
@@ -720,6 +749,8 @@ def encode_robotics_lerobot(
                 has_true_action=has_act,
             )
             counts[sp] += 1
+            if sum(counts.values()) % 50 == 0:
+                print(f"[PREENCODE] {ds_name} progress: {counts} / {n_ep}", flush=True)
         per_ds_counts[ds_name] = counts
         print(f"[PREENCODE] {ds_name}: {counts}", flush=True)
 
@@ -742,6 +773,7 @@ def main() -> None:
     ap.add_argument("--out-dir", type=Path, default=Path("/mnt/slwm-data/SLWM/v3_preencoded/av"))
     ap.add_argument("--device", type=str, default="auto")
     ap.add_argument("--max-clips", type=int, default=100000)
+    ap.add_argument("--train-only", action="store_true", help="Only encode & save train split (keeps existing sealed dev/test bit-identical).")
     args = ap.parse_args()
 
     engine = CausalCodecEngine(device=args.device)
@@ -756,9 +788,9 @@ def main() -> None:
     elif args.corpus == "greatesthits":
         res = encode_greatesthits(engine, args.data_root, args.out_dir, max_clips=args.max_clips)
     elif args.corpus == "msrvtt":
-        res = encode_msrvtt(engine, args.raw_root, args.out_dir, max_clips=args.max_clips)
+        res = encode_msrvtt(engine, args.raw_root, args.out_dir, max_clips=args.max_clips, train_only=args.train_only)
     elif args.corpus == "vggsound":
-        res = encode_vggsound(engine, args.large_av_root, args.out_dir, max_clips_per_split=args.max_clips)
+        res = encode_vggsound(engine, args.large_av_root, args.out_dir, max_clips_per_split=args.max_clips, train_only=args.train_only)
     elif args.corpus == "robotics_lerobot":
         res = encode_robotics_lerobot(engine, args.raw_root, args.out_dir, max_episodes_per_ds=args.max_clips)
     else:

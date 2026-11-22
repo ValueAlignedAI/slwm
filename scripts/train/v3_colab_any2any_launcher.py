@@ -195,7 +195,7 @@ def _run_detached_remote_script_with_polling(
                         lf_loc.write(chunk)
                     full_tail = (full_tail + chunk)[-16000:]
                     for ln in chunk.splitlines():
-                        if any(k in ln for k in ("[TRAIN", "[CKPT", "[WAVE_", "[INIT_CKPT", "ARM_RUN_OK", "Error", "Traceback")):
+                        if any(k in ln for k in ("[TRAIN", "[CKPT", "[WAVE_", "[INIT_CKPT", "[PREENCODE", "[DL]", "ARM_RUN_OK", "DONE", "Error", "Traceback")):
                             print(ln, flush=True)
                 if st["rc"] is not None:
                     return int(st["rc"]), full_tail, False
@@ -537,6 +537,8 @@ def main() -> None:
     ap.add_argument("--drop-modality-prob", type=float, default=0.25)
     ap.add_argument("--anchor-transition-prob", type=float, default=0.50)
     ap.add_argument("--multi-horizon-weight", type=float, default=0.15)
+    ap.add_argument("--sampling-mode", type=str, default="temp_sqrt", choices=("temp_sqrt", "fixed"), help="Domain mixing: `temp_sqrt` enforces epoch caps (default: temp_sqrt).")
+    ap.add_argument("--max-epochs-per-domain", type=float, default=4.0, help="Max planned epochs per domain under `temp_sqrt` sampling (default: 4.0).")
     ap.add_argument("--local-shard-dir", type=Path, required=True, help="Directory with pre-encoded `.npz` shards to upload.")
     ap.add_argument("--include-test-shards", action="store_true", help="Upload sealed `*_test*.npz` shards & enable `--eval-sealed-test`.")
     ap.add_argument("--download-ckpts", action=argparse.BooleanOptionalAction, default=True, help="Download trained core+Wave B/C `.pkl` checkpoints with SHA-256 verification before cleanup (default: True).")
@@ -545,7 +547,7 @@ def main() -> None:
     ap.add_argument("--mirror-fedora-dir", type=str, default="/mnt/slwm-data/SLWM/v3_checkpoints", help="Remote directory on Fedora for permanent checkpoint storage.")
     ap.add_argument("--run-wave-b", action="store_true", help="Also run frozen-core Wave B PolicyCommitGate after each arm.")
     ap.add_argument("--run-wave-c", action="store_true", help="Also run frozen-core Wave C Decoders & causal audit after each arm.")
-    ap.add_argument("--wave-c-steps", type=int, default=1200, help="Frozen-core Wave C multimodal decoder steps (default: 1200).")
+    ap.add_argument("--wave-c-steps", type=int, default=1500, help="Frozen-core Wave C multimodal decoder steps (default: 1500).")
     ap.add_argument("--render-media-gallery", action="store_true", help="Also render real `.wav` audio & `.png`/`.gif`/`.mp4` video any-to-any media gallery on the Colab GPU before teardown.")
     ap.add_argument("--resume", action="store_true", help="Skip arms/seeds whose complete receipt JSONs already exist in `--out-dir`.")
     ap.add_argument("--max-spend-cu", type=float, default=60.0)
@@ -619,10 +621,13 @@ def main() -> None:
             shard_files = sorted(shard_files + list(args.local_shard_dir.rglob("*_exec.jsonl")))
         else:
             shard_files = [p for p in shard_files if "_test" not in p.name]
-        # Avoid uploading redundant 24m text shard or RSO clipbank (keep RSO train shards so frozen-core RSO eval runs!)
+        # Avoid uploading redundant 24m text shard, smaller libri100 shard when libri360 exists, or RSO clipbank!
         has_full_tc = any(p.name == "text_code_train_v1.npz" for p in shard_files)
         if has_full_tc:
             shard_files = [p for p in shard_files if p.name != "text_code_train_24m_balanced.npz"]
+        has_libri360 = any(p.name == "librispeech_train_clean_360.npz" for p in shard_files)
+        if has_libri360:
+            shard_files = [p for p in shard_files if p.name != "librispeech_train_clean_100.npz"]
         shard_files = [p for p in shard_files if not p.name.startswith("rso_train_clipbank_")]
         if not shard_files:
             raise FileNotFoundError(f"No .npz shards found under {args.local_shard_dir}")
@@ -676,6 +681,8 @@ def main() -> None:
                     "--drop-modality-prob", str(args.drop_modality_prob),
                     "--anchor-transition-prob", str(args.anchor_transition_prob),
                     "--multi-horizon-weight", str(args.multi_horizon_weight),
+                    "--sampling-mode", str(args.sampling_mode),
+                    "--max-epochs-per-domain", str(args.max_epochs_per_domain),
                     "--seed", str(seed),
                     "--tag", tag,
                     "--out-dir", "/content/out",

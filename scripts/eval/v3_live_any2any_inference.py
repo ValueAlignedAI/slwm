@@ -38,9 +38,22 @@ from data.v3_unified_shards import BYTE_EOS, BYTE_MOD_SEP, BYTE_PAD, LoadedSpars
 from models.v3.any2any_heads import (
     COMMIT_ACTIONS,
     apply_policy_commit_gate,
+    apply_video_spatial_refiner,
     predict_any2any_heads,
 )
 from models.v3.core import init_core_state, step_core
+
+
+def _maybe_refine_video_groups(heads_params: dict[str, Any], patches_g_15_d: np.ndarray) -> np.ndarray:
+    """Apply strictly causal intra-frame `3x5` spatial refiner (`dt_s == 0`) if present in Wave C heads."""
+    if "video_spatial_refiner" not in heads_params or patches_g_15_d.size == 0:
+        return patches_g_15_d
+    ref_out = apply_video_spatial_refiner(
+        heads_params["video_spatial_refiner"],
+        jnp.asarray(patches_g_15_d, dtype=jnp.float32),
+        matmul_dtype=jnp.float32,
+    )
+    return np.asarray(ref_out, dtype=np.float32)
 
 
 def _empty_packet_b1(spec) -> dict[str, jax.Array]:
@@ -572,6 +585,8 @@ def stream_video_generation_from_shard(
 
         pred_patches, n_ctx, mean_nw = _run_a2v(ep_i)
         cf_patches, _, _ = _run_a2v(cf_ep_i)
+        pred_patches = _maybe_refine_video_groups(params["heads"], pred_patches)
+        cf_patches = _maybe_refine_video_groups(params["heads"], cf_patches)
         cf_label = "counterfactual_shuffled_audio_context"
     else:
         # `action2video`: observe Language + initial `ctx_groups` video + proprio/actions, then autoregressively roll out
@@ -621,6 +636,8 @@ def stream_video_generation_from_shard(
 
         pred_patches, n_ctx, mean_nw = _run_act2v(invert_actions=False)
         cf_patches, _, _ = _run_act2v(invert_actions=True)
+        pred_patches = _maybe_refine_video_groups(params["heads"], pred_patches)
+        cf_patches = _maybe_refine_video_groups(params["heads"], cf_patches)
         cf_label = "counterfactual_inverted_motor_action"
 
     diff = pred_patches - gt_patches
@@ -785,6 +802,7 @@ def stream_text_to_video(
             st, last_v, nw = _tick(params, st, pkt)
             nws.append(float(nw))
 
+    pred_p = _maybe_refine_video_groups(params["heads"], pred_p)
     rendered: dict[str, Any] = {}
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
