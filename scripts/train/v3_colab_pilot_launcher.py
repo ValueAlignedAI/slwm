@@ -81,7 +81,7 @@ def _colab_env() -> dict[str, str]:
     return {
         **os.environ,
         "CLOUDSDK_CONFIG": str(resolve_gcloud_config_dir()),
-        "COLAB_CLI_REQUEST_TIMEOUT": "180",
+        "COLAB_CLI_REQUEST_TIMEOUT": "300",
         "COLAB_CLI_ASSIGN_RETRIES": "1",
         "COLAB_CLI_RETRY_BACKOFF": "15",
     }
