@@ -117,12 +117,20 @@ def main() -> None:
             "import torch\n"
             "print('GPU_PREP_OK', torch.cuda.is_available(), torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'none', flush=True)\n"
         )
-        rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-            session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix="00_prep",
-            bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-            t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
-        )
-        print(out, flush=True)
+        rc, out, err, tripped = 1, "", "", False
+        for p_try in range(1, 4):
+            if p_try > 1:
+                time.sleep(8.0)
+                run_colab("restart-kernel", "-s", session_name, cfg_path=cfg_path, timeout=90)
+                time.sleep(4.0)
+            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
+                session_name, prep_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix=f"00_prep_try{p_try}",
+                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
+                t_alloc_start=t_alloc, phase_timeout_s=600, exec_timeout_s=480,
+            )
+            print(out, flush=True)
+            if rc == 0 and not tripped and "GPU_PREP_OK" in out:
+                break
         if rc != 0 or tripped or "GPU_PREP_OK" not in out:
             raise RuntimeError(f"Prep failed rc={rc}: {err[-500:]}")
 
@@ -142,7 +150,7 @@ for repo_id, dst in (
 ):
     print('[DL]', repo_id, flush=True)
     if 'libero' in repo_id:
-        snapshot_download(repo_id, repo_type='dataset', local_dir=dst, allow_patterns=['meta/*', 'data/chunk-000/file-00[0-3].parquet', 'videos/observation.images.image/chunk-000/file-00[0-3].mp4'])
+        snapshot_download(repo_id, repo_type='dataset', local_dir=dst, allow_patterns=['meta/*', 'meta/**/*', 'data/chunk-000/file-0[0-2][0-9].parquet', 'videos/observation.images.image/chunk-000/file-0[0-2][0-9].mp4'])
     else:
         snapshot_download(repo_id, repo_type='dataset', local_dir=dst)
 sys.argv = ['scripts/data/v3_preencode_av_codecs.py', '--corpus', 'robotics_lerobot', '--raw-root', '/content/raw', '--out-dir', '/content/out_rob', '--device', 'cuda', '--max-clips', '{args.max_lerobot_eps}']
@@ -150,17 +158,25 @@ from scripts.data import v3_preencode_av_codecs
 v3_preencode_av_codecs.main()
 print('ROB_DONE', flush=True)
 """
-            rc, out, err, tripped = _run_remote_kernel_python_with_watchdog(
-                session_name, rob_py, cfg_path=cfg_path, log_dir=log_dir, log_prefix="01_robotics",
-                bal_start=bal_start, prior_spent_cu=0.0, max_spend_cu=args.max_spend_cu,
-                t_alloc_start=t_alloc, phase_timeout_s=1800, exec_timeout_s=1500,
+            rc, out, tripped = _run_detached_remote_script_with_polling(
+                session_name, rob_py, tag="preencode_robotics", cfg_path=cfg_path, log_dir=log_dir,
+                bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc_start=t_alloc,
+                poll_interval_s=30.0, max_wall_s=3600.0,
             )
             print(out[-2000:], flush=True)
-            if "ROB_DONE" in out:
+            if "ROB_DONE" in out and not tripped:
                 for fn in ("robotics_train.npz", "robotics_dev.npz", "robotics_test.npz", "robotics_lerobot_preencode_receipt.json"):
-                    dl = run_colab("download", "-s", session_name, f"/content/out_rob/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=300)
-                    if dl.returncode == 0:
-                        downloaded_files.append(fn)
+                    if fn.endswith(".npz"):
+                        if _download_file_chunked_verified(
+                            session_name, f"/content/out_rob/{fn}", args.out_dir / fn,
+                            cfg_path=cfg_path, log_dir=log_dir,
+                            bal_start=bal_start, max_spend_cu=args.max_spend_cu, t_alloc=t_alloc,
+                        ):
+                            downloaded_files.append(fn)
+                    else:
+                        dl = run_colab("download", "-s", session_name, f"/content/out_rob/{fn}", str(args.out_dir / fn), cfg_path=cfg_path, timeout=120)
+                        if dl.returncode == 0:
+                            downloaded_files.append(fn)
 
         if "msrvtt" in corpora:
             to_flag = ", '--train-only'" if args.train_only_av else ""
