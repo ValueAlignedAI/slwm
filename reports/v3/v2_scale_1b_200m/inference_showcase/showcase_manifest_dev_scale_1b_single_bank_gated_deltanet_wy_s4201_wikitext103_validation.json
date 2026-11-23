@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T17:04:16.380541+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_single_bank_gated_deltanet_wy_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2653,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ands Debauchery and Monstrosity covered the song , and the track was featured on cello metal band Apocalyptica 's 2006 album Amplified / / A Decade of Reinventi",
+      "free_running_32b_continuation": "is a study of the study of the s",
+      "top1_next_byte_preview": "  d wtesatgher  ind tareteou ty\naoner d the stug o and the shank oas aoatured in torl  satal aasdssnplalypsuc lasts00  snlam opehified C A /psevlde of Aesnfenti",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0771,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e , California and South Africa\n",
+      "top1_next_byte_preview": "  eei arbeco Cake  a Cnd Bclna aa  \ufffdakes  .esh ynd .ark .ontains arcticsatellers a aoemming piols a ahadis sonnss , ansiri all pisld s atmt all field  , and t b",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9157,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Rabbit Creek in 1830 during the period of Indian Removal . After the treaty was ratified , European @-@ American settlers began to move into the area . \n\n Afte",
+      "free_running_32b_continuation": " the United States and the Unite",
+      "top1_next_byte_preview": " Cedbit Loeek as t960 wuring the lariod wf tsdian Revoval i .ster the eraaty oas aeiified b turopean cc  anerican Rettlers wegan to save tnto the srea o T\nI fte",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0013",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7422,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ric Places , is located at 601 23rd Avenue . The current mayor is Percy Bland . Members of the city council include Dr. George M. Thomas , representative from W",
+      "free_running_32b_continuation": "a state of many people who have ",
+      "top1_next_byte_preview": " ochcaane  a An aicated it t   m00d auerue C .he sorrent par r is altsy Baaccea Taaoer  of the Coty oouncil as lude te. Jeorge Wa Bhomas M Mesresentative ooom t",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6208,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " better fights involving the supporting players \" . \n\n = Meridian , Mississippi = \n\n Meridian is the sixth largest city in the state of Mississippi , in the Uni",
+      "free_running_32b_continuation": "n the contemporary world of the ",
+      "top1_next_byte_preview": " Coater tothti an olveng the ctnpost ng crayers oTa..\nI =\"anctiansP Mansissippi,, 1\n  eridian =s ahe megth cargest coty on the Uoate of tessissippi a an the sni",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

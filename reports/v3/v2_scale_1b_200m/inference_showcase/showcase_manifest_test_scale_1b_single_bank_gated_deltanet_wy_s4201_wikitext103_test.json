@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T17:06:05.506312+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_single_bank_gated_deltanet_wy_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2851,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "l service is a service that is a",
+      "top1_next_byte_preview": "   A   1a  (eporl e s senles arr tepport ng tore  a . srane n of 1 m   m d   2n leomrear  ais a so ah beve aopport f .TT  ter teyk mr tpgust 10,a teget Wanutena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1438,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": "d a straight line on the side of",
+      "top1_next_byte_preview": " nai .en anirayed ais farhon on the sasteoide of tlanaaear the sonar  oaary a T  t00m 1 0Amyocdy mer sanered whe fever a tnd t  t0 m 00 a rear aholls aegan toll",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9799,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "n 1st Battalion reached regimental headquarters , Freeman obtained the release of G and F Companies from 2nd Division reserve and sent the former to help 1st Ba",
+      "free_running_32b_continuation": "(18th century)\nThe first thing t",
+      "top1_next_byte_preview": " ob0t Crytllion (ecdhed tecioent l aiat uarters i aran as afsained ahe fegease of teand tra nparyes ioom t0d easision oegeave and tett toe rormer to telp tst ba",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8649,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the strength of the strength of ",
+      "top1_next_byte_preview": " ngna the  s of tes srwtry ata .xer then te wifrned tf the pivdh of tis poungert childra he whrned to hhe stnfering of hnhers an tis ooetry.an tead of aeelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6644,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ializing in the context of the c",
+      "top1_next_byte_preview": " Che ryetsa apecilatid bhet tontlictsrauld bndvitably bfise fetween temaneand tn least one cf tts mwo cajn cegal .\ufffd Th bhet end,i te womled tor the capanese aat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:04:51.582951+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_single_bank_gated_deltanet_wy_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0002",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3851,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The rake is pulled through a pile of leaves, twigs and gravel. Items being shaken inside of then poured out. Items shaken inside pan of then poured out. The obj",
+      "free_running_32b_continuation": "ling away at a steady pace. The ",
+      "top1_next_byte_preview": "Ahe waie os pollid ahrough a suee of weaves  whics,ard leavel. Tt ms aeing ptaken an ide af ahe  auurid ont  Ttems bhaken inside topeaf ahe  poured out  The rtj",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2478,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g and a faucet is running and a ",
+      "top1_next_byte_preview": "Aater is running aoudly and ahen st suivns dnf. Whe wanning water itodhtly dulrs and thacklis aown t doneven surface. W wteady atream of water rebbles alutly an",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.13,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of a man sailing and scraping ag",
+      "top1_next_byte_preview": "Ahe weavy racd of a  entustrial mrrpmrnsitioner isit ilom aiarbanrert. T  industrial air conditioner unit iferatis aith a ceavy raar  Aand bokeng ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0006",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9853,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "As birds chirp in the background, metal objects fiercely rattle against one another. While birds tweet, a piece of metal bangs. An object is rattling and echoin",
+      "free_running_32b_continuation": "and a machine is running in the ",
+      "top1_next_byte_preview": "A  tirds ahirp an the background, aatal ibjects alllcely cuttle anainst ene another. Maile airds cweet  m peece of metal iergs  W  ibject is battling and tchoin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0001",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7278,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A person is walking through leaves and occasionally stepping on a small branch or a stick. A person is occasionally stepping on a small branch or a stick while ",
+      "free_running_32b_continuation": "king along a road with their fee",
+      "top1_next_byte_preview": "A person is walking ahrough teaves and stcasionally stipping on t stall soench.Af s btock. A person ws wncasionally wtipping on a small branch or a stick.tiile ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:05:32.179306+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_single_bank_gated_deltanet_wy_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0002",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.973,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "little pet shop cat getting a bath and washed with little brush",
+      "free_running_32b_continuation": " is playing with a man in front ",
+      "top1_next_byte_preview": "aottle ceo saop iar soeting r babt ond dathid uith cottle paeshe",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7815,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man talking about the two cars he test drove",
+      "free_running_32b_continuation": "bout a computer system",
+      "top1_next_byte_preview": "a can ialksng about ahe cro mars to saltshoipe ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4739,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g played in a video gameicke",
+      "top1_next_byte_preview": "a clissrfs peing pnteoduced oo ansisital cealeng sivice",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2864,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a young girl in a horror movie is haunted",
+      "free_running_32b_continuation": " a white shirt talks about a car",
+      "top1_next_byte_preview": "a coung wirl is a wossor sovieis sovlted",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8162,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a song on the stage",
+      "top1_next_byte_preview": "a can is singing a d dianding an ahe sead",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

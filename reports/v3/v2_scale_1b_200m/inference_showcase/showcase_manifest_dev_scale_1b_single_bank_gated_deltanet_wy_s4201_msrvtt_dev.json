@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:03:42.845529+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8405,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a girl asks a man and woman if they ve seen her hamster",
+      "free_running_32b_continuation": "an talking about how to play a g",
+      "top1_next_byte_preview": "a cirl inks a wan tnd hhman tn hhey wins em aer fanmter",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0002",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4899,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a cartoon is drawn",
+      "free_running_32b_continuation": "iving a store through a city whe",
+      "top1_next_byte_preview": "a cartoon cn sriwi ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1968,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a blonde girl in a pink sweater sits on the piano and plays it",
+      "free_running_32b_continuation": "s walking through the streets",
+      "top1_next_byte_preview": "a caande wirl is a wink sweater scns dn aoe sinnosnd slays ats",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9905,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a car being driven",
+      "free_running_32b_continuation": "ven on the roade",
+      "top1_next_byte_preview": "a car ieing sriven ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8817,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y talking about how to produce a",
+      "top1_next_byte_preview": "a can is sovpely txplaining homething ihth ather peoplean ahe seck round",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

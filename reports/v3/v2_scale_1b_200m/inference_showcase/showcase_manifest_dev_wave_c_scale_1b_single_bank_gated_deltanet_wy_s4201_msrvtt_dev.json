@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:17:14.138858+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_1b_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9139,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a girl asks a man and woman if they ve seen her hamster",
+      "free_running_32b_continuation": "an discussing how to do a baby s",
+      "top1_next_byte_preview": "a cirl inks a gan dnd hhmen tn hhey ains em aer kanmter",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5577,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a middle aged woman encourages you to use her product to increase your feminine health",
+      "free_running_32b_continuation": "oman in a shirt tells the studen",
+      "top1_next_byte_preview": "a maddle aged aoman ixjounages hounto sne aer faefuctsto snclease tour cieanise sealth",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1761,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a blonde girl in a pink sweater sits on the piano and plays it",
+      "free_running_32b_continuation": "s singing with children",
+      "top1_next_byte_preview": "a caande wirl is a bonk sweater swns on ahe sinnodnd tlays wt",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9635,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a basket ball player is laughing",
+      "free_running_32b_continuation": "lays a soccer game and a man is ",
+      "top1_next_byte_preview": "a canketbball playsr ps paughing",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7933,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man doing something using paper",
+      "free_running_32b_continuation": "ething with a man discussing his",
+      "top1_next_byte_preview": "a man iring aomething wning aaper",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
