@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T09:26:34.918081+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0002",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3483,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ies ( for Homarus H. Milne @-@ Edwards , 1837 ) invalid for Homarus Weber , 1795 . \n\n The type specimen of Homarus gammarus was a lectotype selected by Lipke Ho",
+      "free_running_32b_continuation": "s and the United States in the U",
+      "top1_next_byte_preview": "   taacor teleg s ao Canleni H-hawards 1 1990 )\nas edidator tomarus (assr ( 1938 ( (TH he fepe otecifen if tomarus iavea  s ias a saaturhpe ottectid by tinpi ao",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1287,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and the South Africa are a sma",
+      "top1_next_byte_preview": "  eai talnso ,ane  a Bnd trlnaoaa  Lakes( Tesh and Lark ,omtiins arcticsateelers a aoemming aatls a ahadis aonnte,, ansonk all polld , atmt all fields , and t s",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.984,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ame to the scene but was unable to get near enough to rescue the crew because of the sea conditions . At the request of Alec Webster , Coastguard Station Office",
+      "free_running_32b_continuation": " of the country and the state of",
+      "top1_next_byte_preview": "  orah the sthne oet ths anable to set toaretvough to seatue the sooa oufause tf the cuc tonsition  t Tn the sesuist of tmlx aalster,i tonltarard ocateon anfice",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8356,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "perations: A Comprehensive Explo",
+      "top1_next_byte_preview": " Ceegtian aaeteApfice (ath tts Cnfercor seca ivtitely on teeaze pnd sirme (erklesan a so aot dorthy os a sers sare axpmple of ahe pepe of post Mffice itaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6363,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "a man with a small striped conta",
+      "top1_next_byte_preview": " C thmabilespnd a terntite Aeshway Systems(ecame aore copular ahan errsingerssetlr.a..he cevoine of the sailwoad wn ustry iomsed tegnificant iob iosses t aesult",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

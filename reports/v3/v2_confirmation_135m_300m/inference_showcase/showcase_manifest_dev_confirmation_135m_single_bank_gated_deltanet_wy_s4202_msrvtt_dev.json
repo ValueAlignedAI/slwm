@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T09:26:21.046021+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7299,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a fun game of race on the tracks",
+      "free_running_32b_continuation": "ed show is shown on a basketball",
+      "top1_next_byte_preview": "a cennwame in aeci an ahe rrack ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4397,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man climbs down a ladder",
+      "free_running_32b_continuation": "zens of a man and woman talks to",
+      "top1_next_byte_preview": "a can ioipbi aozn t saryer ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2529,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a couple is presenting an episode",
+      "free_running_32b_continuation": "senting a song on the sidewalk",
+      "top1_next_byte_preview": "a cauple os slesenting a dalisode ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1048,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a guy telling something",
+      "free_running_32b_continuation": "omething to a man who is singing",
+      "top1_next_byte_preview": "a giy iallsng aomething ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9717,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y being talked about a man in a ",
+      "top1_next_byte_preview": "a can is savpeny bxplaining homethingthth ather peoplein ahe seck round ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T09:27:20.679234+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3626,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": " death and the state of the coun",
+      "top1_next_byte_preview": "  ae ght and her deids ahet as ahe sonkeof t  apteianding crrsaoesonved o Tecl  urg ias berd toosmsto bhet oethog o T rotke a   hoki r .0  m   haindsoooqh an or",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2048,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": "s a straight line of string of s",
+      "top1_next_byte_preview": " n i .erlar(rayes ais hashon on the sast aide of tueraaear the sonnrg Sasry a .n t0 m 1. A.yo dy mer oomered the siver a and t  t0 m 00 aireal (tolls aecan torl",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0885,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " . Similarly they pursued but did not catch the American carriers that had launched the Doolittle Raid on 18 April . \n\n During gunnery training on 5 May , there",
+      "free_running_32b_continuation": " concept of the Similar Similari",
+      "top1_next_byte_preview": " C.Uumplar y,aho  hrbsued tos aidntot horch theismerican cop ier  ooet wad bernched the cecroteee Ciil an t2 Jpril 1 .\nA uring trn ir,,ahaining,pn t Aay 2 the e",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9299,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the country to the sea and the s",
+      "top1_next_byte_preview": " nbne the    of tistcrwtry ata .ner then te wiarned tn the siath of tis foutg rt coildht he worned to the stnfering of tuher  an tis caetiy anttead of aeelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7164,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically within the context of t",
+      "top1_next_byte_preview": " Che rietsa auecilatid that tonslict wiuld bnfvitably bfise fetween tepaneand t tteast tne pf tts fro cojn cegals o..h thet dvd,o wo wolled tor the fapanese cat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

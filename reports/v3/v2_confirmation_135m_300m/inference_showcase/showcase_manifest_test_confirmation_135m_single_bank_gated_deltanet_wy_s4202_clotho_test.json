@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T09:26:49.703931+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0028",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3826,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The vibrations of wings on a swarm of bees is causing a sound of buzzing. The vibrations of wings of a swarm of bees is causing a sound which is like buzzing. A",
+      "free_running_32b_continuation": "of a car are driving by and a ma",
+      "top1_next_byte_preview": "Ahe bedratinn  of aands an a buimm of wies an bousing a swund tf wegzing  Ahe vibratinns of binds an b bwirm of bees an cousing a swund thilh cs coqe aezzing  T",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2652,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of the beach was being started. ",
+      "top1_next_byte_preview": "Ahe woavy racd of t  andistrial mnrpmomtutionid isdt iiom aearbtnrehti A  industrial air conditioner init iferates aith a veavy raad  Aand bokeng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0030",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1348,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "At least two cats meowing while someone is walking around and a male voice at the end. A cat starts meowing and then another cat joins in then a man start",
+      "free_running_32b_continuation": "rs are chirping and then a car a",
+      "top1_next_byte_preview": "A  aaast owo mare aolwing ahile aomeone is salking anound t d t cane paice sr ahe end. A mat ioarts aeowing and ahen a other cat soins in the  mncal spart",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9743,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being played and played and ",
+      "top1_next_byte_preview": "Aaltiple phnns aupeat dly aoanter and tlang in t sendom sashion. Ahe cerson ial claying aith ahe coins an the r fands T person ilaysng with toins in the r hands",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6884,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning and then a storm with a s",
+      "top1_next_byte_preview": "Aanning water iunhis aonttantly an airds cing and chirp  Rater ilows ionststently as birds shirp ioftly in the background. Water irickles irom a sauntain and bi",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
