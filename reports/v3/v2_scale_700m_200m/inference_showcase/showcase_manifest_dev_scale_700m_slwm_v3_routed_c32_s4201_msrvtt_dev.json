@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:46:47.426165+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7956,
+      "mean_nowrite": 0.6522,
+      "ground_truth_text_preview": "a girl asks a man and woman if they ve seen her hamster",
+      "free_running_32b_continuation": "an who is saying he is saying he",
+      "top1_next_byte_preview": "a cirl inks q gan wnd aoman an she  aincee  aer foimter",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5575,
+      "mean_nowrite": 0.6602,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game commentator is showing a s",
+      "top1_next_byte_preview": "ahen is a mideo glip from ahe scow ohit ie  yh daar ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2568,
+      "mean_nowrite": 0.6491,
+      "ground_truth_text_preview": "a couple is presenting an episode",
+      "free_running_32b_continuation": "paring food for a while and a ",
+      "top1_next_byte_preview": "a cample is slepsnting a oilicode",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1102,
+      "mean_nowrite": 0.6483,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a song for a play a gamena pla",
+      "top1_next_byte_preview": "a can is soving a samversationwn a woomwith ao mornds",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7949,
+      "mean_nowrite": 0.6554,
+      "ground_truth_text_preview": "a car being driven",
+      "free_running_32b_continuation": "ven from a roomate roomater r",
+      "top1_next_byte_preview": "a car ieing driven ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

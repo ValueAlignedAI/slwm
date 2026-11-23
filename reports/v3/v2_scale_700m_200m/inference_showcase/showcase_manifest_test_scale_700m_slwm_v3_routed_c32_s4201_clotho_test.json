@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:47:29.395749+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0026",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3667,
+      "mean_nowrite": 0.1986,
+      "ground_truth_text_preview": "Short and sporadic mixed with long continuous buzzing. A low, electric hum oscillates between two tones. a continuous musical note buzzes as it constantly chang",
+      "free_running_32b_continuation": "dic electric vehicles are making",
+      "top1_next_byte_preview": "Aoort bnd whertdic eenes woth woug bhnvinuous muzzing  S sou  snectric mum bfcillates aatween tho ti es  A lonsinuous hosical ioie iuzzis as at ronttantly bhang",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0018",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2373,
+      "mean_nowrite": 0.2686,
+      "ground_truth_text_preview": "Low humming coming from a vent while someone is moving objects about on a desk. Something makes a light hum in the background as something else makes a slight r",
+      "free_running_32b_continuation": "ing down on a hard surface and t",
+      "top1_next_byte_preview": "Aou mum ing ooning daom a sehd aiile aomeone is saving anjects anovt anea hovk. Aomeohing iakes a lotht hummon ahe background as tomeohing ilse cokes a loight h",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1447,
+      "mean_nowrite": 0.189,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usting and then stops and then s",
+      "top1_next_byte_preview": "A coeice is pcdustid aiile auchinery iairs in the background. A danyed iachine is running an the boreground  Aitrsis ppwling an ahter an iie wurn bf ahe waat is",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0006",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9099,
+      "mean_nowrite": 0.2295,
+      "ground_truth_text_preview": "As birds chirp in the background, metal objects fiercely rattle against one another. While birds tweet, a piece of metal bangs. An object is rattling and echoin",
+      "free_running_32b_continuation": "in the background, a bird chirps",
+      "top1_next_byte_preview": "A  tirds chirp in the background, aunal bbjects aallcely reptle anainst ane another. Maile birds cweet  m beece of metal bicgs  W  object is battling agd cchoin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7044,
+      "mean_nowrite": 0.2285,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning and the water running in ",
+      "top1_next_byte_preview": "Aanning water iunhes oonttantly an iirds cing ind chirp  Water rlows ionttstently at tirds chirp ioftly.in the background. Water frickles irom a sarntain and ci",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

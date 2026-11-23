@@ -556,32 +556,38 @@ def stream_video_generation_from_shard(
 
         def _run_a2v(audio_ep_idx: int) -> tuple[np.ndarray, int, float]:
             ss, ee = sh.episode_slices[audio_ep_idx]
+            aud_gis = [gi for gi in range(ss, ee) if int(d["modality_id"][gi]) == 1]
             st_l = init_core_state(spec, 1)
             last_v_l = None
             nws_l: list[float] = []
-            n_aud = 0
-            # Strictly AUDIO-ONLY context (skip all video patches -> zero visual leakage!)
-            for gi in range(ss, ee):
-                if int(d["modality_id"][gi]) != 1:
-                    continue
-                _, st_l, last_v_l, _, nw = _tick(params, st_l, _packet_from_shard(spec, d, gi, is_first=(n_aud == 0)))
+            # Strictly AUDIO-ONLY prefix (skip all video patches -> zero visual leakage!)
+            # Reserve `use_g - 1` interleaved audio packets to stream between generated video groups (matching AV cadence!).
+            n_pre = max(1, min(48, len(aud_gis) - max(0, use_g - 1)))
+            for idx_a in range(n_pre):
+                _, st_l, last_v_l, _, nw = _tick(
+                    params, st_l, _packet_from_shard(spec, d, aud_gis[idx_a], is_first=(idx_a == 0))
+                )
                 nws_l.append(float(nw))
-                n_aud += 1
-                if n_aud >= 48:  # ~3.84s of observed Mimi audio
-                    break
             pred_p = np.zeros((use_g, 15, spec.video_patch_dim), dtype=np.float32)
+            a_cur = n_pre
             for g in range(use_g):
+                if g > 0 and a_cur < len(aud_gis):
+                    _, st_l, last_v_l, _, nw = _tick(
+                        params, st_l, _packet_from_shard(spec, d, aud_gis[a_cur], is_first=False)
+                    )
+                    nws_l.append(float(nw))
+                    a_cur += 1
                 for p_idx in range(15):
                     pv = np.asarray(last_v_l, dtype=np.float32) if last_v_l is not None else np.zeros((spec.video_patch_dim,), dtype=np.float32)
                     pred_p[g, p_idx] = pv
                     pkt = _empty_packet_b1(spec)
                     pkt["modality_id"] = jnp.array([0], dtype=jnp.int32)
-                    pkt["dt_s"] = jnp.array([0.0 if p_idx > 0 else 0.16], dtype=jnp.float32)
+                    pkt["dt_s"] = jnp.array([0.08 if p_idx == 0 else 0.0], dtype=jnp.float32)
                     pkt["spatial_pos"] = jnp.array([p_idx], dtype=jnp.int32)
                     pkt["video_feat"] = jnp.asarray(pv[None, :], dtype=jnp.float32)
                     _, st_l, last_v_l, _, nw = _tick(params, st_l, pkt)
                     nws_l.append(float(nw))
-            return pred_p, n_aud, float(np.mean(nws_l)) if nws_l else 0.0
+            return pred_p, a_cur, float(np.mean(nws_l)) if nws_l else 0.0
 
         pred_patches, n_ctx, mean_nw = _run_a2v(ep_i)
         cf_patches, _, _ = _run_a2v(cf_ep_i)
@@ -590,7 +596,8 @@ def stream_video_generation_from_shard(
         cf_label = "counterfactual_shuffled_audio_context"
     else:
         # `action2video`: observe Language + initial `ctx_groups` video + proprio/actions, then autoregressively roll out
-        # future video groups while feeding upcoming motor actions (true actions vs inverted counterfactual actions)!
+        # future video groups along the EXACT interleaved action schedule (feeding ONLY commanded motor actions + the
+        # model's OWN predicted proprioception — strictly ZERO future ground-truth video or proprioception leakage!).
         ctx_groups = max(1, min(2, n_groups_total - 1))
         use_g = min(n_pred_groups, n_groups_total - ctx_groups)
         gt_patches = np.zeros((use_g, 15, spec.video_patch_dim), dtype=np.float32)
@@ -600,39 +607,49 @@ def stream_video_generation_from_shard(
                 if vi >= 0:
                     gt_patches[g, p_idx] = d["video_feat"][vi].astype(np.float32)
 
-        ctx_end_rel = int(vid_pos[ctx_groups * 15])
-        act_after_ctx = [s0 + rel for rel in range(ctx_end_rel, e0 - s0) if int(d["modality_id"][s0 + rel]) == 3]
+        start_rel = int(vid_pos[ctx_groups * 15])
+        end_rel = int(vid_pos[(ctx_groups + use_g) * 15 - 1]) + 1
 
         def _run_act2v(*, invert_actions: bool) -> tuple[np.ndarray, int, float]:
             st_l = init_core_state(spec, 1)
             last_v_l = None
+            last_act_l = None
             nws_l: list[float] = []
-            for rel in range(ctx_end_rel):
-                _, st_l, last_v_l, _, nw = _tick(params, st_l, _packet_from_shard(spec, d, s0 + rel, is_first=(rel == 0)))
+            for rel in range(start_rel):
+                _, st_l, last_v_l, last_act_l, nw = _tick(
+                    params, st_l, _packet_from_shard(spec, d, s0 + rel, is_first=(rel == 0))
+                )
                 nws_l.append(float(nw))
             pred_p = np.zeros((use_g, 15, spec.video_patch_dim), dtype=np.float32)
-            act_cursor = 0
-            acts_per_group = max(1, len(act_after_ctx) // max(use_g, 1))
-            for g in range(use_g):
-                # Inject upcoming motor actions for this time step (real or inverted counterfactual!)
-                for _ in range(min(acts_per_group, len(act_after_ctx) - act_cursor)):
-                    agi = act_after_ctx[act_cursor]
-                    act_cursor += 1
-                    aci = int(d["act_idx"][agi])
-                    a_ov = (-d["action_feat"][aci].astype(np.float32)) if (invert_actions and aci >= 0) else None
-                    _, st_l, last_v_l, _, nw = _tick(params, st_l, _packet_from_shard(spec, d, agi, is_first=False, action_override=a_ov))
-                    nws_l.append(float(nw))
-                for p_idx in range(15):
+            v_cur = 0
+            for rel in range(start_rel, end_rel):
+                gi = s0 + rel
+                m_id = int(mods[rel])
+                if m_id == 0:
+                    g, p_idx = v_cur // 15, v_cur % 15
                     pv = np.asarray(last_v_l, dtype=np.float32) if last_v_l is not None else np.zeros((spec.video_patch_dim,), dtype=np.float32)
                     pred_p[g, p_idx] = pv
-                    pkt = _empty_packet_b1(spec)
-                    pkt["modality_id"] = jnp.array([0], dtype=jnp.int32)
-                    pkt["dt_s"] = jnp.array([0.0 if p_idx > 0 else 0.16], dtype=jnp.float32)
-                    pkt["spatial_pos"] = jnp.array([p_idx], dtype=jnp.int32)
-                    pkt["video_feat"] = jnp.asarray(pv[None, :], dtype=jnp.float32)
-                    _, st_l, last_v_l, _, nw = _tick(params, st_l, pkt)
+                    pkt = _packet_from_shard(spec, d, gi, is_first=False)
+                    pkt["video_feat"] = jnp.asarray(pv[None, :], dtype=jnp.float32)  # Strictly free-running!
+                    _, st_l, last_v_l, last_act_l, nw = _tick(params, st_l, pkt)
                     nws_l.append(float(nw))
-            return pred_p, ctx_end_rel, float(np.mean(nws_l)) if nws_l else 0.0
+                    v_cur += 1
+                elif m_id == 3:
+                    aci = int(d["act_idx"][gi])
+                    a_ov = (-d["action_feat"][aci].astype(np.float32)) if (invert_actions and aci >= 0) else None
+                    pkt = _packet_from_shard(spec, d, gi, is_first=False, action_override=a_ov)
+                    # Replace ground-truth future proprioception with model's OWN predicted proprio (zero future leakage!)
+                    if last_act_l is not None:
+                        pred_prop = np.asarray(last_act_l, dtype=np.float32)[spec.action_dim : spec.action_dim + spec.proprio_dim]
+                        pkt["proprio_feat"] = jnp.asarray(pred_prop[None, :], dtype=jnp.float32)
+                    else:
+                        pkt["proprio_feat"] = jnp.zeros((1, spec.proprio_dim), dtype=jnp.float32)
+                    _, st_l, last_v_l, last_act_l, nw = _tick(params, st_l, pkt)
+                    nws_l.append(float(nw))
+                else:
+                    _, st_l, last_v_l, last_act_l, nw = _tick(params, st_l, _packet_from_shard(spec, d, gi, is_first=False))
+                    nws_l.append(float(nw))
+            return pred_p, start_rel, float(np.mean(nws_l)) if nws_l else 0.0
 
         pred_patches, n_ctx, mean_nw = _run_act2v(invert_actions=False)
         cf_patches, _, _ = _run_act2v(invert_actions=True)

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:47:54.416431+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.042,
+      "mean_nowrite": 0.6613,
+      "ground_truth_text_preview": "a cartoon that is blurryb on a tv screen of a fashion run way",
+      "free_running_32b_continuation": "is singing",
+      "top1_next_byte_preview": "a clr oon crat is seaery yin t ta shreenwn a banhionmonnais",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0031",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7875,
+      "mean_nowrite": 0.6618,
+      "ground_truth_text_preview": "someone giving demo for some game",
+      "free_running_32b_continuation": "a speech at a car driving down t",
+      "top1_next_byte_preview": "aomeone piving aicontor aome time ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4858,
+      "mean_nowrite": 0.6565,
+      "ground_truth_text_preview": "a man extinguishes a fire outside",
+      "free_running_32b_continuation": "hes a box for a big city street",
+      "top1_next_byte_preview": "a can ixprngeashes a bige sntside",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2065,
+      "mean_nowrite": 0.6615,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g intervieweddedate",
+      "top1_next_byte_preview": "a caissros deing inteoducedto a sasital lealing cavice",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7923,
+      "mean_nowrite": 0.6597,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a song on stage talking about",
+      "top1_next_byte_preview": "a can is singing a o tiarding on ahe food",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

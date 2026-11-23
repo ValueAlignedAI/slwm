@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T01:48:14.731072+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3133,
+      "mean_nowrite": 0.1413,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": " definition of the state of the ",
+      "top1_next_byte_preview": "  ae ght and wat deid  aoat as ahe soikeof t  erteianding crrsaoesoived a .egl sedg ias aord oloimsto thet oeieog a . satke h   coni r h0 0m-  lasnd iooqh an .r",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1337,
+      "mean_nowrite": 0.1409,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": "d on the side of the street and ",
+      "top1_next_byte_preview": " nat .erla Srayed ois harhon in the sast oide of tlanaaear the sonar  oasty a .  t0 m 10 p.moady ser wouered whe sever a tnd tt t0 : 00 a real atolt  aegan torl",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0007",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0132,
+      "mean_nowrite": 0.1514,
+      "ground_truth_text_preview": "ng laboured to a Western ear ( particularly when translating regulated verse , or l\u01dcshi ) , and accommodating the complex allusions contained particularly in th",
+      "free_running_32b_continuation": " strange state of the state of t",
+      "top1_next_byte_preview": " o manerr r ah t sestern crrtoaWrrt cularly tien thadslatiog tesularid sersisa tr pa\ufffd  af, a and t corpodatiog the sonplex pngedion  oontained irrticularly in t",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8475,
+      "mean_nowrite": 0.1414,
+      "ground_truth_text_preview": " = Robert Boulter = \n\n Robert Boulter is an English film , television and theatre actor . He had a guest @-@ starring role on the television series The Bill in ",
+      "free_running_32b_continuation": "r's Research Center (RBC) is a p",
+      "top1_next_byte_preview": " C=\"emert Lebrdur'- R\nI obert Boulter ws a  inglish solm w whllvision srd aee tee frtir a Te ias a srist o   aturt ng aobe in the selevision serves ahe roll os ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6763,
+      "mean_nowrite": 0.1437,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the country and the country ",
+      "top1_next_byte_preview": "  astis ah teppeund thmkosand testroy the sn and tuSEtntvs on thet coty a T  aart of thes cossion,t the Uarth Aorean cnit  aeuld bonst bot the ntnply oine  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

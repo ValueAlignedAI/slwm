@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:55:11.462448+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_slwm_v3_routed_c32_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7776,
+      "mean_nowrite": 0.6541,
+      "ground_truth_text_preview": "a fun game of race on the tracks",
+      "free_running_32b_continuation": "eporting a paperupia is playin",
+      "top1_next_byte_preview": "a gennaime if pede in ahe foacks ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6487,
+      "mean_nowrite": 0.6602,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game commentator is talking ab",
+      "top1_next_byte_preview": "ahen is a gideo goip srom ahe scow ohit ie  to daar ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0031",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2978,
+      "mean_nowrite": 0.658,
+      "ground_truth_text_preview": "a cooking tutorial",
+      "free_running_32b_continuation": "ial is going onoff and then a p",
+      "top1_next_byte_preview": "a glmking mvtorial ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1342,
+      "mean_nowrite": 0.6297,
+      "ground_truth_text_preview": "there is a woman is making a milk shake",
+      "free_running_32b_continuation": "n in a white shirt is talking to",
+      "top1_next_byte_preview": "ahere is a moman in taking a dank pooki ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8583,
+      "mean_nowrite": 0.6496,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "is talking about a person is tal",
+      "top1_next_byte_preview": "ahere is a man is tajering ah a party ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

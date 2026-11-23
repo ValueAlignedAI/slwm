@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T01:47:07.821205+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2704,
+      "mean_nowrite": 0.1329,
+      "ground_truth_text_preview": " This was the favourite of John Tudor who wrote of the island in his Victorian memoirs and described the cave as : \n\n ... in fairyland , so exquisite is the col",
+      "free_running_32b_continuation": "scinating period of the country ",
+      "top1_next_byte_preview": " Cies ces ahe cisorrite sf aahn Chror aho laote anfahe pnland on tis cictorian eatoir  and seccribed hhe cope on a\n\"\n\" .   n tacty and a aomtvcuisitelan the sam",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.05,
+      "mean_nowrite": 0.1477,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e sun and the sun and the sun an",
+      "top1_next_byte_preview": " it rsoh tacteahes snayd a .TA aClrth iecainsd i srocsnte of the cirld oor the sioghts on t009.a wxplnding tis cele iy araying aome otapshin a sinl ock f Te wen",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9289,
+      "mean_nowrite": 0.1466,
+      "ground_truth_text_preview": "ame to the scene but was unable to get near enough to rescue the crew because of the sea conditions . At the request of Alec Webster , Coastguard Station Office",
+      "free_running_32b_continuation": " of the country and the state of",
+      "top1_next_byte_preview": "  orth bhe sthne oet ths andble to sot aoar tvgugh to settue the sooa aufause tf the ctv aovsitions t .  the sesuest of tlexkBasster i tanct uard wcateon affice",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7584,
+      "mean_nowrite": 0.1395,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " (HG) and HG (HG) are a complex ",
+      "top1_next_byte_preview": " C=\"amesysc(alea is ( H\nH omarus gammarus = Hiown as Hhe \"aropean Uaceter gf sonmon lobster o is a seecias of toassd gibster aoom the sartern sulantic acean.t w",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6258,
+      "mean_nowrite": 0.1502,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional stories and stories and st",
+      "top1_next_byte_preview": " ovgeooom theiitional sesoratioe snti ao txeiigraphyc ard shabal cuterial  a aritographe a aoeftsma and maty other aorks of trt.a The ponlection olso includes a",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
