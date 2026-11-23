@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T16:00:32.190721+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_sliding_window_gqa_eqbyte_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9659,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a baseball player runs into a paded wall",
+      "free_running_32b_continuation": "er is shown on a talk showong t",
+      "top1_next_byte_preview": "a conkball player ienn an o ancandm shlk ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5276,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is being playeding and then ",
+      "top1_next_byte_preview": "a counube iaarnel inout aetpiesind tidcynsioe e is a  alpion th aecscribe t   the cesk round os tlck ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2258,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a car being driven",
+      "free_running_32b_continuation": "ven in a car while a man is spea",
+      "top1_next_byte_preview": "a cartieing siiven ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.061,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "in a black suit is driving a bas",
+      "top1_next_byte_preview": "ahere is a man in txjertng ah a merty ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8927,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a guy telling something",
+      "free_running_32b_continuation": "omething on a tv showong tv sho",
+      "top1_next_byte_preview": "a ciy iallsng aomething ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

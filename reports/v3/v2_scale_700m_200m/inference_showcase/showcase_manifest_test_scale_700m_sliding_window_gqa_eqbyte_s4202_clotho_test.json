@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T15:51:22.784155+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3463,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "door is being standing on a stre",
+      "top1_next_byte_preview": "A caud wtueaks drack is buavelling ay ahlling ahren  Ahaific iasseng by an a sol poad and tish sitched saepsng ond saople aalking i lar dath a lqfnd ng tnarm wr",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0000",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2835,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly an",
+      "free_running_32b_continuation": "g and the water is running and t",
+      "top1_next_byte_preview": "Aater is running aoudly and then st raavns.ivf. Whe wanning water fpodhtly falrs and thacklis oown t denuven sprface. W wteady rtream of water iebbles atutly an",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1649,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usted to a static surface while ",
+      "top1_next_byte_preview": "A coeice is rudusted thile aakhinery rairs in the background. A danyes iachine is running an the boreground  Aitrsis rtnding an ahter an ahe wirn bf ahe baat is",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0153,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "of water is being struck against",
+      "top1_next_byte_preview": "Aultiple phnns oepeatedly aoapter and slatk tn t soigom slshion. She clrson ial claying aith ahe woins on the r fand. T person wlaying with toins in their hand.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0016",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6927,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "After the silence, a few people in the distance are talking to each other. After the silence, a few people in the distance are talking. A person is walking thro",
+      "free_running_32b_continuation": "ce of a stop is being started an",
+      "top1_next_byte_preview": "A ter ahe winence  t mew seople an the bistance are balking.ao each other. A ter the silence  a few people an the distance are talking. A ferson is walking ahro",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

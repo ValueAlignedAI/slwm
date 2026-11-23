@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T15:50:54.479040+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3075,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ong and its contribution to the delay in the release of Reign in Blood , \" Angel of Death \" is featured on all of Slayer 's live albums and DVDs and has appeare",
+      "free_running_32b_continuation": "rasting state of the state of th",
+      "top1_next_byte_preview": " n ot d t   sontrabutionsto the ceviw on the pegaase of tednn an traod i tta  eloaf telth o in aoarured in t l tf ttav r a ttafe inlams and seDs.and tas b prare",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0853,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e streets of the streets and the",
+      "top1_next_byte_preview": " et r oh tnct ahes snayd i..T  aColte iepainsd i soovente of the sirld orr the ceoghts on 1018 a asplnding tis cele iy traying toce otacshan t sonl ock o Te wen",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0004",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9392,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "North @-@ Western Area in January 1946 . Posted to Britain at the end of the year , he attended the Royal Air Force Staff College , Andover , and served with RA",
+      "free_running_32b_continuation": "n Confederation (NCC) - A state ",
+      "top1_next_byte_preview": " otth A   Test rn Crca os tupuary 2948\n- .rsted bo teitiin in the Und of the 1ear 2 te wdtended the cemal Srr Force aeatf aomlege o ardruer a and hetved aith to",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8059,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "fficers - A Comprehensive Guide ",
+      "top1_next_byte_preview": " Caectian soltc-fficeriath tts Rncernor deme bxtirely of toewze cnd sirme aarklessn a so aet dorthy on a cirs sane axpmple.of the pepe of most Office ieaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6562,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " automobile and Interstate Highway System became more popular than passenger rails . The decline of the railroad industry caused significant job losses , result",
+      "free_running_32b_continuation": "automobile are some interesting ",
+      "top1_next_byte_preview": " C thmabile and anterneete Cesh-ay Ststems(ygame aore crpular than errsedgerssedlw a..he ceviine of the peilsoad tntustry iomsed bignificant cubsoosses a aesult",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

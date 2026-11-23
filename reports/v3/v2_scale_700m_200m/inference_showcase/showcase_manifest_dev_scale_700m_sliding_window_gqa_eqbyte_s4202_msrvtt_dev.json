@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T15:50:28.157300+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9091,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a baseball player runs into a paded wall",
+      "free_running_32b_continuation": "er is shown on a stageat talkin",
+      "top1_next_byte_preview": "a cankball player ienn on o a cands silk ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5238,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is being playeding and the m",
+      "top1_next_byte_preview": "a counube oaarnel inout aerpiesand tidcynsihe e is a  elpion to bepscribe t d the cesk round os tlcn ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.247,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a basketball player in a basket",
+      "top1_next_byte_preview": "a can is soiing a bomversationbn a beomaith ae momnd",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0974,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man doing something using paper",
+      "free_running_32b_continuation": "ething in a stage on a stageact",
+      "top1_next_byte_preview": "a ban iiing aomething ineng aiper",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9329,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a cartoon character is launched across a room",
+      "free_running_32b_continuation": "cter is sitting at a stagearchi",
+      "top1_next_byte_preview": "a cartoon character is soygchidanross a seom",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

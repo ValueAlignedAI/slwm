@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T15:52:23.469619+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3183,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "llowed in the traditions of specific aspects of his work : Bai Juyi 's concern for the poor , Lu You 's patriotism , and Mei Yaochen 's reflections on the quoti",
+      "free_running_32b_continuation": "ee and the street was a street a",
+      "top1_next_byte_preview": " eaw r tn the sreiitiona of toacieic prpects of tis pork a terlCal n(  Sonserneaor the prsr y aocJou 's crrriotic  a and tan 'on han (s peaeectinn  of the puate",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0012",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1727,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " 65 metres ( 94 ft 0 in ) and a draught of 8 @.@ 93 metres ( 29 ft 4 in ) at deep load . They displaced 36 @,@ 500 long tons ( 37 @,@ 100 t ) at deep load , rou",
+      "free_running_32b_continuation": ") - A significant place in the w",
+      "top1_next_byte_preview": " C..Cinees a1M  )t))0)n)t -rd 1 siawght of t0m   T  fetres ( 10 ft 0 in ) an tipp wewds( Ahe  aesplaye  t0 m.  1   mbag ae g o 30 f.  100 fo1 an deep load . aeu",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0368,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s included in the set list of the group 's 3 December 2012 sold @-@ out show at New York City 's Madison Square Garden . One Direction delivered a performance o",
+      "free_running_32b_continuation": "e state of the state of the stat",
+      "top1_next_byte_preview": " ha  lide  in the stctoint of she sreupso' i micember 2010'te a t   Trt oeor t  tAw York City C  Careson Ctuare Srlden S..n  oasectoon oet vered t srrsermance o",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9186,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the street and the street and",
+      "top1_next_byte_preview": " ocaokted iromt o   -one ipdt  tor tff ty the sorth Aorean  a and tode trrr hen tnr rops of tibonition a aord a aater a and aatiuil ctpplees . .  at ormation ae",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7314,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the state of the state of th",
+      "top1_next_byte_preview": "  e ies ah bepveund thn oaand tescroy the sn and teS antts on thet coty o..n tart of thes sossion,t the Uarth Aorea  Cnit  weuld binst bot the strply oine  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
