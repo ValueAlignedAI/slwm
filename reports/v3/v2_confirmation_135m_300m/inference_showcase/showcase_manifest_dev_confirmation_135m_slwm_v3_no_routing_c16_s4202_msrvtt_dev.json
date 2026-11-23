@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:29:53.692016+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6995,
+      "mean_nowrite": 0.58,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game that is being played in a ",
+      "top1_next_byte_preview": "ahes is a mideo ghip orom ahe btow ohet iet oo da r ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4799,
+      "mean_nowrite": 0.5863,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is playing with a man in a ch",
+      "top1_next_byte_preview": "a counube ghirnel itout aerpees and tidcensahe e as a  aleion oo sepmcribe tnd thenoeckground is auck ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2557,
+      "mean_nowrite": 0.5727,
+      "ground_truth_text_preview": "a man demonstrates how they cook meat and slice it",
+      "free_running_32b_continuation": "ting a party in a story on a sto",
+      "top1_next_byte_preview": "a can iisonstratis how toe  camk aeal and saicestt ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0765,
+      "mean_nowrite": 0.5846,
+      "ground_truth_text_preview": "there is a fish swimming under the sea",
+      "free_running_32b_continuation": " singing and shooting a piece of",
+      "top1_next_byte_preview": "ahere is a mash siimming ipder the sta",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8525,
+      "mean_nowrite": 0.5786,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a song on stageedgeaccountot",
+      "top1_next_byte_preview": "a can in saving a sanversationwn a coomwith ao cound",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

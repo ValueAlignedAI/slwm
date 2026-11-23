@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:34:59.568185+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_slwm_v3_no_routing_c16_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7509,
+      "mean_nowrite": 0.5744,
+      "ground_truth_text_preview": "a woman had made some sort of dough and is wrapping if prior to refrigeration",
+      "free_running_32b_continuation": "e a basketball player in a black",
+      "top1_next_byte_preview": "a coman ias aade aome fort of cagbl and tt saippeng at ieenr to aepregeration",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5287,
+      "mean_nowrite": 0.571,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "en is being playedpotonong sh",
+      "top1_next_byte_preview": "a coyl if woipken ieidlesih niontiining ahicken tnd thrrot an bhown ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2418,
+      "mean_nowrite": 0.5862,
+      "ground_truth_text_preview": "a football player is racing down the field to score a touchdown",
+      "free_running_32b_continuation": "er is playing with a bagielde",
+      "top1_next_byte_preview": "a ceotball glayer is pidingoown the soeldaogterre a soych own",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0401,
+      "mean_nowrite": 0.5764,
+      "ground_truth_text_preview": "there is a woman is making a milk shake",
+      "free_running_32b_continuation": "n is talking about a woman in a ",
+      "top1_next_byte_preview": "ahere is a moman is taking a sack doode ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8831,
+      "mean_nowrite": 0.5733,
+      "ground_truth_text_preview": "a guy telling something",
+      "free_running_32b_continuation": "omethingcar in a black arm in a",
+      "top1_next_byte_preview": "a ciy iallsng aomething",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

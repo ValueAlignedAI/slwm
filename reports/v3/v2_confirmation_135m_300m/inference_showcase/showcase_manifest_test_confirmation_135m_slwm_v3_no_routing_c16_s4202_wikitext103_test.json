@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T17:30:17.935212+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3818,
+      "mean_nowrite": 0.0751,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": " scale of the surface of the sur",
+      "top1_next_byte_preview": "  aa ght ond sar seid  ahat an ahe soikeof t  ertdianding plrsaoeseived a Tegl eargeias aord ooosmsto thet oiteog o . ratke p   iokisr t0  m   lasnd oooeh an ar",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1864,
+      "mean_nowrite": 0.0745,
+      "ground_truth_text_preview": "How to Curse directed by Josie Rourke . How to Curse was performed at Bush Theatre in the London Borough of Hammersmith and Fulham . In a review of the producti",
+      "free_running_32b_continuation": "ectly into the state of the coun",
+      "top1_next_byte_preview": " ow to Cosre aoaectld ty tohea Mobnie i\nTew to Curse Dit arrformed bn tarh are tre in 1he Uandon Coodugh if 1arierh anh and trllam i .n 1 seciew of the crojucti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.058,
+      "mean_nowrite": 0.0764,
+      "ground_truth_text_preview": " she was returned to an even keel after three @-@ days pumping . Hy\u016bga was a primary focus of the attack and she received 10 direct hits and up to 30 near misse",
+      "free_running_32b_continuation": "d to the country and said to her",
+      "top1_next_byte_preview": " Coe was aeaurnid to t  anenimnepeanter aheee o 1 aays aatping a Tep\ufffd  raas a srovery corus on the pntack ond the weceived a0 yafectosyss fnd tndto 10 dowrbtods",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8962,
+      "mean_nowrite": 0.0767,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the state and the state of th",
+      "top1_next_byte_preview": " omiokted aromt o   @ike ondt  oor off ty the sorth Aorean  a and take trrr hen snr rops of t aunition a arrd a aater a and satiuil eupplies a .  at ermation oh",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6873,
+      "mean_nowrite": 0.0699,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the country and the state of",
+      "top1_next_byte_preview": "  araas ah bepveund tiykosand tescroyethe sn and toC intvs on thet coty o T  aart of thes passion t the Uarth Aorean Unit  weuld binst bot the surply oine  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

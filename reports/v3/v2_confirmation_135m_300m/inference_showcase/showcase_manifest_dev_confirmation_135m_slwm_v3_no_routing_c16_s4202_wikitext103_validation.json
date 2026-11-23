@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T17:29:59.174790+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3262,
+      "mean_nowrite": 0.0673,
+      "ground_truth_text_preview": " This was the favourite of John Tudor who wrote of the island in his Victorian memoirs and described the cave as : \n\n ... in fairyland , so exquisite is the col",
+      "free_running_32b_continuation": "scinating world of computer scie",
+      "top1_next_byte_preview": " Cies cas ahe fisorr te of tahn Curor aho waote an ahe fnland on 1is fictorian codoir .and ticcribed the cose on a\n\"\n\" .  st tacry ynd t tomtvpuisitelan the san",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0896,
+      "mean_nowrite": 0.0792,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e stairs and the stairs and the ",
+      "top1_next_byte_preview": " it rsoh tact ahes pnare a TTI aClrth wecained a soosinte if the sirld oor the fioghts on 1019.a anplnding tis cele iy traning aoce otacshan a sonlyeck o Te wel",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9745,
+      "mean_nowrite": 0.0745,
+      "ground_truth_text_preview": " Rabbit Creek in 1830 during the period of Indian Removal . After the treaty was ratified , European @-@ American settlers began to move into the area . \n\n Afte",
+      "free_running_32b_continuation": " the Middle Ages is a critical a",
+      "top1_next_byte_preview": " Cecbit Moeak Cs t987 wuring the leaiod of tndian Revatal i T ter the fraaty oas deiified b tmropean s  earerican cottlers wegan to save tnto the crea a T\nO ste",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7885,
+      "mean_nowrite": 0.0781,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "ffice (MPO) is a critical aspect",
+      "top1_next_byte_preview": " Ceegdian aalteMffice (ith tts Cncernor oeca bxtirely on teiaze and sirmi (arkle sn a so aotedorthy an t sers dare axample of the mepe of most Office.ieaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6625,
+      "mean_nowrite": 0.079,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "in the state of the country and ",
+      "top1_next_byte_preview": " vgnwnd taokled i  tarcdian Silh School i 1he souleae savem to tns faesent aecation an t991 a T ter teccrregation iess aere arssed t te  waeged iith th . Marris",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

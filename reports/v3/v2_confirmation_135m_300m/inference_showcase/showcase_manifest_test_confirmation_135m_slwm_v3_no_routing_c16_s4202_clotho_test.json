@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:30:04.948414+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4146,
+      "mean_nowrite": 0.3072,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "whine and a machine is running i",
+      "top1_next_byte_preview": "A caud mtueaki whack is mravelling ty ahpking ihoen  Araffic iassing by an a rot road wnd aish sitched silssng ssd seople talking.i tar dath b lqund ng nnorm ir",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.236,
+      "mean_nowrite": 0.3655,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of a stream of water flowing ove",
+      "top1_next_byte_preview": "VAhe woavy raad of a  ontustrial mnr fonditioner istt ilom toarba serti A  industrial air conditioner unit iferates ahth a siavy raari Aand bokeng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0018",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1172,
+      "mean_nowrite": 0.3612,
+      "ground_truth_text_preview": "Low humming coming from a vent while someone is moving objects about on a desk. Something makes a light hum in the background as something else makes a slight r",
+      "free_running_32b_continuation": "es in and then slows down and th",
+      "top1_next_byte_preview": "Aou wum ing aoneng from a rert aiile aomeone is soving anjects anovt in a vrvk. Aomeohing iokes a loqht hummwn the background.an aomeohing mnee iokes a ltight h",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9561,
+      "mean_nowrite": 0.3129,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being played at a constant r",
+      "top1_next_byte_preview": "Aaltiple vanns aepeatedly aointeriand tlatk an t songom sashion. Ahe cerson ial claying aith ahe coins an the r cands T person wlaying with toins in their hand ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6976,
+      "mean_nowrite": 0.3322,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning in a container and then s",
+      "top1_next_byte_preview": "Aanning water iunhes oonstantly an iirds aing ind chirp  Rater ilows ionststently as airds chirp aoftly an the background. Water frackles irom a sarntain and ti",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T17:30:12.799000+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4202_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9981,
+      "mean_nowrite": 0.5777,
+      "ground_truth_text_preview": "cartoon show for kids",
+      "free_running_32b_continuation": "r a moment in a cartoony cartoo",
+      "top1_next_byte_preview": "ahr oon ctowioor aids ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7404,
+      "mean_nowrite": 0.5699,
+      "ground_truth_text_preview": "baseball player hits ball",
+      "free_running_32b_continuation": "s play on the ground and then th",
+      "top1_next_byte_preview": "aunkball playerspots aall ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4266,
+      "mean_nowrite": 0.5778,
+      "ground_truth_text_preview": "a child in pink watches a white bird in an open box",
+      "free_running_32b_continuation": " table is playing with a pink in",
+      "top1_next_byte_preview": "a maild is alck titehes a coite sard in a  olen saa",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.131,
+      "mean_nowrite": 0.5777,
+      "ground_truth_text_preview": "a man is showing off a new vehicle",
+      "free_running_32b_continuation": "g how to show how to show how to",
+      "top1_next_byte_preview": "a can in showing hn  a bewssiricle ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8014,
+      "mean_nowrite": 0.5839,
+      "ground_truth_text_preview": "a group of people are walking a woman is talking about their culture",
+      "free_running_32b_continuation": "le are talking about a store in ",
+      "top1_next_byte_preview": "a cioup of people are talking drsoman in talking about ahe r fhsture",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
