@@ -1,0 +1,211 @@
+{
+  "timestamp_utc": "2026-11-23T14:59:41.298260+00:00",
+  "tag": "confirmation_135m_sliding_window_gqa_eqbyte_s4201",
+  "spec_name": "confirmation_135m_sliding_window_gqa_eqbyte",
+  "checkpoint": "/content/out/confirmation_135m_sliding_window_gqa_eqbyte_s4201_ckpt.pkl",
+  "wave_c_decoder_params": 51358758,
+  "use_swiglu_mlp": true,
+  "has_video_spatial_refiner": true,
+  "readout_mup_lr": 0.001,
+  "max_core_grad_verified": 0.0,
+  "core_weights_strictly_frozen": true,
+  "train_curve": [
+    {
+      "step": 1,
+      "loss": 6.60028,
+      "text_bpb": 8.0444,
+      "audio_rvq_ce": 7.6246,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 150,
+      "loss": 0.8794,
+      "text_bpb": 0.1905,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.26489,
+      "action_huber": 2.24127
+    },
+    {
+      "step": 300,
+      "loss": 0.24362,
+      "text_bpb": 0.1716,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19865,
+      "action_huber": 0.41325
+    },
+    {
+      "step": 450,
+      "loss": 0.6353,
+      "text_bpb": 0.1718,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17335,
+      "action_huber": 1.61348
+    },
+    {
+      "step": 600,
+      "loss": 0.42561,
+      "text_bpb": 0.1604,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.18469,
+      "action_huber": 0.98093
+    },
+    {
+      "step": 750,
+      "loss": 0.24577,
+      "text_bpb": 0.1323,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17765,
+      "action_huber": 0.46794
+    },
+    {
+      "step": 900,
+      "loss": 0.26372,
+      "text_bpb": 0.0798,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.18182,
+      "action_huber": 0.55405
+    },
+    {
+      "step": 1050,
+      "loss": 0.24389,
+      "text_bpb": 0.1114,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.15465,
+      "action_huber": 0.49977
+    },
+    {
+      "step": 1200,
+      "loss": 0.39199,
+      "text_bpb": 0.122,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.15795,
+      "action_huber": 0.93348
+    },
+    {
+      "step": 1350,
+      "loss": 0.14649,
+      "text_bpb": 0.0525,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.14341,
+      "action_huber": 0.25969
+    },
+    {
+      "step": 1500,
+      "loss": 0.25936,
+      "text_bpb": 0.0997,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.14516,
+      "action_huber": 0.56382
+    }
+  ],
+  "causal_conditioning_proofs": {
+    "video_to_audio_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 5.86629,
+      "shuffled_source_loss": 5.8629,
+      "causal_shuffle_gain": -0.0034,
+      "causal_shuffle_gain_se": 0.0063,
+      "causal_shuffle_ci95_low": -0.01575,
+      "frac_episodes_improved": 0.4062,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.2777,
+      "shuffled_source_loss": 0.2777,
+      "causal_shuffle_gain": -0.0,
+      "causal_shuffle_gain_se": 0.00066,
+      "causal_shuffle_ci95_low": -0.0013,
+      "frac_episodes_improved": 0.4844,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_text_clotho_dev": {
+      "shard": "clotho_dev.npz",
+      "source_mod": 1,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.74731,
+      "shuffled_source_loss": 0.75224,
+      "causal_shuffle_gain": 0.00494,
+      "causal_shuffle_gain_se": 0.00171,
+      "causal_shuffle_ci95_low": 0.00159,
+      "frac_episodes_improved": 0.625,
+      "causal_conditioning_verified": false
+    },
+    "video_to_text_msrvtt_dev": {
+      "shard": "msrvtt_dev.npz",
+      "source_mod": 0,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.94022,
+      "shuffled_source_loss": 0.95551,
+      "causal_shuffle_gain": 0.01529,
+      "causal_shuffle_gain_se": 0.01943,
+      "causal_shuffle_ci95_low": -0.0228,
+      "frac_episodes_improved": 0.5156,
+      "causal_conditioning_verified": false
+    },
+    "action_intervention_robotics_dev": {
+      "shard": "robotics_dev.npz",
+      "n_evaluated_episodes": 32,
+      "paired_next_proprio_huber": 0.85846,
+      "intervened_next_proprio_huber": 8.27457,
+      "action_intervention_proprio_gain": 7.41611,
+      "action_intervention_proprio_se": 1.13314,
+      "paired_next_video_huber": 0.10969,
+      "intervened_next_video_huber": 0.12769,
+      "action_intervention_video_gain": 0.018,
+      "targets_strictly_held_fixed": true,
+      "causal_action_conditioning_verified": true
+    },
+    "video_to_audio_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 4.69524,
+      "shuffled_source_loss": 4.70783,
+      "causal_shuffle_gain": 0.0126,
+      "causal_shuffle_gain_se": 0.00698,
+      "causal_shuffle_ci95_low": -0.00108,
+      "frac_episodes_improved": 0.5781,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.19546,
+      "shuffled_source_loss": 0.1954,
+      "causal_shuffle_gain": -6e-05,
+      "causal_shuffle_gain_se": 0.00019,
+      "causal_shuffle_ci95_low": -0.00043,
+      "frac_episodes_improved": 0.4531,
+      "causal_conditioning_verified": false
+    }
+  },
+  "wave_c_showcases": {
+    "clotho_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_sliding_window_gqa_eqbyte_s4201_clotho_dev.json",
+      "n_ranked_episodes": 32
+    },
+    "msrvtt_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev.json",
+      "n_ranked_episodes": 32
+    }
+  }
+}

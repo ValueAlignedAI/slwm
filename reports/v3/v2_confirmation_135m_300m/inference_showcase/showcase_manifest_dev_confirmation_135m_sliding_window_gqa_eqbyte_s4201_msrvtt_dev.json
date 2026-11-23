@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T14:51:09.277025+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8034,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a man surfs a box and a man",
+      "top1_next_byte_preview": "a can iprrs ahrough a mrn  whored bitesoorn shilhes ais hadtd",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6051,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is singing a song on a stage",
+      "top1_next_byte_preview": "a counhbe iaentel inout altpies and tidcens aae e is a  apeion oo bepmcribe tnd toenoalk round os tucg ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0031",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4038,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a cooking tutorial",
+      "free_running_32b_continuation": "ial is talking about a song on a",
+      "top1_next_byte_preview": "a camking ferorial ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1141,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a group of video game characters having a fight",
+      "free_running_32b_continuation": "os are playing with a song on a ",
+      "top1_next_byte_preview": "a cioup of pideosgamesihatacters aaveng a silht ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8856,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y talking about a person and a m",
+      "top1_next_byte_preview": "s ban is sappely txploining aome hing aith atherspeople an ahe soskround",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T14:51:53.319340+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0002",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2126,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "little pet shop cat getting a bath and washed with little brush",
+      "free_running_32b_continuation": " is talking about a person and a",
+      "top1_next_byte_preview": "aactle clreiooo ihn ionting a balttsnd ahthir aith aittle baoshe",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8433,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man talking about the two cars he test drove",
+      "free_running_32b_continuation": "bout a man in a black city show",
+      "top1_next_byte_preview": "a can ialking about ahe pro bhrsao saltitoipe ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0005",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5104,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "the man in the video is showing a brief viewing of how the movie is starting",
+      "free_running_32b_continuation": "background is talking about a st",
+      "top1_next_byte_preview": "aherman is ahe bideo gs thowing h saidf hidw ng af air toe mavie is shanteng ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1409,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g played a man in a black shir",
+      "top1_next_byte_preview": "a caissrps being pnteoducedio a sesital aevdingsisice",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8584,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a man in a black shirt in a bl",
+      "top1_next_byte_preview": "a can is shnging a d tianding un ahe bood",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T14:59:41.074468+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7968,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a woman had made some sort of dough and is wrapping if prior to refrigeration",
+      "free_running_32b_continuation": "e a staircase show on the stairc",
+      "top1_next_byte_preview": "a goman ias aade aome ttnt of pegbh and an poippeng an teemr to aeduigeration",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6184,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man climbs down a ladder",
+      "free_running_32b_continuation": "wn the road and a man is talkin",
+      "top1_next_byte_preview": "a gan ioinbi aown t baryer ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3459,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a fish swimming under the sea",
+      "free_running_32b_continuation": " is talking about a playing song",
+      "top1_next_byte_preview": "ahere is a merh ihimming apier the ska ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0826,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a person showing how to perform",
+      "top1_next_byte_preview": "a gan is toving a pamversation wn a beomwith ae stnnd ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9044,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y talking about a person and a m",
+      "top1_next_byte_preview": "s ban is sappely txploining aome hingaith ather people an ahe eeskround",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

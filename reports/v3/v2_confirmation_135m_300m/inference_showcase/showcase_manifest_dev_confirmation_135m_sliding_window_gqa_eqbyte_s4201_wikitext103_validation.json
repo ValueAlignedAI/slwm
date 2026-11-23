@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T14:51:22.407447+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3822,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ands Debauchery and Monstrosity covered the song , and the track was featured on cello metal band Apocalyptica 's 2006 album Amplified / / A Decade of Reinventi",
+      "free_running_32b_continuation": "and the State of the Confederate",
+      "top1_next_byte_preview": "  d oaasutgh s  and tartteosity aonered the stug o and the shanksoas aoatured bn tore saemal aosdsa plalypsic latta000 anlum apehitier S A Apseclde of tesnfenti",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1646,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Rabbit Creek in 1830 during the period of Indian Removal . After the treaty was ratified , European @-@ American settlers began to move into the area . \n\n Afte",
+      "free_running_32b_continuation": " the United States of the United",
+      "top1_next_byte_preview": " Ceibit aoaak is t964 wuring the lrriod of tndian cevotal i .lter the pwaaty oas aebhfied b amropean c  ,aferican Rtttlers wegan to rave tn o the srea a T\nA ste",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0004",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0054,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "North @-@ Western Area in January 1946 . Posted to Britain at the end of the year , he attended the Royal Air Force Staff College , Andover , and served with RA",
+      "free_running_32b_continuation": "n Colorado (1995) is a state of ",
+      "top1_next_byte_preview": " otth A   1ast rn Cuca os tunuary 2995\nw .rlted bo tritiin an the Und of the 1ear 1 ta wltemded the semal Crr Force aeatf aomlege o arnrner a and tevved aith to",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8091,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "fficer (MPO) is a critical aspec",
+      "top1_next_byte_preview": " Ceecdian Trltcafficeriath Pts Internor aeoa axtirely on tiiaze cnd sinmi iadklesin a so aat dorthy tn t sers sare pxpmple.of the srpe of post office ieaecture ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7102,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "in the street and the street was",
+      "top1_next_byte_preview": " vgnynd taoktid i  tarcdian Cosh School o ahe soulege oavem to tns crosent secation in t995.a T ter teccrregatinn waws aere arrsed t teS waaied aith th . airris",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

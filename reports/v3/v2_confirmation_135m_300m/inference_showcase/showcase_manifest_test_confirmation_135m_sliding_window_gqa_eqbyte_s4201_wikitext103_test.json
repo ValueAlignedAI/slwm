@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T14:52:06.473101+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_sliding_window_gqa_eqbyte_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3591,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "l and contain a single model of ",
+      "top1_next_byte_preview": "   p   Aa \nTesorl er  -eglessarr tepplrt ng tore  a . rranfnn if t0m   m i - 2s leimreal  ais a so ah beve aupport f AAT  ter tetk sr 2pgust 1,,a tiret Aanutena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.178,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "How to Curse directed by Josie Rourke . How to Curse was performed at Bush Theatre in the London Borough of Hammersmith and Fulham . In a review of the producti",
+      "free_running_32b_continuation": "ect the state of the state of th",
+      "top1_next_byte_preview": " ow to Crtte aasect d te tahea Cobsloli .ew to Curse Dis arrformed in trrh Cee tre an 1he Uandon Caadugh Cf tirper  ath and trrlamm( Ht tdseciew of the srojucti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1005,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " . Similarly they pursued but did not catch the American carriers that had launched the Doolittle Raid on 18 April . \n\n During gunnery training on 5 May , there",
+      "free_running_32b_continuation": " concept of similar signal theor",
+      "top1_next_byte_preview": " C..emular y,the  artcued tos aid not aorch the smerican poteier  ooet tad bernched the Aemrytt e Ciil of t5 Jpril 1 T\nI oring treser ,pieiling,af t Aay 1 the e",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9466,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Robert Boulter = \n\n Robert Boulter is an English film , television and theatre actor . He had a guest @-@ starring role on the television series The Bill in ",
+      "free_running_32b_continuation": "r Station (1999): A Comprehensiv",
+      "top1_next_byte_preview": " C=Aebort Caordir S A\nI obert Boulter is a  english lilm f ahllvision and the tee ancirsa.Te ias a sriss wr  aeartyng aobl if the rexevision aeries ohe Bobl is ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7879,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the state of the country the",
+      "top1_next_byte_preview": "  a ias ah berveund thmne and tescroy the sn and teM ondts on thet toty w T  aart of thes possion,i the Uarth Aorean cnits aeuld bonst cot the strply oine  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
