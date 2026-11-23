@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T05:43:59.078745+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3851,
+      "mean_nowrite": 0.2342,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "sound is being played on a stree",
+      "top1_next_byte_preview": "A maud wpueaki srack is rrivelling ay ahlking thoen  Araific iassing by an a rot soad wnd tith sitched sylpsng nnd seople talking.i tar deth a ltfnd ng bnorm ir",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0010",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2269,
+      "mean_nowrite": 0.2739,
+      "ground_truth_text_preview": "The man urinates for a long time into a toilet. The rain from the sky falling into a metal barrel. A man is peeing in a toilet for a long time. A metal bowl cat",
+      "free_running_32b_continuation": "s and then shuts off the shore. ",
+      "top1_next_byte_preview": "Ahe wac isinates aor a long pime an e t chwlet  Ahe main faom ahe shy iallsng anto t tetal col.el. T ten is slepng wn t moilet aor a mong time. T matal baxl ion",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0004",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0915,
+      "mean_nowrite": 0.2319,
+      "ground_truth_text_preview": "The dry grass rustles as an animal is rummaging through it. The rustling of a material grows quiet and then begins to rustle audibly again. A person repeatedly ",
+      "free_running_32b_continuation": "ustles on the ground as the wind",
+      "top1_next_byte_preview": "Ahe wii ruass iustles os t  eiimal is bunbaging ihrough at. Ahe damtling of anbecerial iraws luietland then aegins to rustle.andibly.Anain. T merson rupeatedly ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0006",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8685,
+      "mean_nowrite": 0.2403,
+      "ground_truth_text_preview": "As birds chirp in the background, metal objects fiercely rattle against one another. While birds tweet, a piece of metal bangs. An object is rattling and echoin",
+      "free_running_32b_continuation": "in the background as birds chirp",
+      "top1_next_byte_preview": "A  tirds chirp in the background  autal objects alrlcely cettle anainst ete another. Maile birds aweet  a seece of metal oirds  M  object is buttleng and aahoin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0016",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.6936,
+      "mean_nowrite": 0.2415,
+      "ground_truth_text_preview": "After the silence, a few people in the distance are talking to each other. After the silence, a few people in the distance are talking. A person is walking thro",
+      "free_running_32b_continuation": "ce of a man speaks and then some",
+      "top1_next_byte_preview": "A ter ahe wtnence  a mew beople tn the bistance a e balking.ao each other. A ter ahe silence  a few people tn the distance a e talking  A ferson is talking ahro",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

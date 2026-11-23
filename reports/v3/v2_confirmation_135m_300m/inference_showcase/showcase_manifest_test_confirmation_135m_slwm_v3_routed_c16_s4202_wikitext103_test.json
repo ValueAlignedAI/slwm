@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T06:46:27.402026+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3977,
+      "mean_nowrite": 0.0909,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": "ger and more stronger than the s",
+      "top1_next_byte_preview": "  aerght ond slrgsends ahat an ahe soikeof t  ebteianding carsaoesoived a Tegl sarg ias bord toosm to thet oeteog a Tnsatke r   ioki r o   m   lrsnd oooeh an ar",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1855,
+      "mean_nowrite": 0.0964,
+      "ground_truth_text_preview": "cking dive bombers from the second wave and one small bomb detonated on Turret No. 2 . Hy\u016bga was lightly damaged by near misses that rupture some hull plating i",
+      "free_running_32b_continuation": "d in a straight line of straight",
+      "top1_next_byte_preview": " oeng aosiriyobsds aoom the ctaond coye ond tn  oiall sombeoisenatid tn thrket aar 1 a .ed\ufffdrardas aokhtey seraged by towrltadsid ohet wenturedtome oaml oaaneng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.045,
+      "mean_nowrite": 0.0933,
+      "ground_truth_text_preview": " she was returned to an even keel after three @-@ days pumping . Hy\u016bga was a primary focus of the attack and she received 10 direct hits and up to 30 near misse",
+      "free_running_32b_continuation": "d to the staircase of a small to",
+      "top1_next_byte_preview": " Coe was aeaurnid to t  anenimnypeonter aheee ha- hay  latpeng o.Ted\ufffdrarwas a srovery sirus on the srteck ond tee weceived a0 safectoayss fnd 1sdto t0 dowrbteds",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8869,
+      "mean_nowrite": 0.0977,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the stairs and the stairs and",
+      "top1_next_byte_preview": " omeoali  iromt o   -oke optt  oot iff ty the sorth Aorean  a and tane trrr hen t r rops ff t punition a aord a aater a and saaicil supplies.a Tn at ormation au",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7035,
+      "mean_nowrite": 0.0997,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically focusing on the interse",
+      "top1_next_byte_preview": " Che ryet m apecilatid boat tonsiict riuld bndvitably bfise detween tepaneand Sntteast tne pf tts mwo cajn cesals.- Th uhit dnd,o te solled tor ahe fapanese cat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

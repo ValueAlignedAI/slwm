@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T05:42:52.699449+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8631,
+      "mean_nowrite": 0.6738,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a wooden surface while a wo",
+      "top1_next_byte_preview": "a can iprfs aaeough a wrte wuoped oileswhr  ahashed ais hodtd ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5874,
+      "mean_nowrite": 0.6717,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is being played",
+      "top1_next_byte_preview": "a counube chatnel ipout aatpies and aitcens aaa e as a  aleion fo gepmcribe tnd soenpeskground is trcn ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1667,
+      "mean_nowrite": 0.6639,
+      "ground_truth_text_preview": "a man demonstrates how they cook meat and slice it",
+      "free_running_32b_continuation": "tes how to cook a basketball pla",
+      "top1_next_byte_preview": "a can iesonstrates how toe  camk aeat and saecestt ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0138,
+      "mean_nowrite": 0.6527,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a car accompanies a car accompa",
+      "top1_next_byte_preview": "a can is soving a canversation wn a peomwhth ao connd",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7859,
+      "mean_nowrite": 0.6675,
+      "ground_truth_text_preview": "a cartoon character is launched across a room",
+      "free_running_32b_continuation": "cter is showing a cartoon charac",
+      "top1_next_byte_preview": "a cartoon character is sougched atross t soom",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

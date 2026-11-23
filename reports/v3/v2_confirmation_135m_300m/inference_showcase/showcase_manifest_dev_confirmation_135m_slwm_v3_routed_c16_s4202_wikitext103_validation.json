@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T06:46:08.736486+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2908,
+      "mean_nowrite": 0.0875,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "the community and the state of t",
+      "top1_next_byte_preview": " Cetdeatncer af the Sraplateon  o a   tis fwd r frother Sam y tosfing(are aorn in 1he ltnrounding crea o aii  nhsnd hhloens ille w wemuectively.t T\nA enrge Wtlt",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1297,
+      "mean_nowrite": 0.0942,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ice Press\nThe Vice Press is a se",
+      "top1_next_byte_preview": " opiet vankhalliill(aldock (s turil 1 1a d in Sas arebited bo t d peot varshal vf t0 Jar 1 .n M8 Muly 1943,t te was arsted oo toM  aarebCasterforth a aaraysnB a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9432,
+      "mean_nowrite": 0.0938,
+      "ground_truth_text_preview": "h was piloted by Headlam , in November . The following month , Headlam led the three Ansons on a six @-@ day journey back and forth over Central Australia . He ",
+      "free_running_32b_continuation": " the constant constantinople of ",
+      "top1_next_byte_preview": " eihs arceted iy tanv en a an 1ovember 1 .he cillowing yonth i aeadlam waa the crree mmgen  tf t stntm 1cfay ouurnay teck itd forth iner tantral Amstralia.a .e ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7907,
+      "mean_nowrite": 0.0941,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " (HG) and a similar process in t",
+      "top1_next_byte_preview": " C>-emenys (amea  s ( 1\nI omarus gammarus i anown as the \"uropean Uageter (f tommun sabster ( is a stecias of aoossd fibster toom the sartern pulantic Ocean a a",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6498,
+      "mean_nowrite": 0.0988,
+      "ground_truth_text_preview": "ea , only missing from the section east of Crete , and along only the north @-@ west coast of the Black Sea . The northernmost populations are found in the Norw",
+      "free_running_32b_continuation": "g the state of the country and t",
+      "top1_next_byte_preview": " vct ar y aonsing trom the stcoion oxci of taote a and t lng tney thr sorth o 1 ah t ooast of the Uaack Sea i The sorth rn ost caiulation  ore tound in the sort",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

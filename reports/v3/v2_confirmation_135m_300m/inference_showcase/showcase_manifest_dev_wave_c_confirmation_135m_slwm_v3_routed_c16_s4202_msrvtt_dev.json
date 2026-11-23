@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T06:51:01.982800+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_slwm_v3_routed_c16_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8286,
+      "mean_nowrite": 0.5242,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ee times in a black suit and a b",
+      "top1_next_byte_preview": "a can iirrs aheeugh a brt ohoped wilesahrn sholhes ais hawtd ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4891,
+      "mean_nowrite": 0.5233,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "en cooking a cooking cooking coo",
+      "top1_next_byte_preview": "a coyl of aoicken ceodlesihmn iaotainsng aoicken snd carrotsin shown ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1745,
+      "mean_nowrite": 0.5212,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "is talking about a man in a blac",
+      "top1_next_byte_preview": "ahere is a man is tagering ah a morky",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0018",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0544,
+      "mean_nowrite": 0.5231,
+      "ground_truth_text_preview": "a man demonstrates how they cook meat and slice it",
+      "free_running_32b_continuation": "tes how to describe a song on th",
+      "top1_next_byte_preview": "a can iesonstrates how toe  camk teat ind dhice tt ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8746,
+      "mean_nowrite": 0.5227,
+      "ground_truth_text_preview": "a car being driven",
+      "free_running_32b_continuation": "vendchirpeds a car driving ",
+      "top1_next_byte_preview": "a cartieing driven",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T05:44:38.466996+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4202_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.009,
+      "mean_nowrite": 0.6653,
+      "ground_truth_text_preview": "a woman creating a fondant baby and flower",
+      "free_running_32b_continuation": "g a spoon table tennis video",
+      "top1_next_byte_preview": "a coman ioyateng a slotent oesysnd aaiairs",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7685,
+      "mean_nowrite": 0.6769,
+      "ground_truth_text_preview": "while other friends too try and hitting the basket another is eager to achieve his fourth successful basket in basketball",
+      "free_running_32b_continuation": "ends are singing a song on the v",
+      "top1_next_byte_preview": "aoite anher poiends aa kcha tnd sat ing the galketbondther fn tater to spcieve tis fernth fticessul casketan tasketall",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4308,
+      "mean_nowrite": 0.659,
+      "ground_truth_text_preview": "a naked child runs through a field",
+      "free_running_32b_continuation": "eports a child singing a songin",
+      "top1_next_byte_preview": "a ceted ihild ienn ohrough t carld ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1451,
+      "mean_nowrite": 0.6612,
+      "ground_truth_text_preview": "there is a man shooting other people in a corridor",
+      "free_running_32b_continuation": "is talking about a partyd in a ",
+      "top1_next_byte_preview": "ahere is a wan iiowting anher people in a bounedor",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8628,
+      "mean_nowrite": 0.6541,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a song in a park in a park in ",
+      "top1_next_byte_preview": "a can is singing a d sianding an ahe food",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

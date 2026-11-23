@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T05:43:24.925338+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3359,
+      "mean_nowrite": 0.1512,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "the state and the state of the c",
+      "top1_next_byte_preview": " Cesreatlger an the Srmplation :o a   tes fwd r srother Tam y Tosflngwane aorn in 1he stmrounding crea o wii ns wnd Joloens ille w weapoctively.s.T\nO rorge Wtls",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1039,
+      "mean_nowrite": 0.1717,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e same stream and the stream of ",
+      "top1_next_byte_preview": " et rsoh tacteahes snfyd a .TI aCorth wecainsd a soosinte of the sirld oor the fioghts on 1018.a wxplnding tos cele iy traying aoce ooicshan a sonl ock f He wen",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0008",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9545,
+      "mean_nowrite": 0.1684,
+      "ground_truth_text_preview": "g against Haido , a utopian idealist seeking to rule the world with a power called Gelel ; in the fourth , Shikamaru appears in a brief sequence , fighting agai",
+      "free_running_32b_continuation": "and the state of the United Stat",
+      "top1_next_byte_preview": " ot ainst tartana t snopian snea  st wtrking to bele ohe porld oith t srwerfoolled torasia at the eorrth c Geanh an  anpears tn t soief ptnuence o aoruting agai",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7543,
+      "mean_nowrite": 0.1645,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " (Homarus): A Comprehensive Guid",
+      "top1_next_byte_preview": " C=Taleg s (amea us ( H\nI omarus =ammarus = anown as the \"nropean Gacbter (r tonpon gobster o is a stecias of pooyed pebster toom the sartern pflantic Ocean.t w",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6408,
+      "mean_nowrite": 0.1725,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "in the streets of the country an",
+      "top1_next_byte_preview": " vg ond tiokled it taxcnian Silh School i ahe fomlece oanem to tts cresent decation an t998 a Ttter tecirregation oas  aere drssed t te  wamied tith th . Martis",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

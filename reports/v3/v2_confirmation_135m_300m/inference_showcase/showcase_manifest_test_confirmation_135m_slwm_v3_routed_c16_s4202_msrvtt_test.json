@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T06:46:22.269151+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9956,
+      "mean_nowrite": 0.531,
+      "ground_truth_text_preview": "goldfish chase each other around a blue tank to music",
+      "free_running_32b_continuation": "a sharp sharp sharp sharp sharp ",
+      "top1_next_byte_preview": "aibf irh aharesaach other wnound t goae srln ah tesic ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7985,
+      "mean_nowrite": 0.5272,
+      "ground_truth_text_preview": "a man talking about the two cars he test drove",
+      "free_running_32b_continuation": "bout a play showing showing sh",
+      "top1_next_byte_preview": "a can ialksng about ahe syo phrt aalsaltsaoine ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5794,
+      "mean_nowrite": 0.5263,
+      "ground_truth_text_preview": "a man in a music video screams shut up a bunch of times",
+      "free_running_32b_continuation": "c video game is being played",
+      "top1_next_byte_preview": "a man in a bosic video ghreemi aoottdp ancosch of pomes",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1602,
+      "mean_nowrite": 0.5248,
+      "ground_truth_text_preview": "there is a man shooting other people in a corridor",
+      "free_running_32b_continuation": "is talking about a man in a man",
+      "top1_next_byte_preview": "ahere is a man iiowting anher ieoplein a counedor",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7791,
+      "mean_nowrite": 0.5264,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a song on stage and talking ab",
+      "top1_next_byte_preview": "a man is singing a d sianding on ahe bood",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

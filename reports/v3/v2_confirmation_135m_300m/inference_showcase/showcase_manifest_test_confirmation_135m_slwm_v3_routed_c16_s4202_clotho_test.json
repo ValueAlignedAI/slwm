@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T06:46:14.474999+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4189,
+      "mean_nowrite": 0.1819,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "door opens and closes a door and",
+      "top1_next_byte_preview": "A caud wpuaaki drack is baivelling da ahlking ahoen  Araific iassing by av a rot road wnd tighwpitched trepsng.And taople talking i tor dith b lmund ng cntrm ir",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0014",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2602,
+      "mean_nowrite": 0.1716,
+      "ground_truth_text_preview": "A person puts a key into the ignition of a car and starts it. Someone putting a key in a car ignition and starting the engine. Clicking sounds are following by ",
+      "free_running_32b_continuation": " piece of wood and then slows do",
+      "top1_next_byte_preview": "A person iott a pny tn o ahe pnnition of a por dnd tparts ut  Aomeone iutsing a key inta car annition ond startsng ihe cndine. Aaicking oound  ane bolloweng ty ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0013",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1085,
+      "mean_nowrite": 0.193,
+      "ground_truth_text_preview": "High pitched bells play a tune followed by a moment of silence before a deeper bell tolls. High pitched bells ring, followed by a moment of silence, before a de",
+      "free_running_32b_continuation": "eps and splashing of a beep and ",
+      "top1_next_byte_preview": "Aegh potched clels aaay ansrnn aollowed by a satent of stlence.aefore b mrlp r sell rulls  Aigh pitched bells aing  aollowed by a soment of silence. aecore b me",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0006",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8705,
+      "mean_nowrite": 0.1989,
+      "ground_truth_text_preview": "As birds chirp in the background, metal objects fiercely rattle against one another. While birds tweet, a piece of metal bangs. An object is rattling and echoin",
+      "free_running_32b_continuation": "in the background, a bird chirps",
+      "top1_next_byte_preview": "A  tirds chirp in the background, aanal objects alldcely fittle asainst ebe another. Maile mirds aweet  m meece of metal cirgs  A  abject is buttling and achoin",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0020",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7101,
+      "mean_nowrite": 0.2183,
+      "ground_truth_text_preview": "Insects buzz loudly while birds chirp and sing. Birds chirp and sing while insects buzz loudly. Flying insects are buzzing and birds are singing in the backgrou",
+      "free_running_32b_continuation": "udly as the wind blows and crack",
+      "top1_next_byte_preview": "An icts alzz aoudly ahile airds ahirp ind cing  Birds chirp and sing ahile bnsects auzz aoudly  Boiing on ects ane buzzing and surds are cinging an the backgrou",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

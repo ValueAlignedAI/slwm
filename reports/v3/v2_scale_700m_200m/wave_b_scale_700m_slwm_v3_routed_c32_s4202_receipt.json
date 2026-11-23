@@ -1,0 +1,75 @@
+{
+  "timestamp_utc": "2026-11-23T05:47:56.155530+00:00",
+  "tag": "scale_700m_slwm_v3_routed_c32_s4202",
+  "checkpoint": "/content/out/scale_700m_slwm_v3_routed_c32_s4202_ckpt.pkl",
+  "core_weights_strictly_frozen": true,
+  "train_shards_strictly_disjoint_from_dev": true,
+  "primary_blind_reliability_regime": {
+    "n_eval_samples": 2048,
+    "policy_commit_gate": {
+      "overall_decision_accuracy": 0.5479,
+      "grounded_channel_accuracy": 0.4336,
+      "grounded_content_accuracy_on_committed": 0.7149,
+      "unsupported_claim_rate": 0.3379,
+      "contradiction_rate": 0.064,
+      "abstention_noop_rate": 0.6118,
+      "expected_calibration_error_ece": 0.38,
+      "action_distribution": {
+        "SPEAK_TEXT": 0.3833,
+        "EMIT_AUDIO": 0.0,
+        "GENERATE_VIDEO": 0.0049,
+        "ACT_MOTOR": 0.0,
+        "ABSTAIN_SILENCE": 0.6118
+      }
+    },
+    "reliability_only_threshold_baseline": {
+      "overall_decision_accuracy": 0.4956,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "always_commit_baseline": {
+      "grounded_channel_accuracy": 0.9912,
+      "grounded_content_accuracy": 0.6611,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "unsupported_claim_reduction_vs_always_commit_pp": 66.21,
+    "decision_acc_gain_over_reliability_only_pp": 5.22,
+    "non_collapsing_abstention": true
+  },
+  "secondary_degraded_sensor_outage_regime": {
+    "n_eval_samples": 2048,
+    "policy_commit_gate": {
+      "overall_decision_accuracy": 0.6836,
+      "grounded_channel_accuracy": 0.4355,
+      "grounded_content_accuracy_on_committed": 0.7339,
+      "unsupported_claim_rate": 0.0684,
+      "contradiction_rate": 0.0596,
+      "abstention_noop_rate": 0.7456,
+      "expected_calibration_error_ece": 0.2633,
+      "action_distribution": {
+        "SPEAK_TEXT": 0.2515,
+        "EMIT_AUDIO": 0.0,
+        "GENERATE_VIDEO": 0.0029,
+        "ACT_MOTOR": 0.0,
+        "ABSTAIN_SILENCE": 0.7456
+      }
+    },
+    "reliability_only_threshold_baseline": {
+      "overall_decision_accuracy": 0.9883,
+      "unsupported_claim_rate": 0.0,
+      "abstention_noop_rate": 0.5
+    },
+    "always_commit_baseline": {
+      "grounded_channel_accuracy": 0.9766,
+      "grounded_content_accuracy": 0.6992,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "unsupported_claim_reduction_vs_always_commit_pp": 93.16,
+    "decision_acc_gain_over_reliability_only_pp": -30.47,
+    "non_collapsing_abstention": true
+  },
+  "wave_b_showcase_manifest": "/content/out/inference_showcase/showcase_manifest_dev_wave_b_scale_700m_slwm_v3_routed_c32_s4202.json",
+  "wave_b_blind_beats_reliability_only": true
+}

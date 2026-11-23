@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T06:46:03.525190+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7763,
+      "mean_nowrite": 0.516,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is reviewing a song on the sc",
+      "top1_next_byte_preview": "a mounuse phartel inout aorieesind aitcens aae eas a  aleicn oo sepmtribe tnd saenpenkground is tucn ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5005,
+      "mean_nowrite": 0.5233,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "en bowl is being played",
+      "top1_next_byte_preview": "a coyl of ahicken beodlesihmn ioosainsng aoicken snd chrdotsan btown ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0017",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1779,
+      "mean_nowrite": 0.5151,
+      "ground_truth_text_preview": "a band preforms a song",
+      "free_running_32b_continuation": " a song on stage and talks about",
+      "top1_next_byte_preview": "a cand ieeforms a song ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9855,
+      "mean_nowrite": 0.5251,
+      "ground_truth_text_preview": "a group of video game characters having a fight",
+      "free_running_32b_continuation": "o games is going ons and talks ",
+      "top1_next_byte_preview": "a cioup of pedeo gamesiharacters aaveng a calhti",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0005",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8375,
+      "mean_nowrite": 0.5203,
+      "ground_truth_text_preview": "a couple talking about food",
+      "free_running_32b_continuation": "g about a play game which is ta",
+      "top1_next_byte_preview": "a mauple oalking about aiod ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

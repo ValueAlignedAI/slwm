@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T05:45:10.704054+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_slwm_v3_routed_c32_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3174,
+      "mean_nowrite": 0.1617,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": " strips of the strips of the str",
+      "top1_next_byte_preview": "  ae ght and srt seids ohat an ahe soik of t  alteianding slrsaoeaoiver a .ecl  erg ias bord toosmsto thet oenefg a . patke c   hofi r b0  m   waind oooeh an wr",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1125,
+      "mean_nowrite": 0.1649,
+      "ground_truth_text_preview": "other crane was intended on the starboard side , but it was never fitted . \n\n The ships had an air group of 11 each of Yokosuka D4Y dive bombers ( Allied report",
+      "free_running_32b_continuation": "a strange stranger and the stran",
+      "top1_next_byte_preview": " nher poefessas an erded tf the stat uard ahde o aut tt was aover tonted w .TA he ctop  wad b  edr caiun af p0 slrh of teuohh o aa  sesiriytbsrs aa1lb ed sesort",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.988,
+      "mean_nowrite": 0.167,
+      "ground_truth_text_preview": "n 1st Battalion reached regimental headquarters , Freeman obtained the release of G and F Companies from 2nd Division reserve and sent the former to help 1st Ba",
+      "free_running_32b_continuation": "of the State of America\nThe Stat",
+      "top1_next_byte_preview": " ot t castllion oegdted tecioentsl aoat uarters a aran an Sfsained ahe fesaase of teand t aonpanyos toom t0d Aesision oeguavestnd tert toe rirmar to telp t t Aa",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8904,
+      "mean_nowrite": 0.1701,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the star and the star and the",
+      "top1_next_byte_preview": " owinkted aromt o   hone opdt  @or off ty the sarth Corean  a and tane irrr hen pnr rops if t ponition a aort a aater a and siticil eupplies.a T  at ormation au",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6842,
+      "mean_nowrite": 0.1679,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically a form of communication",
+      "top1_next_byte_preview": " Che ryemsa auecilatid ahet tonslict iauld bndvitably bfise fetween tapaneand tntleast tne pf tts mwo main cegals i Thdthet mrd,o te womled tor ahe fapanese cav",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
