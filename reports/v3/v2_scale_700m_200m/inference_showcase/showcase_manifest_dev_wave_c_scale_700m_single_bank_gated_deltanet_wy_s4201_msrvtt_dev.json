@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T05:32:39.602905+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6795,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game in a video game",
+      "top1_next_byte_preview": "ahes is a mideo glip orom ahe scow whet iet io doar ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5062,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a wooden show s show",
+      "top1_next_byte_preview": "a gan itrfs aheough a wrb  shope sote ohan shoshes ais tratd",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.229,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a woman is making a milk shake",
+      "free_running_32b_continuation": "n in a woman is talking about a ",
+      "top1_next_byte_preview": "ahere is a moman in taking a dani pooke ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0328,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a cartoon character is launched across a room",
+      "free_running_32b_continuation": "cter is talking about a player t",
+      "top1_next_byte_preview": "a gartoon character is toygchidotross t boom",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8675,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a group of people dancing and singing for a music video",
+      "free_running_32b_continuation": "le are talking about a programi",
+      "top1_next_byte_preview": "a gioup of people aancingitd cpnging aor a mosic video",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

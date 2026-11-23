@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T05:27:28.937328+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3065,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": " pieces of paper are being place",
+      "top1_next_byte_preview": "  ae ght and wlr peids ahet as she soik of t  eltdianding sorsaoepeived a .egf  erg ias aord toosmsto bhet oeteog o . ranke r   aogi r h0  m   l.inds1roeh en .r",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1587,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": "d a straight line of the street ",
+      "top1_next_byte_preview": " naa .erranirayed ais farhon on the sasteoide of tlrnuaoar the sonar  oosry t .  t00m 10 p.muidy ser soaered whe sover a tnd t  t0 h 00 aineal .iills aelan torl",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0029",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9772,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The company suffered heavy casualties , including the company commander and Keiser 's aide who had accompanied the force . With the critical parts of Cloverleaf",
+      "free_running_32b_continuation": "ers from a state of constant dea",
+      "top1_next_byte_preview": " he sonpuny itpfersd fiavi mortalties i an luding the company ,ompunded ond tanter oA cnr  iii wad b cemplnied the cirmeso Thth the coemical cort  of taauer aaf",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9155,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the sea and the sea and the sea ",
+      "top1_next_byte_preview": " ngna the  s of tes srwtry ata .ver then te wifrned tf the sivdh of tis poutg rt poild,a he whrned to the strfering of hthers an tis oaetry an tead of teelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7178,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically the concept of the \"Spe",
+      "top1_next_byte_preview": " Che lyet a atecilatid ahet tonslict riuld bndvitably bfise fetween tapaneand t  least tne mf tts meo cajn cetalr i Th uhet mnd,i te wolled tor the fapanese pat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

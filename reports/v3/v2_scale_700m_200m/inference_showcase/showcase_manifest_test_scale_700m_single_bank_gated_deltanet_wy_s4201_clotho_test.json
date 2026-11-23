@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T05:26:40.708485+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0027",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3923,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Someone opens a wrapper and chews the contents with a crunching sound. A radio searches for a signal through a lot of static as a bubbling drone appears. While ",
+      "free_running_32b_continuation": " bag of wooden stairs and then s",
+      "top1_next_byte_preview": "Aomeone ipens a boipper and tlecs ahe sontants oith t soenchyng sound. A podio itttches for a cenn l aoaoughoa cau of woatio.wn i panbleng soape orprars  Shile ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0030",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2504,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "At least two cats meowing while someone is walking around and a male voice at the end. A cat starts meowing and then another cat joins in then a man start",
+      "free_running_32b_continuation": "rs are crashing against a stream",
+      "top1_next_byte_preview": "A  aeast aho wars aoawing aiile aomeone is calking around i d c cane coice iptahe end. A cat ioarts aoowing and ahen a other cat siins at the .a cel spart",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0003",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1241,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Keys jingle as they open a small drawer. Various items are being rummaged through, including the jangling of some keys. items being rummaged through and moved, ",
+      "free_running_32b_continuation": "they are jingled and shouted. Ke",
+      "top1_next_byte_preview": "Aiys aingle as the  apen anbpall boawer  Kerious ktems are being senbaged aorough  ancluding ahe sirgling sf aomeodeys. Atems aeing rummaged aorough a   toved  ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8662,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being struck against a stron",
+      "top1_next_byte_preview": "Aeltiple phnns aupeatedly fhanter and clatk an t songom rashion. She cerson ial claying aith ahe coins an the r hand. S person wlaysng with toins in their hand ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0005",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7179,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A man speaks and a door opens and shuts repeatedly afterwards. A man talks followed by doors being opened and closed A man is talking, then a door opens and clo",
+      "free_running_32b_continuation": "d then someone is speaking and t",
+      "top1_next_byte_preview": "A pac ipeaks and t moor ipens and ahuts iepeatedly.Agter ard.. A man salks arllowed by soor  oeing spened and closed r pan ts salking  then s door spens and clo",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

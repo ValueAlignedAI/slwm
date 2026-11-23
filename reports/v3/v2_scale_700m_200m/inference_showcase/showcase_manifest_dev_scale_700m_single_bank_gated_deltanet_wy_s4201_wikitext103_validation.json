@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T05:26:18.665325+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2374,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ands Debauchery and Monstrosity covered the song , and the track was featured on cello metal band Apocalyptica 's 2006 album Amplified / / A Decade of Reinventi",
+      "free_running_32b_continuation": "and Debauchery are also a seriou",
+      "top1_next_byte_preview": "  d  aalotgh r  and Dartteou ty aomer d the stu  o and the shank oas aodtured in tonl  aamal aasdsa plalyptic las t000 Mnbum clehitier a 2 /m2eblle of tesntenti",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1129,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "ice President of the University ",
+      "top1_next_byte_preview": " ocist PanthallCilliardeuk is turil 2 .a l in Vas areuited bo t d past varshal af t0 Jar 2 Hn t9 July 2944,t 1e was arpted oo toM  iryibaartorforth i aarays a a",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0007",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9396,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s commented on his laziness and intelligence , and noted his transformation into a leader ; Anime News Network celebrated Shikamaru 's emergence as \" an unlikel",
+      "free_running_32b_continuation": "is face and the strange strange ",
+      "top1_next_byte_preview": " omomeontad tn tis fisyeess and tn erligence a and hot d tis shanslormation an o t sagdir a andma aaws  ewwork (olebrated taano a   aT cxprgency on ata  andikel",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7619,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": "r is a type of medical computer ",
+      "top1_next_byte_preview": " C=Ciwetcs Crrear s ( H\nI omarus gammarus i Hnown as the Haropean Uacbter gf sonmun lobster g is a seecias of coissd gibster coum the sartern Utlantic Ocean.a w",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6165,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "in the country of the country an",
+      "top1_next_byte_preview": " vgnand tiokled it tarctian ailh School o ahe fomlege oenem to tts sresent sication in t990 a T ter teccrregation ies  aere arrsed t te  wamied with th . Mirris",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
