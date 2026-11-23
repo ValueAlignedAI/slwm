@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T02:58:53.137599+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3489,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ands Debauchery and Monstrosity covered the song , and the track was featured on cello metal band Apocalyptica 's 2006 album Amplified / / A Decade of Reinventi",
+      "free_running_32b_continuation": "and the South African American c",
+      "top1_next_byte_preview": "  d taanotmh r  and tartteuueay ooner d the stug o and the seadesoas aodtured in tole  aatal aendsa plhlypsic l(s s000 anoum apelifier S C SpCebede /f tesnfenti",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1339,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "r Vice Marshal Val Hancock in April . Headlam was promoted to air vice marshal on 29 May . On 17 July 1962 , he was posted to RAAF Base Butterworth , Malaya , a",
+      "free_running_32b_continuation": "isited the State of Colorado and",
+      "top1_next_byte_preview": " oaict ParthallPillSardhck (s turil 1 Ta l in Has arodoted to t d aiae marshal af t0 Jay 2 Tn t9 Muny 1944,a te was arpted bo toM  aesi Car orfooth a aaraysna M",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.981,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ce 1930 , offers daily flights to Dallas / Fort Worth , TX . \n\n During the Great Depression , residents of the city contemplated abandoning the airport because ",
+      "free_running_32b_continuation": " a strong enterprise in the cont",
+      "top1_next_byte_preview": " ori999 - tn iri aetly aoaght  ao tenlas a Srrt Saoth a ah a .TT aring the dreat Depression,i tesedents af the Uoty wontimpoated t ondoneng the crr ort ayhamse ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8214,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "fficers and Companies in the Uni",
+      "top1_next_byte_preview": " Ceecdian Solt-Pfficeraath tts Cnternor deconcxdrrely of tieaze and sirmi ierkle an a lo kat dorthy on a pers sane axpmple.of the irpe of most-office otaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6609,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "a strange strange man who had be",
+      "top1_next_byte_preview": " vgmind saokled a  tarcdian ailh School i the fomlege aenem to tns orosent secation an t995 a T ter tecirregation oews aere arrsed t te  warged tith th . Cortis",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

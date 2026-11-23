@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T02:58:39.009431+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7973,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game where a person is talking ",
+      "top1_next_byte_preview": "ahes ms t mideo glop ooom ahe stow ohit iethoo daar ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5746,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man climbs down a ladder",
+      "free_running_32b_continuation": "ugh a shirt and talks about how ",
+      "top1_next_byte_preview": "a can ioitbs aoun t sakyer ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2276,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a blonde girl in a pink sweater sits on the piano and plays it",
+      "free_running_32b_continuation": "s talking about a persone",
+      "top1_next_byte_preview": "a caande mirl is a baek shiater shts on the sannoand tlays ats",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0875,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man doing something using paper",
+      "free_running_32b_continuation": "e things in a containeral conta",
+      "top1_next_byte_preview": "a can ieing aome hingining aoper ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8654,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y talking about how to play a ga",
+      "top1_next_byte_preview": "a can is sovpyly txplaining homethingoith atherspeoplear ahe seckground",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

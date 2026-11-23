@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T02:59:25.859555+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0504,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "goldfish chase each other around a blue tank to music",
+      "free_running_32b_continuation": "a street with a black hair and a",
+      "top1_next_byte_preview": "arof ieh soiresaach other anound t coae sabk sh aasic ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7712,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a woman creating a fondant baby and flower",
+      "free_running_32b_continuation": "g a song in a white shirt is sit",
+      "top1_next_byte_preview": "a coman ioeateng a siotent iusy s d aiywirs",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4367,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "athletes are getting ready and start running for an event",
+      "free_running_32b_continuation": "tting a ball on the streeter an",
+      "top1_next_byte_preview": "a  lete  ane sotting aeady tnd thartitenning arr a  iveni",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.07,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a man shooting other people in a corridor",
+      "free_running_32b_continuation": "is talking about a man in a whit",
+      "top1_next_byte_preview": "ahere is a man ipowting anher perple in a wounidor",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.781,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is singing and standing in the road",
+      "free_running_32b_continuation": "g a song on stage",
+      "top1_next_byte_preview": "a can is shnging a d aoanding on ahe bood",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

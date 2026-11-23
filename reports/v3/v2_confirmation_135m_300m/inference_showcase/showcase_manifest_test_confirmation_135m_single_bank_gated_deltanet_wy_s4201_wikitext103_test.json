@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T02:59:40.022210+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_single_bank_gated_deltanet_wy_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.342,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "l - The start of the start of th",
+      "top1_next_byte_preview": "   p   Po  1eaorl ict (egles oor terport ng tone  a . sranfnn if t0m-  m0@.  .m leoerear  .is also ah beve aupelrt f..T  rter tetk rr tpgust 1,,a 1rret Ainutena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2024,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "How to Curse directed by Josie Rourke . How to Curse was performed at Bush Theatre in the London Borough of Hammersmith and Fulham . In a review of the producti",
+      "free_running_32b_continuation": "ection in the United States and ",
+      "top1_next_byte_preview": " ow to Cotre aisectid ty tahea Cobsseea .ow to Curse Dit trrfermed is trrh Cie tre an the 1ordon Suadngh of tirpert ath and trllarmM Tn t seciew of the procucti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0791,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "n 1st Battalion reached regimental headquarters , Freeman obtained the release of G and F Companies from 2nd Division reserve and sent the former to help 1st Ba",
+      "free_running_32b_continuation": "is a common condition that is a ",
+      "top1_next_byte_preview": " ot0t crytllion iecdhed tecuoentsl aeal uarters i aran an afsained ahe fesaase of teand tra nmanyes arom t0d aesision oegeavedasd tetd toe rormer po telp t0t Da",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9311,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the state of the state of the",
+      "top1_next_byte_preview": " owookted toomt o   aine indt  oor off ty the sarth Aorean  a and tane trrr hen ynr rops af t bonition a aord a aater a and siaicil ctpplies o T  at ormation au",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7164,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the state of the country and",
+      "top1_next_byte_preview": "  a ais ah bereound thmsaaand tiscroy the cn and to  tndvs on thet toty o.Ts aart of thes polsion,i the Uarth Aorean Cnit  weuld bonst bot the Uumply oine  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

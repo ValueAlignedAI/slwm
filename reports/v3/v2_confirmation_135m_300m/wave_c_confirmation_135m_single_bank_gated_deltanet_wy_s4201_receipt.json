@@ -1,0 +1,211 @@
+{
+  "timestamp_utc": "2026-11-23T03:09:36.109212+00:00",
+  "tag": "confirmation_135m_single_bank_gated_deltanet_wy_s4201",
+  "spec_name": "confirmation_135m_single_bank_gated_deltanet",
+  "checkpoint": "/content/out/confirmation_135m_single_bank_gated_deltanet_wy_s4201_ckpt.pkl",
+  "wave_c_decoder_params": 51358758,
+  "use_swiglu_mlp": true,
+  "has_video_spatial_refiner": true,
+  "readout_mup_lr": 0.001,
+  "max_core_grad_verified": 0.0,
+  "core_weights_strictly_frozen": true,
+  "train_curve": [
+    {
+      "step": 1,
+      "loss": 6.60028,
+      "text_bpb": 8.0444,
+      "audio_rvq_ce": 7.6246,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 150,
+      "loss": 0.91541,
+      "text_bpb": 0.183,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.30902,
+      "action_huber": 2.31039
+    },
+    {
+      "step": 300,
+      "loss": 0.214,
+      "text_bpb": 0.163,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19052,
+      "action_huber": 0.33851
+    },
+    {
+      "step": 450,
+      "loss": 0.74224,
+      "text_bpb": 0.1691,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19639,
+      "action_huber": 1.9131
+    },
+    {
+      "step": 600,
+      "loss": 0.37045,
+      "text_bpb": 0.1553,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19958,
+      "action_huber": 0.80413
+    },
+    {
+      "step": 750,
+      "loss": 0.22566,
+      "text_bpb": 0.1359,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.25098,
+      "action_huber": 0.33181
+    },
+    {
+      "step": 900,
+      "loss": 0.18017,
+      "text_bpb": 0.0786,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19081,
+      "action_huber": 0.29519
+    },
+    {
+      "step": 1050,
+      "loss": 0.27879,
+      "text_bpb": 0.1097,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.16482,
+      "action_huber": 0.59548
+    },
+    {
+      "step": 1200,
+      "loss": 0.3661,
+      "text_bpb": 0.1193,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.164,
+      "action_huber": 0.85161
+    },
+    {
+      "step": 1350,
+      "loss": 0.13591,
+      "text_bpb": 0.0532,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.15148,
+      "action_huber": 0.21938
+    },
+    {
+      "step": 1500,
+      "loss": 0.22943,
+      "text_bpb": 0.0982,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.1531,
+      "action_huber": 0.46709
+    }
+  ],
+  "causal_conditioning_proofs": {
+    "video_to_audio_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 5.83804,
+      "shuffled_source_loss": 5.85162,
+      "causal_shuffle_gain": 0.01358,
+      "causal_shuffle_gain_se": 0.00854,
+      "causal_shuffle_ci95_low": -0.00317,
+      "frac_episodes_improved": 0.625,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.2661,
+      "shuffled_source_loss": 0.2664,
+      "causal_shuffle_gain": 0.00031,
+      "causal_shuffle_gain_se": 0.00024,
+      "causal_shuffle_ci95_low": -0.00016,
+      "frac_episodes_improved": 0.4688,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_text_clotho_dev": {
+      "shard": "clotho_dev.npz",
+      "source_mod": 1,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.73453,
+      "shuffled_source_loss": 0.74234,
+      "causal_shuffle_gain": 0.00781,
+      "causal_shuffle_gain_se": 0.00249,
+      "causal_shuffle_ci95_low": 0.00293,
+      "frac_episodes_improved": 0.6562,
+      "causal_conditioning_verified": true
+    },
+    "video_to_text_msrvtt_dev": {
+      "shard": "msrvtt_dev.npz",
+      "source_mod": 0,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.88748,
+      "shuffled_source_loss": 0.8868,
+      "causal_shuffle_gain": -0.00068,
+      "causal_shuffle_gain_se": 0.00473,
+      "causal_shuffle_ci95_low": -0.00995,
+      "frac_episodes_improved": 0.4375,
+      "causal_conditioning_verified": false
+    },
+    "action_intervention_robotics_dev": {
+      "shard": "robotics_dev.npz",
+      "n_evaluated_episodes": 32,
+      "paired_next_proprio_huber": 0.71228,
+      "intervened_next_proprio_huber": 8.82184,
+      "action_intervention_proprio_gain": 8.10955,
+      "action_intervention_proprio_se": 1.27302,
+      "paired_next_video_huber": 0.11533,
+      "intervened_next_video_huber": 0.13457,
+      "action_intervention_video_gain": 0.01924,
+      "targets_strictly_held_fixed": true,
+      "causal_action_conditioning_verified": true
+    },
+    "video_to_audio_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 4.7697,
+      "shuffled_source_loss": 4.78084,
+      "causal_shuffle_gain": 0.01114,
+      "causal_shuffle_gain_se": 0.00794,
+      "causal_shuffle_ci95_low": -0.00443,
+      "frac_episodes_improved": 0.5938,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.19445,
+      "shuffled_source_loss": 0.19447,
+      "causal_shuffle_gain": 2e-05,
+      "causal_shuffle_gain_se": 0.00013,
+      "causal_shuffle_ci95_low": -0.00023,
+      "frac_episodes_improved": 0.5781,
+      "causal_conditioning_verified": false
+    }
+  },
+  "wave_c_showcases": {
+    "clotho_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_single_bank_gated_deltanet_wy_s4201_clotho_dev.json",
+      "n_ranked_episodes": 32
+    },
+    "msrvtt_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_single_bank_gated_deltanet_wy_s4201_msrvtt_dev.json",
+      "n_ranked_episodes": 32
+    }
+  }
+}
