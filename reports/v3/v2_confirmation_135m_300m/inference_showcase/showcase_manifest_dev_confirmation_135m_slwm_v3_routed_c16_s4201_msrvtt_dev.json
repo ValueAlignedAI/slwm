@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:22:52.039431+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0001",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.686,
+      "mean_nowrite": 0.5564,
+      "ground_truth_text_preview": "this is a video clip from the show what not to wear",
+      "free_running_32b_continuation": " game which is being playedo an",
+      "top1_next_byte_preview": "ahes is a medeo ghip orom ahe stowohit iothoo baar ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5692,
+      "mean_nowrite": 0.541,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "enelephant speakinging in a wo",
+      "top1_next_byte_preview": "a coyl of aoilkenceodlesihnnioosaining aoickennnd chrrotsin poown ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1425,
+      "mean_nowrite": 0.5447,
+      "ground_truth_text_preview": "a blonde girl in a pink sweater sits on the piano and plays it",
+      "free_running_32b_continuation": "s talking about a boat and a boa",
+      "top1_next_byte_preview": "a coande airl is a bank bteater ihts in ahe sannosnd tlays wn",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0464,
+      "mean_nowrite": 0.5469,
+      "ground_truth_text_preview": "a couple is presenting an episode",
+      "free_running_32b_continuation": "paring foodly treest with a b",
+      "top1_next_byte_preview": "a cample os dlepenting a  onisode ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0005",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8132,
+      "mean_nowrite": 0.538,
+      "ground_truth_text_preview": "a couple talking about food",
+      "free_running_32b_continuation": "g about a sports matchs and a c",
+      "top1_next_byte_preview": "a cample oalking about aiod ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

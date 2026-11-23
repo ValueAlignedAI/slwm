@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:23:03.068943+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0028",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3734,
+      "mean_nowrite": 0.1923,
+      "ground_truth_text_preview": "The vibrations of wings on a swarm of bees is causing a sound of buzzing. The vibrations of wings of a swarm of bees is causing a sound which is like buzzing. A",
+      "free_running_32b_continuation": "of a car drive by and a car driv",
+      "top1_next_byte_preview": "Ahe webratinn  of aands af a ruirm af wiep an chrsing a stund of bebzing. The wibratinn  of wings af w swarm of wees an cousing a swund ohilh is cike aezzing  T",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0027",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2435,
+      "mean_nowrite": 0.1354,
+      "ground_truth_text_preview": "Someone opens a wrapper and chews the contents with a crunching sound. A radio searches for a signal through a lot of static as a bubbling drone appears. While ",
+      "free_running_32b_continuation": " door and then starts to tap on ",
+      "top1_next_byte_preview": "Aomeone ipens a doepped asd tlacs ihe whntents oith a soenchyng mound. A catio strrches for a wennal ahaough a sou of woatic.an t cizbleng soune inprars  Aaile ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0030",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1672,
+      "mean_nowrite": 0.1332,
+      "ground_truth_text_preview": "At least two cats meowing while someone is walking around and a male voice at the end. A cat starts meowing and then another cat joins in then a man start",
+      "free_running_32b_continuation": "rs drive by and a car passes by ",
+      "top1_next_byte_preview": "A  taast fho pars aatw ng ahile aomeone is salking inound i d t cene coice ir ahe snd. A cat itarts aaowing and ahen a other cat iuins tn the  s can wpart",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.971,
+      "mean_nowrite": 0.1426,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being struck and then stoppe",
+      "top1_next_byte_preview": "Aultiple bonns aupeatedly alanter and clatk an t coigom sastion. Ahe cerson wal slacing aith ahe coins on the r fands T person wlaying with tlins wn the r hands",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0005",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7076,
+      "mean_nowrite": 0.1442,
+      "ground_truth_text_preview": "A man speaks and a door opens and shuts repeatedly afterwards. A man talks followed by doors being opened and closed A man is talking, then a door opens and clo",
+      "free_running_32b_continuation": "d then speaks and then speaks an",
+      "top1_next_byte_preview": "A pan ipeaks and t moor ipens and chuts aepeatedly anter ards  A man salks aollowed by aoor  aefng spened and closed.a man ts talking  ahen s door ipens and clo",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T01:23:10.855877+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0002",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0313,
+      "mean_nowrite": 0.5461,
+      "ground_truth_text_preview": "little pet shop cat getting a bath and washed with little brush",
+      "free_running_32b_continuation": " in a black child which is playi",
+      "top1_next_byte_preview": "aottle rroewhow ialaartting c cach ind tat  d hith aittle broshe",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.734,
+      "mean_nowrite": 0.5519,
+      "ground_truth_text_preview": "cartoon show for kids",
+      "free_running_32b_continuation": "r the streets of the carpenter ",
+      "top1_next_byte_preview": "aortoon chowihor tids ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4711,
+      "mean_nowrite": 0.5552,
+      "ground_truth_text_preview": "a young girl in a horror movie is haunted",
+      "free_running_32b_continuation": " a movie is playing with a boyd",
+      "top1_next_byte_preview": "a coung girl is a bousor iavieis pevntid ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.166,
+      "mean_nowrite": 0.5682,
+      "ground_truth_text_preview": "man in black shirt is holding a baby upside down and talking about universal studios",
+      "free_running_32b_continuation": "irt is talking about a boy and a",
+      "top1_next_byte_preview": "aan in alack thirt is salding a blly sp ide aown t d talking tbout tsdversal stofeos",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8254,
+      "mean_nowrite": 0.5476,
+      "ground_truth_text_preview": "there is someone playing a game in a computer",
+      "free_running_32b_continuation": "e is talking about a man in a mo",
+      "top1_next_byte_preview": "ahere is aometne ilaying a vame on a bouputer ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

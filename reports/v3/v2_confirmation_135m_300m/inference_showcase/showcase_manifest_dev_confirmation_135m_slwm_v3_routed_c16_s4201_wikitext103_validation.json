@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T01:22:57.329175+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0002",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3142,
+      "mean_nowrite": 0.0973,
+      "ground_truth_text_preview": "ies ( for Homarus H. Milne @-@ Edwards , 1837 ) invalid for Homarus Weber , 1795 . \n\n The type specimen of Homarus gammarus was a lectotype selected by Lipke Ho",
+      "free_running_32b_continuation": " and Homaru and Homaru and Homar",
+      "top1_next_byte_preview": "    iaaor talen   ao HaclerH   1nward  ) M990 ) an edidaaor tomarus (as r ( a9 7 (..TT hi fepe ohecifen if tomarus wisea is ias a siaturipe oprectid by tonte ao",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1353,
+      "mean_nowrite": 0.1052,
+      "ground_truth_text_preview": "layer to earn this award . \n\n McCarty remained a presence on the field for the Knights in 2001 , expanding his role by playing some snaps as a fullback . He rus",
+      "free_running_32b_continuation": "e start of the contrary the star",
+      "top1_next_byte_preview": " ot rsoh tact thes pnfrd a .TI aClrth iecainsd a srosente of the sirld oor the piights on 1015.a axplnding tis fele iy traying aoce otaishin a sonl-ack a.Te wel",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9688,
+      "mean_nowrite": 0.1014,
+      "ground_truth_text_preview": "ce 1930 , offers daily flights to Dallas / Fort Worth , TX . \n\n During the Great Depression , residents of the city contemplated abandoning the airport because ",
+      "free_running_32b_continuation": " a strong and superior control o",
+      "top1_next_byte_preview": " ori840 a an ire aitly aoeghts ao tevlas a Dlrt Saoth o ah 1 .TI aring the lreat Depression ( tesedents of the Uoty woutinpoated t ondoneng the crr ort oytamse ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7539,
+      "mean_nowrite": 0.0985,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " (Homarus 1999) - A powerful too",
+      "top1_next_byte_preview": " C=tiwents (area is ( H\nI omarus gammarus = gaown as the \"aropean Sacbter (f aonmon lobster ( is a ciecias of soassd sobster aoom the sastern pulantic Ocean t w",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6636,
+      "mean_nowrite": 0.0997,
+      "ground_truth_text_preview": " better fights involving the supporting players \" . \n\n = Meridian , Mississippi = \n\n Meridian is the sixth largest city in the state of Mississippi , in the Uni",
+      "free_running_32b_continuation": "n the community of the country a",
+      "top1_next_byte_preview": " Cufwer toght  an olveng the ctnelrt vg aran rs oTa..\nI =\"adcdian ( Mecsiosippi , 1   eridian =s ahe mttth sergest moty on the Uoate of Messissippi.a wn the sni",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

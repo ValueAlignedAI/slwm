@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T01:23:15.997042+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_routed_c16_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3975,
+      "mean_nowrite": 0.0975,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "led -- the form of the state of ",
+      "top1_next_byte_preview": "   p   Ta  -esorleors -egles aor terport ng tone  a.. sranf n of t m   m @.  1n l .mrear  ais a so ah brve topport f..T  rter teyk cbetugust 1,,2 trnet Sanutena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1831,
+      "mean_nowrite": 0.1023,
+      "ground_truth_text_preview": "cking dive bombers from the second wave and one small bomb detonated on Turret No. 2 . Hy\u016bga was lightly damaged by near misses that rupture some hull plating i",
+      "free_running_32b_continuation": "r and the strange character of t",
+      "top1_next_byte_preview": " oend oosirietbsr  arom the staond tore ond tn  oeall somb aisenated tn thrket Sav 1 t .ed\ufffd araas aakhtey sirpged by towrltadsid ahet wenturedotue oaml ooaneng ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0556,
+      "mean_nowrite": 0.1042,
+      "ground_truth_text_preview": " she was returned to an even keel after three @-@ days pumping . Hy\u016bga was a primary focus of the attack and she received 10 direct hits and up to 30 near misse",
+      "free_running_32b_continuation": "d to her father and said to her ",
+      "top1_next_byte_preview": " Che was aeaurnid to h  anenimiep anter aheee m   aeys oetping a..ed\ufffdsandas a sronery sorus on the srtack ond aea weaeived a00yafecticess fnd sssto t0 dewrbteds",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0025",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8873,
+      "mean_nowrite": 0.1046,
+      "ground_truth_text_preview": " in combat , was struck with a strong attack by several divisions of the Korean People 's Army which crossed the river and struck all along the division 's line",
+      "free_running_32b_continuation": " a prominent author who was a su",
+      "top1_next_byte_preview": " Cn toniat s ahr aoiock bith a smrang snteck oe toveral fisenions of the carean canple aseanme ahoch woessed the cover and teaegk t l trlng the wasinion oteaage",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0026",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7184,
+      "mean_nowrite": 0.1018,
+      "ground_truth_text_preview": "ive was to surround Taegu and destroy the UN and ROK units in that city . As part of this mission , the North Korean units would first cut the supply lines to T",
+      "free_running_32b_continuation": "und the country and the stranger",
+      "top1_next_byte_preview": "  asias ah bepveund thbresand tesproy the sn and toM tndte on thet toty o .n aart of thes possion t the Uarth Aorean cnio  oeuld bonst bot the ctnply oene  oo t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
