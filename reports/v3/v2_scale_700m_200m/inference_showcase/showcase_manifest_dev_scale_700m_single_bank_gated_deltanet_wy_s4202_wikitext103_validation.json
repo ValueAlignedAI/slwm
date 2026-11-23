@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T11:21:45.032810+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4202_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2694,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "a monkey sitting at his face and",
+      "top1_next_byte_preview": " Cetdiahggirsnn ahe Sarplation  o a d tes cwdes srother Sam y Tosflngwane aotn in the ftnfoundingstrea o wii nbtwnd Hhloins ille w aeapoctively.a.T\nT enrge Wtut",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1276,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and the South African State of",
+      "top1_next_byte_preview": "  eas aebnno aane  a and Btlna aa  ,akes, .esh indsLark .ontains arnticsapaelers a ahemming aaols a ahadis ponnt  , ansori all pllld t atmt all field  , and t b",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9244,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ce 1930 , offers daily flights to Dallas / Fort Worth , TX . \n\n During the Great Depression , residents of the city contemplated abandoning the airport because ",
+      "free_running_32b_continuation": " a series of strategies for cont",
+      "top1_next_byte_preview": " ora090 w an iri aetly aoeght  ao tevlas a Srrt Saolh a ah 1 .TI aring the freat Depression,t tesedents of the Uoty houtinpoated t ondoneng the crr ort ayfause ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0000",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7555,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " = Homarus gammarus = \n\n Homarus gammarus , known as the European lobster or common lobster , is a species of clawed lobster from the eastern Atlantic Ocean , M",
+      "free_running_32b_continuation": " (Homarus gamma) - A Homarus gam",
+      "top1_next_byte_preview": " C=Cawegis (area  s ( H\nI omarus gammarus = aaown as the \"nropean Hacbter (f tompon lobster g is a seecias of toosed bobster goom the sartern pflantic Ocean a w",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6353,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional contemporary artists and a",
+      "top1_next_byte_preview": " ovgeooom thaditional cisiratioe snt  ao txhiigraphyc ard cranal canerials a aritographi a poiftsma cnd caty other sorks of trt.a .he conlection onso pncludes a",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

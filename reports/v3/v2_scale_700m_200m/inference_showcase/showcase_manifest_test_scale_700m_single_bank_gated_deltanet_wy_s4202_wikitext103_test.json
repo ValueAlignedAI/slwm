@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T11:23:15.261169+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4202_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2561,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "l and the state of the United St",
+      "top1_next_byte_preview": "   p   1a  Tesorl ess aecles orr tecplrt ng tosew a . sranf n if t m   m @   .n l amreal  .is b so ch beve tupport f .-  rter teyk su tpgust 2,,a trret Rinutena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0009",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.142,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Industry Association of America ( RIAA ) on 25 April 2013 , denoting shipments of 500 @,@ 000 copies . \n\n The song became One Direction 's fourth top @-@ forty",
+      "free_running_32b_continuation": "ation and Community Engagement: ",
+      "top1_next_byte_preview": " Cn istri Tdseciation af trericanaAAAA))) if t0 Juril 2012\n- pevoteng tuafpents af t   A   a.0 @omies o.T\nI he atfg ielome are oasectoon o1 aorn h do ip'  cou h",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0029",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0038,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The company suffered heavy casualties , including the company commander and Keiser 's aide who had accompanied the force . With the critical parts of Cloverleaf",
+      "free_running_32b_continuation": "ered from the company to the com",
+      "top1_next_byte_preview": " he sonpany wtpfered fiavy rorhalties a ancluding the fompany sompinder ond tintsr CA Cnr  oie wad b cemplnied the cirme o .hth the soetical crrti of toauer esf",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.878,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the streets and the streets of t",
+      "top1_next_byte_preview": " ngna the  s af tis frwtry aTa..ver then te wefrned tf the siadh of tis foung st fhildra he worned to hhe stnfering of hnher  an his caemry an tead of teelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6875,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically exploring the concept o",
+      "top1_next_byte_preview": " Che ryetsa ahecilatod bhet tonslict rauld bndvitably bfise fetween tepan and tn teast tne of tts mwo cajn cetals -.Thdthet end,o te womled tor ahe fapanese cat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "timestamp_utc": "2026-11-23T11:25:27.487048+00:00",
+  "tag": "scale_700m_single_bank_gated_deltanet_wy_s4202",
+  "checkpoint": "/content/out/scale_700m_single_bank_gated_deltanet_wy_s4202_ckpt.pkl",
+  "core_weights_strictly_frozen": true,
+  "train_shards_strictly_disjoint_from_dev": true,
+  "primary_blind_reliability_regime": {
+    "n_eval_samples": 2048,
+    "policy_commit_gate": {
+      "overall_decision_accuracy": 0.5464,
+      "grounded_channel_accuracy": 0.4775,
+      "grounded_content_accuracy_on_committed": 0.7035,
+      "unsupported_claim_rate": 0.3848,
+      "contradiction_rate": 0.0708,
+      "abstention_noop_rate": 0.5688,
+      "expected_calibration_error_ece": 0.3892,
+      "action_distribution": {
+        "SPEAK_TEXT": 0.4312,
+        "EMIT_AUDIO": 0.0,
+        "GENERATE_VIDEO": 0.0,
+        "ACT_MOTOR": 0.0,
+        "ABSTAIN_SILENCE": 0.5688
+      }
+    },
+    "reliability_only_threshold_baseline": {
+      "overall_decision_accuracy": 0.498,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "always_commit_baseline": {
+      "grounded_channel_accuracy": 0.9961,
+      "grounded_content_accuracy": 0.668,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "unsupported_claim_reduction_vs_always_commit_pp": 61.52,
+    "decision_acc_gain_over_reliability_only_pp": 4.83,
+    "non_collapsing_abstention": true
+  },
+  "secondary_degraded_sensor_outage_regime": {
+    "n_eval_samples": 2048,
+    "policy_commit_gate": {
+      "overall_decision_accuracy": 0.7324,
+      "grounded_channel_accuracy": 0.5312,
+      "grounded_content_accuracy_on_committed": 0.7399,
+      "unsupported_claim_rate": 0.0664,
+      "contradiction_rate": 0.0693,
+      "abstention_noop_rate": 0.7002,
+      "expected_calibration_error_ece": 0.2184,
+      "action_distribution": {
+        "SPEAK_TEXT": 0.2983,
+        "EMIT_AUDIO": 0.0,
+        "GENERATE_VIDEO": 0.0015,
+        "ACT_MOTOR": 0.0,
+        "ABSTAIN_SILENCE": 0.7002
+      }
+    },
+    "reliability_only_threshold_baseline": {
+      "overall_decision_accuracy": 0.9946,
+      "unsupported_claim_rate": 0.0,
+      "abstention_noop_rate": 0.5
+    },
+    "always_commit_baseline": {
+      "grounded_channel_accuracy": 0.9893,
+      "grounded_content_accuracy": 0.6943,
+      "unsupported_claim_rate": 1.0,
+      "abstention_noop_rate": 0.0
+    },
+    "unsupported_claim_reduction_vs_always_commit_pp": 93.36,
+    "decision_acc_gain_over_reliability_only_pp": -26.22,
+    "non_collapsing_abstention": true
+  },
+  "wave_b_showcase_manifest": "/content/out/inference_showcase/showcase_manifest_dev_wave_b_scale_700m_single_bank_gated_deltanet_wy_s4202.json",
+  "wave_b_blind_beats_reliability_only": false
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T11:21:17.624358+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0011",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8399,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a woman had made some sort of dough and is wrapping if prior to refrigeration",
+      "free_running_32b_continuation": "e a picture of a bowling pictur",
+      "top1_next_byte_preview": "a coman ion aane aome pput of srlbh wnd wt saippeng at ieecr to teprageration",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0017",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4716,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a band preforms a song",
+      "free_running_32b_continuation": " a song in the streetsife and ",
+      "top1_next_byte_preview": "a band ieopermi a song ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2327,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a middle aged woman encourages you to use her product to increase your feminine health",
+      "free_running_32b_continuation": "oman is singing a song",
+      "top1_next_byte_preview": "a candle aged moman ixjounages hou to tne ter trojuctsto sntlease your sieinine sealth ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0004",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0584,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is having a conversation in a room with no sound",
+      "free_running_32b_continuation": " a speech to a man talking about",
+      "top1_next_byte_preview": "a can is soving a somversationwn a weomaith ae bonnd",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7795,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a guy telling something",
+      "free_running_32b_continuation": "omething she s she s s s s s s ",
+      "top1_next_byte_preview": "a biy iallsng tomething",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

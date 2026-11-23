@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T11:32:09.360858+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_single_bank_gated_deltanet_wy_s4202_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9543,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "en teacher is singing a songing",
+      "top1_next_byte_preview": "a coyl if woicken teidlesaiuniamtainsng ahickennnd ahr otspn moown ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.477,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a baseball player runs into a paded wall",
+      "free_running_32b_continuation": "er is driving a streetling shif",
+      "top1_next_byte_preview": "a bonkball player iens an o a pard sotk",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2099,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a middle aged woman encourages you to use her product to increase your feminine health",
+      "free_running_32b_continuation": "oman is showing how to create a ",
+      "top1_next_byte_preview": "a candle aged moman ixjounages hou to tne ter troguctsto hntlease hour cieinine eealth ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.0555,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "is talking to each otherapped h",
+      "top1_next_byte_preview": "ahere is a man is txjering ah a carky ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8442,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a guy telling something",
+      "free_running_32b_continuation": "omething he s talking",
+      "top1_next_byte_preview": "a biy iallsng tomething ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

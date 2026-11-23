@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T11:22:13.970701+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_single_bank_gated_deltanet_wy_s4202_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0025",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3721,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A loud squeaky truck is travelling by talking women. traffic passing by on a wet road and high pitched beeping and people talking A car with a sounding alarm dr",
+      "free_running_32b_continuation": "stream of water is running in th",
+      "top1_next_byte_preview": "A caud wtueaki soack is buivelling aa ahlking ahoen  Araific iassing by an a tot road wnd toth sitched tuepsng and taople talking.i tar dith a lqfnd ng bnorm ir",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0014",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2287,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A person puts a key into the ignition of a car and starts it. Someone putting a key in a car ignition and starting the engine. Clicking sounds are following by ",
+      "free_running_32b_continuation": " bag of water and then stops aga",
+      "top1_next_byte_preview": "A person iltt a beybin o ahe knnition of a kar.wnd ttorts at. Aomeone iutsing a key inta car annition ond starting ioe kngine  Aaicking otunds ane balloweng aa ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0008",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1337,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "A device is adjusted while machinery whirs in the background. A copier machine is running in the foreground. Boat is sailing on water as the horn of the boat is",
+      "free_running_32b_continuation": "usted and then stops again. A de",
+      "top1_next_byte_preview": "A coeice is rpjusted ahile aachinery ioirs in the background. A danyed oakhine is running an the boreground  Aitrsis atndeng an aiter an ahe wurn bf ahe boat is",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9645,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being struck and then struck",
+      "top1_next_byte_preview": "Auftiple ponns aepeatedly aoanter asd tlatk an t rongom sashion. Mhe cerson ial claying aith ahe wlins an the r hands T person wlaying with toins in the r hand ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7078,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning and splashing water in a ",
+      "top1_next_byte_preview": "Aanning water iunhis ionttantly in tirds cing ind shirp  Water ilows aonttstently as birds shirp ioftly in the background. Water frickles arom a farntain wnd ti",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
