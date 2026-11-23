@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T08:21:48.072541+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0030",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3286,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ands Debauchery and Monstrosity covered the song , and the track was featured on cello metal band Apocalyptica 's 2006 album Amplified / / A Decade of Reinventi",
+      "free_running_32b_continuation": "Development in the United States",
+      "top1_next_byte_preview": "  d htasrtlhir  Dnd tartteouhty\noonersd the stu  o and the seank oas aodtured in tone stamal aasdsa plalyptic lasos000 anlemsspehetier S A 1lsebode of tesnfenti",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0697,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "egon River . M @-@ 82 follows Fremont Street east to a junction with M @-@ 37 . The two highways merge and run concurrently over the river and into downtown on ",
+      "free_running_32b_continuation": " M M M M M M M M M M M M M M M M",
+      "top1_next_byte_preview": " vg owocer S SaM   1  Morlowi aren nt Staeet Pgrt oo s sonition oith aaa-  12 f Mhe soo sogh ays aaage tsd sen tomterrently wner the pever and tn o tiwntown sn ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9373,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Rabbit Creek in 1830 during the period of Indian Removal . After the treaty was ratified , European @-@ American settlers began to move into the area . \n\n Afte",
+      "free_running_32b_continuation": " the Context of Contemporary Chi",
+      "top1_next_byte_preview": " Cedbit hoeek Cs t992 -uring the lrriod of tndia  cevatal i Tlter the eriaty oas tebhfied b auropean c   American Rottlems wegan to save tnto the srea a T\nI ste",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.821,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "ffice - A Comprehensive Examinat",
+      "top1_next_byte_preview": " Ceecaian arlt-Sffice -ath ans anternor ceca ixtirely af tuiace mnd firmi Rarile sn a so aot dorthy fs a mery sare axpmple of the cepe of most Office wtaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0021",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6968,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ege and located at Meridian High School , the college moved to its present location in 1965 . After desegregation laws were passed , MJC merged with T.J. Harris",
+      "free_running_32b_continuation": "a stream of streams and streams ",
+      "top1_next_byte_preview": " vgntnd tookted a  taxcaian aagh School o ahe somlege oavem to tns cresent aecation in t990.a T ter tectrragatinn ies, aere arrsed a te  waaied tith ah . Serris",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

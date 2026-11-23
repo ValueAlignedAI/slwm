@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T08:22:52.314467+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0006",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3188,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "llowed in the traditions of specific aspects of his work : Bai Juyi 's concern for the poor , Lu You 's patriotism , and Mei Yaochen 's reflections on the quoti",
+      "free_running_32b_continuation": "ain of the street and the street",
+      "top1_next_byte_preview": " oaw r an the sraiitiona of toeciaic cnsects of tis cork a hrrlBon s(B tonsernefor the srwr s aocBuunas corrictism a and tar 'on hrv 's ceseectsnn  of the puete",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0016",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1496,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "other crane was intended on the starboard side , but it was never fitted . \n\n The ships had an air group of 11 each of Yokosuka D4Y dive bombers ( Allied report",
+      "free_running_32b_continuation": "a strange condition and the stra",
+      "top1_next_byte_preview": " nher toezesias an erded tn the strrsuatd ahde o aut tt was aover tonted t TTI he stop  wad b  irr cuawn of c0 cnch yf tauoh  a aa  aeseriytbsrs wa1ua nd aesrrt",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0010",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0314,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "s included in the set list of the group 's 3 December 2012 sold @-@ out show at New York City 's Madison Square Garden . One Direction delivered a performance o",
+      "free_running_32b_continuation": "e streets of the streets of the ",
+      "top1_next_byte_preview": " oi  rides an the stctoint of the sreun os i mec mber 1012\nae dit   ant ooorst  tow York City as 3arrson otuare arlden a.Tn  oesectoon oecivered t srrsermance o",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9349,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "ported very rough seas as the eye neared land . \n\n The powerful hurricane moved over or near several islands in the Bahamas . Winds on Spanish Wells and Harbour",
+      "free_running_32b_continuation": "h and so much the same thing is ",
+      "top1_next_byte_preview": " estrr airy seunh aav oan ihe sxesoovr d tadd a TTA he srrer ul eemricane savem tner tn fear toaeral hnlands tn the catamas a Thtdo af teaiish casli and timrorr",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7295,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically the concept of a series",
+      "top1_next_byte_preview": " Cherryet w aoecilatid ahet tonslict wauld bndvitably bfise fetween tepaneand tnhteast tne of tts mho majn cegals i Th ahet evd,o to womled tor ahe papanese cat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

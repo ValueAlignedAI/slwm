@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T08:21:28.852875+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9002,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a stage and a woman says so",
+      "top1_next_byte_preview": "a can ipres aheough a san stile  sitesohrn shiches ais haxtd",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5388,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a youtube channel about puppies and kittens there is an option to subscribe and the background is pink",
+      "free_running_32b_continuation": "el is shown by a man and a woman",
+      "top1_next_byte_preview": "a counube daarnel inout aerpyes and aitcens ihe e is a  oleion ih aepmtribe t   shensolk roundis tlcci",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2855,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a song plays in the background as a boy is running in a race",
+      "free_running_32b_continuation": " a stagere driving down the roa",
+      "top1_next_byte_preview": "a ctng ilayi an ahe sackgroundan h may is sinning an t bope ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1086,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a group of video game characters having a fight",
+      "free_running_32b_continuation": "os games are shown in a common g",
+      "top1_next_byte_preview": "a cioup of pieeosgamespharacters aaveng a sirht ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9058,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a cartoon character is launched across a room",
+      "free_running_32b_continuation": "cter is driving down the street",
+      "top1_next_byte_preview": "a car oon aharacter is dougchid itross a soom",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

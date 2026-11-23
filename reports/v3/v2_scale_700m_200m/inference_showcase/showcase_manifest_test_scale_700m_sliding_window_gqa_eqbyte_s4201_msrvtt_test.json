@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T08:22:33.151367+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0000",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9743,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a woman creating a fondant baby and flower",
+      "free_running_32b_continuation": "g a song on a stagere showing h",
+      "top1_next_byte_preview": "a coman iooakeng a sixt mt sasy and aiiwers",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7289,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "news reporters talk about a strange sight in part of san diego",
+      "free_running_32b_continuation": "are shown to the stage of the st",
+      "top1_next_byte_preview": "aows aeporter  aalkiabout t mtretge chtnt an tart af toi feso",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4782,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man in a music video screams shut up a bunch of times",
+      "free_running_32b_continuation": "c video gamens is showing how ",
+      "top1_next_byte_preview": "a can is a basic video gheeemsaoot dp ansaich of pwmes",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1857,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a class is being introduced to a digital reading device",
+      "free_running_32b_continuation": "g playedartistdartist moves ",
+      "top1_next_byte_preview": "a caissris being pnteoduced to a sesital cevceng sevice",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0009",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8677,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "there is someone playing a game in a computer",
+      "free_running_32b_continuation": "e saying the part of the cartoon",
+      "top1_next_byte_preview": "ahere is aome ne slaying a same an a vammuter ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T08:27:55.287804+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_scale_700m_sliding_window_gqa_eqbyte_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0012",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8343,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man climbs down a ladder",
+      "free_running_32b_continuation": "wn to the streets of the streets",
+      "top1_next_byte_preview": "a gan ioimie aown t piryer ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5317,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a bowl of chicken noodle soup containing chicken and carrots is shown",
+      "free_running_32b_continuation": "en playing a basketball player i",
+      "top1_next_byte_preview": "a goyl if philken peidlesitmp aootaining aoicken nnd thrrotsin btown ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2878,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a couple is presenting an episode",
+      "free_running_32b_continuation": "paring food in a spooky wood sho",
+      "top1_next_byte_preview": "a gample os plepenteng a  olicode",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1273,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man doing something using paper",
+      "free_running_32b_continuation": "ethingtellingfootstepsots and",
+      "top1_next_byte_preview": "a gan ieing aomethingtning aiper",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8919,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y giving a song in a playit and",
+      "top1_next_byte_preview": "a gan is povpyny gxplaining aomethingthth ather peoplewr ahe cackground",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

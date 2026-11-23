@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T08:22:08.615615+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_700m_sliding_window_gqa_eqbyte_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0027",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3238,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Someone opens a wrapper and chews the contents with a crunching sound. A radio searches for a signal through a lot of static as a bubbling drone appears. While ",
+      "free_running_32b_continuation": " piece of piece of piece of piec",
+      "top1_next_byte_preview": "Aomeone ipens a poipper and soaes ahe whntants oith t soonchyng sound. S wodio ittrches aor a connal ahaough a cau of woatic cn t cisbleng soupe bnprars. Arile ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0017",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2622,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Rhythmic shaking of rice shaker being moved around. The rhythmic shaking of the shaker created a percussive sound. Some small food that is being moved around. T",
+      "free_running_32b_continuation": "g and constant shaking and const",
+      "top1_next_byte_preview": "Aaythmic soaping af ahne ahakissieing soved acound  Rhe whythmic shaking of rhe rhakir bleakes a sirsussioe shund  Tomeophall biot ihat is seing moved around  S",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0012",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1348,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "The heavy roar of an industrial air conditioner unit from near a vent. An industrial air conditioner unit operates with a heavy roar. Wind making ",
+      "free_running_32b_continuation": "of a heavy rain falling on the r",
+      "top1_next_byte_preview": "Ahe woavy waad of a  andustrial srrpcomtitioner isit ioom aoarba serti A  industrial air conditioner unit fferates aith a viavy raar  Aand boceng ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9685,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are being started to start and s",
+      "top1_next_byte_preview": "Aultiple phnns aapeatedly alonter and tlatk an t sengom sashion. She carson ial claying aith ahe coins an ahe r hand. T person wlaying with toins in their hand.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0022",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7319,
+      "mean_nowrite": 0.0,
+      "ground_truth_text_preview": "Water runs continuously from a faucet to a sink. Water pours from the faucet and into a metallic bucket. Water is pouring out of a faucet into a metal bucket. I",
+      "free_running_32b_continuation": "inuously while a car drives by i",
+      "top1_next_byte_preview": "Aater iunn aontinuously wrom a saucet io a stnk. Water iours irom ahe saucet isd ttte a setal ic sozket. Water is pouring dnt af a maucet tnto a metal bucket. W",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
