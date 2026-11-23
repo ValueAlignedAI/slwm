@@ -902,6 +902,7 @@ def stream_audio_continuation_from_shard(
     rendered: dict[str, str] = {}
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(out_dir / f"audio2audio_ep{ep_i:04d}_mimi_codes.npz", gt_codes=gt_all_k, pred_codes=pred_full_k)
         rendered["gt_full_wav"] = decode_mimi_codes_to_wav(gt_all_k, out_dir / f"audio2audio_ep{ep_i:04d}_gt_{k_aud}rvq.wav")
         rendered["pred_continuation_wav"] = decode_mimi_codes_to_wav(pred_full_k, out_dir / f"audio2audio_ep{ep_i:04d}_pred_cont_{k_aud}rvq.wav")
     return {

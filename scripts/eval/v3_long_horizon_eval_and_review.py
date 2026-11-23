@@ -488,7 +488,7 @@ def run_long_horizon_eval(shard_dir: Path, out_root: Path) -> dict[str, Any]:
         # 3. Long-horizon `audio2audio` (2.0s prefix -> 4.0s continuation = 6.0s total) on Clotho
         a2a_dir = mdir / "audio2audio_4s"
         a2a_res = stream_audio_continuation_from_shard(
-            bundle, clotho_sh, episode_idx=0, prefix_ticks=25, gen_ticks=50, out_dir=a2a_dir
+            bundle, clotho_sh, episode_idx=0, ctx_ticks=25, gen_ticks=50, out_dir=a2a_dir
         )
         a2a_gt_p = a2a_dir / "audio2audio_ep0000_gt_8rvq.wav"
         a2a_pr_p = a2a_dir / "audio2audio_ep0000_pred_cont_8rvq.wav"
@@ -506,6 +506,20 @@ def run_long_horizon_eval(shard_dir: Path, out_root: Path) -> dict[str, Any]:
             "dsp_pred": dsp_a2a_pr,
             "rvq_diversity_suffix": div_a2a,
             "spectrogram_png": spec_a2a,
+        }
+
+        # 3b. Long-horizon `text2video` (10 groups = 37 frames = 2.96s @ 12.5fps!)
+        t2v_dir = mdir / "text2video_3s"
+        t2v_res = stream_text_to_video(bundle, "a car driving down a road", n_pred_groups=10, out_dir=t2v_dir, tag="car_3s")
+        zt2v = np.load(t2v_dir / "text2video_car_3s_latents.npz")["pred_patches"]
+        t2v_rgb = decode_wan_patches_to_rgb(zt2v)
+        t2v_mot = float(np.mean(np.abs(np.diff(t2v_rgb.astype(np.float32), axis=0)))) if t2v_rgb is not None and len(t2v_rgb) > 1 else 0.0
+        mres["text2video_3s"] = {
+            **t2v_res,
+            "n_frames": int(len(t2v_rgb)) if t2v_rgb is not None else 0,
+            "duration_s_at_12p5fps": round(len(t2v_rgb) / 12.5, 2) if t2v_rgb is not None else 0.0,
+            "pred_frame_motion_rgb_l1": round(t2v_mot, 3),
+            "latent_std": round(float(zt2v.std()), 4),
         }
 
         # 4. Long-horizon `text2audio` (4.00s = 50 ticks across 3 contrasting prompts -> prompt-sensitivity test!)
