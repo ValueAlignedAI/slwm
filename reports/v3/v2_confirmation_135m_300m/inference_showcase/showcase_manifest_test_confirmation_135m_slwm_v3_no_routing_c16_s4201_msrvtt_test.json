@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T12:09:27.288874+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0007",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0474,
+      "mean_nowrite": 0.6599,
+      "ground_truth_text_preview": "cartoon show for kids",
+      "free_running_32b_continuation": "llows a man walking down the str",
+      "top1_next_byte_preview": "aor oon iiowiiol aids ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0030",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8097,
+      "mean_nowrite": 0.6692,
+      "ground_truth_text_preview": "an oriental femal is dressed in a pink wig with girlish clothing and is carrying a stuffed animal",
+      "free_running_32b_continuation": "ale is speaking to a person in a",
+      "top1_next_byte_preview": "a  alaental colaleis srissed an a boek son ahth arrlse  shothengind an ahreiing a strffid bndmal",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0025",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4907,
+      "mean_nowrite": 0.6462,
+      "ground_truth_text_preview": "a man in a music video screams shut up a bunch of times",
+      "free_running_32b_continuation": "c video game with a man in a whi",
+      "top1_next_byte_preview": "a can is a baskc video ghreemi ahottdp a boich of menes ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0028",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.111,
+      "mean_nowrite": 0.6682,
+      "ground_truth_text_preview": "someone is adding ingredients for a batter",
+      "free_running_32b_continuation": "ng a song on the streetoff to a",
+      "top1_next_byte_preview": "aome ne is ptding at redients tor a fashery",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7286,
+      "mean_nowrite": 0.667,
+      "ground_truth_text_preview": "a group of people are walking a woman is talking about their culture",
+      "free_running_32b_continuation": "le are talking about a couple of",
+      "top1_next_byte_preview": "a cioup of people are talking ongoman tn talking about she r fhlture",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T12:09:13.623918+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0023",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3197,
+      "mean_nowrite": 0.0831,
+      "ground_truth_text_preview": " lead singer of The Temptations , and his older brother Jimmy Ruffin were born in the surrounding area , Whynot and Collinsville , respectively . \n\n George Soul",
+      "free_running_32b_continuation": "a boy and a woman are talking ab",
+      "top1_next_byte_preview": " Cetrettgclr sn aho Srrplation  o a d hes cpdes frother oammy aosfln wane aotn in the stbrounding crea o wai epeand Jhloens ille w weapectively.a.T\nO rorge Whln",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1018,
+      "mean_nowrite": 0.0961,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e and Carlos (1950) and Carlos (",
+      "top1_next_byte_preview": "  eaa arbana aine  a and Srlna aa  \ufffdakes\ufffd Tesh ynd aark aontain  arcticsapallers a aoemming aools a ahrdis sonnt  a ansari all poeld , ahnt all ,ield  , and a s",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9609,
+      "mean_nowrite": 0.0888,
+      "ground_truth_text_preview": "h was piloted by Headlam , in November . The following month , Headlam led the three Ansons on a six @-@ day journey back and forth over Central Australia . He ",
+      "free_running_32b_continuation": " the state of the country and th",
+      "top1_next_byte_preview": " etas arcet  ay tanvqen a an 1orember 1 The sirlowing sonth o aeadlam ,ef the frree ymgan  tf t stx-m 1 may ouurnay teck ind forth iner tentral Asstralia a .e w",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0018",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7475,
+      "mean_nowrite": 0.0944,
+      "ground_truth_text_preview": " Meridian Post Office with its interior done entirely of bronze and Verde marble is also noteworthy as a very fine example of the type of Post Office structures",
+      "free_running_32b_continuation": "ffice of the Constitution of the",
+      "top1_next_byte_preview": " Ceecdian arltcCffice oath Sts Infernor pema bxthrely in toiwze and sinma iankle tn a so katedorthy fs t pers sane axpmple of the prpe of most Office otaucture.",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0017",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6438,
+      "mean_nowrite": 0.0962,
+      "ground_truth_text_preview": "ging from traditional decorative arts to ethnographic and tribal materials , photography , crafts , and many other works of art . The collection also includes 1",
+      "free_running_32b_continuation": "ional contents to the same state",
+      "top1_next_byte_preview": " ovgearom thenitional cisoratioe snt  to tnhnicraphyc srd srabal pettrials t aritographi a aoeftsma and paty other aorks of art a The conoection onso includes t",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

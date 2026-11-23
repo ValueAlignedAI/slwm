@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T12:15:09.401684+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_c_confirmation_135m_slwm_v3_no_routing_c16_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0029",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8022,
+      "mean_nowrite": 0.6682,
+      "ground_truth_text_preview": "a girl asks a man and woman if they ve seen her hamster",
+      "free_running_32b_continuation": "an in a black park while a man i",
+      "top1_next_byte_preview": "a girl inks h gan isd ahman tn hhey airahe  aer faister ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3702,
+      "mean_nowrite": 0.6659,
+      "ground_truth_text_preview": "a middle aged woman encourages you to use her product to increase your feminine health",
+      "free_running_32b_continuation": "oman is showing a song on a boat",
+      "top1_next_byte_preview": "a gandle age  goman ixtourages hou to sne aer saofuctsao sntlease hour piaanine sealth",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0015",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2271,
+      "mean_nowrite": 0.6734,
+      "ground_truth_text_preview": "there is a woman is making a milk shake",
+      "free_running_32b_continuation": "n is talking about a person sho",
+      "top1_next_byte_preview": "ahere is a moman is taking a sanl ahoke ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0003",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9745,
+      "mean_nowrite": 0.6596,
+      "ground_truth_text_preview": "a car being driven",
+      "free_running_32b_continuation": "ven in a basketball machine tal",
+      "top1_next_byte_preview": "a gartieing driven ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.868,
+      "mean_nowrite": 0.6534,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "is talking about a person shop",
+      "top1_next_byte_preview": "ahere is a man is tagering ah a party",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

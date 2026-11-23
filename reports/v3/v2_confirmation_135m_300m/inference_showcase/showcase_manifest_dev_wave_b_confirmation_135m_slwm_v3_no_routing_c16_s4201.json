@@ -1,0 +1,76 @@
+{
+  "timestamp_utc": "2026-11-23T12:11:16.654446+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "wave_b_confirmation_135m_slwm_v3_no_routing_c16_s4201",
+  "ranking_metric": "decision_accuracy",
+  "higher_is_better": true,
+  "total_ranked_episodes": 16,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wave_b_blind_ep0014",
+      "ground_truth_supported": true,
+      "channel_provenance": {
+        "input_context": "observed_blind_reliability_1p0",
+        "commit_decision": "policy_commit_gate_routed"
+      },
+      "decision_accuracy": 0.25,
+      "abstention_rate": 0.75,
+      "dominant_action": "ABSTAIN_SILENCE",
+      "selected_quantile": "P05_failure",
+      "rank_index": 1
+    },
+    "P25": {
+      "episode_id": "wave_b_blind_ep0007",
+      "ground_truth_supported": false,
+      "channel_provenance": {
+        "input_context": "observed_blind_reliability_1p0",
+        "commit_decision": "policy_commit_gate_routed"
+      },
+      "decision_accuracy": 0.4141,
+      "abstention_rate": 0.4141,
+      "dominant_action": "SPEAK_TEXT",
+      "selected_quantile": "P25",
+      "rank_index": 4
+    },
+    "P50_median": {
+      "episode_id": "wave_b_blind_ep0004",
+      "ground_truth_supported": true,
+      "channel_provenance": {
+        "input_context": "observed_blind_reliability_1p0",
+        "commit_decision": "policy_commit_gate_routed"
+      },
+      "decision_accuracy": 0.5,
+      "abstention_rate": 0.5,
+      "dominant_action": "SPEAK_TEXT",
+      "selected_quantile": "P50_median",
+      "rank_index": 8
+    },
+    "P75": {
+      "episode_id": "wave_b_blind_ep0000",
+      "ground_truth_supported": true,
+      "channel_provenance": {
+        "input_context": "observed_blind_reliability_1p0",
+        "commit_decision": "policy_commit_gate_routed"
+      },
+      "decision_accuracy": 0.5938,
+      "abstention_rate": 0.4062,
+      "dominant_action": "SPEAK_TEXT",
+      "selected_quantile": "P75",
+      "rank_index": 11
+    },
+    "P95_best": {
+      "episode_id": "wave_b_blind_ep0009",
+      "ground_truth_supported": false,
+      "channel_provenance": {
+        "input_context": "observed_blind_reliability_1p0",
+        "commit_decision": "policy_commit_gate_routed"
+      },
+      "decision_accuracy": 0.8594,
+      "abstention_rate": 0.8594,
+      "dominant_action": "ABSTAIN_SILENCE",
+      "selected_quantile": "P95_best",
+      "rank_index": 14
+    }
+  }
+}

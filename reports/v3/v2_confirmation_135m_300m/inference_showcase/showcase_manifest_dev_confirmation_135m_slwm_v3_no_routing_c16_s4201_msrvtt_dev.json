@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T12:09:08.351634+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7988,
+      "mean_nowrite": 0.676,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a box and then shows how to",
+      "top1_next_byte_preview": "a can ihpfs aweough a brne aioped pitesahrn sholhes ais hattd ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0006",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3859,
+      "mean_nowrite": 0.6659,
+      "ground_truth_text_preview": "a middle aged woman encourages you to use her product to increase your feminine health",
+      "free_running_32b_continuation": "oman in a black tshirt talks abo",
+      "top1_next_byte_preview": "a candle ane  aoman ixjourages hou to sse air maofuctsao sntlease hour paeanine sealth",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0020",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1858,
+      "mean_nowrite": 0.6734,
+      "ground_truth_text_preview": "there is a fish swimming under the sea",
+      "free_running_32b_continuation": " is being shown in a basket or a",
+      "top1_next_byte_preview": "ahere is a merh iiim ing ipder ahe ska ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0016",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9746,
+      "mean_nowrite": 0.6688,
+      "ground_truth_text_preview": "a man is happily explaining something with other people at the background",
+      "free_running_32b_continuation": "y playing with a baby in a black",
+      "top1_next_byte_preview": "a can is tovpeny pxplaining homethingaith atherspeople wn ahe seckground",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0021",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8732,
+      "mean_nowrite": 0.6534,
+      "ground_truth_text_preview": "there is a man is entering to a party",
+      "free_running_32b_continuation": "is talking about a playrtabl",
+      "top1_next_byte_preview": "ahere is a man is tatering ah a carky",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

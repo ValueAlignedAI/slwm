@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T12:09:32.452411+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0028",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3168,
+      "mean_nowrite": 0.0917,
+      "ground_truth_text_preview": "75 @-@ mm. recoilless rifles for supporting fires . A platoon of 4 @.@ 2 @-@ inch mortars was also to give support . \n\n After dark on August 31 , First Lieutena",
+      "free_running_32b_continuation": "l and control of the state of th",
+      "top1_next_byte_preview": "   p  @Ao  Aeaoml a.  aegles arr terport ng tore  a . sranf n of t m   m0@   2n l a rear  fis a so ah beve topplrt f .-A rter tiyk mr tpgust 1,,a trret Nan tena",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1739,
+      "mean_nowrite": 0.0895,
+      "ground_truth_text_preview": "How to Curse directed by Josie Rourke . How to Curse was performed at Bush Theatre in the London Borough of Hammersmith and Fulham . In a review of the producti",
+      "free_running_32b_continuation": "ectly into the world of a comput",
+      "top1_next_byte_preview": " ow to Cotee Uefectld ty tohea Sestde\ni Tow to Curse Dit arrformed bn trrh Sre tre in 1he 1ondon Paadugh\nCf 1irmer  ath and torlam i .t t seciew of the crojucti",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0029",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0562,
+      "mean_nowrite": 0.0887,
+      "ground_truth_text_preview": "The company suffered heavy casualties , including the company commander and Keiser 's aide who had accompanied the force . With the critical parts of Cloverleaf",
+      "free_running_32b_continuation": "ers from a company which is a co",
+      "top1_next_byte_preview": " he sonplny wapfersd fiavy rorhalties a ancluding the sompany aompinder and tinter as 'nrenoii wad t cemplnied the cirmeso..hth the coeticil rrrti of toauer asf",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0031",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9041,
+      "mean_nowrite": 0.0977,
+      "ground_truth_text_preview": "y located front @-@ line units cut off by the North Koreans , and made fourteen airdrops of ammunition , food , water , and medical supplies . As information sl",
+      "free_running_32b_continuation": "of the street and the street and",
+      "top1_next_byte_preview": " osookled aoomt o   Tone ondt  aor tff ty the sorth oorean  a and take irrr hen snrcrops of t ponition a aort a ahter a and sidical sirplies o T  at ormation ah",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.7025,
+      "mean_nowrite": 0.0896,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically the experience of the p",
+      "top1_next_byte_preview": " Che ryet p apecilatid ahat tontlictsbiuld bnvvitably bfise aetween tepaneand tntleast tne pf tts mho main cesals.a.Th uhet dxd,o te wolled tor the fapanese pat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

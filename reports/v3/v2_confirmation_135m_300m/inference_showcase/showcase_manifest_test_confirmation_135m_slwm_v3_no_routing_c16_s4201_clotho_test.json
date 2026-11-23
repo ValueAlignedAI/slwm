@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T12:09:19.381326+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "confirmation_135m_slwm_v3_no_routing_c16_s4201_clotho_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "clotho_test_ep0026",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.3928,
+      "mean_nowrite": 0.2475,
+      "ground_truth_text_preview": "Short and sporadic mixed with long continuous buzzing. A low, electric hum oscillates between two tones. a continuous musical note buzzes as it constantly chang",
+      "free_running_32b_continuation": "dically splashing on the ground ",
+      "top1_next_byte_preview": "dAoert bii chlktdicabuled with siwg shnvanuous serzing  S mon  cnectric memmifcillates aetween tho oonss  A lantinuous bisic l ioie iezzes an it sonttantly bhan",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "clotho_test_ep0027",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2453,
+      "mean_nowrite": 0.2966,
+      "ground_truth_text_preview": "Someone opens a wrapper and chews the contents with a crunching sound. A radio searches for a signal through a lot of static as a bubbling drone appears. While ",
+      "free_running_32b_continuation": " door and then shuts the door an",
+      "top1_next_byte_preview": "Aomeone ipens a doipper and tlacs oheiwhntents oith a wlench ng sound. A podio iottches fol a ctnn l ahaough a sou of coatic.an a casbleng crine rnprars. Shele ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "clotho_test_ep0014",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1238,
+      "mean_nowrite": 0.2494,
+      "ground_truth_text_preview": "A person puts a key into the ignition of a car and starts it. Someone putting a key in a car ignition and starting the engine. Clicking sounds are following by ",
+      "free_running_32b_continuation": " bag on a board and then starts ",
+      "top1_next_byte_preview": "A person iltt a bnybin o ahe snnition of a kar and ttarts at  Aomeone iutsing a key inta car annition and startsng ahe kngine. Aaicking oounds are bolloweng ay ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "clotho_test_ep0015",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9666,
+      "mean_nowrite": 0.3219,
+      "ground_truth_text_preview": "Multiple coins repeatedly clatter and clank in a random fashion. The person was playing with the coins in their hand. A person playing with coins in their hand.",
+      "free_running_32b_continuation": "are repeatedly opened and then s",
+      "top1_next_byte_preview": "Aaltiple blnns aepeat dly aoanter and tlank tn t roigom roshion. Ahe cerson ial puacing aith ahe clin  on the r fands T person wlaysng with tlins in the r hands",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "clotho_test_ep0021",
+      "observed_modalities": [
+        1,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.7158,
+      "mean_nowrite": 0.3581,
+      "ground_truth_text_preview": "Running water rushes constantly as birds sing and chirp. Water flows consistently as birds chirp softly in the background. Water trickles from a fountain and bi",
+      "free_running_32b_continuation": "unning water from a faucet into ",
+      "top1_next_byte_preview": "Aasning water funhes ilnsiantly an tirds aing ind chirp  Rater ilows ionttstently as birds chirp ioftly in the background. Water irickles orom a bauntain and ai",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

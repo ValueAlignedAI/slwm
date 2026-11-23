@@ -1,0 +1,211 @@
+{
+  "timestamp_utc": "2026-11-23T12:15:09.572199+00:00",
+  "tag": "confirmation_135m_slwm_v3_no_routing_c16_s4201",
+  "spec_name": "confirmation_135m_slwm_v3_no_routing",
+  "checkpoint": "/content/out/confirmation_135m_slwm_v3_no_routing_c16_s4201_ckpt.pkl",
+  "wave_c_decoder_params": 51358758,
+  "use_swiglu_mlp": true,
+  "has_video_spatial_refiner": true,
+  "readout_mup_lr": 0.001,
+  "max_core_grad_verified": 0.0,
+  "core_weights_strictly_frozen": true,
+  "train_curve": [
+    {
+      "step": 1,
+      "loss": 6.60028,
+      "text_bpb": 8.0444,
+      "audio_rvq_ce": 7.6246,
+      "video_huber": 0.0,
+      "action_huber": 0.0
+    },
+    {
+      "step": 150,
+      "loss": 1.03833,
+      "text_bpb": 0.1688,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.30514,
+      "action_huber": 2.69283
+    },
+    {
+      "step": 300,
+      "loss": 0.17491,
+      "text_bpb": 0.1389,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.19337,
+      "action_huber": 0.23511
+    },
+    {
+      "step": 450,
+      "loss": 1.1017,
+      "text_bpb": 0.1548,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17409,
+      "action_huber": 3.02375
+    },
+    {
+      "step": 600,
+      "loss": 0.36886,
+      "text_bpb": 0.1453,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.18393,
+      "action_huber": 0.82189
+    },
+    {
+      "step": 750,
+      "loss": 0.19505,
+      "text_bpb": 0.1213,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17769,
+      "action_huber": 0.3234
+    },
+    {
+      "step": 900,
+      "loss": 0.19611,
+      "text_bpb": 0.0799,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.17489,
+      "action_huber": 0.35807
+    },
+    {
+      "step": 1050,
+      "loss": 0.23789,
+      "text_bpb": 0.1102,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.15177,
+      "action_huber": 0.4855
+    },
+    {
+      "step": 1200,
+      "loss": 0.36977,
+      "text_bpb": 0.1173,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.15751,
+      "action_huber": 0.87049
+    },
+    {
+      "step": 1350,
+      "loss": 0.13617,
+      "text_bpb": 0.0525,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.13892,
+      "action_huber": 0.23322
+    },
+    {
+      "step": 1500,
+      "loss": 0.21714,
+      "text_bpb": 0.0984,
+      "audio_rvq_ce": 0.0,
+      "video_huber": 0.1429,
+      "action_huber": 0.44032
+    }
+  ],
+  "causal_conditioning_proofs": {
+    "video_to_audio_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 5.82795,
+      "shuffled_source_loss": 5.82884,
+      "causal_shuffle_gain": 0.00089,
+      "causal_shuffle_gain_se": 0.00701,
+      "causal_shuffle_ci95_low": -0.01286,
+      "frac_episodes_improved": 0.4844,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_vggsound_dev": {
+      "shard": "vggsound_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.26211,
+      "shuffled_source_loss": 0.26257,
+      "causal_shuffle_gain": 0.00046,
+      "causal_shuffle_gain_se": 0.00027,
+      "causal_shuffle_ci95_low": -7e-05,
+      "frac_episodes_improved": 0.6562,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_text_clotho_dev": {
+      "shard": "clotho_dev.npz",
+      "source_mod": 1,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.71459,
+      "shuffled_source_loss": 0.72017,
+      "causal_shuffle_gain": 0.00557,
+      "causal_shuffle_gain_se": 0.00167,
+      "causal_shuffle_ci95_low": 0.00231,
+      "frac_episodes_improved": 0.6562,
+      "causal_conditioning_verified": true
+    },
+    "video_to_text_msrvtt_dev": {
+      "shard": "msrvtt_dev.npz",
+      "source_mod": 0,
+      "target_mod": 2,
+      "metric": "text_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.84357,
+      "shuffled_source_loss": 0.85048,
+      "causal_shuffle_gain": 0.00691,
+      "causal_shuffle_gain_se": 0.00319,
+      "causal_shuffle_ci95_low": 0.00067,
+      "frac_episodes_improved": 0.5469,
+      "causal_conditioning_verified": true
+    },
+    "action_intervention_robotics_dev": {
+      "shard": "robotics_dev.npz",
+      "n_evaluated_episodes": 32,
+      "paired_next_proprio_huber": 0.73645,
+      "intervened_next_proprio_huber": 8.66873,
+      "action_intervention_proprio_gain": 7.93228,
+      "action_intervention_proprio_se": 1.19591,
+      "paired_next_video_huber": 0.10831,
+      "intervened_next_video_huber": 0.12701,
+      "action_intervention_video_gain": 0.0187,
+      "targets_strictly_held_fixed": true,
+      "causal_action_conditioning_verified": true
+    },
+    "video_to_audio_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 0,
+      "target_mod": 1,
+      "metric": "audio_rvq_ce_nat",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 4.73311,
+      "shuffled_source_loss": 4.73453,
+      "causal_shuffle_gain": 0.00143,
+      "causal_shuffle_gain_se": 0.00916,
+      "causal_shuffle_ci95_low": -0.01652,
+      "frac_episodes_improved": 0.4844,
+      "causal_conditioning_verified": false
+    },
+    "audio_to_video_greatesthits_dev": {
+      "shard": "greatesthits_dev.npz",
+      "source_mod": 1,
+      "target_mod": 0,
+      "metric": "video_patch_huber",
+      "n_evaluated_episodes": 64,
+      "paired_loss": 0.19158,
+      "shuffled_source_loss": 0.19164,
+      "causal_shuffle_gain": 6e-05,
+      "causal_shuffle_gain_se": 0.00012,
+      "causal_shuffle_ci95_low": -0.00019,
+      "frac_episodes_improved": 0.5156,
+      "causal_conditioning_verified": false
+    }
+  },
+  "wave_c_showcases": {
+    "clotho_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_slwm_v3_no_routing_c16_s4201_clotho_dev.json",
+      "n_ranked_episodes": 32
+    },
+    "msrvtt_dev": {
+      "manifest_path": "/content/out/inference_showcase/showcase_manifest_dev_wave_c_confirmation_135m_slwm_v3_no_routing_c16_s4201_msrvtt_dev.json",
+      "n_ranked_episodes": 32
+    }
+  }
+}
