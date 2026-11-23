@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T10:29:55.029095+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_msrvtt_dev",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_dev_ep0010",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8483,
+      "mean_nowrite": 0.6298,
+      "ground_truth_text_preview": "a man surfs through a tube shaped wave then smashes his board",
+      "free_running_32b_continuation": "ough a green leave and says some",
+      "top1_next_byte_preview": "a can iurfs warough a gabe ahoke  litesshrn shorhed aes fadtd ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_dev_ep0022",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.5321,
+      "mean_nowrite": 0.6118,
+      "ground_truth_text_preview": "a baseball player runs into a paded wall",
+      "free_running_32b_continuation": "er is playing a song on the floo",
+      "top1_next_byte_preview": "a coneball player iens on o a sop salk ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_dev_ep0024",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.2881,
+      "mean_nowrite": 0.618,
+      "ground_truth_text_preview": "a song plays in the background as a boy is running in a race",
+      "free_running_32b_continuation": " a video gameeeeeeeeeeeeeeeeee",
+      "top1_next_byte_preview": "a ctng plays an ahe vackgroundws a gay is sinning an t ceie",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_dev_ep0013",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.036,
+      "mean_nowrite": 0.6115,
+      "ground_truth_text_preview": "a basket ball player is laughing",
+      "free_running_32b_continuation": "layer fills the stairs and then ",
+      "top1_next_byte_preview": "a caneetbcall ilayer ps paughing",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_dev_ep0005",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.8792,
+      "mean_nowrite": 0.6158,
+      "ground_truth_text_preview": "a couple talking about food",
+      "free_running_32b_continuation": "g about the country farm service",
+      "top1_next_byte_preview": "a clmple oalking about tiod ",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

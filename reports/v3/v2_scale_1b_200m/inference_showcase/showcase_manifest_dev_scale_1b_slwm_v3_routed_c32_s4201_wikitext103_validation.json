@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T10:30:29.943180+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "dev",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_wikitext103_validation",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_validation_ep0002",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.2424,
+      "mean_nowrite": 0.1186,
+      "ground_truth_text_preview": "ies ( for Homarus H. Milne @-@ Edwards , 1837 ) invalid for Homarus Weber , 1795 . \n\n The type specimen of Homarus gammarus was a lectotype selected by Lipke Ho",
+      "free_running_32b_continuation": "s and Harris and Harris and Harr",
+      "top1_next_byte_preview": "   tastor tinenas aa Haclera   Mniard  @ 1990 ) wn edidaaor tomarus H.ssr ( 1837 ( (TI he fepe oeecifen of tomarus iriea  s ias a sigturhpe tppectid by tenii Ho",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_validation_ep0019",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0664,
+      "mean_nowrite": 0.1258,
+      "ground_truth_text_preview": "ark , Bonita Lakes , and Okatibbee Lake . Highland Park contains picnic shelters , swimming pools , tennis courts , a baseball field , softball fields , and a p",
+      "free_running_32b_continuation": "e (1888), and the Battle of Batt",
+      "top1_next_byte_preview": "  eas aebnno aene  , Bnd trlya a   (akes. Tesh ynd aark aonsains arctic spellers a auemming paols a ahmdis aonnty , tnsare all pirld o ahmt all cield  , and t b",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_validation_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9166,
+      "mean_nowrite": 0.1194,
+      "ground_truth_text_preview": "h was piloted by Headlam , in November . The following month , Headlam led the three Ansons on a six @-@ day journey back and forth over Central Australia . He ",
+      "free_running_32b_continuation": " the state of the state and the ",
+      "top1_next_byte_preview": " esas arcet d by tanv en C an 1erember 1 1he sirlowing yanthsw weadlam ,af the ceree mmten  af t sen m   aay auurney teck ttd forth tner thntral Amgtralia.a Tea",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_validation_ep0014",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6811,
+      "mean_nowrite": 0.1202,
+      "ground_truth_text_preview": "hough varying from rates as high as 165 % to as low as 0 @.@ 2 % . In the 1970 census the population decreased , then slightly increased by 1980 , after which t",
+      "free_running_32b_continuation": "om the stars to the stars the st",
+      "top1_next_byte_preview": " ewshtteriing drom tenes on tigh as t0  p oo 1b low as 1.%   %0% o.Tn the c990ssontus whe crpulation wecleased a ahe  tooghtly dn reased ty 20%  a anter thich t",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_validation_ep0001",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.612,
+      "mean_nowrite": 0.1271,
+      "ground_truth_text_preview": "ea , only missing from the section east of Crete , and along only the north @-@ west coast of the Black Sea . The northernmost populations are found in the Norw",
+      "free_running_32b_continuation": "g and starting to be a start of ",
+      "top1_next_byte_preview": " vcw ar y tansing arom the stcoion oxrt of taete a and tlsng wney the serth o   aist ooast of the saack Cea i The sorth rn ost soiulation  ore sound in the sort",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

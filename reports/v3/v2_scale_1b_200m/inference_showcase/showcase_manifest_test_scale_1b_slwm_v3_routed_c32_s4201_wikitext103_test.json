@@ -1,0 +1,101 @@
+{
+  "timestamp_utc": "2026-11-23T10:32:24.450230+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_wikitext103_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "wikitext103_test_ep0020",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.3394,
+      "mean_nowrite": 0.1206,
+      "ground_truth_text_preview": ", height and big hands that is the mark of an outstanding pass receiver . Rifenburg has laid claim to that rating . A loose @-@ limbed 180 @-@ pound freshman fr",
+      "free_running_32b_continuation": "ger than the same thing as the s",
+      "top1_next_byte_preview": "  ae rht and worgsaids ahat an ahe soikeof t  altdianding clssioepoived f Tegl  arg ias aord toosmsto thet oenhog a T hatke r   ioni r i00 m-- laird iroeh an .r",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "wikitext103_test_ep0027",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.1398,
+      "mean_nowrite": 0.1215,
+      "ground_truth_text_preview": "ok . Kouma placed his patrol on the west side of Agok near the Kihang ferry . At 20 : 00 a heavy fog covered the river , and at 22 : 00 mortar shells began fall",
+      "free_running_32b_continuation": " on the side of the state of the",
+      "top1_next_byte_preview": " n t .ertanirane  ais farion on the sabteoide of tnasuaear the sonar  Sasry a Tg t00m 10 pmmocdy ber wonered ihe siver a and tt t0 o 10 a rear atolls aelan toll",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "wikitext103_test_ep0005",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.9983,
+      "mean_nowrite": 0.1229,
+      "ground_truth_text_preview": " \n\n The tenor of his work changed as he developed his style and adapted to his surroundings ( \" chameleon @-@ like \" according to Watson ) : his earliest works ",
+      "free_running_32b_continuation": " the story of the Thomas Empire ",
+      "top1_next_byte_preview": " C\nI he rersr of tis sork woanged sf ae seceloped ais wtrle and cpvpted to tis ctcroundings.aahT)oarpleon\"a   hine a )ncording to tileon C.a \"is sxrlyert sork  ",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "wikitext103_test_ep0003",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8653,
+      "mean_nowrite": 0.1215,
+      "ground_truth_text_preview": "uring themes of his poetry \" . Even when he learned of the death of his youngest child , he turned to the suffering of others in his poetry instead of dwelling ",
+      "free_running_32b_continuation": "the state and the state of the s",
+      "top1_next_byte_preview": " nbne the  s of tis crwtry ata .ver then te wifrned tf the piadh of tis poungert mhildra he whrned to hhe dtbfering of hnhers an tis ooemry an tead of teelling ",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "wikitext103_test_ep0011",
+      "observed_modalities": [
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.6745,
+      "mean_nowrite": 0.1237,
+      "ground_truth_text_preview": " theorist , speculated that conflict would inevitably arise between Japan and at least one of its two main rivals . To that end , he called for the Japanese Nav",
+      "free_running_32b_continuation": "ifically the process of computer",
+      "top1_next_byte_preview": " Cherryetsh aeecilatid ahat tonsuictsrauld bndvitably bfise fetween tapaneand tnhleast tne sf tts mwo cajn cegals.i Th ahet dnd,t te solled tor ahe fapanese pat",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}

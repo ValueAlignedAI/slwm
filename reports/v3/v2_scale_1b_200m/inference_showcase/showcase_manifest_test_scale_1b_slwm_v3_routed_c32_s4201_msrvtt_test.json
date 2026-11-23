@@ -1,0 +1,106 @@
+{
+  "timestamp_utc": "2026-11-23T10:31:49.355517+00:00",
+  "protocol": "AGENTS.md \u00a713.2 Deterministic Uncurated Quantile Showcase (Frozen Weights, Zero Best-of-N)",
+  "split": "test",
+  "model_name": "scale_1b_slwm_v3_routed_c32_s4201_msrvtt_test",
+  "ranking_metric": "text_bpb",
+  "higher_is_better": false,
+  "total_ranked_episodes": 32,
+  "selected_quantiles": {
+    "P05_failure": {
+      "episode_id": "msrvtt_test_ep0026",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 2.0629,
+      "mean_nowrite": 0.6134,
+      "ground_truth_text_preview": "bill murray is covered in frosting",
+      "free_running_32b_continuation": "repeated by a man in white shirt",
+      "top1_next_byte_preview": "aorlymarray is romered wn bront ng ",
+      "selected_quantile": "P05_failure",
+      "rank_index": 2
+    },
+    "P25": {
+      "episode_id": "msrvtt_test_ep0027",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.8359,
+      "mean_nowrite": 0.6105,
+      "ground_truth_text_preview": "a man talking about the two cars he test drove",
+      "free_running_32b_continuation": "bout a man and a woman in a gymn",
+      "top1_next_byte_preview": "a can ialking about ahe ceo parsao taltehoupe ",
+      "selected_quantile": "P25",
+      "rank_index": 8
+    },
+    "P50_median": {
+      "episode_id": "msrvtt_test_ep0008",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.4458,
+      "mean_nowrite": 0.6245,
+      "ground_truth_text_preview": "man in black shirt is holding a baby upside down and talking about universal studios",
+      "free_running_32b_continuation": "irt is talking about a baby car ",
+      "top1_next_byte_preview": "aen is alack suirt is talding a baly cp  dewown t d talksng tbout tsdversil htrdee",
+      "selected_quantile": "P50_median",
+      "rank_index": 16
+    },
+    "P75": {
+      "episode_id": "msrvtt_test_ep0023",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 1.1714,
+      "mean_nowrite": 0.6347,
+      "ground_truth_text_preview": "athletes are getting ready and start running for an event",
+      "free_running_32b_continuation": "tting ready to play with the tea",
+      "top1_next_byte_preview": "a hleses are potting ready tnd start tenning aar a  axeni",
+      "selected_quantile": "P75",
+      "rank_index": 23
+    },
+    "P95_best": {
+      "episode_id": "msrvtt_test_ep0019",
+      "observed_modalities": [
+        0,
+        2
+      ],
+      "channel_provenance": {
+        "input_context": "observed",
+        "free_running_generation": "predicted_autoregressive_frozen_core",
+        "teacher_forced_readout": "predicted_diagnostic_forced"
+      },
+      "text_bpb": 0.9141,
+      "mean_nowrite": 0.6104,
+      "ground_truth_text_preview": "a group of people are walking a woman is talking about their culture",
+      "free_running_32b_continuation": "le at a concert in a red shirt g",
+      "top1_next_byte_preview": "a cioup of people ate talking andiman in walking about hhe r chlture",
+      "selected_quantile": "P95_best",
+      "rank_index": 29
+    }
+  }
+}
