@@ -1,0 +1,3209 @@
+{
+  "receipt_type": "slwm_v3_v2_long_horizon_frozen_weight_evaluation",
+  "source_script": "scripts/eval/v3_long_horizon_eval_and_review.py",
+  "commit": "fbbe469",
+  "weights_strictly_frozen": true,
+  "hardware_note": "Apple M4 Max (JAX CPU float32 core + PyTorch MPS Wan 2.1 / Mimi codec decode)",
+  "protocol": {
+    "weights_strictly_frozen": true,
+    "action2video_groups": 12,
+    "action2video_frames": 45,
+    "action2video_duration_s_25fps": 1.8,
+    "audio2video_groups": 10,
+    "audio2video_frames": 37,
+    "audio2video_duration_s_12p5fps": 2.96,
+    "video2audio_mimi_ticks_12p5hz": 50,
+    "video2audio_duration_s": 4.0,
+    "audio2audio_continuation_s": 4.0,
+    "text2audio_duration_s": 4.0,
+    "video2action_motor_steps": 60,
+    "text_continuation_bytes": 256
+  },
+  "models": {
+    "135m_routed": {
+      "action2video_1p8s": {
+        "mode": "action2video (robotics_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 69,
+        "predicted_video_groups": 12,
+        "latent_huber_loss": 0.15894,
+        "latent_cosine_sim": 0.973,
+        "counterfactual_latent_rmse": 0.42171,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 20.47,
+          "cf_vs_gt_psnr_db": 20.7,
+          "pred_vs_cf_psnr_db": 28.58
+        },
+        "mean_nowrite": 0.5643,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_inverted_motor_action"
+        },
+        "temporal_eval": {
+          "n_groups": 12,
+          "n_frames": 45,
+          "duration_s_at_fps": 1.8,
+          "fps_assumed": 25.0,
+          "overall_psnr_db": 20.47,
+          "overall_cf_psnr_db": 20.7,
+          "overall_psnr_gain_over_cf_db": -0.24,
+          "early_huber": 0.1291,
+          "late_huber": 0.1646,
+          "drift_ratio_late_over_early": 1.27,
+          "early_psnr_db": 20.62,
+          "late_psnr_db": 20.89,
+          "gt_frame_motion_rgb_l1": 1.762,
+          "pred_frame_motion_rgb_l1": 1.202,
+          "cf_frame_motion_rgb_l1": 1.307,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.1064,
+              "cos": 0.9829,
+              "norm_ratio": 1.013,
+              "cf_rmse": 0.0,
+              "psnr_db": 19.52,
+              "cf_psnr_db": 19.52,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 1,
+              "t_sec": 0.16,
+              "huber": 0.1215,
+              "cos": 0.9816,
+              "norm_ratio": 1.005,
+              "cf_rmse": 0.1707,
+              "psnr_db": 21.5,
+              "cf_psnr_db": 21.49,
+              "psnr_margin_over_cf_db": 0.02
+            },
+            {
+              "group": 2,
+              "t_sec": 0.32,
+              "huber": 0.1244,
+              "cos": 0.9817,
+              "norm_ratio": 1.015,
+              "cf_rmse": 0.2073,
+              "psnr_db": 21.52,
+              "cf_psnr_db": 21.77,
+              "psnr_margin_over_cf_db": -0.25
+            },
+            {
+              "group": 3,
+              "t_sec": 0.48,
+              "huber": 0.1642,
+              "cos": 0.972,
+              "norm_ratio": 1.025,
+              "cf_rmse": 0.2473,
+              "psnr_db": 19.94,
+              "cf_psnr_db": 20.2,
+              "psnr_margin_over_cf_db": -0.26
+            },
+            {
+              "group": 4,
+              "t_sec": 0.64,
+              "huber": 0.1782,
+              "cos": 0.9683,
+              "norm_ratio": 1.025,
+              "cf_rmse": 0.2604,
+              "psnr_db": 19.43,
+              "cf_psnr_db": 19.75,
+              "psnr_margin_over_cf_db": -0.31
+            },
+            {
+              "group": 5,
+              "t_sec": 0.8,
+              "huber": 0.187,
+              "cos": 0.9655,
+              "norm_ratio": 1.025,
+              "cf_rmse": 0.3446,
+              "psnr_db": 19.56,
+              "cf_psnr_db": 19.85,
+              "psnr_margin_over_cf_db": -0.3
+            },
+            {
+              "group": 6,
+              "t_sec": 0.96,
+              "huber": 0.1857,
+              "cos": 0.9662,
+              "norm_ratio": 1.022,
+              "cf_rmse": 0.4334,
+              "psnr_db": 19.86,
+              "cf_psnr_db": 20.22,
+              "psnr_margin_over_cf_db": -0.36
+            },
+            {
+              "group": 7,
+              "t_sec": 1.12,
+              "huber": 0.1815,
+              "cos": 0.9678,
+              "norm_ratio": 1.023,
+              "cf_rmse": 0.4909,
+              "psnr_db": 20.67,
+              "cf_psnr_db": 20.93,
+              "psnr_margin_over_cf_db": -0.26
+            },
+            {
+              "group": 8,
+              "t_sec": 1.28,
+              "huber": 0.1699,
+              "cos": 0.9716,
+              "norm_ratio": 1.023,
+              "cf_rmse": 0.5278,
+              "psnr_db": 20.87,
+              "cf_psnr_db": 21.21,
+              "psnr_margin_over_cf_db": -0.34
+            },
+            {
+              "group": 9,
+              "t_sec": 1.44,
+              "huber": 0.161,
+              "cos": 0.9731,
+              "norm_ratio": 1.014,
+              "cf_rmse": 0.5974,
+              "psnr_db": 21.13,
+              "cf_psnr_db": 21.16,
+              "psnr_margin_over_cf_db": -0.02
+            },
+            {
+              "group": 10,
+              "t_sec": 1.6,
+              "huber": 0.1615,
+              "cos": 0.9738,
+              "norm_ratio": 1.014,
+              "cf_rmse": 0.6049,
+              "psnr_db": 20.92,
+              "cf_psnr_db": 21.18,
+              "psnr_margin_over_cf_db": -0.25
+            },
+            {
+              "group": 11,
+              "t_sec": 1.76,
+              "huber": 0.166,
+              "cos": 0.9732,
+              "norm_ratio": 1.016,
+              "cf_rmse": 0.6198,
+              "psnr_db": 20.66,
+              "cf_psnr_db": 20.92,
+              "psnr_margin_over_cf_db": -0.26
+            }
+          ]
+        }
+      },
+      "video2audio_4s": {
+        "greatesthits_ep0": {
+          "mode": "video2audio (greatesthits_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 101,
+          "ground_truth_label": "",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 1.0,
+          "mean_nowrite": 0.6238,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.00952,
+            "peak": 0.6915,
+            "zcr": 0.0367,
+            "spectral_centroid_hz": 5276.6,
+            "spectral_flatness": 0.4325,
+            "envelope_cv": 4.1003,
+            "lag1_mel_cos": 0.9997
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.06309,
+            "peak": 0.3282,
+            "zcr": 0.0244,
+            "spectral_centroid_hz": 957.1,
+            "spectral_flatness": 0.0029,
+            "envelope_cv": 0.4247,
+            "lag1_mel_cos": 0.9995,
+            "log_mel_l1_vs_ref": 2.1171,
+            "mean_mel_cos_vs_ref": 0.9812,
+            "envelope_pearson_vs_ref": 0.046
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.04286,
+            "peak": 0.4546,
+            "zcr": 0.0752,
+            "spectral_centroid_hz": 1499.3,
+            "spectral_flatness": 0.0054,
+            "envelope_cv": 0.5896,
+            "lag1_mel_cos": 0.9993,
+            "log_mel_l1_vs_ref": 2.8972,
+            "mean_mel_cos_vs_ref": 0.9737,
+            "envelope_pearson_vs_ref": 0.0029
+          },
+          "pred_vs_cf_log_mel_l1": 1.2098,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.1,
+            "rvq0_entropy_bits": 0.562,
+            "rvq0_adj_repeat_rate": 0.9184
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.317,
+            "rvq0_adj_repeat_rate": 0.4286
+          }
+        },
+        "vggsound_ep0": {
+          "mode": "video2audio (vggsound_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 66,
+          "ground_truth_label": "sound: people marching",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9925,
+          "mean_nowrite": 0.6071,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.05257,
+            "peak": 0.3185,
+            "zcr": 0.059,
+            "spectral_centroid_hz": 1426.8,
+            "spectral_flatness": 0.0071,
+            "envelope_cv": 0.6835,
+            "lag1_mel_cos": 0.9993
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.01805,
+            "peak": 0.119,
+            "zcr": 0.0395,
+            "spectral_centroid_hz": 1569.7,
+            "spectral_flatness": 0.0086,
+            "envelope_cv": 0.6257,
+            "lag1_mel_cos": 0.9995,
+            "log_mel_l1_vs_ref": 1.3004,
+            "mean_mel_cos_vs_ref": 0.9935,
+            "envelope_pearson_vs_ref": 0.0124
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.05764,
+            "peak": 0.2522,
+            "zcr": 0.013,
+            "spectral_centroid_hz": 783.4,
+            "spectral_flatness": 0.0007,
+            "envelope_cv": 0.352,
+            "lag1_mel_cos": 0.9995,
+            "log_mel_l1_vs_ref": 1.1407,
+            "mean_mel_cos_vs_ref": 0.9939,
+            "envelope_pearson_vs_ref": -0.0502
+          },
+          "pred_vs_cf_log_mel_l1": 0.7722,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.14,
+            "rvq0_entropy_bits": 1.429,
+            "rvq0_adj_repeat_rate": 0.8367
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.38,
+            "rvq0_entropy_bits": 3.773,
+            "rvq0_adj_repeat_rate": 0.3061
+          }
+        }
+      },
+      "audio2audio_4s": {
+        "mode": "audio2audio (clotho_test.npz)",
+        "episode_idx": 0,
+        "observed_prefix_sec": 2.0,
+        "generated_continuation_sec": 4.0,
+        "mean_nowrite": 0.3138,
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "dsp_gt": {
+          "duration_s": 6.0,
+          "rms": 0.08418,
+          "peak": 0.5084,
+          "zcr": 0.1091,
+          "spectral_centroid_hz": 2261.7,
+          "spectral_flatness": 0.0338,
+          "envelope_cv": 0.1857,
+          "lag1_mel_cos": 0.9989
+        },
+        "dsp_pred": {
+          "duration_s": 6.0,
+          "rms": 0.09477,
+          "peak": 0.4662,
+          "zcr": 0.1163,
+          "spectral_centroid_hz": 2283.4,
+          "spectral_flatness": 0.0322,
+          "envelope_cv": 0.178,
+          "lag1_mel_cos": 0.9989,
+          "log_mel_l1_vs_ref": 0.2574,
+          "mean_mel_cos_vs_ref": 0.9995,
+          "envelope_pearson_vs_ref": 0.3177
+        },
+        "rvq_diversity_suffix": {
+          "rvq0_unique_ratio": 0.02,
+          "rvq0_entropy_bits": -0.0,
+          "rvq0_adj_repeat_rate": 1.0
+        }
+      },
+      "text2video_3s": {
+        "mode": "text2video",
+        "prompt": "a car driving down a road",
+        "predicted_video_groups": 10,
+        "mean_nowrite": 0.6269,
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "n_frames": 37,
+        "duration_s_at_12p5fps": 2.96,
+        "pred_frame_motion_rgb_l1": 2.598,
+        "latent_std": 0.8901
+      },
+      "text2audio_4s": {
+        "items": [
+          {
+            "mode": "text2audio",
+            "prompt": "sound: water rushing in a stream",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.21,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.02547,
+              "peak": 0.1619,
+              "zcr": 0.0596,
+              "spectral_centroid_hz": 1550.4,
+              "spectral_flatness": 0.0083,
+              "envelope_cv": 0.4707,
+              "lag1_mel_cos": 0.9994
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.16,
+              "rvq0_entropy_bits": 1.699,
+              "rvq0_adj_repeat_rate": 0.8571
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: dog barking loudly",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.2336,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.08439,
+              "peak": 0.2752,
+              "zcr": 0.0017,
+              "spectral_centroid_hz": 520.3,
+              "spectral_flatness": 0.0002,
+              "envelope_cv": 0.3207,
+              "lag1_mel_cos": 0.9995
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.14,
+              "rvq0_entropy_bits": 1.692,
+              "rvq0_adj_repeat_rate": 0.8776
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: drum beats and percussion",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.2186,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.04235,
+              "peak": 0.1095,
+              "zcr": 0.0114,
+              "spectral_centroid_hz": 1951.4,
+              "spectral_flatness": 0.0074,
+              "envelope_cv": 0.5344,
+              "lag1_mel_cos": 0.9994
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.18,
+              "rvq0_entropy_bits": 2.015,
+              "rvq0_adj_repeat_rate": 0.7143
+            }
+          }
+        ],
+        "prompt_centroid_spread_hz": 1431.1
+      },
+      "audio2video_3s": {
+        "mode": "audio2video (vggsound_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 57,
+        "predicted_video_groups": 10,
+        "latent_huber_loss": 0.82557,
+        "latent_cosine_sim": 0.5818,
+        "counterfactual_latent_rmse": 0.54675,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 12.33,
+          "cf_vs_gt_psnr_db": 12.38,
+          "pred_vs_cf_psnr_db": 19.98
+        },
+        "mean_nowrite": 0.5709,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_shuffled_audio_context"
+        },
+        "temporal_eval": {
+          "n_groups": 10,
+          "n_frames": 37,
+          "duration_s_at_fps": 2.96,
+          "fps_assumed": 12.5,
+          "overall_psnr_db": 12.33,
+          "overall_cf_psnr_db": 12.38,
+          "overall_psnr_gain_over_cf_db": -0.05,
+          "early_huber": 0.6222,
+          "late_huber": 0.9211,
+          "drift_ratio_late_over_early": 1.48,
+          "early_psnr_db": 12.43,
+          "late_psnr_db": 12.15,
+          "gt_frame_motion_rgb_l1": 2.758,
+          "pred_frame_motion_rgb_l1": 2.858,
+          "cf_frame_motion_rgb_l1": 2.7,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.3783,
+              "cos": 0.482,
+              "norm_ratio": 0.725,
+              "cf_rmse": 0.4748,
+              "psnr_db": 12.13,
+              "cf_psnr_db": 11.97,
+              "psnr_margin_over_cf_db": 0.16
+            },
+            {
+              "group": 1,
+              "t_sec": 0.32,
+              "huber": 0.7032,
+              "cos": 0.6092,
+              "norm_ratio": 0.488,
+              "cf_rmse": 0.4999,
+              "psnr_db": 12.43,
+              "cf_psnr_db": 12.39,
+              "psnr_margin_over_cf_db": 0.03
+            },
+            {
+              "group": 2,
+              "t_sec": 0.64,
+              "huber": 0.7851,
+              "cos": 0.5544,
+              "norm_ratio": 0.509,
+              "cf_rmse": 0.5382,
+              "psnr_db": 12.74,
+              "cf_psnr_db": 12.39,
+              "psnr_margin_over_cf_db": 0.36
+            },
+            {
+              "group": 3,
+              "t_sec": 0.96,
+              "huber": 0.8741,
+              "cos": 0.5325,
+              "norm_ratio": 0.489,
+              "cf_rmse": 0.5463,
+              "psnr_db": 12.36,
+              "cf_psnr_db": 12.48,
+              "psnr_margin_over_cf_db": -0.12
+            },
+            {
+              "group": 4,
+              "t_sec": 1.28,
+              "huber": 0.9289,
+              "cos": 0.6151,
+              "norm_ratio": 0.44,
+              "cf_rmse": 0.5456,
+              "psnr_db": 12.52,
+              "cf_psnr_db": 12.36,
+              "psnr_margin_over_cf_db": 0.16
+            },
+            {
+              "group": 5,
+              "t_sec": 1.6,
+              "huber": 0.936,
+              "cos": 0.6269,
+              "norm_ratio": 0.423,
+              "cf_rmse": 0.5393,
+              "psnr_db": 12.3,
+              "cf_psnr_db": 12.41,
+              "psnr_margin_over_cf_db": -0.11
+            },
+            {
+              "group": 6,
+              "t_sec": 1.92,
+              "huber": 0.8868,
+              "cos": 0.6105,
+              "norm_ratio": 0.458,
+              "cf_rmse": 0.5575,
+              "psnr_db": 12.07,
+              "cf_psnr_db": 12.4,
+              "psnr_margin_over_cf_db": -0.33
+            },
+            {
+              "group": 7,
+              "t_sec": 2.24,
+              "huber": 0.9043,
+              "cos": 0.6059,
+              "norm_ratio": 0.466,
+              "cf_rmse": 0.5786,
+              "psnr_db": 12.33,
+              "cf_psnr_db": 12.23,
+              "psnr_margin_over_cf_db": 0.1
+            },
+            {
+              "group": 8,
+              "t_sec": 2.56,
+              "huber": 0.898,
+              "cos": 0.5737,
+              "norm_ratio": 0.469,
+              "cf_rmse": 0.5808,
+              "psnr_db": 12.08,
+              "cf_psnr_db": 12.21,
+              "psnr_margin_over_cf_db": -0.13
+            },
+            {
+              "group": 9,
+              "t_sec": 2.88,
+              "huber": 0.9611,
+              "cos": 0.576,
+              "norm_ratio": 0.45,
+              "cf_rmse": 0.5953,
+              "psnr_db": 12.04,
+              "cf_psnr_db": 12.35,
+              "psnr_margin_over_cf_db": -0.31
+            }
+          ]
+        }
+      },
+      "video2action_2p4s": {
+        "mode": "video2action (robotics_test.npz)",
+        "episode_idx": 1,
+        "predicted_action_steps": 60,
+        "action_huber_loss": 0.05278,
+        "action_l1_error": 0.23051,
+        "action_cosine_sim": 0.7738,
+        "mean_nowrite": 0.5571,
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions"
+      },
+      "text_long_256b": {
+        "code": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+          "generated": "    if len is not in arrs and len is not in arrs and len is not in arrs and len is not in arrs and len is not in arrs and len is not in arrs and len is not in arrs and len is not in arrs in arrs in arrs in arrs in arrs in arrs in arrs in arrs in arrs in ar",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.099,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 66,
+            "distinct_3gram_ratio": 0.1562,
+            "python_syntax_valid": false
+          }
+        },
+        "prose": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "The European Space Agency announced that the new telescope ",
+          "generated": "was a problem with the space agency and the space was a problem with the space was the same as the space was the telescope was the telescope was the telescope was the telescope was the telescope was the telescope was the teles was the teles was the teles w",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.1016,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 50,
+            "distinct_3gram_ratio": 0.4583
+          }
+        },
+        "audio2text": {
+          "mode": "cross_modal_to_text (clotho_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 192,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly and gently. The sound could either be heavy rain or the thunder of jets. Water flo",
+          "generated_text": "A car drives down a road and then stops and then stops. A car drives down a road and then stops and then stops and then stops. A car drives down a steady and steady as the car is stopped and t",
+          "mean_nowrite": 0.1801,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 42,
+            "distinct_3gram_ratio": 0.55
+          }
+        },
+        "video2text": {
+          "mode": "cross_modal_to_text (msrvtt_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 512,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "a woman creating a fondant baby and flower",
+          "generated_text": "s and the computer screen is the best way to produce a product of the product of the product of the product of the product. A product of the product is the product of the product of the produc",
+          "mean_nowrite": 0.5383,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 39,
+            "distinct_3gram_ratio": 0.6216
+          }
+        }
+      }
+    },
+    "700m_routed": {
+      "action2video_1p8s": {
+        "mode": "action2video (robotics_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 69,
+        "predicted_video_groups": 12,
+        "latent_huber_loss": 0.2201,
+        "latent_cosine_sim": 0.962,
+        "counterfactual_latent_rmse": 1.64139,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 18.6,
+          "cf_vs_gt_psnr_db": 14.5,
+          "pred_vs_cf_psnr_db": 16.98
+        },
+        "mean_nowrite": 0.6456,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_inverted_motor_action"
+        },
+        "temporal_eval": {
+          "n_groups": 12,
+          "n_frames": 45,
+          "duration_s_at_fps": 1.8,
+          "fps_assumed": 25.0,
+          "overall_psnr_db": 18.6,
+          "overall_cf_psnr_db": 14.5,
+          "overall_psnr_gain_over_cf_db": 4.1,
+          "early_huber": 0.1819,
+          "late_huber": 0.2569,
+          "drift_ratio_late_over_early": 1.41,
+          "early_psnr_db": 19.1,
+          "late_psnr_db": 18.24,
+          "gt_frame_motion_rgb_l1": 1.762,
+          "pred_frame_motion_rgb_l1": 1.637,
+          "cf_frame_motion_rgb_l1": 3.495,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.164,
+              "cos": 0.9715,
+              "norm_ratio": 0.999,
+              "cf_rmse": 0.0,
+              "psnr_db": 17.82,
+              "cf_psnr_db": 17.82,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 1,
+              "t_sec": 0.16,
+              "huber": 0.1759,
+              "cos": 0.9718,
+              "norm_ratio": 1.009,
+              "cf_rmse": 0.3181,
+              "psnr_db": 19.84,
+              "cf_psnr_db": 18.77,
+              "psnr_margin_over_cf_db": 1.07
+            },
+            {
+              "group": 2,
+              "t_sec": 0.32,
+              "huber": 0.1693,
+              "cos": 0.9749,
+              "norm_ratio": 1.031,
+              "cf_rmse": 0.4225,
+              "psnr_db": 20.3,
+              "cf_psnr_db": 19.54,
+              "psnr_margin_over_cf_db": 0.76
+            },
+            {
+              "group": 3,
+              "t_sec": 0.48,
+              "huber": 0.2185,
+              "cos": 0.9627,
+              "norm_ratio": 1.01,
+              "cf_rmse": 0.6405,
+              "psnr_db": 18.45,
+              "cf_psnr_db": 17.13,
+              "psnr_margin_over_cf_db": 1.32
+            },
+            {
+              "group": 4,
+              "t_sec": 0.64,
+              "huber": 0.2089,
+              "cos": 0.9625,
+              "norm_ratio": 1.014,
+              "cf_rmse": 1.7109,
+              "psnr_db": 18.04,
+              "cf_psnr_db": 12.3,
+              "psnr_margin_over_cf_db": 5.73
+            },
+            {
+              "group": 5,
+              "t_sec": 0.8,
+              "huber": 0.2325,
+              "cos": 0.9575,
+              "norm_ratio": 1.001,
+              "cf_rmse": 1.8912,
+              "psnr_db": 18.02,
+              "cf_psnr_db": 12.54,
+              "psnr_margin_over_cf_db": 5.48
+            },
+            {
+              "group": 6,
+              "t_sec": 0.96,
+              "huber": 0.2131,
+              "cos": 0.9608,
+              "norm_ratio": 1.002,
+              "cf_rmse": 1.8705,
+              "psnr_db": 18.3,
+              "cf_psnr_db": 14.01,
+              "psnr_margin_over_cf_db": 4.29
+            },
+            {
+              "group": 7,
+              "t_sec": 1.12,
+              "huber": 0.2313,
+              "cos": 0.9592,
+              "norm_ratio": 0.995,
+              "cf_rmse": 1.9288,
+              "psnr_db": 18.98,
+              "cf_psnr_db": 13.83,
+              "psnr_margin_over_cf_db": 5.15
+            },
+            {
+              "group": 8,
+              "t_sec": 1.28,
+              "huber": 0.2403,
+              "cos": 0.9598,
+              "norm_ratio": 1.004,
+              "cf_rmse": 2.0546,
+              "psnr_db": 18.68,
+              "cf_psnr_db": 14.01,
+              "psnr_margin_over_cf_db": 4.67
+            },
+            {
+              "group": 9,
+              "t_sec": 1.44,
+              "huber": 0.2512,
+              "cos": 0.957,
+              "norm_ratio": 0.971,
+              "cf_rmse": 2.0104,
+              "psnr_db": 17.65,
+              "cf_psnr_db": 14.08,
+              "psnr_margin_over_cf_db": 3.57
+            },
+            {
+              "group": 10,
+              "t_sec": 1.6,
+              "huber": 0.2597,
+              "cos": 0.956,
+              "norm_ratio": 0.98,
+              "cf_rmse": 2.1582,
+              "psnr_db": 18.4,
+              "cf_psnr_db": 13.76,
+              "psnr_margin_over_cf_db": 4.65
+            },
+            {
+              "group": 11,
+              "t_sec": 1.76,
+              "huber": 0.2765,
+              "cos": 0.9527,
+              "norm_ratio": 0.984,
+              "cf_rmse": 2.2352,
+              "psnr_db": 18.22,
+              "cf_psnr_db": 13.53,
+              "psnr_margin_over_cf_db": 4.69
+            }
+          ]
+        }
+      },
+      "video2audio_4s": {
+        "greatesthits_ep0": {
+          "mode": "video2audio (greatesthits_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 101,
+          "ground_truth_label": "",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9975,
+          "mean_nowrite": 0.7183,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.00952,
+            "peak": 0.6915,
+            "zcr": 0.0367,
+            "spectral_centroid_hz": 5276.6,
+            "spectral_flatness": 0.4325,
+            "envelope_cv": 4.1003,
+            "lag1_mel_cos": 0.9997
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.0977,
+            "peak": 0.5528,
+            "zcr": 0.0867,
+            "spectral_centroid_hz": 3106.2,
+            "spectral_flatness": 0.0485,
+            "envelope_cv": 0.5264,
+            "lag1_mel_cos": 0.9991,
+            "log_mel_l1_vs_ref": 3.6187,
+            "mean_mel_cos_vs_ref": 0.995,
+            "envelope_pearson_vs_ref": 0.0759
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.08223,
+            "peak": 1.0,
+            "zcr": 0.3293,
+            "spectral_centroid_hz": 3887.1,
+            "spectral_flatness": 0.0419,
+            "envelope_cv": 0.5826,
+            "lag1_mel_cos": 0.999,
+            "log_mel_l1_vs_ref": 3.9035,
+            "mean_mel_cos_vs_ref": 0.9749,
+            "envelope_pearson_vs_ref": 0.043
+          },
+          "pred_vs_cf_log_mel_l1": 1.3671,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.08,
+            "rvq0_entropy_bits": 1.776,
+            "rvq0_adj_repeat_rate": 0.9184
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.317,
+            "rvq0_adj_repeat_rate": 0.4286
+          }
+        },
+        "vggsound_ep0": {
+          "mode": "video2audio (vggsound_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 66,
+          "ground_truth_label": "sound: people marching",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 1.0,
+          "mean_nowrite": 0.7092,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.05257,
+            "peak": 0.3185,
+            "zcr": 0.059,
+            "spectral_centroid_hz": 1426.8,
+            "spectral_flatness": 0.0071,
+            "envelope_cv": 0.6835,
+            "lag1_mel_cos": 0.9993
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.08735,
+            "peak": 0.456,
+            "zcr": 0.0308,
+            "spectral_centroid_hz": 1330.1,
+            "spectral_flatness": 0.0107,
+            "envelope_cv": 0.4719,
+            "lag1_mel_cos": 0.9992,
+            "log_mel_l1_vs_ref": 0.7519,
+            "mean_mel_cos_vs_ref": 0.9965,
+            "envelope_pearson_vs_ref": -0.1533
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.08099,
+            "peak": 0.5209,
+            "zcr": 0.0204,
+            "spectral_centroid_hz": 887.6,
+            "spectral_flatness": 0.0007,
+            "envelope_cv": 0.4816,
+            "lag1_mel_cos": 0.9994,
+            "log_mel_l1_vs_ref": 0.8952,
+            "mean_mel_cos_vs_ref": 0.9971,
+            "envelope_pearson_vs_ref": -0.11
+          },
+          "pred_vs_cf_log_mel_l1": 0.8573,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.1,
+            "rvq0_entropy_bits": 2.067,
+            "rvq0_adj_repeat_rate": 0.7551
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.38,
+            "rvq0_entropy_bits": 3.773,
+            "rvq0_adj_repeat_rate": 0.3061
+          }
+        }
+      },
+      "audio2audio_4s": {
+        "mode": "audio2audio (clotho_test.npz)",
+        "episode_idx": 0,
+        "observed_prefix_sec": 2.0,
+        "generated_continuation_sec": 4.0,
+        "mean_nowrite": 0.3178,
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "dsp_gt": {
+          "duration_s": 6.0,
+          "rms": 0.08418,
+          "peak": 0.5084,
+          "zcr": 0.1091,
+          "spectral_centroid_hz": 2261.7,
+          "spectral_flatness": 0.0338,
+          "envelope_cv": 0.1857,
+          "lag1_mel_cos": 0.9989
+        },
+        "dsp_pred": {
+          "duration_s": 6.0,
+          "rms": 0.09057,
+          "peak": 0.486,
+          "zcr": 0.1071,
+          "spectral_centroid_hz": 2035.9,
+          "spectral_flatness": 0.0227,
+          "envelope_cv": 0.1532,
+          "lag1_mel_cos": 0.9989,
+          "log_mel_l1_vs_ref": 0.2616,
+          "mean_mel_cos_vs_ref": 0.9994,
+          "envelope_pearson_vs_ref": 0.3518
+        },
+        "rvq_diversity_suffix": {
+          "rvq0_unique_ratio": 0.06,
+          "rvq0_entropy_bits": 1.054,
+          "rvq0_adj_repeat_rate": 0.9388
+        }
+      },
+      "text2video_3s": {
+        "mode": "text2video",
+        "prompt": "a car driving down a road",
+        "predicted_video_groups": 10,
+        "mean_nowrite": 0.7587,
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "n_frames": 37,
+        "duration_s_at_12p5fps": 2.96,
+        "pred_frame_motion_rgb_l1": 2.361,
+        "latent_std": 0.7533
+      },
+      "text2audio_4s": {
+        "items": [
+          {
+            "mode": "text2audio",
+            "prompt": "sound: water rushing in a stream",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.1705,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.03716,
+              "peak": 0.2634,
+              "zcr": 0.0078,
+              "spectral_centroid_hz": 668.2,
+              "spectral_flatness": 0.0003,
+              "envelope_cv": 0.5366,
+              "lag1_mel_cos": 0.9997
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.18,
+              "rvq0_entropy_bits": 1.852,
+              "rvq0_adj_repeat_rate": 0.8163
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: dog barking loudly",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.1592,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.07563,
+              "peak": 0.2504,
+              "zcr": 0.0203,
+              "spectral_centroid_hz": 1009.3,
+              "spectral_flatness": 0.0013,
+              "envelope_cv": 0.39,
+              "lag1_mel_cos": 0.9994
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.16,
+              "rvq0_entropy_bits": 1.684,
+              "rvq0_adj_repeat_rate": 0.8367
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: drum beats and percussion",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.211,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.05399,
+              "peak": 0.3359,
+              "zcr": 0.1977,
+              "spectral_centroid_hz": 3175.9,
+              "spectral_flatness": 0.1137,
+              "envelope_cv": 0.1672,
+              "lag1_mel_cos": 0.9989
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.12,
+              "rvq0_entropy_bits": 1.051,
+              "rvq0_adj_repeat_rate": 0.898
+            }
+          }
+        ],
+        "prompt_centroid_spread_hz": 2507.7
+      },
+      "audio2video_3s": {
+        "mode": "audio2video (vggsound_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 57,
+        "predicted_video_groups": 10,
+        "latent_huber_loss": 0.96743,
+        "latent_cosine_sim": 0.3889,
+        "counterfactual_latent_rmse": 0.27897,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 12.36,
+          "cf_vs_gt_psnr_db": 11.99,
+          "pred_vs_cf_psnr_db": 25.45
+        },
+        "mean_nowrite": 0.6915,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_shuffled_audio_context"
+        },
+        "temporal_eval": {
+          "n_groups": 10,
+          "n_frames": 37,
+          "duration_s_at_fps": 2.96,
+          "fps_assumed": 12.5,
+          "overall_psnr_db": 12.36,
+          "overall_cf_psnr_db": 11.99,
+          "overall_psnr_gain_over_cf_db": 0.37,
+          "early_huber": 0.7419,
+          "late_huber": 1.073,
+          "drift_ratio_late_over_early": 1.45,
+          "early_psnr_db": 12.53,
+          "late_psnr_db": 11.92,
+          "gt_frame_motion_rgb_l1": 2.758,
+          "pred_frame_motion_rgb_l1": 2.833,
+          "cf_frame_motion_rgb_l1": 3.236,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.4279,
+              "cos": 0.3073,
+              "norm_ratio": 0.505,
+              "cf_rmse": 0.3358,
+              "psnr_db": 12.62,
+              "cf_psnr_db": 11.36,
+              "psnr_margin_over_cf_db": 1.26
+            },
+            {
+              "group": 1,
+              "t_sec": 0.32,
+              "huber": 0.8497,
+              "cos": 0.4366,
+              "norm_ratio": 0.34,
+              "cf_rmse": 0.2584,
+              "psnr_db": 12.47,
+              "cf_psnr_db": 12.05,
+              "psnr_margin_over_cf_db": 0.42
+            },
+            {
+              "group": 2,
+              "t_sec": 0.64,
+              "huber": 0.9482,
+              "cos": 0.3022,
+              "norm_ratio": 0.384,
+              "cf_rmse": 0.2633,
+              "psnr_db": 12.49,
+              "cf_psnr_db": 12.24,
+              "psnr_margin_over_cf_db": 0.24
+            },
+            {
+              "group": 3,
+              "t_sec": 0.96,
+              "huber": 1.0288,
+              "cos": 0.2991,
+              "norm_ratio": 0.414,
+              "cf_rmse": 0.2894,
+              "psnr_db": 12.59,
+              "cf_psnr_db": 12.13,
+              "psnr_margin_over_cf_db": 0.46
+            },
+            {
+              "group": 4,
+              "t_sec": 1.28,
+              "huber": 1.0839,
+              "cos": 0.4272,
+              "norm_ratio": 0.39,
+              "cf_rmse": 0.2712,
+              "psnr_db": 12.73,
+              "cf_psnr_db": 12.02,
+              "psnr_margin_over_cf_db": 0.71
+            },
+            {
+              "group": 5,
+              "t_sec": 1.6,
+              "huber": 1.0808,
+              "cos": 0.4586,
+              "norm_ratio": 0.374,
+              "cf_rmse": 0.2369,
+              "psnr_db": 12.58,
+              "cf_psnr_db": 11.78,
+              "psnr_margin_over_cf_db": 0.8
+            },
+            {
+              "group": 6,
+              "t_sec": 1.92,
+              "huber": 1.0361,
+              "cos": 0.4238,
+              "norm_ratio": 0.432,
+              "cf_rmse": 0.3075,
+              "psnr_db": 12.3,
+              "cf_psnr_db": 12.02,
+              "psnr_margin_over_cf_db": 0.27
+            },
+            {
+              "group": 7,
+              "t_sec": 2.24,
+              "huber": 1.0689,
+              "cos": 0.4011,
+              "norm_ratio": 0.415,
+              "cf_rmse": 0.2665,
+              "psnr_db": 12.08,
+              "cf_psnr_db": 11.98,
+              "psnr_margin_over_cf_db": 0.1
+            },
+            {
+              "group": 8,
+              "t_sec": 2.56,
+              "huber": 1.0401,
+              "cos": 0.3824,
+              "norm_ratio": 0.408,
+              "cf_rmse": 0.2674,
+              "psnr_db": 11.96,
+              "cf_psnr_db": 12.0,
+              "psnr_margin_over_cf_db": -0.04
+            },
+            {
+              "group": 9,
+              "t_sec": 2.88,
+              "huber": 1.1099,
+              "cos": 0.3864,
+              "norm_ratio": 0.386,
+              "cf_rmse": 0.2807,
+              "psnr_db": 11.72,
+              "cf_psnr_db": 11.68,
+              "psnr_margin_over_cf_db": 0.03
+            }
+          ]
+        }
+      },
+      "video2action_2p4s": {
+        "mode": "video2action (robotics_test.npz)",
+        "episode_idx": 1,
+        "predicted_action_steps": 60,
+        "action_huber_loss": 0.17005,
+        "action_l1_error": 0.36445,
+        "action_cosine_sim": 0.4963,
+        "mean_nowrite": 0.6382,
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions"
+      },
+      "text_long_256b": {
+        "code": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+          "generated": "    lo                                                                                                                                                                                                                                                          ",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.0752,
+          "dominant_policy_gate_action": "ABSTAIN_SILENCE",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 1,
+            "distinct_3gram_ratio": 1.0,
+            "python_syntax_valid": true
+          }
+        },
+        "prose": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "The European Space Agency announced that the new telescope ",
+          "generated": "was a significant place in the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the state of the stat",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.1459,
+          "dominant_policy_gate_action": "ABSTAIN_SILENCE",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 58,
+            "distinct_3gram_ratio": 0.1607
+          }
+        },
+        "audio2text": {
+          "mode": "cross_modal_to_text (clotho_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 192,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly and gently. The sound could either be heavy rain or the thunder of jets. Water flo",
+          "generated_text": "A bell is ringing while a machine is running in the background. A bell in the ringing in the background in the background in the background in the background. A machine is running while a mach",
+          "mean_nowrite": 0.21,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 36,
+            "distinct_3gram_ratio": 0.7353
+          }
+        },
+        "video2text": {
+          "mode": "cross_modal_to_text (msrvtt_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 512,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "a woman creating a fondant baby and flower",
+          "generated_text": "set of a paper in a container or a paper file. A paper is repeated until it reaches a paper button. A paper is repeated until it is reached a paper button. A paper is reached a paper is reache",
+          "mean_nowrite": 0.6518,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 40,
+            "distinct_3gram_ratio": 0.7368
+          }
+        }
+      }
+    },
+    "700m_single_bank": {
+      "action2video_1p8s": {
+        "mode": "action2video (robotics_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 69,
+        "predicted_video_groups": 12,
+        "latent_huber_loss": 0.24358,
+        "latent_cosine_sim": 0.9588,
+        "counterfactual_latent_rmse": 1.6201,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 19.71,
+          "cf_vs_gt_psnr_db": 14.11,
+          "pred_vs_cf_psnr_db": 15.82
+        },
+        "mean_nowrite": 0.0,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_inverted_motor_action"
+        },
+        "temporal_eval": {
+          "n_groups": 12,
+          "n_frames": 45,
+          "duration_s_at_fps": 1.8,
+          "fps_assumed": 25.0,
+          "overall_psnr_db": 19.71,
+          "overall_cf_psnr_db": 14.11,
+          "overall_psnr_gain_over_cf_db": 5.6,
+          "early_huber": 0.199,
+          "late_huber": 0.2602,
+          "drift_ratio_late_over_early": 1.31,
+          "early_psnr_db": 19.53,
+          "late_psnr_db": 20.3,
+          "gt_frame_motion_rgb_l1": 1.762,
+          "pred_frame_motion_rgb_l1": 1.959,
+          "cf_frame_motion_rgb_l1": 3.688,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.1663,
+              "cos": 0.9708,
+              "norm_ratio": 0.974,
+              "cf_rmse": 0.0,
+              "psnr_db": 18.19,
+              "cf_psnr_db": 18.19,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 1,
+              "t_sec": 0.16,
+              "huber": 0.1696,
+              "cos": 0.9725,
+              "norm_ratio": 0.972,
+              "cf_rmse": 0.361,
+              "psnr_db": 20.53,
+              "cf_psnr_db": 19.0,
+              "psnr_margin_over_cf_db": 1.53
+            },
+            {
+              "group": 2,
+              "t_sec": 0.32,
+              "huber": 0.1669,
+              "cos": 0.9739,
+              "norm_ratio": 0.977,
+              "cf_rmse": 0.9111,
+              "psnr_db": 20.86,
+              "cf_psnr_db": 16.85,
+              "psnr_margin_over_cf_db": 4.01
+            },
+            {
+              "group": 3,
+              "t_sec": 0.48,
+              "huber": 0.2933,
+              "cos": 0.9483,
+              "norm_ratio": 0.948,
+              "cf_rmse": 1.2794,
+              "psnr_db": 18.53,
+              "cf_psnr_db": 13.87,
+              "psnr_margin_over_cf_db": 4.66
+            },
+            {
+              "group": 4,
+              "t_sec": 0.64,
+              "huber": 0.2357,
+              "cos": 0.9582,
+              "norm_ratio": 0.957,
+              "cf_rmse": 1.6132,
+              "psnr_db": 18.83,
+              "cf_psnr_db": 13.49,
+              "psnr_margin_over_cf_db": 5.35
+            },
+            {
+              "group": 5,
+              "t_sec": 0.8,
+              "huber": 0.3101,
+              "cos": 0.9444,
+              "norm_ratio": 0.926,
+              "cf_rmse": 1.7405,
+              "psnr_db": 18.56,
+              "cf_psnr_db": 13.1,
+              "psnr_margin_over_cf_db": 5.46
+            },
+            {
+              "group": 6,
+              "t_sec": 0.96,
+              "huber": 0.2394,
+              "cos": 0.9582,
+              "norm_ratio": 0.947,
+              "cf_rmse": 1.8204,
+              "psnr_db": 19.35,
+              "cf_psnr_db": 13.47,
+              "psnr_margin_over_cf_db": 5.87
+            },
+            {
+              "group": 7,
+              "t_sec": 1.12,
+              "huber": 0.3009,
+              "cos": 0.9488,
+              "norm_ratio": 0.924,
+              "cf_rmse": 1.8548,
+              "psnr_db": 19.62,
+              "cf_psnr_db": 13.24,
+              "psnr_margin_over_cf_db": 6.38
+            },
+            {
+              "group": 8,
+              "t_sec": 1.28,
+              "huber": 0.2571,
+              "cos": 0.9575,
+              "norm_ratio": 0.935,
+              "cf_rmse": 1.9751,
+              "psnr_db": 20.44,
+              "cf_psnr_db": 13.52,
+              "psnr_margin_over_cf_db": 6.92
+            },
+            {
+              "group": 9,
+              "t_sec": 1.44,
+              "huber": 0.2783,
+              "cos": 0.9572,
+              "norm_ratio": 0.908,
+              "cf_rmse": 1.8755,
+              "psnr_db": 19.96,
+              "cf_psnr_db": 13.64,
+              "psnr_margin_over_cf_db": 6.32
+            },
+            {
+              "group": 10,
+              "t_sec": 1.6,
+              "huber": 0.2572,
+              "cos": 0.9592,
+              "norm_ratio": 0.927,
+              "cf_rmse": 2.0663,
+              "psnr_db": 20.47,
+              "cf_psnr_db": 13.24,
+              "psnr_margin_over_cf_db": 7.23
+            },
+            {
+              "group": 11,
+              "t_sec": 1.76,
+              "huber": 0.2481,
+              "cos": 0.9599,
+              "norm_ratio": 0.936,
+              "cf_rmse": 2.1966,
+              "psnr_db": 20.33,
+              "cf_psnr_db": 12.79,
+              "psnr_margin_over_cf_db": 7.53
+            }
+          ]
+        }
+      },
+      "video2audio_4s": {
+        "greatesthits_ep0": {
+          "mode": "video2audio (greatesthits_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 101,
+          "ground_truth_label": "",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9625,
+          "mean_nowrite": 0.0,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.00952,
+            "peak": 0.6915,
+            "zcr": 0.0367,
+            "spectral_centroid_hz": 5276.6,
+            "spectral_flatness": 0.4325,
+            "envelope_cv": 4.1003,
+            "lag1_mel_cos": 0.9997
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.03044,
+            "peak": 0.4084,
+            "zcr": 0.0215,
+            "spectral_centroid_hz": 2456.7,
+            "spectral_flatness": 0.0899,
+            "envelope_cv": 1.9818,
+            "lag1_mel_cos": 0.9996,
+            "log_mel_l1_vs_ref": 1.0401,
+            "mean_mel_cos_vs_ref": 0.9938,
+            "envelope_pearson_vs_ref": 0.0094
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.0061,
+            "peak": 0.0833,
+            "zcr": 0.0157,
+            "spectral_centroid_hz": 3597.1,
+            "spectral_flatness": 0.1254,
+            "envelope_cv": 1.6562,
+            "lag1_mel_cos": 0.9998,
+            "log_mel_l1_vs_ref": 0.528,
+            "mean_mel_cos_vs_ref": 0.9985,
+            "envelope_pearson_vs_ref": -0.0141
+          },
+          "pred_vs_cf_log_mel_l1": 0.7271,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.686,
+            "rvq0_adj_repeat_rate": 0.4694
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.317,
+            "rvq0_adj_repeat_rate": 0.4286
+          }
+        },
+        "vggsound_ep0": {
+          "mode": "video2audio (vggsound_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 66,
+          "ground_truth_label": "sound: people marching",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9975,
+          "mean_nowrite": 0.0,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.05257,
+            "peak": 0.3185,
+            "zcr": 0.059,
+            "spectral_centroid_hz": 1426.8,
+            "spectral_flatness": 0.0071,
+            "envelope_cv": 0.6835,
+            "lag1_mel_cos": 0.9993
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.14228,
+            "peak": 0.4967,
+            "zcr": 0.015,
+            "spectral_centroid_hz": 991.7,
+            "spectral_flatness": 0.0009,
+            "envelope_cv": 0.3425,
+            "lag1_mel_cos": 0.9993,
+            "log_mel_l1_vs_ref": 0.7384,
+            "mean_mel_cos_vs_ref": 0.9964,
+            "envelope_pearson_vs_ref": -0.3407
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.02761,
+            "peak": 0.3597,
+            "zcr": 0.0488,
+            "spectral_centroid_hz": 1974.3,
+            "spectral_flatness": 0.0136,
+            "envelope_cv": 1.0202,
+            "lag1_mel_cos": 0.9994,
+            "log_mel_l1_vs_ref": 1.0466,
+            "mean_mel_cos_vs_ref": 0.9934,
+            "envelope_pearson_vs_ref": 0.328
+          },
+          "pred_vs_cf_log_mel_l1": 1.0584,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.08,
+            "rvq0_entropy_bits": 1.231,
+            "rvq0_adj_repeat_rate": 0.9388
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.38,
+            "rvq0_entropy_bits": 3.773,
+            "rvq0_adj_repeat_rate": 0.3061
+          }
+        }
+      },
+      "audio2audio_4s": {
+        "mode": "audio2audio (clotho_test.npz)",
+        "episode_idx": 0,
+        "observed_prefix_sec": 2.0,
+        "generated_continuation_sec": 4.0,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "dsp_gt": {
+          "duration_s": 6.0,
+          "rms": 0.08418,
+          "peak": 0.5084,
+          "zcr": 0.1091,
+          "spectral_centroid_hz": 2261.7,
+          "spectral_flatness": 0.0338,
+          "envelope_cv": 0.1857,
+          "lag1_mel_cos": 0.9989
+        },
+        "dsp_pred": {
+          "duration_s": 6.0,
+          "rms": 0.07586,
+          "peak": 0.4662,
+          "zcr": 0.1286,
+          "spectral_centroid_hz": 2567.9,
+          "spectral_flatness": 0.0579,
+          "envelope_cv": 0.1952,
+          "lag1_mel_cos": 0.9989,
+          "log_mel_l1_vs_ref": 0.2342,
+          "mean_mel_cos_vs_ref": 0.9995,
+          "envelope_pearson_vs_ref": 0.232
+        },
+        "rvq_diversity_suffix": {
+          "rvq0_unique_ratio": 0.02,
+          "rvq0_entropy_bits": -0.0,
+          "rvq0_adj_repeat_rate": 1.0
+        }
+      },
+      "text2video_3s": {
+        "mode": "text2video",
+        "prompt": "a car driving down a road",
+        "predicted_video_groups": 10,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "n_frames": 37,
+        "duration_s_at_12p5fps": 2.96,
+        "pred_frame_motion_rgb_l1": 2.329,
+        "latent_std": 0.8075
+      },
+      "text2audio_4s": {
+        "items": [
+          {
+            "mode": "text2audio",
+            "prompt": "sound: water rushing in a stream",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.10239,
+              "peak": 0.4955,
+              "zcr": 0.0043,
+              "spectral_centroid_hz": 417.9,
+              "spectral_flatness": 0.0004,
+              "envelope_cv": 0.483,
+              "lag1_mel_cos": 0.9995
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.14,
+              "rvq0_entropy_bits": 1.828,
+              "rvq0_adj_repeat_rate": 0.7959
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: dog barking loudly",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.12209,
+              "peak": 0.4366,
+              "zcr": 0.0171,
+              "spectral_centroid_hz": 1028.9,
+              "spectral_flatness": 0.0011,
+              "envelope_cv": 0.3933,
+              "lag1_mel_cos": 0.9993
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.14,
+              "rvq0_entropy_bits": 1.019,
+              "rvq0_adj_repeat_rate": 0.8776
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: drum beats and percussion",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.01548,
+              "peak": 0.0667,
+              "zcr": 0.0195,
+              "spectral_centroid_hz": 1499.9,
+              "spectral_flatness": 0.0099,
+              "envelope_cv": 0.5719,
+              "lag1_mel_cos": 0.9997
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.14,
+              "rvq0_entropy_bits": 1.384,
+              "rvq0_adj_repeat_rate": 0.8776
+            }
+          }
+        ],
+        "prompt_centroid_spread_hz": 1082.0
+      },
+      "audio2video_3s": {
+        "mode": "audio2video (vggsound_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 57,
+        "predicted_video_groups": 10,
+        "latent_huber_loss": 0.99049,
+        "latent_cosine_sim": 0.3625,
+        "counterfactual_latent_rmse": 0.40059,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 12.1,
+          "cf_vs_gt_psnr_db": 12.31,
+          "pred_vs_cf_psnr_db": 24.2
+        },
+        "mean_nowrite": 0.0,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_shuffled_audio_context"
+        },
+        "temporal_eval": {
+          "n_groups": 10,
+          "n_frames": 37,
+          "duration_s_at_fps": 2.96,
+          "fps_assumed": 12.5,
+          "overall_psnr_db": 12.1,
+          "overall_cf_psnr_db": 12.31,
+          "overall_psnr_gain_over_cf_db": -0.21,
+          "early_huber": 0.73,
+          "late_huber": 1.0924,
+          "drift_ratio_late_over_early": 1.5,
+          "early_psnr_db": 12.15,
+          "late_psnr_db": 12.14,
+          "gt_frame_motion_rgb_l1": 2.758,
+          "pred_frame_motion_rgb_l1": 3.052,
+          "cf_frame_motion_rgb_l1": 2.31,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.4292,
+              "cos": 0.3444,
+              "norm_ratio": 0.587,
+              "cf_rmse": 0.3165,
+              "psnr_db": 12.08,
+              "cf_psnr_db": 11.9,
+              "psnr_margin_over_cf_db": 0.18
+            },
+            {
+              "group": 1,
+              "t_sec": 0.32,
+              "huber": 0.8072,
+              "cos": 0.4938,
+              "norm_ratio": 0.428,
+              "cf_rmse": 0.3288,
+              "psnr_db": 12.2,
+              "cf_psnr_db": 12.4,
+              "psnr_margin_over_cf_db": -0.2
+            },
+            {
+              "group": 2,
+              "t_sec": 0.64,
+              "huber": 0.9536,
+              "cos": 0.3151,
+              "norm_ratio": 0.452,
+              "cf_rmse": 0.3765,
+              "psnr_db": 12.18,
+              "cf_psnr_db": 12.36,
+              "psnr_margin_over_cf_db": -0.18
+            },
+            {
+              "group": 3,
+              "t_sec": 0.96,
+              "huber": 1.0769,
+              "cos": 0.2316,
+              "norm_ratio": 0.448,
+              "cf_rmse": 0.4109,
+              "psnr_db": 11.79,
+              "cf_psnr_db": 12.24,
+              "psnr_margin_over_cf_db": -0.45
+            },
+            {
+              "group": 4,
+              "t_sec": 1.28,
+              "huber": 1.1372,
+              "cos": 0.352,
+              "norm_ratio": 0.424,
+              "cf_rmse": 0.446,
+              "psnr_db": 11.9,
+              "cf_psnr_db": 12.22,
+              "psnr_margin_over_cf_db": -0.32
+            },
+            {
+              "group": 5,
+              "t_sec": 1.6,
+              "huber": 1.1336,
+              "cos": 0.3925,
+              "norm_ratio": 0.426,
+              "cf_rmse": 0.4261,
+              "psnr_db": 12.25,
+              "cf_psnr_db": 12.16,
+              "psnr_margin_over_cf_db": 0.1
+            },
+            {
+              "group": 6,
+              "t_sec": 1.92,
+              "huber": 1.0898,
+              "cos": 0.3651,
+              "norm_ratio": 0.458,
+              "cf_rmse": 0.4393,
+              "psnr_db": 12.01,
+              "cf_psnr_db": 12.24,
+              "psnr_margin_over_cf_db": -0.22
+            },
+            {
+              "group": 7,
+              "t_sec": 2.24,
+              "huber": 1.1143,
+              "cos": 0.3525,
+              "norm_ratio": 0.445,
+              "cf_rmse": 0.4329,
+              "psnr_db": 12.11,
+              "cf_psnr_db": 12.39,
+              "psnr_margin_over_cf_db": -0.28
+            },
+            {
+              "group": 8,
+              "t_sec": 2.56,
+              "huber": 1.0559,
+              "cos": 0.3788,
+              "norm_ratio": 0.447,
+              "cf_rmse": 0.4225,
+              "psnr_db": 12.25,
+              "cf_psnr_db": 12.41,
+              "psnr_margin_over_cf_db": -0.16
+            },
+            {
+              "group": 9,
+              "t_sec": 2.88,
+              "huber": 1.1071,
+              "cos": 0.404,
+              "norm_ratio": 0.424,
+              "cf_rmse": 0.3828,
+              "psnr_db": 12.05,
+              "cf_psnr_db": 12.32,
+              "psnr_margin_over_cf_db": -0.28
+            }
+          ]
+        }
+      },
+      "video2action_2p4s": {
+        "mode": "video2action (robotics_test.npz)",
+        "episode_idx": 1,
+        "predicted_action_steps": 60,
+        "action_huber_loss": 0.1426,
+        "action_l1_error": 0.40092,
+        "action_cosine_sim": 0.5801,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions"
+      },
+      "text_long_256b": {
+        "code": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+          "generated": "    lo                                                                                                                                                                                                                                                          ",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.0,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 1,
+            "distinct_3gram_ratio": 1.0,
+            "python_syntax_valid": true
+          }
+        },
+        "prose": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "The European Space Agency announced that the new telescope ",
+          "generated": "was a state construction system which was a state construction system which was a state construction system which was a state construction system which was a state construction system which was a state construction system which was a state construction sys",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.0,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 41,
+            "distinct_3gram_ratio": 0.1795
+          }
+        },
+        "audio2text": {
+          "mode": "cross_modal_to_text (clotho_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 192,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly and gently. The sound could either be heavy rain or the thunder of jets. Water flo",
+          "generated_text": "A person is walking through a stream of water. A person walks through a stream of water. A person walks through a stream of water. Water is flowing and a person walks through a stream. Water i",
+          "mean_nowrite": 0.0,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 37,
+            "distinct_3gram_ratio": 0.6286
+          }
+        },
+        "video2text": {
+          "mode": "cross_modal_to_text (msrvtt_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 512,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "a woman creating a fondant baby and flower",
+          "generated_text": "s and a computer can be used to store a computer in a way that is called a computer program. A computer program is a computer program that is a computer program that is a computer program that",
+          "mean_nowrite": 0.0,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 38,
+            "distinct_3gram_ratio": 0.7778
+          }
+        }
+      }
+    },
+    "700m_sw_gqa": {
+      "action2video_1p8s": {
+        "mode": "action2video (robotics_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 69,
+        "predicted_video_groups": 12,
+        "latent_huber_loss": 0.21366,
+        "latent_cosine_sim": 0.9632,
+        "counterfactual_latent_rmse": 0.92065,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 19.33,
+          "cf_vs_gt_psnr_db": 16.44,
+          "pred_vs_cf_psnr_db": 21.8
+        },
+        "mean_nowrite": 0.0,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_inverted_motor_action"
+        },
+        "temporal_eval": {
+          "n_groups": 12,
+          "n_frames": 45,
+          "duration_s_at_fps": 1.8,
+          "fps_assumed": 25.0,
+          "overall_psnr_db": 19.33,
+          "overall_cf_psnr_db": 16.44,
+          "overall_psnr_gain_over_cf_db": 2.89,
+          "early_huber": 0.1997,
+          "late_huber": 0.2203,
+          "drift_ratio_late_over_early": 1.1,
+          "early_psnr_db": 19.39,
+          "late_psnr_db": 19.43,
+          "gt_frame_motion_rgb_l1": 1.762,
+          "pred_frame_motion_rgb_l1": 1.343,
+          "cf_frame_motion_rgb_l1": 1.757,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.2136,
+              "cos": 0.9624,
+              "norm_ratio": 0.949,
+              "cf_rmse": 0.0,
+              "psnr_db": 17.46,
+              "cf_psnr_db": 17.46,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 1,
+              "t_sec": 0.16,
+              "huber": 0.1964,
+              "cos": 0.9675,
+              "norm_ratio": 0.978,
+              "cf_rmse": 0.734,
+              "psnr_db": 20.31,
+              "cf_psnr_db": 17.2,
+              "psnr_margin_over_cf_db": 3.12
+            },
+            {
+              "group": 2,
+              "t_sec": 0.32,
+              "huber": 0.1812,
+              "cos": 0.9714,
+              "norm_ratio": 0.987,
+              "cf_rmse": 0.8249,
+              "psnr_db": 20.61,
+              "cf_psnr_db": 17.41,
+              "psnr_margin_over_cf_db": 3.2
+            },
+            {
+              "group": 3,
+              "t_sec": 0.48,
+              "huber": 0.2077,
+              "cos": 0.9644,
+              "norm_ratio": 0.992,
+              "cf_rmse": 0.7124,
+              "psnr_db": 19.19,
+              "cf_psnr_db": 17.22,
+              "psnr_margin_over_cf_db": 1.97
+            },
+            {
+              "group": 4,
+              "t_sec": 0.64,
+              "huber": 0.2173,
+              "cos": 0.9613,
+              "norm_ratio": 1.001,
+              "cf_rmse": 0.8828,
+              "psnr_db": 18.68,
+              "cf_psnr_db": 15.98,
+              "psnr_margin_over_cf_db": 2.71
+            },
+            {
+              "group": 5,
+              "t_sec": 0.8,
+              "huber": 0.2181,
+              "cos": 0.9603,
+              "norm_ratio": 1.011,
+              "cf_rmse": 0.8385,
+              "psnr_db": 18.66,
+              "cf_psnr_db": 16.76,
+              "psnr_margin_over_cf_db": 1.9
+            },
+            {
+              "group": 6,
+              "t_sec": 0.96,
+              "huber": 0.198,
+              "cos": 0.9645,
+              "norm_ratio": 1.003,
+              "cf_rmse": 0.9648,
+              "psnr_db": 19.49,
+              "cf_psnr_db": 16.38,
+              "psnr_margin_over_cf_db": 3.11
+            },
+            {
+              "group": 7,
+              "t_sec": 1.12,
+              "huber": 0.2505,
+              "cos": 0.9569,
+              "norm_ratio": 0.976,
+              "cf_rmse": 0.9144,
+              "psnr_db": 18.83,
+              "cf_psnr_db": 16.53,
+              "psnr_margin_over_cf_db": 2.3
+            },
+            {
+              "group": 8,
+              "t_sec": 1.28,
+              "huber": 0.193,
+              "cos": 0.9675,
+              "norm_ratio": 1.014,
+              "cf_rmse": 1.012,
+              "psnr_db": 20.56,
+              "cf_psnr_db": 17.13,
+              "psnr_margin_over_cf_db": 3.43
+            },
+            {
+              "group": 9,
+              "t_sec": 1.44,
+              "huber": 0.2278,
+              "cos": 0.9614,
+              "norm_ratio": 0.982,
+              "cf_rmse": 1.1719,
+              "psnr_db": 18.79,
+              "cf_psnr_db": 14.78,
+              "psnr_margin_over_cf_db": 4.02
+            },
+            {
+              "group": 10,
+              "t_sec": 1.6,
+              "huber": 0.2555,
+              "cos": 0.9562,
+              "norm_ratio": 0.976,
+              "cf_rmse": 1.1554,
+              "psnr_db": 18.63,
+              "cf_psnr_db": 15.29,
+              "psnr_margin_over_cf_db": 3.34
+            },
+            {
+              "group": 11,
+              "t_sec": 1.76,
+              "huber": 0.2047,
+              "cos": 0.9662,
+              "norm_ratio": 1.0,
+              "cf_rmse": 1.2095,
+              "psnr_db": 19.76,
+              "cf_psnr_db": 16.13,
+              "psnr_margin_over_cf_db": 3.63
+            }
+          ]
+        }
+      },
+      "video2audio_4s": {
+        "greatesthits_ep0": {
+          "mode": "video2audio (greatesthits_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 101,
+          "ground_truth_label": "",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.99,
+          "mean_nowrite": 0.0,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.00952,
+            "peak": 0.6915,
+            "zcr": 0.0367,
+            "spectral_centroid_hz": 5276.6,
+            "spectral_flatness": 0.4325,
+            "envelope_cv": 4.1003,
+            "lag1_mel_cos": 0.9997
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.00921,
+            "peak": 0.0732,
+            "zcr": 0.0493,
+            "spectral_centroid_hz": 1553.4,
+            "spectral_flatness": 0.01,
+            "envelope_cv": 0.3598,
+            "lag1_mel_cos": 0.9996,
+            "log_mel_l1_vs_ref": 1.8841,
+            "mean_mel_cos_vs_ref": 0.9861,
+            "envelope_pearson_vs_ref": 0.0101
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.12897,
+            "peak": 0.6066,
+            "zcr": 0.1155,
+            "spectral_centroid_hz": 2536.5,
+            "spectral_flatness": 0.0418,
+            "envelope_cv": 0.2528,
+            "lag1_mel_cos": 0.9987,
+            "log_mel_l1_vs_ref": 4.5328,
+            "mean_mel_cos_vs_ref": 0.9829,
+            "envelope_pearson_vs_ref": 0.0339
+          },
+          "pred_vs_cf_log_mel_l1": 2.9607,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.18,
+            "rvq0_entropy_bits": 1.614,
+            "rvq0_adj_repeat_rate": 0.7959
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.317,
+            "rvq0_adj_repeat_rate": 0.4286
+          }
+        },
+        "vggsound_ep0": {
+          "mode": "video2audio (vggsound_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 66,
+          "ground_truth_label": "sound: people marching",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 1.0,
+          "mean_nowrite": 0.0,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.05257,
+            "peak": 0.3185,
+            "zcr": 0.059,
+            "spectral_centroid_hz": 1426.8,
+            "spectral_flatness": 0.0071,
+            "envelope_cv": 0.6835,
+            "lag1_mel_cos": 0.9993
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.11146,
+            "peak": 0.5758,
+            "zcr": 0.0785,
+            "spectral_centroid_hz": 1583.4,
+            "spectral_flatness": 0.0023,
+            "envelope_cv": 0.5165,
+            "lag1_mel_cos": 0.9988,
+            "log_mel_l1_vs_ref": 1.0928,
+            "mean_mel_cos_vs_ref": 0.9979,
+            "envelope_pearson_vs_ref": -0.0309
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.01836,
+            "peak": 0.2206,
+            "zcr": 0.0836,
+            "spectral_centroid_hz": 2318.7,
+            "spectral_flatness": 0.0362,
+            "envelope_cv": 0.8517,
+            "lag1_mel_cos": 0.9994,
+            "log_mel_l1_vs_ref": 0.8972,
+            "mean_mel_cos_vs_ref": 0.9944,
+            "envelope_pearson_vs_ref": 0.4708
+          },
+          "pred_vs_cf_log_mel_l1": 1.2475,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.32,
+            "rvq0_entropy_bits": 3.335,
+            "rvq0_adj_repeat_rate": 0.4898
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.38,
+            "rvq0_entropy_bits": 3.773,
+            "rvq0_adj_repeat_rate": 0.3061
+          }
+        }
+      },
+      "audio2audio_4s": {
+        "mode": "audio2audio (clotho_test.npz)",
+        "episode_idx": 0,
+        "observed_prefix_sec": 2.0,
+        "generated_continuation_sec": 4.0,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "dsp_gt": {
+          "duration_s": 6.0,
+          "rms": 0.08418,
+          "peak": 0.5084,
+          "zcr": 0.1091,
+          "spectral_centroid_hz": 2261.7,
+          "spectral_flatness": 0.0338,
+          "envelope_cv": 0.1857,
+          "lag1_mel_cos": 0.9989
+        },
+        "dsp_pred": {
+          "duration_s": 6.0,
+          "rms": 0.08768,
+          "peak": 0.5081,
+          "zcr": 0.1166,
+          "spectral_centroid_hz": 2303.2,
+          "spectral_flatness": 0.0376,
+          "envelope_cv": 0.1621,
+          "lag1_mel_cos": 0.9989,
+          "log_mel_l1_vs_ref": 0.2394,
+          "mean_mel_cos_vs_ref": 0.9999,
+          "envelope_pearson_vs_ref": 0.3767
+        },
+        "rvq_diversity_suffix": {
+          "rvq0_unique_ratio": 0.04,
+          "rvq0_entropy_bits": 0.68,
+          "rvq0_adj_repeat_rate": 0.9796
+        }
+      },
+      "text2video_3s": {
+        "mode": "text2video",
+        "prompt": "a car driving down a road",
+        "predicted_video_groups": 10,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "n_frames": 37,
+        "duration_s_at_12p5fps": 2.96,
+        "pred_frame_motion_rgb_l1": 2.502,
+        "latent_std": 0.8604
+      },
+      "text2audio_4s": {
+        "items": [
+          {
+            "mode": "text2audio",
+            "prompt": "sound: water rushing in a stream",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.04975,
+              "peak": 0.2412,
+              "zcr": 0.0654,
+              "spectral_centroid_hz": 1580.8,
+              "spectral_flatness": 0.0083,
+              "envelope_cv": 0.2925,
+              "lag1_mel_cos": 0.9992
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.12,
+              "rvq0_entropy_bits": 0.979,
+              "rvq0_adj_repeat_rate": 0.898
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: dog barking loudly",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.07257,
+              "peak": 0.3077,
+              "zcr": 0.0286,
+              "spectral_centroid_hz": 999.3,
+              "spectral_flatness": 0.0006,
+              "envelope_cv": 0.4568,
+              "lag1_mel_cos": 0.9994
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.18,
+              "rvq0_entropy_bits": 2.356,
+              "rvq0_adj_repeat_rate": 0.8367
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: drum beats and percussion",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.0,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.03309,
+              "peak": 0.1328,
+              "zcr": 0.006,
+              "spectral_centroid_hz": 848.4,
+              "spectral_flatness": 0.0013,
+              "envelope_cv": 0.8131,
+              "lag1_mel_cos": 0.9996
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.18,
+              "rvq0_entropy_bits": 1.609,
+              "rvq0_adj_repeat_rate": 0.7755
+            }
+          }
+        ],
+        "prompt_centroid_spread_hz": 732.4
+      },
+      "audio2video_3s": {
+        "mode": "audio2video (vggsound_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 57,
+        "predicted_video_groups": 10,
+        "latent_huber_loss": 0.95033,
+        "latent_cosine_sim": 0.4288,
+        "counterfactual_latent_rmse": 0.57081,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 12.09,
+          "cf_vs_gt_psnr_db": 11.83,
+          "pred_vs_cf_psnr_db": 19.75
+        },
+        "mean_nowrite": 0.0,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_shuffled_audio_context"
+        },
+        "temporal_eval": {
+          "n_groups": 10,
+          "n_frames": 37,
+          "duration_s_at_fps": 2.96,
+          "fps_assumed": 12.5,
+          "overall_psnr_db": 12.09,
+          "overall_cf_psnr_db": 11.83,
+          "overall_psnr_gain_over_cf_db": 0.26,
+          "early_huber": 0.7191,
+          "late_huber": 1.0682,
+          "drift_ratio_late_over_early": 1.49,
+          "early_psnr_db": 11.94,
+          "late_psnr_db": 12.0,
+          "gt_frame_motion_rgb_l1": 2.758,
+          "pred_frame_motion_rgb_l1": 2.678,
+          "cf_frame_motion_rgb_l1": 2.303,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.4324,
+              "cos": 0.3727,
+              "norm_ratio": 0.672,
+              "cf_rmse": 0.3243,
+              "psnr_db": 11.65,
+              "cf_psnr_db": 11.82,
+              "psnr_margin_over_cf_db": -0.18
+            },
+            {
+              "group": 1,
+              "t_sec": 0.32,
+              "huber": 0.7917,
+              "cos": 0.5106,
+              "norm_ratio": 0.466,
+              "cf_rmse": 0.356,
+              "psnr_db": 12.0,
+              "cf_psnr_db": 12.18,
+              "psnr_margin_over_cf_db": -0.18
+            },
+            {
+              "group": 2,
+              "t_sec": 0.64,
+              "huber": 0.9331,
+              "cos": 0.3499,
+              "norm_ratio": 0.484,
+              "cf_rmse": 0.4084,
+              "psnr_db": 12.17,
+              "cf_psnr_db": 12.01,
+              "psnr_margin_over_cf_db": 0.16
+            },
+            {
+              "group": 3,
+              "t_sec": 0.96,
+              "huber": 1.0279,
+              "cos": 0.3381,
+              "norm_ratio": 0.497,
+              "cf_rmse": 0.446,
+              "psnr_db": 12.07,
+              "cf_psnr_db": 11.76,
+              "psnr_margin_over_cf_db": 0.31
+            },
+            {
+              "group": 4,
+              "t_sec": 1.28,
+              "huber": 1.0526,
+              "cos": 0.466,
+              "norm_ratio": 0.455,
+              "cf_rmse": 0.4946,
+              "psnr_db": 12.2,
+              "cf_psnr_db": 11.71,
+              "psnr_margin_over_cf_db": 0.48
+            },
+            {
+              "group": 5,
+              "t_sec": 1.6,
+              "huber": 1.0517,
+              "cos": 0.486,
+              "norm_ratio": 0.465,
+              "cf_rmse": 0.5445,
+              "psnr_db": 12.12,
+              "cf_psnr_db": 11.68,
+              "psnr_margin_over_cf_db": 0.44
+            },
+            {
+              "group": 6,
+              "t_sec": 1.92,
+              "huber": 1.0093,
+              "cos": 0.4661,
+              "norm_ratio": 0.513,
+              "cf_rmse": 0.5941,
+              "psnr_db": 12.28,
+              "cf_psnr_db": 11.93,
+              "psnr_margin_over_cf_db": 0.35
+            },
+            {
+              "group": 7,
+              "t_sec": 2.24,
+              "huber": 1.0582,
+              "cos": 0.4379,
+              "norm_ratio": 0.532,
+              "cf_rmse": 0.7097,
+              "psnr_db": 12.11,
+              "cf_psnr_db": 11.8,
+              "psnr_margin_over_cf_db": 0.31
+            },
+            {
+              "group": 8,
+              "t_sec": 2.56,
+              "huber": 1.0491,
+              "cos": 0.4069,
+              "norm_ratio": 0.557,
+              "cf_rmse": 0.7554,
+              "psnr_db": 12.01,
+              "cf_psnr_db": 11.63,
+              "psnr_margin_over_cf_db": 0.38
+            },
+            {
+              "group": 9,
+              "t_sec": 2.88,
+              "huber": 1.0973,
+              "cos": 0.4277,
+              "norm_ratio": 0.553,
+              "cf_rmse": 0.832,
+              "psnr_db": 11.88,
+              "cf_psnr_db": 11.54,
+              "psnr_margin_over_cf_db": 0.33
+            }
+          ]
+        }
+      },
+      "video2action_2p4s": {
+        "mode": "video2action (robotics_test.npz)",
+        "episode_idx": 1,
+        "predicted_action_steps": 60,
+        "action_huber_loss": 0.10058,
+        "action_l1_error": 0.29385,
+        "action_cosine_sim": 0.7784,
+        "mean_nowrite": 0.0,
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions"
+      },
+      "text_long_256b": {
+        "code": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+          "generated": "    lo                                                                                                                                                                                                                                                          ",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.0,
+          "dominant_policy_gate_action": "ABSTAIN_SILENCE",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 1,
+            "distinct_3gram_ratio": 1.0,
+            "python_syntax_valid": true
+          }
+        },
+        "prose": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "The European Space Agency announced that the new telescope ",
+          "generated": "was a problem with the space agency and the space agency was a problem with the space agency and the space agency was a problem with the space agency was a problem with the space agency was a problem with the space agency was a problem with the space agenc",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.0,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 50,
+            "distinct_3gram_ratio": 0.2292
+          }
+        },
+        "audio2text": {
+          "mode": "cross_modal_to_text (clotho_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 192,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly and gently. The sound could either be heavy rain or the thunder of jets. Water flo",
+          "generated_text": "A person is walking on a train and then someone is walking on a train and then someone is walking on a train and then someone is walking on a train and then someone is walking on a train and t",
+          "mean_nowrite": 0.0,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 41,
+            "distinct_3gram_ratio": 0.2821
+          }
+        },
+        "video2text": {
+          "mode": "cross_modal_to_text (msrvtt_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 512,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "a woman creating a fondant baby and flower",
+          "generated_text": "n and discussiong to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to to tto to t to tto to to t ",
+          "mean_nowrite": 0.0,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 61,
+            "distinct_3gram_ratio": 0.1864
+          }
+        }
+      }
+    },
+    "1b_routed": {
+      "action2video_1p8s": {
+        "mode": "action2video (robotics_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 69,
+        "predicted_video_groups": 12,
+        "latent_huber_loss": 1.4019,
+        "latent_cosine_sim": 0.4732,
+        "counterfactual_latent_rmse": 0.47588,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 10.44,
+          "cf_vs_gt_psnr_db": 11.35,
+          "pred_vs_cf_psnr_db": 20.25
+        },
+        "mean_nowrite": 0.6162,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_inverted_motor_action"
+        },
+        "temporal_eval": {
+          "n_groups": 12,
+          "n_frames": 45,
+          "duration_s_at_fps": 1.8,
+          "fps_assumed": 25.0,
+          "overall_psnr_db": 10.44,
+          "overall_cf_psnr_db": 11.35,
+          "overall_psnr_gain_over_cf_db": -0.91,
+          "early_huber": 0.9565,
+          "late_huber": 1.7671,
+          "drift_ratio_late_over_early": 1.85,
+          "early_psnr_db": 12.9,
+          "late_psnr_db": 8.68,
+          "gt_frame_motion_rgb_l1": 1.762,
+          "pred_frame_motion_rgb_l1": 4.524,
+          "cf_frame_motion_rgb_l1": 4.435,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.7435,
+              "cos": 0.7971,
+              "norm_ratio": 0.748,
+              "cf_rmse": 0.0,
+              "psnr_db": 12.65,
+              "cf_psnr_db": 12.65,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 1,
+              "t_sec": 0.16,
+              "huber": 0.8999,
+              "cos": 0.7573,
+              "norm_ratio": 0.671,
+              "cf_rmse": 0.3248,
+              "psnr_db": 13.44,
+              "cf_psnr_db": 13.07,
+              "psnr_margin_over_cf_db": 0.37
+            },
+            {
+              "group": 2,
+              "t_sec": 0.32,
+              "huber": 1.0166,
+              "cos": 0.7165,
+              "norm_ratio": 0.609,
+              "cf_rmse": 0.261,
+              "psnr_db": 12.95,
+              "cf_psnr_db": 12.68,
+              "psnr_margin_over_cf_db": 0.27
+            },
+            {
+              "group": 3,
+              "t_sec": 0.48,
+              "huber": 1.1658,
+              "cos": 0.6709,
+              "norm_ratio": 0.517,
+              "cf_rmse": 0.3237,
+              "psnr_db": 12.57,
+              "cf_psnr_db": 12.35,
+              "psnr_margin_over_cf_db": 0.22
+            },
+            {
+              "group": 4,
+              "t_sec": 0.64,
+              "huber": 1.372,
+              "cos": 0.5287,
+              "norm_ratio": 0.47,
+              "cf_rmse": 0.3745,
+              "psnr_db": 11.19,
+              "cf_psnr_db": 10.39,
+              "psnr_margin_over_cf_db": 0.8
+            },
+            {
+              "group": 5,
+              "t_sec": 0.8,
+              "huber": 1.441,
+              "cos": 0.4896,
+              "norm_ratio": 0.423,
+              "cf_rmse": 0.2552,
+              "psnr_db": 11.44,
+              "cf_psnr_db": 11.33,
+              "psnr_margin_over_cf_db": 0.12
+            },
+            {
+              "group": 6,
+              "t_sec": 0.96,
+              "huber": 1.5548,
+              "cos": 0.3808,
+              "norm_ratio": 0.44,
+              "cf_rmse": 0.2763,
+              "psnr_db": 10.3,
+              "cf_psnr_db": 10.58,
+              "psnr_margin_over_cf_db": -0.28
+            },
+            {
+              "group": 7,
+              "t_sec": 1.12,
+              "huber": 1.5606,
+              "cos": 0.3813,
+              "norm_ratio": 0.4,
+              "cf_rmse": 0.3157,
+              "psnr_db": 10.93,
+              "cf_psnr_db": 11.25,
+              "psnr_margin_over_cf_db": -0.32
+            },
+            {
+              "group": 8,
+              "t_sec": 1.28,
+              "huber": 1.6594,
+              "cos": 0.275,
+              "norm_ratio": 0.437,
+              "cf_rmse": 0.4951,
+              "psnr_db": 9.55,
+              "cf_psnr_db": 11.18,
+              "psnr_margin_over_cf_db": -1.63
+            },
+            {
+              "group": 9,
+              "t_sec": 1.44,
+              "huber": 1.7268,
+              "cos": 0.2296,
+              "norm_ratio": 0.479,
+              "cf_rmse": 0.559,
+              "psnr_db": 8.86,
+              "cf_psnr_db": 10.54,
+              "psnr_margin_over_cf_db": -1.67
+            },
+            {
+              "group": 10,
+              "t_sec": 1.6,
+              "huber": 1.7897,
+              "cos": 0.1923,
+              "norm_ratio": 0.501,
+              "cf_rmse": 0.7232,
+              "psnr_db": 8.62,
+              "cf_psnr_db": 10.92,
+              "psnr_margin_over_cf_db": -2.31
+            },
+            {
+              "group": 11,
+              "t_sec": 1.76,
+              "huber": 1.8926,
+              "cos": 0.1158,
+              "norm_ratio": 0.542,
+              "cf_rmse": 0.9884,
+              "psnr_db": 7.69,
+              "cf_psnr_db": 11.08,
+              "psnr_margin_over_cf_db": -3.39
+            }
+          ]
+        }
+      },
+      "video2audio_4s": {
+        "greatesthits_ep0": {
+          "mode": "video2audio (greatesthits_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 101,
+          "ground_truth_label": "",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9775,
+          "mean_nowrite": 0.6658,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.00952,
+            "peak": 0.6915,
+            "zcr": 0.0367,
+            "spectral_centroid_hz": 5276.6,
+            "spectral_flatness": 0.4325,
+            "envelope_cv": 4.1003,
+            "lag1_mel_cos": 0.9997
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.03539,
+            "peak": 0.2477,
+            "zcr": 0.102,
+            "spectral_centroid_hz": 2123.9,
+            "spectral_flatness": 0.0253,
+            "envelope_cv": 0.3698,
+            "lag1_mel_cos": 0.9992,
+            "log_mel_l1_vs_ref": 3.2984,
+            "mean_mel_cos_vs_ref": 0.9864,
+            "envelope_pearson_vs_ref": -0.1104
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.06072,
+            "peak": 0.4715,
+            "zcr": 0.3347,
+            "spectral_centroid_hz": 4538.5,
+            "spectral_flatness": 0.2853,
+            "envelope_cv": 0.394,
+            "lag1_mel_cos": 0.9988,
+            "log_mel_l1_vs_ref": 4.0708,
+            "mean_mel_cos_vs_ref": 0.9973,
+            "envelope_pearson_vs_ref": -0.0514
+          },
+          "pred_vs_cf_log_mel_l1": 1.2461,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.08,
+            "rvq0_entropy_bits": 1.694,
+            "rvq0_adj_repeat_rate": 0.898
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.34,
+            "rvq0_entropy_bits": 3.317,
+            "rvq0_adj_repeat_rate": 0.4286
+          }
+        },
+        "vggsound_ep0": {
+          "mode": "video2audio (vggsound_test.npz)",
+          "episode_idx": 0,
+          "counterfactual_episode_idx": 66,
+          "ground_truth_label": "sound: people marching",
+          "observed_video_patches": 180,
+          "generated_mimi_ticks_12p5hz": 50,
+          "generated_duration_sec": 4.0,
+          "causal_video_conditioning_code_diff_rate": 0.9925,
+          "mean_nowrite": 0.6485,
+          "epistemic_labels": {
+            "gt_wav": "observed_ground_truth",
+            "pred_wav": "predicted_free_running_frozen_weights",
+            "shuffled_video_cf_wav": "counterfactual_shuffled_video_context"
+          },
+          "dsp_gt": {
+            "duration_s": 4.0,
+            "rms": 0.05257,
+            "peak": 0.3185,
+            "zcr": 0.059,
+            "spectral_centroid_hz": 1426.8,
+            "spectral_flatness": 0.0071,
+            "envelope_cv": 0.6835,
+            "lag1_mel_cos": 0.9993
+          },
+          "dsp_pred": {
+            "duration_s": 4.0,
+            "rms": 0.10902,
+            "peak": 0.7855,
+            "zcr": 0.1798,
+            "spectral_centroid_hz": 2843.8,
+            "spectral_flatness": 0.0381,
+            "envelope_cv": 0.2512,
+            "lag1_mel_cos": 0.9988,
+            "log_mel_l1_vs_ref": 1.9055,
+            "mean_mel_cos_vs_ref": 0.9716,
+            "envelope_pearson_vs_ref": -0.3105
+          },
+          "dsp_cf": {
+            "duration_s": 4.0,
+            "rms": 0.05195,
+            "peak": 0.2915,
+            "zcr": 0.0651,
+            "spectral_centroid_hz": 1692.6,
+            "spectral_flatness": 0.0131,
+            "envelope_cv": 0.7344,
+            "lag1_mel_cos": 0.9991,
+            "log_mel_l1_vs_ref": 1.0717,
+            "mean_mel_cos_vs_ref": 0.9954,
+            "envelope_pearson_vs_ref": -0.1981
+          },
+          "pred_vs_cf_log_mel_l1": 1.9377,
+          "rvq_diversity_pred": {
+            "rvq0_unique_ratio": 0.22,
+            "rvq0_entropy_bits": 2.578,
+            "rvq0_adj_repeat_rate": 0.6531
+          },
+          "rvq_diversity_gt": {
+            "rvq0_unique_ratio": 0.38,
+            "rvq0_entropy_bits": 3.773,
+            "rvq0_adj_repeat_rate": 0.3061
+          }
+        }
+      },
+      "audio2audio_4s": {
+        "mode": "audio2audio (clotho_test.npz)",
+        "episode_idx": 0,
+        "observed_prefix_sec": 2.0,
+        "generated_continuation_sec": 4.0,
+        "mean_nowrite": 0.3037,
+        "epistemic_label": "prefix_observed_suffix_predicted_frozen_weights",
+        "dsp_gt": {
+          "duration_s": 6.0,
+          "rms": 0.08418,
+          "peak": 0.5084,
+          "zcr": 0.1091,
+          "spectral_centroid_hz": 2261.7,
+          "spectral_flatness": 0.0338,
+          "envelope_cv": 0.1857,
+          "lag1_mel_cos": 0.9989
+        },
+        "dsp_pred": {
+          "duration_s": 6.0,
+          "rms": 0.07416,
+          "peak": 0.4662,
+          "zcr": 0.1366,
+          "spectral_centroid_hz": 2702.7,
+          "spectral_flatness": 0.068,
+          "envelope_cv": 0.2065,
+          "lag1_mel_cos": 0.9989,
+          "log_mel_l1_vs_ref": 0.253,
+          "mean_mel_cos_vs_ref": 0.9994,
+          "envelope_pearson_vs_ref": 0.1562
+        },
+        "rvq_diversity_suffix": {
+          "rvq0_unique_ratio": 0.02,
+          "rvq0_entropy_bits": -0.0,
+          "rvq0_adj_repeat_rate": 1.0
+        }
+      },
+      "text2video_3s": {
+        "mode": "text2video",
+        "prompt": "a car driving down a road",
+        "predicted_video_groups": 10,
+        "mean_nowrite": 0.7006,
+        "epistemic_label": "imagined_text_conditioned_video_frozen_weights",
+        "n_frames": 37,
+        "duration_s_at_12p5fps": 2.96,
+        "pred_frame_motion_rgb_l1": 3.186,
+        "latent_std": 0.7819
+      },
+      "text2audio_4s": {
+        "items": [
+          {
+            "mode": "text2audio",
+            "prompt": "sound: water rushing in a stream",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.1936,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.00415,
+              "peak": 0.341,
+              "zcr": 0.0675,
+              "spectral_centroid_hz": 4945.4,
+              "spectral_flatness": 0.3393,
+              "envelope_cv": 2.7405,
+              "lag1_mel_cos": 0.9998
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.3,
+              "rvq0_entropy_bits": 3.28,
+              "rvq0_adj_repeat_rate": 0.3469
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: dog barking loudly",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.2307,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.05101,
+              "peak": 0.2059,
+              "zcr": 0.0149,
+              "spectral_centroid_hz": 925.9,
+              "spectral_flatness": 0.0032,
+              "envelope_cv": 0.7116,
+              "lag1_mel_cos": 0.9995
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.12,
+              "rvq0_entropy_bits": 1.897,
+              "rvq0_adj_repeat_rate": 0.7347
+            }
+          },
+          {
+            "mode": "text2audio",
+            "prompt": "sound: drum beats and percussion",
+            "generated_duration_sec": 4.0,
+            "mean_nowrite": 0.1986,
+            "epistemic_label": "imagined_text_conditioned_audio_frozen_weights",
+            "dsp": {
+              "duration_s": 4.0,
+              "rms": 0.00236,
+              "peak": 0.0157,
+              "zcr": 0.0654,
+              "spectral_centroid_hz": 3664.5,
+              "spectral_flatness": 0.1603,
+              "envelope_cv": 0.7836,
+              "lag1_mel_cos": 0.9998
+            },
+            "rvq_diversity": {
+              "rvq0_unique_ratio": 0.2,
+              "rvq0_entropy_bits": 2.813,
+              "rvq0_adj_repeat_rate": 0.6531
+            }
+          }
+        ],
+        "prompt_centroid_spread_hz": 4019.5
+      },
+      "audio2video_3s": {
+        "mode": "audio2video (vggsound_test.npz)",
+        "episode_idx": 1,
+        "observed_context_ticks": 57,
+        "predicted_video_groups": 10,
+        "latent_huber_loss": 0.91614,
+        "latent_cosine_sim": 0.4794,
+        "counterfactual_latent_rmse": 0.49269,
+        "rgb_metrics": {
+          "pred_vs_gt_psnr_db": 12.68,
+          "cf_vs_gt_psnr_db": 12.75,
+          "pred_vs_cf_psnr_db": 24.61
+        },
+        "mean_nowrite": 0.6721,
+        "epistemic_labels": {
+          "left_panel": "observed_ground_truth",
+          "middle_panel": "predicted_free_running_frozen_weights",
+          "right_panel": "counterfactual_shuffled_audio_context"
+        },
+        "temporal_eval": {
+          "n_groups": 10,
+          "n_frames": 37,
+          "duration_s_at_fps": 2.96,
+          "fps_assumed": 12.5,
+          "overall_psnr_db": 12.68,
+          "overall_cf_psnr_db": 12.75,
+          "overall_psnr_gain_over_cf_db": -0.07,
+          "early_huber": 0.7136,
+          "late_huber": 0.9899,
+          "drift_ratio_late_over_early": 1.39,
+          "early_psnr_db": 12.62,
+          "late_psnr_db": 12.71,
+          "gt_frame_motion_rgb_l1": 2.758,
+          "pred_frame_motion_rgb_l1": 2.284,
+          "cf_frame_motion_rgb_l1": 2.58,
+          "per_group_curve": [
+            {
+              "group": 0,
+              "t_sec": 0.0,
+              "huber": 0.4087,
+              "cos": 0.3845,
+              "norm_ratio": 0.59,
+              "cf_rmse": 0.3378,
+              "psnr_db": 12.71,
+              "cf_psnr_db": 12.13,
+              "psnr_margin_over_cf_db": 0.58
+            },
+            {
+              "group": 1,
+              "t_sec": 0.32,
+              "huber": 0.8016,
+              "cos": 0.5106,
+              "norm_ratio": 0.399,
+              "cf_rmse": 0.3211,
+              "psnr_db": 12.71,
+              "cf_psnr_db": 12.71,
+              "psnr_margin_over_cf_db": 0.0
+            },
+            {
+              "group": 2,
+              "t_sec": 0.64,
+              "huber": 0.9306,
+              "cos": 0.3457,
+              "norm_ratio": 0.43,
+              "cf_rmse": 0.3832,
+              "psnr_db": 12.45,
+              "cf_psnr_db": 12.75,
+              "psnr_margin_over_cf_db": -0.3
+            },
+            {
+              "group": 3,
+              "t_sec": 0.96,
+              "huber": 1.005,
+              "cos": 0.36,
+              "norm_ratio": 0.477,
+              "cf_rmse": 0.4188,
+              "psnr_db": 12.55,
+              "cf_psnr_db": 12.89,
+              "psnr_margin_over_cf_db": -0.34
+            },
+            {
+              "group": 4,
+              "t_sec": 1.28,
+              "huber": 1.0556,
+              "cos": 0.4749,
+              "norm_ratio": 0.472,
+              "cf_rmse": 0.5169,
+              "psnr_db": 12.63,
+              "cf_psnr_db": 12.55,
+              "psnr_margin_over_cf_db": 0.08
+            },
+            {
+              "group": 5,
+              "t_sec": 1.6,
+              "huber": 1.009,
+              "cos": 0.5451,
+              "norm_ratio": 0.469,
+              "cf_rmse": 0.4938,
+              "psnr_db": 12.71,
+              "cf_psnr_db": 12.51,
+              "psnr_margin_over_cf_db": 0.2
+            },
+            {
+              "group": 6,
+              "t_sec": 1.92,
+              "huber": 0.9812,
+              "cos": 0.5132,
+              "norm_ratio": 0.526,
+              "cf_rmse": 0.5424,
+              "psnr_db": 12.83,
+              "cf_psnr_db": 12.77,
+              "psnr_margin_over_cf_db": 0.07
+            },
+            {
+              "group": 7,
+              "t_sec": 2.24,
+              "huber": 1.0015,
+              "cos": 0.5085,
+              "norm_ratio": 0.55,
+              "cf_rmse": 0.6048,
+              "psnr_db": 12.82,
+              "cf_psnr_db": 12.96,
+              "psnr_margin_over_cf_db": -0.14
+            },
+            {
+              "group": 8,
+              "t_sec": 2.56,
+              "huber": 0.9781,
+              "cos": 0.4953,
+              "norm_ratio": 0.549,
+              "cf_rmse": 0.5822,
+              "psnr_db": 12.58,
+              "cf_psnr_db": 13.07,
+              "psnr_margin_over_cf_db": -0.49
+            },
+            {
+              "group": 9,
+              "t_sec": 2.88,
+              "huber": 0.99,
+              "cos": 0.5416,
+              "norm_ratio": 0.539,
+              "cf_rmse": 0.6148,
+              "psnr_db": 12.74,
+              "cf_psnr_db": 12.78,
+              "psnr_margin_over_cf_db": -0.04
+            }
+          ]
+        }
+      },
+      "video2action_2p4s": {
+        "mode": "video2action (robotics_test.npz)",
+        "episode_idx": 1,
+        "predicted_action_steps": 60,
+        "action_huber_loss": 0.16325,
+        "action_l1_error": 0.42525,
+        "action_cosine_sim": 0.3453,
+        "mean_nowrite": 0.6069,
+        "epistemic_label": "predicted_motor_action_blind_to_gt_actions"
+      },
+      "text_long_256b": {
+        "code": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "def binary_search(arr, target):\n    lo, hi = 0, len(arr) - 1\n",
+          "generated": "    if hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not given and hi is not",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.1202,
+          "dominant_policy_gate_action": "SPEAK_TEXT",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 64,
+            "distinct_3gram_ratio": 0.0968,
+            "python_syntax_valid": false
+          }
+        },
+        "prose": {
+          "mode": "text2text",
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "prompt": "The European Space Agency announced that the new telescope ",
+          "generated": "was a star and the star was a star and the star was a star and the star was a star and was a star and was a star and was a star and was and was and was and was and was and was and was and was and was and was and was and was and was and was and was and was ",
+          "n_generated_bytes": 256,
+          "mean_nowrite": 0.1156,
+          "dominant_policy_gate_action": "ABSTAIN_SILENCE",
+          "quality": {
+            "n_chars": 256,
+            "n_words": 65,
+            "distinct_3gram_ratio": 0.1587
+          }
+        },
+        "audio2text": {
+          "mode": "cross_modal_to_text (clotho_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 192,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "Water is running loudly and then it trails off. The running water slightly roars and trickles down an uneven surface. A steady stream of water bubbles softly and gently. The sound could either be heavy rain or the thunder of jets. Water flo",
+          "generated_text": "A person is walking through a street with heels on the ground. A person is walking through a street with heels on the ground. A person is walking through a street with heels on the ground. Som",
+          "mean_nowrite": 0.2045,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 37,
+            "distinct_3gram_ratio": 0.3714
+          }
+        },
+        "video2text": {
+          "mode": "cross_modal_to_text (msrvtt_test.npz)",
+          "episode_idx": 0,
+          "observed_context_ticks": 512,
+          "epistemic_label": "predicted_free_running_frozen_weights",
+          "ground_truth_text": "a woman creating a fondant baby and flower",
+          "generated_text": "set and not isinstance of a particular particular particular particular particular particular particular particular particular particular particularpartum particularpartum particularpartum par",
+          "mean_nowrite": 0.6125,
+          "quality": {
+            "n_chars": 192,
+            "n_words": 20,
+            "distinct_3gram_ratio": 0.6111
+          }
+        }
+      }
+    }
+  }
+}

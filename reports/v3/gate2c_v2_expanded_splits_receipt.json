@@ -1,0 +1,263 @@
+{
+  "gate": "SLWM-v3 Gate 2c \u2014 Non-Vacuous Expanded v2 Multimodal Corpus Exact Episode-Payload Zero-Overlap Audit",
+  "timestamp_utc": "2026-11-24T04:45:45.590646+00:00",
+  "non_vacuity_assertions_passed": true,
+  "corpora": {
+    "librispeech_360": {
+      "required_nonempty_modalities": [
+        "audio"
+      ],
+      "splits": {
+        "train": {
+          "n_ticks": 6878423,
+          "n_episodes": 20000,
+          "n_video_ep_hashes": 0,
+          "n_nonsilent_audio_ep_hashes": 20000,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 19977
+        },
+        "dev": {
+          "n_ticks": 537584,
+          "n_episodes": 2703,
+          "n_video_ep_hashes": 0,
+          "n_nonsilent_audio_ep_hashes": 2703,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 2676
+        },
+        "test": {
+          "n_ticks": 531078,
+          "n_episodes": 2620,
+          "n_video_ep_hashes": 0,
+          "n_nonsilent_audio_ep_hashes": 2620,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 2589
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "nonsilent_audio_train_dev": 0,
+        "action_train_dev": 0,
+        "text_ge16b_train_dev": 0,
+        "video_train_test": 0,
+        "nonsilent_audio_train_test": 0,
+        "action_train_test": 0,
+        "text_ge16b_train_test": 0,
+        "video_dev_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "action_dev_test": 0,
+        "text_ge16b_dev_test": 20
+      },
+      "zero_media_overlap_pass": true,
+      "zero_train_eval_media_overlap_pass": true
+    },
+    "greatesthits": {
+      "required_nonempty_modalities": [
+        "video",
+        "audio"
+      ],
+      "splits": {
+        "train": {
+          "n_ticks": 248694,
+          "n_episodes": 458,
+          "n_video_ep_hashes": 458,
+          "n_nonsilent_audio_ep_hashes": 458,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 0
+        },
+        "dev": {
+          "n_ticks": 116745,
+          "n_episodes": 215,
+          "n_video_ep_hashes": 215,
+          "n_nonsilent_audio_ep_hashes": 215,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 0
+        },
+        "test": {
+          "n_ticks": 165072,
+          "n_episodes": 304,
+          "n_video_ep_hashes": 304,
+          "n_nonsilent_audio_ep_hashes": 304,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 0
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "nonsilent_audio_train_dev": 0,
+        "action_train_dev": 0,
+        "text_ge16b_train_dev": 0,
+        "video_train_test": 0,
+        "nonsilent_audio_train_test": 0,
+        "action_train_test": 0,
+        "text_ge16b_train_test": 0,
+        "video_dev_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "action_dev_test": 0,
+        "text_ge16b_dev_test": 0
+      },
+      "zero_media_overlap_pass": true,
+      "zero_train_eval_media_overlap_pass": true
+    },
+    "msrvtt_v2": {
+      "required_nonempty_modalities": [
+        "video"
+      ],
+      "splits": {
+        "train": {
+          "n_ticks": 969776,
+          "n_episodes": 2000,
+          "n_video_ep_hashes": 2000,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 1949
+        },
+        "dev": {
+          "n_ticks": 123895,
+          "n_episodes": 200,
+          "n_video_ep_hashes": 200,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 197
+        },
+        "test": {
+          "n_ticks": 124087,
+          "n_episodes": 200,
+          "n_video_ep_hashes": 200,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 200
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "nonsilent_audio_train_dev": 0,
+        "action_train_dev": 0,
+        "text_ge16b_train_dev": 5,
+        "video_train_test": 0,
+        "nonsilent_audio_train_test": 0,
+        "action_train_test": 0,
+        "text_ge16b_train_test": 3,
+        "video_dev_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "action_dev_test": 0,
+        "text_ge16b_dev_test": 0
+      },
+      "zero_media_overlap_pass": true,
+      "zero_train_eval_media_overlap_pass": true
+    },
+    "vggsound_v2": {
+      "required_nonempty_modalities": [
+        "video",
+        "audio"
+      ],
+      "splits": {
+        "train": {
+          "n_ticks": 1035295,
+          "n_episodes": 2000,
+          "n_video_ep_hashes": 1984,
+          "n_nonsilent_audio_ep_hashes": 1977,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 275
+        },
+        "dev": {
+          "n_ticks": 134309,
+          "n_episodes": 200,
+          "n_video_ep_hashes": 197,
+          "n_nonsilent_audio_ep_hashes": 197,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 97
+        },
+        "test": {
+          "n_ticks": 133524,
+          "n_episodes": 200,
+          "n_video_ep_hashes": 200,
+          "n_nonsilent_audio_ep_hashes": 200,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 0,
+          "n_text_ep_hashes_ge16b": 142
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "nonsilent_audio_train_dev": 0,
+        "action_train_dev": 0,
+        "text_ge16b_train_dev": 93,
+        "video_train_test": 0,
+        "nonsilent_audio_train_test": 0,
+        "action_train_test": 0,
+        "text_ge16b_train_test": 128,
+        "video_dev_test": 0,
+        "nonsilent_audio_dev_test": 1,
+        "action_dev_test": 0,
+        "text_ge16b_dev_test": 50
+      },
+      "zero_media_overlap_pass": false,
+      "zero_train_eval_media_overlap_pass": true
+    },
+    "robotics_v2": {
+      "required_nonempty_modalities": [
+        "video",
+        "action"
+      ],
+      "splits": {
+        "train": {
+          "n_ticks": 213855,
+          "n_episodes": 791,
+          "n_video_ep_hashes": 206,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 791,
+          "n_text_ep_hashes_ge16b": 3
+        },
+        "dev": {
+          "n_ticks": 22294,
+          "n_episodes": 98,
+          "n_video_ep_hashes": 25,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 98,
+          "n_text_ep_hashes_ge16b": 3
+        },
+        "test": {
+          "n_ticks": 22878,
+          "n_episodes": 98,
+          "n_video_ep_hashes": 25,
+          "n_nonsilent_audio_ep_hashes": 0,
+          "n_silent_audio_eps": 0,
+          "n_action_ep_hashes": 98,
+          "n_text_ep_hashes_ge16b": 3
+        }
+      },
+      "overlaps": {
+        "video_train_dev": 0,
+        "nonsilent_audio_train_dev": 0,
+        "action_train_dev": 0,
+        "text_ge16b_train_dev": 3,
+        "video_train_test": 0,
+        "nonsilent_audio_train_test": 0,
+        "action_train_test": 0,
+        "text_ge16b_train_test": 3,
+        "video_dev_test": 0,
+        "nonsilent_audio_dev_test": 0,
+        "action_dev_test": 0,
+        "text_ge16b_dev_test": 3
+      },
+      "zero_media_overlap_pass": true,
+      "zero_train_eval_media_overlap_pass": true
+    }
+  },
+  "all_expanded_v2_zero_train_eval_media_overlap": true,
+  "all_expanded_v2_zero_any_split_media_overlap": false,
+  "vggsound_dev_test_audio_note": "1/200 visually distinct clip pair shares non-silent audio track hash 5d3bd1557da1cc90 between vggsound dev and test (0 occurrences in train; video_dev_test = 0)."
+}
