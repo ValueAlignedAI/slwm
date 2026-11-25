@@ -1,0 +1,653 @@
+{
+  "gate": "SLWM-v4 Gate 1 \u2014 Strictly Causal 160 ms Heartbeat, 52/68 Humanoid Schema & Programmatic Single-Pass Corpus Receipt",
+  "timestamp_utc": "2026-11-25T00:31:45.463790+00:00",
+  "independent_gate1_peer_review": {
+    "reviewer_id": "fc9b6dad-a98e-4909-8f63-f945cdf0fb2d",
+    "verdict": "PASS"
+  },
+  "clock_lock": {
+    "heartbeat_sec": 0.16,
+    "heartbeats_per_hour": 22500.0,
+    "video_frames_per_heartbeat": 4.0,
+    "audio_ticks_per_heartbeat": 2.0,
+    "motor_ticks_per_heartbeat": 4.0,
+    "unified_action_dim": 52,
+    "unified_proprio_dim": 68,
+    "exact_integer_clock_lock": true,
+    "packets_per_av_heartbeat": 17,
+    "packets_per_av_motor_heartbeat": 21,
+    "heartbeats_per_120s_2min": 750,
+    "packets_per_120s_av_stream": 12750,
+    "packets_per_120s_av_motor_stream": 15750
+  },
+  "action_slices": {
+    "left_arm_7dof": [
+      0,
+      7
+    ],
+    "right_arm_7dof": [
+      7,
+      14
+    ],
+    "left_hand_or_gripper_7dof": [
+      14,
+      21
+    ],
+    "right_hand_or_gripper_7dof": [
+      21,
+      28
+    ],
+    "left_leg_6dof": [
+      28,
+      34
+    ],
+    "right_leg_6dof": [
+      34,
+      40
+    ],
+    "waist_3dof": [
+      40,
+      43
+    ],
+    "mobile_base_twist_4dof": [
+      43,
+      47
+    ],
+    "head_and_aux_5dof": [
+      47,
+      52
+    ]
+  },
+  "proprio_slices": {
+    "joint_state_52dof": [
+      0,
+      52
+    ],
+    "left_wrist_force_torque_6d": [
+      52,
+      58
+    ],
+    "right_wrist_force_torque_6d": [
+      58,
+      64
+    ],
+    "torso_imu_base_orient_4d": [
+      64,
+      68
+    ]
+  },
+  "multi_fps_resampling_policy": {
+    "50_fps_aloha_unitreeh1_epic": "Exact 2:1 integer decimation to 25.0 fps video + 25.0 Hz kinematics (zero interpolation jitter).",
+    "30_fps_unitree_g1_agibot_holoassist": "Exact causal nearest-past frame sampling to 25.0 fps (max 16.7 ms phase bound) + linear/SLERP kinematics resampling to 25.0 Hz.",
+    "25_fps_vggsound_rh20t_greatesthits": "Native or PTS-locked 25.0 fps audio-video resampling (video & audio share identical PTS clock).",
+    "15_fps_droid_1_0_1": "Causal timestamp resampling to 25.0 fps with explicit duplicate-frame indicator mask (`target_valid_mask = 0` on repeated video groups or native 15 Hz kinematic linear/SLERP alignment); audited in Gate 2.",
+    "excluded_low_fps_5fps_bridge_10fps_libero": "BridgeData V2 (5 fps) is EXCLUDED from 25 fps Wan 2.1 4-frame video compression (prevents 5x static-frame collapse); LIBERO (10 fps) is held out of 25 fps video dynamics and deferred for closed-loop eval until Gate 1 LIBERO oracle addendum."
+  },
+  "rh20t_empirical_audio_and_ft_tar_probe": {
+    "repo_id": "tonyfanggalaxies/RH20T",
+    "method": "HTTP byte-range (0..3 MiB) streaming tarfile header inspection across RH20T_lowdim/RH20T_cfg1..cfg7.tar.gz",
+    "configs_with_verified_wav_audio": [
+      "cfg1",
+      "cfg2",
+      "cfg3",
+      "cfg4",
+      "cfg5",
+      "cfg6",
+      "cfg7"
+    ],
+    "example_wav_members": {
+      "cfg1": {
+        "member": "RH20T_cfg1/task_0001_user_0001_scene_0001_cfg_0001/audio_mixed/audio_1629432622288.wav",
+        "bytes": 3360044
+      },
+      "cfg2": {
+        "member": "RH20T_cfg2/task_0001_user_0002_scene_0001_cfg_0002/audio_mixed/audio_1629444226124.wav",
+        "bytes": 2880044
+      },
+      "cfg3": {
+        "member": "RH20T_cfg3/task_0001_user_0016_scene_0001_cfg_0003/audio_mixed/audio_1631270642628.wav",
+        "bytes": 2112044
+      },
+      "cfg4": {
+        "member": "RH20T_cfg4/task_0001_user_0010_scene_0001_cfg_0004/audio_mixed/audio_1631341189568.wav",
+        "bytes": 1536044
+      },
+      "cfg5": {
+        "member": "RH20T_cfg5/task_0001_user_0007_scene_0001_cfg_0005/audio_mixed/audio_1640002317420.wav",
+        "bytes": 1632044
+      },
+      "cfg6": {
+        "member": "RH20T_cfg6/task_0001_user_0014_scene_0001_cfg_0006/audio_mixed/audio_1641554299859.wav",
+        "bytes": 2688044
+      },
+      "cfg7": {
+        "member": "RH20T_cfg7/task_0001_user_0014_scene_0001_cfg_0007/audio_mixed/audio_1645701128103.wav",
+        "bytes": 1344044
+      }
+    },
+    "gate2_followup": "Full non-silence / SNR / sample-rate audit across all extracted episodes required in Gate 2."
+  },
+  "tier1_v4s3_persistent_fp16_corpus": [
+    {
+      "name": "unitree_g1_h1_humanoid",
+      "pillar": "robotics_humanoid",
+      "hf_repos": [
+        "unitreerobotics/G1_Dex1_Assembling_Motor",
+        "unitreerobotics/G1_Dex1_Assemble_Stool",
+        "unitreerobotics/G1_Dex1_Hang_Pants",
+        "unitreerobotics/G1_Dex1_Fold_Clothes",
+        "unitreerobotics/G1_WBT_Inspire_Walk_To_Table_Put_Cups_And_Rack_Plates_In_Dishwasher",
+        "unitreerobotics/G1_Brainco_Make_Sandwich",
+        "unitreerobotics/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine",
+        "unitreerobotics/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher",
+        "unitreerobotics/G1_Dex1_MountCamera_Dataset",
+        "unitreerobotics/G1_Dex3_ToastedBread_Dataset",
+        "unitreerobotics/G1_Dex1_Wipe_Table",
+        "unitreerobotics/G1_Dex1_Arrange_Surgical_Kits",
+        "lerobot/unitreeh1_fold_clothes"
+      ],
+      "verified_source_hours": 108.67,
+      "native_fps": "30.0 (G1) / 50.0 (H1)",
+      "license": "apache-2.0 / unitree-open",
+      "modalities": [
+        "video",
+        "motor_action",
+        "proprio",
+        "text"
+      ],
+      "text_bytes_per_sec": 2.0,
+      "disjointness_axis": "task_episode_hash_and_session_cluster",
+      "target_hours": 60.0,
+      "target_mix_weight": 0.042,
+      "derived_packets_m": 26.082,
+      "derived_breakdown_m": {
+        "video": 20.25,
+        "audio": 0.0,
+        "motor": 5.4,
+        "text": 0.432
+      },
+      "derived_storage_gb_fp16": 47.24,
+      "derived_storage_gb_selected": 47.24,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "droid_1_0_1",
+      "pillar": "robotics_humanoid",
+      "hf_repos": [
+        "lerobot/droid_1.0.1"
+      ],
+      "verified_source_hours": 511.67,
+      "native_fps": "15.0",
+      "license": "apache-2.0",
+      "modalities": [
+        "video",
+        "motor_action",
+        "proprio",
+        "text",
+        "episode_success"
+      ],
+      "text_bytes_per_sec": 2.0,
+      "disjointness_axis": "building_and_collector_id",
+      "target_hours": 115.0,
+      "target_mix_weight": 0.075,
+      "derived_packets_m": 49.9905,
+      "derived_breakdown_m": {
+        "video": 38.8125,
+        "audio": 0.0,
+        "motor": 10.35,
+        "text": 0.828
+      },
+      "derived_storage_gb_fp16": 90.54,
+      "derived_storage_gb_selected": 90.54,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "rh20t_contact_av_force",
+      "pillar": "robotics_humanoid",
+      "hf_repos": [
+        "tonyfanggalaxies/RH20T"
+      ],
+      "verified_source_hours": 50.0,
+      "verified_audio_probe": "Byte-range tar header stream verified audio_mixed/audio_<ms>.wav (1.34-3.36 MB PCM WAV) + transformed/force_torque.npy present inside RH20T_lowdim/RH20T_cfg1..cfg7.tar.gz; full SNR/non-silence audited in Gate 2.",
+      "native_fps": "10-30 (timestamp-locked color.mp4 + timestamps.npy)",
+      "license": "cc-by-4.0",
+      "modalities": [
+        "video",
+        "audio",
+        "motor_action",
+        "proprio_force_torque",
+        "text"
+      ],
+      "text_bytes_per_sec": 2.0,
+      "disjointness_axis": "user_and_scene_id_and_robot_cfg",
+      "target_hours": 45.0,
+      "target_mix_weight": 0.035,
+      "derived_packets_m": 21.5865,
+      "derived_breakdown_m": {
+        "video": 15.1875,
+        "audio": 2.025,
+        "motor": 4.05,
+        "text": 0.324
+      },
+      "derived_storage_gb_fp16": 35.57,
+      "derived_storage_gb_selected": 35.57,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "agibot_and_aloha_sim",
+      "pillar": "robotics_humanoid",
+      "hf_repos": [
+        "agibot-world/AgiBotWorld2026",
+        "lerobot/aloha_sim_insertion_human",
+        "lerobot/aloha_sim_transfer_cube_human"
+      ],
+      "verified_source_hours": 1000.0,
+      "native_fps": "30.0 (AgiBot) / 50.0 (ALOHA-Sim); 5 fps Bridge & 10 fps LIBERO excluded from 25 fps Wan 2.1",
+      "license": "cc-by-nc-sa-4.0 (AgiBot, non-commercial research) / apache-2.0 (ALOHA)",
+      "modalities": [
+        "video",
+        "motor_action",
+        "proprio",
+        "text"
+      ],
+      "text_bytes_per_sec": 2.0,
+      "disjointness_axis": "task_and_scene_id",
+      "target_hours": 75.0,
+      "target_mix_weight": 0.048,
+      "derived_packets_m": 32.6025,
+      "derived_breakdown_m": {
+        "video": 25.3125,
+        "audio": 0.0,
+        "motor": 6.75,
+        "text": 0.54
+      },
+      "derived_storage_gb_fp16": 59.05,
+      "derived_storage_gb_selected": 59.05,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "vggsound_full_sync",
+      "pillar": "av_sync_egocentric",
+      "hf_repos": [
+        "Loie/VGGSound"
+      ],
+      "verified_source_hours": 554.1,
+      "native_fps": "25.0",
+      "license": "cc-by-4.0",
+      "modalities": [
+        "video",
+        "audio",
+        "text"
+      ],
+      "text_bytes_per_sec": 3.0,
+      "disjointness_axis": "youtube_video_id_and_sha256_media",
+      "target_hours": 150.0,
+      "target_mix_weight": 0.092,
+      "derived_packets_m": 58.995,
+      "derived_breakdown_m": {
+        "video": 50.625,
+        "audio": 6.75,
+        "motor": 0.0,
+        "text": 1.62
+      },
+      "derived_storage_gb_fp16": 111.26,
+      "derived_storage_gb_selected": 111.26,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "epic_kitchens_100_long_ego_av",
+      "pillar": "av_sync_egocentric",
+      "hf_repos": [
+        "a1raman/epic_kitchens_100"
+      ],
+      "external_annotations": "https://github.com/epic-kitchens/epic-kitchens-100-annotations (official EPIC_100_train/validation CSVs)",
+      "verified_source_hours": 65.0,
+      "native_fps": "50.0 -> 25.0 (2:1 integer decimation)",
+      "license": "cc-by-nc-4.0 (non-commercial research)",
+      "modalities": [
+        "video",
+        "audio",
+        "text"
+      ],
+      "text_bytes_per_sec": 6.0,
+      "disjointness_axis": "participant_id_P01_P37",
+      "target_hours": 55.0,
+      "target_mix_weight": 0.036,
+      "derived_packets_m": 22.2255,
+      "derived_breakdown_m": {
+        "video": 18.5625,
+        "audio": 2.475,
+        "motor": 0.0,
+        "text": 1.188
+      },
+      "derived_storage_gb_fp16": 40.8,
+      "derived_storage_gb_selected": 40.8,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "holoassist_and_greatesthits_av",
+      "pillar": "av_sync_egocentric",
+      "hf_repos": [
+        "SitongGong/HoloAssist"
+      ],
+      "external_sources": [
+        "MIT CSAIL GreatestHits (~8.1 h impact-audio benchmark, verified in SLWM-v3)"
+      ],
+      "verified_source_hours": 174.0,
+      "native_fps": "30.0 -> 25.0",
+      "license": "cc-by-4.0 / MIT-research",
+      "modalities": [
+        "video",
+        "audio",
+        "text"
+      ],
+      "text_bytes_per_sec": 6.0,
+      "disjointness_axis": "recording_session_and_date",
+      "target_hours": 55.0,
+      "target_mix_weight": 0.036,
+      "derived_packets_m": 22.2255,
+      "derived_breakdown_m": {
+        "video": 18.5625,
+        "audio": 2.475,
+        "motor": 0.0,
+        "text": 1.188
+      },
+      "derived_storage_gb_fp16": 40.8,
+      "derived_storage_gb_selected": 40.8,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "wavcaps_and_libriheavy_speech",
+      "pillar": "speech_audio_semantics",
+      "hf_repos": [
+        "cvssp/WavCaps",
+        "mythicinfinity/libriheavy"
+      ],
+      "verified_source_hours": 51000.0,
+      "native_fps": "audio_only_12.5Hz_mimi",
+      "license": "cc-by-4.0",
+      "modalities": [
+        "audio",
+        "text"
+      ],
+      "text_bytes_per_sec": 14.0,
+      "disjointness_axis": "speaker_and_freesound_clip_id",
+      "target_hours": 4000.0,
+      "target_mix_weight": 0.386,
+      "derived_packets_m": 381.6,
+      "derived_breakdown_m": {
+        "video": 0.0,
+        "audio": 180.0,
+        "motor": 0.0,
+        "text": 201.6
+      },
+      "derived_storage_gb_fp16": 13.07,
+      "derived_storage_gb_selected": 13.07,
+      "video_latent_dtype": "fp16"
+    },
+    {
+      "name": "fineweb_edu_and_stack_code",
+      "pillar": "text_code_reasoning",
+      "hf_repos": [
+        "HuggingFaceFW/fineweb-edu",
+        "HuggingFaceTB/smollm-corpus"
+      ],
+      "verified_source_hours": 0.0,
+      "native_fps": "text_bytes",
+      "license": "odc-by-1.0 / apache-2.0",
+      "modalities": [
+        "text"
+      ],
+      "raw_text_bytes_m": 500.0,
+      "disjointness_axis": "exact_doc_sha256_and_64b_substring",
+      "target_hours": 0.0,
+      "target_mix_weight": 0.25,
+      "derived_packets_m": 500.0,
+      "derived_breakdown_m": {
+        "video": 0.0,
+        "audio": 0.0,
+        "motor": 0.0,
+        "text": 500.0
+      },
+      "derived_storage_gb_fp16": 0.55,
+      "derived_storage_gb_selected": 0.55,
+      "video_latent_dtype": "fp16"
+    }
+  ],
+  "budget_v4_s3_45m_600m_pos": {
+    "tier": "tier1_v4s3",
+    "video_latent_dtype": "fp16",
+    "target_train_packets_m": 600.0,
+    "total_available_packets_m": 1115.31,
+    "total_video_av_robotics_hours": 555.0,
+    "total_audio_only_hours": 4000.0,
+    "total_preencoded_storage_gb_fp16": 438.88,
+    "total_preencoded_storage_gb_selected": 438.88,
+    "max_planned_epochs_any_domain": 0.9728,
+    "strict_single_pass_le_1_epoch": true,
+    "pillar_share_pct": {
+      "robotics_humanoid": 20.0,
+      "av_sync_egocentric": 16.4,
+      "speech_audio_semantics": 38.6,
+      "text_code_reasoning": 25.0
+    },
+    "multimodal_signal_share_pct": 75.0,
+    "allocated_modality_packet_share_pct": {
+      "video": 29.18,
+      "audio": 20.39,
+      "motor": 4.07,
+      "text": 46.36
+    },
+    "non_text_packet_share_pct": 53.64,
+    "per_domain": {
+      "unitree_g1_h1_humanoid": {
+        "target_hours": 60.0,
+        "allocated_packets_m": 25.2,
+        "available_packets_m": 26.08,
+        "planned_epochs": 0.9662,
+        "mix_share_pct": 4.2,
+        "storage_gb_fp16": 47.24,
+        "storage_gb_selected": 47.24,
+        "license": "apache-2.0 / unitree-open"
+      },
+      "droid_1_0_1": {
+        "target_hours": 115.0,
+        "allocated_packets_m": 45.0,
+        "available_packets_m": 49.99,
+        "planned_epochs": 0.9002,
+        "mix_share_pct": 7.5,
+        "storage_gb_fp16": 90.54,
+        "storage_gb_selected": 90.54,
+        "license": "apache-2.0"
+      },
+      "rh20t_contact_av_force": {
+        "target_hours": 45.0,
+        "allocated_packets_m": 21.0,
+        "available_packets_m": 21.59,
+        "planned_epochs": 0.9728,
+        "mix_share_pct": 3.5,
+        "storage_gb_fp16": 35.57,
+        "storage_gb_selected": 35.57,
+        "license": "cc-by-4.0"
+      },
+      "agibot_and_aloha_sim": {
+        "target_hours": 75.0,
+        "allocated_packets_m": 28.8,
+        "available_packets_m": 32.6,
+        "planned_epochs": 0.8834,
+        "mix_share_pct": 4.8,
+        "storage_gb_fp16": 59.05,
+        "storage_gb_selected": 59.05,
+        "license": "cc-by-nc-sa-4.0 (AgiBot, non-commercial research) / apache-2.0 (ALOHA)"
+      },
+      "vggsound_full_sync": {
+        "target_hours": 150.0,
+        "allocated_packets_m": 55.2,
+        "available_packets_m": 58.99,
+        "planned_epochs": 0.9357,
+        "mix_share_pct": 9.2,
+        "storage_gb_fp16": 111.26,
+        "storage_gb_selected": 111.26,
+        "license": "cc-by-4.0"
+      },
+      "epic_kitchens_100_long_ego_av": {
+        "target_hours": 55.0,
+        "allocated_packets_m": 21.6,
+        "available_packets_m": 22.23,
+        "planned_epochs": 0.9719,
+        "mix_share_pct": 3.6,
+        "storage_gb_fp16": 40.8,
+        "storage_gb_selected": 40.8,
+        "license": "cc-by-nc-4.0 (non-commercial research)"
+      },
+      "holoassist_and_greatesthits_av": {
+        "target_hours": 55.0,
+        "allocated_packets_m": 21.6,
+        "available_packets_m": 22.23,
+        "planned_epochs": 0.9719,
+        "mix_share_pct": 3.6,
+        "storage_gb_fp16": 40.8,
+        "storage_gb_selected": 40.8,
+        "license": "cc-by-4.0 / MIT-research"
+      },
+      "wavcaps_and_libriheavy_speech": {
+        "target_hours": 4000.0,
+        "allocated_packets_m": 231.6,
+        "available_packets_m": 381.6,
+        "planned_epochs": 0.6069,
+        "mix_share_pct": 38.6,
+        "storage_gb_fp16": 13.07,
+        "storage_gb_selected": 13.07,
+        "license": "cc-by-4.0"
+      },
+      "fineweb_edu_and_stack_code": {
+        "target_hours": 0.0,
+        "allocated_packets_m": 150.0,
+        "available_packets_m": 500.0,
+        "planned_epochs": 0.3,
+        "mix_share_pct": 25.0,
+        "storage_gb_fp16": 0.55,
+        "storage_gb_selected": 0.55,
+        "license": "odc-by-1.0 / apache-2.0"
+      }
+    }
+  },
+  "budget_v4_s4_150m_3000m_pos_tier2_streaming_or_int8": {
+    "tier": "tier2_v4s4",
+    "video_latent_dtype": "int8",
+    "target_train_packets_m": 3000.0,
+    "total_available_packets_m": 3469.85,
+    "total_video_av_robotics_hours": 2100.0,
+    "total_audio_only_hours": 14500.0,
+    "total_preencoded_storage_gb_fp16": 1668.03,
+    "total_preencoded_storage_gb_selected": 908.95,
+    "max_planned_epochs_any_domain": 1.0,
+    "strict_single_pass_le_1_epoch": true,
+    "pillar_share_pct": {
+      "robotics_humanoid": 18.9,
+      "av_sync_egocentric": 9.58,
+      "speech_audio_semantics": 43.51,
+      "text_code_reasoning": 28.01
+    },
+    "multimodal_signal_share_pct": 71.99,
+    "allocated_modality_packet_share_pct": {
+      "video": 22.77,
+      "audio": 21.69,
+      "motor": 3.9,
+      "text": 51.65
+    },
+    "non_text_packet_share_pct": 48.35,
+    "per_domain": {
+      "unitree_g1_h1_humanoid": {
+        "target_hours": 100.0,
+        "allocated_packets_m": 42.01,
+        "available_packets_m": 43.47,
+        "planned_epochs": 0.9664,
+        "mix_share_pct": 1.4,
+        "storage_gb_fp16": 78.73,
+        "storage_gb_selected": 42.58,
+        "license": "apache-2.0 / unitree-open"
+      },
+      "droid_1_0_1": {
+        "target_hours": 450.0,
+        "allocated_packets_m": 186.05,
+        "available_packets_m": 195.62,
+        "planned_epochs": 0.9511,
+        "mix_share_pct": 6.2,
+        "storage_gb_fp16": 354.28,
+        "storage_gb_selected": 191.62,
+        "license": "apache-2.0"
+      },
+      "rh20t_contact_av_force": {
+        "target_hours": 50.0,
+        "allocated_packets_m": 23.98,
+        "available_packets_m": 23.98,
+        "planned_epochs": 1.0,
+        "mix_share_pct": 0.8,
+        "storage_gb_fp16": 39.53,
+        "storage_gb_selected": 21.45,
+        "license": "cc-by-4.0"
+      },
+      "agibot_and_aloha_sim": {
+        "target_hours": 750.0,
+        "allocated_packets_m": 315.08,
+        "available_packets_m": 326.02,
+        "planned_epochs": 0.9664,
+        "mix_share_pct": 10.5,
+        "storage_gb_fp16": 590.47,
+        "storage_gb_selected": 319.37,
+        "license": "cc-by-nc-sa-4.0 (AgiBot, non-commercial research) / apache-2.0 (ALOHA)"
+      },
+      "vggsound_full_sync": {
+        "target_hours": 520.0,
+        "allocated_packets_m": 198.05,
+        "available_packets_m": 204.52,
+        "planned_epochs": 0.9684,
+        "mix_share_pct": 6.6,
+        "storage_gb_fp16": 385.71,
+        "storage_gb_selected": 197.75,
+        "license": "cc-by-4.0"
+      },
+      "epic_kitchens_100_long_ego_av": {
+        "target_hours": 65.0,
+        "allocated_packets_m": 26.27,
+        "available_packets_m": 26.27,
+        "planned_epochs": 1.0,
+        "mix_share_pct": 0.88,
+        "storage_gb_fp16": 48.21,
+        "storage_gb_selected": 24.72,
+        "license": "cc-by-nc-4.0 (non-commercial research)"
+      },
+      "holoassist_and_greatesthits_av": {
+        "target_hours": 165.0,
+        "allocated_packets_m": 63.02,
+        "available_packets_m": 66.68,
+        "planned_epochs": 0.9451,
+        "mix_share_pct": 2.1,
+        "storage_gb_fp16": 122.39,
+        "storage_gb_selected": 62.75,
+        "license": "cc-by-4.0 / MIT-research"
+      },
+      "wavcaps_and_libriheavy_speech": {
+        "target_hours": 14500.0,
+        "allocated_packets_m": 1305.33,
+        "available_packets_m": 1383.3,
+        "planned_epochs": 0.9436,
+        "mix_share_pct": 43.51,
+        "storage_gb_fp16": 47.39,
+        "storage_gb_selected": 47.39,
+        "license": "cc-by-4.0"
+      },
+      "fineweb_edu_and_stack_code": {
+        "target_hours": 0.0,
+        "allocated_packets_m": 840.21,
+        "available_packets_m": 1200.0,
+        "planned_epochs": 0.7002,
+        "mix_share_pct": 28.01,
+        "storage_gb_fp16": 1.32,
+        "storage_gb_selected": 1.32,
+        "license": "odc-by-1.0 / apache-2.0"
+      }
+    }
+  }
+}
