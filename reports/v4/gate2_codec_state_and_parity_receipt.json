@@ -1,0 +1,153 @@
+{
+  "gate": "SLWM-v4 Gate 2 \u2014 Complete Frozen Codec Streaming State (Enc + Dec), Mimi 16-RVQ Whisper WER Ceiling & Wan 2.1 int8 Audit",
+  "timestamp_utc": "2026-11-25T00:39:59.867784+00:00",
+  "kyutai_mimi": {
+    "params": {
+      "total": 79308609,
+      "encoder_plus_rvq_and_downsample": 39391520,
+      "decoder_upsample_tf_and_seanet": 39917089,
+      "partition_exact": true
+    },
+    "encoder_streaming_state": {
+      "online_equals_offline_24s_16rvq": true,
+      "sliding_window_kv_len_by_4s_chunk": [
+        100,
+        200,
+        249,
+        249,
+        249,
+        249
+      ],
+      "kv_cache_elems": 2039808,
+      "conv_cache_elems": 11526,
+      "total_streaming_state_mib_bf16": 3.913,
+      "total_streaming_state_mib_fp32": 7.825
+    },
+    "decoder_streaming_state": {
+      "raw_code_suffix_invariance_prefix_max_abs_diff": 0.0,
+      "raw_code_suffix_invariance_suffix_max_abs_diff": 0.7591,
+      "strictly_causal_zero_future_lookahead": true,
+      "sliding_window_kv_len_by_4s_chunk": [
+        100,
+        200,
+        249,
+        249,
+        249,
+        249
+      ],
+      "sliding_window_o1_capped_at_249": true,
+      "decoder_transformer_kv_elems": 2039808,
+      "upsample_and_seanet_causal_conv_elems": 12672,
+      "upsample_and_seanet_conv1d_layers": 6,
+      "upsample_and_seanet_convt1d_layers": 5,
+      "hf_seanet_note": "HF MimiDecoderModel caches decoder_transformer KV natively; upsample+SEANet causal conv ring-buffer state is enumerated layer-by-layer and included in strict system MiB.",
+      "decoder_transformer_kv_mib_bf16": 3.891,
+      "upsample_and_seanet_conv_mib_bf16": 0.024,
+      "total_decoder_streaming_state_mib_bf16": 3.915,
+      "total_decoder_streaming_state_mib_fp32": 7.83
+    },
+    "direct_16rvq_librispeech_dev_clean_whisper_tiny_wer": {
+      "mimi_32rvq": {
+        "n_utterances": 40,
+        "total_ref_words": 630,
+        "total_word_edits": 27,
+        "wer_pct": 4.29,
+        "mean_mr_stft_vs_32rvq": 0.0,
+        "mean_si_snr_db_vs_32rvq": null
+      },
+      "mimi_16rvq": {
+        "n_utterances": 40,
+        "total_ref_words": 630,
+        "total_word_edits": 31,
+        "wer_pct": 4.92,
+        "mean_mr_stft_vs_32rvq": 0.1932,
+        "mean_si_snr_db_vs_32rvq": 9.87
+      },
+      "mimi_8rvq": {
+        "n_utterances": 40,
+        "total_ref_words": 630,
+        "total_word_edits": 44,
+        "wer_pct": 6.98,
+        "mean_mr_stft_vs_32rvq": 0.2738,
+        "mean_si_snr_db_vs_32rvq": 3.92
+      }
+    },
+    "direct_16rvq_greatesthits_dev_impact_n16": {
+      "mimi_16rvq": {
+        "n_clips": 16,
+        "mean_onset_corr_20ms_vs_32rvq": 0.9986,
+        "median_peak_err_ms_vs_32rvq": 0.0,
+        "mean_mr_stft_vs_32rvq": 0.1645
+      },
+      "mimi_8rvq": {
+        "n_clips": 16,
+        "mean_onset_corr_20ms_vs_32rvq": 0.9945,
+        "median_peak_err_ms_vs_32rvq": 0.0,
+        "mean_mr_stft_vs_32rvq": 0.2366
+      }
+    },
+    "local_cpu_160ms_heartbeat_latency_ms": {
+      "device": "apple_m4_max_cpu_fp32 (mps_available=True)",
+      "encode_2ticks_160ms_ms": 14.78,
+      "decode_2ticks_160ms_ms": 11.6
+    }
+  },
+  "wan21_causal_vae": {
+    "params": {
+      "total": 126892531,
+      "encoder_and_quant_conv": 53596928,
+      "decoder_and_post_quant_conv": 73295603,
+      "partition_exact": true
+    },
+    "encoder_streaming_state": {
+      "resolution_hw": [
+        192,
+        320
+      ],
+      "online_equals_offline_max_abs_diff": 0.0,
+      "online_equals_offline": true,
+      "feat_cache_elems_chunk1": 86261760,
+      "feat_cache_elems_chunk2": 86261760,
+      "feat_cache_exact_o1_constant": true,
+      "streaming_state_mib_bf16": 164.531,
+      "streaming_state_mib_fp32": 329.062
+    },
+    "decoder_streaming_state": {
+      "raw_latent_suffix_invariance_prefix_max_abs_diff": 0.0,
+      "raw_latent_suffix_invariance_suffix_max_abs_diff": 2.0,
+      "strictly_causal_zero_future_lookahead": true,
+      "online_equals_offline_max_abs_diff": 0.0,
+      "online_equals_offline": true,
+      "feat_cache_elems_chunk0_first": 70794240,
+      "feat_cache_elems_chunk1": 145274880,
+      "feat_cache_elems_chunk2": 145274880,
+      "feat_cache_exact_o1_constant": true,
+      "streaming_state_mib_bf16": 277.09,
+      "streaming_state_mib_fp32": 554.18
+    },
+    "int8_vs_fp16_latent_quantization_audit": {
+      "n_dev_clips": 12,
+      "n_patches_audited": 540,
+      "mean_latent_psnr_db": 61.44,
+      "mean_latent_mse": 0.0001168,
+      "mean_decoded_rgb_psnr_db_vs_fp16": 54.03,
+      "mean_decoded_rgb_11x11_ssim_vs_fp16": 0.99957,
+      "tier2_int8_storage_authorized_psnr_gt_50db": true
+    },
+    "local_mps_160ms_heartbeat_latency_ms": {
+      "device": "apple_m4_max_mps_bf16 (reference only; NVIDIA A100/H100 bf16 latency measured separately)",
+      "encode_4frames_160ms_ms": 132.7,
+      "decode_4frames_160ms_ms": 224.68
+    }
+  },
+  "track2_frozen_codec_strict_system_totals": {
+    "total_frozen_params": 206201140,
+    "total_encoder_streaming_state_mib_bf16": 168.444,
+    "total_decoder_streaming_state_mib_bf16": 281.005,
+    "total_bidirectional_live_codec_state_mib_bf16": 449.449,
+    "total_encoder_streaming_state_mib_fp32": 336.887,
+    "total_decoder_streaming_state_mib_fp32": 562.01,
+    "total_bidirectional_live_codec_state_mib_fp32": 898.897
+  },
+  "gate2_codec_parity_pass": true
+}

@@ -401,6 +401,8 @@ def allocate_colab_session_safe(
                     res = run_colab("new", "-s", session_name, "--gpu", "A100", cfg_path=cfg_path, timeout=360)
                 elif cur_acc == "l4":
                     res = run_colab("new", "-s", session_name, "--gpu", "L4", "--high-mem", cfg_path=cfg_path, timeout=360)
+                elif cur_acc == "t4":
+                    res = run_colab("new", "-s", session_name, "--gpu", "T4", cfg_path=cfg_path, timeout=360)
                 elif cur_acc == "g4":
                     res = run_colab("new", "-s", session_name, "--gpu", "G4", cfg_path=cfg_path, timeout=360)
                 else:

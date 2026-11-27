@@ -1,0 +1,215 @@
+{
+  "gate": "SLWM-v4 Gate 2 \u2014 Single-GPU NVIDIA A100/H100 160 ms Live Latency & Real-Corpus Schema/SNR Probe",
+  "timestamp_utc": "2026-11-25T00:51:13.546513+00:00",
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpu_total_vram_gib": 79.25,
+  "torch_version": "2.14.1+cu130",
+  "gpu_160ms_live_codec_latency": {
+    "wan21_enc_4f_192x320_bf16_eager": {
+      "median_ms": 17.56,
+      "p95_ms": 20.31,
+      "mean_ms": 17.97
+    },
+    "wan21_dec_4f_192x320_bf16_eager": {
+      "median_ms": 33.73,
+      "p95_ms": 34.26,
+      "mean_ms": 33.88
+    },
+    "mimi_enc_2ticks_16rvq_fp32": {
+      "median_ms": 19.32,
+      "p95_ms": 20.1,
+      "mean_ms": 19.47
+    },
+    "mimi_dec_2ticks_16rvq_fp32": {
+      "median_ms": 13.14,
+      "p95_ms": 13.34,
+      "mean_ms": 13.14
+    },
+    "mimi_enc_2ticks_16rvq_bf16": {
+      "median_ms": 20.74,
+      "p95_ms": 20.87,
+      "mean_ms": 20.74
+    },
+    "mimi_dec_2ticks_16rvq_bf16": {
+      "median_ms": 13.17,
+      "p95_ms": 13.3,
+      "mean_ms": 13.18
+    },
+    "total_bidirectional_codecs_eager_bf16_ms": 85.2,
+    "remaining_headroom_inside_160ms_ms": 74.8,
+    "codecs_fit_inside_160ms_realtime": true,
+    "peak_codec_hbm_mib": 17891.4,
+    "tier1_preencode_wan21_batch4x41f_ms": {
+      "median_ms": 650.36,
+      "p95_ms": 650.61,
+      "mean_ms": 650.23
+    },
+    "tier1_preencode_realtime_speedup_x": 9.8,
+    "est_gpu_hours_for_555h_tier1_video": 56.4
+  },
+  "rh20t_real_audio_and_ft_audit": {
+    "configs": {
+      "cfg1": {
+        "n_wavs_audited": 14,
+        "audio_valid_rate": 1.0,
+        "sample_rates_hz": [
+          48000
+        ],
+        "mean_dur_s": 32.21,
+        "median_rms_dbfs": -7.46,
+        "npy_schemas": {
+          "force_torque.npy": "dict(n_keys=9, sample_key='819112070044', val_type=list, len=294)",
+          "force_torque_base.npy": "dict(n_keys=9, sample_key='819112070044', val_type=list, len=294)",
+          "gripper.npy": "dict(n_keys=9, sample_key='819112070044', val_type=dict, len=294)",
+          "high_freq_data.npy": "dict(n_keys=10, sample_key='base', val_type=list, len=3605)",
+          "joint.npy": "dict(n_keys=9, sample_key='035622060973', val_type=dict, len=287)",
+          "tcp.npy": "dict(n_keys=9, sample_key='819112070044', val_type=list, len=294)",
+          "tcp_base.npy": "dict(n_keys=9, sample_key='819112070044', val_type=list, len=294)"
+        }
+      },
+      "cfg5": {
+        "n_wavs_audited": 15,
+        "audio_valid_rate": 0.2,
+        "sample_rates_hz": [
+          48000
+        ],
+        "mean_dur_s": 23.53,
+        "median_rms_dbfs": -57.72,
+        "npy_schemas": {
+          "force_torque.npy": "dict(n_keys=9, sample_key='105422061350', val_type=list, len=270)",
+          "force_torque_base.npy": "dict(n_keys=9, sample_key='105422061350', val_type=list, len=270)",
+          "gripper.npy": "dict(n_keys=9, sample_key='105422061350', val_type=dict, len=270)",
+          "high_freq_data.npy": "err()",
+          "joint.npy": "dict(n_keys=9, sample_key='036422060215', val_type=dict, len=231)",
+          "tcp.npy": "dict(n_keys=9, sample_key='105422061350', val_type=list, len=270)",
+          "tcp_base.npy": "dict(n_keys=9, sample_key='105422061350', val_type=list, len=270)"
+        }
+      }
+    }
+  },
+  "robotics_real_parquet_schemas": {
+    "agibot_g2a": {
+      "rows": 391,
+      "columns": {
+        "observation.state": "list[len=216]",
+        "action": "list[len=44]",
+        "episode_index": "int(0)",
+        "frame_index": "int(0)",
+        "index": "int(0)",
+        "task_index": "int(0)",
+        "intervened": "bool(False)",
+        "succeed": "bool(False)",
+        "reward": "float(0.0)",
+        "done": "bool(False)",
+        "truncated": "bool(False)",
+        "action_prob": "float(0.0)",
+        "timestamp": "float(0.0)"
+      }
+    },
+    "unitree_g1_wbt_inspire": {
+      "rows": 102244,
+      "columns": {
+        "observation.state.lower_body": "list[len=15]",
+        "observation.state.left_arm": "list[len=7]",
+        "observation.state.right_arm": "list[len=7]",
+        "observation.state.left_leg": "list[len=6]",
+        "observation.state.right_leg": "list[len=6]",
+        "observation.state.hand_state": "list[len=12]",
+        "observation.state.left_ee_pose_gripper_base": "list[len=6]",
+        "observation.state.right_ee_pose_gripper_base": "list[len=6]",
+        "observation.state.state_torso": "list[len=6]",
+        "observation.state.state_d435": "list[len=6]",
+        "observation.state.left_ee_pose_gripper_torso": "list[len=6]",
+        "observation.state.right_ee_pose_gripper_torso": "list[len=6]",
+        "observation.state.state_base_pose": "list[len=7]",
+        "observation.state.waist_state_joint": "list[len=3]",
+        "observation.state.left_fig6d": "list[len=6]",
+        "observation.state.right_fig6d": "list[len=6]",
+        "observation.state.recomputed_ee_valid": "int(1)",
+        "action.lower_body": "list[len=15]",
+        "action.left_arm": "list[len=7]",
+        "action.right_arm": "list[len=7]",
+        "action.left_leg": "list[len=6]",
+        "action.right_leg": "list[len=6]",
+        "action.hand_cmd": "list[len=12]",
+        "action.left_ee_pose_gripper_base": "list[len=6]",
+        "action.right_ee_pose_gripper_base": "list[len=6]",
+        "action.action_torso": "list[len=6]",
+        "action.action_d435": "list[len=6]",
+        "action.left_ee_pose_gripper_torso": "list[len=6]",
+        "action.right_ee_pose_gripper_torso": "list[len=6]",
+        "action.action_base_pose": "list[len=7]",
+        "action.base_command": "list[len=4]",
+        "action.waist_action_joint": "list[len=3]",
+        "action.left_fig6d": "list[len=6]",
+        "action.right_fig6d": "list[len=6]",
+        "timestamp": "float(0.0)",
+        "frame_index": "int(0)",
+        "episode_index": "int(0)",
+        "index": "int(0)",
+        "task_index": "int(0)",
+        "observation.state.state_base_rot": "list[len=6]",
+        "observation.state.state_base_rot_quat": "list[len=4]",
+        "action.action_base_rot": "list[len=4]"
+      }
+    },
+    "unitree_g1_dex1": {
+      "rows": 137889,
+      "columns": {
+        "observation.infrared_valid": "int(0)",
+        "observation.state.left_arm": "list[len=7]",
+        "observation.state.right_arm": "list[len=7]",
+        "observation.state.left_gripper": "float(4.114190101623535)",
+        "observation.state.right_gripper": "float(4.109595775604248)",
+        "observation.state.lower_body": "list[len=15]",
+        "observation.state.left_leg": "list[len=6]",
+        "observation.state.right_leg": "list[len=6]",
+        "observation.state.left_ee_pose_gripper_base": "list[len=6]",
+        "observation.state.right_ee_pose_gripper_base": "list[len=6]",
+        "observation.state.state_torso": "list[len=6]",
+        "observation.state.state_d435": "list[len=6]",
+        "observation.state.left_ee_pose_gripper_torso": "list[len=6]",
+        "observation.state.right_ee_pose_gripper_torso": "list[len=6]",
+        "observation.state.waist_state_joint": "list[len=3]",
+        "observation.state.recomputed_ee_valid": "int(1)",
+        "action.left_arm": "list[len=7]",
+        "action.right_arm": "list[len=7]",
+        "action.left_gripper": "float(4.114213943481445)",
+        "action.right_gripper": "float(4.118638038635254)",
+        "action.lower_body": "list[len=15]",
+        "action.pivot": "list[len=7]",
+        "action.gripper_controls": "list[len=4]",
+        "action.left_leg": "list[len=6]",
+        "action.right_leg": "list[len=6]",
+        "action.base_command": "list[len=4]",
+        "action.left_ee_pose_gripper_base": "list[len=6]",
+        "action.right_ee_pose_gripper_base": "list[len=6]",
+        "action.action_torso": "list[len=6]",
+        "action.action_d435": "list[len=6]",
+        "action.left_ee_pose_gripper_torso": "list[len=6]",
+        "action.right_ee_pose_gripper_torso": "list[len=6]",
+        "action.waist_action_joint": "list[len=3]",
+        "timestamp": "float(0.0)",
+        "frame_index": "int(0)",
+        "episode_index": "int(0)",
+        "index": "int(0)",
+        "task_index": "int(18)"
+      }
+    },
+    "droid_1_0_1": {
+      "error": "404 Client Error. (Request ID: Root=1-6b063136-4672cac973bcc04265ca1057;7713152f-ee84-4b26-9f1c-d98156c0111c)\n\nEntry Not Found for url: https://huggingface.co/datasets/lerobot/droid_1.0.1/resolve/main/data/chunk-000/episode_000000.parquet."
+    }
+  },
+  "holoassist_duration_audit": {
+    "n_standard_mp4s": 475,
+    "n_pitchshift_mp4s": 425,
+    "n_probed_ffprobe": 10,
+    "mean_clip_duration_s": 313.9,
+    "est_total_hours": 41.4
+  },
+  "vggsound_shard00_probe": {
+    "n_clips_probed": 20,
+    "audio_valid_rate": 1.0,
+    "mean_clip_duration_s": 9.99
+  }
+}

@@ -215,12 +215,13 @@ def test_programmatic_corpus_arithmetic_and_two_tier_single_pass_budgets() -> No
                 f"Formula mismatch in {tier}/{row['name']}: got {row['derived_packets_m']}, expected {exp_pkts_m}"
             )
 
-    # 2. Tier 1 (`V4-S3` 45M HPO Sweep, 600M single-pass pos): strictly <= 1.0 epoch, >= 70% signal, inside 200-500 GB fp16!
-    t1 = verify_single_pass_budget(600.0, tier="tier1_v4s3")
+    # 2. Tier 1 (`V4-S3` 45M HPO Sweep, 450M single-pass pos, Gate-2-certified int8): strictly <= 1.0 epoch, >= 70% signal, fits inside 1 Colab VM SSD (< 200 GB)!
+    t1 = verify_single_pass_budget(450.0, tier="tier1_v4s3")
     assert t1["strict_single_pass_le_1_epoch"] is True
     assert t1["max_planned_epochs_any_domain"] <= 1.0001
     assert t1["multimodal_signal_share_pct"] >= 70.0
-    assert 200.0 <= t1["total_preencoded_storage_gb_fp16"] <= 500.0
+    assert 100.0 <= t1["total_preencoded_storage_gb_selected"] <= 200.0
+    assert 200.0 <= t1["total_preencoded_storage_gb_fp16"] <= 300.0
 
     # 3. Tier 2 (`V4-S4` 150M Confirmation, 3.0B single-pass pos): strictly <= 1.0 epoch, >= 70% signal, honest multi-hundred-GB/TB storage!
     t2 = verify_single_pass_budget(3000.0, tier="tier2_v4s4")

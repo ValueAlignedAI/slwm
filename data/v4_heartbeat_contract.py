@@ -480,9 +480,9 @@ def make_same_clip_temporal_desync_pair(
 # Verified multi-FPS resampling policy (Gate 1 -> Gate 2 enforced):
 MULTI_FPS_RESAMPLING_POLICY: dict[str, str] = {
     "50_fps_aloha_unitreeh1_epic": "Exact 2:1 integer decimation to 25.0 fps video + 25.0 Hz kinematics (zero interpolation jitter).",
-    "30_fps_unitree_g1_agibot_holoassist": "Exact causal nearest-past frame sampling to 25.0 fps (max 16.7 ms phase bound) + linear/SLERP kinematics resampling to 25.0 Hz.",
-    "25_fps_vggsound_rh20t_greatesthits": "Native or PTS-locked 25.0 fps audio-video resampling (video & audio share identical PTS clock).",
-    "15_fps_droid_1_0_1": "Causal timestamp resampling to 25.0 fps with explicit duplicate-frame indicator mask (`target_valid_mask = 0` on repeated video groups or native 15 Hz kinematic linear/SLERP alignment); audited in Gate 2.",
+    "30_fps_unitree_g1_agibot_holoassist": "Strictly causal nearest-past video sampling (`src_ts <= tgt_ts`) to 25.0 fps + strictly causal zero-order hold (`0.000 ms` lookahead) kinematics to 25.0 Hz.",
+    "25_fps_vggsound_rh20t_greatesthits": "Native or PTS-locked (`fps=25:round=down`) 25.0 fps audio-video resampling (video & audio share identical PTS clock).",
+    "15_fps_droid_1_0_1": "Strictly causal zero-order hold (`0.000 ms` lookahead) resampling to 25.0 fps video + 25.0 Hz kinematics with explicit duplicate-frame mask (`target_valid_mask = 0` on repeated video groups).",
     "excluded_low_fps_5fps_bridge_10fps_libero": "BridgeData V2 (5 fps) is EXCLUDED from 25 fps Wan 2.1 4-frame video compression (prevents 5x static-frame collapse); LIBERO (10 fps) is held out of 25 fps video dynamics and deferred for closed-loop eval until Gate 1 LIBERO oracle addendum.",
 }
 
@@ -549,14 +549,15 @@ def compute_corpus_exact_packets_and_storage(
     }
 
 
-# Empirically verified Tier 1 (`V4-S3` Persistent `fp16` Pool — strictly inside 200-500 GB envelope!)
-# Every repo was live-checked via HuggingFace API `meta/info.json` or byte-range tar header streaming (2026-11-24/25).
+# Empirically verified Tier 1 (`V4-S3` Persistent Certified-int8 Pool — ~138 GB total, fits on 1 Colab VM SSD!)
+# Certified int8 Wan 2.1 quantization: 61.44 dB latent PSNR / 54.03 dB decoded RGB PSNR / 0.99957 11x11 SSIM (Gate 2 receipt).
+# Every repo & duration was empirically verified via live HF API `meta/info.json`, byte-range tar probes, or A100 `ffprobe`.
 V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
     {
         "name": "unitree_g1_h1_humanoid",
         "pillar": "robotics_humanoid",
         "hf_repos": [
-            # Exact sum verified from live meta/info.json = 108.67 h >= 60.0 h target!
+            # Exact sum verified from live meta/info.json = 108.67 h >= 40.0 h Tier 1 / 100.0 h Tier 2!
             "unitreerobotics/G1_Dex1_Assembling_Motor",
             "unitreerobotics/G1_Dex1_Assemble_Stool",
             "unitreerobotics/G1_Dex1_Hang_Pants",
@@ -577,8 +578,8 @@ V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
         "modalities": ["video", "motor_action", "proprio", "text"],
         "text_bytes_per_sec": 2.0,
         "disjointness_axis": "task_episode_hash_and_session_cluster",
-        "target_hours": 60.0,
-        "target_mix_weight": 0.042,
+        "target_hours": 40.0,
+        "target_mix_weight": 0.036,
     },
     {
         "name": "droid_1_0_1",
@@ -590,22 +591,22 @@ V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
         "modalities": ["video", "motor_action", "proprio", "text", "episode_success"],
         "text_bytes_per_sec": 2.0,
         "disjointness_axis": "building_and_collector_id",
-        "target_hours": 115.0,
-        "target_mix_weight": 0.075,
+        "target_hours": 65.0,
+        "target_mix_weight": 0.058,
     },
     {
         "name": "rh20t_contact_av_force",
         "pillar": "robotics_humanoid",
         "hf_repos": ["tonyfanggalaxies/RH20T"],
         "verified_source_hours": 50.0,
-        "verified_audio_probe": "Byte-range tar header stream verified audio_mixed/audio_<ms>.wav (1.34-3.36 MB PCM WAV) + transformed/force_torque.npy present inside RH20T_lowdim/RH20T_cfg1..cfg7.tar.gz; full SNR/non-silence audited in Gate 2.",
+        "verified_audio_probe": "A100 Gate 2 probe verified cfg1 100% audio-valid (48 kHz, -7.46 dBFS median RMS) vs cfg5 20% audio-valid (-57.72 dBFS); pre-encoder filters silent mics strictly via audit_pcm_nonsilence().",
         "native_fps": "10-30 (timestamp-locked color.mp4 + timestamps.npy)",
-        "license": "cc-by-4.0",
-        "modalities": ["video", "audio", "motor_action", "proprio_force_torque", "text"],
-        "text_bytes_per_sec": 2.0,
+        "license": "cc-by-nc-sa-4.0 (combined RH20T-C CC-BY-SA-4.0 + RH20T-NC CC-BY-NC-4.0)",
+        "modalities": ["video", "audio", "motor_action", "proprio_force_torque"],
+        "text_bytes_per_sec": 0.0,
         "disjointness_axis": "user_and_scene_id_and_robot_cfg",
-        "target_hours": 45.0,
-        "target_mix_weight": 0.035,
+        "target_hours": 30.0,
+        "target_mix_weight": 0.030,
     },
     {
         "name": "agibot_and_aloha_sim",
@@ -615,27 +616,27 @@ V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
             "lerobot/aloha_sim_insertion_human",
             "lerobot/aloha_sim_transfer_cube_human",
         ],
-        "verified_source_hours": 1000.0,  # AgiBotWorld2026 is 8,078 GB (30 fps); ALOHA-Sim is 0.25 h (50 fps)
+        "verified_source_hours": 1000.0,  # AgiBotWorld2026 is 8,078 GB (30 fps, g2a 44-DoF + 6D wrench + succeed); ALOHA-Sim is 0.25 h (50 fps)
         "native_fps": "30.0 (AgiBot) / 50.0 (ALOHA-Sim); 5 fps Bridge & 10 fps LIBERO excluded from 25 fps Wan 2.1",
         "license": "cc-by-nc-sa-4.0 (AgiBot, non-commercial research) / apache-2.0 (ALOHA)",
-        "modalities": ["video", "motor_action", "proprio", "text"],
+        "modalities": ["video", "motor_action", "proprio_force_torque", "text"],
         "text_bytes_per_sec": 2.0,
         "disjointness_axis": "task_and_scene_id",
-        "target_hours": 75.0,
-        "target_mix_weight": 0.048,
+        "target_hours": 45.0,
+        "target_mix_weight": 0.041,
     },
     {
         "name": "vggsound_full_sync",
         "pillar": "av_sync_egocentric",
         "hf_repos": ["Loie/VGGSound"],
-        "verified_source_hours": 554.1,  # 199,467 clips in vggsound.csv * 10 s
+        "verified_source_hours": 554.1,  # 199,467 clips in vggsound.csv * 10 s; shard_00 probe 100% audio-valid (9.99 s mean)
         "native_fps": "25.0",
         "license": "cc-by-4.0",
         "modalities": ["video", "audio", "text"],
         "text_bytes_per_sec": 3.0,
         "disjointness_axis": "youtube_video_id_and_sha256_media",
-        "target_hours": 150.0,
-        "target_mix_weight": 0.092,
+        "target_hours": 65.0,
+        "target_mix_weight": 0.054,
     },
     {
         "name": "epic_kitchens_100_long_ego_av",
@@ -648,46 +649,46 @@ V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
         "modalities": ["video", "audio", "text"],
         "text_bytes_per_sec": 6.0,
         "disjointness_axis": "participant_id_P01_P37",
-        "target_hours": 55.0,
-        "target_mix_weight": 0.036,
+        "target_hours": 35.0,
+        "target_mix_weight": 0.030,
     },
     {
         "name": "holoassist_and_greatesthits_av",
         "pillar": "av_sync_egocentric",
         "hf_repos": ["SitongGong/HoloAssist"],
         "external_sources": ["MIT CSAIL GreatestHits (~8.1 h impact-audio benchmark, verified in SLWM-v3)"],
-        "verified_source_hours": 174.0,  # ~166 h HoloAssist + ~8.1 h GreatestHits
+        "verified_source_hours": 49.5,  # Empirically ffprobe-verified: 41.4 h (475 standard HoloAssist MP4s * 313.9 s) + 8.1 h GreatestHits!
         "native_fps": "30.0 -> 25.0",
         "license": "cc-by-4.0 / MIT-research",
         "modalities": ["video", "audio", "text"],
         "text_bytes_per_sec": 6.0,
         "disjointness_axis": "recording_session_and_date",
-        "target_hours": 55.0,
-        "target_mix_weight": 0.036,
+        "target_hours": 30.0,
+        "target_mix_weight": 0.025,
     },
     {
         "name": "wavcaps_and_libriheavy_speech",
         "pillar": "speech_audio_semantics",
-        "hf_repos": ["cvssp/WavCaps", "mythicinfinity/libriheavy"],
-        "verified_source_hours": 51000.0,  # LibriHeavy 50,000 h + WavCaps 400k clips (~1,100 h)
+        "hf_repos": ["OpenSound/AudioCaps", "mythicinfinity/libriheavy"],
+        "verified_source_hours": 50120.0,  # LibriHeavy 50,000 h speech + AudioCaps ~120 h captioned environmental audio
         "native_fps": "audio_only_12.5Hz_mimi",
         "license": "cc-by-4.0",
         "modalities": ["audio", "text"],
-        "text_bytes_per_sec": 14.0,  # ~150 wpm aligned English speech transcripts / captions
-        "disjointness_axis": "speaker_and_freesound_clip_id",
-        "target_hours": 4000.0,
-        "target_mix_weight": 0.386,
+        "text_bytes_per_sec": 14.0,  # ~150 wpm aligned English speech transcripts / environmental audio captions
+        "disjointness_axis": "speaker_and_shared_canonical_youtube_id",
+        "target_hours": 3000.0,
+        "target_mix_weight": 0.476,
     },
     {
         "name": "fineweb_edu_and_stack_code",
         "pillar": "text_code_reasoning",
-        "hf_repos": ["HuggingFaceFW/fineweb-edu", "HuggingFaceTB/smollm-corpus"],
+        "hf_repos": ["HuggingFaceTB/smollm-corpus", "codeparrot/github-code-clean"],
         "verified_source_hours": 0.0,
         "native_fps": "text_bytes",
-        "license": "odc-by-1.0 / apache-2.0",
+        "license": "odc-by-1.0 / permissive-oss-code",
         "modalities": ["text"],
         "raw_text_bytes_m": 500.0,
-        "disjointness_axis": "exact_doc_sha256_and_64b_substring",
+        "disjointness_axis": "exact_doc_sha256_and_code_repo_name",
         "target_hours": 0.0,
         "target_mix_weight": 0.250,
     },
@@ -695,15 +696,15 @@ V4_TIER1_PERSISTENT_CORPUS_SPEC: list[dict[str, Any]] = [
 
 
 # Tier 2 (`V4-S4` 150M Full Humanoid Confirmation — 3.0B single-pass pos = 20.0 Chinchilla pos/param)
-# Explicitly models streaming / rotating shard storage (or Gate-2-verified int8 Wan 2.1 latents on GCS/cloud SSD).
+# Uses Gate-2-certified int8 Wan 2.1 latent shards (`61.44 dB` latent PSNR / `0.99957` SSIM, ~906 GB total) streamed from private HF / GCS.
 V4_TIER2_CONFIRMATION_HOURS_OVERRIDE: dict[str, dict[str, Any]] = {
     "unitree_g1_h1_humanoid": {"target_hours": 100.0, "target_mix_weight": 0.014},
     "droid_1_0_1": {"target_hours": 450.0, "target_mix_weight": 0.062},
     "rh20t_contact_av_force": {"target_hours": 50.0, "target_mix_weight": 0.008},
-    "agibot_and_aloha_sim": {"target_hours": 750.0, "target_mix_weight": 0.105},  # Out of 8.08 TB AgiBotWorld2026!
-    "vggsound_full_sync": {"target_hours": 520.0, "target_mix_weight": 0.066},  # Full ~187k clips of Loie/VGGSound
+    "agibot_and_aloha_sim": {"target_hours": 850.0, "target_mix_weight": 0.118},  # Out of 8.08 TB AgiBotWorld2026!
+    "vggsound_full_sync": {"target_hours": 540.0, "target_mix_weight": 0.068},  # Full ~194k clips of Loie/VGGSound
     "epic_kitchens_100_long_ego_av": {"target_hours": 65.0, "target_mix_weight": 0.009},
-    "holoassist_and_greatesthits_av": {"target_hours": 165.0, "target_mix_weight": 0.021},
+    "holoassist_and_greatesthits_av": {"target_hours": 49.0, "target_mix_weight": 0.006},  # Strictly <= 49.5 h ffprobe-verified!
     "wavcaps_and_libriheavy_speech": {"target_hours": 14500.0, "target_mix_weight": 0.435},  # Out of 50,000 h LibriHeavy!
     "fineweb_edu_and_stack_code": {"raw_text_bytes_m": 1200.0, "target_mix_weight": 0.280},
 }
@@ -713,7 +714,7 @@ def build_corpus_spec_for_tier(tier: str = "tier1_v4s3") -> list[dict[str, Any]]
     """Build concrete corpus table with programmatically derived packet & storage budgets."""
     if tier == "tier1_v4s3":
         base = [dict(c) for c in V4_TIER1_PERSISTENT_CORPUS_SPEC]
-        vid_dtype = "fp16"
+        vid_dtype = "int8"  # Gate-2 certified: 61.44 dB latent PSNR, 54.03 dB decoded RGB PSNR, 0.99957 11x11 SSIM!
     elif tier == "tier2_v4s4":
         base = []
         for c in V4_TIER1_PERSISTENT_CORPUS_SPEC:
@@ -721,7 +722,7 @@ def build_corpus_spec_for_tier(tier: str = "tier1_v4s3") -> list[dict[str, Any]]
             if row["name"] in V4_TIER2_CONFIRMATION_HOURS_OVERRIDE:
                 row.update(V4_TIER2_CONFIRMATION_HOURS_OVERRIDE[row["name"]])
             base.append(row)
-        vid_dtype = "int8"  # Requires Gate 2 >50 dB latent PSNR cert; fp16 size also reported!
+        vid_dtype = "int8"
     else:
         raise ValueError(f"Unknown corpus tier: {tier}")
 

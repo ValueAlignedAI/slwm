@@ -1,0 +1,1673 @@
+{
+  "gate": "SLWM-v4 Gate 2 \u2014 Connected Data Contract, Disjoint Splits & Codec Parity",
+  "timestamp_utc": "2026-11-27T12:35:30.308209+00:00",
+  "hf_public_org": "valueai-org",
+  "public_license_audit": {
+    "unitree_g1_h1_humanoid": {
+      "repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+      "private": false,
+      "card_license": "apache-2.0",
+      "expected_license": "apache-2.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "droid_1_0_1": {
+      "repo_id": "valueai-org/slwm-v4-droid-latents",
+      "private": false,
+      "card_license": "apache-2.0",
+      "expected_license": "apache-2.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "agibot_and_aloha_sim": {
+      "repo_id": "valueai-org/slwm-v4-agibot-aloha-latents",
+      "private": false,
+      "card_license": "cc-by-nc-sa-4.0",
+      "expected_license": "cc-by-nc-sa-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "rh20t_contact_av_force": {
+      "repo_id": "valueai-org/slwm-v4-rh20t-latents",
+      "private": false,
+      "card_license": "cc-by-nc-sa-4.0",
+      "expected_license": "cc-by-nc-sa-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "vggsound_full_sync": {
+      "repo_id": "valueai-org/slwm-v4-vggsound-latents",
+      "private": false,
+      "card_license": "cc-by-4.0",
+      "expected_license": "cc-by-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "epic_kitchens_100_long_ego_av": {
+      "repo_id": "valueai-org/slwm-v4-epic-kitchens-100-latents",
+      "private": false,
+      "card_license": "cc-by-nc-4.0",
+      "expected_license": "cc-by-nc-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "holoassist_and_greatesthits_av": {
+      "repo_id": "valueai-org/slwm-v4-holoassist-latents",
+      "private": false,
+      "card_license": "cdla-permissive-2.0",
+      "expected_license": "cdla-permissive-2.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "greatesthits_impact_av": {
+      "repo_id": "valueai-org/slwm-v4-greatesthits-latents",
+      "private": false,
+      "card_license": "other",
+      "expected_license": "other",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "wavcaps_and_libriheavy_speech": {
+      "repo_id": "valueai-org/slwm-v4-speech-audio-latents",
+      "private": false,
+      "card_license": "cc-by-nc-4.0",
+      "expected_license": "cc-by-nc-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "fineweb_edu_and_stack_code": {
+      "repo_id": "valueai-org/slwm-v4-text-code-latents",
+      "private": false,
+      "card_license": "odc-by",
+      "expected_license": "odc-by",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    },
+    "eval_benchmarks": {
+      "repo_id": "valueai-org/slwm-v4-eval-benchmarks",
+      "private": false,
+      "card_license": "cc-by-nc-4.0",
+      "expected_license": "cc-by-nc-4.0",
+      "readme_present": true,
+      "orphan_meta_files": [],
+      "orphan_npz_files": [],
+      "license_compliant": true
+    }
+  },
+  "all_public_licenses_compliant": true,
+  "n_total_shards": 519,
+  "n_external_eval_benchmarks": 14,
+  "expected_tier1_corpora": [
+    "agibot_and_aloha_sim",
+    "droid_1_0_1",
+    "epic_kitchens_100_long_ego_av",
+    "fineweb_edu_and_stack_code",
+    "holoassist_and_greatesthits_av",
+    "rh20t_contact_av_force",
+    "unitree_g1_h1_humanoid",
+    "vggsound_full_sync",
+    "wavcaps_and_libriheavy_speech"
+  ],
+  "missing_corpora": [],
+  "global_totals": {
+    "total_episodes": 952467,
+    "total_hours_all_splits": 3433.445,
+    "hours_by_split": {
+      "train": 2927.165,
+      "dev": 178.462,
+      "test": 327.818
+    },
+    "total_packets_all_splits": 921277190,
+    "packets_by_split": {
+      "train": 812371452,
+      "dev": 49492623,
+      "test": 59413115
+    },
+    "modality_packet_counts": {
+      "video_patches": 103233990,
+      "audio_ticks": 147531980,
+      "motor_ticks": 16209060,
+      "text_bytes": 654302160
+    },
+    "non_text_packet_fraction": 0.2898,
+    "long_continuous_ge_120s_by_split": {
+      "dev": 54,
+      "test": 61,
+      "train": 1386
+    },
+    "v4_s3_450m_implied_max_epochs": 0.5539,
+    "v4_s3_450m_per_corpus_max_epochs": 0.98,
+    "v4_s3_450m_video_motor_av_share_pct": 23.88,
+    "v4_s3_450m_multimodal_corpus_share_pct": 75.0,
+    "v4_s3_450m_sensory_non_text_packet_share_pct": 47.95,
+    "v4_s3_450m_modality_packet_shares_pct": {
+      "video": 19.36,
+      "audio": 25.67,
+      "motor": 2.92,
+      "text": 52.05
+    },
+    "single_pass_le_1_0_epoch_for_v4_s3": true
+  },
+  "eval_cluster_richness_audit": {
+    "unitree_g1_h1_humanoid": {
+      "dev_clusters": 29,
+      "test_clusters": 13,
+      "ge_4_pass": true
+    },
+    "droid_1_0_1": {
+      "dev_clusters": 11,
+      "test_clusters": 7,
+      "ge_4_pass": true
+    },
+    "agibot_and_aloha_sim": {
+      "dev_clusters": 6,
+      "test_clusters": 8,
+      "ge_4_pass": true
+    },
+    "rh20t_contact_av_force": {
+      "dev_clusters": 7,
+      "test_clusters": 13,
+      "ge_4_pass": true
+    },
+    "greatesthits_impact_av": {
+      "dev_clusters": 6,
+      "test_clusters": 6,
+      "ge_4_pass": true
+    }
+  },
+  "audiocaps_split_counts": {
+    "test": 1349,
+    "train": 26689,
+    "dev": 2483
+  },
+  "showcase_concrete_lock_audit": {
+    "n_locked_episode_ids": 1332,
+    "missing_locked_ids": [],
+    "excluded_locked_ids": [],
+    "showcase_concrete_lock_pass": true
+  },
+  "v4_s3_450m_single_pass_waterfill_mixture": {
+    "unitree_g1_h1_humanoid": {
+      "alloc_packets": 14006753,
+      "share_pct": 3.11,
+      "train_packets_avail": 14292606,
+      "realized_epochs": 0.98
+    },
+    "droid_1_0_1": {
+      "alloc_packets": 24759549,
+      "share_pct": 5.5,
+      "train_packets_avail": 25264846,
+      "realized_epochs": 0.98
+    },
+    "agibot_and_aloha_sim": {
+      "alloc_packets": 13049080,
+      "share_pct": 2.9,
+      "train_packets_avail": 13315388,
+      "realized_epochs": 0.98
+    },
+    "rh20t_contact_av_force": {
+      "alloc_packets": 12705249,
+      "share_pct": 2.82,
+      "train_packets_avail": 12964540,
+      "realized_epochs": 0.98
+    },
+    "vggsound_full_sync": {
+      "alloc_packets": 22576583,
+      "share_pct": 5.02,
+      "train_packets_avail": 23037330,
+      "realized_epochs": 0.98
+    },
+    "epic_kitchens_100_long_ego_av": {
+      "alloc_packets": 12359123,
+      "share_pct": 2.75,
+      "train_packets_avail": 12611350,
+      "realized_epochs": 0.98
+    },
+    "holoassist_and_greatesthits_av": {
+      "alloc_packets": 7792425,
+      "share_pct": 1.73,
+      "train_packets_avail": 7951455,
+      "realized_epochs": 0.98
+    },
+    "greatesthits_impact_av": {
+      "alloc_packets": 243271,
+      "share_pct": 0.05,
+      "train_packets_avail": 248236,
+      "realized_epochs": 0.98
+    },
+    "wavcaps_and_libriheavy_speech": {
+      "alloc_packets": 230007967,
+      "share_pct": 51.11,
+      "train_packets_avail": 251803903,
+      "realized_epochs": 0.9134
+    },
+    "fineweb_edu_and_stack_code": {
+      "alloc_packets": 112500000,
+      "share_pct": 25.0,
+      "train_packets_avail": 450881798,
+      "realized_epochs": 0.2495
+    }
+  },
+  "global_non_vacuous_split_audit": {
+    "sensory_and_cluster_audit": {
+      "counts_by_split": {
+        "train": 821604,
+        "dev": 49064,
+        "test": 81799
+      },
+      "unique_cluster_counts": {
+        "train": 144688,
+        "dev": 9045,
+        "test": 7850
+      },
+      "unique_media_hash_counts": {
+        "video": {
+          "train": 45580,
+          "dev": 3607,
+          "test": 2980
+        },
+        "audio": {
+          "train": 694054,
+          "dev": 40935,
+          "test": 74625
+        },
+        "motor": {
+          "train": 22190,
+          "dev": 2115,
+          "test": 1470
+        }
+      },
+      "cluster_overlaps": {
+        "train_dev": 0,
+        "train_test": 0,
+        "dev_test": 0
+      },
+      "media_payload_overlaps": {
+        "video": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "audio": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "motor": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        }
+      },
+      "non_vacuous_zero_overlap_pass": true
+    },
+    "unique_document_text_audit": {
+      "counts_by_split": {
+        "train": 108536,
+        "dev": 6020,
+        "test": 5916
+      },
+      "unique_cluster_counts": {
+        "train": 103176,
+        "dev": 5761,
+        "test": 5645
+      },
+      "unique_media_hash_counts": {
+        "text": {
+          "train": 108462,
+          "dev": 6020,
+          "test": 5901
+        }
+      },
+      "cluster_overlaps": {
+        "train_dev": 0,
+        "train_test": 0,
+        "dev_test": 0
+      },
+      "media_payload_overlaps": {
+        "text": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        }
+      },
+      "non_vacuous_zero_overlap_pass": true
+    },
+    "shared_label_text_prompt_overlaps_informational": {
+      "train_dev": 574,
+      "train_test": 588,
+      "dev_test": 292
+    },
+    "non_vacuous_zero_overlap_pass": true
+  },
+  "cross_corpus_youtube_consistency": {
+    "n_unique_yt_clusters": 45622,
+    "n_cross_split_conflicts": 0,
+    "zero_cross_corpus_yt_leak_pass": true
+  },
+  "per_corpus_summary": {
+    "unitree_g1_h1_humanoid": {
+      "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+      "license": "apache-2.0",
+      "manifest_path": "unitree_g1_h1_humanoid/unitree_g1_h1_humanoid_preencode_manifest.json",
+      "n_shards": 52,
+      "n_manifest_shards": 52,
+      "missing_manifest_shards": [],
+      "n_episodes": 3600,
+      "total_hours": 39.519,
+      "hours_by_split": {
+        "train": 32.922,
+        "dev": 4.953,
+        "test": 1.644
+      },
+      "total_packets": 17147818,
+      "packets_by_split": {
+        "train": 14292606,
+        "dev": 2141270,
+        "test": 713942
+      },
+      "expected_modalities": [
+        "video",
+        "motor"
+      ],
+      "audio_valid_episodes": 0,
+      "audio_checked_episodes": 0,
+      "audio_valid_rate": null,
+      "episodes_ge_120s": 53,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher": 294,
+        "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine": 251,
+        "G1_WBT_Inspire_Walk_To_Table_Put_Cups_And_Rack_Plates_In_Dishwasher": 282,
+        "G1_Dex3_ToastedBread_Dataset": 417,
+        "unitreeh1_fold_clothes": 37,
+        "G1_Brainco_Make_Sandwich": 787,
+        "G1_Dex1_Arrange_Surgical_Kits": 100,
+        "G1_Dex1_Assemble_Stool": 140,
+        "G1_Dex1_Assembling_Motor": 259,
+        "G1_Dex1_Fold_Clothes": 353,
+        "G1_Dex1_Hang_Pants": 385,
+        "G1_Dex1_MountCamera_Dataset": 295
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 3008,
+          "dev": 428,
+          "test": 164
+        },
+        "unique_cluster_counts": {
+          "train": 218,
+          "dev": 29,
+          "test": 13
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 2983,
+            "dev": 428,
+            "test": 164
+          },
+          "motor": {
+            "train": 2970,
+            "dev": 428,
+            "test": 164
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "motor": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "droid_1_0_1": {
+      "public_repo_id": "valueai-org/slwm-v4-droid-latents",
+      "license": "apache-2.0",
+      "manifest_path": "droid_1_0_1/droid_1_0_1_preencode_manifest.json",
+      "n_shards": 67,
+      "n_manifest_shards": 67,
+      "missing_manifest_shards": [],
+      "n_episodes": 12348,
+      "total_hours": 65.008,
+      "hours_by_split": {
+        "train": 57.663,
+        "dev": 4.576,
+        "test": 2.769
+      },
+      "total_packets": 28478344,
+      "packets_by_split": {
+        "train": 25264846,
+        "dev": 2006888,
+        "test": 1206610
+      },
+      "expected_modalities": [
+        "video",
+        "motor"
+      ],
+      "audio_valid_episodes": 0,
+      "audio_checked_episodes": 0,
+      "audio_valid_rate": null,
+      "episodes_ge_120s": 12,
+      "labeled_success_pos": 10252,
+      "labeled_success_neg": 2096,
+      "subcorpus_counts": {
+        "default": 12348
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 11075,
+          "dev": 891,
+          "test": 382
+        },
+        "unique_cluster_counts": {
+          "train": 143,
+          "dev": 11,
+          "test": 7
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 11074,
+            "dev": 891,
+            "test": 382
+          },
+          "motor": {
+            "train": 11074,
+            "dev": 891,
+            "test": 382
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "motor": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "agibot_and_aloha_sim": {
+      "public_repo_id": "valueai-org/slwm-v4-agibot-aloha-latents",
+      "license": "cc-by-nc-sa-4.0",
+      "manifest_path": "agibot_and_aloha_sim/agibot_and_aloha_sim_preencode_manifest.json",
+      "n_shards": 83,
+      "n_manifest_shards": 83,
+      "missing_manifest_shards": [],
+      "n_episodes": 3158,
+      "total_hours": 45.566,
+      "hours_by_split": {
+        "train": 30.986,
+        "dev": 6.894,
+        "test": 7.686
+      },
+      "total_packets": 19584290,
+      "packets_by_split": {
+        "train": 13315388,
+        "dev": 2964681,
+        "test": 3304221
+      },
+      "expected_modalities": [
+        "video",
+        "motor"
+      ],
+      "audio_valid_episodes": 0,
+      "audio_checked_episodes": 0,
+      "audio_valid_rate": null,
+      "episodes_ge_120s": 142,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "aloha_sim_transfer_cube_human": 50,
+        "aloha_sim_insertion_human": 50,
+        "agibot_world_2026": 3058
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 2061,
+          "dev": 536,
+          "test": 561
+        },
+        "unique_cluster_counts": {
+          "train": 34,
+          "dev": 6,
+          "test": 8
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 2013,
+            "dev": 536,
+            "test": 561
+          },
+          "motor": {
+            "train": 2010,
+            "dev": 536,
+            "test": 561
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "motor": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "rh20t_contact_av_force": {
+      "public_repo_id": "valueai-org/slwm-v4-rh20t-latents",
+      "license": "cc-by-nc-sa-4.0",
+      "manifest_path": "rh20t_contact_av_force/rh20t_contact_av_force_preencode_manifest.json",
+      "n_shards": 29,
+      "n_manifest_shards": 29,
+      "missing_manifest_shards": [],
+      "n_episodes": 6759,
+      "total_hours": 30.008,
+      "hours_by_split": {
+        "train": 27.349,
+        "dev": 1.238,
+        "test": 1.422
+      },
+      "total_packets": 14221687,
+      "packets_by_split": {
+        "train": 12964540,
+        "dev": 584197,
+        "test": 672950
+      },
+      "expected_modalities": [
+        "video",
+        "audio",
+        "motor"
+      ],
+      "audio_valid_episodes": 6350,
+      "audio_checked_episodes": 6759,
+      "audio_valid_rate": 0.9395,
+      "episodes_ge_120s": 0,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "cfg3": 687,
+        "cfg1": 3775,
+        "cfg2": 1583,
+        "cfg4": 714
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 6136,
+          "dev": 260,
+          "test": 363
+        },
+        "unique_cluster_counts": {
+          "train": 173,
+          "dev": 7,
+          "test": 13
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 6136,
+            "dev": 260,
+            "test": 363
+          },
+          "audio": {
+            "train": 5775,
+            "dev": 239,
+            "test": 336
+          },
+          "motor": {
+            "train": 6136,
+            "dev": 260,
+            "test": 363
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "motor": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "vggsound_full_sync": {
+      "public_repo_id": "valueai-org/slwm-v4-vggsound-latents",
+      "license": "cc-by-4.0",
+      "manifest_path": "vggsound_full_sync/vggsound_full_sync_preencode_manifest.json",
+      "n_shards": 68,
+      "n_manifest_shards": 68,
+      "missing_manifest_shards": [],
+      "n_episodes": 23717,
+      "total_hours": 65.058,
+      "hours_by_split": {
+        "train": 58.559,
+        "dev": 3.331,
+        "test": 3.169
+      },
+      "total_packets": 25594097,
+      "packets_by_split": {
+        "train": 23037330,
+        "dev": 1310171,
+        "test": 1246596
+      },
+      "expected_modalities": [
+        "video",
+        "audio"
+      ],
+      "audio_valid_episodes": 23717,
+      "audio_checked_episodes": 23717,
+      "audio_valid_rate": 1.0,
+      "episodes_ge_120s": 0,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "default": 23717
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 21346,
+          "dev": 1215,
+          "test": 1156
+        },
+        "unique_cluster_counts": {
+          "train": 17776,
+          "dev": 1022,
+          "test": 971
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 21275,
+            "dev": 1214,
+            "test": 1152
+          },
+          "audio": {
+            "train": 21285,
+            "dev": 1214,
+            "test": 1152
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "epic_kitchens_100_long_ego_av": {
+      "public_repo_id": "valueai-org/slwm-v4-epic-kitchens-100-latents",
+      "license": "cc-by-nc-4.0",
+      "manifest_path": "epic_kitchens_100_long_ego_av/epic_kitchens_100_long_ego_av_preencode_manifest.json",
+      "n_shards": 36,
+      "n_manifest_shards": 36,
+      "missing_manifest_shards": [],
+      "n_episodes": 1023,
+      "total_hours": 35.037,
+      "hours_by_split": {
+        "train": 32.086,
+        "dev": 1.517,
+        "test": 1.435
+      },
+      "total_packets": 13771298,
+      "packets_by_split": {
+        "train": 12611350,
+        "dev": 599579,
+        "test": 560369
+      },
+      "expected_modalities": [
+        "video",
+        "audio",
+        "text"
+      ],
+      "audio_valid_episodes": 1023,
+      "audio_checked_episodes": 1023,
+      "audio_valid_rate": 1.0,
+      "episodes_ge_120s": 841,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "default": 1023
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 935,
+          "dev": 44,
+          "test": 44
+        },
+        "unique_cluster_counts": {
+          "train": 32,
+          "dev": 2,
+          "test": 3
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 935,
+            "dev": 44,
+            "test": 44
+          },
+          "audio": {
+            "train": 935,
+            "dev": 44,
+            "test": 44
+          },
+          "text": {
+            "train": 866,
+            "dev": 44,
+            "test": 29
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "text": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "holoassist_and_greatesthits_av": {
+      "public_repo_id": "valueai-org/slwm-v4-holoassist-latents",
+      "license": "cdla-permissive-2.0",
+      "manifest_path": "holoassist_and_greatesthits_av/holoassist_and_greatesthits_av_preencode_manifest.json",
+      "n_shards": 26,
+      "n_manifest_shards": 26,
+      "missing_manifest_shards": [],
+      "n_episodes": 735,
+      "total_hours": 22.011,
+      "hours_by_split": {
+        "train": 21.175,
+        "dev": 0.576,
+        "test": 0.261
+      },
+      "total_packets": 8270234,
+      "packets_by_split": {
+        "train": 7951455,
+        "dev": 218822,
+        "test": 99957
+      },
+      "expected_modalities": [
+        "video",
+        "audio"
+      ],
+      "audio_valid_episodes": 612,
+      "audio_checked_episodes": 735,
+      "audio_valid_rate": 0.8327,
+      "episodes_ge_120s": 453,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "default": 735
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 706,
+          "dev": 19,
+          "test": 10
+        },
+        "unique_cluster_counts": {
+          "train": 140,
+          "dev": 8,
+          "test": 3
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 706,
+            "dev": 19,
+            "test": 10
+          },
+          "audio": {
+            "train": 584,
+            "dev": 18,
+            "test": 10
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "greatesthits_impact_av": {
+      "public_repo_id": "valueai-org/slwm-v4-greatesthits-latents",
+      "license": "other",
+      "manifest_path": "greatesthits_impact_av/greatesthits_impact_av_preencode_manifest.json",
+      "n_shards": 5,
+      "n_manifest_shards": 5,
+      "missing_manifest_shards": [],
+      "n_episodes": 977,
+      "total_hours": 1.346,
+      "hours_by_split": {
+        "train": 0.631,
+        "dev": 0.296,
+        "test": 0.419
+      },
+      "total_packets": 529534,
+      "packets_by_split": {
+        "train": 248236,
+        "dev": 116530,
+        "test": 164768
+      },
+      "expected_modalities": [
+        "video",
+        "audio"
+      ],
+      "audio_valid_episodes": 977,
+      "audio_checked_episodes": 977,
+      "audio_valid_rate": 1.0,
+      "episodes_ge_120s": 0,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "default": 977
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 458,
+          "dev": 215,
+          "test": 304
+        },
+        "unique_cluster_counts": {
+          "train": 16,
+          "dev": 6,
+          "test": 6
+        },
+        "unique_media_hash_counts": {
+          "video": {
+            "train": 458,
+            "dev": 215,
+            "test": 304
+          },
+          "audio": {
+            "train": 458,
+            "dev": 215,
+            "test": 304
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "video": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          },
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "wavcaps_and_libriheavy_speech": {
+      "public_repo_id": "valueai-org/slwm-v4-speech-audio-latents",
+      "license": "cc-by-nc-4.0",
+      "manifest_path": "wavcaps_and_libriheavy_speech/wavcaps_and_libriheavy_speech_preencode_manifest.json",
+      "n_shards": 104,
+      "n_manifest_shards": 104,
+      "missing_manifest_shards": [],
+      "n_episodes": 780701,
+      "total_hours": 3129.888,
+      "hours_by_split": {
+        "train": 2665.794,
+        "dev": 155.081,
+        "test": 309.013
+      },
+      "total_packets": 293677847,
+      "packets_by_split": {
+        "train": 251803903,
+        "dev": 14810577,
+        "test": 27063367
+      },
+      "expected_modalities": [
+        "audio"
+      ],
+      "audio_valid_episodes": 780701,
+      "audio_checked_episodes": 780701,
+      "audio_valid_rate": 1.0,
+      "episodes_ge_120s": 0,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "libriheavy": 750180,
+        "audiocaps": 30521
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 668278,
+          "dev": 39480,
+          "test": 72943
+        },
+        "unique_cluster_counts": {
+          "train": 23913,
+          "dev": 2289,
+          "test": 1249
+        },
+        "unique_media_hash_counts": {
+          "audio": {
+            "train": 665017,
+            "dev": 39205,
+            "test": 72779
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "audio": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    },
+    "fineweb_edu_and_stack_code": {
+      "public_repo_id": "valueai-org/slwm-v4-text-code-latents",
+      "license": "odc-by",
+      "manifest_path": "fineweb_edu_and_stack_code/fineweb_edu_and_stack_code_preencode_manifest.json",
+      "n_shards": 49,
+      "n_manifest_shards": 49,
+      "missing_manifest_shards": [],
+      "n_episodes": 119449,
+      "total_hours": 0.0,
+      "hours_by_split": {
+        "train": 0.0,
+        "dev": 0.0,
+        "test": 0.0
+      },
+      "total_packets": 500002041,
+      "packets_by_split": {
+        "train": 450881798,
+        "dev": 24739908,
+        "test": 24380335
+      },
+      "expected_modalities": [
+        "text"
+      ],
+      "audio_valid_episodes": 0,
+      "audio_checked_episodes": 0,
+      "audio_valid_rate": null,
+      "episodes_ge_120s": 0,
+      "labeled_success_pos": 0,
+      "labeled_success_neg": 0,
+      "subcorpus_counts": {
+        "fineweb_edu": 86825,
+        "github_code_javascript": 3325,
+        "github_code_go": 571,
+        "github_code_php": 3519,
+        "github_code_c": 4045,
+        "github_code_css": 552,
+        "github_code_markdown": 2114,
+        "github_code_c++": 2245,
+        "github_code_batchfile": 41,
+        "github_code_java": 5234,
+        "github_code_sql": 194,
+        "github_code_python": 2071,
+        "github_code_html": 3230,
+        "github_code_shell": 353,
+        "github_code_c#": 2054,
+        "github_code_ruby": 1273,
+        "github_code_typescript": 603,
+        "github_code_rust": 97,
+        "github_code_scala": 188,
+        "github_code_cmake": 56,
+        "github_code_tex": 85,
+        "github_code_lua": 150,
+        "github_code_julia": 20,
+        "github_code_makefile": 159,
+        "github_code_fortran": 33,
+        "github_code_powershell": 44,
+        "github_code_assembly": 23,
+        "github_code_perl": 150,
+        "github_code_dockerfile": 51,
+        "github_code_visual basic": 52,
+        "github_code_haskell": 92
+      },
+      "non_vacuous_split_audit": {
+        "counts_by_split": {
+          "train": 107601,
+          "dev": 5976,
+          "test": 5872
+        },
+        "unique_cluster_counts": {
+          "train": 103144,
+          "dev": 5759,
+          "test": 5642
+        },
+        "unique_media_hash_counts": {
+          "text": {
+            "train": 107596,
+            "dev": 5976,
+            "test": 5872
+          }
+        },
+        "cluster_overlaps": {
+          "train_dev": 0,
+          "train_test": 0,
+          "dev_test": 0
+        },
+        "media_payload_overlaps": {
+          "text": {
+            "train_dev": 0,
+            "train_test": 0,
+            "dev_test": 0
+          }
+        },
+        "non_vacuous_zero_overlap_pass": true
+      }
+    }
+  },
+  "codec_parity_summary": {
+    "gate2_codec_parity_pass": true,
+    "track2_frozen_codec_strict_system_totals": {
+      "total_frozen_params": 206201140,
+      "total_encoder_streaming_state_mib_bf16": 168.444,
+      "total_decoder_streaming_state_mib_bf16": 281.005,
+      "total_bidirectional_live_codec_state_mib_bf16": 449.449,
+      "total_encoder_streaming_state_mib_fp32": 336.887,
+      "total_decoder_streaming_state_mib_fp32": 562.01,
+      "total_bidirectional_live_codec_state_mib_fp32": 898.897
+    },
+    "mimi_16rvq_librispeech_wer_pct": 4.92,
+    "wan21_int8_latent_psnr_db": 61.44,
+    "wan21_int8_decoded_rgb_psnr_db": 54.03,
+    "wan21_int8_decoded_rgb_ssim": 0.99957,
+    "a100_bidirectional_codec_ms": 85.2,
+    "a100_headroom_inside_160ms": 74.8
+  },
+  "showcase_manifest_sha256": "384c4cc38c4f1b1c9720a33cd3df8894b3c7d83b50857e512f9d9b9100007952",
+  "eval_exclusion_manifest": {
+    "gate": "SLWM-v4 Gate 2 \u2014 Pre-Training Cross-Split Upstream Duplicate Eval Exclusion Manifest",
+    "timestamp_utc": "2026-11-27T12:17:42.984885+00:00",
+    "policy": "Upstream duplicate recordings crossing disjoint split cluster boundaries are atomically excised strictly from dev/test shards prior to training and permanently excluded from showcase pools and evaluation.",
+    "n_excluded_eval_episodes": 39,
+    "exclusions": [
+      {
+        "corpus": "vggsound_full_sync",
+        "public_repo_id": "valueai-org/slwm-v4-vggsound-latents",
+        "excluded_split": "dev",
+        "episode_id": "4qhEUr5U48o_000021",
+        "cluster_key": "yt::4qhEUr5U48o",
+        "matched_split": "train",
+        "matched_episode_id": "-0jeONf82dE_000021",
+        "matched_modality": "video",
+        "payload_sha256": "28e5bcafb25efa900e7ea48a2798f4baea22b3175c0557a98c4cc6e745b978eb",
+        "reason": "Cross-split YouTube re-upload duplicate video detected by non-vacuous SHA-256 payload audit; excised from eval split prior to any model training."
+      },
+      {
+        "corpus": "vggsound_full_sync",
+        "public_repo_id": "valueai-org/slwm-v4-vggsound-latents",
+        "excluded_split": "test",
+        "episode_id": "-0MDgdtkV0k_000044",
+        "cluster_key": "yt::-0MDgdtkV0k",
+        "matched_split": "train",
+        "matched_episode_id": "3sBIRZReSC0_000044",
+        "matched_modality": "video",
+        "payload_sha256": "aeecad3385dc796c3ffdda359ad50b10eb10e214f62e4490ed88ec1b4cf56293",
+        "reason": "Cross-split YouTube re-upload duplicate video detected by non-vacuous SHA-256 payload audit; excised from eval split prior to any model training."
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "dev",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00400",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_20",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00918",
+        "matched_modality": "video",
+        "payload_sha256": "22c723e77870ed041284a93c646bab98ed47c2653c8879d9d7e797b2083b91d8",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "dev",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00401",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_20",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00919",
+        "matched_modality": "video",
+        "payload_sha256": "7dabb86734167353de9da83f0e0121d2cc07070a0dacdf35c37ca08df37eee57",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "dev",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00402",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_20",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00920",
+        "matched_modality": "motor",
+        "payload_sha256": "9c1991ec25277db0b98dcf4662edf50629fb78cc9540438aad4b90a288550c79",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "dev",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00403",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_20",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00921",
+        "matched_modality": "motor",
+        "payload_sha256": "7cc0e445fbe96a7a31c00ebc994fdca924044b0e51a9f4519c528149fb183ecd",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "dev",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00404",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_20",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00922",
+        "matched_modality": "video",
+        "payload_sha256": "7fe4b6bc7007966bcab710d7e98eb1f55e14e8d5e86d4d904314411b8d8dbec7",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00383",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00901",
+        "matched_modality": "motor",
+        "payload_sha256": "62079ec27d35c10841d4a46eb9d55581fafa9733c07aa1de2fe7b8581a262793",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00384",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00902",
+        "matched_modality": "video",
+        "payload_sha256": "156b7be63f3b94f40fc06aa2e601608d68e33335f37b7cbdb2d8c7b1ba82e35f",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00385",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00903",
+        "matched_modality": "motor",
+        "payload_sha256": "4ea729f63f797d7f8aa4a0daef0c096af175b1dbb4b512067feeb6f63562db71",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00386",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00904",
+        "matched_modality": "video",
+        "payload_sha256": "513b52c54784c4880a362ad3379f14c7d8cc42d4de923eaab8a7b256dbd785ca",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00387",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00905",
+        "matched_modality": "video",
+        "payload_sha256": "4cef72fefed2030c11cb9d5e512be0f35e03215611c9028d5ea9951e66debfc0",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00388",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00906",
+        "matched_modality": "video",
+        "payload_sha256": "83798a7e1b2448a25e54559b5dec5a414507999656cbb6766c4dcc73e684b613",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00389",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00907",
+        "matched_modality": "video",
+        "payload_sha256": "2f4622d864e1e85faaed1ce2617850f27b768a56ce61abe7038d46bf6960daa4",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00390",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00908",
+        "matched_modality": "video",
+        "payload_sha256": "516dd05718d02455c0e2c1c249bfd52a5623f270bc3332b3132e857cc8c0328b",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00391",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00909",
+        "matched_modality": "video",
+        "payload_sha256": "5895bc6fdcf0446fd475b471ac651fb6a21abbe0abb1b7928333ba80ec0d48a0",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00392",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00910",
+        "matched_modality": "video",
+        "payload_sha256": "2f0db8f20d0876c024508f71b4ff557a2218935cfa6b64dd1ce93dfc0f1f0f33",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00393",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00911",
+        "matched_modality": "video",
+        "payload_sha256": "fc30a6ab19310cd25488d9d906564f1f179aca397d19cc5bdd005e5c97909741",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00394",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00912",
+        "matched_modality": "video",
+        "payload_sha256": "923e5845899660acdbeb7b50848ca2c275a894baba904184ab3d1deb9d11d1f3",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00395",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00913",
+        "matched_modality": "video",
+        "payload_sha256": "587309aaef2df2a919f299f45fddd739577406017e4f949dedce5c499f468118",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00396",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00914",
+        "matched_modality": "video",
+        "payload_sha256": "1d1ce7f30b534c50010b91d967f2dc4adc2103639a8cb598ac1b7a9d530c55e5",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00397",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00915",
+        "matched_modality": "video",
+        "payload_sha256": "6744f8f107e446695622412654f6be08dc64b98307ee060691459bb7b083d7b1",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00398",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00916",
+        "matched_modality": "video",
+        "payload_sha256": "4dce70da8e8daae1a786c4251b224528dbf245925700fdc8d33577bbdf88bd0b",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00399",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_19",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep00917",
+        "matched_modality": "video",
+        "payload_sha256": "e55c7f6c98f5fac42865f5f730a4a731503cb15a8aab3ce9af354d5c3eeccbd2",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00774",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01292",
+        "matched_modality": "video",
+        "payload_sha256": "5fbb846296dd6e4b519274051a0998a32821b1ddb61b00a4c9b46b5e5faf5cb8",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00775",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01293",
+        "matched_modality": "video",
+        "payload_sha256": "c262f3c28339022529ba0c6eff077ad15ec84bf045d7568083c19a9dba2e2ebd",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00776",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01294",
+        "matched_modality": "video",
+        "payload_sha256": "6828fa5d3d637d063d03ddd2d8245173160046e3a9da7edb695511187bad393e",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00777",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01295",
+        "matched_modality": "video",
+        "payload_sha256": "ca3349b3ea91e5d388aa565c91b7a68a940daff530410028d5aae12df51e1411",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00778",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01296",
+        "matched_modality": "video",
+        "payload_sha256": "24b456b7cb47b07fb75b698c2830c6a1f00a708856a3a009667ffdcbbcf23f6f",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_Dex1_Hang_Pants_ep00779",
+        "cluster_key": "g1h1::unitreerobotics/g1_dex1_hang_pants::epblock_38",
+        "matched_split": "train",
+        "matched_episode_id": "G1_Dex1_Hang_Pants_ep01297",
+        "matched_modality": "video",
+        "payload_sha256": "d389bf2e45a49600bc3be1e64c8a583f2c1110837f23ae89d1afdea1ba453208",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00066",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00118",
+        "matched_modality": "video",
+        "payload_sha256": "cdc40a4958f0bf292a544798a4839e09350872a7495b49c38fb074f9f2551760",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00067",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00119",
+        "matched_modality": "video",
+        "payload_sha256": "c603cbbe86e94bfd7280f43d380b81b08bf96c27a617705fcf3374055a7daeca",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00068",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00120",
+        "matched_modality": "video",
+        "payload_sha256": "70f583fb9656e70c003da5340532ff48929b0bf1b0fcf8b1a8de1c851d71b99e",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00069",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00121",
+        "matched_modality": "video",
+        "payload_sha256": "d87f27934f4a0b477688a4e71a7e38cd89881bb7cf97e65e00f558e2f7c246b1",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00070",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00122",
+        "matched_modality": "video",
+        "payload_sha256": "95c7db469008d5372f177f012bed73bf1b954ae64cce562a3d0333482fe9d3b6",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00077",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00129",
+        "matched_modality": "video",
+        "payload_sha256": "0796195f6c361fb212f01d707d4bfc6050d062468e277f235168257b9056f132",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00078",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00130",
+        "matched_modality": "video",
+        "payload_sha256": "d56a93d570f43621c93f4a8bb0b61702bd40f178ece062e8cb01256dfa1c92ce",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "unitree_g1_h1_humanoid",
+        "public_repo_id": "valueai-org/slwm-v4-unitree-g1-h1-latents",
+        "excluded_split": "test",
+        "episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00079",
+        "cluster_key": "g1h1::unitreerobotics/g1_wbt_inspire_put_clothes_into_washing_machine::epblock_3",
+        "matched_split": "train",
+        "matched_episode_id": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep00131",
+        "matched_modality": "video",
+        "payload_sha256": "32b34f8b2b11b9355efdb8b2bbdc68829318bdbd555c047d8cb4619c714eae86",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      },
+      {
+        "corpus": "wavcaps_and_libriheavy_speech",
+        "public_repo_id": "valueai-org/slwm-v4-speech-audio-latents",
+        "excluded_split": "dev",
+        "episode_id": "ac_9073",
+        "cluster_key": "yt::2dfTnnU5KNg",
+        "matched_split": "train",
+        "matched_episode_id": "ac_22447",
+        "matched_modality": "audio",
+        "payload_sha256": "6aaa4149dd518bfd3de1d92c54f74e5073206be546a28abda0ceca178c539c63",
+        "reason": "upstream_duplicate_recording_crossing_split_cluster_boundary"
+      }
+    ]
+  },
+  "gate2_overall_pass": true
+}
