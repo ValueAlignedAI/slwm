@@ -1,0 +1,108 @@
+{
+  "gate": "SLWM-v4 Gate 3 \u2014 Local 120s Mimi KV=249 & Wan 2.1 O(1) Streaming Cache Saturation Verification",
+  "timestamp_utc": "2026-11-27T13:35:40.452992+00:00",
+  "host_platform": "Darwin arm64",
+  "mimi_120s_750hb_cpu_fp32": {
+    "n_heartbeats": 750,
+    "duration_sec": 120.0,
+    "steady_t_gt_20s_enc_median_ms": 15.55,
+    "steady_t_gt_20s_dec_median_ms": 12.63,
+    "kv_trace": {
+      "0.16s": {
+        "enc": {
+          "physical_kv_len": 4,
+          "cumulative_seq_len": 4
+        },
+        "dec": {
+          "physical_kv_len": 4,
+          "cumulative_seq_len": 4
+        }
+      },
+      "10s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 252
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 252
+        }
+      },
+      "20s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 504
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 504
+        }
+      },
+      "40s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 1004
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 1004
+        }
+      },
+      "60s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 1504
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 1504
+        }
+      },
+      "90s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 2252
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 2252
+        }
+      },
+      "120s": {
+        "enc": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 3000
+        },
+        "dec": {
+          "physical_kv_len": 249,
+          "cumulative_seq_len": 3000
+        }
+      }
+    },
+    "state_bytes_trace": {
+      "0.16s": 308496,
+      "10s": 16364816,
+      "20s": 16364816,
+      "40s": 16364816,
+      "60s": 16364816,
+      "90s": 16364816,
+      "120s": 16364816
+    },
+    "kv_saturated_249_from_10s_to_120s": true,
+    "state_bytes_flat_o1_10s_to_120s": true
+  },
+  "wan21_24s_150hb_mps_fp16": {
+    "n_heartbeats": 150,
+    "steady_enc_median_ms": 168.81,
+    "steady_dec_median_ms": 275.72,
+    "cache_bytes_trace": {
+      "0.16s": 463073280,
+      "1.76s": 463073280,
+      "10s": 463073280,
+      "20s": 463073280,
+      "24s": 463073280
+    },
+    "state_bytes_flat_o1": true
+  },
+  "wall_sec": 114.5
+}
